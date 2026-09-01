@@ -3,15 +3,26 @@ import { assertStagePlannedOrLegacy, buildPipelinePlan, missingMandatoryProfileS
 import { FactoryOperatingProfileSchema } from '../../src/schemas/operating-profile.js';
 
 describe('pipeline plan', () => {
-  it('allows only planned stages and reports legacy fallback explicitly', () => {
+  it('classifies mandatory stages as allowed', () => {
     const plan = buildPipelinePlan({ mode: 'fast-reskin', designMode: 'reference_reskin', productionLine: 'idle-management' });
     expect(stageExecutionPolicy(plan, 'QA')).toEqual({ allowed: true, classification: 'mandatory' });
+    expect(assertStagePlannedOrLegacy(plan, 'QA')).toEqual({ allowed: true, classification: 'mandatory' });
+  });
+
+  it('classifies skipped/unlisted stages as disallowed', () => {
+    const plan = buildPipelinePlan({ mode: 'fast-reskin', designMode: 'reference_reskin', productionLine: 'idle-management' });
     expect(stageExecutionPolicy(plan, 'PRESENTATION_QA')).toEqual({ allowed: true, classification: 'optional' });
     expect(stageExecutionPolicy(plan, 'BUILD_3_PROTOTYPES')).toEqual({ allowed: false, classification: 'skipped' });
     expect(stageExecutionPolicy(plan, 'NARRATIVE_CONTRACT')).toEqual({ allowed: false, classification: 'unlisted' });
     expect(() => assertStagePlannedOrLegacy(plan, 'BUILD_3_PROTOTYPES')).toThrow(/skipped/);
-    expect(assertStagePlannedOrLegacy(undefined, 'NARRATIVE_CONTRACT', { legacyPlan: true })).toEqual({ allowed: true, classification: 'legacy' });
+    expect(() => assertStagePlannedOrLegacy(plan, 'NARRATIVE_CONTRACT')).toThrow(/unlisted/);
   });
+
+  it('classifies legacy plan execution as allowed with explicit legacy marker', () => {
+    expect(assertStagePlannedOrLegacy(undefined, 'NARRATIVE_CONTRACT', { legacyPlan: true })).toEqual({ allowed: true, classification: 'legacy' });
+    expect(() => assertStagePlannedOrLegacy(undefined, 'NARRATIVE_CONTRACT')).toThrow();
+  });
+
   it('keeps the one-person fast lane compact but never skips release-critical gates', () => {
     const plan = buildPipelinePlan({ mode: 'fast-reskin', designMode: 'reference_reskin', productionLine: 'cut-stack-dodge' });
     expect(PipelinePlanSchema.parse(plan).mandatoryStages).toEqual(expect.arrayContaining(['BUSINESS_PREFLIGHT', 'OPEN_SOURCE_RESEARCH', 'CORE_SPEC_FROZEN', 'FULL_BUILD', 'QA', 'TARGET_PLATFORM_QA', 'RELEASE']));

@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -54,5 +54,29 @@ describe('factory stage completeness', () => {
     const audit = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/stage-contracts/SYSTEMS_CONTRACT.json'), 'utf8')) as { passed?: boolean; missing?: string[] };
     expect(audit.passed).toBe(false);
     expect(audit.missing).toEqual(expect.arrayContaining(['artifacts/systems-contract.json', 'systems:contract']));
+  });
+
+  it('records stage-plan policy for started stages', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'factory-stage-policy-'));
+    roots.push(root);
+    const seed = path.join(root, 'seed.yaml');
+    await writeFile(seed, 'title: Policy Evidence\ntheme: spirits\ntemplate: idle-shop-v1\ndesignMode: prototype_tournament\n');
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub' });
+    const runId = await factory.newRun(seed);
+    const runRoot = path.join(root, 'runs', runId);
+    await expect(factory.resume(runId)).resolves.toHaveProperty('stage');
+    const policyFiles = await readdir(path.join(runRoot, 'artifacts/stage-plan-policy'));
+    expect(policyFiles.length).toBeGreaterThan(0);
+    const policyName = policyFiles[0];
+    expect(policyName).toBeTypeOf('string');
+    const policyFile = path.join(runRoot, 'artifacts/stage-plan-policy', policyName!);
+    const policy = JSON.parse(await readFile(policyFile, 'utf8')) as {
+      source?: string;
+      classification?: string;
+      allowed?: boolean;
+    };
+    expect(policy.source).toBe('pipeline-plan');
+    expect(policy.classification).toBe('mandatory');
+    expect(policy.allowed).toBe(true);
   });
 });
