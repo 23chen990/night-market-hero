@@ -4,6 +4,7 @@ import { expect, it } from 'vitest';
 import { builderVerificationPassed, FixerAgent } from '../../src/agents/index.js';
 import type { CodexProvider } from '../../src/providers/interfaces.js';
 import type { RuntimeAdapter } from '../../src/adapters/runtime.js';
+import type { QaReport } from '../../src/schemas/index.js';
 
 it('keeps generated game workspace mutations inside BuilderAgent and FixerAgent', async () => {
   const orchestrator = await readFile(path.join(process.cwd(), 'src/factory.ts'), 'utf8');
@@ -47,7 +48,7 @@ it('still requires the full regression when the fixer provider claims full mode'
     build: async () => ({ verificationMode: 'full' as const, metrics: { provider: 'test', model: 'test', calls: 1 } }),
     fix: async () => ({ verificationMode: 'full' as const, summary: 'fixed', metrics: { provider: 'test', model: 'test', calls: 1 } }),
   };
-  const qaReport = {
+  const qaReport: QaReport = {
     schemaVersion: 1,
     passed: false,
     checks: [],

@@ -87,6 +87,12 @@ async function packageFinderPlayable(output: string): Promise<void> {
 export class WebLiteRuntimeAdapter implements RuntimeAdapter {
   private preview?: { stop: () => Promise<void> };
   constructor(private readonly repositoryRoot: string) {}
+  // Generated workspaces reuse the factory's node_modules through a symlink.
+  // Never run the package manager inside such a workspace: pnpm 11's
+  // verify-deps-before-run would reconcile the symlinked tree against the
+  // workspace manifest and prune the factory's own dependencies. Invoke the
+  // factory's pinned binaries directly instead (same approach as buildWeb).
+  private factoryBin(name: string) { return path.join(this.repositoryRoot, 'node_modules/.bin', name); }
   async createProject(workspace: string, template: string) {
     const templateDirectories: Record<string, string> = {
       'idle-shop-v1': 'idle-shop-v1',
@@ -127,9 +133,9 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     const packageJson = JSON.parse(await readFile(path.join(workspace, 'package.json'), 'utf8')) as { scripts?: Record<string, string> };
     const missingScripts = ['test', 'typecheck'].filter((name) => !packageJson.scripts?.[name]);
     if (missingScripts.length > 0) throw new Error(`Builder verification requires package scripts: test, typecheck; missing ${missingScripts.join(', ')}`);
-    await command('pnpm', ['test'], workspace);
+    await command(this.factoryBin('vitest'), ['run'], workspace);
     checks.push('test:passed');
-    await command('pnpm', ['typecheck'], workspace);
+    await command(this.factoryBin('tsc'), ['--noEmit'], workspace);
     checks.push('typecheck:passed');
     return checks;
   }
@@ -143,9 +149,9 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     const requiredMarkers = ['__FORMAL_TEST__', 'contractVersion', 'safe-tutorial', 'first-pursuit', 'route-alternation', 'gate-climax'];
     const missingMarkers = requiredMarkers.filter((marker) => !source.includes(marker));
     if (missingMarkers.length > 0) throw new Error(`Formal prototype test contract is missing: ${missingMarkers.join(', ')}`);
-    await command('pnpm', ['lint'], workspace);
-    await command('pnpm', ['typecheck'], workspace);
-    await command('pnpm', ['test'], workspace);
+    await command(this.factoryBin('eslint'), ['.'], workspace);
+    await command(this.factoryBin('tsc'), ['--noEmit'], workspace);
+    await command(this.factoryBin('vitest'), ['run'], workspace);
     return ['lint:passed', 'typecheck:passed', 'test:passed', 'formal-test-contract:v1'];
   }
   async buildWeb(workspace: string) {

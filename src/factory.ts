@@ -1702,7 +1702,7 @@ export function createFactory(options: FactoryOptions = {}) {
         retryable: failureKind !== 'POLICY_BLOCK' && failureKind !== 'SPEC_ERROR',
       }));
     } catch { /* preserve the original failure if evidence persistence itself fails */ }
-    record.status = 'failed'; record.finishedAt = new Date().toISOString(); record.errors.push(message); state.stage = 'FAILED'; state.status = 'failed'; await store.save(state); await store.log(state.runId, 'stage.failed', { stage: record.stage, message, failureClass, failureKind, routeTo: route.stage }); throw error;
+    record.failureReason = primaryCause; state.failureReason = primaryCause; record.status = 'failed'; record.finishedAt = new Date().toISOString(); record.errors.push(message); state.stage = 'FAILED'; state.status = 'failed'; await store.save(state); await store.log(state.runId, 'stage.failed', { stage: record.stage, message, failureClass, failureKind, routeTo: route.stage }); throw error;
   }
 
   async function markAutoAbandoned(state: RunState, reason: 'cost-cap' | 'fix-cap' | 'platform-blocked' | 'unknown') {

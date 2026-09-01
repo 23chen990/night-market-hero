@@ -144,9 +144,12 @@ export class Cocos3dRuntimeAdapter implements RuntimeAdapter {
 
     const packageJson = JSON.parse(await readFile(path.join(workspace, 'package.json'), 'utf8')) as { scripts?: Record<string, string> };
     for (const script of ['test', 'typecheck']) if (!packageJson.scripts?.[script]) throw new Error(`Cocos project is missing package script: ${script}`);
-    await this.runChecked('pnpm', ['test'], workspace, [0]);
+    // Generated workspaces symlink the factory's node_modules; invoking pnpm
+    // there would let verify-deps-before-run prune the factory's dependencies.
+    // Call the factory's pinned binaries directly instead.
+    await this.runChecked(path.join(this.repositoryRoot, 'node_modules/.bin/vitest'), ['run', 'tests'], workspace, [0]);
     checks.push('test:passed');
-    await this.runChecked('pnpm', ['typecheck'], workspace, [0]);
+    await this.runChecked(path.join(this.repositoryRoot, 'node_modules/.bin/tsc'), ['--noEmit', '-p', 'tsconfig.core.json'], workspace, [0]);
     checks.push('typecheck:passed');
     return checks;
   }

@@ -55,15 +55,12 @@ async function makeWorkspace(prefix: string): Promise<{ root: string; workspace:
   return { root, workspace };
 }
 
-describe('WebLiteRuntimeAdapter command() pnpm resolution', () => {
+describe('WebLiteRuntimeAdapter verifyProject uses factory-pinned binaries', () => {
   afterEach(() => mockSpawn.mockReset());
 
-  it('falls back to `corepack pnpm` when pnpm is not on PATH', async () => {
-    const { workspace } = await makeWorkspace('web-lite-fallback-');
-    // pnpm test → ENOENT, corepack pnpm test → ok; pnpm typecheck → ENOENT, corepack → ok.
-    queueSpawn({ code: 'ENOENT' });
+  it('invokes factory vitest and tsc instead of pnpm inside the symlinked workspace', async () => {
+    const { workspace } = await makeWorkspace('web-lite-factory-bin-');
     queueSpawn();
-    queueSpawn({ code: 'ENOENT' });
     queueSpawn();
 
     const adapter = new WebLiteRuntimeAdapter(process.cwd());
@@ -76,23 +73,22 @@ describe('WebLiteRuntimeAdapter command() pnpm resolution', () => {
 
     const calls = recordedSpawns();
     expect(calls.map(({ bin, args }) => [bin, args] as const)).toEqual([
-      ['pnpm', ['test']],
-      ['corepack', ['pnpm', 'test']],
-      ['pnpm', ['typecheck']],
-      ['corepack', ['pnpm', 'typecheck']],
+      [path.join(process.cwd(), 'node_modules/.bin/vitest'), ['run']],
+      [path.join(process.cwd(), 'node_modules/.bin/tsc'), ['--noEmit']],
     ]);
   });
 
-  it('uses pnpm directly when it spawns without error', async () => {
-    const { workspace } = await makeWorkspace('web-lite-direct-');
+  it('does not enable pnpm verify-deps toggles when spawning factory binaries', async () => {
+    const { workspace } = await makeWorkspace('web-lite-env-');
     queueSpawn();
     queueSpawn();
 
     const adapter = new WebLiteRuntimeAdapter(process.cwd());
-    await expect(adapter.verifyProject(workspace, { requireScripts: true })).resolves.toContain('test:passed');
+    await adapter.verifyProject(workspace, { requireScripts: true });
 
-    const calls = recordedSpawns();
-    expect(calls.map(({ bin }) => bin)).toEqual(['pnpm', 'pnpm']);
+    for (const { options } of recordedSpawns()) {
+      expect(options.env.pnpm_config_verify_deps_before_run).toBeUndefined();
+    }
   });
 
   it('does not retry with corepack for non-pnpm commands', async () => {
@@ -105,18 +101,5 @@ describe('WebLiteRuntimeAdapter command() pnpm resolution', () => {
     const calls = recordedSpawns();
     expect(calls).toHaveLength(1);
     expect(calls[0]!.bin).toContain('node_modules/.bin/vite');
-  });
-
-  it('disables pnpm pre-run dependency checks for package-manager spawns only', async () => {
-    const { workspace } = await makeWorkspace('web-lite-env-');
-    queueSpawn();
-    queueSpawn();
-
-    const adapter = new WebLiteRuntimeAdapter(process.cwd());
-    await adapter.verifyProject(workspace, { requireScripts: true });
-
-    for (const { options } of recordedSpawns()) {
-      expect(options.env.pnpm_config_verify_deps_before_run).toBe('false');
-    }
   });
 });
