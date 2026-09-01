@@ -24,6 +24,12 @@ describe('factory stage completeness', () => {
     for (const stage of ['PRODUCTION_LINE_REVIEW', 'IAA_REVIEW', 'BLUEPRINT', 'EXPERIENCE_HYPOTHESIS', 'CORE_SPEC_FROZEN', 'CONTENT_EXPANSION', 'UI_SKELETON']) {
       expect(done.stages[stage]?.status, stage).toBe('completed');
     }
+    // The mock builder only runs contract checks, so the FULL_BUILD ledger must
+    // record contract evidence instead of claiming a full test/typecheck run.
+    expect(done.stages.FULL_BUILD?.status).toBe('completed');
+    expect(done.stages.FULL_BUILD?.evidence).toContain('build:tests:contract');
+    expect(done.stages.FULL_BUILD?.evidence).toContain('build:typecheck:contract');
+    expect(done.stages.FULL_BUILD?.evidence).not.toContain('build:tests');
     for (const artifact of ['production-line-decision.json', 'iaa-contract.json', 'game-blueprint.json', 'experience-hypothesis.json', 'core-spec-lock.json', 'content-expansion.json', 'ui-skeleton.json']) {
       await expect(readFile(path.join(root, 'runs', runId, 'artifacts', artifact), 'utf8'), artifact).resolves.toBeTruthy();
     }

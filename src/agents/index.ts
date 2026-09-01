@@ -313,13 +313,20 @@ export class FixerAgent {
   async run(workspace: string, threadId: string | undefined, qaReport: QaReport, context?: AgentExecutionContext) {
     if (context && !isChildPath(path.join(path.resolve(context.runRoot), 'workspace'), path.resolve(workspace))) throw new Error('Fixer workspace must remain inside the current run workspace');
     const result = await this.provider.fix({ workspace, threadId, qaReport: QaReportSchema.parse(qaReport), context });
-    // A repair is not complete merely because the provider returned. Always
-    // execute the full local regression suite so the handoff cannot claim a
-    // fix without test/typecheck evidence, even for a provider that selected
-    // the lightweight contract mode.
-    const verification = await this.runtime.verifyProject(workspace, { requireScripts: true });
-    if (!verification.includes('test:passed') || !verification.includes('typecheck:passed')) {
-      throw new Error('Fixer verification must include test:passed and typecheck:passed');
+    // A repair is not complete merely because the provider returned. Full-mode
+    // providers (real codex integrations) get the complete local regression so
+    // the handoff cannot claim a fix without test/typecheck evidence. Contract-
+    // mode providers (mock/stub) never touched the workspace, so the lightweight
+    // contract checks mirror BuilderAgent instead of pretending a full
+    // regression ran.
+    const verification = await this.runtime.verifyProject(workspace, { requireScripts: result.verificationMode === 'full' });
+    if (result.verificationMode === 'full' && (!verification.includes('test:passed') || !verification.includes('typecheck:passed'))) {
+      const blockers = ['test:passed', 'typecheck:passed'].filter((check) => !verification.includes(check));
+      if (context?.runRoot) {
+        await mkdir(path.join(context.runRoot, 'artifacts'), { recursive: true });
+        await writeFile(path.join(context.runRoot, 'artifacts/fix-verification-blockers.json'), `${JSON.stringify({ schemaVersion: 1, stage: 'FIX', passed: false, verification, blockers, fixedAt: new Date().toISOString() }, null, 2)}\n`);
+      }
+      throw new Error(`Fixer verification must include test:passed and typecheck:passed; missing ${blockers.join(', ')}`);
     }
     await this.runtime.buildWeb(workspace);
     return { ...result, verification };

@@ -20,7 +20,10 @@ describe('stage contracts', () => {
     const audit = evaluateStageContract(contract, {
       inputs,
       artifacts,
-      evidence: contract.evidenceRequired.map((item) => item.id),
+      // Evidence ids may carry `|` any-of alternatives (e.g. full vs contract
+      // verification strength); feeding the first branch keeps this audit
+      // satisfied by the full-mode evidence.
+      evidence: contract.evidenceRequired.flatMap((item) => item.id.split('|')[0]!),
       artifactVersions: Object.fromEntries([...inputs, ...artifacts].map((item) => [item, 1])),
       strictVersions: true,
     });

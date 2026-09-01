@@ -67,7 +67,7 @@ describe('factory hardening contracts', () => {
     const audit = evaluateStageContract(contract, {
       inputs: contract.inputs.filter((item) => item.required).map((item) => item.path),
       artifacts: contract.outputs.filter((item) => item.required).map((item) => item.path),
-      evidence: contract.evidenceRequired.filter((item) => item.required).map((item) => item.id),
+      evidence: contract.evidenceRequired.filter((item) => item.required).flatMap((item) => item.id.split('|')[0]!),
       artifactVersions: Object.fromEntries(contract.outputs.filter((item) => item.required).map((item) => [item.path, item.artifactVersion])),
     });
     expect(audit.passed).toBe(true);

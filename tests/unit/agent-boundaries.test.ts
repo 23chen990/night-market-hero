@@ -19,14 +19,14 @@ it('does not label a Builder report successful when a verification check is expl
   expect(builderVerificationPassed(['contract:test-api-7', 'typecheck:failed'])).toBe(false);
 });
 
-it('always runs the full regression verification after a fixer turn', async () => {
+it('mirrors the builder verification mode after a fixer turn', async () => {
   let requireScripts: boolean | undefined;
   const provider: CodexProvider = {
     build: async () => ({ verificationMode: 'contract' as const, metrics: { provider: 'test', model: 'test', calls: 1 } }),
     fix: async () => ({ verificationMode: 'contract' as const, summary: 'fixed', metrics: { provider: 'test', model: 'test', calls: 1 } }),
   };
   const runtime = {
-    verifyProject: async (_workspace: string, options: { requireScripts: boolean }) => { requireScripts = options.requireScripts; return ['contract:test-api-7', 'test:passed', 'typecheck:passed']; },
+    verifyProject: async (_workspace: string, options: { requireScripts: boolean }) => { requireScripts = options.requireScripts; return ['contract:test-api-7', 'save:versioned']; },
     buildWeb: async () => '/tmp/fixer-dist',
   } as unknown as RuntimeAdapter;
   const result = await new FixerAgent(provider, runtime).run('/tmp/game-workspace', undefined, {
@@ -38,6 +38,32 @@ it('always runs the full regression verification after a fixer turn', async () =
     consoleLog: 'logs/console.log',
     testedAt: new Date(0).toISOString(),
   });
-  expect(requireScripts).toBe(true);
-  expect(result.verification).toEqual(['contract:test-api-7', 'test:passed', 'typecheck:passed']);
+  expect(requireScripts).toBe(false);
+  expect(result.verification).toEqual(['contract:test-api-7', 'save:versioned']);
+});
+
+it('still requires the full regression when the fixer provider claims full mode', async () => {
+  const provider: CodexProvider = {
+    build: async () => ({ verificationMode: 'full' as const, metrics: { provider: 'test', model: 'test', calls: 1 } }),
+    fix: async () => ({ verificationMode: 'full' as const, summary: 'fixed', metrics: { provider: 'test', model: 'test', calls: 1 } }),
+  };
+  const qaReport = {
+    schemaVersion: 1,
+    passed: false,
+    checks: [],
+    issues: [{ id: 'qa-1', severity: 'error', message: 'broken', evidence: 'screenshot' }],
+    screenshots: [],
+    consoleLog: 'logs/console.log',
+    testedAt: new Date(0).toISOString(),
+  };
+  const passingRuntime = {
+    verifyProject: async (_workspace: string, options: { requireScripts: boolean }) => options.requireScripts ? ['contract:test-api-7', 'test:passed', 'typecheck:passed'] : ['contract:test-api-7'],
+    buildWeb: async () => '/tmp/fixer-dist',
+  } as unknown as RuntimeAdapter;
+  await expect(new FixerAgent(provider, passingRuntime).run('/tmp/game-workspace', undefined, qaReport)).resolves.toMatchObject({ verification: ['contract:test-api-7', 'test:passed', 'typecheck:passed'] });
+  const failingRuntime = {
+    verifyProject: async (_workspace: string, options: { requireScripts: boolean }) => options.requireScripts ? ['contract:test-api-7', 'test:passed'] : ['contract:test-api-7'],
+    buildWeb: async () => '/tmp/fixer-dist',
+  } as unknown as RuntimeAdapter;
+  await expect(new FixerAgent(provider, failingRuntime).run('/tmp/game-workspace', undefined, qaReport)).rejects.toThrow(/typecheck:passed/u);
 });
