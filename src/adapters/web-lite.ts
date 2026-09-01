@@ -6,7 +6,19 @@ import type { AssetManifest, GameBlueprint, StyleLock } from '../schemas/index.j
 import { clearDir, copyTree, exists, listFiles } from '../core/files.js';
 
 function command(bin: string, args: string[], cwd: string): Promise<void> {
-  return new Promise((resolve, reject) => { const child = spawn(bin, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] }); let output = ''; child.stdout.on('data', (d) => output += d); child.stderr.on('data', (d) => output += d); child.on('exit', (code) => code === 0 ? resolve() : reject(new Error(`${bin} failed (${code}): ${output}`))); });
+  return new Promise((resolve, reject) => {
+    const child = spawn(bin, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
+    let output = '';
+    child.stdout.on('data', (d) => output += d);
+    child.stderr.on('data', (d) => output += d);
+    child.on('error', (error) => {
+      const reason = (error as NodeJS.ErrnoException).code === 'ENOENT'
+        ? `${bin} was not found on PATH`
+        : error.message;
+      reject(new Error(`${bin} could not be started: ${reason}`));
+    });
+    child.on('exit', (code) => code === 0 ? resolve() : reject(new Error(`${bin} failed (${code}): ${output}`)));
+  });
 }
 
 const playableMimeTypes: Record<string, string> = {
