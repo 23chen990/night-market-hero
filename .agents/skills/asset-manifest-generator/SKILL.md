@@ -19,6 +19,9 @@ reuse third-party artwork.
 
 1. Derive only assets the selected template consumes: customer, product, background, upgrade UI, and one promo image.
 2. Build prompts from content plus Style Lock. Include originality and forbidden-item constraints.
+   These are static source assets: do not create a pseudo-animation from independently generated in-between images.
+   UI continuity is owned by Builder's validated `uiAnimationStandard`; a future motion-specific asset may contain
+   only two to four aligned key poses in one sprite sheet, never a loose batch with drifting crops or pivots.
 3. Call `ImageProvider`; in Mock mode create deterministic local SVGs. Use stable ids and relative `assets/*` paths.
 4. Hash actual bytes with SHA-256 and mark generated only after the file exists.
 

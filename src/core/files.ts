@@ -1,13 +1,21 @@
-import { createHash } from 'node:crypto';
-import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises';
+import { createHash, randomUUID } from 'node:crypto';
+import { mkdir, readFile, readdir, rename, rm, stat, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 export async function ensureDir(directory: string) { await mkdir(directory, { recursive: true }); }
 export async function writeJsonAtomic(file: string, value: unknown) {
   await ensureDir(path.dirname(file));
-  const temporary = `${file}.${process.pid}.tmp`;
-  await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`);
-  await rename(temporary, file);
+  // A per-call nonce avoids two concurrent stage resumptions clobbering the
+  // same process-scoped temporary file. Rename remains atomic on the target
+  // filesystem, and a failed write cleans up its own temporary path.
+  const temporary = `${file}.${process.pid}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`);
+    await rename(temporary, file);
+  } catch (error) {
+    await unlink(temporary).catch(() => undefined);
+    throw error;
+  }
 }
 export async function readJson(file: string): Promise<unknown> { return JSON.parse(await readFile(file, 'utf8')); }
 export async function sha256File(file: string) { return createHash('sha256').update(await readFile(file)).digest('hex'); }

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Spatial Logistics Core</title>
+    <style>
+      #file-launch-warning {
+        box-sizing: border-box;
+        max-width: 720px;
+        margin: 12vh auto;
+        padding: 32px;
+        border: 2px solid #38bdf8;
+        border-radius: 24px;
+        background: #0f172a;
+        color: #f8fafc;
+        font: 18px/1.7 system-ui, sans-serif;
+      }
+      #file-launch-warning h1 { margin-top: 0; }
+      #file-launch-warning code { color: #67e8f9; }
+    </style>
+  </head>
+  <body>
+    <aside id="file-launch-warning" hidden>
+      <h1>还差一步</h1>
+      <p>这是一个 Phaser 游戏，不能直接双击 index.html 运行。</p>
+      <p>请返回文件夹，双击 <code>打开游戏.command</code>，它会启动本地服务并自动打开游戏。</p>
+    </aside>
+    <main id="shell">
+      <header>
+        <div>
+          <p class="eyebrow">GREYBOX PROTOTYPE</p>
+          <h1>空间物流核心</h1>
+        </div>
+        <p class="instructions">WASD / 方向键移动；触屏按住拖动。不需要交互键。</p>
+      </header>
+      <div id="game" aria-label="空间物流玩法原型"></div>
+      <footer id="hud" aria-live="polite">
+        <span id="money">货币 0</span>
+        <span id="carry">携带 0/4</span>
+        <span id="shelf">货架 0/8</span>
+        <span id="queue">队列 0</span>
+      </footer>
+    </main>
+    <script>
+      if (window.location.protocol === 'file:') {
+        document.querySelector('#shell').hidden = true;
+        document.querySelector('#file-launch-warning').hidden = false;
+      }
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

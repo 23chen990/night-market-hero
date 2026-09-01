@@ -1,21 +1,87 @@
 import type { RuntimeAdapter } from '../adapters/runtime.js';
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 import { listFiles } from '../core/files.js';
 import { packageRelease } from '../core/release.js';
-import type { AgentProvider, CodexProvider, ImageProvider, QAProvider } from '../providers/interfaces.js';
-import { ArtApprovalSchema, ArtDirectionsSchema, AssetManifestSchema, BuildReportSchema, GameBlueprintSchema, QaReportSchema, ReleaseManifestSchema, StyleLockSchema, type ArtApproval, type ArtDirections, type AssetManifest, type GameBlueprint, type QaReport, type Seed, type StyleLock } from '../schemas/index.js';
+import type { AgentExecutionContext, AgentProvider, BuilderVerificationMode, CodexProvider, FormalPrototypeBuildInput, ImageProvider, QAProvider } from '../providers/interfaces.js';
+import { ArtApprovalSchema, ArtDirectionsSchema, AssetManifestSchema, BuildReportSchema, CompetitorResearchSchema, FormalPrototypeBuildReportSchema, FormalPrototypeFollowupConstraintsSchema, GameBlueprintSchema, GameplayRevisionLockSchema, GreenlightDecisionSchema, IaaMonetizationReviewSchema, OpenSourceResearchArtifactSchema, OpenSourceResearchSchema, ProductionCostReviewSchema, QaEvidenceSchema, QaReportSchema, ReferenceMechanicSpecSchema, ReleaseManifestSchema, StyleLockSchema, type ArtApproval, type ArtDirections, type AssetManifest, type CompetitorResearch, type GameBlueprint, type GameplayRevisionLock, type IaaMonetizationReview, type OpenSourceResearch, type ProductionCostReview, type QaEvidence, type QaReport, type ReferenceMechanicSpec, type Seed, type StyleLock } from '../schemas/index.js';
+import { GameplayIdeaSchema, IdeaGenerationSchema, LowCostFilterSchema, PlaytestTournamentSchema, PrototypeBuildReportSchema, PrototypeSelectionSchema, WinnerSelectionSchema, type GameplayIdea, type IdeaGeneration, type LowCostFilter, type PlaytestTournament, type PrototypeBuildReport, type PrototypeSelection } from '../schemas/gameplay-experiment.js';
+import { ActionMechanicExperimentSpecSchema, ActionPlaytestReportSchema, ActionPrototypeBuildReportSchema, type ActionMechanicExperimentSpec, type ActionPlaytestReport, type ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
+import { Hybrid3dAssetResearchArtifactSchema, type Hybrid3dAssetResearchArtifact } from '../schemas/hybrid-3d-assets.js';
+import { buildCompletionGateReport } from '../qa/experience-gates.js';
+import { RuntimeProductGateSchema } from '../core/runtime-product-gates.js';
+import { evaluateInteractionContinuity } from '../qa/interaction-continuity.js';
+import { InteractionContinuityContractSchema, InteractionContinuityObservationSchema, InteractionContinuityReportSchema, type InteractionContinuityReport, type InteractionContinuityContract } from '../schemas/interaction-continuity.js';
 
 /** Non-builder roles return validated artifacts and never receive a game workspace. */
+export class CompetitorResearchAgent {
+  constructor(private readonly provider: AgentProvider) {}
+  async run(seed: Seed, context?: AgentExecutionContext) { const result = await this.provider.generateCompetitorResearch(seed, context); return { value: CompetitorResearchSchema.parse(result.value), metrics: result.metrics }; }
+}
+export class OpenSourceResearchAgent {
+  constructor(private readonly provider: AgentProvider) {}
+  async run(seed: Seed, gameplay: GameplayIdea | ReferenceMechanicSpec, context?: AgentExecutionContext) { const result = await this.provider.generateOpenSourceResearch(seed, parseApprovedGameplay(gameplay), context); return { value: OpenSourceResearchSchema.parse(result.value), metrics: result.metrics }; }
+}
+export class ProductionCostReviewerAgent {
+  constructor(private readonly provider: AgentProvider) {}
+  async run(seed: Seed, research: CompetitorResearch, context?: AgentExecutionContext) { const result = await this.provider.generateProductionCostReview(seed, CompetitorResearchSchema.parse(research), context); return { value: ProductionCostReviewSchema.parse(result.value), metrics: result.metrics }; }
+  async filter(ideas: IdeaGeneration, context?: AgentExecutionContext) { const result = await this.provider.generateLowCostFilter(IdeaGenerationSchema.parse(ideas), context); return { value: LowCostFilterSchema.parse(result.value), metrics: result.metrics }; }
+}
+export class IaaMonetizationReviewerAgent {
+  constructor(private readonly provider: AgentProvider) {}
+  async run(seed: Seed, gameplayContext: CompetitorResearch | ReferenceMechanicSpec, context?: AgentExecutionContext) {
+    const parsedContext = 'lockedBy' in gameplayContext ? ReferenceMechanicSpecSchema.parse(gameplayContext) : CompetitorResearchSchema.parse(gameplayContext);
+    const result = await this.provider.generateIaaMonetizationReview(seed, parsedContext, context);
+    return { value: IaaMonetizationReviewSchema.parse(result.value), metrics: result.metrics };
+  }
+}
+export class GreenlightAgent {
+  constructor(private readonly provider: AgentProvider) {}
+  async run(seed: Seed, research: CompetitorResearch, cost: ProductionCostReview, monetization: IaaMonetizationReview, context?: AgentExecutionContext) {
+    const result = await this.provider.generateGreenlightDecision(seed, CompetitorResearchSchema.parse(research), ProductionCostReviewSchema.parse(cost), IaaMonetizationReviewSchema.parse(monetization), context);
+    return { value: GreenlightDecisionSchema.parse(result.value), metrics: result.metrics };
+  }
+  async selectPrototypes(ideas: IdeaGeneration, filter: LowCostFilter, context?: AgentExecutionContext) { const result = await this.provider.generatePrototypeSelection(IdeaGenerationSchema.parse(ideas), LowCostFilterSchema.parse(filter), context); return { value: PrototypeSelectionSchema.parse(result.value), metrics: result.metrics }; }
+  async selectWinner(tournament: PlaytestTournament, context?: AgentExecutionContext) { const result = await this.provider.generateWinnerSelection(PlaytestTournamentSchema.parse(tournament), context); return { value: WinnerSelectionSchema.parse(result.value), metrics: result.metrics }; }
+}
 export class ProducerAgent {
   constructor(private readonly provider: AgentProvider) {}
-  async run(seed: Seed) { return GameBlueprintSchema.parse(await this.provider.generateBlueprint(seed)); }
+  async ideate(seed: Seed, research: CompetitorResearch, batch: number, context?: AgentExecutionContext) { const result = await this.provider.generateIdeas(seed, CompetitorResearchSchema.parse(research), batch, context); return { value: IdeaGenerationSchema.parse(result.value), metrics: result.metrics }; }
+  async run(seed: Seed, gameplay: GameplayIdea | ReferenceMechanicSpec, openSourceResearch: OpenSourceResearch, context?: AgentExecutionContext) {
+    const approvedGameplay = parseApprovedGameplay(gameplay);
+    const result = await this.provider.generateBlueprint(seed, context, approvedGameplay, OpenSourceResearchSchema.parse(openSourceResearch));
+    const generated = result.value && typeof result.value === 'object' && !Array.isArray(result.value)
+      ? result.value as Record<string, unknown>
+      : {};
+    const referenceMechanics = seed.designMode === 'reference_reskin' ? ReferenceMechanicSpecSchema.parse(approvedGameplay) : undefined;
+    const value = GameBlueprintSchema.parse({
+      ...generated,
+      title: seed.title,
+      theme: seed.theme,
+      runtime: seed.runtime,
+      template: seed.template,
+      designMode: seed.designMode,
+      referenceMechanics,
+      spatialShop: seed.spatialShop,
+      targetPlatforms: seed.targetPlatforms,
+      coreLoop: referenceMechanics?.coreLoop ?? generated.coreLoop,
+      preferences: seed.preferences,
+    });
+    return { value, metrics: result.metrics };
+  }
+}
+
+function parseApprovedGameplay(value: GameplayIdea | ReferenceMechanicSpec) {
+  const reference = ReferenceMechanicSpecSchema.safeParse(value);
+  return reference.success ? reference.data : GameplayIdeaSchema.parse(value);
 }
 export class ArtDirectorAgent {
   constructor(private readonly provider: AgentProvider) {}
-  async run(blueprint: GameBlueprint) { return ArtDirectionsSchema.parse(await this.provider.generateArtDirections(blueprint)); }
+  async run(blueprint: GameBlueprint, context?: AgentExecutionContext) { const result = await this.provider.generateArtDirections(blueprint, context); return { value: ArtDirectionsSchema.parse(result.value), metrics: result.metrics }; }
 }
 export class StyleLockAgent {
   constructor(private readonly provider: AgentProvider) {}
-  async run(blueprint: GameBlueprint, directions: ArtDirections, approval: ArtApproval) { return StyleLockSchema.parse(await this.provider.generateStyleLock(blueprint, directions, ArtApprovalSchema.parse(approval))); }
+  async run(blueprint: GameBlueprint, directions: ArtDirections, approval: ArtApproval, context?: AgentExecutionContext) { const result = await this.provider.generateStyleLock(blueprint, directions, ArtApprovalSchema.parse(approval), context); return { value: StyleLockSchema.parse(result.value), metrics: result.metrics }; }
 }
 export class AssetProducerAgent {
   constructor(private readonly provider: ImageProvider) {}
@@ -23,32 +89,289 @@ export class AssetProducerAgent {
 }
 
 /** Builder and Fixer are the only roles whose provider is authorized to edit the game workspace. */
+export function builderVerificationPassed(checks: readonly string[]): boolean {
+  return checks.length >= 2 && checks.every((check) => !/(?:^|[:\s_-])(?:fail(?:ed|ure)?|error|missing|blocked)(?:$|[:\s_-])/iu.test(check));
+}
+
 export class BuilderAgent {
   constructor(private readonly provider: CodexProvider, private readonly runtime: RuntimeAdapter) {}
-  async run(workspace: string, blueprint: GameBlueprint, styleLock: StyleLock, assets: AssetManifest, template: string, assetSource: string) {
+  private async verifyAndReport(workspace: string, template: string, threadId: string | undefined, verificationMode: BuilderVerificationMode) {
+    const verification = await this.runtime.verifyProject(workspace, { requireScripts: verificationMode === 'full' });
+    const webBuild = await this.runtime.buildWeb(workspace);
+    const runtime = template === 'spatial-shop-3d-v1' ? 'cocos-3d' : 'web-lite';
+    const webBuildPath = runtime === 'cocos-3d' ? 'workspace/game/build/web-mobile' : 'workspace/game/dist';
+    const success = builderVerificationPassed(verification);
+    const report = BuildReportSchema.parse({ schemaVersion: 1, success, runtime, template, codexThreadId: threadId, workspace: 'workspace/game', webBuild: webBuildPath, files: await listFiles(webBuild), verification, builtAt: new Date().toISOString(), completion: { status: success ? 'IMPLEMENTATION_READY' : 'CANDIDATE_BLOCKED', blockers: ['normalFlow', 'visualEvidence', 'levelDifference', 'humanPlaytest', 'runtimeProductJourney'] } });
+    return { report, threadId };
+  }
+  async run(workspace: string, blueprint: GameBlueprint, styleLock: StyleLock, assets: AssetManifest, template: string, assetSource: string, approved3dAssets?: { research: Hybrid3dAssetResearchArtifact; sourceRoot: string }, gameplayRevision?: GameplayRevisionLock, context?: AgentExecutionContext, interactionContinuityContract?: InteractionContinuityContract) {
+    if (context && !isChildPath(path.join(path.resolve(context.runRoot), 'workspace'), path.resolve(workspace))) throw new Error('Builder workspace must remain inside the current run workspace');
     await this.runtime.createProject(workspace, template);
     await this.runtime.applyBlueprint(workspace, blueprint, styleLock);
     await this.runtime.importAssets(workspace, assets, assetSource);
-    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, template });
-    const webBuild = await this.runtime.buildWeb(workspace);
-    const report = BuildReportSchema.parse({ schemaVersion: 1, success: true, runtime: 'web-lite', template, codexThreadId: codexResult.threadId, workspace: 'workspace/game', webBuild: 'workspace/game/dist', files: await listFiles(webBuild), builtAt: new Date().toISOString() });
-    return { report, threadId: codexResult.threadId };
+    if (approved3dAssets) {
+      if (!this.runtime.importApproved3dAssets) throw new Error('The selected runtime cannot import approved 3D assets');
+      await this.runtime.importApproved3dAssets(workspace, Hybrid3dAssetResearchArtifactSchema.parse(approved3dAssets.research), approved3dAssets.sourceRoot);
+    }
+    const validatedGameplayRevision = gameplayRevision ? GameplayRevisionLockSchema.parse(gameplayRevision) : undefined;
+    const validatedContinuity = interactionContinuityContract ? InteractionContinuityContractSchema.parse(interactionContinuityContract) : undefined;
+    if (validatedContinuity && context?.runRoot) {
+      await mkdir(path.join(context.runRoot, 'artifacts'), { recursive: true });
+      await writeFile(path.join(context.runRoot, 'artifacts/interaction-continuity-contract.json'), `${JSON.stringify(validatedContinuity, null, 2)}\n`);
+    }
+    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, template, gameplayRevision: validatedGameplayRevision, interactionContinuityContract: validatedContinuity, context });
+    return { ...await this.verifyAndReport(workspace, template, codexResult.threadId, codexResult.verificationMode), metrics: codexResult.metrics };
+  }
+  async verifyExisting(workspace: string, template: string, threadId: string, verificationMode: BuilderVerificationMode = 'full', context?: AgentExecutionContext) { if (context && !isChildPath(path.join(path.resolve(context.runRoot), 'workspace'), path.resolve(workspace))) throw new Error('Builder workspace must remain inside the current run workspace'); return this.verifyAndReport(workspace, template, threadId, verificationMode); }
+  async implementFormalPrototype(workspace: string, input: FormalPrototypeBuildInput) {
+    if (!path.isAbsolute(workspace)) throw new Error('Formal prototype workspace must be an absolute path');
+    if (!this.provider.formalPrototype) throw new Error('The configured Codex provider cannot implement a formal prototype follow-up');
+    if (!this.runtime.verifyFormalProject) throw new Error('The configured runtime cannot verify a formal prototype follow-up');
+    const constraints = FormalPrototypeFollowupConstraintsSchema.parse(input.constraints);
+    const research = OpenSourceResearchArtifactSchema.parse(input.research);
+    const result = await this.provider.formalPrototype({ ...input, constraints, research, workspace });
+    const verification = await this.runtime.verifyFormalProject(workspace);
+    const webBuildAbsolute = await this.runtime.buildWeb(workspace);
+    const report = FormalPrototypeBuildReportSchema.parse({
+      schemaVersion: 1,
+      status: 'BUILT',
+      game: constraints.game.title,
+      workspace: constraints.targetWorkspace,
+      selectedActionSlot: input.actionSelection.selectedSlot,
+      author: 'BuilderAgent',
+      codexThreadId: result.threadId ?? null,
+      webBuild: path.posix.join(constraints.targetWorkspace, 'dist'),
+      files: await listFiles(webBuildAbsolute),
+      verification,
+      builtAt: new Date().toISOString(),
+    });
+    return { report, metrics: result.metrics };
+  }
+  async buildPrototypes(runRoot: string, ideas: IdeaGeneration, selection: PrototypeSelection, context?: AgentExecutionContext) {
+    const resolvedRunRoot = path.resolve(runRoot);
+    if (!isChildPath(path.dirname(resolvedRunRoot), resolvedRunRoot)) throw new Error('Prototype run root must be an absolute non-root path');
+    const ideaById = new Map(ideas.ideas.map((idea) => [idea.id, idea]));
+    const slots = ['a', 'b', 'c'] as const;
+    const prototypes = []; const metrics = { provider: 'prototype-builder', model: 'mixed', calls: 0, usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
+    for (let index = 0; index < slots.length; index += 1) {
+      const slot = slots[index]; const ideaId = selection.selectedIdeaIds[index];
+      if (!slot || !ideaId) throw new Error(`Prototype selection is missing slot ${index}`);
+      const idea = ideaById.get(ideaId);
+      if (!idea) throw new Error(`Selected prototype idea ${ideaId} does not exist`);
+      const workspace = path.join(resolvedRunRoot, 'workspace', `prototype-${slot}`);
+      const builtFile = path.join(workspace, 'dist/index.html'); let built = '';
+      try { built = await readFile(builtFile, 'utf8'); } catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
+      if (!hasPlayablePrototypeContract(built)) {
+        await rm(workspace, { recursive: true, force: true }); await mkdir(path.join(workspace, 'dist'), { recursive: true });
+        const html = prototypeHtml(slot, idea);
+        await writeFile(path.join(workspace, 'index.html'), html); await writeFile(builtFile, html);
+        if (this.provider.prototype) { const result = await this.provider.prototype({ workspace, idea, slot, context }); metrics.calls += result.metrics.calls; if (result.metrics.usage) { metrics.usage.inputTokens += result.metrics.usage.inputTokens; metrics.usage.outputTokens += result.metrics.usage.outputTokens; metrics.usage.totalTokens += result.metrics.usage.totalTokens; } }
+        built = await readFile(builtFile, 'utf8');
+      }
+      if (!hasPlayablePrototypeContract(built)) throw new Error(`prototype-${slot} is not immediately playable or testable`);
+      prototypes.push({ slot, ideaId, workspace: `workspace/prototype-${slot}`, entrypoint: `workspace/prototype-${slot}/dist/index.html`, launchCommand: `pnpm factory preview ${path.basename(runRoot)} prototype-${slot}`, placeholderArt: true as const, formalUi: false as const, iaaIncluded: false as const, majorSystems: idea.majorSystems, verification: ['html:playable', 'test-api:available'], author: 'BuilderAgent' as const });
+    }
+    return { report: PrototypeBuildReportSchema.parse({ schemaVersion: 1, batch: ideas.batch, prototypes }), metrics };
+  }
+  async buildActionPrototypes(runRoot: string, sourceWorkspaceAbsolute: string, inputSpec: ActionMechanicExperimentSpec, context?: AgentExecutionContext) {
+    if (!path.isAbsolute(sourceWorkspaceAbsolute)) throw new Error('Action prototype source workspace must be an absolute path');
+    const spec = ActionMechanicExperimentSpecSchema.parse(inputSpec);
+    const resolvedRunRoot = path.resolve(runRoot);
+    const resolvedSource = path.resolve(sourceWorkspaceAbsolute);
+    const metrics = { provider: 'action-prototype-builder', model: 'mixed', calls: 0, usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
+    const prototypes = [];
+
+    for (const variant of spec.prototypes) {
+      const workspace = path.resolve(resolvedRunRoot, variant.workspace);
+      if (!isChildPath(resolvedRunRoot, workspace)) throw new Error(`Action prototype workspace must stay inside the run root: ${variant.workspace}`);
+      if (workspace === resolvedSource || isChildPath(resolvedSource, workspace)) throw new Error(`Action prototype workspace must be isolated from its source: ${variant.workspace}`);
+      await rm(workspace, { recursive: true, force: true });
+      await copyActionPrototypeSource(resolvedSource, workspace);
+
+      let generatedByFallback = !this.provider.actionPrototype;
+      if (this.provider.actionPrototype) {
+        const result = await this.provider.actionPrototype({ workspace, spec, variant, context });
+        metrics.calls += result.metrics.calls;
+        if (result.metrics.usage) {
+          metrics.usage.inputTokens += result.metrics.usage.inputTokens;
+          metrics.usage.outputTokens += result.metrics.usage.outputTokens;
+          metrics.usage.totalTokens += result.metrics.usage.totalTokens;
+        }
+        generatedByFallback = result.metrics.provider === 'mock';
+      }
+
+      const builtFile = path.join(workspace, 'dist/index.html');
+      if (generatedByFallback) {
+        await mkdir(path.dirname(builtFile), { recursive: true });
+        await writeFile(builtFile, actionPrototypeHtml(variant));
+      }
+      let built = '';
+      try { built = await readFile(builtFile, 'utf8'); } catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
+      if (!hasActionPrototypeContract(built)) throw new Error(`Action prototype ${variant.slot} dist/index.html must expose window.__ACTION_TEST__ contractVersion 1`);
+
+      prototypes.push({
+        slot: variant.slot,
+        workspace: variant.workspace,
+        geometryFixtureHash: variant.geometryFixtureHash,
+        treatmentHash: variant.treatmentHash,
+        entrypoint: path.posix.join(variant.workspace.replaceAll('\\', '/'), 'dist/index.html'),
+        launchCommand: `pnpm --dir ${variant.workspace} preview`,
+        author: 'BuilderAgent' as const,
+        verification: ['source:isolated-copy', 'action-test-contract:v1'],
+      });
+    }
+
+    return { report: ActionPrototypeBuildReportSchema.parse({ schemaVersion: 1, experimentId: spec.experimentId, prototypes }), metrics };
   }
 }
 export class QAAgent {
   constructor(private readonly provider: QAProvider, private readonly runtime: RuntimeAdapter) {}
-  async run(workspace: string, runRoot: string): Promise<QaReport> {
-    return QaReportSchema.parse(await this.provider.playtest({ runtime: this.runtime, workspace, runRoot }));
+  async run(workspace: string, runRoot: string, buildPassed = false): Promise<QaReport> {
+    const raw = await this.provider.playtest({ runtime: this.runtime, workspace, runRoot });
+    const rawRecord = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw as Record<string, unknown> : undefined;
+    const rawEvidence = rawRecord?.evidence;
+    const validEvidence: QaEvidence[] = [];
+    let invalidEvidenceCount = 0;
+    if (Array.isArray(rawEvidence)) {
+      for (const item of rawEvidence) {
+        const parsedEvidence = QaEvidenceSchema.safeParse(item);
+        if (parsedEvidence.success) validEvidence.push(parsedEvidence.data);
+        else invalidEvidenceCount += 1;
+      }
+    } else if (rawEvidence !== undefined) {
+      invalidEvidenceCount = 1;
+    }
+    // Parse the report body independently from evidence so a provider that
+    // emits one malformed evidence row cannot crash the whole QA stage before
+    // the control plane can record a visible blocker and safe fallback.
+    const parsed = QaReportSchema.parse(rawRecord ? (() => {
+      const body = { ...rawRecord };
+      delete body.evidence;
+      delete body.interactionContinuityContract;
+      delete body.interactionContinuityObservation;
+      delete body.interactionContinuity;
+      return body;
+    })() : raw);
+    const fallbackEvidence = [{
+      schemaVersion: 1,
+      mode: 'STATE_COVERAGE' as const,
+      actions: parsed.checks.map((check) => check.name).slice(0, 16).concat('provider-playtest'),
+      artifacts: parsed.screenshots.length ? parsed.screenshots : ['artifacts/qa-report.json'],
+      forbiddenOperations: ['provider-test-api-oracle'],
+    }];
+    // Some providers legitimately omit evidence while older providers may
+    // serialize an empty array.  Treat both forms as missing; an empty array
+    // is not usable evidence and must never be persisted as a passing report.
+    let interactionContinuity: InteractionContinuityReport | undefined;
+    const continuityContract = rawRecord?.interactionContinuityContract ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).contract : undefined);
+    const continuityObservation = rawRecord?.interactionContinuityObservation ?? (rawRecord?.interactionContinuity && typeof rawRecord.interactionContinuity === 'object' && !Array.isArray(rawRecord.interactionContinuity) ? (rawRecord.interactionContinuity as Record<string, unknown>).observation : undefined);
+    if (continuityContract !== undefined || continuityObservation !== undefined) {
+      try {
+        const contract = InteractionContinuityContractSchema.parse(continuityContract);
+        const observation = InteractionContinuityObservationSchema.parse(continuityObservation);
+        interactionContinuity = evaluateInteractionContinuity(contract, observation);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'interaction continuity artifact is invalid';
+        interactionContinuity = InteractionContinuityReportSchema.parse({ schemaVersion: 1, contractId: 'invalid-interaction-continuity', passed: false, blockers: [`contract:invalid:${message.slice(0, 240)}`], evidence: ['artifacts/interaction-continuity-report.json'], checkedNodes: 0, checkedScenarios: 0, checkedRepetitions: 0, evaluatedAt: new Date().toISOString() });
+      }
+    }
+    const report = QaReportSchema.parse({
+      ...parsed,
+      evidence: validEvidence.length > 0 ? validEvidence : fallbackEvidence,
+      ...(interactionContinuity ? { interactionContinuity } : {}),
+      ...(invalidEvidenceCount > 0 ? {
+        issues: [...parsed.issues, {
+          id: 'qa-evidence-normalization',
+          severity: 'error' as const,
+          message: `${invalidEvidenceCount} provider QA evidence item(s) failed schema validation and were replaced with a diagnostic fallback.`,
+          evidence: 'artifacts/qa-evidence.json',
+        }],
+      } : {}),
+    });
+    const continuityFailed = interactionContinuity !== undefined && !interactionContinuity.passed;
+    const finalReport = continuityFailed
+      ? QaReportSchema.parse({ ...report, passed: false, issues: [...report.issues, { id: 'interaction-continuity', severity: 'error' as const, message: 'interaction continuity contract failed', evidence: 'artifacts/interaction-continuity-report.json' }] })
+      : report;
+    await writeFile(path.join(runRoot, 'artifacts/qa-evidence.json'), `${JSON.stringify(report.evidence, null, 2)}\n`);
+    if (interactionContinuity) await writeFile(path.join(runRoot, 'artifacts/interaction-continuity-report.json'), `${JSON.stringify(interactionContinuity, null, 2)}\n`);
+    await writeFile(path.join(runRoot, 'artifacts/runtime-product-gates.json'), `${JSON.stringify(RuntimeProductGateSchema.parse({ schemaVersion: 1, entrypoint: 'unknown', defaultMode: 'unknown', journey: ['reset', 'primary input', 'observe result', 'retry or finish'], coreLoop: [], terminal: [], replay: [], runtimeWiredFiles: ['runtime-product-gates.json:provider-evidence-missing'], legacyBehavior: { status: 'STILL_DEFAULT_PATH', evidence: ['QA provider must replace this placeholder'] }, browserEvidence: ['runtime-product-journey:missing'], passed: false }), null, 2)}\n`);
+    await writeFile(path.join(runRoot, 'artifacts/completion-gates.json'), JSON.stringify(await buildCompletionGateReport({ runRoot, corePassed: buildPassed, normalFlowPassed: finalReport.passed, screenshots: finalReport.screenshots }), null, 2) + '\n');
+    return finalReport;
+  }
+  async tournament(report: PrototypeBuildReport, runRoot: string): Promise<PlaytestTournament> { return PlaytestTournamentSchema.parse(await this.provider.playtestTournament({ runtime: this.runtime, report: PrototypeBuildReportSchema.parse(report), runRoot })); }
+  async actionTournament(spec: ActionMechanicExperimentSpec, report: ActionPrototypeBuildReport, runRoot: string): Promise<ActionPlaytestReport> {
+    return ActionPlaytestReportSchema.parse(await this.provider.playtestActionMechanics({
+      runtime: this.runtime,
+      spec: ActionMechanicExperimentSpecSchema.parse(spec),
+      report: ActionPrototypeBuildReportSchema.parse(report),
+      runRoot,
+    }));
   }
 }
 export class FixerAgent {
   constructor(private readonly provider: CodexProvider, private readonly runtime: RuntimeAdapter) {}
-  async run(workspace: string, threadId: string | undefined, qaReport: QaReport) {
-    const result = await this.provider.fix({ workspace, threadId, qaReport: QaReportSchema.parse(qaReport) });
+  async run(workspace: string, threadId: string | undefined, qaReport: QaReport, context?: AgentExecutionContext) {
+    if (context && !isChildPath(path.join(path.resolve(context.runRoot), 'workspace'), path.resolve(workspace))) throw new Error('Fixer workspace must remain inside the current run workspace');
+    const result = await this.provider.fix({ workspace, threadId, qaReport: QaReportSchema.parse(qaReport), context });
+    // A repair is not complete merely because the provider returned. Always
+    // execute the full local regression suite so the handoff cannot claim a
+    // fix without test/typecheck evidence, even for a provider that selected
+    // the lightweight contract mode.
+    const verification = await this.runtime.verifyProject(workspace, { requireScripts: true });
+    if (!verification.includes('test:passed') || !verification.includes('typecheck:passed')) {
+      throw new Error('Fixer verification must include test:passed and typecheck:passed');
+    }
     await this.runtime.buildWeb(workspace);
-    return result;
+    return { ...result, verification };
+  }
+  async runFormal(workspace: string, threadId: string | undefined, qaReport: QaReport, context?: AgentExecutionContext) {
+    if (!path.isAbsolute(workspace)) throw new Error('Formal prototype workspace must be an absolute path');
+    if (!this.runtime.verifyFormalProject) throw new Error('The configured runtime cannot verify a formal prototype repair');
+    const result = await this.provider.fix({ workspace, threadId, qaReport: QaReportSchema.parse(qaReport), context });
+    const verification = await this.runtime.verifyFormalProject(workspace);
+    const webBuild = await this.runtime.buildWeb(workspace);
+    return { ...result, verification, webBuild };
   }
 }
 export class ReleaseAgent {
-  async run(runRoot: string, blueprint: GameBlueprint) { return ReleaseManifestSchema.parse(await packageRelease(runRoot, blueprint)); }
+  async run(runRoot: string, blueprint: GameBlueprint, options?: { enforceAcceptance?: boolean; enforceOperatingGates?: boolean; certificationRequired?: boolean; artQualityRequired?: boolean; requirePresentation?: boolean; requirePlatformSpine?: boolean; requirePlatformPackages?: boolean; requireDependencyAllowlist?: boolean; requireSideEffectJournal?: boolean; requirePortfolioGate?: boolean; requirePlatformPolicy?: boolean; reuseCandidate?: boolean }) { return ReleaseManifestSchema.parse(await packageRelease(runRoot, blueprint, options)); }
+}
+
+function hasPlayablePrototypeContract(html: string) {
+  if (!html.includes('__PROTOTYPE_TEST__')) return false;
+  const controlTags = html.match(/<[^>]*\bdata-(?:choice|action|lantern)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)[^>]*>/giu) ?? [];
+  return controlTags.some((tag) => !/\sdisabled(?:\s|=|>)/iu.test(tag));
+}
+
+const actionCopyExcludedDirectories = new Set(['node_modules', 'dist', 'coverage', 'screenshots', 'playwright-report', 'test-results', 'qa-evidence']);
+const actionCopyExcludedFiles = new Set(['qa-report.json', 'qa-evidence.md', 'console.log']);
+
+function isChildPath(parent: string, candidate: string) {
+  const relative = path.relative(parent, candidate);
+  return relative.length > 0 && !relative.startsWith('..') && !path.isAbsolute(relative);
+}
+
+async function copyActionPrototypeSource(source: string, destination: string) {
+  await cp(source, destination, {
+    recursive: true,
+    filter: (candidate) => {
+      if (candidate === source) return true;
+      const name = path.basename(candidate).toLowerCase();
+      return !actionCopyExcludedDirectories.has(name) && !actionCopyExcludedFiles.has(name);
+    },
+  });
+}
+
+function hasActionPrototypeContract(html: string) {
+  return html.includes('__ACTION_TEST__') && /["']?contractVersion["']?\s*:\s*1\b/.test(html);
+}
+
+function actionPrototypeHtml(variant: ActionMechanicExperimentSpec['prototypes'][number]) {
+  const payload = JSON.stringify({ slot: variant.slot, geometryFixtureHash: variant.geometryFixtureHash, treatment: variant.treatment }).replaceAll('<', '\\u003c');
+  return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Action prototype ${variant.slot}</title><style>html,body{margin:0;height:100%;background:#151821;color:#fff;font:16px system-ui}main{height:100%;display:grid;place-items:center}canvas{width:min(100%,390px);height:auto;background:#252b38;touch-action:none}</style><main><canvas width="390" height="844" aria-label="Hold and release action prototype"></canvas></main><script>const variant=${payload};const anchors=[{id:'anchor-1',x:190,y:220},{id:'anchor-2',x:310,y:180}];let state;let events=[];function snapshot(){return JSON.parse(JSON.stringify(state))}function resetGame(){events=[];state={tick:0,status:'playing',inputHeld:false,player:{x:60,y:420,vx:4,vy:0},anchors,attachedAnchorId:null,ropeLength:null,maxSpeed:4,finishX:360,failY:820,eventSeq:0};return snapshot()}function emit(type,source){state.eventSeq++;events.push({seq:state.eventSeq,tick:state.tick,type,source})}function act(command){state.inputHeld=!!command.held;state.attachedAnchorId=state.inputHeld?'anchor-1':null;state.ropeLength=state.inputHeld?240:null;emit(state.inputHeld?'input-held':'input-released',command.source||'input');return snapshot()}function advanceTicks(count){for(let i=0;i<count&&state.status==='playing';i++){state.tick++;state.player.x+=state.player.vx;state.player.y+=state.player.vy;if(state.player.x>=state.finishX){state.status='won';emit('finish','simulation')}if(state.player.y>=state.failY){state.status='failed';emit('failure','simulation')}}return snapshot()}function loadScenario(id){resetGame();if(id==='failure')state.player.y=state.failY-1;if(id==='finish')state.player.x=state.finishX-5;if(id==='behind-hook')state.player.vx=8;return snapshot()}function getEvents(sinceSeq=0){return events.filter(event=>event.seq>sinceSeq).map(event=>({...event}))}window.__ACTION_TEST__={contractVersion:1,getManifest(){return {slot:variant.slot,fixedStepSeconds:1/60,courseFixtureHash:variant.geometryFixtureHash,anchorPolicy:variant.treatment.join('; ')}},resetGame,getState:snapshot,act,advanceTicks,loadScenario,getEvents};const canvas=document.querySelector('canvas');canvas.addEventListener('pointerdown',()=>act({held:true,source:'pointer'}));canvas.addEventListener('pointerup',()=>act({held:false,source:'pointer'}));addEventListener('keydown',event=>{if(event.code==='Space'&&!event.repeat)act({held:true,source:'keyboard'})});addEventListener('keyup',event=>{if(event.code==='Space')act({held:false,source:'keyboard'})});resetGame()</script></html>`;
+}
+
+function prototypeHtml(slot: 'a' | 'b' | 'c', idea: GameplayIdea) {
+  const payload = JSON.stringify({ slot, ideaId: idea.id, name: idea.name, coreAction: idea.coreAction, decision: idea.decision, pressure: idea.pressure });
+  return `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${idea.name}</title><style>html,body{margin:0;height:100%;background:#171923;color:#f7fafc;font:18px system-ui}main{max-width:700px;margin:auto;padding:24px}#arena{height:240px;border:3px solid #718096;display:grid;place-items:center;background:#2d3748}button{font:inherit;padding:18px;margin:12px 8px 0 0;background:#f6ad55;border:0;border-radius:8px}small{color:#cbd5e0}</style><main><small>PROTOTYPE ${slot.toUpperCase()} · PLACEHOLDER ART</small><h1>${idea.name}</h1><p>${idea.coreAction}</p><div id="arena"><div><b id="prompt"></b><p id="state"></p></div></div><button data-choice="0">安全选择</button><button data-choice="1">冒险选择</button><p>${idea.decision}</p></main><script>const spec=${payload};let state;function resetGame(seed=1){state={seed,turn:0,score:0,pressure:2,combo:0,failed:false,lastChoice:null,variation:0};render();return getState()}function getState(){return JSON.parse(JSON.stringify(state))}function act(choice){if(state.failed)return getState();const target=(state.seed+state.turn+(spec.slot.charCodeAt(0)-97))%2;const correct=choice===target;state.turn++;state.lastChoice=choice;state.variation=target;if(correct){state.score+=choice?3:1;state.combo++;state.pressure=Math.max(0,state.pressure-1)}else{state.combo=0;state.pressure+=choice?2:1}if(state.pressure>=7)state.failed=true;render();return getState()}function render(){document.querySelector('#prompt').textContent='Signal '+(state.variation?'◆':'●')+' — choose before pressure fills';document.querySelector('#state').textContent='Turn '+state.turn+' · Score '+state.score+' · Pressure '+state.pressure+'/7'+(state.failed?' · FAILED':'')}document.querySelectorAll('[data-choice]').forEach(button=>button.onclick=()=>act(Number(button.dataset.choice)));window.__PROTOTYPE_TEST__={resetGame,getState,act,spec};resetGame()</script></html>`;
 }
