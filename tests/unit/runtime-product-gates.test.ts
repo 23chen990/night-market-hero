@@ -1,11 +1,17 @@
-import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
+import { chmod, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { RuntimeProductGateSchema, deriveRuntimeProductGate, evaluateRuntimeProductGate, verifyRuntimeWiredFiles } from '../../src/core/runtime-product-gates.js';
 
 const roots: string[] = [];
-afterEach(async () => { await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true }))); });
+afterEach(async () => {
+  // Restore execute bits before recursive delete so chmod(0) fixtures can be cleaned up.
+  await Promise.all(roots.splice(0).map(async (root) => {
+    try { await chmod(root, 0o755); } catch { /* already gone */ }
+    await rm(root, { recursive: true, force: true });
+  }));
+});
 
 const good = {
   schemaVersion: 1 as const,
@@ -73,47 +79,77 @@ const goodFlow = {
 };
 
 describe('deriveRuntimeProductGate rejects incomplete natural flows', () => {
-  const derive = (naturalFlow: unknown) => deriveRuntimeProductGate({
+  const derive = (naturalFlow: unknown, browserEvidence: string[] = ['screenshots/natural.png']) => deriveRuntimeProductGate({
     naturalFlow,
     runtimeWiredFiles: ['workspace/game/index.html'],
-    browserEvidence: ['screenshots/natural.png'],
+    browserEvidence,
   });
 
+  /** Pin the gate to a specific blocker id. Derive does not expose blockers on
+   * the gate object, so we assert the observable projections that each blocker
+   * produces (passed=false plus the field that blocker clears / invalidates). */
   it('accepts the full good-flow trace (positive control)', () => {
     const gate = derive(goodFlow);
     expect(gate.passed).toBe(true);
     expect(gate.terminal).toContain('settlement');
     expect(gate.replay).toContain('replay');
+    expect(gate.coreLoop).toEqual(['produce', 'settle']);
   });
 
-  it('rejects a trace that never started from a reset', () => {
-    expect(derive({ ...goodFlow, startedFromReset: false }).passed).toBe(false);
+  it('rejects a trace that never started from a reset (natural-reset-missing)', () => {
+    const gate = derive({ ...goodFlow, startedFromReset: false });
+    expect(gate.passed).toBe(false);
+    // Reset missing is the only corrupted field; projections otherwise remain.
+    expect(gate.coreLoop).toEqual(['produce', 'settle']);
+    expect(gate.terminal).toContain('settlement');
+    expect(gate.replay).toContain('replay');
   });
 
-  it('rejects a trace with no state transition that changed', () => {
-    expect(derive({
+  it('rejects a trace with no state transition that changed (natural-state-transition-missing)', () => {
+    const gate = derive({
       ...goodFlow,
       transitions: [
         { name: 'produce', changed: false, evidence: 'no change observed' },
         { name: 'settle', changed: false, evidence: 'no change observed' },
       ],
-    }).passed).toBe(false);
+    });
+    expect(gate.passed).toBe(false);
+    expect(gate.coreLoop).toEqual([]);
   });
 
-  it('rejects a trace with no terminal outcome', () => {
-    expect(derive({ ...goodFlow, completion: 'none' }).passed).toBe(false);
+  it('rejects a trace with no terminal outcome (natural-terminal-missing)', () => {
+    const gate = derive({ ...goodFlow, completion: 'none' });
+    expect(gate.passed).toBe(false);
+    expect(gate.terminal).toEqual([]);
   });
 
-  it('rejects a trace with no replay observation', () => {
-    expect(derive({ ...goodFlow, replayObserved: false }).passed).toBe(false);
+  it('rejects a trace with no replay observation (natural-replay-missing)', () => {
+    const gate = derive({ ...goodFlow, replayObserved: false });
+    expect(gate.passed).toBe(false);
+    expect(gate.replay).toEqual([]);
   });
 
-  it('rejects a trace that forced state via forbidden operations', () => {
-    expect(derive({ ...goodFlow, passed: false, forbiddenOperations: ['page.evaluate:setState'] }).passed).toBe(false);
+  it('rejects a trace that forced state via forbidden operations (natural-state-forcing-operation)', () => {
+    const gate = derive({ ...goodFlow, passed: false, forbiddenOperations: ['page.evaluate:setState'] });
+    expect(gate.passed).toBe(false);
+    // Forbidden ops do not clear terminal/replay projections; only fail the gate.
+    expect(gate.terminal).toContain('settlement');
+    expect(gate.replay).toContain('replay');
   });
 
-  it('rejects a trace with an unsupported schema version', () => {
-    expect(derive({ schemaVersion: 2 }).passed).toBe(false);
+  it('rejects a trace with an unsupported schema version (natural-flow-schema-invalid)', () => {
+    const gate = derive({ schemaVersion: 2 });
+    expect(gate.passed).toBe(false);
+    expect(gate.coreLoop).toEqual([]);
+    expect(gate.terminal).toEqual([]);
+    expect(gate.replay).toEqual([]);
+  });
+
+  it('rejects when browser evidence is missing (browser-evidence-missing)', () => {
+    // browserEvidence.min(1) is enforced by the base schema, so derive cannot
+    // emit a failed gate object with an empty list — it throws instead. That
+    // still locks the "no browser evidence ⇒ cannot pass" ratchet.
+    expect(() => derive(goodFlow, [])).toThrow(/browserEvidence|Too small/u);
   });
 });
 
@@ -187,6 +223,50 @@ describe('verifyRuntimeWiredFiles rejects unsafe or broken wiring', () => {
     const result = await verifyRuntimeWiredFiles({ runRoot: ghost, files: ['real.ts'] });
     expect(result.passed).toBe(false);
     expect(result.blockers).toContain('run-root:missing');
+  });
+
+  it('rejects the run-root itself (.) as outside wiring', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'rpg-outside-'));
+    roots.push(runRoot);
+    const result = await verifyRuntimeWiredFiles({ runRoot, files: ['.'] });
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain('outside:.');
+  });
+
+  it('rejects wiring that points at a directory instead of a file', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'rpg-notfile-'));
+    roots.push(runRoot);
+    await mkdir(path.join(runRoot, 'workspace'), { recursive: true });
+    const result = await verifyRuntimeWiredFiles({ runRoot, files: ['workspace'] });
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain('not-file:workspace');
+  });
+
+  it('rejects wiring whose realpath escapes the run root via a parent directory symlink', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'rpg-outres-'));
+    roots.push(runRoot);
+    const outside = await mkdtemp(path.join(tmpdir(), 'rpg-outside-target-'));
+    roots.push(outside);
+    await writeFile(path.join(outside, 'secret.ts'), 'export const leaked = true;\n');
+    // Intermediate directory symlink: the final path component is a regular file,
+    // so lstat does not see a symlink, but realpath resolves outside realRoot.
+    await symlink(outside, path.join(runRoot, 'escape'));
+    const result = await verifyRuntimeWiredFiles({ runRoot, files: ['escape/secret.ts'] });
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain('outside-resolved:escape/secret.ts');
+  });
+
+  it('rejects wiring that exists but cannot be read (non-ENOENT lstat failure)', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'rpg-unreadable-'));
+    roots.push(runRoot);
+    await mkdir(path.join(runRoot, 'locked'), { recursive: true });
+    await writeFile(path.join(runRoot, 'locked', 'secret.ts'), 'export const hidden = true;\n');
+    await chmod(path.join(runRoot, 'locked'), 0);
+    const result = await verifyRuntimeWiredFiles({ runRoot, files: ['locked/secret.ts'] });
+    // Restore execute bit so afterEach cleanup can delete the tree.
+    await chmod(path.join(runRoot, 'locked'), 0o755);
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain('unreadable:locked/secret.ts');
   });
 });
 
