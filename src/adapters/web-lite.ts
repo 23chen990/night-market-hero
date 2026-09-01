@@ -7,17 +7,39 @@ import { clearDir, copyTree, exists, listFiles } from '../core/files.js';
 
 function command(bin: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const child = spawn(bin, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
+    const env = bin === 'pnpm' || bin === 'corepack'
+      // pnpm 11 verifies dependency state before every run and rebuilds
+      // node_modules when it disagrees (verifyDepsBeforeRun defaults to
+      // "install"). Generated workspaces share the factory's node_modules
+      // through a symlink, so that check would wipe the factory's own
+      // dependency tree mid-run. pnpm reads this toggle from the
+      // pnpm_config_* env namespace, not npm_config_*. Disable it for spawned
+      // package-manager commands only; interactive pnpm keeps its defaults.
+      ? { ...process.env, pnpm_config_verify_deps_before_run: 'false' }
+      : process.env;
+    const child = spawn(bin, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'], env });
     let output = '';
+    let settled = false;
     child.stdout.on('data', (d) => output += d);
     child.stderr.on('data', (d) => output += d);
     child.on('error', (error) => {
-      const reason = (error as NodeJS.ErrnoException).code === 'ENOENT'
-        ? `${bin} was not found on PATH`
-        : error.message;
-      reject(new Error(`${bin} could not be started: ${reason}`));
+      if (settled) return;
+      settled = true;
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === 'ENOENT' && bin === 'pnpm') {
+        // pnpm is not on PATH: fall back to corepack, which resolves the
+        // packageManager version declared in package.json (pnpm@11.19.0).
+        void command('corepack', ['pnpm', ...args], cwd).then(resolve, reject);
+        return;
+      }
+      reject(new Error(`${bin} could not be started: ${code === 'ENOENT' ? `${bin} was not found on PATH` : error.message}`));
     });
-    child.on('exit', (code) => code === 0 ? resolve() : reject(new Error(`${bin} failed (${code}): ${output}`)));
+    child.on('exit', (code) => {
+      if (settled) return;
+      settled = true;
+      if (code === 0) resolve();
+      else reject(new Error(`${bin} failed (${code}): ${output}`));
+    });
   });
 }
 
