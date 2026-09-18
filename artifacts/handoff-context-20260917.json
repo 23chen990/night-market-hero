@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "cross-agent-handoff-context",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "updatedAt": "2026-09-17T00:00:00+08:00",
+  "currentUserGoal": "继续修复无限横向地图的背景拼接，使连接自然并保持原参考图画风；素材可自行生成，但禁止 CSS 自绘。",
+  "completed": {
+    "legacyCssBackgroundLeakFix": true,
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "fullTests": {"passed": 216, "failed": 0, "skipped": 10, "total": 226},
+    "naturalJourney": true
+  },
+  "openIssue": {
+    "rootCause": "Opaque full-frame panorama tiles are hard-cut at chunk boundaries; the portrait mist overlay is stretched narrow and rendered at alpha 0.08, so it cannot establish shared architecture, horizon, lighting or reflections.",
+    "productionFiles": ["src/night-city-renderer.ts", "src/district-world.ts"],
+    "mustPreserve": ["player physics", "collision", "economy", "persistence", "platform adapters", "default runtime journey"]
+  },
+  "evidence": {
+    "userScreenshot": {"path": "reference-evidence/verified/codex-clipboard-48e2752d-7214-4c5e-b05d-d1a1cd02689c-85f07e3133ac.png", "sha256": "85f07e3133accb5807106d152ab7b16687d42838c91ed785c5e4eba48650d0d6"},
+    "originalTarget": {"path": "reference-evidence/verified/e9125f53d0ba2cf49743758dc26237db-fe1d3464bbf8.png", "sha256": "fe1d3464bbf8eb9111620ed823cc8cbba2e9f5e7c27754356e7898dc10aa90a7"},
+    "triage": "artifacts/experience-complaint-background-stitch-20260916.json",
+    "matrix": "artifacts/experience-reproduction-matrix-background-stitch-20260916.json",
+    "plan": "artifacts/background-stitch-plan-20260916.json",
+    "styleConcept": {"path": "artifacts/background-stitch-plan-20260916/bridge-transition-concept-v2-reference-style.png", "sha256": "853b6e57b84675c2fdb6365a6cb01e227e4a2b4890b2f7f99d2e6c59f39325be"}
+  },
+  "implementationPlan": {
+    "transitionFamilies": ["market-internal", "rooftops-internal", "waterfront-internal", "market-rooftops", "rooftops-waterfront", "waterfront-market"],
+    "variantsPerFamily": 2,
+    "bridgeWidthPx": [420, 640],
+    "canvasHeightPx": 941,
+    "edgeLockPx": 160,
+    "renderDepths": {"panorama": -20, "bridge": -19, "foreground": -10},
+    "deterministicInputs": ["seed", "previous district", "next district", "visitIndex"],
+    "forbidden": ["CSS gradients", "CSS-drawn scenery", "Phaser Graphics scenery", "unbounded per-meter texture creation"]
+  },
+  "nextAction": "Generate style-matched raster bridge assets, verify alpha/composites, then TDD the deterministic bridge descriptor and integrate it into NightCityRenderer.",
+  "handoffMarkdown": "artifacts/handoff-context-20260917.md"
+}

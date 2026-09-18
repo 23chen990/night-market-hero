@@ -1,0 +1,155 @@
+{
+  "scope": "Built standalone HTML rendered in headless Chromium via set_content. Not target phone / Phaser / mini-game integration.",
+  "checks": [
+    {
+      "name": "Standalone build loads without network",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Trial attaches, deforms, releases and settles",
+      "pass": true,
+      "detail": {
+        "peakFrameOffset": 30.377533963299797,
+        "endOffset": 0.000779057148832754,
+        "landed": "rest"
+      }
+    },
+    {
+      "name": "Fixed architectural anchor trial",
+      "pass": true,
+      "detail": "beam"
+    },
+    {
+      "name": "Locked-knot comparison checkbox",
+      "pass": true,
+      "detail": {
+        "offset": 0
+      }
+    },
+    {
+      "name": "Elastic sliders apply live coefficients",
+      "pass": true,
+      "detail": {
+        "mass": 2.4,
+        "stiffness": 80,
+        "damping": 12,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ]
+      }
+    },
+    {
+      "name": "Pause freezes physics",
+      "pass": true,
+      "detail": {
+        "tick": 1065
+      }
+    },
+    {
+      "name": "Real keyboard Space hold/release controls",
+      "pass": true,
+      "detail": {
+        "heldAnchor": "lantern",
+        "afterKeyUp": null
+      }
+    },
+    {
+      "name": "Pointer control hold / pointer capture release",
+      "pass": true,
+      "detail": {
+        "attached": "lantern",
+        "released": null
+      }
+    },
+    {
+      "name": "Canvas architectural ring hit testing",
+      "pass": true,
+      "detail": {
+        "hitAnchor": "beam"
+      }
+    },
+    {
+      "name": "Visibility pause handler preserves attached anchor",
+      "pass": true,
+      "detail": {
+        "preservedAttachedAnchor": "lantern"
+      }
+    },
+    {
+      "name": "Physics updates reuse static architecture caches",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "after": 1,
+        "count": 7
+      }
+    },
+    {
+      "name": "PNG and state JSON export buttons",
+      "pass": true,
+      "detail": {
+        "pngSize": [
+          1672,
+          941
+        ],
+        "pngMode": "RGB"
+      }
+    },
+    {
+      "name": "Viewport 844×390 layout",
+      "pass": true,
+      "detail": {
+        "stage": {
+          "x": 8,
+          "y": 0,
+          "width": 828,
+          "height": 333
+        },
+        "designWidth": 2340
+      }
+    },
+    {
+      "name": "Viewport 1180×720 layout",
+      "pass": true,
+      "detail": {
+        "stage": {
+          "x": 24,
+          "y": 89.4375,
+          "width": 1132,
+          "height": 518.390625
+        },
+        "designWidth": 2055
+      }
+    },
+    {
+      "name": "Viewport 390×844 layout",
+      "pass": true,
+      "detail": {
+        "stage": {
+          "x": 10,
+          "y": 72.34375,
+          "width": 370,
+          "height": 285
+        },
+        "designWidth": 1222
+      }
+    },
+    {
+      "name": "No runtime JS errors or external requests",
+      "pass": true,
+      "detail": null
+    }
+  ],
+  "errors": [],
+  "network_requests": [],
+  "screens": [],
+  "browser": "144.0.7559.96",
+  "passed": 16,
+  "failed": 0
+}

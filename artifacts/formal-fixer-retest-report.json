@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "passed": false,
+  "checks": [
+    {"name":"targeted-regression-tests","passed":true,"evidence":"formal-fixer-regression.test.ts: high route candidate, single pursuer expression, mobile copy"},
+    {"name":"typecheck","passed":true,"evidence":"pnpm typecheck"},
+    {"name":"lint","passed":true,"evidence":"pnpm lint"},
+    {"name":"build","passed":true,"evidence":"pnpm build; dist and self-contained playable alias emitted"},
+    {"name":"natural-default-journey","passed":true,"evidence":"qa-natural-journey-run.mjs at 844x390: startup→tutorial won→night-patrol→natural failure settlement→replay, portrait block restored, 0 errors"},
+    {"name":"natural-gate-collision","passed":false,"evidence":"No independent natural timing trace proving closing-gate collision; existing fixture-only evidence remains insufficient"},
+    {"name":"perceptual-endless-features","passed":false,"evidence":"Prior perceptual report still marks sky/pickups/combo/anchor spacing natural evidence BLOCKED; requires separate fresh-browser retest"}
+  ],
+  "filesChanged": ["src/main.ts","src/game-core.ts","src/style.css","tests/formal-fixer-regression.test.ts"],
+  "remainingGaps": ["natural closing-gate collision", "fresh-browser perceptual evidence for endless features", "pre-existing attachRadius fixture expectation mismatch in full suite"]
+}

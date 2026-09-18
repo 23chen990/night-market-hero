@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "stage": "TRIAGE",
+  "targetGame": "夜市飞侠",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "route": "formal-fixer",
+  "sourceQaArtifact": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/user-feedback-qa-20260903.json",
+  "issues": [
+    {
+      "id": "qa-visible-currency-must-be-coins",
+      "classification": "economy-copy-and-runtime-ui",
+      "scope": "visible strings and settlement controls",
+      "acceptance": "all player-facing rewards use 金币"
+    },
+    {
+      "id": "qa-tutorial-not-perceptible",
+      "classification": "default-journey-teaching-and-affordance",
+      "scope": "fresh normal-input tutorial",
+      "acceptance": "grapple, release, coin pickup, canopy rescue visibly stage in order"
+    },
+    {
+      "id": "qa-pursuer-net-not-observable-or-aimed",
+      "classification": "pursuit-pressure-net-telegraph-and-spatial-aiming",
+      "scope": "fresh normal-input first pursuit/net event",
+      "acceptance": "visible guard and raise/aim/release/travel/land net sequence aimed from predicted player motion"
+    }
+  ],
+  "omittedScope": ["all other QA issues and platform packaging"],
+  "status": "TRIAGED"
+}

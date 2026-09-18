@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "stage": "FIX_RETEST",
+  "route": "formal-fixer",
+  "revision": "user-authorized-hub-integration-revision-20260904",
+  "targetGame": "夜市飞侠",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "triage": {
+    "objects": ["Hub top money/gate image layers", "Hub money value", "grapple anchor presentation"],
+    "classification": "residual raster shell + compressed money glyph + geometric anchor fallback",
+    "acceptance": ["transparent shell sources", "money value keeps aspect ratio", "approved anchor-button used for visible anchors", "alias starts ready without errors"]
+  },
+  "contextOmitted": ["game-core.ts and gameplay/collision/economy/save logic", "factory and other runs", "map background generation"],
+  "filesChanged": ["src/main.ts", "src/style.css", "tests/hub-asset-integration.test.ts", "tests/hud-slice.test.ts", "tests/hub-top-assets-anchor.test.ts", "artifacts/formal-fixer-hub-transparent-anchor-20260904.json", "src/assets/approved-runtime/hub/money-shell-transparent.png", "src/assets/approved-runtime/hub/gate-strip-transparent.png", "src/assets/approved-runtime/hub/money-value.png", "src/assets/approved-runtime/hub/anchor-button.png", "dist/index.html", "夜市飞侠-护印突围-试玩版.html"],
+  "changes": ["Replaced aligned shell/value imports with transparent shell and native-ratio money-value asset.", "Added Phaser anchor-button texture/sprite layer for every visible grapple anchor while preserving world coordinates and hit logic.", "Retained neutral scene and existing approved modules/identity assets."],
+  "tests": {"redGreen":"New transparent-source/anchor tests failed before implementation and pass after patch.","npmTest":{"status":"PASS","tests":193,"passed":183,"skipped":10,"failed":0},"lint":"PASS","typecheck":"PASS","build":"PASS"},
+  "runtimeEvidence": {"url":"http://127.0.0.1:8080/夜市飞侠-护印突围-试玩版.html?seed=31&fresh=1","screenshots":["qa-evidence/hub-transparent-anchor-20260904/hub-1672x941.png","qa-evidence/hub-transparent-anchor-20260904/hub-844x390.png"],"viewports":["1672x941","844x390"],"preload":"ready","moneyNaturalWidth":79,"anchorTextureLoaded":true,"consoleErrors":0,"pageErrors":0},
+  "remainingGaps":["A faint top horizontal line remains from authored environment crossbeam modules behind the HUD; shell PNG residual dark matte is removed.","No dedicated settings Hub PNG; pause icon fallback remains.","Neutral scene remains intentional and web-lite evidence is not platform publishability proof."]
+}

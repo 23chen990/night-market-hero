@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#100b20" />
+    <title>夜市飞侠：护印突围</title>
+  </head>
+  <body>
+    <main id="app" data-ui-preload="pending" data-ui-state-motion="state-change" aria-label="夜市飞侠：护印突围可玩原型" data-visual-standard="ui-f-night-market-interior" data-character-reference-sha256="adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb" data-orientation="LANDSCAPE_16_9" data-rendering="MINIMAL_FLAT_2D" data-persistent-tutorial="false" data-city-district="" data-city-chunk-count="0" data-city-renderer="image-stream">
+      <div class="scene-layer" data-ui="scene-layer" aria-hidden="true"></div>
+      <div id="game"></div>
+      <button class="grapple-surface" data-action="grapple" data-gameplay-action="grapple-hold-release" aria-label="按住飞索挂接地形节点并借力，松手保留动量">grapple</button>
+      <span class="sr-only" data-ui="game-title">夜市飞侠</span>
+      <span class="sr-only" data-ui="game-subtitle">护印突围</span>
+      <span class="sr-only" data-ui="level-title">夜市内市</span>
+      <span class="sr-only" data-ui="opening-story">游侠受托护送原创盟契铜符，要在坊门关闭前穿越夜市，交给渡口接应人。</span>
+      <span class="sr-only" data-ui="wishfire">0</span>
+      <header class="corner-hud safe-top" data-reference-stage="true" data-reference-layout="top-hud" data-ui-motion="hud-enter">
+        <button class="hub-image-button hub-back-key" data-hub="hub-back-key" data-ui="back" data-ui-motion="icon-press" type="button" aria-label="返回"><img data-ui="back-icon" alt="" /></button>
+        <div class="hub-money" data-hub="hub-money" aria-label="金币">
+          <img class="hub-money-shell" data-hub="hub-money-shell" alt="" />
+          <img class="hub-money-value" data-hub="hub-money-value" aria-hidden="true" alt="" hidden />
+          <span class="hub-money-number" data-ui="coins-total" aria-live="polite" aria-label="当前金币">0</span>
+        </div>
+        <div class="hub-gate" data-hub="hub-gate" aria-label="坊门进度">
+          <img class="hub-gate-strip" data-hub="hub-gate-strip" aria-hidden="true" alt="" hidden />
+          <img class="hub-gate-counter-frame" data-hub="hub-gate-counter-frame" data-ui="gate-counter-frame" aria-hidden="true" alt="" />
+          <span class="hub-gate-count" data-ui="gates-total" aria-label="已闯城门">0</span>
+          <span class="hub-destination"><strong data-ui="destination">内市牌楼</strong><span class="hub-gate-distance" data-ui="gate-distance" aria-label="距下座坊门">0m</span></span>
+        </div>
+        <button class="hub-image-button hub-settings" data-hub="hub-settings" data-ui="settings" data-action="pause" data-ui-motion="icon-press" type="button" aria-label="暂停"><img data-ui="settings-icon" data-asset-role="settings-gear" alt="" /></button>
+        <button class="pause-button" data-ui-motion="icon-press" data-action="pause" aria-label="暂停" hidden><img data-ui="pause-icon" aria-hidden="true" alt="" /></button>
+        <div class="run-readout" data-ui="run-readout" aria-label="本局战绩" hidden>
+          <span class="hud-metric"><small>里程</small><strong data-ui="distance">0m</strong></span>
+          <span class="hud-metric hud-metric-coins"><small>金币</small><strong data-ui="run-coins">0</strong></span>
+          <span class="hud-metric hud-metric-combo"><small>连击</small><strong data-ui="combo">0</strong></span>
+          <span class="hud-metric"><small>已闯城门</small><strong data-ui="multiplier">0</strong></span>
+          <span class="hud-metric"><small>距下门</small><strong data-ui="depth">0m</strong></span>
+          <span class="hud-metric"><small>最远城门</small><strong data-ui="record">0</strong></span>
+          <span class="run-state" data-ui="run-state">夜巡</span>
+        </div>
+      </header>
+      <div class="journey-meter" data-ui-motion="hud-enter" aria-label="前往渡口的进度" hidden><span data-ui="progress"></span></div>
+      <aside class="guard-presence" data-ui="pursuer" data-ui-motion="hud-enter" data-visible="true" data-primary-expression="visible-guard-silhouette" data-character-identity="strict-reference" data-pose="compact-low-running" data-weapon="short-low-held" data-face="none" aria-label="画面左缘追来的官兵">
+        <img class="pursuit-icon" data-ui="pursuit-icon" aria-hidden="true" alt="" />
+        <span class="left-edge-alert" data-ui="left-edge-alert" aria-hidden="true"></span>
+        <span class="guard-figure" aria-hidden="true"><i></i><b></b></span>
+        <span class="guard-copy sr-only"><strong data-ui="pursuer-label">官兵</strong><small data-ui="pursuer-distance">444 步</small></span>
+      </aside>
+      <aside class="chase-readout sr-only" aria-live="polite">
+        <strong data-ui="chase-label">官兵尚在后方</strong><span data-ui="chase-distance">444 步</span>
+        <span data-ui="chase-meter"></span>
+      </aside>
+      <div class="threat-vignette" data-ui="threat-vignette" data-ui-motion="overlay-feedback" aria-hidden="true"></div>
+      <img class="feedback-layer" data-ui="feedback-layer" data-ui-motion="overlay-feedback" aria-hidden="true" alt="" hidden />
+      <div class="escape-feedback" data-ui="escape-feedback" data-ui-motion="overlay-feedback" data-active="false" aria-live="polite" hidden><img data-ui="escape-ring-icon" aria-hidden="true" alt="" /><span class="sr-only">与官兵拉开距离！</span></div>
+      <div class="climax-callout" data-ui="climax" data-ui-motion="overlay-feedback" data-active="false" hidden><img data-ui="closing-gate-icon" aria-hidden="true" alt="" /><span class="sr-only" data-ui="climax-copy">夜市内门正在关闭</span></div>
+      <div class="result-scrim" data-ui="result-scrim" hidden>
+      <section class="result-card" data-ui="result" data-ui-motion="menu-enter" aria-live="polite" hidden>
+        <span class="result-kicker" data-ui="result-kicker"></span>
+        <h1 data-ui="result-title"></h1>
+        <p data-ui="result-copy"></p>
+        <div class="settlement-details" data-ui="settlement-details" aria-label="本次夜巡结算"></div>
+        <div class="result-actions">
+          <button class="reward-button" data-ui-motion="icon-press" data-action="revive" hidden>看完广告 · 安全复起</button>
+          <button class="reward-button" data-ui-motion="icon-press" data-action="double" hidden>看完广告 · 再得 30 金币</button>
+          <button class="plain-button" data-ui-motion="icon-press" data-action="restart">不看广告 · 重新启程</button>
+          <button class="plain-button" data-ui-motion="icon-press" data-action="continue" hidden>继续下一程</button>
+        </div>
+        <small class="ad-note" data-ui="ad-note">广告奖励由你主动选择</small>
+      </section>
+      </div>
+      <section class="pause-overlay" data-ui="pause-overlay" data-ui-motion="menu-enter" aria-live="polite" hidden>
+        <img data-ui="pause-overlay-icon" aria-hidden="true" alt="" /><strong class="sr-only">已暂停</strong><span class="sr-only">点击右上角继续</span>
+      </section>
+      <section class="orientation-block" data-ui="orientation-block" data-ui-motion="menu-enter" role="dialog" aria-modal="true" aria-label="需要横屏" hidden>
+        <strong>请旋转至横屏</strong><span>夜市飞索仅在横屏游戏区域内响应</span>
+      </section>
+      <div class="item-actions" data-reference-stage="true" data-persistent="true" aria-label="道具">
+        <div class="item-button" data-slot="talisman" data-reference-x="1543" data-reference-y="290" data-reference-width="103" data-reference-height="103" data-action="talisman" aria-label="使用附身符"><img class="item-ring" data-hub="hub-inventory-ring-top" alt="" /><img class="talisman-art" data-hub="hub-inventory-talisman" alt="" /><button class="ad-play-button" data-ui="ad-play" data-hub="hub-inventory-play-top" type="button" aria-label="播放广告"><img data-ui="ad-play-icon" alt="" /></button><b class="item-count">×3</b></div>
+        <div class="item-button item-slot-empty" data-slot="firecracker" data-reference-x="1543" data-reference-y="429" data-reference-width="103" data-reference-height="103" data-action="firecracker" role="button" tabindex="0" aria-label="卷轴槽位"><img class="item-ring" data-hub="hub-inventory-ring-bottom" alt="" /><img class="scroll-art" data-hub="hub-inventory-scroll" alt="" /><button class="ad-play-button" data-ui="ad-play-bottom" data-hub="hub-inventory-play-bottom" type="button" aria-label="播放广告"><img data-ui="ad-play-icon-bottom" alt="" /></button><b class="item-count">×2</b></div>
+      </div>
+      <footer class="route-hint safe-bottom" data-ui-motion="overlay-feedback" data-visible="true" hidden>
+        <img data-ui="route-state-icon" aria-hidden="true" alt="" /><span class="sr-only" data-ui="route-hint">官兵执行宵禁 · 按住挂接，松手飞行</span>
+      </footer>
+      <div class="tutorial-rail" data-ui="tutorial-rail" aria-hidden="true" hidden>
+        <img data-tutorial-step="hook" alt="" /><img data-tutorial-step="release" alt="" /><img data-tutorial-step="coin" alt="" /><img data-tutorial-step="bounce" alt="" />
+        <span data-ui="tutorial-stage" class="tutorial-stage" aria-live="polite"></span>
+      </div>
+      <button class="clear-progress-button" data-action="clear-progress" aria-label="清除所有进度" hidden>清除进度</button>
+    </main>
+    <script>
+      if (location.protocol === 'file:' && !decodeURIComponent(location.pathname).endsWith('夜市飞侠-护印突围-试玩版.html')) {
+        location.replace(new URL('./夜市飞侠-护印突围-试玩版.html', location.href).href);
+      }
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

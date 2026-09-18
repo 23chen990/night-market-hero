@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "stage": "FIX_RETEST",
+  "route": "formal-fixer",
+  "revision": "user-authorized-hub-pixel-coordinate-review-20260904",
+  "targetGame": "夜市飞侠",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "contextOmitted": ["game-core gameplay and collision logic", "factory and other runs", "map background generation"],
+  "reference": {
+    "effectImage": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/codex-clipboard-583372dd-65e3-4ae0-8153-472bb6561572.png",
+    "effectImagePixels": "1672x941",
+    "contentBoundary": "The supplied effect image is already game-content-only 1672x941; browser chrome appears only in separate 3282x2048 capture and is excluded from mapping."
+  },
+  "mapping": {
+    "stage": "reference-stage 1672x941; scale=min(viewportWidth/1672, viewportHeight/941), centered with safe-area offsets",
+    "hubMoneyShell": {"source":"money-shell-transparent.png 532x160", "mappedRect":{"x":576,"y":27,"width":183,"height":58}, "runtimeRect1672":{"x":576,"y":27.25,"width":183,"height":58}, "runtimeRect844":{"x":314.05,"y":11.19,"width":75.84,"height":24.03}, "contentFit":"contain; intrinsic art approximately 183x55 within box"},
+    "hubMoneyValue": {"source":"money-value.png 79x31", "mappedRect":{"x":656,"y":45,"width":83,"height":24}, "runtimeRect1672":{"x":656,"y":45.25,"width":83,"height":24}, "runtimeRect844":{"x":347.19,"y":18.64,"width":34.39,"height":9.94}, "contentFit":"contain; glyph content approximately 61.16x24 (native aspect 2.548, no horizontal stretch)"},
+    "hubGateStrip": {"source":"gate-strip-transparent.png 272x112", "mappedRect":{"x":860,"y":27,"width":176,"height":58}, "runtimeRect1672":{"x":860,"y":27.25,"width":176,"height":58}, "runtimeRect844":{"x":431.75,"y":11.19,"width":72.94,"height":24.03}, "contentFit":"contain; intrinsic art approximately 141.14x58 centered in box"},
+    "inventoryRingTop": {"source":"inventory-ring.png 656x676", "mappedRect":{"x":1543,"y":290,"width":103,"height":103}, "runtimeRect1672":{"x":1543,"y":290.25,"width":103,"height":103}, "runtimeRect844":{"x":714.83,"y":120.19,"width":42.69,"height":42.69}, "contentFit":"contain"},
+    "anchorButton": {"source":"anchor-button.png 632x646", "coordinateSpace":"world (not UI reference-stage)", "runtimeWorldSamples":[{"id":"node-1","x":275,"y":365},{"id":"node-2","x":600,"y":335},{"id":"node-3","x":925,"y":375},{"id":"node-4","x":1250,"y":330},{"id":"node-5","x":1575,"y":370}], "renderSizes":{"idle":46,"eligibleOrAttached":54}, "interaction":"game-core anchor ids/coordinates and hit testing unchanged"}
+  },
+  "tests": {"redGreen":"Coordinate contract test added and passes; transparent/anchor tests remain green.","npmTest":{"status":"PASS","tests":195,"passed":185,"skipped":10,"failed":0},"lint":"PASS","typecheck":"PASS","build":"PASS"},
+  "runtimeEvidence": {"screenshots":["qa-evidence/hub-transparent-anchor-20260904/hub-1672x941.png","qa-evidence/hub-transparent-anchor-20260904/hub-844x390.png"],"aliasUrl":"http://127.0.0.1:8080/夜市飞侠-护印突围-试玩版.html?seed=31&fresh=1","preload":"ready","consoleErrors":0,"pageErrors":0},
+  "conclusion": "Hub UI runtime rectangles match the declared reference-stage mapping; mobile differences are the expected uniform scale/letterbox. Grapple anchors are world-space sprites, so their positions intentionally follow camera/world coordinates rather than top-Hub pixel coordinates. Browser-chrome offsets are not part of the 1672x941 game content.",
+  "remainingGaps": ["Effect image's authored night-market background is unavailable and remains intentionally unimplemented.","Faint horizontal environment crossbeam lines are outside Hub image layers and were not moved.","Web-lite evidence is not platform publishability proof."]
+}

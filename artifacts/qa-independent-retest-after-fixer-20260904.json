@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "route": "qa",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "issueIds": [
+    "formal-left-edge-guard-not-visually-hidden",
+    "formal-high-route-remains-spatially-low",
+    "formal-gate-collision-still-fixture-only"
+  ],
+  "deterministic": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "tests": "PASS: 169 passed, 10 skipped, 0 failed",
+    "build": "PASS",
+    "command": "npm run lint && npm run typecheck && npm test && npm run build",
+    "contractVersion": 1
+  },
+  "natural": {
+    "startup": "PASS",
+    "guardMutualExclusion": {
+      "status": "PASS",
+      "samples": 6,
+      "evidence": "world pursuer on-screen while edge pursuer data-visible=false and rendered=false"
+    },
+    "highRouteCorridorAndRoofNet": {
+      "status": "PASS",
+      "highRouteSamples": 11,
+      "highRouteYRange": [397.40679100380896, 461.54303057620217],
+      "corridor": {"x": 1515, "y": 300, "width": 570, "height": 210},
+      "roofNetPhases": ["warning", "entering", "active", "impact", "raise", "travel", "missed"],
+      "roofNetAtBounds": {"status": "PASS", "tick": 923, "playerX": 1740.5181893521565, "boundsX": 1691.6000000000001, "phase": "active", "collisionActive": true},
+      "prematureMissedBeforeBounds": false
+    },
+    "closingGateCollision": {
+      "status": "PASS",
+      "event": {"sequence": 26, "tick": 1319, "type": "closing-gate-collision", "segment": "gate-climax", "cause": "bottom-leaf"},
+      "gateBeatsObserved": [1, 2, 3]
+    },
+    "terminalSettlement": {"status": "PASS", "terminalStatus": "won", "progress": 0.9651556186034194, "tick": 1326},
+    "replay": {"status": "PASS", "state": {"status": "playing", "seed": 32, "levelId": "lantern-entry"}},
+    "landscape": {"viewport": "844x390", "hold": "PASS", "release": "PASS", "consoleErrors": 0, "pageErrors": 0}
+  },
+  "perceptual": {
+    "status": "PASS",
+    "orientationBlock": {"status": "PASS", "viewport": "390x844", "visible": true, "gameplayFrozen": true},
+    "worldGuardEdgeMutual": "PASS",
+    "criticalUi": "PASS: visible grapple affordance and pursuit feedback in desktop/landscape screenshots"
+  },
+  "screenshots": [
+    "qa-evidence/qa-independent-retest-after-fixer-20260904/startup-desktop.png",
+    "qa-evidence/qa-independent-retest-after-fixer-20260904/terminal-desktop.png",
+    "qa-evidence/qa-independent-retest-after-fixer-20260904/replay-desktop.png",
+    "qa-evidence/qa-independent-retest-after-fixer-20260904/startup-landscape-844x390.png",
+    "qa-evidence/qa-independent-retest-after-fixer-20260904/portrait-390x844.png"
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "blockers": [],
+  "status": "PASS"
+}

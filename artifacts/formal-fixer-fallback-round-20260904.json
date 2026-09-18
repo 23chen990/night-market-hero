@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "authorization": "explicit-user",
+  "attemptLabel": "manual-after-spark-discovery",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "issueIds": [
+    "formal-left-edge-guard-not-visually-hidden",
+    "formal-high-route-remains-spatially-low",
+    "formal-gate-collision-still-fixture-only"
+  ],
+  "filesChanged": [
+    "src/main.ts",
+    "src/game-core.ts",
+    "src/style.css",
+    "tests/formal-fixer-regression.test.ts",
+    "tests/formal-world.test.ts",
+    "tests/formal-fixer-fallback-natural-browser.ts"
+  ],
+  "red": {
+    "passed": true,
+    "evidence": [
+      "formal-fixer-regression.test.ts initially failed on missing authoritative pursuer hidden switch",
+      "formal-fixer-regression.test.ts initially failed because high commitment persisted outside its corridor"
+    ]
+  },
+  "green": {
+    "passed": true,
+    "evidence": [
+      "focused formal-fixer, formal-world, formal-contract, QA round 2 route/shell tests pass",
+      "normal hold/release deterministic gate collision emits closing-gate-collision on beat 3 while remaining playing"
+    ]
+  },
+  "checks": {
+    "lint": "PASS (npm run lint)",
+    "typecheck": "PASS (npm run typecheck)",
+    "tests": "PASS: 169 passed, 10 skipped, 0 failed",
+    "build": "PASS (npm run build)"
+  },
+  "naturalEvidence": {
+    "startup": "PASS",
+    "guardMutualExclusion": "BLOCKED: fresh pointer run did not reach a frame with world guard on-screen; mobile edge DOM was hidden=true/display=none",
+    "highRouteCorridorAndRoofNet": "BLOCKED: roof-net telegraph/active/missed reached its world bounds, but normal pointer rhythm committed low and never produced a natural high branch sample",
+    "closingGateCollision": "BLOCKED: normal pointer rhythm fell before emitting a natural closing-gate-collision in the fresh browser run; deterministic non-fixture hold/release regression passes",
+    "terminalReplay": "BLOCKED: same fresh run fell before terminal settlement/replay",
+    "screenshots": [
+      "qa-evidence/formal-fixer-fallback-round-20260904/startup-desktop.png",
+      "qa-evidence/formal-fixer-fallback-round-20260904/terminal-desktop.png",
+      "qa-evidence/formal-fixer-fallback-round-20260904/startup-landscape-844x390.png"
+    ],
+    "consoleErrors": 0,
+    "pageErrors": 0
+  },
+  "remainingBlockers": [
+    "Natural browser evidence does not observe the exact high-route branch named by the issue.",
+    "Natural browser evidence does not observe closing-gate collision or terminal/replay in the same fresh journey; fixture/deterministic evidence cannot substitute."
+  ],
+  "status": "BLOCKED"
+}

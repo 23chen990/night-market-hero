@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "report": "无限地图的全景片段在屏幕中部出现硬直线，场景连接不自然；用户要求连接区域必须由专门生成的过渡内容完成。",
+  "classification": ["core-experience", "reference-fidelity", "visual-hierarchy"],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "问题已在夜市背景的渲染表现层定位，计划先限定在全景拼接、过渡资产和对应渲染测试；不改角色、碰撞、经济、存档、平台适配或默认流程。若实现需要改动世界调度或核心循环，将升级为 formal-fixer。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": ["game-core gameplay and collision rules", "economy, persistence and platform adapters", "factory code and other runs"]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "打开夜市飞侠：护印突围的横屏试玩版。",
+      "让角色向右移动，使相邻两个夜市 chunk 同时进入视口。",
+      "观察视口中部的相邻全景交界、屋檐轮廓、灯笼亮度和水面反射。"
+    ],
+    "observed": [
+      "相邻不透明全景在 chunk 边界直接切换，形成贯穿画面的竖直硬线。",
+      "当前 district-transition-mist-v1 只有低透明度覆盖，不能让两侧建筑轮廓、光源方向和水面纹理连续。",
+      "截图中交界两侧的透视、明暗和前景遮挡关系不共享同一条过渡结构，因此玩家会识别为两张图拼接。"
+    ],
+    "evidence": [
+      {"path": "reference-evidence/verified/codex-clipboard-48e2752d-7214-4c5e-b05d-d1a1cd02689c-85f07e3133ac.png", "sha256": "85f07e3133accb5807106d152ab7b16687d42838c91ed785c5e4eba48650d0d6", "kind": "user-report", "provenance": "verified-reference"},
+      {"path": "src/night-city-renderer.ts", "sha256": "ba239dfb7b0389bd8a63aa68c872dbc4614f61b46af033ea4d439e8a06037ab9", "kind": "factory-source", "provenance": "repository-source"},
+      {"path": "src/assets/night-city/district-transition-mist-v1.png", "sha256": "750eafe7ea69cf76492de6d93511d110c2e44b29102e40c55382a58462bd9b93", "kind": "factory-source", "provenance": "repository-source"}
+    ]
+  },
+  "acceptanceCriteria": [
+    "相邻 chunk 不再以贯穿画面的硬竖线直接切换。",
+    "每个连接带拥有独立的自生成结构：至少包含共享地平线/屋檐节奏、连续灯笼或雾层、以及可解释的前景遮挡或水面反射。",
+    "同一 district 内的连接和 district 变化连接使用不同的过渡配方，但都保持夜市主色、光向和透视一致。",
+    "连接带在 844x390 与 1180x720 横屏视口、startup/grounded/jump 三个分支都不露出透明底或硬切边。",
+    "无限地图仍保持确定性：相同 seed 和 world X 每次生成相同的连接资产与布局，不增加无限增长的纹理对象。"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-09-16T10:05:00Z"
+}

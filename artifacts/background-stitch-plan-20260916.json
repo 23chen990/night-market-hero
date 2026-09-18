@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "background-stitch-plan",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "problemModel": {
+    "currentFailure": "Opaque 1672x941 panoramas are placed as adjacent world tiles; a 820x1919 portrait mist is stretched to a narrow strip and drawn at alpha 0.08, so the join remains a recognizable vertical cut.",
+    "playerPerception": "The eye reads two unrelated screenshots because the horizon, building silhouettes, light direction, and water reflections do not cross the boundary as one scene."
+  },
+  "design": {
+    "principle": "The join is its own authored raster scene, not a CSS effect and not a generic translucent cover.",
+    "transitionFamilies": [
+      {"id": "market-internal", "pairs": ["market->market"], "visualBridge": "shared awning and lantern rhythm continuing into a busier stall lane"},
+      {"id": "rooftops-internal", "pairs": ["rooftops->rooftops"], "visualBridge": "one roof ridge handing off to a higher tiled bridge"},
+      {"id": "waterfront-internal", "pairs": ["waterfront->waterfront"], "visualBridge": "one pier, mast and reflection line turning into the next water court"},
+      {"id": "market-rooftops", "pairs": ["market->rooftops", "rooftops->market"], "visualBridge": "covered alley rising into a tiled roof bridge"},
+      {"id": "rooftops-waterfront", "pairs": ["rooftops->waterfront", "waterfront->rooftops"], "visualBridge": "stone stair/bridge with reflected lanterns"},
+      {"id": "waterfront-market", "pairs": ["waterfront->market", "market->waterfront"], "visualBridge": "floating stall pier turning into a lantern market edge"}
+    ],
+    "assetRecipe": {
+      "variantsPerFamily": 2,
+      "bridgeWidthPx": {"min": 420, "max": 640},
+      "canvasHeightPx": 941,
+      "edgeLockPx": 160,
+      "edgeTreatment": "opaque center with raster feather masks at both edges, color-matched to the outgoing and incoming plates",
+      "layers": ["shared sky/fog and horizon", "bridge architecture and light sources", "foreground occluder/reflection alpha"]
+    },
+    "runtime": {
+      "worldRule": "Keep the existing deterministic district scheduler; derive a bridge key from seed, previous district, next district, and visit index.",
+      "placement": "Render base panoramas behind the bridge plate; render bridge plate at depth -19; keep eaves/reflections in front at depth -10.",
+      "pooling": "Pool bridge images with the same bounded retention policy as panorama images; never allocate one image per traveled meter.",
+      "fallback": "If a bridge texture is not ready, keep the opaque base plates and defer the bridge reveal; never expose CSS or a transparent canvas gap."
+    }
+  },
+  "implementationOrder": [
+    "Generate and alpha-verify the bridge raster set; inspect composited light/dark/saturated backgrounds.",
+    "Add deterministic transition descriptors and bridge asset paths.",
+    "Replace the generic mist join with bridge plates and foreground occluders.",
+    "Add unit tests for pair coverage, deterministic keys, bounded pooling, and screen coverage.",
+    "Run natural Playwright captures at same-district and district-change joins in grounded and airborne states on 844x390 and 1180x720.",
+    "Rebuild the alias and rerun the default startup -> core loop -> terminal -> replay journey."
+  ],
+  "conceptEvidence": {
+    "path": "artifacts/background-stitch-plan-20260916/bridge-transition-concept-v2-reference-style.png",
+    "sha256": "853b6e57b84675c2fdb6365a6cb01e227e4a2b4890b2f7f99d2e6c59f39325be",
+    "note": "参考原图画风的视觉方向稿：低饱和冷蓝雾夜、深色剪影、少量暖色灯笼；中心用屋檐、灯笼线和连续水面倒影承担连接，不是最终运行时切片。"
+  },
+  "nonGoals": ["CSS gradients or CSS-drawn scenery", "Phaser Graphics scenery", "changing player physics, collision, economy, persistence, or platform adapters", "creating unique unbounded textures during play"],
+  "acceptanceChecks": [
+    "No recognizable hard vertical boundary at a bridge center in runtime captures.",
+    "Bridge plate and both neighboring panoramas share palette, horizon height, and light direction.",
+    "Same seed/world coordinates produce the same bridge key and layout.",
+    "Retained bridge image count stays within the renderer cap.",
+    "All existing tests plus targeted natural journey pass with no console/page errors."
+  ],
+  "status": "PLAN_READY",
+  "createdAt": "2026-09-16T10:08:00Z"
+}

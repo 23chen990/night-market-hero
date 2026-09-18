@@ -1,0 +1,1024 @@
+{
+  "schemaVersion": "hybrid-ambient-study-3.0",
+  "project": "夜市飞侠：护印突围",
+  "status": "visual-study-not-releaseApproved",
+  "design": {
+    "tileWidth": 1672,
+    "height": 941,
+    "worldWidth": 3344,
+    "scrollFactor": 1
+  },
+  "seed": 210917,
+  "description": "3344-unit finite authored market; layered static caches + independent ambient actors. Not infinite runtime or release-approved assets.",
+  "layers": {
+    "0": "sky",
+    "9": "distant",
+    "10": "distant",
+    "12": "distant",
+    "18": "mid",
+    "20": "mid",
+    "24": "mid",
+    "28": "mid",
+    "33": "architecture",
+    "34": "architecture",
+    "40": "architecture",
+    "42": "architecture",
+    "43": "details",
+    "44": "details",
+    "45": "details",
+    "46": "details",
+    "49": "ground",
+    "51": "stalls",
+    "52": "stalls",
+    "53": "stalls",
+    "54": "stalls",
+    "55": "stalls",
+    "56": "stalls",
+    "57": "stalls",
+    "61": "foreground",
+    "70": "foreground"
+  },
+  "objects": [
+    {
+      "id": "sky",
+      "type": "sky",
+      "layer": 0,
+      "x": 0,
+      "y": 0,
+      "w": 3344,
+      "h": 941,
+      "seed": 210917
+    },
+    {
+      "id": "far-house-0",
+      "type": "house",
+      "layer": 10,
+      "x": -180,
+      "y": 555,
+      "w": 350,
+      "h": 240,
+      "floors": 1,
+      "palette": "far",
+      "windows": true,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-1",
+      "type": "house",
+      "layer": 10,
+      "x": 220,
+      "y": 560,
+      "w": 290,
+      "h": 260,
+      "floors": 1,
+      "palette": "far",
+      "windows": false,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-2",
+      "type": "house",
+      "layer": 10,
+      "x": 392,
+      "y": 500,
+      "w": 425,
+      "h": 320,
+      "floors": 2,
+      "palette": "far",
+      "windows": true,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-3",
+      "type": "house",
+      "layer": 10,
+      "x": 860,
+      "y": 545,
+      "w": 330,
+      "h": 260,
+      "floors": 1,
+      "palette": "far",
+      "windows": true,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-4",
+      "type": "house",
+      "layer": 10,
+      "x": 1060,
+      "y": 520,
+      "w": 300,
+      "h": 290,
+      "floors": 1,
+      "palette": "far",
+      "windows": false,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-5",
+      "type": "house",
+      "layer": 10,
+      "x": 1560,
+      "y": 490,
+      "w": 390,
+      "h": 325,
+      "floors": 2,
+      "palette": "far",
+      "windows": true,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-6",
+      "type": "house",
+      "layer": 10,
+      "x": 1800,
+      "y": 560,
+      "w": 380,
+      "h": 260,
+      "floors": 1,
+      "palette": "far",
+      "windows": true,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-7",
+      "type": "house",
+      "layer": 10,
+      "x": 2130,
+      "y": 420,
+      "w": 400,
+      "h": 390,
+      "floors": 2,
+      "palette": "far",
+      "windows": false,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-8",
+      "type": "house",
+      "layer": 10,
+      "x": 2530,
+      "y": 495,
+      "w": 400,
+      "h": 320,
+      "floors": 2,
+      "palette": "far",
+      "windows": true,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-house-9",
+      "type": "house",
+      "layer": 10,
+      "x": 3030,
+      "y": 540,
+      "w": 430,
+      "h": 280,
+      "floors": 1,
+      "palette": "far",
+      "windows": true,
+      "roofHeight": 64,
+      "artRoof": false
+    },
+    {
+      "id": "far-tower-1",
+      "type": "tower",
+      "layer": 9,
+      "x": 939,
+      "y": 298,
+      "w": 150,
+      "h": 452,
+      "palette": "farther",
+      "tiers": 4
+    },
+    {
+      "id": "far-tower-2",
+      "type": "tower",
+      "layer": 9,
+      "x": 2690,
+      "y": 260,
+      "w": 184,
+      "h": 510,
+      "palette": "farther",
+      "tiers": 5
+    },
+    {
+      "id": "far-city-gate",
+      "type": "citygate",
+      "layer": 12,
+      "x": 1258,
+      "y": 373,
+      "w": 346,
+      "h": 418,
+      "palette": "far",
+      "warmth": 0.38
+    },
+    {
+      "id": "far-city-gate-2",
+      "type": "citygate",
+      "layer": 12,
+      "x": 2985,
+      "y": 403,
+      "w": 332,
+      "h": 384,
+      "palette": "farther",
+      "warmth": 0.15
+    },
+    {
+      "id": "paifang-01",
+      "type": "paifang",
+      "layer": 20,
+      "x": 430,
+      "y": 160,
+      "w": 690,
+      "base": 804,
+      "palette": "mid"
+    },
+    {
+      "id": "middle-shop-1",
+      "type": "house",
+      "layer": 18,
+      "x": 89,
+      "y": 478,
+      "w": 285,
+      "h": 334,
+      "floors": 1,
+      "palette": "back",
+      "windows": false,
+      "roofHeight": 72,
+      "artRoof": false
+    },
+    {
+      "id": "middle-shop-2",
+      "type": "house",
+      "layer": 18,
+      "x": 1793,
+      "y": 298,
+      "w": 448,
+      "h": 507,
+      "floors": 2,
+      "palette": "back",
+      "windows": true,
+      "roofHeight": 95,
+      "artRoof": false
+    },
+    {
+      "id": "middle-shop-3",
+      "type": "house",
+      "layer": 18,
+      "x": 2360,
+      "y": 535,
+      "w": 386,
+      "h": 278,
+      "floors": 1,
+      "palette": "back",
+      "windows": false,
+      "roofHeight": 56,
+      "artRoof": false
+    },
+    {
+      "id": "rear-canopy-0",
+      "type": "fabric",
+      "layer": 24,
+      "x": 344,
+      "y": 578,
+      "w": 317,
+      "h": 173,
+      "base": 810,
+      "palette": "back",
+      "sag": 45,
+      "shapeVariant": 2
+    },
+    {
+      "id": "rear-canopy-1",
+      "type": "fabric",
+      "layer": 24,
+      "x": 663,
+      "y": 593,
+      "w": 350,
+      "h": 165,
+      "base": 810,
+      "palette": "back",
+      "sag": 53,
+      "shapeVariant": 0
+    },
+    {
+      "id": "rear-canopy-2",
+      "type": "fabric",
+      "layer": 24,
+      "x": 924,
+      "y": 564,
+      "w": 246,
+      "h": 202,
+      "base": 786,
+      "palette": "back",
+      "sag": 34,
+      "shapeVariant": 1
+    },
+    {
+      "id": "rear-canopy-3",
+      "type": "fabric",
+      "layer": 24,
+      "x": 1742,
+      "y": 592,
+      "w": 253,
+      "h": 190,
+      "base": 793,
+      "palette": "back",
+      "sag": 37,
+      "shapeVariant": 2
+    },
+    {
+      "id": "rear-canopy-4",
+      "type": "fabric",
+      "layer": 24,
+      "x": 2180,
+      "y": 565,
+      "w": 339,
+      "h": 210,
+      "base": 810,
+      "palette": "back",
+      "sag": 53,
+      "shapeVariant": 0
+    },
+    {
+      "id": "rear-canopy-5",
+      "type": "fabric",
+      "layer": 24,
+      "x": 2633,
+      "y": 563,
+      "w": 399,
+      "h": 213,
+      "base": 810,
+      "palette": "back",
+      "sag": 61,
+      "shapeVariant": 1
+    },
+    {
+      "id": "rear-canopy-6",
+      "type": "fabric",
+      "layer": 24,
+      "x": 3000,
+      "y": 600,
+      "w": 385,
+      "h": 180,
+      "base": 810,
+      "palette": "back",
+      "sag": 45,
+      "shapeVariant": 2
+    },
+    {
+      "id": "left-teahouse",
+      "type": "foregroundHouse",
+      "layer": 40,
+      "x": -165,
+      "y": -97,
+      "w": 756,
+      "bodyX": -92,
+      "bodyW": 439,
+      "roofBase": 246,
+      "floor": 499,
+      "base": 830,
+      "palette": "near",
+      "facing": "right",
+      "windows": true
+    },
+    {
+      "id": "right-teahouse",
+      "type": "foregroundHouse",
+      "layer": 40,
+      "x": 1194,
+      "y": -30,
+      "w": 792,
+      "bodyX": 1328,
+      "bodyW": 1120,
+      "returnW": 580,
+      "roofBase": 326,
+      "floor": 541,
+      "base": 855,
+      "palette": "near",
+      "facing": "left",
+      "windows": false
+    },
+    {
+      "id": "second-low-inn",
+      "type": "house",
+      "layer": 33,
+      "x": 2050,
+      "y": 210,
+      "w": 711,
+      "h": 606,
+      "floors": 2,
+      "palette": "frontmid",
+      "windows": true,
+      "roofHeight": 125,
+      "artRoof": true
+    },
+    {
+      "id": "second-end-house",
+      "type": "foregroundHouse",
+      "layer": 40,
+      "x": 3026,
+      "y": 1,
+      "w": 714,
+      "bodyX": 3171,
+      "bodyW": 454,
+      "roofBase": 320,
+      "floor": 552,
+      "base": 850,
+      "palette": "near",
+      "facing": "left",
+      "windows": false
+    },
+    {
+      "id": "scaffold-01",
+      "type": "scaffold",
+      "layer": 42,
+      "x": 1153,
+      "y": 393,
+      "w": 167,
+      "h": 432,
+      "base": 831,
+      "palette": "near"
+    },
+    {
+      "id": "scaffold-02",
+      "type": "scaffold",
+      "layer": 34,
+      "x": 2674,
+      "y": 402,
+      "w": 215,
+      "h": 420,
+      "base": 828,
+      "palette": "frontmid"
+    },
+    {
+      "id": "high-cable-01",
+      "type": "cable",
+      "layer": 44,
+      "x1": 331,
+      "y1": 286,
+      "x2": 1361,
+      "y2": 290,
+      "sag": 75,
+      "palette": "near",
+      "lanterns": [
+        {
+          "t": 0.19,
+          "scale": 0.63,
+          "drop": 16
+        },
+        {
+          "t": 0.48,
+          "scale": 0.77,
+          "drop": 22
+        },
+        {
+          "t": 0.79,
+          "scale": 0.6,
+          "drop": 13
+        }
+      ],
+      "width": 2.5,
+      "interactive": true
+    },
+    {
+      "id": "high-cable-02",
+      "type": "cable",
+      "layer": 43,
+      "x1": 1790,
+      "y1": 547,
+      "x2": 2764,
+      "y2": 520,
+      "sag": 63,
+      "palette": "frontmid",
+      "lanterns": [
+        {
+          "t": 0.27,
+          "scale": 0.68,
+          "drop": 17
+        },
+        {
+          "t": 0.7,
+          "scale": 0.6,
+          "drop": 15
+        }
+      ],
+      "width": 2.4
+    },
+    {
+      "id": "high-cable-03",
+      "type": "cable",
+      "layer": 43,
+      "x1": 2750,
+      "y1": 375,
+      "x2": 3225,
+      "y2": 323,
+      "sag": 86,
+      "palette": "near",
+      "lanterns": [
+        {
+          "t": 0.55,
+          "scale": 0.64,
+          "drop": 20
+        }
+      ],
+      "width": 2.7
+    },
+    {
+      "id": "left-lamp",
+      "type": "lamp",
+      "layer": 45,
+      "x": 215,
+      "y": 265,
+      "scale": 1.34,
+      "drop": 20,
+      "warmth": 0.8,
+      "anchor": {
+        "owner": "left-teahouse",
+        "part": "eave-beam"
+      }
+    },
+    {
+      "id": "second-inn-lamp",
+      "type": "lamp",
+      "layer": 44,
+      "x": 2266,
+      "y": 346,
+      "scale": 0.84,
+      "drop": 14,
+      "warmth": 0.65,
+      "anchor": {
+        "owner": "right-teahouse",
+        "part": "eave-beam"
+      }
+    },
+    {
+      "id": "sign-01",
+      "type": "sign",
+      "layer": 46,
+      "x": 348,
+      "y": 304,
+      "w": 77,
+      "h": 194,
+      "palette": "near",
+      "postX": 332
+    },
+    {
+      "id": "sign-02",
+      "type": "sign",
+      "layer": 46,
+      "x": 1297,
+      "y": 325,
+      "w": 65,
+      "h": 177,
+      "palette": "near",
+      "postX": 1355
+    },
+    {
+      "id": "sign-03",
+      "type": "sign",
+      "layer": 46,
+      "x": 2737,
+      "y": 333,
+      "w": 68,
+      "h": 171,
+      "palette": "frontmid",
+      "postX": 2746
+    },
+    {
+      "id": "street",
+      "type": "street",
+      "layer": 49,
+      "x": -400,
+      "y": 812,
+      "w": 4200,
+      "h": 129,
+      "palette": "near"
+    },
+    {
+      "id": "left-awning",
+      "type": "fabric",
+      "layer": 51,
+      "x": -92,
+      "y": 543,
+      "w": 584,
+      "h": 103,
+      "base": 816,
+      "palette": "near",
+      "sag": 55,
+      "shapeVariant": 0
+    },
+    {
+      "id": "central-canopy",
+      "type": "artCanopy",
+      "layer": 52,
+      "x": 688,
+      "y": 622,
+      "w": 454,
+      "h": 203,
+      "base": 830,
+      "palette": "near"
+    },
+    {
+      "id": "right-lower-canopy",
+      "type": "fabric",
+      "layer": 56,
+      "x": 1315,
+      "y": 648,
+      "w": 440,
+      "h": 144,
+      "base": 924,
+      "palette": "dark",
+      "sag": 37,
+      "shapeVariant": 2
+    },
+    {
+      "id": "second-canopy",
+      "type": "artCanopy",
+      "layer": 52,
+      "x": 1774,
+      "y": 570,
+      "w": 366,
+      "h": 255,
+      "base": 830,
+      "palette": "frontmid"
+    },
+    {
+      "id": "second-long-canopy",
+      "type": "fabric",
+      "layer": 53,
+      "x": 2465,
+      "y": 580,
+      "w": 470,
+      "h": 111,
+      "base": 826,
+      "palette": "near",
+      "sag": 61,
+      "shapeVariant": 2
+    },
+    {
+      "id": "second-side-canopy",
+      "type": "artCanopy",
+      "layer": 56,
+      "x": 3116,
+      "y": 652,
+      "w": 343,
+      "h": 258,
+      "base": 931,
+      "palette": "dark"
+    },
+    {
+      "id": "alley-stall",
+      "type": "alley",
+      "layer": 28,
+      "x": 477,
+      "y": 683,
+      "w": 315,
+      "h": 149,
+      "base": 832,
+      "palette": "back"
+    },
+    {
+      "id": "alley-stall-2",
+      "type": "alley",
+      "layer": 28,
+      "x": 2179,
+      "y": 651,
+      "w": 365,
+      "h": 178,
+      "base": 829,
+      "palette": "back"
+    },
+    {
+      "id": "counter-0",
+      "type": "counter",
+      "layer": 54,
+      "x": 32,
+      "y": 780,
+      "w": 268,
+      "base": 827,
+      "palette": "near",
+      "props": [
+        0.14,
+        0.49,
+        0.79
+      ]
+    },
+    {
+      "id": "counter-1",
+      "type": "counter",
+      "layer": 54,
+      "x": 757,
+      "y": 777,
+      "w": 324,
+      "base": 827,
+      "palette": "near",
+      "props": [
+        0.26,
+        0.75
+      ]
+    },
+    {
+      "id": "counter-2",
+      "type": "counter",
+      "layer": 54,
+      "x": 1840,
+      "y": 779,
+      "w": 235,
+      "base": 827,
+      "palette": "frontmid",
+      "props": [
+        0.14,
+        0.49,
+        0.79
+      ]
+    },
+    {
+      "id": "counter-3",
+      "type": "counter",
+      "layer": 54,
+      "x": 2500,
+      "y": 777,
+      "w": 343,
+      "base": 827,
+      "palette": "near",
+      "props": [
+        0.26,
+        0.75
+      ]
+    },
+    {
+      "id": "counter-4",
+      "type": "counter",
+      "layer": 57,
+      "x": 3080,
+      "y": 882,
+      "w": 310,
+      "base": 927,
+      "palette": "dark",
+      "props": [
+        0.14,
+        0.49,
+        0.79
+      ]
+    },
+    {
+      "id": "cart-01",
+      "type": "sprite",
+      "layer": 54,
+      "asset": "cart",
+      "x": 479,
+      "y": 740,
+      "w": 193,
+      "h": 96,
+      "palette": "frontmid",
+      "anchor": {
+        "owner": "street",
+        "part": "top"
+      }
+    },
+    {
+      "id": "cart-02",
+      "type": "sprite",
+      "layer": 54,
+      "asset": "cart",
+      "x": 943,
+      "y": 737,
+      "w": 168,
+      "h": 91,
+      "palette": "near",
+      "anchor": {
+        "owner": "street",
+        "part": "top"
+      }
+    },
+    {
+      "id": "cart-03",
+      "type": "sprite",
+      "layer": 54,
+      "asset": "cart",
+      "x": 2793,
+      "y": 726,
+      "w": 184,
+      "h": 100,
+      "palette": "near",
+      "anchor": {
+        "owner": "street",
+        "part": "top"
+      }
+    },
+    {
+      "id": "stall-lamp-01",
+      "type": "lamp",
+      "layer": 55,
+      "x": 803,
+      "y": 700,
+      "scale": 0.5,
+      "drop": 5,
+      "warmth": 0.35,
+      "anchor": {
+        "owner": "central-canopy",
+        "part": "crossbeam"
+      }
+    },
+    {
+      "id": "stall-lamp-02",
+      "type": "lamp",
+      "layer": 55,
+      "x": 2631,
+      "y": 663,
+      "scale": 0.46,
+      "drop": 5,
+      "warmth": 0.28,
+      "anchor": {
+        "owner": "second-long-canopy",
+        "part": "crossbeam"
+      }
+    },
+    {
+      "id": "rail-0",
+      "type": "rail",
+      "layer": 61,
+      "x": -200,
+      "y": 831,
+      "w": 483,
+      "h": 64,
+      "palette": "dark",
+      "step": 57
+    },
+    {
+      "id": "rail-1",
+      "type": "rail",
+      "layer": 61,
+      "x": 353,
+      "y": 850,
+      "w": 212,
+      "h": 66,
+      "palette": "dark",
+      "step": 63
+    },
+    {
+      "id": "rail-2",
+      "type": "rail",
+      "layer": 61,
+      "x": 681,
+      "y": 851,
+      "w": 321,
+      "h": 62,
+      "palette": "dark",
+      "step": 57
+    },
+    {
+      "id": "rail-3",
+      "type": "rail",
+      "layer": 61,
+      "x": 1361,
+      "y": 918,
+      "w": 415,
+      "h": 61,
+      "palette": "dark",
+      "step": 63
+    },
+    {
+      "id": "rail-4",
+      "type": "rail",
+      "layer": 61,
+      "x": 1712,
+      "y": 845,
+      "w": 233,
+      "h": 68,
+      "palette": "dark",
+      "step": 57
+    },
+    {
+      "id": "rail-5",
+      "type": "rail",
+      "layer": 61,
+      "x": 2140,
+      "y": 860,
+      "w": 389,
+      "h": 69,
+      "palette": "dark",
+      "step": 63
+    },
+    {
+      "id": "rail-6",
+      "type": "rail",
+      "layer": 61,
+      "x": 2790,
+      "y": 852,
+      "w": 282,
+      "h": 62,
+      "palette": "dark",
+      "step": 57
+    },
+    {
+      "id": "bottom-bank",
+      "type": "bank",
+      "layer": 70,
+      "x": -400,
+      "y": 915,
+      "w": 4200,
+      "h": 90,
+      "palette": "dark"
+    }
+  ],
+  "water": {
+    "underWalkway": [
+      [
+        0,
+        837
+      ],
+      [
+        3344,
+        837
+      ],
+      [
+        3344,
+        941
+      ],
+      [
+        0,
+        941
+      ]
+    ],
+    "basins": [
+      {
+        "id": "market-water-alley",
+        "polygon": [
+          [
+            1090,
+            732
+          ],
+          [
+            1876,
+            732
+          ],
+          [
+            1908,
+            941
+          ],
+          [
+            1107,
+            941
+          ]
+        ],
+        "surfaceY": 753,
+        "farBankY": 734,
+        "x": 1090,
+        "w": 786
+      },
+      {
+        "id": "second-water-alley",
+        "polygon": [
+          [
+            2915,
+            741
+          ],
+          [
+            3344,
+            741
+          ],
+          [
+            3344,
+            941
+          ],
+          [
+            2880,
+            941
+          ]
+        ],
+        "surfaceY": 757,
+        "farBankY": 743,
+        "x": 2915,
+        "w": 429
+      }
+    ]
+  },
+  "layerPipeline": [
+    "backdrop-and-water",
+    "far-people",
+    "boats-and-reflections",
+    "upper-architecture",
+    "high-lamps-and-banners",
+    "street",
+    "rear-street-people",
+    "stalls-and-counters",
+    "front-street-people",
+    "front-posts",
+    "stall-lamps",
+    "foreground"
+  ],
+  "version": "v04-grapple-study",
+  "note": "Finite interactive study derived from v03; not integrated Phaser gameplay."
+}

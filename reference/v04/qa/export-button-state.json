@@ -1,0 +1,251 @@
+{
+  "sceneVersion": "v04-grapple-study",
+  "config": {
+    "version": "v04-study-1",
+    "units": "design pixels; normalized prototype mass, not SI engineering values",
+    "physics": {
+      "fixedStep": 0.008333333333333333,
+      "gravity": 870,
+      "airAcceleration": 410,
+      "groundAcceleration": 1600,
+      "maxRunSpeed": 290,
+      "maxAirSpeed": 670,
+      "jumpSpeed": 435,
+      "playerMass": 1,
+      "reach": 30,
+      "footOffset": 43,
+      "maxGrapple": 430,
+      "minRope": 72,
+      "reelSpeed": 105,
+      "iterations": 7,
+      "softWorldBounds": [
+        350,
+        1260
+      ]
+    },
+    "elastic": {
+      "mass": 2.4,
+      "stiffness": 42,
+      "damping": 9.5,
+      "maxOffset": 54,
+      "horizontalLimitRatio": 0.72,
+      "cableId": "high-cable-01",
+      "attachT": 0.48,
+      "supports": [
+        "left-teahouse",
+        "right-teahouse"
+      ]
+    },
+    "anchors": [
+      {
+        "id": "beam",
+        "label": "横梁挂环",
+        "type": "fixed",
+        "x": 596,
+        "y": 325,
+        "support": "paifang-01"
+      },
+      {
+        "id": "lantern",
+        "label": "灯绳绑结",
+        "type": "elastic",
+        "cableId": "high-cable-01",
+        "t": 0.48
+      }
+    ],
+    "platforms": [
+      {
+        "id": "start",
+        "label": "起步木台",
+        "x": 362,
+        "y": 540,
+        "w": 152,
+        "posts": [
+          381,
+          494
+        ],
+        "base": 816
+      },
+      {
+        "id": "rest",
+        "label": "缓冲木台",
+        "x": 651,
+        "y": 610,
+        "w": 375,
+        "posts": [
+          675,
+          1005
+        ],
+        "base": 826
+      },
+      {
+        "id": "finish",
+        "label": "落脚木台",
+        "x": 1003,
+        "y": 565,
+        "w": 252,
+        "posts": [
+          1020,
+          1227
+        ],
+        "base": 829
+      }
+    ],
+    "stations": {
+      "beam": {
+        "x": 459,
+        "platform": "start"
+      },
+      "lantern": {
+        "x": 716,
+        "platform": "rest"
+      }
+    },
+    "trial": {
+      "beam": {
+        "angle": -0.7,
+        "radius": 172
+      },
+      "lantern": {
+        "angle": -0.68,
+        "radius": 153
+      }
+    },
+    "exclusions": {
+      "ambientPeopleCollision": false,
+      "boatCollision": false,
+      "backgroundPixelCollision": false,
+      "runtimeStreaming": false,
+      "ropeWrapping": false
+    },
+    "changesFromV03": [
+      "high-cable-01 sag changed from 125 to 75 design pixels, endpoints unchanged; taken out of static cache",
+      "central canopy lowered from y553 to y622, h272 to203; foot remains y830",
+      "three explicitly supported gameplay platforms added; their visible deck tops are collision coordinates",
+      "player pose is new code rig inspired by project silhouette; not an approved production animation sheet"
+    ],
+    "trialReleaseSeconds": 1.25
+  },
+  "liveElastic": {
+    "mass": 2.4,
+    "stiffness": 42,
+    "damping": 9.5,
+    "maxOffset": 54,
+    "horizontalLimitRatio": 0.72,
+    "cableId": "high-cable-01",
+    "attachT": 0.48,
+    "supports": [
+      "left-teahouse",
+      "right-teahouse"
+    ]
+  },
+  "viewer": {
+    "cameraX": 0,
+    "width": 1749,
+    "height": 941,
+    "time": 11.299999999999999,
+    "ambientTime": 11.332934666666779,
+    "ambient": true,
+    "timeScale": 1,
+    "debug": false,
+    "follow": true,
+    "hints": true,
+    "labels": true,
+    "gameplay": true
+  },
+  "physics": {
+    "time": 12.299999999999942,
+    "tick": 1476,
+    "station": "lantern",
+    "paused": false,
+    "player": {
+      "x": 916.4030996038003,
+      "y": 567,
+      "oldX": 916.3857224406383,
+      "oldY": 567,
+      "vx": 2.08525957943948,
+      "vy": 0,
+      "facing": 1,
+      "ground": "rest",
+      "attached": null,
+      "ropeLength": 123.00000000000003,
+      "tension": 0,
+      "walkDistance": 187.2084322786261,
+      "releaseAge": 0.5833333333333337,
+      "landAge": 0.24999999999999997
+    },
+    "hand": {
+      "x": 928.4030996038003,
+      "y": 560
+    },
+    "anchors": [
+      {
+        "id": "beam",
+        "label": "横梁挂环",
+        "type": "fixed",
+        "x": 596,
+        "y": 325,
+        "support": "paifang-01",
+        "restX": 596,
+        "restY": 325,
+        "vx": 0,
+        "vy": 0,
+        "oldX": 596,
+        "oldY": 325
+      },
+      {
+        "id": "lantern",
+        "label": "灯绳绑结",
+        "type": "elastic",
+        "cableId": "high-cable-01",
+        "t": 0.48,
+        "x": 827.0690236338071,
+        "y": 360.25543008613926,
+        "restX": 825.4,
+        "restY": 362.8,
+        "vx": -16.59263878595084,
+        "vy": -27.7652474057345,
+        "oldX": 827.20729562369,
+        "oldY": 360.4868071478537
+      }
+    ],
+    "elastic": {
+      "mass": 2.4,
+      "stiffness": 42,
+      "damping": 9.5,
+      "maxOffset": 54,
+      "horizontalLimitRatio": 0.72,
+      "cableId": "high-cable-01",
+      "attachT": 0.48,
+      "supports": [
+        "left-teahouse",
+        "right-teahouse"
+      ],
+      "locked": false,
+      "dx": 1.6690236338071145,
+      "dy": -2.544569913860755,
+      "offset": 3.0431030111930215
+    },
+    "metrics": {
+      "maxOffset": 30.455395939608923,
+      "maxConstraintError": 8.526512829121202e-14,
+      "maxSpeed": 432.6506916027895,
+      "rescues": 0,
+      "attaches": 8,
+      "releases": 5,
+      "landings": 2,
+      "droppedSeconds": 0
+    },
+    "trial": {
+      "id": "lantern",
+      "start": 10.466666666666713,
+      "released": true,
+      "duration": 6.5
+    },
+    "message": {
+      "type": "land",
+      "time": 12.049999999999956,
+      "platform": "rest"
+    }
+  }
+}

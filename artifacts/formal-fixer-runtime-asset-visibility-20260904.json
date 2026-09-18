@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "stage": "FIX",
+  "route": "formal-fixer",
+  "revision": "user-authorized-runtime-assets-visibility-revision-20260904",
+  "targetGame": "夜市飞侠",
+  "targetRun": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "contextOmitted": ["game-core.ts", "economy/persistence", "platform adapters", "other runs", "new map generation"],
+  "filesChanged": [
+    "src/main.ts",
+    "src/style.css",
+    "tests/runtime-assets-wiring.test.ts",
+    "tests/runtime-asset-visibility.test.ts",
+    "artifacts/formal-fixer-runtime-asset-visibility-20260904.json",
+    "src/assets/approved-runtime/identity/*.png",
+    "src/assets/approved-runtime/environment/*.png"
+  ],
+  "changes": [
+    "Copied the listed art-review/shared-assets-v1 transparent assets into approved-runtime without regeneration.",
+    "Loaded protagonist and pursuer sprites in Phaser and rendered them at existing state.player/state.pursuer world coordinates.",
+    "Added independent environment module sprites behind gameplay using environmentGeometry and terrain bounds.",
+    "Raised sprite/module display sizes and alpha, and changed the neutral base to a cold-teal #102a33 for silhouette contrast."
+  ],
+  "tests": {
+    "red": "runtime-asset-visibility.test.ts and runtime-assets-wiring.test.ts failed before wiring/contrast changes",
+    "targeted": "npm test -- tests/runtime-assets-wiring.test.ts tests/runtime-asset-visibility.test.ts",
+    "full": "npm test (176 passed, 10 skipped, 0 failed)",
+    "typecheck": "npm run typecheck",
+    "lint": "npm run lint",
+    "build": "npm run build"
+  },
+  "runtimeEvidence": {
+    "viewports": [
+      {"width": 1672, "height": 941, "sceneBackground": "rgb(16, 42, 51)", "screenshot": "qa-evidence/runtime-asset-visibility-1672x941.png"},
+      {"width": 844, "height": 390, "sceneBackground": "rgb(16, 42, 51)", "screenshot": "qa-evidence/runtime-asset-visibility-844x390.png"}
+    ],
+    "scenario": "segment-first-pursuit",
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "visibleChecks": ["protagonist sprite", "world pursuer sprite", "stall canopy", "paifang crossbeam", "pushcart", "inner eave", "lantern cable"]
+  },
+  "remainingGaps": [
+    "No user-supplied map background exists; the cold-teal neutral base remains intentional.",
+    "The approved runtime identity assets are single static frames, not an animation strip.",
+    "Web-lite evidence is not a claim of WeChat, Douyin, or TapTap package publishability."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "stage": "FIX_RETEST",
+  "route": "formal-fixer",
+  "revision": "user-authorized-hub-integration-revision-20260904",
+  "targetGame": "夜市飞侠",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "triage": {
+    "object": "default startup Hub shell",
+    "classification": "stale bundled alias/build artifact + inventory tone mismatch",
+    "reproduction": "Standalone alias served from http://127.0.0.1:8080 loaded an older bundle and failed on missing data-ui=level-title.",
+    "acceptance": ["Rebuilt standalone alias starts with __PROTOTYPE_TEST__ ready", "Hub PNGs and characters visible", "No console/page errors", "Both inventory slots share tone presentation"]
+  },
+  "contextOmitted": ["game-core.ts and gameplay logic", "factory and other runs", "map background generation or authored scene work"],
+  "filesChanged": ["src/style.css", "tests/hub-alias-retest.test.ts", "artifacts/formal-fixer-hub-alias-retest-20260904.json", "dist/index.html", "夜市飞侠-护印突围-试玩版.html"],
+  "tests": {
+    "redGreen": "Alias contract and slot-tone tests failed before rebuild/presentation patch, then passed.",
+    "npmTest": {"status":"PASS", "tests":191, "passed":181, "skipped":10, "failed":0},
+    "lint":"PASS", "typecheck":"PASS", "build":"PASS"
+  },
+  "runtimeEvidence": {
+    "url": "http://127.0.0.1:8080/夜市飞侠-护印突围-试玩版.html?seed=31&fresh=1",
+    "screenshots": ["qa-evidence/hub-alias-retest-20260904/alias-1672x941.png", "qa-evidence/hub-alias-retest-20260904/alias-844x390.png"],
+    "viewports": ["1672x941", "844x390"],
+    "preload": "ready",
+    "hubAssetsVisible": true,
+    "referenceRectsVerified": true,
+    "consoleErrors": 0,
+    "pageErrors": 0
+  },
+  "remainingGaps": ["No dedicated Hub settings PNG; pause icon remains controlled fallback.", "Neutral scene intentionally has no user-supplied map background.", "Web-lite/alias evidence does not establish WeChat, Douyin, or TapTap package publishability."]
+}

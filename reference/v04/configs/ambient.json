@@ -1,0 +1,277 @@
+{
+  "schemaVersion": "ambient-3.0",
+  "seed": 210918,
+  "status": "motion-study-not-releaseApproved",
+  "note": "Hand-authored safe routes. People and boats have no gameplay collision. All x/y use the same world coordinates as the architecture.",
+  "people": [
+    {
+      "id": "walker-hat",
+      "kind": "hat",
+      "path": [
+        [
+          320,
+          814
+        ],
+        [
+          696,
+          815
+        ]
+      ],
+      "speed": 23,
+      "height": 99,
+      "timeOffset": 2.2,
+      "waitA": 4.2,
+      "waitB": 3.3,
+      "layer": "street",
+      "color": "near",
+      "role": "路人 · 沿街慢行"
+    },
+    {
+      "id": "walker-bundle",
+      "kind": "bundle",
+      "path": [
+        [
+          640,
+          824
+        ],
+        [
+          1240,
+          825
+        ]
+      ],
+      "speed": 20,
+      "height": 92,
+      "timeOffset": 1.8,
+      "waitA": 5.7,
+      "waitB": 4.6,
+      "layer": "nearStreet",
+      "color": "near",
+      "role": "行商 · 货摊前沿步道"
+    },
+    {
+      "id": "merchant-one",
+      "kind": "merchant",
+      "path": [
+        [
+          873,
+          817
+        ],
+        [
+          873,
+          817
+        ]
+      ],
+      "speed": 0,
+      "height": 94,
+      "timeOffset": 1.4,
+      "layer": "street",
+      "color": "near",
+      "role": "摊主 · 柜台后整理货物"
+    },
+    {
+      "id": "far-passenger",
+      "kind": "cap",
+      "path": [
+        [
+          1368,
+          735
+        ],
+        [
+          1515,
+          735
+        ]
+      ],
+      "speed": 9,
+      "height": 48,
+      "timeOffset": 5.5,
+      "waitA": 5,
+      "waitB": 6,
+      "layer": "far",
+      "color": "far",
+      "role": "远岸行人"
+    },
+    {
+      "id": "walker-second",
+      "kind": "cap",
+      "path": [
+        [
+          2094,
+          815
+        ],
+        [
+          2470,
+          815
+        ]
+      ],
+      "speed": 22,
+      "height": 96,
+      "timeOffset": 4,
+      "waitA": 4,
+      "waitB": 6,
+      "layer": "street",
+      "color": "near",
+      "role": "第二段路人"
+    },
+    {
+      "id": "merchant-two",
+      "kind": "merchant",
+      "path": [
+        [
+          2638,
+          816
+        ],
+        [
+          2638,
+          816
+        ]
+      ],
+      "speed": 0,
+      "height": 90,
+      "timeOffset": 4.3,
+      "layer": "street",
+      "color": "near",
+      "role": "第二段摊主"
+    },
+    {
+      "id": "far-second",
+      "kind": "hat",
+      "path": [
+        [
+          2975,
+          744
+        ],
+        [
+          3280,
+          744
+        ]
+      ],
+      "speed": 10,
+      "height": 51,
+      "timeOffset": 14,
+      "waitA": 7,
+      "waitB": 6,
+      "layer": "far",
+      "color": "far",
+      "role": "第二段远岸行人"
+    }
+  ],
+  "boats": [
+    {
+      "id": "passing-skiff",
+      "asset": "sampan",
+      "basin": "market-water-alley",
+      "mode": "pass",
+      "path": [
+        [
+          1244,
+          803
+        ],
+        [
+          1774,
+          803
+        ]
+      ],
+      "speed": 13,
+      "width": 198,
+      "timeOffset": 1.8,
+      "waitA": 8,
+      "waitB": 12,
+      "bobbing": 0.9,
+      "phase": 0.2,
+      "role": "水巷缓行乌篷船"
+    },
+    {
+      "id": "moored-skiff",
+      "asset": "cargo-boat",
+      "basin": "market-water-alley",
+      "mode": "moored",
+      "path": [
+        [
+          1611,
+          787
+        ],
+        [
+          1611,
+          787
+        ]
+      ],
+      "speed": 0,
+      "width": 150,
+      "timeOffset": 0,
+      "bobbing": 1.0,
+      "phase": 2.1,
+      "mooring": [
+        1701,
+        775
+      ],
+      "lamp": true,
+      "role": "系泊货舟"
+    },
+    {
+      "id": "second-skiff",
+      "asset": "sampan",
+      "basin": "second-water-alley",
+      "mode": "moored",
+      "path": [
+        [
+          3050,
+          805
+        ],
+        [
+          3050,
+          805
+        ]
+      ],
+      "speed": 0,
+      "width": 185,
+      "timeOffset": 0,
+      "bobbing": 0.8,
+      "phase": 1.2,
+      "mooring": [
+        3150,
+        787
+      ],
+      "lamp": false,
+      "role": "第二段泊船"
+    }
+  ],
+  "waterLights": [
+    {
+      "x": 1431,
+      "y": 759,
+      "width": 35,
+      "length": 48,
+      "alpha": 0.19,
+      "phase": 0.4
+    },
+    {
+      "x": 1587,
+      "y": 799,
+      "width": 12,
+      "length": 38,
+      "alpha": 0.14,
+      "phase": 2.2
+    },
+    {
+      "x": 3176,
+      "y": 767,
+      "width": 18,
+      "length": 52,
+      "alpha": 0.12,
+      "phase": 3.4
+    }
+  ],
+  "limits": {
+    "maxPeople": 7,
+    "maxBoats": 3,
+    "allowGameplayInteraction": false,
+    "cameraAutoLoop": false
+  },
+  "animation": {
+    "walkAtlasFrames": 32,
+    "localStride": 44,
+    "stanceFraction": 0.6,
+    "accelerationSeconds": 0.85,
+    "windMaxRadians": 0.023
+  }
+}

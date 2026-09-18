@@ -1,0 +1,693 @@
+{
+  "file": "market-v04-grapple-preview.mp4",
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 24,
+  "seconds": 14,
+  "physicsStep": 0.008333333333333333,
+  "ticksPerVideoFrame": 5,
+  "chapters": [
+    {
+      "from": 0,
+      "to": 7,
+      "station": "elastic lantern cable"
+    },
+    {
+      "from": 7,
+      "to": 14,
+      "station": "fixed beam"
+    }
+  ],
+  "releaseAtSecondsInEachTrial": 1.25,
+  "source": "actual v04 HTML + same physics solver; deterministic initial-state resets at chapter boundary, no trajectory keyframes",
+  "not": "real-time screen recording, infinite route demonstration, or phone performance evidence",
+  "samples": [
+    {
+      "time": 0,
+      "tick": 0,
+      "station": "lantern",
+      "paused": false,
+      "player": {
+        "x": 729.1946673251742,
+        "y": 481.76862596889197,
+        "oldX": 729.1946673251742,
+        "oldY": 481.76862596889197,
+        "vx": 0,
+        "vy": 0,
+        "facing": 1,
+        "ground": null,
+        "attached": "lantern",
+        "ropeLength": 123.00000000000003,
+        "tension": 0,
+        "walkDistance": 0,
+        "releaseAge": 9,
+        "landAge": 9
+      },
+      "hand": {
+        "x": 748.0584580457283,
+        "y": 458.44144440636416
+      },
+      "anchors": [
+        {
+          "id": "beam",
+          "label": "横梁挂环",
+          "type": "fixed",
+          "x": 596,
+          "y": 325,
+          "support": "paifang-01",
+          "restX": 596,
+          "restY": 325,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 596,
+          "oldY": 325
+        },
+        {
+          "id": "lantern",
+          "label": "灯绳绑结",
+          "type": "elastic",
+          "cableId": "high-cable-01",
+          "t": 0.48,
+          "x": 825.4,
+          "y": 362.8,
+          "restX": 825.4,
+          "restY": 362.8,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 825.4,
+          "oldY": 362.8
+        }
+      ],
+      "elastic": {
+        "mass": 2.4,
+        "stiffness": 42,
+        "damping": 9.5,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ],
+        "locked": false,
+        "dx": 0,
+        "dy": 0,
+        "offset": 0
+      },
+      "metrics": {
+        "maxOffset": 0,
+        "maxConstraintError": 0,
+        "maxSpeed": 0,
+        "rescues": 0,
+        "attaches": 1,
+        "releases": 0,
+        "landings": 0,
+        "droppedSeconds": 0.18339999999999998
+      },
+      "trial": {
+        "id": "lantern",
+        "start": 0,
+        "released": false,
+        "duration": 6.5
+      },
+      "message": {
+        "type": "trial",
+        "time": 0,
+        "id": "lantern"
+      }
+    },
+    {
+      "time": 1.9999999999999953,
+      "tick": 240,
+      "station": "lantern",
+      "paused": false,
+      "player": {
+        "x": 916.537574073851,
+        "y": 567,
+        "oldX": 916.5355833661272,
+        "oldY": 567,
+        "vx": 0.23888492686182872,
+        "vy": 0,
+        "facing": 1,
+        "ground": "rest",
+        "attached": null,
+        "ropeLength": 123.00000000000003,
+        "tension": 0,
+        "walkDistance": 187.3429067486768,
+        "releaseAge": 0.7499999999999998,
+        "landAge": 0.41666666666666713
+      },
+      "hand": {
+        "x": 928.537574073851,
+        "y": 560
+      },
+      "anchors": [
+        {
+          "id": "beam",
+          "label": "横梁挂环",
+          "type": "fixed",
+          "x": 596,
+          "y": 325,
+          "support": "paifang-01",
+          "restX": 596,
+          "restY": 325,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 596,
+          "oldY": 325
+        },
+        {
+          "id": "lantern",
+          "label": "灯绳绑结",
+          "type": "elastic",
+          "cableId": "high-cable-01",
+          "t": 0.48,
+          "x": 824.9108897520764,
+          "y": 357.71464683951973,
+          "restX": 825.4,
+          "restY": 362.8,
+          "vx": -9.395070650157322,
+          "vy": -5.1067375883530985,
+          "oldX": 824.9891820074944,
+          "oldY": 357.75720298608934
+        }
+      ],
+      "elastic": {
+        "mass": 2.4,
+        "stiffness": 42,
+        "damping": 9.5,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ],
+        "locked": false,
+        "dx": -0.48911024792357694,
+        "dy": -5.085353160480281,
+        "offset": 5.1088203727896575
+      },
+      "metrics": {
+        "maxOffset": 30.455395939608923,
+        "maxConstraintError": 8.526512829121202e-14,
+        "maxSpeed": 254.4481103975949,
+        "rescues": 0,
+        "attaches": 1,
+        "releases": 1,
+        "landings": 1,
+        "droppedSeconds": 0.18339999999999998
+      },
+      "trial": {
+        "id": "lantern",
+        "start": 0,
+        "released": true,
+        "duration": 6.5
+      },
+      "message": {
+        "type": "land",
+        "time": 1.5833333333333302,
+        "platform": "rest"
+      }
+    },
+    {
+      "time": 3.9999999999999885,
+      "tick": 480,
+      "station": "lantern",
+      "paused": false,
+      "player": {
+        "x": 916.5549724517543,
+        "y": 567,
+        "oldX": 916.5549724517539,
+        "oldY": 567,
+        "vx": 5.4569682106375694e-11,
+        "vy": 0,
+        "facing": 1,
+        "ground": "rest",
+        "attached": null,
+        "ropeLength": 123.00000000000003,
+        "tension": 0,
+        "walkDistance": 187.3603051265801,
+        "releaseAge": 2.749999999999993,
+        "landAge": 2.4166666666666607
+      },
+      "hand": {
+        "x": 928.5549724517543,
+        "y": 560
+      },
+      "anchors": [
+        {
+          "id": "beam",
+          "label": "横梁挂环",
+          "type": "fixed",
+          "x": 596,
+          "y": 325,
+          "support": "paifang-01",
+          "restX": 596,
+          "restY": 325,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 596,
+          "oldY": 325
+        },
+        {
+          "id": "lantern",
+          "label": "灯绳绑结",
+          "type": "elastic",
+          "cableId": "high-cable-01",
+          "t": 0.48,
+          "x": 825.3518529499108,
+          "y": 362.69651157596354,
+          "restX": 825.4,
+          "restY": 362.8,
+          "vx": 0.04613199097093457,
+          "vy": 0.39919966014167585,
+          "oldX": 825.3514685166527,
+          "oldY": 362.693184912129
+        }
+      ],
+      "elastic": {
+        "mass": 2.4,
+        "stiffness": 42,
+        "damping": 9.5,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ],
+        "locked": false,
+        "dx": -0.048147050089141885,
+        "dy": -0.1034884240364704,
+        "offset": 0.1141402310398864
+      },
+      "metrics": {
+        "maxOffset": 30.455395939608923,
+        "maxConstraintError": 8.526512829121202e-14,
+        "maxSpeed": 254.4481103975949,
+        "rescues": 0,
+        "attaches": 1,
+        "releases": 1,
+        "landings": 1,
+        "droppedSeconds": 0.18339999999999998
+      },
+      "trial": {
+        "id": "lantern",
+        "start": 0,
+        "released": true,
+        "duration": 6.5
+      },
+      "message": {
+        "type": "land",
+        "time": 1.5833333333333302,
+        "platform": "rest"
+      }
+    },
+    {
+      "time": 6.000000000000088,
+      "tick": 720,
+      "station": "lantern",
+      "paused": false,
+      "player": {
+        "x": 916.5549724518635,
+        "y": 567,
+        "oldX": 916.554972451863,
+        "oldY": 567,
+        "vx": 5.4569682106375694e-11,
+        "vy": 0,
+        "facing": 1,
+        "ground": "rest",
+        "attached": null,
+        "ropeLength": 123.00000000000003,
+        "tension": 0,
+        "walkDistance": 187.36030512668924,
+        "releaseAge": 4.750000000000026,
+        "landAge": 4.416666666666676
+      },
+      "hand": {
+        "x": 928.5549724518635,
+        "y": 560
+      },
+      "anchors": [
+        {
+          "id": "beam",
+          "label": "横梁挂环",
+          "type": "fixed",
+          "x": 596,
+          "y": 325,
+          "support": "paifang-01",
+          "restX": 596,
+          "restY": 325,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 596,
+          "oldY": 325
+        },
+        {
+          "id": "lantern",
+          "label": "灯绳绑结",
+          "type": "elastic",
+          "cableId": "high-cable-01",
+          "t": 0.48,
+          "x": 825.3994254741873,
+          "y": 362.80005213991114,
+          "restX": 825.4,
+          "restY": 362.8,
+          "vx": 0.0036974400654798956,
+          "vy": 0.007686649705647142,
+          "oldX": 825.3993946621868,
+          "oldY": 362.79998808449693
+        }
+      ],
+      "elastic": {
+        "mass": 2.4,
+        "stiffness": 42,
+        "damping": 9.5,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ],
+        "locked": false,
+        "dx": -0.0005745258126808039,
+        "dy": 5.2139911133508576e-05,
+        "offset": 0.0005768868864600307
+      },
+      "metrics": {
+        "maxOffset": 30.455395939608923,
+        "maxConstraintError": 8.526512829121202e-14,
+        "maxSpeed": 254.4481103975949,
+        "rescues": 0,
+        "attaches": 1,
+        "releases": 1,
+        "landings": 1,
+        "droppedSeconds": 0.18339999999999998
+      },
+      "trial": {
+        "id": "lantern",
+        "start": 0,
+        "released": true,
+        "duration": 6.5
+      },
+      "message": {
+        "type": "land",
+        "time": 1.5833333333333302,
+        "platform": "rest"
+      }
+    },
+    {
+      "time": 7.958333333333519,
+      "tick": 955,
+      "station": "beam",
+      "paused": false,
+      "player": {
+        "x": 656.5163801741223,
+        "y": 486.00238423893325,
+        "oldX": 654.9697779551902,
+        "oldY": 486.5752619924089,
+        "vx": 185.59226627185126,
+        "vy": -68.74533041707991,
+        "facing": 1,
+        "ground": null,
+        "attached": "beam",
+        "ropeLength": 142.00000000000003,
+        "tension": 1082.9114008279296,
+        "walkDistance": 171.3218223790052,
+        "releaseAge": 9.999999999999943,
+        "landAge": 9.999999999999943
+      },
+      "hand": {
+        "x": 645.9611975856126,
+        "y": 457.92057303446813
+      },
+      "anchors": [
+        {
+          "id": "beam",
+          "label": "横梁挂环",
+          "type": "fixed",
+          "x": 596,
+          "y": 325,
+          "support": "paifang-01",
+          "restX": 596,
+          "restY": 325,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 596,
+          "oldY": 325
+        },
+        {
+          "id": "lantern",
+          "label": "灯绳绑结",
+          "type": "elastic",
+          "cableId": "high-cable-01",
+          "t": 0.48,
+          "x": 825.4,
+          "y": 362.8,
+          "restX": 825.4,
+          "restY": 362.8,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 825.4,
+          "oldY": 362.8
+        }
+      ],
+      "elastic": {
+        "mass": 2.4,
+        "stiffness": 42,
+        "damping": 9.5,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ],
+        "locked": false,
+        "dx": 0,
+        "dy": 0,
+        "offset": 0
+      },
+      "metrics": {
+        "maxOffset": 30.455395939608923,
+        "maxConstraintError": 8.526512829121202e-14,
+        "maxSpeed": 254.4481103975949,
+        "rescues": 0,
+        "attaches": 2,
+        "releases": 1,
+        "landings": 1,
+        "droppedSeconds": 0.18339999999999998
+      },
+      "trial": {
+        "id": "beam",
+        "start": 6.958333333333469,
+        "released": false,
+        "duration": 6.5
+      },
+      "message": {
+        "type": "trial",
+        "time": 6.958333333333469,
+        "id": "beam"
+      }
+    },
+    {
+      "time": 9.958333333333409,
+      "tick": 1195,
+      "station": "beam",
+      "paused": false,
+      "player": {
+        "x": 736.622325346038,
+        "y": 567,
+        "oldX": 736.6223252681859,
+        "oldY": 567,
+        "vx": 9.34224772208836e-06,
+        "vy": 0,
+        "facing": 1,
+        "ground": "rest",
+        "attached": null,
+        "ropeLength": 142.00000000000003,
+        "tension": 0,
+        "walkDistance": 251.42776755092086,
+        "releaseAge": 1.7583333333333295,
+        "landAge": 1.224999999999998
+      },
+      "hand": {
+        "x": 748.622325346038,
+        "y": 560
+      },
+      "anchors": [
+        {
+          "id": "beam",
+          "label": "横梁挂环",
+          "type": "fixed",
+          "x": 596,
+          "y": 325,
+          "support": "paifang-01",
+          "restX": 596,
+          "restY": 325,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 596,
+          "oldY": 325
+        },
+        {
+          "id": "lantern",
+          "label": "灯绳绑结",
+          "type": "elastic",
+          "cableId": "high-cable-01",
+          "t": 0.48,
+          "x": 825.4,
+          "y": 362.8,
+          "restX": 825.4,
+          "restY": 362.8,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 825.4,
+          "oldY": 362.8
+        }
+      ],
+      "elastic": {
+        "mass": 2.4,
+        "stiffness": 42,
+        "damping": 9.5,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ],
+        "locked": false,
+        "dx": 0,
+        "dy": 0,
+        "offset": 0
+      },
+      "metrics": {
+        "maxOffset": 30.455395939608923,
+        "maxConstraintError": 8.526512829121202e-14,
+        "maxSpeed": 411.83486528643664,
+        "rescues": 0,
+        "attaches": 2,
+        "releases": 2,
+        "landings": 2,
+        "droppedSeconds": 0.18339999999999998
+      },
+      "trial": {
+        "id": "beam",
+        "start": 6.958333333333469,
+        "released": true,
+        "duration": 6.5
+      },
+      "message": {
+        "type": "land",
+        "time": 8.733333333333478,
+        "platform": "rest"
+      }
+    },
+    {
+      "time": 11.958333333333295,
+      "tick": 1435,
+      "station": "beam",
+      "paused": false,
+      "player": {
+        "x": 736.6223260265047,
+        "y": 567,
+        "oldX": 736.6223260265042,
+        "oldY": 567,
+        "vx": 5.4569682106375694e-11,
+        "vy": 0,
+        "facing": 1,
+        "ground": "rest",
+        "attached": null,
+        "ropeLength": 142.00000000000003,
+        "tension": 0,
+        "walkDistance": 251.42776823138752,
+        "releaseAge": 3.7583333333333226,
+        "landAge": 3.224999999999991
+      },
+      "hand": {
+        "x": 748.6223260265047,
+        "y": 560
+      },
+      "anchors": [
+        {
+          "id": "beam",
+          "label": "横梁挂环",
+          "type": "fixed",
+          "x": 596,
+          "y": 325,
+          "support": "paifang-01",
+          "restX": 596,
+          "restY": 325,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 596,
+          "oldY": 325
+        },
+        {
+          "id": "lantern",
+          "label": "灯绳绑结",
+          "type": "elastic",
+          "cableId": "high-cable-01",
+          "t": 0.48,
+          "x": 825.4,
+          "y": 362.8,
+          "restX": 825.4,
+          "restY": 362.8,
+          "vx": 0,
+          "vy": 0,
+          "oldX": 825.4,
+          "oldY": 362.8
+        }
+      ],
+      "elastic": {
+        "mass": 2.4,
+        "stiffness": 42,
+        "damping": 9.5,
+        "maxOffset": 54,
+        "horizontalLimitRatio": 0.72,
+        "cableId": "high-cable-01",
+        "attachT": 0.48,
+        "supports": [
+          "left-teahouse",
+          "right-teahouse"
+        ],
+        "locked": false,
+        "dx": 0,
+        "dy": 0,
+        "offset": 0
+      },
+      "metrics": {
+        "maxOffset": 30.455395939608923,
+        "maxConstraintError": 8.526512829121202e-14,
+        "maxSpeed": 411.83486528643664,
+        "rescues": 0,
+        "attaches": 2,
+        "releases": 2,
+        "landings": 2,
+        "droppedSeconds": 0.18339999999999998
+      },
+      "trial": {
+        "id": "beam",
+        "start": 6.958333333333469,
+        "released": true,
+        "duration": 6.5
+      },
+      "message": {
+        "type": "land",
+        "time": 8.733333333333478,
+        "platform": "rest"
+      }
+    }
+  ]
+}

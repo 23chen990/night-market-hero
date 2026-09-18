@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "direct-builder-repair-evidence",
+  "route": "direct-builder",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "why": "根因已定位为应用壳旧 CSS 背景和横版相机纵向覆盖契约，修改限定在表现层，未触碰核心玩法、持久化或平台适配。",
+  "contextIntentionallyOmitted": ["game-core gameplay and collision rules", "factory and other runs", "monetization and persistence"],
+  "filesChanged": [
+    "src/style.css",
+    "src/camera-layout.ts",
+    "src/main.ts",
+    "tests/camera-layout.test.ts",
+    "tests/ui-coordinate-scene.test.ts"
+  ],
+  "implementation": [
+    "应用壳改为 100vw×100vh 且透明，不再露出旧蓝黑 CSS 底色。",
+    "横版相机按逻辑高度缩放，避免视口上下出现 CSS letterbox。",
+    "side-view 相机 scrollY 固定在 worldTop，跳跃/滞空不会把图片场景移出视口。",
+    "保留 NightCityRenderer 的不透明 PNG 全景流作为唯一场景背景。"
+  ],
+  "tests": [
+    "npx tsx --test tests/camera-layout.test.ts tests/ui-coordinate-scene.test.ts tests/night-city-renderer.test.ts tests/runtime-assets-wiring.test.ts",
+    "pnpm typecheck",
+    "pnpm lint",
+    "pnpm build"
+  ],
+  "runtimeEvidence": [
+    {"path": "qa-evidence/user-feedback-background-leak-20260916/fixed/landscape-startup.png", "sha256": "cbeff41fc7b19457ab840099743ed122240d19fc62047ac3b838527b9c456261", "viewport": "844x390", "branch": "startup"},
+    {"path": "qa-evidence/user-feedback-background-leak-20260916/fixed/landscape-jump.png", "sha256": "0a2f667146634f1e4af6669ab4a03e19503e2a9dab1a95e8bf3cfbe267b8e5ef", "viewport": "844x390", "branch": "natural-hold-release-jump"},
+    {"path": "qa-evidence/user-feedback-background-leak-20260916/fixed/desktop-startup.png", "sha256": "77d24f4141288a7839217f5fbc1645b911ce4327a7db74bced9d4ec2f1be6639", "viewport": "1180x720", "branch": "startup"},
+    {"path": "qa-evidence/natural-gate-fix/desktop-night-patrol-gate.png", "sha256": "db3af5f1326ec151e0f783e3c36e5b645b1968518a1696c0d12450a4fc8ae734", "viewport": "1180x720", "branch": "terminal-to-endless"},
+    {"path": "qa-evidence/natural-gate-fix/desktop-replay.png", "sha256": "0c4cc35c0201a24a5a8efcba4c91ca5b1a504b18a4b0669cae17bc8a1f048601", "viewport": "1180x720", "branch": "replay"},
+    {"path": "qa-evidence/natural-gate-fix/portrait-390x844.png", "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d", "viewport": "390x844", "branch": "orientation-block"}
+  ],
+  "runtimeAssertions": {
+    "errors": 0,
+    "phoneAppRect": "844x390 at (0,0)",
+    "desktopAppRect": "1180x720 at (0,0)",
+    "appBackground": "rgba(0, 0, 0, 0)",
+    "bodyBackground": "rgba(0, 0, 0, 0)",
+    "canvasBackground": "rgba(0, 0, 0, 0)",
+    "renderer": "image-stream",
+    "phoneChunks": 4,
+    "desktopChunks": 3
+  },
+  "naturalJourney": {"passed": true, "startup": "lantern-entry", "terminalSettlementCoins": 8, "endlessSegment": 2, "replayStatus": "playing", "portraitFrozen": true},
+  "remainingEvidenceGaps": [],
+  "status": "PATCHED_WITH_NATURAL_RUNTIME_RETEST"
+}

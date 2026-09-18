@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "stage": "TRIAGE",
+  "targetGame": "夜市飞侠",
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "sourceArtifact": "runs/mobile-chart-adaptation-20260830/artifacts/triage-ui-gameplay-mismatch-20260903.json",
+  "matrix": [
+    { "objectType": "scene/backdrop", "lifecycle": "startup|normal|replay", "rendererPath": "Phaser FlightScene + DOM shell", "viewport": "1180x720|844x390", "branchRepresented": true, "status": "confirmed-mismatch" },
+    { "objectType": "HUD/status", "lifecycle": "startup|normal", "rendererPath": "corner-hud|run-readout|journey-meter", "viewport": "1180x720|844x390", "branchRepresented": true, "status": "confirmed-mismatch" },
+    { "objectType": "tutorial", "lifecycle": "safe-tutorial", "rendererPath": "tutorial-rail|route-hint|Phaser world", "viewport": "844x390", "branchRepresented": true, "status": "natural-retest-required" },
+    { "objectType": "grapple/anchor", "lifecycle": "eligible|attached|released", "rendererPath": "Phaser Graphics", "viewport": "844x390", "branchRepresented": true, "status": "parity-check" },
+    { "objectType": "pursuer/net", "lifecycle": "warning|raise|aim|release|travel|land|active", "rendererPath": "Phaser silhouette + obstacle renderer", "viewport": "844x390", "branchRepresented": true, "status": "natural-observability-risk" },
+    { "objectType": "item slot", "lifecycle": "empty|available|consumed", "rendererPath": "DOM ring/talisman/ad-play layers", "viewport": "844x390", "branchRepresented": true, "status": "composition-risk" },
+    { "objectType": "terminal", "lifecycle": "won|failed|replay", "rendererPath": "result scrim/card", "viewport": "1180x720|844x390", "branchRepresented": true, "status": "parity-check" }
+  ],
+  "acceptance": [
+    "approved full-bleed fixed side-view composition dominates default gameplay",
+    "default path has sparse status only and no route rail/tutorial card/metric dashboard",
+    "tutorial stages grapple, release, coin, canopy rescue through world affordances",
+    "single left-edge red pursuit signal is the only chase warning",
+    "ring, talisman, and ad-play item layers remain independent and visible",
+    "player-visible economy vocabulary is 金币"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "axes": {
+    "objectTypes": ["opaque district panorama", "chunk boundary", "generated transition band", "foreground eaves and reflections"],
+    "lifecycleStateBranches": ["startup", "playing-grounded", "playing-jump-airborne", "district-change", "terminal-settlement"],
+    "rendererPaths": ["NightCityRenderer panorama image-stream", "district-transition-mist image overlay", "foreground alpha image stream", "CSS/app shell fallback"],
+    "viewports": [
+      {"label": "landscape-phone", "width": 844, "height": 390},
+      {"label": "desktop-landscape", "width": 1180, "height": 720}
+    ]
+  },
+  "cells": [
+    {"id": "same-district-grounded-phone", "objectType": "chunk boundary", "lifecycleStateBranch": "playing-grounded", "rendererPath": "NightCityRenderer panorama image-stream", "viewport": {"label": "landscape-phone", "width": 844, "height": 390}, "status": "REPRODUCED", "expected": "The two market/rooftop/waterfront variants read as one continuous street with no hard vertical cut.", "observed": "The opaque next panorama replaces the previous panorama at a recognizable vertical boundary; the low-alpha mist does not hide the mismatch.", "evidence": [{"path": "reference-evidence/verified/codex-clipboard-48e2752d-7214-4c5e-b05d-d1a1cd02689c-85f07e3133ac.png", "sha256": "85f07e3133accb5807106d152ab7b16687d42838c91ed785c5e4eba48650d0d6", "kind": "user-report", "provenance": "verified-reference"}]},
+    {"id": "district-change-jump-phone", "objectType": "generated transition band", "lifecycleStateBranch": "district-change", "rendererPath": "district-transition-mist image overlay", "viewport": {"label": "landscape-phone", "width": 844, "height": 390}, "status": "REPRODUCED", "expected": "District changes are signaled by a designed visual transition that shares horizon, palette and foreground depth.", "observed": "The same mist asset is used as a faint generic veil; it does not carry a district-specific bridge structure.", "evidence": [{"path": "src/night-city-renderer.ts", "sha256": "ba239dfb7b0389bd8a63aa68c872dbc4614f61b46af033ea4d439e8a06037ab9", "kind": "factory-source", "provenance": "repository-source"}]},
+    {"id": "same-district-desktop", "objectType": "foreground eaves and reflections", "lifecycleStateBranch": "playing-grounded", "rendererPath": "foreground alpha image stream", "viewport": {"label": "desktop-landscape", "width": 1180, "height": 720}, "status": "BLOCKED", "expected": "Foreground silhouettes and water reflections hide the seam consistently at desktop scale.", "observed": "No new runtime capture has yet measured the seam after a generated transition band is implemented.", "evidence": []},
+    {"id": "airborne-phone", "objectType": "opaque district panorama", "lifecycleStateBranch": "playing-jump-airborne", "rendererPath": "NightCityRenderer panorama image-stream", "viewport": {"label": "landscape-phone", "width": 844, "height": 390}, "status": "PASS", "expected": "The fixed side-view vertical origin preserves the authored background coverage while airborne.", "observed": "The previously reported old CSS shell leak is fixed; this matrix cell is retained to ensure the new seam repair does not regress it.", "evidence": [{"path": "qa-evidence/user-feedback-background-leak-20260916/fixed/landscape-jump.png", "sha256": "0a2f667146634f1e4af6669ab4a03e19503e2a9dab1a95e8bf3cfbe267b8e5ef", "kind": "runtime-capture", "provenance": "verified-run-artifact"}]},
+    {"id": "terminal-shell-phone", "objectType": "chunk boundary", "lifecycleStateBranch": "terminal-settlement", "rendererPath": "CSS/app shell fallback", "viewport": {"label": "landscape-phone", "width": 844, "height": 390}, "status": "NOT_APPLICABLE", "expected": "Settlement overlay may dim the authored scene but must not reintroduce the panorama seam as a shell color.", "observed": "The seam repair is a gameplay-scene concern; settlement dimming is intentionally out of scope for this plan.", "evidence": []}
+  ],
+  "confirmedFindings": [
+    "The reported visual defect is represented by the default NightCityRenderer path, not by a sibling or debug-only scene.",
+    "The current renderer treats full-frame opaque panoramas as independent tiles and adds only a low-alpha generic mist at each join.",
+    "A successful repair needs a deterministic, authored transition asset or generated raster band that owns the join instead of merely covering it."
+  ],
+  "remainingGaps": ["The exact transition asset recipe and its runtime memory budget still need implementation and natural-input verification."],
+  "createdAt": "2026-09-16T10:05:00Z"
+}

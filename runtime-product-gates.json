@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "defaultEntrypoint": "src/main.ts",
+  "defaultMode": "lantern-entry",
+  "runtimeWiredEntrypoints": ["src/main.ts", "src/game-core.ts", "src/progression.ts", "src/monetization.ts"],
+  "journey": ["startup", "tutorial", "tutorial-settlement", "night-patrol", "segment-crossing", "checkpoint-gate", "death-settlement", "replay"],
+  "legacyBehavior": { "status": "compatibility-only", "evidence": "level-progression.test.ts is superseded; default continuation enters night-patrol" },
+  "browserEvidence": ["qa-evidence/qa-round2-desktop.png"],
+  "productSystems": { "characters": true, "missions": true, "vehicles": true, "records": true, "economy": true }
+}

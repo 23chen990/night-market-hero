@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "report": "跳跃时仍能看到旧底色/背景，用户质疑 CSS 旧背景是否仍存在。",
+  "classification": ["reference-fidelity", "visual-hierarchy"],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "问题已在默认 FlightScene 的表现层复现；根因定位为固定比例应用壳与透明 Canvas 的旧底色，以及镜头/全景覆盖契约不明确。生产修复限定在相机布局与应用壳样式。",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": ["game-core gameplay and collision rules", "factory and other runs", "monetization and persistence"]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "启动 prototype-a 的试玩版并使用横屏 844x390 视口。",
+      "通过默认按住/松开飞索输入让角色进入跳跃/滞空状态。",
+      "观察游戏壳边缘和跳跃画面中 Canvas 透明区域。"
+    ],
+    "observed": [
+      "运行时仍能计算出 #app 的旧蓝黑背景色 rgb(8, 24, 35)，透明 Canvas 的未覆盖区域会露出该底色。",
+      "当前截图在视口两侧保留旧底色色带，说明默认运行路径仍依赖 CSS 壳背景。"
+    ],
+    "evidence": [
+      {"path": "qa-evidence/user-feedback-background-leak-20260916/startup.png", "sha256": "ee6266e396df062b3f1a5e3b58424025e05ba9f3e774886c76692d3a29a40752", "kind": "runtime-capture", "provenance": "verified-run-artifact"},
+      {"path": "qa-evidence/user-feedback-background-leak-20260916/high-jump.png", "sha256": "ad5985c2c31f274d0c6a026c1f24b6488d43c030c2899f9f72552f77b90bcfea", "kind": "runtime-capture", "provenance": "verified-run-artifact"},
+      {"path": "src/style.css", "sha256": "a60f05d01ef62ac2eb5508b825ce810c34964ffcd4b4bc17d2e9381e9e25100a", "kind": "factory-source", "provenance": "repository-source"},
+      {"path": "src/camera-layout.ts", "sha256": "684f3de826d12b4f83e47518fdc00e49b29435b0653cdc29417f0c3ae778c1dd", "kind": "factory-source", "provenance": "repository-source"}
+    ]
+  },
+  "acceptanceCriteria": [
+    "默认横屏应用壳不再绘制或暴露旧 CSS 蓝黑底色。",
+    "透明 Canvas 的夜市图片在 844x390 和 1180x720 视口覆盖完整游戏区域。",
+    "角色跳跃时相机保持横版固定纵向原点，不因垂直跟随露出图片外的底色。",
+    "默认自然按住/松开输入、终局和回放流程保持可用。"
+  ],
+  "status": "CLOSED",
+  "createdAt": "2026-09-16T09:40:41Z"
+}

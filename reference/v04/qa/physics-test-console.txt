@@ -1,0 +1,373 @@
+{
+  "testEnvironment": "Node v22.16.0",
+  "date": "2026-09-18T10:51:50.576Z",
+  "scope": "Finite v04 numerical simulation only; no Phaser, no target-device measurements",
+  "checks": [
+    {
+      "name": "Both canonical comparison trials land safely",
+      "pass": true,
+      "detail": {
+        "beam": [
+          {
+            "type": "reset",
+            "time": 0,
+            "id": "lantern"
+          },
+          {
+            "type": "attach",
+            "time": 0,
+            "id": "beam"
+          },
+          {
+            "type": "trial-ready",
+            "time": 0,
+            "id": "beam"
+          },
+          {
+            "type": "trial",
+            "time": 0,
+            "id": "beam"
+          },
+          {
+            "type": "release",
+            "time": 1.2583333333333313,
+            "id": "beam"
+          },
+          {
+            "type": "land",
+            "time": 1.7833333333333294,
+            "platform": "rest"
+          },
+          {
+            "type": "trial-end",
+            "time": 6.500000000000113
+          }
+        ],
+        "lantern": [
+          {
+            "type": "reset",
+            "time": 0,
+            "id": "lantern"
+          },
+          {
+            "type": "attach",
+            "time": 0,
+            "id": "lantern"
+          },
+          {
+            "type": "trial-ready",
+            "time": 0,
+            "id": "lantern"
+          },
+          {
+            "type": "trial",
+            "time": 0,
+            "id": "lantern"
+          },
+          {
+            "type": "release",
+            "time": 1.2583333333333313,
+            "id": "lantern"
+          },
+          {
+            "type": "land",
+            "time": 1.5833333333333302,
+            "platform": "rest"
+          },
+          {
+            "type": "trial-end",
+            "time": 6.500000000000113
+          }
+        ]
+      }
+    },
+    {
+      "name": "Elastic load moves knot; locked comparison stays fixed",
+      "pass": true,
+      "detail": {
+        "elasticPeakPx": 30.455395939608923,
+        "lockedPeakPx": 0
+      }
+    },
+    {
+      "name": "Force-controlled rebound decays after release",
+      "pass": true,
+      "detail": {
+        "peakPx": 30.455395939608923,
+        "atSevenSecondsPx": 0.00015481878916303156,
+        "samples": [
+          {
+            "t": 0.008,
+            "dx": -0.008686339836003754,
+            "dy": 0.0107470832015224,
+            "attached": "lantern"
+          },
+          {
+            "t": 0.508,
+            "dx": -8.283314851037744,
+            "dy": 13.866132982389047,
+            "attached": "lantern"
+          },
+          {
+            "t": 1.008,
+            "dx": -1.6528748434129739,
+            "dy": 30.362234364735855,
+            "attached": "lantern"
+          },
+          {
+            "t": 1.508,
+            "dx": 7.4863093358319475,
+            "dy": 13.86803616629794,
+            "attached": null
+          },
+          {
+            "t": 2.008,
+            "dx": -0.5642255414900319,
+            "dy": -5.120325428582589,
+            "attached": null
+          },
+          {
+            "t": 2.508,
+            "dx": -0.8853243169767211,
+            "dy": -0.8079416247013569,
+            "attached": null
+          },
+          {
+            "t": 3.008,
+            "dx": 0.2561777848411566,
+            "dy": 0.8492913594680545,
+            "attached": null
+          },
+          {
+            "t": 3.508,
+            "dx": 0.06601417625518025,
+            "dy": -0.06543288881829312,
+            "attached": null
+          },
+          {
+            "t": 4.008,
+            "dx": -0.04771678574923044,
+            "dy": -0.10014572672281474,
+            "attached": null
+          },
+          {
+            "t": 4.508,
+            "dx": 0.0009203941881423816,
+            "dy": 0.029193255395512097,
+            "attached": null
+          },
+          {
+            "t": 5.008,
+            "dx": 0.006189325640320931,
+            "dy": 0.007423452651664775,
+            "attached": null
+          },
+          {
+            "t": 5.508,
+            "dx": -0.00138677764402928,
+            "dy": -0.0054173815711919815,
+            "attached": null
+          },
+          {
+            "t": 6.008,
+            "dx": -0.000544031971799086,
+            "dy": 0.00011401902185070867,
+            "attached": null
+          },
+          {
+            "t": 6.508,
+            "dx": 0.00029642344020430755,
+            "dy": 0.0007007416127748911,
+            "attached": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "Releasing does not add a hidden launch impulse",
+      "pass": true,
+      "detail": {
+        "before": [
+          152.47638657504922,
+          -25.603439407586848
+        ],
+        "after": [
+          152.47638657504922,
+          -25.603439407586848
+        ]
+      }
+    },
+    {
+      "name": "Visible cable ends stay fixed and the knot equals physical anchor",
+      "pass": true,
+      "detail": {
+        "left": {
+          "x": 331,
+          "y": 286
+        },
+        "right": {
+          "x": 1361,
+          "y": 290
+        },
+        "knot": {
+          "x": 823.4536224430914,
+          "y": 393.11511477955173
+        },
+        "physicalAnchor": {
+          "x": 823.4536224430914,
+          "y": 393.11511477955173
+        }
+      }
+    },
+    {
+      "name": "Hand attachment matches rendered rope length while taut",
+      "pass": true,
+      "detail": {
+        "maxStretchPx": 1.2789769243681803e-13
+      }
+    },
+    {
+      "name": "Fixed ticks agree under 30 / 60 / 144 Hz frame delivery",
+      "pass": true,
+      "detail": {
+        "values": [
+          {
+            "hz": 30,
+            "ticks": 720,
+            "x": 916.5549724518635,
+            "y": 567,
+            "anchorY": 362.80005213991114
+          },
+          {
+            "hz": 60,
+            "ticks": 720,
+            "x": 916.5549724518635,
+            "y": 567,
+            "anchorY": 362.80005213991114
+          },
+          {
+            "hz": 144,
+            "ticks": 720,
+            "x": 916.5549724518635,
+            "y": 567,
+            "anchorY": 362.80005213991114
+          }
+        ],
+        "maxDifferencePx": 0
+      }
+    },
+    {
+      "name": "Paused simulation ignores accumulated elapsed time",
+      "pass": true,
+      "detail": {
+        "pausedForRequestedSeconds": 60,
+        "tick": 60
+      }
+    },
+    {
+      "name": "Parameter extremes remain finite and respect offset cap",
+      "pass": true,
+      "detail": [
+        {
+          "stiffness": 28,
+          "damping": 2,
+          "maxOffset": 20,
+          "maxEllipseRatio": 1.000000000000004,
+          "rescues": 2,
+          "maxConstraintError": 0.0004274186218253817
+        },
+        {
+          "stiffness": 28,
+          "damping": 2,
+          "maxOffset": 70,
+          "maxEllipseRatio": 1.000000000000001,
+          "rescues": 4,
+          "maxConstraintError": 0.00037908695691157845
+        },
+        {
+          "stiffness": 28,
+          "damping": 24,
+          "maxOffset": 20,
+          "maxEllipseRatio": 1.000000000000004,
+          "rescues": 5,
+          "maxConstraintError": 0.00016026868544827266
+        },
+        {
+          "stiffness": 28,
+          "damping": 24,
+          "maxOffset": 70,
+          "maxEllipseRatio": 0.5785810876668677,
+          "rescues": 4,
+          "maxConstraintError": 1.1368683772161603e-13
+        },
+        {
+          "stiffness": 140,
+          "damping": 2,
+          "maxOffset": 20,
+          "maxEllipseRatio": 1.000000000000004,
+          "rescues": 3,
+          "maxConstraintError": 0.0008052030685234968
+        },
+        {
+          "stiffness": 140,
+          "damping": 2,
+          "maxOffset": 70,
+          "maxEllipseRatio": 0.4744420430842426,
+          "rescues": 5,
+          "maxConstraintError": 1.1368683772161603e-13
+        },
+        {
+          "stiffness": 140,
+          "damping": 24,
+          "maxOffset": 20,
+          "maxEllipseRatio": 0.8087145672604177,
+          "rescues": 5,
+          "maxConstraintError": 1.1368683772161603e-13
+        },
+        {
+          "stiffness": 140,
+          "damping": 24,
+          "maxOffset": 70,
+          "maxEllipseRatio": 0.23106130493154792,
+          "rescues": 5,
+          "maxConstraintError": 1.1368683772161603e-13
+        }
+      ]
+    },
+    {
+      "name": "Sample manual input reaches right landing",
+      "pass": true,
+      "detail": {
+        "input": "From default lantern station, right held, jump+attach at t0, release at specified time; only these samples are checked",
+        "trials": [
+          {
+            "hold": 1.1,
+            "hit": {
+              "time": 1.358333333333331,
+              "x": 999.3292565291453,
+              "y": 522
+            }
+          },
+          {
+            "hold": 1.15,
+            "hit": {
+              "time": 1.416666666666664,
+              "x": 1000.3244422544493,
+              "y": 522
+            }
+          },
+          {
+            "hold": 1.2,
+            "hit": {
+              "time": 1.466666666666664,
+              "x": 998.2087241113933,
+              "y": 522
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "passed": 10,
+  "failed": 0
+}

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "stage": "FIX",
+  "route": "formal-fixer",
+  "revision": "user-authorized-new-ui-scene-revision-20260904",
+  "targetGame": "夜市飞侠",
+  "targetRun": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "contextOmitted": [
+    "game-core.ts and gameplay state-machine details",
+    "economy, persistence, platform adapters, and other runs",
+    "reference screenshot pixels as runtime assets",
+    "map generation or unprovided scene art"
+  ],
+  "filesChanged": [
+    "index.html",
+    "src/main.ts",
+    "src/style.css",
+    "tests/hud-slice.test.ts",
+    "tests/parallax-viewport.test.ts",
+    "tests/ui-coordinate-scene.test.ts",
+    "artifacts/formal-fixer-ui-coordinate-scene-20260904.json"
+  ],
+  "changes": [
+    "Removed generated night-market backdrop, parallax environment assets, and procedural interior backdrop drawing from the default playable path.",
+    "Added a neutral scene-layer container; gameplay canvas remains transparent over it.",
+    "Added a 1672x941 reference-stage transform with resize observation and safe offsets.",
+    "Placed persistent inventory ring and independent icon/play layers from existing supplied assets using stage coordinates.",
+    "Removed viewport-fixed percentage and clamp sizing from the inventory layout."
+  ],
+  "tests": {
+    "red": "ui-coordinate-scene.test.ts initially failed before implementation",
+    "targeted": "npm test -- tests/ui-coordinate-scene.test.ts tests/parallax-viewport.test.ts tests/hud-slice.test.ts",
+    "full": "npm test (172 passed, 10 skipped, 0 failed)",
+    "typecheck": "npm run typecheck",
+    "lint": "npm run lint",
+    "build": "npm run build"
+  },
+  "runtimeEvidence": {
+    "viewports": [
+      {
+        "width": 1672,
+        "height": 941,
+        "referenceStage": "1672x941",
+        "scale": 1,
+        "inventoryTopRect": {"x": 1543, "y": 290.25, "width": 103, "height": 103},
+        "sceneBackground": "rgb(11, 19, 26)",
+        "screenshot": "qa-evidence/ui-coordinate-scene-1672x941.png"
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "referenceStage": "1672x941",
+        "scale": 0.414453,
+        "inventoryTopRect": {"x": 714.828125, "y": 120.1875, "width": 42.6875, "height": 42.6875},
+        "sceneBackground": "rgb(11, 19, 26)",
+        "screenshot": "qa-evidence/ui-coordinate-scene-844x390.png"
+      }
+    ],
+    "consoleErrors": 0,
+    "pageErrors": 0
+  },
+  "remainingGaps": [
+    "No user-supplied map background exists; the runtime intentionally remains neutral.",
+    "The final browser natural journey and platform packages still require independent QA; web-lite evidence is not a publishability claim.",
+    "The empty firecracker slot has no supplied icon asset in this workspace and therefore renders its ring only."
+  ]
+}

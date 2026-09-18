@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "stage": "FIX",
+  "route": "formal-fixer",
+  "revision": "user-authorized-hub-integration-revision-20260904",
+  "targetGame": "夜市飞侠",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "contextOmitted": [
+    "game-core.ts and gameplay/economy/save logic",
+    "factory code and other runs",
+    "map-background and screenshot-generation work"
+  ],
+  "changes": [
+    "Copied approved Hub PNGs into src/assets/approved-runtime/hub with meaningful alpha verified.",
+    "Wired Hub top navigation and persistent inventory image layers to the 1672x941 reference stage coordinates.",
+    "Kept neutral scene layer and existing approved identity/environment runtime assets; no full-map or screenshot backdrop loaded.",
+    "Preserved dynamic gameplay text/state contracts behind image layers."
+  ],
+  "filesChanged": [
+    "index.html",
+    "src/main.ts",
+    "src/style.css",
+    "src/assets/approved-runtime/hub/money-shell-aligned.png",
+    "src/assets/approved-runtime/hub/money-value-aligned.png",
+    "src/assets/approved-runtime/hub/gate-strip-aligned.png",
+    "src/assets/approved-runtime/hub/back-key.png",
+    "src/assets/approved-runtime/hub/inventory-ring.png",
+    "src/assets/approved-runtime/hub/inventory-talisman.png",
+    "src/assets/approved-runtime/hub/inventory-scroll.png",
+    "src/assets/approved-runtime/hub/inventory-play.png",
+    "tests/hub-asset-integration.test.ts",
+    "tests/hud-slice.test.ts",
+    "tests/level1-ui-integration.test.ts",
+    "tests/ui-gameplay-mismatch-fix.test.ts",
+    "tests/ui-coordinate-scene.test.ts",
+    "tests/visual-standard.test.ts",
+    "artifacts/formal-fixer-hub-integration-20260904.json"
+  ],
+  "tests": {
+    "npmTest": { "status": "PASS", "tests": 189, "passed": 179, "skipped": 10, "failed": 0 },
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS"
+  },
+  "runtimeEvidence": {
+    "screenshots": [
+      "qa-evidence/hub-integration-20260904/hub-1672x941.png",
+      "qa-evidence/hub-integration-20260904/hub-844x390.png"
+    ],
+    "viewports": ["1672x941", "844x390"],
+    "hubLayersVisible": true,
+    "referenceCoordinatesVerified": true,
+    "consoleErrors": 0,
+    "pageErrors": 0
+  },
+  "remainingGaps": [
+    "No dedicated Hub settings PNG was present in the approved asset set; settings uses the existing pause icon as a controlled fallback.",
+    "Mobile 844x390 necessarily scales the 1672x941 reference stage down with safe-area letterboxing.",
+    "Neutral scene intentionally has no authored night-market map background until user supplies one.",
+    "Web-lite runtime evidence is not proof of WeChat, Douyin, or TapTap package publishability."
+  ]
+}

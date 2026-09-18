@@ -1,0 +1,38 @@
+# ===== 依赖 =====
+node_modules/
+
+# ===== 构建产物 / 缓存 =====
+dist/
+.vite/
+build/
+out/
+.cache/
+
+# ===== Android / Gradle 构建缓存与产物 =====
+.gradle/
+*.apk
+*.aar
+*.apk.gz
+local.properties
+platforms/**/app/build/
+platforms/**/.gradle/
+
+# ===== TapTap 小程序构建产物（可由 tools 重新生成） =====
+platforms/**/taptap-miniapp-build/
+
+# ===== 单文件可玩构建产物（可由构建重新生成，约 25MB） =====
+夜市飞侠-护印突围-试玩版.html
+
+# ===== OS / 编辑器 / 临时 =====
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.log
+*.tmp
+tmp/
+temp/
+
+# ===== 压缩包（均可重新生成） =====
+*.zip

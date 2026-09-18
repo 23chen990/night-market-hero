@@ -1,0 +1,126 @@
+{
+  "version": "v04-study-1",
+  "units": "design pixels; normalized prototype mass, not SI engineering values",
+  "physics": {
+    "fixedStep": 0.008333333333333333,
+    "gravity": 870,
+    "airAcceleration": 410,
+    "groundAcceleration": 1600,
+    "maxRunSpeed": 290,
+    "maxAirSpeed": 670,
+    "jumpSpeed": 435,
+    "playerMass": 1,
+    "reach": 30,
+    "footOffset": 43,
+    "maxGrapple": 430,
+    "minRope": 72,
+    "reelSpeed": 105,
+    "iterations": 7,
+    "softWorldBounds": [
+      350,
+      1260
+    ]
+  },
+  "elastic": {
+    "mass": 2.4,
+    "stiffness": 42,
+    "damping": 9.5,
+    "maxOffset": 54,
+    "horizontalLimitRatio": 0.72,
+    "cableId": "high-cable-01",
+    "attachT": 0.48,
+    "supports": [
+      "left-teahouse",
+      "right-teahouse"
+    ]
+  },
+  "anchors": [
+    {
+      "id": "beam",
+      "label": "横梁挂环",
+      "type": "fixed",
+      "x": 596,
+      "y": 325,
+      "support": "paifang-01"
+    },
+    {
+      "id": "lantern",
+      "label": "灯绳绑结",
+      "type": "elastic",
+      "cableId": "high-cable-01",
+      "t": 0.48
+    }
+  ],
+  "platforms": [
+    {
+      "id": "start",
+      "label": "起步木台",
+      "x": 362,
+      "y": 540,
+      "w": 152,
+      "posts": [
+        381,
+        494
+      ],
+      "base": 816
+    },
+    {
+      "id": "rest",
+      "label": "缓冲木台",
+      "x": 651,
+      "y": 610,
+      "w": 375,
+      "posts": [
+        675,
+        1005
+      ],
+      "base": 826
+    },
+    {
+      "id": "finish",
+      "label": "落脚木台",
+      "x": 1003,
+      "y": 565,
+      "w": 252,
+      "posts": [
+        1020,
+        1227
+      ],
+      "base": 829
+    }
+  ],
+  "stations": {
+    "beam": {
+      "x": 459,
+      "platform": "start"
+    },
+    "lantern": {
+      "x": 716,
+      "platform": "rest"
+    }
+  },
+  "trial": {
+    "beam": {
+      "angle": -0.7,
+      "radius": 172
+    },
+    "lantern": {
+      "angle": -0.68,
+      "radius": 153
+    }
+  },
+  "exclusions": {
+    "ambientPeopleCollision": false,
+    "boatCollision": false,
+    "backgroundPixelCollision": false,
+    "runtimeStreaming": false,
+    "ropeWrapping": false
+  },
+  "changesFromV03": [
+    "high-cable-01 sag changed from 125 to 75 design pixels, endpoints unchanged; taken out of static cache",
+    "central canopy lowered from y553 to y622, h272 to203; foot remains y830",
+    "three explicitly supported gameplay platforms added; their visible deck tops are collision coordinates",
+    "player pose is new code rig inspired by project silhouette; not an approved production animation sheet"
+  ],
+  "trialReleaseSeconds": 1.25
+}

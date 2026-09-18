@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.kker.nightmarkethero'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.kker.nightmarkethero'
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName '0.1.0'
+    }
+
+    buildTypes {
+        debug {
+            // 提审用：保留 debuggable，方便你在手机上直接装包验证
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    aaptOptions {
+        // 关键：index.html 约 7MB。
+        // Android 对「已压缩」的 asset 有约 1MB 的读取限制，超过会读不出来导致白屏。
+        // 因此对 html 禁用压缩，保证 WebView 能完整加载。
+        noCompress 'html'
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    // 纯 WebView 外壳，不引入任何第三方依赖，减小体积与审核风险。
+}

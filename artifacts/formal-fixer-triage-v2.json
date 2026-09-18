@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "sourceArtifacts": [
+    "runs/mobile-chart-adaptation-20260830/artifacts/formal-release-candidate-retest-report.json",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-natural-journey-report.json",
+    "runs/mobile-chart-adaptation-20260830/workspace/prototype-a/artifacts/perceptual-qa-report.json"
+  ],
+  "classification": "core-loop-and-natural-player-experience",
+  "scope": ["single-pursuer-expression", "reachable-high-route", "mobile-readability"],
+  "acceptanceCriteria": [
+    "world pursuer and edge warning never render simultaneously",
+    "normal high-route input has an early reachable upper anchor before roof-net",
+    "mobile pursuit label and distance are at least 12px equivalent",
+    "natural journey and gate timing remain independently retested; fixture evidence cannot substitute"
+  ],
+  "status": "PATCHED_WITH_NATURAL_RETEST_PENDING"
+}

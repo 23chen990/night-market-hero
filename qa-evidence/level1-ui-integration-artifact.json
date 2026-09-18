@@ -1,0 +1,54 @@
+{
+  "artifactType": "level-1-ui-integration",
+  "schemaVersion": 1,
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "level": "灯棚初试",
+  "criticalPath": ["safe-tutorial", "first-pursuit", "route-alternation", "gate-climax"],
+  "uiPolicy": {
+    "wordlessStateExpression": true,
+    "textFallback": ["accessibility", "system-error", "platform-orientation"],
+    "appAnchored": true,
+    "pauseHitTargetPt": 44,
+    "reducedMotion": true,
+    "eventDrivenMotion": true,
+    "preloadedAssets": true
+  },
+  "reusedAssetGroups": [
+    "grapple-attached", "destination-arrow", "safe-state", "copper-token", "pause",
+    "pursuit-warning", "closing-gate", "tutorial-icon-set-v3", "grapple-structure-v1",
+    "feedback-first-level-effects", "parallax-interior-layers"
+  ],
+  "nonRegression": {
+    "gameCoreModified": false,
+    "legacyCharacterSheetUsed": false,
+    "collisionLogicInAssets": false,
+    "platformAdaptersChanged": false
+  },
+  "explicitTODO": [
+    "approved four-frame protagonist/pursuer animation set",
+    "dedicated progress track and inner-gate destination art",
+    "layered wordless pause overlay art",
+    "character cool-cyan backlight",
+    "v1 alpha and three-background evidence closure"
+  ],
+  "verification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "tests": { "passed": 109, "skipped": 10, "failed": 0 },
+    "directDoubleClick": {
+      "command": "npm run test:file",
+      "passed": true,
+      "entrypoint": "夜市飞侠-护印突围-试玩版.html",
+      "protocol": "file://",
+      "selfContained": true,
+      "distSha256": "7e79f82ac5071c67d80e2a49fc2b89c93a2733beca6485bda1acdabd9ae7435c"
+    },
+    "browserMatrix": "qa-evidence/level1-ui-matrix.json",
+    "screenshots": [
+      "qa-evidence/level1-ui-1180x720.png",
+      "qa-evidence/level1-ui-844x390.png",
+      "qa-evidence/level1-ui-390x844.png",
+      "qa-evidence/level1-ui-reduced-motion.png"
+    ]
+  }
+}

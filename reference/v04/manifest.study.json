@@ -1,0 +1,143 @@
+{
+  "project": "夜市飞侠：护印突围",
+  "version": "v04-grapple-study-1",
+  "status": "interactive-study-not-production-approved",
+  "productionReady": false,
+  "inputSourceZip": "night-market-hybrid-ambient-v03-source.zip",
+  "inputSourceSha256": "bd3ba46608fe2de59ec626f7862ac4dc08b0800c97fc3dabf7eec881dfe98dde",
+  "newWholeSceneAIImages": 0,
+  "runtimeWholeSceneImageInputs": 0,
+  "componentImageCount": 10,
+  "images": [
+    {
+      "id": "alley",
+      "file": "assets/alley.png",
+      "size": [
+        397,
+        229
+      ],
+      "bytes": 18809,
+      "sha256": "b571ad34269fd84cbb469c43fd62a2b8354da66b1c213b38cac98bbe9d96b234",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "banner",
+      "file": "assets/banner.png",
+      "size": [
+        118,
+        293
+      ],
+      "bytes": 6650,
+      "sha256": "76315c4bbd63ac9d989ff29c9fced326de91a9ca9f113f1c084d0aaead6ba341",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "canopy",
+      "file": "assets/canopy.png",
+      "size": [
+        326,
+        264
+      ],
+      "bytes": 11156,
+      "sha256": "1fa1621ae7495c13b0bb6c40f3d545979bf5ec3781301baa83d2d8774183e3ad",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "cargo-boat",
+      "file": "assets/cargo-boat.png",
+      "size": [
+        570,
+        210
+      ],
+      "bytes": 13213,
+      "sha256": "c1c5eeae1a0670dc4e57059bf6e06e275ff226f8175b8eaa0c35440e4758482a",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "cart",
+      "file": "assets/cart.png",
+      "size": [
+        264,
+        143
+      ],
+      "bytes": 11720,
+      "sha256": "f9137555874b42759808695b0c5db6505dedff17e9f5273b39f2c098331ab0f9",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "crossbeam",
+      "file": "assets/crossbeam.png",
+      "size": [
+        396,
+        169
+      ],
+      "bytes": 12198,
+      "sha256": "7e823775904061ba3ce615e4d05ec545fc6fb1b001652acb858bc61764cb858b",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "eave",
+      "file": "assets/eave.png",
+      "size": [
+        354,
+        203
+      ],
+      "bytes": 13753,
+      "sha256": "cbb0ab6a9bce5b69015122e3d8fcf0e593b9e162f42facf3561f17e1ae8e8aa3",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "lamp",
+      "file": "assets/lamp.png",
+      "size": [
+        44,
+        101
+      ],
+      "bytes": 6450,
+      "sha256": "88dac5b13a6d16e57f3c2020db01fc526f2c4d54d7469417678749e8061e0ae1",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "sampan",
+      "file": "assets/sampan.png",
+      "size": [
+        630,
+        252
+      ],
+      "bytes": 21428,
+      "sha256": "8ad5449c71c38dffb6995076226e8d52d24bebc0f298912c92a92747072b9e55",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    },
+    {
+      "id": "scaffold",
+      "file": "assets/scaffold.png",
+      "size": [
+        284,
+        363
+      ],
+      "bytes": 23137,
+      "sha256": "a185c59aa65ae22e29b93b050de2b0495675a1204d485aa0cc548a6b6fee44d2",
+      "source": "same component in user-provided night-market-hybrid-ambient-v03-source.zip"
+    }
+  ],
+  "worldDesignSize": [
+    3344,
+    941
+  ],
+  "renderer": "Canvas2D components and authored geometry, v03 ambient system, v04 live grapple solver",
+  "physics": "custom normalized 1/120s finite-study solver, not existing Phaser physics",
+  "qa": {
+    "numericalChecksPassed": 10,
+    "browserChecksPassed": 16,
+    "allKnownQaChecksPassed": true,
+    "notRun": [
+      "target phones",
+      "existing Phaser integration",
+      "complete infinite-map streaming",
+      "mini-game platform adaptation",
+      "all possible gameplay states"
+    ]
+  },
+  "htmlSha256": "8f04dcc84510e5a61e68e937d4bea51f9a382373d7149faf1e46ae60a998e21a",
+  "mainDeliverable": "index.html"
+}

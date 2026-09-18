@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "axes": {
+    "objectTypes": ["night-city panorama", "transparent Phaser canvas", "application shell"],
+    "lifecycleStateBranches": ["startup", "playing-grounded", "playing-jump-airborne", "terminal-settlement"],
+    "rendererPaths": ["NightCityRenderer image-stream", "Phaser transparent canvas", "CSS #app fallback"],
+    "viewports": [
+      {"label": "landscape-phone", "width": 844, "height": 390},
+      {"label": "desktop-landscape", "width": 1180, "height": 720}
+    ]
+  },
+  "cells": [
+    {"id": "panorama-jump-phone", "objectType": "night-city panorama", "lifecycleStateBranch": "playing-jump-airborne", "rendererPath": "NightCityRenderer image-stream", "viewport": {"label": "landscape-phone", "width": 844, "height": 390}, "status": "REPRODUCED", "expected": "Opaque panorama covers the entire game viewport.", "observed": "Image scene is inside a fixed 16:9 shell and old shell color remains visible outside it.", "evidence": [{"path": "qa-evidence/user-feedback-background-leak-20260916/high-jump.png", "sha256": "ad5985c2c31f274d0c6a026c1f24b6488d43c030c2899f9f72552f77b90bcfea", "kind": "runtime-capture", "provenance": "verified-run-artifact"}]},
+    {"id": "canvas-jump-phone", "objectType": "transparent Phaser canvas", "lifecycleStateBranch": "playing-jump-airborne", "rendererPath": "Phaser transparent canvas", "viewport": {"label": "landscape-phone", "width": 844, "height": 390}, "status": "REPRODUCED", "expected": "Transparent pixels reveal only the raster scene behind them.", "observed": "Transparent pixels reveal #app rgb(8, 24, 35) outside the fixed shell.", "evidence": [{"path": "src/style.css", "sha256": "a60f05d01ef62ac2eb5508b825ce810c34964ffcd4b4bc17d2e9381e9e25100a", "kind": "factory-source", "provenance": "repository-source"}]},
+    {"id": "shell-startup-desktop", "objectType": "application shell", "lifecycleStateBranch": "startup", "rendererPath": "CSS #app fallback", "viewport": {"label": "desktop-landscape", "width": 1180, "height": 720}, "status": "REPRODUCED", "expected": "No legacy solid background is visible around the image scene.", "observed": "#app uses a solid #081823 fallback and its aspect constraint creates exposed bands.", "evidence": [{"path": "src/style.css", "sha256": "a60f05d01ef62ac2eb5508b825ce810c34964ffcd4b4bc17d2e9381e9e25100a", "kind": "factory-source", "provenance": "repository-source"}]},
+    {"id": "terminal-settlement-phone", "objectType": "application shell", "lifecycleStateBranch": "terminal-settlement", "rendererPath": "CSS #app fallback", "viewport": {"label": "landscape-phone", "width": 844, "height": 390}, "status": "NOT_APPLICABLE", "expected": "Settlement overlay may intentionally dim the image scene.", "observed": "No gameplay background leak is asserted in this overlay branch.", "evidence": []}
+  ],
+  "confirmedFindings": [
+    "The reported branch is represented by the default FlightScene and transparent Phaser canvas.",
+    "The old solid CSS shell background is still present in the source and is observable outside the fixed aspect-ratio app shell."
+  ],
+  "remainingGaps": ["Natural browser retest after the patch is still required."],
+  "createdAt": "2026-09-16T09:40:41Z"
+}
