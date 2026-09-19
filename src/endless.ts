@@ -71,7 +71,7 @@ function mutationRoll(seed:number, segment:number):number {
 export function chooseMutation(segmentIndex:number, _metaProgress:number, seed:number):Mutation|null {
   const idx = Math.max(0, Math.floor(segmentIndex));
   if (idx < 3) return null; // 变异起始段：第3段起
-  let seq = mutationSequenceCache.get(seed) ?? [];
+  const seq = mutationSequenceCache.get(seed) ?? [];
   if (seq.length <= idx) {
     for (let s = Math.max(3, seq.length); s <= idx; s++) {
       const pool = MUTATION_POOL.slice(0, Math.min(MUTATION_POOL.length, 1 + Math.floor(Math.max(0, metersAtSegment(s)) / 600)));
