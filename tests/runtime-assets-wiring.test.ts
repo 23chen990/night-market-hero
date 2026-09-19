@@ -50,6 +50,10 @@ test('long-map component scenery is preview-only and exposes bounded telemetry',
   assert.match(main, /app\.dataset\.componentRenderer/);
   assert.match(main, /app\.dataset\.missingAssetCount/);
   assert.match(main, /longmap=1/);
+  assert.match(main, /runtimeUrls/);
+  for (const asset of ['market.stallCanopy', 'structure.paifangBeam', 'structure.innerEave', 'lighting.lanternCable', 'market.pushcart']) {
+    assert.match(main, new RegExp(asset.replace('.', '\\.'), 'u'));
+  }
 });
 
 test('live gate HUD values stay wired to current core state', () => {

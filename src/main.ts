@@ -72,6 +72,17 @@ import hubInventoryScroll from './assets/approved-runtime/hub/inventory-scroll.p
 import hubInventoryPlay from './assets/approved-runtime/hub/inventory-play.png';
 import hubAnchorButton from './assets/approved-runtime/hub/anchor-button.png';
 
+const longmapRuntimeUrls = {
+  'market.stallCanopy': stallCanopyAsset,
+  'structure.paifangBeam': paifangCrossbeamAsset,
+  'structure.bambooScaffold': bambooScaffoldAsset,
+  'structure.innerEave': innerEaveAsset,
+  'lighting.lanternCable': lanternCableAsset,
+  'market.pushcart': pushcartAsset,
+  'market.blankBanner': blankBannerAsset,
+  'market.coveredAlleyFrame': coveredAlleyFrameAsset,
+} as const;
+
 const CHARACTER_BLUE_BLACK = 0x061522;
 const VERMILION_SCARF = 0xd83b2d;
 const COPPER_WAIST_ACCENT = 0xb9793f;
@@ -667,7 +678,12 @@ class FlightScene extends Phaser.Scene {
   private readonly nightCityRenderer = createNightCityRenderer({ prefetchChunks: 1, maxRetainedChunks: 8 });
   // Preview URL: ?longmap=1. The default formal journey keeps this layer off.
   private readonly componentPreviewEnabled = isLongmapPreviewEnabled(typeof window !== 'undefined' ? window.location.search : '');
-  private readonly componentRenderer = createComponentRenderer({ enabled: this.componentPreviewEnabled, prefetchChunks: 1, maxRetainedComponents: 64 });
+  private readonly componentRenderer = createComponentRenderer({
+    enabled: this.componentPreviewEnabled,
+    prefetchChunks: 1,
+    maxRetainedComponents: 64,
+    runtimeUrls: longmapRuntimeUrls,
+  });
   private cameraLayout = createCameraLayout({ width: REFERENCE_STAGE_WIDTH, height: REFERENCE_STAGE_HEIGHT, lookAhead: 0.32 });
 
   constructor() {

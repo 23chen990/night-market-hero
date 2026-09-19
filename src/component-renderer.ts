@@ -41,6 +41,8 @@ export interface ComponentRendererOptions {
   enabled?: boolean;
   prefetchChunks?: number;
   maxRetainedComponents?: number;
+  /** Vite-resolved URLs keyed by semantic catalog asset ID. */
+  runtimeUrls?: Readonly<Record<string, string>>;
 }
 
 export interface ComponentRendererStats {
@@ -89,6 +91,7 @@ export class ComponentRenderer {
   private readonly enabled: boolean;
   private readonly prefetchChunks: number;
   private readonly maxRetainedComponents: number;
+  private readonly runtimeUrls: Readonly<Record<string, string>>;
   private readonly retained = new Map<string, RetainedComponent>();
   private readonly freeByKey = new Map<string, ComponentRenderImage[]>();
   private preloaded = false;
@@ -108,12 +111,14 @@ export class ComponentRenderer {
     this.enabled = options.enabled ?? false;
     this.prefetchChunks = Math.max(0, Math.floor(options.prefetchChunks ?? 1));
     this.maxRetainedComponents = Math.max(1, Math.floor(options.maxRetainedComponents ?? 64));
+    this.runtimeUrls = options.runtimeUrls ?? {};
   }
 
   preload(scene: ComponentSceneLike): void {
     if (!this.enabled || this.preloaded) return;
     for (const asset of availableLongmapArt()) {
-      if (asset.path && asset.runtimeKey) scene.load.image(asset.runtimeKey, asset.path);
+      const runtimeUrl = this.runtimeUrls[asset.assetId] ?? asset.path;
+      if (runtimeUrl && asset.runtimeKey) scene.load.image(asset.runtimeKey, runtimeUrl);
     }
     this.preloaded = true;
   }
