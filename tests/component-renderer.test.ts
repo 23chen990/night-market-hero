@@ -22,9 +22,10 @@ interface FakeImage {
 
 function fakeScene() {
   const loaded = new Set<string>();
+  const loadedUrls = new Map<string, string>();
   const images: FakeImage[] = [];
   const scene = {
-    load: { image(key: string) { loaded.add(key); } },
+    load: { image(key: string, url: string) { loaded.add(key); loadedUrls.set(key, url); } },
     textures: { exists(key: string) { return loaded.has(key); } },
     add: { image(_x: number, _y: number, key: string) {
       const image: FakeImage = {
@@ -42,7 +43,7 @@ function fakeScene() {
       return image;
     } },
   };
-  return { scene, images };
+  return { scene, images, loadedUrls };
 }
 
 describe('component scenery foundation', () => {
@@ -104,6 +105,46 @@ describe('component scenery foundation', () => {
     assert.ok(images.every((image) => image.key.startsWith('longmap-component-')));
   });
 
+  test('approved runtime assets use supplied Vite URLs through their catalog runtime keys', () => {
+    const { scene, images, loadedUrls } = fakeScene();
+    const runtimeUrls = {
+      'market.stallCanopy': '/assets/stall-canopy-v1-abc.png',
+      'structure.paifangBeam': '/assets/paifang-crossbeam-v1-def.png',
+      'structure.innerEave': '/assets/inner-eave-v1-ghi.png',
+      'lighting.lanternCable': '/assets/lantern-cable-v1-jkl.png',
+      'market.pushcart': '/assets/pushcart-v1-mno.png',
+    };
+    const options = { enabled: true, prefetchChunks: 0, maxRetainedComponents: 32, runtimeUrls } as Parameters<typeof createComponentRenderer>[0];
+    const renderer = createComponentRenderer(options);
+    renderer.preload(scene);
+    for (const assetId of Object.keys(runtimeUrls)) {
+      const asset = getLongmapArt(assetId)!;
+      assert.equal(asset.status, 'AVAILABLE');
+      assert.equal(loadedUrls.get(asset.runtimeKey!), runtimeUrls[assetId as keyof typeof runtimeUrls]);
+    }
+    const stats = renderer.render(scene, 73, 0, 12_800);
+    assert.ok(stats.visibleCount > 0);
+    for (const assetId of Object.keys(runtimeUrls)) {
+      assert.ok(images.some((image) => image.key === getLongmapArt(assetId)?.runtimeKey), `missing image for ${assetId}`);
+    }
+  });
+
+  test('approved catalog entries retain stable source paths and runtime keys', () => {
+    const expected = {
+      'market.stallCanopy': ['./assets/approved-runtime/environment/stall-canopy-v1.png', 'longmap-component-market-stall-canopy'],
+      'structure.paifangBeam': ['./assets/approved-runtime/environment/paifang-crossbeam-v1.png', 'longmap-component-structure-paifang-beam'],
+      'structure.innerEave': ['./assets/approved-runtime/environment/inner-eave-v1.png', 'longmap-component-structure-inner-eave'],
+      'lighting.lanternCable': ['./assets/approved-runtime/environment/lantern-cable-v1.png', 'longmap-component-lighting-lantern-cable'],
+      'market.pushcart': ['./assets/approved-runtime/environment/pushcart-v1.png', 'longmap-component-market-pushcart'],
+    } as const;
+    for (const [assetId, [path, runtimeKey]] of Object.entries(expected)) {
+      const asset = getLongmapArt(assetId);
+      assert.equal(asset?.status, 'AVAILABLE');
+      assert.equal(asset?.path, path);
+      assert.equal(asset?.runtimeKey, runtimeKey);
+    }
+  });
+
   test('pool remains bounded while scrolling away and reuses released components', () => {
     const { scene, images } = fakeScene();
     const renderer = createComponentRenderer({ enabled: true, prefetchChunks: 1, maxRetainedComponents: 12 });
@@ -143,6 +184,8 @@ describe('component scenery foundation', () => {
 
   test('component renderer has no collision or building-graphics side effect', async () => {
     const source = await readFile(new URL('../src/component-renderer.ts', import.meta.url), 'utf8');
+    const catalog = await readFile(new URL('../src/longmap-art-catalog.ts', import.meta.url), 'utf8');
     assert.doesNotMatch(source, /add\.graphics|new Phaser\.GameObjects\.Graphics|collider|physics/);
+    assert.doesNotMatch(catalog, /import\.meta\.url/);
   });
 });

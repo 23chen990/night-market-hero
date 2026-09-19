@@ -31,7 +31,10 @@ function available(
     assetId,
     status: 'AVAILABLE',
     role,
-    path: new URL(path, import.meta.url).href,
+    // Keep catalog paths as source metadata. The Phaser runtime receives the
+    // Vite-resolved URL from the entrypoint via ComponentRendererOptions.
+    // This keeps the catalog safe to embed in the self-contained build.
+    path,
     runtimeKey,
     transparent: true,
     nominalCanvas,
