@@ -1089,7 +1089,7 @@ export class GrappleGame {
     this.stylishFlights = 0;
     this.shortcutRewarded = snapshot.activeTerrain?.kind === '窄巷' && snapshot.activeTerrain.behaviorState === 'concealed';
     this.bambooLoadTicks = snapshot.activeTerrain?.kind === '竹架' && snapshot.activeTerrain.behaviorState === 'broken' ? 6 : 0;
-    const restoreGateCloseTicks = level.gateCloseTicks * this.mutationEffects().gateCloseTicksFactor; // 封灯：关门快约10%
+    const restoreGateCloseTicks = level.gateCloseTicks * this.mutationModifiers().gateCloseTicksFactor; // 封灯：关门快约10%
     this.gateClimaxStartedTick = snapshot.activeChaseEvent === 'closing-gate'
       ? snapshot.tick - Math.round(snapshot.gate.animationProgress * restoreGateCloseTicks)
       : null;
@@ -1105,6 +1105,10 @@ export class GrappleGame {
     this.pursuitIntentTicks = 0;
     this.unattachedHeldTicks = 0;
     this.grappleReconnectNotBeforeX = 0;
+    // 'night-patrol' 只由 configureEndlessState() 产出，故它是恢复运行模式的权威标记。
+    // 必须在此同步私有 endlessMode，否则 restore 后 GrappleState 处于无限夜巡、
+    // 而下一 tick 却走 campaign 分支（progress / 段位 / 距离 / 航道扩展全部错分支）。
+    this.endlessMode = this.state.levelId === 'night-patrol';
     this.endlessCourseLastCullSegment = -1;
     return true;
   }
@@ -1422,7 +1426,7 @@ export class GrappleGame {
     const baseAttachRadius = Math.min(ATTACH_RADIUS, this.endlessMode
       ? difficultyAtSegment(this.state.segmentIndex).assistAttachRadius
       : this.levelDefinition().assistAttachRadius);
-    const fx = this.mutationEffects();
+    const fx = this.mutationModifiers();
     const speed = Math.max(0.0001, Math.hypot(player.vx, player.vy));
     const branchAnchorIds = this.state.routeTraversal.phase === 'branch' && this.state.routeTraversal.committedRoute
       ? new Set(this.state.levelIndex === 0
@@ -1539,7 +1543,7 @@ export class GrappleGame {
 
   /** 变异生效后的实际关门 tick 数：封灯使关门快约 10%。其余变异/普通关卡不变。 */
   private effectiveGateCloseTicks(): number {
-    return this.levelDefinition().gateCloseTicks * this.mutationEffects().gateCloseTicksFactor;
+    return this.levelDefinition().gateCloseTicks * this.mutationModifiers().gateCloseTicksFactor;
   }
 
   private segmentForProgress(progress: number): SegmentId {
@@ -1912,7 +1916,7 @@ export class GrappleGame {
     const targetSpeed = Math.max(0, Math.min(PURSUER_MAX_SPEED,
       (targetGap / PURSUER_TARGET_RESPONSE_SECONDS
         + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow)
-        * this.mutationEffects().pursuitSpeedFactor)); // 宵禁加派：追兵净逼近 +25%
+        * this.mutationModifiers().pursuitSpeedFactor)); // 宵禁加派：追兵净逼近 +25%
     // Debris is a real temporary obstruction for the guard, not just a lower
     // desired speed. Prevent its inertia from masking the slowdown when the
     // player crosses into a later authored segment in the same tick.
@@ -2056,7 +2060,7 @@ export class GrappleGame {
 
     const vehicle = this.state.vehicleId ? VEHICLES.find((item) => item.id === this.state.vehicleId) ?? null : null;
     const vehicleActive = !!vehicle && this.state.vehicleTicksRemaining > 0;
-    const fx = this.mutationEffects();
+    const fx = this.mutationModifiers();
     let gravity = GRAVITY * fx.gravityFactor;
     if (vehicleActive && vehicle!.id === '纸鸢' && this.state.vehiclePhase !== 'holding') gravity = KITE_GLIDE_GRAVITY * fx.gravityFactor;
     player.vy += gravity * dt;
