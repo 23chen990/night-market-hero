@@ -51,6 +51,16 @@ const DISTRICT_NAMES: Record<DistrictId, string> = {
   waterfront: '临河水市',
 };
 
+// These are the legacy gameplay layout tokens, retained only as a compatibility
+// projection for endlessAnchorLayout. RunPlan sceneFamily remains authoritative
+// for visual recipes; keeping these tuned tokens avoids changing the validated
+// anchor envelope while the new topology is introduced.
+const GAMEPLAY_LAYOUT_IDS: Record<DistrictId, readonly string[]> = {
+  market: ['market-awning-lane', 'market-steam-court', 'market-lantern-row', 'market-stall-turn'],
+  rooftops: ['rooftops-blue-ridge', 'rooftops-tile-bridge', 'rooftops-drumline', 'rooftops-open-eave'],
+  waterfront: ['waterfront-stone-bridge', 'waterfront-mast-crossing', 'waterfront-lantern-reflection', 'waterfront-ferry-turn'],
+};
+
 function descriptorToDistrict(descriptor: RunPlanChunkDescriptor): DistrictDescriptor {
   return {
     id: descriptor.district,
@@ -77,7 +87,7 @@ function descriptorToChunk(descriptor: RunPlanChunkDescriptor): CityChunk {
     ...descriptor,
     index: descriptor.globalChunkIndex,
     name: DISTRICT_NAMES[descriptor.district],
-    layoutId: `${descriptor.sceneFamily}#v${descriptor.layoutVariant}`,
+    layoutId: GAMEPLAY_LAYOUT_IDS[descriptor.district][descriptor.layoutVariant]!,
   };
 }
 

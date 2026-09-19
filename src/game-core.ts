@@ -668,8 +668,9 @@ function endlessAnchorLayout(seed: number, x: number, baseSpacing: number): { y:
   if (!chunk) return { y: 365, spacing: baseSpacing };
   const layoutHash = stableTextHash(chunk.layoutId);
   const ordinal = Math.max(0, Math.floor(x / Math.max(1, baseSpacing)));
-  const pattern = ENDLESS_DISTRICT_ANCHOR_Y[chunk.district];
-  const spacingScales = ENDLESS_DISTRICT_SPACING_SCALE[chunk.district];
+  const gameplayDistrict = chunk.gameplayDistrict ?? chunk.district;
+  const pattern = ENDLESS_DISTRICT_ANCHOR_Y[gameplayDistrict];
+  const spacingScales = ENDLESS_DISTRICT_SPACING_SCALE[gameplayDistrict];
   const patternIndex = (layoutHash + chunk.variant + ordinal) % pattern.length;
   const variantLift = [-8, 6, -4, 10][chunk.variant]!;
   const segment = segmentForIndex(segmentIndexAtX(x));

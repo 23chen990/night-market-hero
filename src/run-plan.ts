@@ -38,6 +38,11 @@ export interface RunPlanChunkDescriptor {
   fromDistrict: RunPlanDistrict | null;
   toDistrict: RunPlanDistrict | null;
   sceneFamily: string;
+  /**
+   * Short-lived gameplay compatibility profile for the validated endless
+   * opening. This is not world topology and is never used by scenery.
+   */
+  gameplayDistrict: RunPlanDistrict;
   variant: 0 | 1 | 2 | 3;
   variantSeed: number;
   layoutVariant: 0 | 1 | 2 | 3;
@@ -86,6 +91,54 @@ const AUTHORED_CHAIN: readonly AuthoredSceneSlot[] = [
 
 const VARIANTS: readonly (0 | 1 | 2 | 3)[] = [0, 1, 2, 3];
 
+// Preserve the baseline's deterministic variant cadence for gameplay-facing
+// layout compatibility. The topology and identity still come from RunPlan;
+// this only keeps the validated visual/anchor variant sequence stable while
+// authored scene families are introduced.
+function legacyVariantFromHash(seed: number, salt: number): 0 | 1 | 2 | 3 {
+  return VARIANTS[mix(seed, salt) % VARIANTS.length]!;
+}
+
+function legacyVariantBlockExit(seed: number, blockIndex: number): 0 | 1 | 2 | 3 {
+  return legacyVariantFromHash(seed, 0xa54ff53a ^ Math.imul(blockIndex, 0x27d4eb2f));
+}
+
+function legacyVariantBlock(seed: number, blockIndex: number, entryVariant: 0 | 1 | 2 | 3): Array<0 | 1 | 2 | 3> {
+  const exitVariant = legacyVariantBlockExit(seed, blockIndex);
+  const result: Array<0 | 1 | 2 | 3> = [];
+  for (let slot = 0; slot < 31; slot += 1) {
+    const previous = result[slot - 1] ?? entryVariant;
+    const avoidThreeCycle = slot >= 3 ? result[slot - 3] : undefined;
+    const avoidExit = slot === 30 ? exitVariant : undefined;
+    let candidates = VARIANTS.filter((variant) => variant !== previous
+      && variant !== avoidThreeCycle && variant !== avoidExit);
+    if (candidates.length === 0) candidates = VARIANTS.filter((variant) => variant !== previous && variant !== avoidExit);
+    if (candidates.length === 0) candidates = VARIANTS.filter((variant) => variant !== previous);
+    const salt = 0x510e527f ^ Math.imul(blockIndex, 0x165667b1) ^ Math.imul(slot + 1, 0x9e3779b9);
+    result.push(candidates[mix(seed, salt) % candidates.length]!);
+  }
+  result.push(exitVariant);
+  return result;
+}
+
+function legacyVariantForChunk(seed: number, globalChunkIndex: number): 0 | 1 | 2 | 3 {
+  const blockIndex = Math.floor(globalChunkIndex / 32);
+  const slot = globalChunkIndex % 32;
+  const entryVariant = blockIndex === 0 ? legacyVariantFromHash(seed, 0x243f6a88) : legacyVariantBlockExit(seed, blockIndex - 1);
+  return legacyVariantBlock(seed, blockIndex, entryVariant)[slot]!;
+}
+
+function gameplayDistrictForChunk(seed: number, globalChunkIndex: number, authoredDistrict: RunPlanDistrict): RunPlanDistrict {
+  // The baseline opening taught two market chunks, then both non-market
+  // districts before the long-map chain's authored scenery takes over. Keep
+  // that validated anchor envelope while the new topology remains authoritative
+  // for chunk identity, renderer metadata, and scene recipes.
+  if (globalChunkIndex < 2) return 'market';
+  if (globalChunkIndex < 4) return normalizedSeed(seed) % 2 === 0 ? 'waterfront' : 'rooftops';
+  if (globalChunkIndex < 6) return normalizedSeed(seed) % 2 === 0 ? 'rooftops' : 'waterfront';
+  return authoredDistrict;
+}
+
 function normalizedSeed(seed: number): number {
   if (!Number.isFinite(seed)) return 1;
   return Math.trunc(seed) >>> 0;
@@ -132,8 +185,9 @@ function descriptorForIndex(seed: number, requestedIndex: number): RunPlanChunkD
   const authored = AUTHORED_CHAIN[slotIndex]!;
   const variantSeed = seedForChunk(seed, globalChunkIndex, 0x9e3779b9);
   const layoutSeed = seedForChunk(seed, globalChunkIndex, 0x7f4a7c15);
-  const variant = VARIANTS[variantSeed % VARIANTS.length]!;
-  const layoutVariant = VARIANTS[layoutSeed % VARIANTS.length]!;
+  const variant = legacyVariantForChunk(seed, globalChunkIndex);
+  const layoutVariant = variant;
+  const gameplayDistrict = gameplayDistrictForChunk(seed, globalChunkIndex, authored.district);
   const transition = authored.kind === 'transition'
     ? { fromDistrict: authored.fromDistrict!, toDistrict: authored.toDistrict! }
     : null;
@@ -151,6 +205,7 @@ function descriptorForIndex(seed: number, requestedIndex: number): RunPlanChunkD
     fromDistrict: transition?.fromDistrict ?? null,
     toDistrict: transition?.toDistrict ?? null,
     sceneFamily: authored.sceneFamily,
+    gameplayDistrict,
     variant,
     variantSeed,
     layoutVariant,
