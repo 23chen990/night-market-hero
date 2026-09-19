@@ -42,6 +42,16 @@ test('night-city renderer streams approved district panoramas before visibility'
   assert.doesNotMatch(main, /drawCoveredNightMarketInterior/);
 });
 
+test('long-map component scenery is preview-only and exposes bounded telemetry', () => {
+  assert.match(main, /createComponentRenderer/);
+  assert.match(main, /isLongmapPreviewEnabled/);
+  assert.match(main, /componentRenderer\.preload\(this\)/);
+  assert.match(main, /componentRenderer\.render\(this, state\.seed/);
+  assert.match(main, /app\.dataset\.componentRenderer/);
+  assert.match(main, /app\.dataset\.missingAssetCount/);
+  assert.match(main, /longmap=1/);
+});
+
 test('live gate HUD values stay wired to current core state', () => {
   assert.match(main, /data-ui="gates-total"/);
   assert.match(main, /data-ui="gate-distance"/);
