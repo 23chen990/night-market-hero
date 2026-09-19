@@ -13,7 +13,9 @@ describe('night-city image renderer', () => {
     const plan = createNightCityRenderPlan(73, 0, 9_600);
     assert.ok(plan.chunks.length > 0);
     assert.deepEqual(Object.keys(NIGHT_CITY_ASSET_PATHS).sort(), ['districtTransitionMist', 'foregroundEaves', 'gateCounterFrame', 'market', 'marketV2', 'rooftops', 'rooftopsV2', 'settingsGear', 'waterfront', 'waterfrontV2']);
-    assert.deepEqual(new Set(plan.chunks.map((chunk) => chunk.district)), new Set(['market', 'rooftops', 'waterfront']));
+    assert.deepEqual(new Set(plan.chunks.map((chunk) => chunk.district)), new Set(['market', 'rooftops']));
+    const waterfrontPlan = createNightCityRenderPlan(73, 10 * 1_600, 15 * 1_600);
+    assert.ok(waterfrontPlan.chunks.some((chunk) => chunk.district === 'waterfront'));
     assert.ok(plan.chunks.every((chunk) => chunk.assetKey.startsWith('night-city-')));
     assert.ok(plan.chunks.every((chunk) => chunk.width > 0 && chunk.height > 0));
     for (let index = 1; index < plan.chunks.length; index += 1) {
@@ -92,19 +94,19 @@ describe('night-city image renderer', () => {
     };
     const renderer = createNightCityRenderer({ prefetchChunks: 1, maxRetainedChunks: 8 });
     renderer.preload(scene);
-    const stats = renderer.render(scene, 1, 3_200, 4_800);
+    const stats = renderer.render(scene, 1, 5 * 1_600, 6 * 1_600);
     const eaves = rendered.find((item) => item.key === 'night-city-foreground-eaves');
     assert.ok(eaves, 'foreground eaves must be image-backed');
     assert.ok(eaves.height >= 941, 'the full-height eaves artwork must cover the 941px logical stage');
     assert.ok(Math.abs(eaves.width / eaves.height - 1_672 / 941) < 0.02, 'eaves must preserve the approved aspect ratio');
-    const panorama = rendered.find((item) => item.key.startsWith('night-city-market'));
+    const panorama = rendered.find((item) => item.key.startsWith('night-city-rooftops'));
     assert.equal(panorama?.scrollFactor, 1, 'opaque panorama must stay world-aligned to preserve screen coverage');
     assert.equal(panorama?.verticalScrollFactor, 0, 'jump camera movement must not uncover the panorama vertically');
     assert.equal(panorama?.alpha, 1, 'opaque panorama must fully replace the retired CSS scene background');
     const eavesScroll = rendered.find((item) => item.key === 'night-city-foreground-eaves');
     assert.ok(eavesScroll?.scrollFactor !== undefined && eavesScroll.scrollFactor > 1, 'foreground stream provides the depth/parallax motion');
     assert.equal(eavesScroll?.verticalScrollFactor, 0, 'jump camera movement must not uncover the foreground stream vertically');
-    assert.ok(stats.district === 'rooftops' || stats.district === 'waterfront', 'district telemetry must use the focused world chunk, not the prefetch edge');
+    assert.equal(stats.district, 'rooftops', 'district telemetry must use the focused world chunk, not the prefetch edge');
   });
 
   test('keeps neighboring panorama coverage overlapped and the long-run pool bounded', () => {
@@ -180,5 +182,18 @@ describe('night-city image renderer', () => {
       assert.ok(foregroundCoverage.left <= 0 && foregroundCoverage.right >= viewportWidth);
       assert.equal(panoramaPlan.chunks[0]!.height / panoramaPlan.chunks[0]!.width, 941 / 1_672);
     }
+  });
+
+  test('preserves transition metadata while using the destination panorama fallback', () => {
+    const plan = createNightCityRenderPlan(73, 4 * 1_600, 6 * 1_600);
+    const transition = plan.chunks.find((chunk) => chunk.kind === 'transition');
+
+    assert.ok(transition, 'a viewport crossing the first boundary must expose the transition chunk');
+    assert.deepEqual(transition?.transition, { fromDistrict: 'market', toDistrict: 'rooftops' });
+    assert.equal(transition?.fromDistrict, 'market');
+    assert.equal(transition?.toDistrict, 'rooftops');
+    assert.equal(transition?.district, 'rooftops');
+    assert.match(transition?.assetKey ?? '', /^night-city-rooftops-/,
+      'fallback rendering should use the transition destination panorama');
   });
 });

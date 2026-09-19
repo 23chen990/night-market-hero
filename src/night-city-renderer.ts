@@ -44,6 +44,13 @@ export interface NightCityChunkRender {
   startX: number;
   endX: number;
   district: DistrictId;
+  kind: CityChunk['kind'];
+  fromDistrict: CityChunk['fromDistrict'];
+  toDistrict: CityChunk['toDistrict'];
+  transition: CityChunk['transition'];
+  chunkId: string;
+  chainIndex: number;
+  sceneFamily: string;
   name: string;
   variant: CityChunk['variant'];
   layoutId: string;
@@ -147,6 +154,13 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
       startX: chunk.startX,
       endX: chunk.endX,
       district: chunk.district,
+      kind: chunk.kind,
+      fromDistrict: chunk.fromDistrict,
+      toDistrict: chunk.toDistrict,
+      transition: chunk.transition,
+      chunkId: chunk.chunkId,
+      chainIndex: chunk.chainIndex,
+      sceneFamily: chunk.sceneFamily,
       name: chunk.name,
       variant: chunk.variant,
       layoutId: chunk.layoutId,
