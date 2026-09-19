@@ -4,6 +4,7 @@ import {
   RUN_PLAN_CHAIN_LENGTH,
   RUN_PLAN_CHUNK_WIDTH,
   RUN_PLAN_MAX_VIEW_CHUNKS,
+  MAX_RUN_PLAN_CHUNK_INDEX,
   chunkIndexAtWorldX,
   runPlanChunkAtIndex,
   runPlanChunkAtWorldX,
@@ -80,6 +81,17 @@ describe('authoritative long-map run plan', () => {
     assert.ok(Number.isFinite(chunk.startX));
     assert.ok(Number.isFinite(chunk.endX));
     assert.ok(Number.isFinite(chunk.layoutSeed));
+  });
+
+  test('keeps the maximum chunk width exact at the finite address limit', () => {
+    const chunk = runPlanChunkAtIndex(SEED, MAX_RUN_PLAN_CHUNK_INDEX);
+    assert.equal(chunk.endX - chunk.startX, RUN_PLAN_CHUNK_WIDTH);
+    assert.ok(Number.isSafeInteger(chunk.startX));
+    assert.ok(Number.isSafeInteger(chunk.endX));
+  });
+
+  test('keeps gameplay compatibility projection out of the topology descriptor', () => {
+    assert.equal('gameplayDistrict' in runPlanChunkAtIndex(SEED, 2), false);
   });
 
   test('does not turn the next chain into the same chunk instance', () => {

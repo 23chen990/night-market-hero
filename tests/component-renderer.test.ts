@@ -71,6 +71,28 @@ describe('component scenery foundation', () => {
     }
   });
 
+  test('rooftops recipes use atomic horizontal components instead of full-building art', () => {
+    const rooftopFamilies = [
+      'rooftops-01/low-tile-ridges',
+      'rooftops-02/stepped-eaves',
+      'rooftops-03/cross-street-roof-bridge',
+      'rooftops-04/open-high-ridge',
+    ];
+    const rooftopAssets = new Set(rooftopFamilies.flatMap((family) =>
+      getLongmapSceneRecipe(family)!.placements.map((placement) => placement.assetId)));
+    for (const assetId of [
+      'rooftops.lowBuildingMass',
+      'rooftops.highBuildingMass',
+      'rooftops.foregroundEaveOccluder',
+      'rooftops.highLanternSupportFrame',
+      'rooftops.crossStreetNegativeSpace',
+      'rooftops.darkCanopy',
+    ]) assert.ok(rooftopAssets.has(assetId), `missing atomic rooftop component ${assetId}`);
+    for (const assetId of ['rooftops.tileRoof', 'rooftops.attic', 'rooftops.silhouette']) {
+      assert.equal(rooftopAssets.has(assetId), false, `legacy full-building asset remains: ${assetId}`);
+    }
+  });
+
   test('missing assets are counted and skipped without procedural scenery fallback', () => {
     const { scene, images } = fakeScene();
     const renderer = createComponentRenderer({ enabled: true, prefetchChunks: 0, maxRetainedComponents: 16 });

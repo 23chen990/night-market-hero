@@ -34,7 +34,9 @@ test('manifest records transparency, canvas, transform, support, and occlusion f
   assert.match(manifest, /stall-canopy-v1\.png/);
   assert.match(manifest, /paifang-crossbeam-v1\.png/);
   assert.match(manifest, /waterfront\.stoneBridge/);
-  assert.match(manifest, /rooftops\.highLanternSupport/);
+  assert.match(manifest, /rooftops\.highLanternSupportFrame/);
+  assert.match(manifest, /rooftops\.crossStreetNegativeSpace/);
+  assert.match(manifest, /rooftops\.darkCanopy/);
 });
 
 test('ambient and elastic-anchor requirements are listed without runtime implementation', () => {

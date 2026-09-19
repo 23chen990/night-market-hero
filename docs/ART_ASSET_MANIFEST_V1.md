@@ -34,10 +34,10 @@
 | 03 | `market-03/teahouse-signage` | 闹市 | 茶楼门面、内檐、招牌 | panorama + 可用内檐；门面/招牌/单灯缺失计数 |
 | 04 | `market-04/paifang-market-court` | 闹市 | 牌楼市场庭院、覆巷框 | panorama + 可用牌楼/覆巷框/灯绳 |
 | 05 | `transition/market-to-rooftops/climb-to-eaves` | 过渡 | 进入屋脊的上升脚手与内檐 | 目标地区 panorama + 雾；上升结构缺失计数 |
-| 06 | `rooftops-01/low-tile-ridges` | 屋脊 | 低瓦顶、飞檐、高位灯绳 | panorama fallback；屋瓦/飞檐/支撑缺失计数 |
-| 07 | `rooftops-02/stepped-eaves` | 屋脊 | 高低错层、小阁楼、旗幡 | panorama fallback；全部屋脊组件待生产 |
-| 08 | `rooftops-03/cross-street-roof-bridge` | 屋脊 | 跨街屋桥、高位灯绳 | panorama fallback；桥体只记 visual support |
-| 09 | `rooftops-04/open-high-ridge` | 屋脊 | 开阔高位屋脊、远景剪影 | panorama fallback；不生成程序瓦顶 |
+| 06 | `rooftops-01/low-tile-ridges` | 屋脊 | 低位建筑质量块、前景屋檐、高位支撑架、暗棚 | panorama fallback；原子组件缺失计数 |
+| 07 | `rooftops-02/stepped-eaves` | 屋脊 | 高位/低位建筑质量块、错层屋檐、暗棚 | panorama fallback；不依赖整栋建筑图 |
+| 08 | `rooftops-03/cross-street-roof-bridge` | 屋脊 | 跨街负空间结构、高位支撑架、灯绳 | panorama fallback；桥框只记 visual support |
+| 09 | `rooftops-04/open-high-ridge` | 屋脊 | 高位建筑块、前景屋檐、跨街留白、暗棚 | panorama fallback；不生成程序瓦顶 |
 | 10 | `transition/rooftops-to-waterfront/descent-to-canal` | 过渡 | 从屋脊下降到河道的坡桥 | 目标地区 panorama + 雾；下降结构缺失计数 |
 | 11 | `waterfront-01/narrow-canal` | 水市 | 河岸房屋、窄河、木栈桥 | panorama fallback；船与河岸模块待生产 |
 | 12 | `waterfront-02/stone-bridge` | 水市 | 石桥、拱桥、桥下船 | panorama fallback；桥体待生产 |
@@ -82,17 +82,16 @@ ComponentRenderer 只使用以下 Phaser world depth；DOM HUD 不属于此表�
 | `structure.woodenRail` | 木栏；M01/M02 | foreground / `MISSING` | — | YES | 768×256 | YES / YES | NO / NO | NO | foreground-occluder |
 | `market.signboard` | 招牌/旗幡空白底板；M03 | foreground / `MISSING` | — | YES | 512×256 | YES / YES | NO / YES（挂点） | NO | player-readable；避免可读文字依赖 |
 
-## 屋脊：首要缺失需求
+## 屋脊：首要缺失需求（原子化横版组件）
 
 | Asset ID | 中文名称 / 使用 chunk | 角色 / 状态 | 已有文件路径 | 建议透明背景 | 建议 nominal canvas size | 可否水平镜像 / 是否允许缩放 | 是否是钩锁支撑结构 / 是否需要独立 pivot / mount point | 是否有动态版本 | 遮挡要求 / 备注 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `rooftops.tileRoof` | 低瓦顶/高瓦顶；R01/R02/R→W | background / `MISSING` | — | YES | 1600×768 | YES / YES | NO / NO | NO | behind-player；禁止程序画瓦片 |
-| `rooftops.flyingEave` | 飞檐角；R01/R04 | foreground / `MISSING` | — | YES | 768×512 | YES / YES | NO / YES（转角 pivot） | NO | foreground-occluder |
-| `rooftops.roofBridge` | 跨街屋桥；R03/R04 | support / `MISSING` | — | YES | 1024×384 | YES / YES | YES / YES | NO | 仅 visual support；碰撞另开任务 |
-| `rooftops.attic` | 小阁楼；R02 | mid / `MISSING` | — | YES | 768×768 | YES / YES | NO / NO | NO | player-readable |
-| `rooftops.highLanternSupport` | 高位灯绳支撑；R01/R03 | support / `MISSING` | — | YES | 1024×256 | YES / YES | YES / YES | YES | 后续弹性挂点拆为 beam/knot/cable |
-| `rooftops.flag` | 屋脊旗幡；R02/R04 | foreground / `MISSING` | — | YES | 256×512 | YES / YES | NO / YES（旗杆 pivot） | YES | player-readable |
-| `rooftops.silhouette` | 远景屋顶剪影；R03/R04 | background / `MISSING` | — | YES | 1600×768 | YES / YES | NO / NO | NO | behind-player；只作远景层 |
+| `rooftops.lowBuildingMass` | 低位建筑质量块；R01/R02 | background / `MISSING` | — | YES | 1024×384 | YES / YES | NO / NO | NO | behind-player；横向拼接，不能包含完整屋顶 |
+| `rooftops.highBuildingMass` | 高位建筑质量块；R02/R03/R04/R→W | background / `MISSING` | — | YES | 1024×512 | YES / YES | NO / NO | NO | behind-player；用于高低错层 |
+| `rooftops.foregroundEaveOccluder` | 前景屋檐遮挡条；R01/R02/R04 | foreground / `MISSING` | — | YES | 768×256 | YES / YES | NO / NO | NO | foreground-occluder；不得压 HUD |
+| `rooftops.highLanternSupportFrame` | 独立高位支撑架；R01/R03/R04 | support / `MISSING` | — | YES | 768×192 | YES / YES | YES / YES | YES | 后续弹性挂点拆为 beam/knot/cable |
+| `rooftops.crossStreetNegativeSpace` | 跨街负空间结构；R03/R04 | support / `MISSING` | — | YES | 1024×384 | YES / YES | YES / YES | NO | 桥框与留白只作 visual support；碰撞另开任务 |
+| `rooftops.darkCanopy` | 暗棚/暗檐横向遮片；R01/R02/R03/R04 | mid / `MISSING` | — | YES | 1024×256 | YES / YES | NO / NO | NO | player-readable；控制前后景层次 |
 
 ## 水市：首要缺失需求
 

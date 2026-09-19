@@ -58,7 +58,8 @@ describe('district-world compatibility facade', () => {
     assert.equal(CITY_CHUNK_WIDTH, 1_600);
     assert.equal(chunk.index, 4);
     assert.equal(chunk.endX - chunk.startX, CITY_CHUNK_WIDTH);
-    assert.match(chunk.layoutId, /^rooftops-/);
+    assert.equal(chunk.gameplayDistrict, 'waterfront');
+    assert.match(chunk.layoutId, /^waterfront-/);
     assert.equal(descriptor.id, 'rooftops', 'transition compatibility district is the destination district');
     assert.equal(descriptor.kind, 'transition');
     assert.deepEqual(descriptor.transition, { fromDistrict: 'market', toDistrict: 'rooftops' });
@@ -67,6 +68,9 @@ describe('district-world compatibility facade', () => {
   test('preserves the validated endless opening profile without changing authored topology', () => {
     const chunks = authoredChain(32);
     assert.deepEqual(chunks.slice(0, 6).map((chunk) => chunk.gameplayDistrict), [
+      'market', 'market', 'waterfront', 'waterfront', 'rooftops', 'rooftops',
+    ]);
+    assert.deepEqual(chunks.slice(0, 6).map((chunk) => chunk.layoutId.split('-')[0]), [
       'market', 'market', 'waterfront', 'waterfront', 'rooftops', 'rooftops',
     ]);
     assert.deepEqual(chunks.slice(0, 6).map((chunk) => chunk.district), [
