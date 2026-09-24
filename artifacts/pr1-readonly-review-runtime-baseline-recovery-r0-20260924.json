@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "pull-request-readonly-review",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0",
+  "pullRequest": {
+    "number": 1,
+    "url": "https://github.com/23chen990/night-market-hero/pull/1",
+    "title": "Longmap Art Integration v1 - Existing Runtime Asset Verification",
+    "state": "OPEN",
+    "baseBranch": "main",
+    "headBranch": "feature/longmap-art-integration-v1",
+    "headSha": "11b8bb8fa1183c818c94a3bef9e63ddbc7f997ab"
+  },
+  "currentMainSha": "369baaa4f89772f830741e3f70a37150c5f673ba",
+  "mergeBaseSha": "3303cf69002b91e069100e4fe70595df4a87f296",
+  "prDiffAgainstMergeBase": {
+    "files": [
+      "src/component-renderer.ts",
+      "src/longmap-art-catalog.ts",
+      "src/main.ts",
+      "tests/component-renderer.test.ts",
+      "tests/runtime-assets-wiring.test.ts"
+    ],
+    "additions": 76,
+    "deletions": 5
+  },
+  "r0Relevance": {
+    "directlyTouchesNightCityRenderer": false,
+    "directlyTouchesV36Asset": false,
+    "directlyTouchesBuildScript": false,
+    "relevantDifference": "PR #1 changes the longmap component preview URL handoff and component/catalog tests. Its head is not an ancestor of current main and its src/main.ts version does not contain current main's fresh=1 bootstrap clearing behavior; it must not be used as the R0 base or merged as part of this repair.",
+    "scopeDecision": "read-only reference; no merge, close, rebase, force-push, or follow-up refactor"
+  },
+  "reviewedAt": "2026-09-24T00:00:00Z",
+  "status": "READ_ONLY_REVIEW_COMPLETE"
+}

@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-runtime-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0",
+  "route": "direct-builder",
+  "passed": true,
+  "checks": [
+    {
+      "viewport": "1280x720",
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "tick": 663,
+        "inputTransitions": 32
+      },
+      "nightPatrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "terminal": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/desktop-1280x720-startup.png",
+          "sha256": "ce4148512f8d33e2ad2620e89eaaf3a7baf251ccbaf4ce4c5bf7d995b747a0ce"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/desktop-1280x720-tutorial-terminal.png",
+          "sha256": "dc4e9ce9e3cb3dd20f33ad0e0014a9e09febeee311e109c6da6f153707851957"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/desktop-1280x720-night-patrol.png",
+          "sha256": "96ee744c310ec2df4a1925f473105318a2c49a64a1138cdd204ef541d9612760"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/desktop-1280x720-night-patrol-failed.png",
+          "sha256": "37532d8b5892a925e68c951ad148f569aa961d1e54c030de3d5626f947bd0718"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/desktop-1280x720-night-patrol-replay.png",
+          "sha256": "5757941855fe35dd06fb22d3108099d51b7c83402517bd61c79f99f2503c8df5"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": "844x390",
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "tick": 932,
+        "inputTransitions": 42
+      },
+      "nightPatrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "terminal": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/landscape-844x390-startup.png",
+          "sha256": "e4381eb7c2214bf382a2f3cb39bc1f95c1f63fb0cbdfdd508ecc00061d6b01ba"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/landscape-844x390-tutorial-terminal.png",
+          "sha256": "5d0199ef5f6fcc62c898d3866808b8e2127c0c86772275282e69018775235c46"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/landscape-844x390-night-patrol.png",
+          "sha256": "1a7855133a6ba59cb63a3fc5bedaed9490f97698963d18143568d746c2ede21b"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/landscape-844x390-night-patrol-failed.png",
+          "sha256": "a590477b13ed747b4aa137b5f437ce4a212ba89c719dba0057c887c8aafb3129"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/landscape-844x390-night-patrol-replay.png",
+          "sha256": "d32b3cbd314630a7e7293459c503ed67b7edf5f8eda6c15a023704a97f48ebb8"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "portrait": {
+    "viewport": "390x844",
+    "orientationVisible": true,
+    "frozen": true,
+    "screenshot": {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/qa-evidence/r0-built-20260924/portrait-390x844.png",
+      "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+    },
+    "errors": []
+  },
+  "runtimeWiredEntrypointFiles": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/src/night-city-renderer.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/src/component-renderer.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/src/game-core.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市-r0/src/run-snapshot.ts"
+  ],
+  "evidenceGaps": [
+    "Rooftops Batch B art remains BLOCKED pending an approved composition; this report covers the gameplay journey only.",
+    "Web-lite evidence does not establish WeChat, Douyin, or TapTap package publishability."
+  ]
+}
