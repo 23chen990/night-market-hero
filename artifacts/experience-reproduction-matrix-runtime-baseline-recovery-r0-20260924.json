@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "issueId": "runtime-baseline-recovery-r0-rooftops-v36",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0",
+  "axes": {
+    "objectTypes": [
+      "Rooftops same-district panorama join",
+      "market or waterfront panorama join",
+      "foreground eaves stream",
+      "longmap component preview asset"
+    ],
+    "lifecycleStateBranches": [
+      "default preload",
+      "default render",
+      "longmap preview query branch",
+      "missing texture or catalog asset branch"
+    ],
+    "rendererPresentationPaths": [
+      "NightCityRenderer image stream",
+      "ComponentRenderer overlay",
+      "scripts/build.ts self-contained playable"
+    ],
+    "viewports": [
+      {"label": "desktop-landscape", "width": 1280, "height": 720},
+      {"label": "mobile-landscape", "width": 844, "height": 390},
+      {"label": "mobile-portrait", "width": 390, "height": 844}
+    ]
+  },
+  "cells": [
+    {
+      "id": "rooftops-same-district-default-preload",
+      "objectType": "Rooftops same-district panorama join",
+      "lifecycleStateBranch": "default preload",
+      "rendererPresentationPath": "NightCityRenderer image stream",
+      "viewport": "all listed viewports",
+      "status": "REPRODUCED_REGRESSION",
+      "evidence": "Current baseline preload enumerates night-city-rooftops-transition-v36."
+    },
+    {
+      "id": "rooftops-same-district-default-render",
+      "objectType": "Rooftops same-district panorama join",
+      "lifecycleStateBranch": "default render",
+      "rendererPresentationPath": "NightCityRenderer image stream",
+      "viewport": "all listed viewports",
+      "status": "REPRODUCED_REGRESSION",
+      "evidence": "Current baseline desired map selects the v36 carrier at consecutive Rooftops chunks."
+    },
+    {
+      "id": "other-district-join",
+      "objectType": "market or waterfront panorama join",
+      "lifecycleStateBranch": "default render",
+      "rendererPresentationPath": "NightCityRenderer image stream",
+      "viewport": "all listed viewports",
+      "status": "PASS_SCOPE_GUARD",
+      "evidence": "The exact v36 diff leaves district-change and other joins on district-transition-mist."
+    },
+    {
+      "id": "foreground-eaves",
+      "objectType": "foreground eaves stream",
+      "lifecycleStateBranch": "default render",
+      "rendererPresentationPath": "NightCityRenderer image stream",
+      "viewport": "all listed viewports",
+      "status": "PASS_SCOPE_GUARD",
+      "evidence": "The exact v36 diff does not touch the eaves desired-image branch or layer scroll factors."
+    },
+    {
+      "id": "component-preview-default",
+      "objectType": "longmap component preview asset",
+      "lifecycleStateBranch": "longmap preview query branch",
+      "rendererPresentationPath": "ComponentRenderer overlay",
+      "viewport": "all listed viewports",
+      "status": "PASS_SCOPE_GUARD",
+      "evidence": "main.ts keeps isLongmapPreviewEnabled gated by longmap=1; no R0 change is planned."
+    },
+    {
+      "id": "missing-component-asset",
+      "objectType": "longmap component preview asset",
+      "lifecycleStateBranch": "missing texture or catalog asset branch",
+      "rendererPresentationPath": "ComponentRenderer overlay",
+      "viewport": "all listed viewports",
+      "status": "PASS_SCOPE_GUARD",
+      "evidence": "ComponentRenderer continues to skip missing/unavailable entries; no R0 change is planned."
+    }
+  ],
+  "acceptance": [
+    "The two Rooftops regression cells become PASS after the v36 branch is removed.",
+    "All scope-guard cells remain PASS through targeted tests and browser checks.",
+    "No natural journey claim is inferred from this renderer matrix; Rooftops seam evidence remains renderer-specialized only."
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-24T00:00:00Z"
+}
