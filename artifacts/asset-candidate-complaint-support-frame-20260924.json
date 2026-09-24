@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "asset-candidate-complaint",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "candidateId": "market-support-frame-v1",
+  "candidatePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-component-scene-v43/quarantine/rooftops-support-frame-v1-material-direction-rejected.png",
+  "userFeedback": "材质不对，方向也不对",
+  "classification": [
+    "asset-production-direction-mismatch",
+    "material-language-mismatch",
+    "view-and-responsibility-mismatch",
+    "transparency-generation-failure",
+    "rejected-before-approval"
+  ],
+  "reproduction": {
+    "evidence": [
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-component-scene-v43/quarantine/rooftops-support-frame-v1-material-direction-rejected.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/assets/crossbeam.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/assets/scaffold.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/exports/market-v04-fixed.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png"
+    ],
+    "matrix": [
+      {
+        "objectType": "support-frame",
+        "lifecycleOrStateBranch": "static authored scene resource",
+        "rendererOrPresentationPath": "imagegen transparent candidate",
+        "deviceOrViewport": "resource preview",
+        "result": "REPRODUCED_REJECTED",
+        "evidence": "front-facing complete portal/gate reads as an independent object, not a partial side-on support"
+      },
+      {
+        "objectType": "material",
+        "lifecycleOrStateBranch": "static authored scene resource",
+        "rendererOrPresentationPath": "imagegen candidate RGB",
+        "deviceOrViewport": "resource preview",
+        "result": "REPRODUCED_REJECTED",
+        "evidence": "glossy high-detail wood and cyan edge light do not match the approved blue-black painterly silhouette language"
+      },
+      {
+        "objectType": "alpha",
+        "lifecycleOrStateBranch": "static transparent resource",
+        "rendererOrPresentationPath": "generated file",
+        "deviceOrViewport": "light/dark/saturated composites",
+        "result": "REPRODUCED_REJECTED",
+        "evidence": "checkerboard was baked into an RGB output; no alpha-capable file was delivered"
+      }
+    ]
+  },
+  "rootCauseHypotheses": [
+    "The prompt described a new timber frame as an object instead of binding the resource to the v04 side-on scene grammar.",
+    "The prompt allowed painterly wood detail and rim light, which caused a glossy 3D asset rather than a compressed blue-black silhouette.",
+    "The generator preview was treated as transparency even though the output mode was RGB and the checkerboard was baked in."
+  ],
+  "correctedDirection": {
+    "resourceRole": "small side-on partial support fragment used behind/under an eave or canopy",
+    "material": "same deep blue-black, low-contrast, painterly silhouette as v04; no glossy planks, no cyan rim, no white outline",
+    "composition": "asymmetrical crop with visible attachment edge; never a complete gate, portal, building or centered landmark",
+    "alpha": "true RGBA with meaningful partial alpha; validate on light, dark and saturated backgrounds before approval",
+    "production": "resource candidate first, approval board second, scene composition only after explicit ART_APPROVED"
+  },
+  "status": "REJECTED_BY_USER",
+  "runtime": {
+    "status": "NOT_INTEGRATED",
+    "catalogChanged": false,
+    "componentRendererChanged": false
+  }
+}

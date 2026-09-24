@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "issueId": "rooftops-single-hybrid-v42-still-wrong-20260923",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "complete panorama scene owner",
+      "generated side-eave module",
+      "self-drawn lantern cable",
+      "self-drawn canopy/scaffold",
+      "flattened composite"
+    ],
+    "lifecycleStateBranches": [
+      "offline layer review",
+      "offline flattened review",
+      "default Rooftops runtime preview",
+      "pre-approval artifact state"
+    ],
+    "rendererPresentationPaths": [
+      "v42 Pillow composite",
+      "v04 layered component composition",
+      "NightCityRenderer panorama owner",
+      "legacy fallback overlays"
+    ],
+    "viewports": [
+      {"label": "desktop", "width": 1672, "height": 941},
+      {"label": "mobile-landscape", "width": 844, "height": 390}
+    ]
+  },
+  "cells": [
+    {
+      "id": "v42-desktop-flattened",
+      "objectType": "flattened composite",
+      "lifecycleStateBranch": "offline flattened review",
+      "rendererPresentationPath": "v42 Pillow composite",
+      "viewport": {"label": "desktop", "width": 1672, "height": 941},
+      "status": "REPRODUCED_REJECTED",
+      "expected": "同一张场景图内，底板、结构和灯光属于同一套材质、透视和遮挡关系。",
+      "observed": "用户反馈效果仍不对；候选不能进入验收通过状态。"
+    },
+    {
+      "id": "v42-mobile-flattened",
+      "objectType": "flattened composite",
+      "lifecycleStateBranch": "offline flattened review",
+      "rendererPresentationPath": "v42 Pillow composite",
+      "viewport": {"label": "mobile-landscape", "width": 844, "height": 390},
+      "status": "REPRODUCED_REJECTED",
+      "expected": "缩小后仍保留统一空间层级和可读的飞行通道。",
+      "observed": "用户反馈 v42 整体效果不符合预期；不以移动预览单独关闭问题。"
+    },
+    {
+      "id": "v42-layer-responsibility",
+      "objectType": "generated side-eave module",
+      "lifecycleStateBranch": "offline layer review",
+      "rendererPresentationPath": "v42 Pillow composite",
+      "viewport": {"label": "desktop", "width": 1672, "height": 941},
+      "status": "HYPOTHESIS_PENDING_AUDIT",
+      "expected": "资源作为依附于场景结构的局部层，不争夺完整场景的视觉拥有权。",
+      "observed": "需核对其透视、材质细节密度、光向及与底图的遮挡关系。"
+    },
+    {
+      "id": "v42-runtime-gate",
+      "objectType": "flattened composite",
+      "lifecycleStateBranch": "pre-approval artifact state",
+      "rendererPresentationPath": "NightCityRenderer panorama owner",
+      "viewport": {"label": "desktop", "width": 1672, "height": 941},
+      "status": "PASS_SCOPE_GUARD",
+      "expected": "用户未 ART_APPROVED 前不改 runtime/catalog/ComponentRenderer。",
+      "observed": "v42 未接入运行时。"
+    }
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-23T00:00:00Z"
+}

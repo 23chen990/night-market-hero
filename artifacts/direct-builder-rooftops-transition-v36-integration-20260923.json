@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "generated-game-repair-handoff",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": {
+    "selected": "direct-builder",
+    "reason": "用户已明确批准 v36；接入局部限制在夜景渲染器的 Rooftops 同区全景接缝与一张已验证 PNG，不改核心玩法、状态机、持久化、平台适配或发布配置。",
+    "contextIntentionallyOmitted": [
+      "prototype-a 旧交接、旧候选和拒绝的 v1-v35 资产",
+      "与本次 Rooftops 接缝无因果关系的经济、广告、载具、HUD 和平台适配改动",
+      "其他代理已有的未提交工作区变更"
+    ]
+  },
+  "approval": {
+    "candidateId": "rooftops.transition-candidate-v36-fullheight",
+    "decision": "ART_APPROVED_BY_USER",
+    "basis": "用户回复：可以",
+    "runtimeContract": "single PNG; bridge/fog layers and QA montages are not runtime inputs"
+  },
+  "filesChangedByThisRoute": [
+    {
+      "path": "src/assets/night-city/rooftops-transition-v36-fullheight.png",
+      "change": "copied approved runtime asset without overwriting an existing file",
+      "sha256": "f508f5b8f49eb2a24c2acf1a8044ba201e966731bc05473c7bf70fb7c4c66fb4",
+      "dimensions": [
+        640,
+        941
+      ],
+      "format": "RGBA PNG"
+    },
+    {
+      "path": "src/night-city-renderer.ts",
+      "change": "preloads and renders the single asset at Rooftops-to-Rooftops panorama variant joins; keeps other district joins on existing mist"
+    },
+    {
+      "path": "tests/night-city-renderer.test.ts",
+      "change": "locks the single-asset preload, seam placement, dimensions, native alpha and layer exclusion contract"
+    }
+  ],
+  "runtimeWiredEntrypointFiles": [
+    "src/main.ts",
+    "src/night-city-renderer.ts",
+    "src/game-core.ts",
+    "src/run-snapshot.ts"
+  ],
+  "runtimeBehavior": {
+    "sceneOwners": "adjacent panorama chunks remain the scene owners",
+    "carrierPlacement": "640x941 at chunk.startX - 320, depth -9, world-aligned",
+    "affectedJoins": "only consecutive Rooftops chunks",
+    "unchangedJoins": "market/waterfront and district-change joins keep district-transition-mist-v1",
+    "loadedRuntimeCandidateFiles": [
+      "src/assets/night-city/rooftops-transition-v36-fullheight.png"
+    ],
+    "excludedFromRuntime": [
+      "layers/bridge-architecture-v36.png",
+      "layers/seam-fog-v36.png",
+      "qa/seam-montage-desktop-1672x941.png",
+      "qa/seam-montage-mobile-844x390.png"
+    ],
+    "gameplayChanged": false,
+    "defaultJourneyFlowChanged": false,
+    "visualDefaultRendererChanged": true
+  },
+  "tests": {
+    "red": {
+      "command": "npm test -- --test-name-pattern='night-city image renderer|uses the approved single full-height PNG for Rooftops variant seams'",
+      "result": "expected failure before implementation: 3 renderer assertions failed"
+    },
+    "green": {
+      "command": "npm test -- --test-name-pattern='night-city image renderer|uses the approved single full-height PNG for Rooftops variant seams'",
+      "result": "pass"
+    },
+    "fullSuite": {
+      "command": "npm test",
+      "result": "263 passed, 0 failed, 10 skipped"
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "result": "pass"
+    },
+    "lint": {
+      "command": "npm run lint",
+      "result": "pass"
+    },
+    "build": {
+      "command": "npm run build",
+      "result": "pass",
+      "outputs": [
+        "dist/index.html",
+        "夜市飞侠-护印突围-试玩版.html"
+      ]
+    },
+    "targetedRuntime": {
+      "command": "npx tsx tests/natural-journey-retest-20260921.ts",
+      "result": "pass",
+      "checks": [
+        "startup",
+        "natural hold/release tutorial core loop",
+        "tutorial settlement",
+        "night-patrol terminal failure",
+        "replay",
+        "landscape 1280x720 and 844x390",
+        "portrait orientation block"
+      ],
+      "evidence": "qa-evidence/natural-journey-20260921/qa-report.json",
+      "limitation": "This journey report does not traverse far enough to observe a Rooftops seam; it proves the default gameplay flow remains intact."
+    }
+  },
+  "evidenceGaps": [
+    "Fresh natural/perceptual QA at the actual Rooftops world seam is still required.",
+    "The runtime check is web-lite evidence and does not establish WeChat, Douyin or TapTap package publishability.",
+    "This direct-builder handoff does not claim formal FIX completion or perceptual gate completion.",
+    "User feedback rejects the current visual direction as fragmented; v36 is retained for forensics only.",
+    "A new hybrid production contract and candidate set are required before another runtime integration."
+  ],
+  "status": "BLOCKED_BY_USER_FEEDBACK"
+}

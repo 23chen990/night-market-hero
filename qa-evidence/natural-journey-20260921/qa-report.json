@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-runtime-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": "formal-fixer",
+  "passed": true,
+  "checks": [
+    {
+      "viewport": "1280x720",
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "tick": 663,
+        "inputTransitions": 32
+      },
+      "nightPatrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "terminal": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/desktop-1280x720-startup.png",
+          "sha256": "d6596ee01f4dbdec8211795021862aaa52416fe0e9d035f6eb03d9310aa788bc"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/desktop-1280x720-tutorial-terminal.png",
+          "sha256": "2cd3ebb6fa825d25ef1a6af72ec8b3bda0f78e85c79555ad3d2146018422bdd6"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/desktop-1280x720-night-patrol.png",
+          "sha256": "8b0230bc47f6376c543746cbfede3c369eab075953cd1dbf925265df0383b285"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/desktop-1280x720-night-patrol-failed.png",
+          "sha256": "4eb2e3bd8d27743596f9e8a4396b74eec00832f763f6f46033228d5601b6cbd3"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/desktop-1280x720-night-patrol-replay.png",
+          "sha256": "1a7ae12b2e5090c3a8f36afc8db6cbb21460b4bb70df133634aef6a339c4861f"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": "844x390",
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "tick": 732,
+        "inputTransitions": 32
+      },
+      "nightPatrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "terminal": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/landscape-844x390-startup.png",
+          "sha256": "5987856e438ecc85dcaf1673665b9d37d4de069f4968b67d469e384ddbdbd3d2"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/landscape-844x390-tutorial-terminal.png",
+          "sha256": "beb1376202ee196aee09b6dfb8faf5dbcc629c86b26299efc21715ea2bb6b25e"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/landscape-844x390-night-patrol.png",
+          "sha256": "06f6a3424f979ed418baecd387adc1c34e492fb2f7cbce43bfb14fb91c274230"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/landscape-844x390-night-patrol-failed.png",
+          "sha256": "a590477b13ed747b4aa137b5f437ce4a212ba89c719dba0057c887c8aafb3129"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/landscape-844x390-night-patrol-replay.png",
+          "sha256": "5b262d101efbb1ab5f18f9f70a2858a811af726f4e28c83a228351a5a5f25b5b"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "portrait": {
+    "viewport": "390x844",
+    "orientationVisible": true,
+    "frozen": true,
+    "screenshot": {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/natural-journey-20260921/portrait-390x844.png",
+      "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+    },
+    "errors": []
+  },
+  "runtimeWiredEntrypointFiles": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/run-snapshot.ts"
+  ],
+  "evidenceGaps": [
+    "Rooftops Batch B art remains BLOCKED pending an approved composition; this report covers the gameplay journey only.",
+    "Web-lite evidence does not establish WeChat, Douyin, or TapTap package publishability."
+  ]
+}

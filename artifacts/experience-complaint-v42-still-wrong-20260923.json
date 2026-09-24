@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "issueId": "rooftops-single-hybrid-v42-still-wrong-20260923",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户明确反馈单张混合组景 v42 效果仍不对。v42 不能作为可验收候选，必须停止继续叠加资源并重新检查底图、材质和组景职责。",
+  "classification": [
+    "core-experience",
+    "reference-fidelity",
+    "visual-hierarchy",
+    "asset-composition-mismatch",
+    "repeated-candidate-rejection"
+  ],
+  "route": {
+    "selected": "formal-fixer",
+    "rationale": "已连续出现多轮美术候选被用户拒绝；问题可能同时涉及底图拥有者、资源材质、资源放置和 v04 组景职责，不能继续局部调色或再贴一张图关闭。"
+  },
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-single-hybrid-v42/review.json",
+      "role": "rejected-candidate-review",
+      "provenance": "verified-run-artifact"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-single-hybrid-v42/qa/rooftops-single-hybrid-v42-1672x941.png",
+      "role": "user-rejected-visual-candidate",
+      "provenance": "verified-run-artifact"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/README.md",
+      "role": "original-component-composition-reference",
+      "provenance": "repository-source"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/rooftops-panorama-v2.png",
+      "role": "complete-scene-base-used-by-v42",
+      "provenance": "repository-source"
+    }
+  ],
+  "observedCandidateProblemsToVerify": [
+    "v42 仍以完整写实 panorama 作为主视觉，再把局部模块贴到其上，可能与 v04 的组件组景拥有者不一致。",
+    "生成的右侧屋檐资源与已有 panorama 的透视、光向、材质细节密度可能不是同一套绘制语言。",
+    "灯绳和棚架被当作装饰叠层，而不是绑定到组景结构的可解释对象，导致漂浮/贴纸读法。",
+    "当前只做了单张扁平 preview，没有证明资源之间的前中后景遮挡和统一材质来自同一组景配方。"
+  ],
+  "correctedAcceptance": [
+    "v42 标记 REJECTED_BY_USER，不能进入 runtime/catalog。",
+    "下一版必须先确定单张场景的唯一拥有者：要么从 v04 组件组景重建底板，要么明确只保留一个完整场景底图；不能两者叠加争夺视觉主导。",
+    "资源必须按结构依附关系放置：檐/梁/灯绳/棚布从可见支撑出发，遮挡关系在组景图中成立。",
+    "离线验收至少包含组件层、组景层和扁平图三张证据，并提供 1672x941 与 844x390 预览。",
+    "用户 ART_APPROVED 前保持 runtime、catalog、ComponentRenderer 不变。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-23T00:00:00Z"
+}

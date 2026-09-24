@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "asset-candidate-complaint",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "candidateId": "foreground-ground-occluder-v1",
+  "candidateBatch": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-atomic-resources-v44",
+  "userFeedback": "底部遮挡带看起来像自绘，材质和形状不太对",
+  "evidence": {
+    "sourceAttachment": "reference-evidence/incoming/codex-clipboard-c128fd14-9d73-46ee-9388-bf5dc7f0a7b3-0b8389a1c51c.png",
+    "approvalBoard": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-atomic-resources-v44/qa/rooftops-atomic-resources-v44-approval-board.png",
+    "candidateAsset": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-atomic-resources-v44/assets/foreground-ground-occluder-v1.png"
+  },
+  "classification": [
+    "asset-material-mismatch",
+    "asset-origin-visible",
+    "foreground-silhouette-shape-mismatch",
+    "rejected-before-approval"
+  ],
+  "reproductionMatrix": [
+    {
+      "objectType": "bottom occluder",
+      "lifecycleOrStateBranch": "static resource approval",
+      "rendererOrPresentationPath": "isolated approval board",
+      "deviceOrViewport": "light background board",
+      "result": "REPRODUCED_REJECTED",
+      "evidence": "large trapezoid rail with repeated evenly spaced braces reads as a newly drawn overlay rather than the v04 foreground layer"
+    },
+    {
+      "objectType": "bottom occluder",
+      "lifecycleOrStateBranch": "static resource approval",
+      "rendererOrPresentationPath": "isolated approval board",
+      "deviceOrViewport": "dark/saturated backgrounds",
+      "result": "HYPOTHESIS_PENDING_REPLACEMENT",
+      "evidence": "value is readable, but the silhouette has no authored v04 material texture or irregular grounding rhythm"
+    },
+    {
+      "objectType": "runtime integration",
+      "lifecycleOrStateBranch": "default browser journey",
+      "rendererOrPresentationPath": "runtime source/catalog",
+      "deviceOrViewport": "all",
+      "result": "PASS_SCOPE_GUARD",
+      "evidence": "candidate batch is offline and not integrated"
+    }
+  ],
+  "rootCause": [
+    "This asset was drawn directly in the approval script instead of produced from the same v04 foreground/ground material language.",
+    "The regular slanted brace repetition makes its procedural origin visible.",
+    "It is a generic occluder strip rather than a locally authored piece of roof deck, railing or platform edge."
+  ],
+  "acceptanceCriteria": [
+    "Bottom occluder is a separately approvable RGBA resource, not a script-only polygon.",
+    "Its shape is an irregular v04-style foreground deck/rail fragment with visible depth and material texture.",
+    "It does not form a continuous generic strip or compete with the scene owner.",
+    "It passes light/dark/saturated alpha composite checks without checkerboard, white matte or edge halo.",
+    "No scene composition or runtime integration occurs before asset approval."
+  ],
+  "route": "formal-asset-review",
+  "status": "REJECTED_BY_USER"
+}

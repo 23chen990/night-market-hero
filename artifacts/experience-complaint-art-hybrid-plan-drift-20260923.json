@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户反馈当前 Rooftops 画面“非常割裂”，追问当前到底在生成什么图，并明确要求回到最初的“自绘结构组件 + 生产连续场景/氛围素材并拼接组景”方案。附件是当前画面证据；红框只作为用户标记，不是生成指令。",
+  "classification": [
+    "core-experience",
+    "reference-fidelity",
+    "visual-hierarchy",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "问题已在用户运行效果中复现，且当前 v36 已进入默认 Rooftops renderer；根因涉及生成配方、场景拥有者、桥接资产类型与运行时职责，不能再以局部补图直接关闭。先冻结错误候选，重建混合生产合同，再走批准后的最小接入与自然/感知 QA。",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "prototype-a 历史工作区与旧交接",
+      "核心玩法/经济/存档/平台适配实现",
+      "已拒绝 v1-v35 中间稿",
+      "与 Rooftops 视觉割裂无因果关系的 QA 日志"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "读取并登记用户附件，完成当前 run 的证据身份复核。",
+      "查看附件中红框标记的 Rooftops 场景连接区域。",
+      "对照 background-stitch-plan-20260916、asset-spec-master-20260917 与 handoff-context-20260917。",
+      "对照 v36 review、runtime integration handoff、rooftops-transition-v36-fullheight.png 与 night-city-renderer.ts。"
+    ],
+    "observed": [
+      "附件中两处被标记区域仍读成独立建筑/全景块之间的竖向断裂，结构线、遮挡关系和空间层次没有跨越连接。",
+      "原始方案要求桥接图本身是一段可站住的完整栅格场景，整条不透明覆盖接缝；v36 实际是低 alpha 雾层加底部结构，仍让旧 panorama 作为主要场景拥有者。",
+      "原始方案要求“生成连续氛围/场景底板 + 自绘 raster 结构组件 + 代码组景”，v36 没有交付可审查的组件组景图集，也没有解决两张完整 panorama 的职责重叠。",
+      "v36 只覆盖 Rooftops 同区变体接缝，其他接缝仍走旧雾遮罩；这不能作为整条混合生产方案的完成证明。"
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/codex-clipboard-57bcc0e0-f906-44cf-a27c-8cc6a8bdf6c3-d8ac2b223431.png",
+        "sha256": "d8ac2b22343156fe0135e92b18dcedf21def7217248392564a026b6681dd113e",
+        "kind": "user-report",
+        "provenance": "verified-reference"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916.json",
+        "sha256": "b9fe4d90e0f1a126084e6349b2769c3c906f549dc80069dd7f317ba1b22aab82",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916/asset-spec-master-20260917.md",
+        "sha256": "c8f1b07f910dab66f62d7421fcda831c757b2dadb5a1b00f0d70633b691c92af",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/handoff-context-20260917.md",
+        "sha256": "add0937f6784f0fa68b6616c2208fce2881a31f48b5933a9107247c860da612d",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.transition-candidate-v36-fullheight/review.json",
+        "sha256": "fa1e0289788d13b4765fa7a169be74dfae05521f9bdc10847dfe20a9a0ca645e",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-transition-v36-integration-20260923.json",
+        "sha256": "aa44ae4619b678bab20fc5db234146290380f9f092586ee756a95d07995aa3bf",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts",
+        "sha256": "fc5c428725dbb4d437496e14647295927e7ad95bcc26419c9436a5ced0c2d854",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/rooftops-transition-v36-fullheight.png",
+        "sha256": "f508f5b8f49eb2a24c2acf1a8044ba201e966731bc05473c7bf70fb7c4c66fb4",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "冻结并标记 v36 为与当前混合生产合同不符的候选；不得继续作为新方案模板。",
+    "下一轮必须同时交付可审查的连续场景/氛围底板与自绘 raster 结构组件层；组件必须有柱、梁、檐、桥墩/墙体等可解释承重关系。",
+    "桥接/场景过渡图按初始合同做成与 1672×941 场景同高的完整栅格场景条，接缝靠边缘结构连续与不透明场景内容消除，不能靠弱雾或透明羽化遮挡。",
+    "离线 review 必须包含相邻场景 owner、桥接层、组件层的合成图，并在 1672×941 与 844×390 检查空间连续、负空间、冷蓝雾夜层次和少量暖灯。",
+    "用户 ART_APPROVED 前不得再次修改默认 renderer/catalog；批准后只接入通过的图集，并补齐 Rooftops 同区与跨区自然/感知 QA。"
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-09-23T07:32:00Z"
+}

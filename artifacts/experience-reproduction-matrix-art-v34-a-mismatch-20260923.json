@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "v34 atmosphere/fog layer",
+      "v34 lowBuildingMass",
+      "rooftops-panorama-v2",
+      "v34 review composite",
+      "default NightCityRenderer scene"
+    ],
+    "lifecycleStateBranches": [
+      "candidate-preview",
+      "review-composite",
+      "approved-runtime",
+      "default-panorama-runtime",
+      "district-transition"
+    ],
+    "rendererPaths": [
+      "artifact-preview",
+      "offline-composite",
+      "ComponentRenderer",
+      "NightCityRenderer"
+    ],
+    "viewports": [
+      {
+        "label": "component-strip",
+        "width": 1024,
+        "height": 384
+      },
+      {
+        "label": "desktop-landscape",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "v34-component-strip",
+      "objectType": "v34 lowBuildingMass",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "component-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "连续低位建筑质量块，和同一剪纸场景自然相连。",
+      "observed": "只有稀疏屋檐、棚架、竹架片段；技术透明但未形成连续质量块。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v34-a-composite/rooftops-low-building-mass-v34.png",
+          "sha256": "75ad057ae1f3fa838f7d74b4659670a54c1ec4cd6b7725549a81b59175ac719a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "v34-runtime-review",
+      "objectType": "v34 review composite",
+      "lifecycleStateBranch": "review-composite",
+      "rendererPath": "offline-composite",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "主构图、远近层、低位结构和雾气读成同一场景。",
+      "observed": "panorama 几乎承担全部场景；新增层像很弱的底部叠加，用户反馈仍不符合预期。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v34-a-composite/qa/runtime-preview-over-rooftops-panorama-v2.png",
+          "sha256": "a69d87985bc4fcacaedbd01c66e78b9557e5216897259fe93a896a72d08b9704",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "v34-mobile-review",
+      "objectType": "v34 review composite",
+      "lifecycleStateBranch": "review-composite",
+      "rendererPath": "offline-composite",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "玩家视口中结构层次和飞行负空间仍清楚。",
+      "observed": "移动裁切后仍看不出明确的新低位场景层；感知 gate 尚未通过。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v34-a-composite/qa/mobile-landscape-844x390.png",
+          "sha256": "8b592b2a394a194f964b63f2c135be719f208be78474d2447b71334ca25656ca",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "default-runtime",
+      "objectType": "default NightCityRenderer scene",
+      "lifecycleStateBranch": "default-panorama-runtime",
+      "rendererPath": "NightCityRenderer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "默认路径保持当前 panorama fallback，不能被未批准候选污染。",
+      "observed": "v34 未接入；当前分支未改变。",
+      "evidence": []
+    },
+    {
+      "id": "district-transition",
+      "objectType": "v34 atmosphere/fog layer",
+      "lifecycleStateBranch": "district-transition",
+      "rendererPath": "NightCityRenderer",
+      "viewport": {
+        "label": "desktop-landscape",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "相邻 chunk/transition 中接缝自然且风格连续。",
+      "observed": "v34 只有单张 review composite，没有相邻 chunk 或接缝证据。",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "v34 技术 alpha 检查通过，但视觉整合未通过用户验收。",
+    "候选失败不涉及默认 runtime，因为 v34 未接入。",
+    "当前需要先重写视觉职责合同，再决定下一候选生产方式。"
+  ],
+  "remainingGaps": [
+    "用户对场景拥有者与结构占比的期望尚未明确。",
+    "需要相邻 chunk/transition 的 review 语境。",
+    "需要新的候选并重新走 ART_APPROVAL。"
+  ],
+  "createdAt": "2026-09-23T12:41:39+08:00"
+}

@@ -1301,6 +1301,22 @@ export class GrappleGame {
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
     this.lastReleasedAnchorId = releasedAnchor;
+    // A long first-run release can leave the player on the low counter
+    // passage with almost no forward swing. Give that authored recovery lane a
+    // small upward/forward launch after a few real input transitions so the
+    // player can reach the shared route again without an automatic grapple or
+    // a change to the normal high-route physics.
+    const lowFloorReleaseRecovery = !this.endlessMode
+      && this.state.levelIndex === 0
+      && this.state.inputTransitions >= 6
+      && releasedAnchor === 'node-low'
+      && this.state.player.y >= this.state.routeGraph.branches.low.corridor.y
+        + this.state.routeGraph.branches.low.corridor.height
+        - PLAYER_COLLISION_RADIUS - 60;
+    if (lowFloorReleaseRecovery) {
+      this.state.player.vx = Math.max(this.state.player.vx, 260);
+      this.state.player.vy = Math.min(this.state.player.vy, -260);
+    }
     if (this.endlessMode && releasedAnchor) {
       // A deliberate early release should produce a short, readable glide
       // before another hook can be captured.  Rhythm releases made after the
@@ -1315,8 +1331,15 @@ export class GrappleGame {
       this.state.regrappleGraceUntilTick = this.state.tick + REGRAPPLE_GRACE_TICKS;
     }
     if (this.state.segment === 'gate-climax' && this.state.tick < this.gateCollisionRecoveryUntilTick) {
-      this.state.player.vx = Math.max(this.state.player.vx, 560);
-      this.state.player.vy = Math.min(this.state.player.vy, -180);
+      // After a leaf hit, steer back toward the live opening instead of
+      // always launching upward. The old fixed upward impulse could clear the
+      // arch, miss the aperture on the next swing, and turn a recoverable
+      // tutorial collision into an unrelated fall.
+      const aperture = this.state.gate.collisionAperture;
+      const targetY = aperture.y + aperture.height / 2;
+      const verticalCorrection = Math.max(-420, Math.min(420, (targetY - this.state.player.y) * 3));
+      this.state.player.vx = Math.max(this.state.player.vx, 420);
+      this.state.player.vy = verticalCorrection;
     }
     if (releasedAnchor && releaseSpeed >= 360) {
       const previousTier = this.state.comboTier;
@@ -1436,9 +1459,53 @@ export class GrappleGame {
           : this.state.routeGraph.branches[this.state.routeTraversal.committedRoute].anchorIds
         : this.state.routeTraversal.committedRoute === 'high' ? this.state.routeGraph.branches.high.anchorIds : ['node-low', 'node-7'])
       : null;
+    // A first-time player can settle on the bottom of the authored low
+    // corridor after a long release. While the visible grapple action is
+    // still held, let that bounded recovery lane capture its forward low
+    // anchor even though the anchor is above the falling body. This is a
+    // recovery affordance for the existing route, not an automatic grapple:
+    // it only applies in the campaign's low branch, inside the corridor, and
+    // while the player is actively holding the grapple input.
+    const lowCorridor = this.state.routeGraph.branches.low.corridor;
+    const lowBranchRecovery = !this.endlessMode
+      && this.state.levelIndex === 0
+      && this.state.routeTraversal.committedRoute === 'low'
+      && (
+        (this.state.routeTraversal.phase === 'branch'
+          && player.y >= lowCorridor.y + lowCorridor.height - PLAYER_COLLISION_RADIUS - 60)
+        || (this.state.routeTraversal.phase === 'split'
+          && player.vx < -80
+          && player.y >= lowCorridor.y + 40)
+      );
+    // Near the tutorial gate, a player who is still holding the visible
+    // grapple input may be below the final upper anchor after a late release.
+    // Treat that anchor as a bounded falling rescue so one missed swing can be
+    // recovered without granting a passage or changing the gate contract.
+    const tutorialGateRecoveryWindow = !this.endlessMode
+      && this.state.levelIndex === 0
+      && this.state.inputTransitions > 0
+      && this.state.activeChaseEvent === 'closing-gate'
+      && player.x >= this.state.gate.x - 520
+      && player.x < this.state.gate.x
+      && player.y >= 220
+      && player.y <= this.state.failY - PLAYER_COLLISION_RADIUS
+      && (player.y < this.state.gate.collisionAperture.y
+        || player.y > this.state.gate.collisionAperture.y + this.state.gate.collisionAperture.height);
+    // If a browser delivers a long hold/release window while the player is
+    // still approaching the fork, the body can lose forward swing and keep
+    // recapturing the same nearby ring. Let an active tutorial input recover
+    // the next forward ring inside the authored approach envelope. The
+    // normal branch filter, forward-only bounds, and tutorial-only guard keep
+    // this from changing high/low route physics or endless play.
+    const tutorialApproachRecovery = !this.endlessMode
+      && this.state.levelIndex === 0
+      && this.state.inputTransitions >= 4
+      && (this.state.routeTraversal.phase === 'approach' || this.state.routeTraversal.phase === 'split')
+      && player.x < this.state.routeGraph.split.x + this.state.routeGraph.split.width
+      && (player.vx < 140 || speed < 220 || player.y > 600);
     let selected: { anchor: Anchor; score: number } | null = null;
     for (const anchor of this.state.anchors) {
-      if (!branchAnchorIds && anchor.id === 'node-low') continue;
+      if (!branchAnchorIds && anchor.id === 'node-low' && !lowBranchRecovery) continue;
       const regrappleGrace = this.state.tick > 0 && this.state.tick < this.state.regrappleGraceUntilTick;
       const dx = anchor.x - player.x;
       const dy = anchor.y - player.y;
@@ -1449,19 +1516,33 @@ export class GrappleGame {
       if (distance > attachRadius || distance < 0.0001) continue;
       const rescueEligible = player.vy > 120
         && (dy > 0 || (this.endlessMode && player.y > 780 && dy < 0));
+      const lowFloorRecoveryEligible = lowBranchRecovery
+        && anchor.id === 'node-low'
+        && dx >= -220
+        && dx <= 180;
+      const gateRecoveryEligible = tutorialGateRecoveryWindow
+        && anchor.id === 'node-8'
+        && dx >= -300
+        && dx <= 260;
+      const tutorialApproachEligible = tutorialApproachRecovery
+        && anchor.id !== this.lastReleasedAnchorId
+        && dx >= 60
+        && dx <= 560;
+      const recoveryEligible = lowFloorRecoveryEligible || gateRecoveryEligible || tutorialApproachEligible;
       if (this.endlessMode && !rescueEligible && !regrappleGrace && player.x < this.grappleReconnectNotBeforeX) continue;
-      if (branchAnchorIds && !branchAnchorIds.has(anchor.id) && !rescueEligible) continue;
+      if (branchAnchorIds && !branchAnchorIds.has(anchor.id) && !rescueEligible && !recoveryEligible) continue;
       const alignment = (dx * player.vx + dy * player.vy) / (distance * speed);
-      if (alignment < (regrappleGrace ? -0.55 : -0.15) && !rescueEligible) continue;
+      if (alignment < (regrappleGrace ? -0.55 : -0.15) && !rescueEligible && !recoveryEligible) continue;
       const angle = Math.acos(Math.max(-1, Math.min(1, alignment)));
-      if (this.state.route === 'high' && angle > 1.28 && !rescueEligible) continue;
+      if (this.state.route === 'high' && angle > 1.28 && !rescueEligible && !recoveryEligible) continue;
       // Normal traversal follows the player's launch direction, not the nearest
       // ring. This prevents a low, close ring from stealing a deliberate upward
       // rightward transfer; rescue drops still use the forgiving distance bias.
-      const distanceWeight = rescueEligible ? 0.75 : 0.45;
+      const distanceWeight = rescueEligible || recoveryEligible ? 0.75 : 0.45;
       const directionWeight = 1 - distanceWeight;
       const sameAnchorPenalty = anchor.id === this.lastReleasedAnchorId ? 0.18 : 0;
-      const score = distanceWeight * (distance / attachRadius) + directionWeight * (angle / Math.PI) + sameAnchorPenalty;
+      const recoveryPriority = recoveryEligible ? -1 : 0;
+      const score = recoveryPriority + distanceWeight * (distance / attachRadius) + directionWeight * (angle / Math.PI) + sameAnchorPenalty;
       if (!selected || score < selected.score - 1e-9 || (Math.abs(score - selected.score) <= 1e-9 && anchor.x > selected.anchor.x)) {
         selected = { anchor, score };
       }
@@ -2025,6 +2106,12 @@ export class GrappleGame {
       : gate.bottomLeafBounds.y - PLAYER_COLLISION_RADIUS;
     player.vy = hitTop ? Math.max(120, Math.abs(player.vy) * 0.28) : -Math.max(120, Math.abs(player.vy) * 0.28);
     player.vx = Math.max(90, Math.abs(player.vx) * 0.55);
+    // A fast fixed-step swing can overlap a leaf and advance past the live
+    // opening in the same render frame. Keep the body on the approach side so
+    // the recovery window can visibly re-enter the aperture instead of
+    // tunnelling through the arch and falling beyond the course.
+    player.x = Math.min(player.x, aperture.x - PLAYER_COLLISION_RADIUS - 1);
+    player.vx = Math.min(player.vx, 260);
     this.lastReleasedAnchorId = this.state.attachedAnchorId;
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
@@ -2198,7 +2285,19 @@ export class GrappleGame {
     // small browser-frame variations cannot end a run before every district
     // theme has appeared once.
     const endlessOpeningGrace = this.endlessMode && this.state.segmentIndex <= 3;
-    if (!gateShelter && !endlessOpeningGrace && pursuerContact && !talismanProtected && !talismanGrace && !vehicleCatchImmune) {
+    // The tutorial's first chase is also an input lesson. A real pointer hold
+    // can span a different number of fixed ticks on desktop and mobile, so a
+    // player who has made several genuine hold/release transitions gets to
+    // reach the authored branch rejoin before guard contact becomes lethal.
+    // Falling still fails normally, and the endless patrol keeps its own
+    // pressure rules; this only removes a timing-dependent early catch from
+    // the first tutorial route.
+    const tutorialOpeningGrace = !this.endlessMode
+      && this.state.levelIndex === 0
+      && this.state.inputTransitions >= 4
+      && player.x < this.state.routeGraph.rejoin.x;
+    if (!gateShelter && !endlessOpeningGrace && !tutorialOpeningGrace
+      && pursuerContact && !talismanProtected && !talismanGrace && !vehicleCatchImmune) {
       this.state.status = 'failed';
       this.state.failureReason = 'caught';
       this.state.message = '官兵追上了';

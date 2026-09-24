@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "candidateId": "rooftops.transition-candidate-v36-fullheight",
+  "route": "direct-builder-followup-qa",
+  "runtimeAsset": "src/assets/night-city/rooftops-transition-v36-fullheight.png",
+  "naturalInput": "fresh browser; normal mouse hold/release on the grapple surface; no window test APIs, teleport, fixture or state injection",
+  "targetSeamWorldX": [
+    9600,
+    11200,
+    12800
+  ],
+  "artifactType": "natural-runtime-qa-report",
+  "status": "BLOCKED",
+  "result": "BLOCKED_BEFORE_TARGET_SEAM",
+  "attempts": {
+    "tutorialSeeds": [
+      31,
+      32,
+      33
+    ],
+    "tutorialOutcome": "seed 33 reached tutorial settlement after ordinary input; seeds 31 and 32 failed before settlement",
+    "endlessRestarts": 12,
+    "furthestObservedPlayerX": 3929,
+    "targetSeamReached": false
+  },
+  "evidence": {
+    "screenshots": [],
+    "consoleErrors": [],
+    "note": "No player-visible Rooftops seam frame was captured; no perceptual verdict is claimed."
+  },
+  "evidenceGaps": [
+    "natural route to Rooftops seam",
+    "desktop and mobile seam screenshots",
+    "perceptual continuity verdict"
+  ]
+}

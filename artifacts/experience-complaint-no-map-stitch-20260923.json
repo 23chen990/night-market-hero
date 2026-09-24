@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "issueId": "rooftops-no-map-stitch-20260923",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户明确纠正：当前任务不是地图拼接、不是背景链、不是过渡图；应回到最初的单张混合组景方案——自绘结构资源与生产的素材资源共同组成一张场景图。",
+  "classification": [
+    "factory-routing",
+    "scope-mismatch",
+    "asset-unit-mismatch",
+    "user-correction"
+  ],
+  "evidence": [
+    {
+      "path": "/Users/kker/Downloads/夜市飞侠-护印突围-正式工程源码包-20260918.zip",
+      "sha256": "f954f0c67f4062edababda722e13bbd9009d0d1867a2ceaa99a58a6bc27557ed",
+      "role": "user-supplied-source-package",
+      "provenance": "user-supplied"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-lowBuildingMass-hybrid-production-plan-20260922.json",
+      "role": "prior-hybrid-production-plan",
+      "provenance": "repository-source"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/rooftops-panorama-v2.png",
+      "role": "existing-complete-scene-base",
+      "provenance": "repository-source"
+    }
+  ],
+  "observedDrift": [
+    "上一轮错误地把交付单位设为 1672x941 背景链帧。",
+    "更早的错误候选把交付单位设为 bridge/transition 场景条。",
+    "用户要求的单位是单张混合组景：完整场景底板 + 自绘/生产的可解释资源层，最终扁平为一张场景图。"
+  ],
+  "correctedAcceptance": [
+    "不得生产或验收地图链、循环长卷、链头/链尾或过渡图。",
+    "只做一张 Rooftops 混合组景候选，保留完整场景空间，不输出孤立建筑抠图作为交付。",
+    "候选必须记录 generated base、hand-drawn/resource layers、depth/placement 和最终 flattened composite。",
+    "自绘/生成资源必须与批准的冷蓝青雾夜材质融合，不能像贴纸或第二套描边。",
+    "只生成离线 review 候选；用户 ART_APPROVED 前不修改 runtime、catalog 或 ComponentRenderer。"
+  ],
+  "route": {
+    "selected": "formal-fixer",
+    "reason": "此前已出现多轮候选拒绝，且交付单位与运行时职责反复漂移；需要冻结错误链/过渡候选并重新建立单张混合组景合同，再走离线验收。"
+  },
+  "status": "OPEN",
+  "createdAt": "2026-09-23T00:00:00Z"
+}

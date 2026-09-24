@@ -13,6 +13,7 @@ export const NIGHT_CITY_ASSET_PATHS = Object.freeze({
   marketV2: new URL('./assets/night-city/market-panorama-v2.png', import.meta.url).href,
   rooftops: new URL('./assets/night-city/rooftops-panorama-v1.png', import.meta.url).href,
   rooftopsV2: new URL('./assets/night-city/rooftops-panorama-v2.png', import.meta.url).href,
+  rooftopsTransitionV36: new URL('./assets/night-city/rooftops-transition-v36-fullheight.png', import.meta.url).href,
   waterfront: new URL('./assets/night-city/waterfront-panorama-v1.png', import.meta.url).href,
   waterfrontV2: new URL('./assets/night-city/waterfront-panorama-v2.png', import.meta.url).href,
   districtTransitionMist: new URL('./assets/night-city/district-transition-mist-v1.png', import.meta.url).href,
@@ -35,6 +36,7 @@ export const NIGHT_CITY_LAYER_CONFIG = Object.freeze({
 export type NightCityAssetKey =
   | 'night-city-market-v1' | 'night-city-market-v2'
   | 'night-city-rooftops-v1' | 'night-city-rooftops-v2'
+  | 'night-city-rooftops-transition-v36'
   | 'night-city-waterfront-v1' | 'night-city-waterfront-v2'
   | 'night-city-district-transition-mist'
   | 'night-city-foreground-eaves';
@@ -123,6 +125,7 @@ const PANORAMA_PATHS: Record<NightCityAssetKey, string> = {
   'night-city-market-v2': NIGHT_CITY_ASSET_PATHS.marketV2,
   'night-city-rooftops-v1': NIGHT_CITY_ASSET_PATHS.rooftops,
   'night-city-rooftops-v2': NIGHT_CITY_ASSET_PATHS.rooftopsV2,
+  'night-city-rooftops-transition-v36': NIGHT_CITY_ASSET_PATHS.rooftopsTransitionV36,
   'night-city-waterfront-v1': NIGHT_CITY_ASSET_PATHS.waterfront,
   'night-city-waterfront-v2': NIGHT_CITY_ASSET_PATHS.waterfrontV2,
   'night-city-district-transition-mist': NIGHT_CITY_ASSET_PATHS.districtTransitionMist,
@@ -306,16 +309,17 @@ export class NightCityRenderer {
       const previous = plan.chunks[index - 1]!;
       const chunk = plan.chunks[index]!;
       const districtChange = previous.district !== chunk.district;
+      const rooftopVariantJoin = previous.district === 'rooftops' && chunk.district === 'rooftops';
       desired.set(`transition:${chunk.index}`, {
-        key: 'night-city-district-transition-mist',
-        x: chunk.startX - 150,
+        key: rooftopVariantJoin ? 'night-city-rooftops-transition-v36' : 'night-city-district-transition-mist',
+        x: rooftopVariantJoin ? chunk.startX - 320 : chunk.startX - 150,
         y: 0,
         // A light veil is present at every raster join so the two approved
         // variants in one district blend as one continuous street. District
         // changes use the same artwork with a stronger treatment below.
-        width: districtChange ? 300 : 220,
+        width: rooftopVariantJoin ? 640 : districtChange ? 300 : 220,
         height: PANORAMA_CANVAS_HEIGHT,
-        depth: districtChange ? -9 : -8,
+        depth: rooftopVariantJoin || districtChange ? -9 : -8,
         cropX: 0,
         cropY: 0,
       });
@@ -347,7 +351,7 @@ export class NightCityRenderer {
         this.retained.set(id, item);
       }
       item.image.setOrigin(0, 0).setPosition(spec.x, spec.y).setDisplaySize(spec.width, spec.height)
-        .setDepth(spec.depth).setAlpha(spec.depth === -20 ? 1 : spec.depth === -9 || spec.depth === -8 ? 0.08 : 0.9);
+        .setDepth(spec.depth).setAlpha(spec.depth === -20 || spec.key === 'night-city-rooftops-transition-v36' ? 1 : spec.depth === -9 || spec.depth === -8 ? 0.08 : 0.9);
       item.image.setScrollFactor?.(spec.depth === -20 || spec.depth === -9
         ? NIGHT_CITY_LAYER_CONFIG.panoramaScrollFactor
         : NIGHT_CITY_LAYER_CONFIG.foregroundScrollFactor, 0);

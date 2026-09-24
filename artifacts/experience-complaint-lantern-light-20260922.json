@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户确认 v17 使用了生成氛围底板、自绘 raster 组件和分层合成，但指出灯笼元素必须发光；当前 v17 将 lantern-cable 组件整体压成蓝黑墨块，缺少独立暖光层。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy"
+  ],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "问题局限在候选灯笼的分层表现；只修改候选 artifacts 和验证，不接入 runtime。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "核心玩法与自然旅程 QA",
+      "其他游戏 run",
+      "未批准的 runtime/catalog 接入"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "查看 v17 暗色与浅色合成。",
+      "检查 v17 的 hand-drawn inputs 与 tint 处理。",
+      "对照定稿图中的暖黄灯笼光点。"
+    ],
+    "observed": [
+      "v17 的 lantern-cable 与建筑组件使用同一蓝黑墨块处理。",
+      "只有一个临时暖色小矩形，不是由灯笼组件产生的独立发光层。",
+      "定稿风格需要灯绳/挂点是冷暗结构，灯笼本体和局部光晕是克制暖黄。"
+    ],
+    "evidence": [
+      {
+        "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v17-low-band-embedded/rooftops-low-building-mass-v17-low-band-embedded.png",
+        "sha256": "bdd87dd5f82cb2f6ed01d5b1e9fd6832df72d8506a538a7acc5a47767ef4a40f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+        "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+        "kind": "reference",
+        "provenance": "verified-reference"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "灯绳和挂点留在冷暗结构层，灯笼本体从 raster 组件中分离为暖黄层。",
+    "每盏灯有低半径暖色光晕，光晕不变成白雾或大面积泛光。",
+    "灯笼暖光应自然嵌入生成底板和暗色建筑层，不能像贴图叠加。",
+    "透明、浅色、深色和饱和背景验证通过；ART_APPROVED 前不接入 runtime。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-22T05:10:00.000Z"
+}

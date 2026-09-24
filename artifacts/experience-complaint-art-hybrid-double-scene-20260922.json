@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reportedAt": "2026-09-22T08:10:00+08:00",
+  "report": "用户反馈当前候选仍然不对，要求重新思考。",
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v26-approved-raster-assembly/qa/runtime-preview-over-rooftops-panorama-v2.png",
+      "role": "current-candidate-review",
+      "observation": "完整 rooftops-panorama-v2 与同语义屋脊/棚架 raster 叠加，出现重复轮廓和双场景感。"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+      "role": "verified-style-authority",
+      "observation": "定稿图是统一的冷蓝青雾夜、分层剪影和受控负空间；不是把两个完整场景相加。"
+    }
+  ],
+  "classification": {
+    "category": "art-direction-and-compositing",
+    "rootCauseHypothesis": "v26 把完整 panorama 当成底板，同时叠加了包含屋脊/棚架语义的组件；这违反混合生产中 generated atmosphere plate 与 authored raster component 的职责分离。",
+    "scope": "single-art-candidate",
+    "route": "direct-builder"
+  },
+  "acceptanceCriteria": [
+    "新候选只做 rooftops.lowBuildingMass，不改变 lanternCable 和完整 panorama 资产。",
+    "生成层只承担连续冷蓝青雾和远处低位建筑质量；禁止重复完整屋顶、灯笼、HUD 和完整牌坊。",
+    "自绘 raster 组件作为低位近中景结构嵌入生成层，不与完整 panorama 同时作为两个完整场景叠加。",
+    "输出保留真实 alpha；透明区 RGB 清零，并通过 light/dark/saturated 三种背景复核。",
+    "候选完成后保持 ART_CANDIDATE_PENDING_USER_REVIEW，未获 ART_APPROVED 前不接入 runtime/catalog。"
+  ]
+}

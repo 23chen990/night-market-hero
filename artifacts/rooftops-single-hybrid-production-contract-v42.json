@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "single-scene-hybrid-production-contract",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "status": "ACTIVE",
+  "assetUnit": "one complete offline Rooftops scene composite",
+  "canvas": {"width": 1672, "height": 941, "finalMode": "RGB"},
+  "inputs": {
+    "completeSceneOwner": "src/assets/night-city/rooftops-panorama-v2.png",
+    "generatedResource": "rooftops-side-eave-support-v2.png",
+    "selfDrawnResources": ["lantern-cable-v1.png", "stall-canopy-v1.png", "bamboo-scaffold-v1.png"]
+  },
+  "assembly": {
+    "order": ["complete-scene-base", "mid-support-and-lanterns", "near-side-eave", "softened-canopy-and-scaffold", "flatten-to-rgb"],
+    "materialRule": "resources are color-graded, softened and occluded into the same cold blue/teal night material; warm lantern pixels remain sparse",
+    "supportRule": "every new eave/canopy has visible posts, beam or wall support; no floating roof",
+    "negativeSpaceRule": "keep the central flight corridor open; resources do not form a cross-map bridge",
+    "forbidden": ["map stitching", "background chain", "transition/bridge asset", "second opaque panorama", "runtime-generated scenery", "checkerboard matte"]
+  },
+  "review": {
+    "desktop": "1672x941",
+    "mobile": "844x390",
+    "approvalGate": "ART_APPROVED",
+    "runtimeBeforeApproval": "unchanged"
+  },
+  "supersedes": [
+    "rooftops-chain-production-contract-v40",
+    "rooftops-chain-plan-correction-20260923",
+    "rooftops-material-contract-v38"
+  ]
+}

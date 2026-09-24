@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "issueId": "rooftops-chain-plan-drift-20260923",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户指出当前生产又回到了已废弃的过渡/桥接图方案，要求重新阅读交接计划。",
+  "classification": [
+    "factory-routing",
+    "scope-mismatch",
+    "asset-composition-mismatch"
+  ],
+  "authoritativePlan": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916/infinite-bg-chain-plan-20260917.md",
+  "handoffPrompt": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916/chain-gen-handoff-prompt-20260917.md",
+  "observedDrift": [
+    "生产单位被错误设为 560x941 bridge/transition plate。",
+    "交接计划要求的是 1672x941 完整不透明链图。",
+    "交接计划要求链内单向右缘续画、链头/链尾暗角，没有独立过渡图。"
+  ],
+  "correctedAcceptance": [
+    "下一候选命名为 rooftops-c1-t01，不使用 transition/bridge 命名。",
+    "输出 PNG 原图，尺寸 1672x941，完全不透明。",
+    "rooftops-c1-t01 左侧约 160px 自然收暗，右缘保持正常结构以供 t02 续画。",
+    "风格遵循冷蓝青雾夜、低曝光、深色剪影、少量暖灯；结构必须有支撑。",
+    "通过尺寸、模式、色彩基准、左右缘和 844x390/1672x941 预览后再继续下一张。",
+    "未获用户 ART_APPROVED 前不接入 approved-runtime、catalog 或 ComponentRenderer。"
+  ],
+  "status": "SUPERSEDED_BY_USER_SCOPE_CORRECTION",
+  "supersededBy": "experience-complaint-no-map-stitch-20260923"
+}

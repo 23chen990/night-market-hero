@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "infinite-background-chain-production-contract",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "status": "SUPERSEDED_BY_USER_SCOPE_CORRECTION",
+  "architecture": {
+    "chains": 10,
+    "framesPerChain": 10,
+    "closedLoop": false,
+    "unit": "full opaque background frame"
+  },
+  "assetSpec": {
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB or fully opaque RGBA",
+    "format": "PNG source; JPEG q85 only at ingestion",
+    "transitionAssets": false
+  },
+  "firstCandidate": {
+    "name": "rooftops-c1-t01.png",
+    "flavor": "rooftops",
+    "chain": "c1",
+    "sequence": "t01",
+    "leftEdge": "naturally dark/simplified for approximately 160px",
+    "rightEdge": "normal continuation for t02"
+  },
+  "chainRules": [
+    "t02-t09 use the previous frame right edge as the sole structural reference",
+    "t10 right edge is naturally dark/simplified; no half-floating structure",
+    "chain heads and tails do not touch each other in the runtime",
+    "no CSS/Phaser-drawn scenery and no transparent fog-only seam cover",
+    "resource images may be produced as intermediate inputs, but each delivered chain frame is flattened into one opaque scene"
+  ],
+  "style": {
+    "authority": [
+      "rooftops-panorama-v1",
+      "rooftops-panorama-v2",
+      "approved final style samples"
+    ],
+    "palette": "cold blue/teal fog night, deep blue silhouettes, sparse warm lanterns",
+    "avoid": [
+      "bright cyan rim",
+      "high-frequency concept-art detail",
+      "checkerboard",
+      "watermark",
+      "text"
+    ]
+  },
+  "roundWorkflow": "Produce one chain frame, validate its right-edge continuation contract, seek art review, then use it as the next frame reference.",
+  "runtime": {
+    "status": "NOT_INTEGRATED",
+    "approvalGate": "ART_APPROVED"
+  },
+  "supersededBy": "experience-complaint-no-map-stitch-20260923",
+  "supersededAt": "2026-09-23T00:00:00Z"
+}

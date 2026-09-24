@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "asset-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "sourceEvidence": [
+    "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+    "reference-evidence/incoming/ChatGPT-Image-2026-9-17-16_19_06-3-c1e4c3b5258d.png"
+  ],
+  "cells": [
+    {
+      "objectType": "water surface",
+      "lifecycleOrStateBranch": "candidate production",
+      "rendererOrPresentationPath": "generated raster → alpha repair → approval board",
+      "deviceOrViewport": "1672x941 authority comparison",
+      "result": "REJECTED_STYLE",
+      "rootCause": "graphic brush texture and value contrast diverge from final authority water openings"
+    },
+    {
+      "objectType": "foreground deck/rail",
+      "lifecycleOrStateBranch": "candidate production",
+      "rendererOrPresentationPath": "RGB checkerboard source → alpha repair",
+      "deviceOrViewport": "light/dark/saturated composites",
+      "result": "REJECTED_SOURCE_PROVENANCE",
+      "rootCause": "source preview contains checkerboard pixels; repaired derivative is not yet an authority-matched production asset"
+    },
+    {
+      "objectType": "lantern reflection",
+      "lifecycleOrStateBranch": "candidate production",
+      "rendererOrPresentationPath": "generated raster → alpha repair → approval board",
+      "deviceOrViewport": "dark authority comparison",
+      "result": "REJECTED_STYLE",
+      "rootCause": "orange intensity and regular cluster presentation are too bright and too graphic"
+    },
+    {
+      "objectType": "runtime integration",
+      "lifecycleOrStateBranch": "default browser journey",
+      "rendererOrPresentationPath": "runtime source/catalog",
+      "deviceOrViewport": "all",
+      "result": "PASS_SCOPE_GUARD",
+      "rootCause": "v45/v46 candidates were never integrated into the generated game"
+    }
+  ],
+  "acceptance": [
+    "The final style authority is the primary material/value reference for the next candidate.",
+    "Any checkerboard RGB source remains quarantined and is not used as a delivered asset.",
+    "The replacement candidate passes alpha, matte and authority-style checks before another scene composition."
+  ]
+}

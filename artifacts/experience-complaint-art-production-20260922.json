@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户指出当前 rooftops.lowBuildingMass 候选整体连续场景方向尚可，但几张候选缩略图完全偏离定稿风格；用户提醒交接明确要求“自绘 raster 结构组件 + 生成氛围/连续场景素材”结合。此前尝试把整张图几何化、后处理成统一色块，丢失了定稿图的深蓝吸光、剪纸边缘、真实支撑结构和层次。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "问题已定位在候选资产生产配方，尚未接入默认运行时；只需重做 artifacts 候选和验收记录，不修改核心玩法、schema、保存或发布配置。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "与当前资产无关的自然旅程 QA 日志",
+      "其他游戏 run 的素材与工厂回归结果",
+      "尚未通过用户 ART_APPROVED 的 runtime/catalog 接入细节"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "查看用户当前上传的四张候选对比图并与已验证定稿风格图对照。",
+      "读取 PROJECT_HANDOFF.md、handoff-context-20260917.md 与无限地图链式生产方案。",
+      "检查现有 approved-runtime/environment raster 组件与 rooftops-panorama-v2 连续场景素材。",
+      "对比此前 v7–v11 候选：整图生成、几何矢量化、低分辨率合并都没有执行“生成底板 + 自绘组件组景”的交接方案。"
+    ],
+    "observed": [
+      "连续场景的冷蓝青雾方向可保留，但候选要么只剩孤立屋檐/山形块面，要么保留生成器的细线和纹理，均未形成可控的剪纸式结构层。",
+      "交接已明确“美术组件＋代码组景”，静态建筑/支撑分组缓存或导出，人物/船/动态灯笼/受力绳索独立；禁止 CSS 渐变或 Phaser Graphics 代替 raster 素材。",
+      "现有 approved-runtime/environment 已包含 stall-canopy、paifang-crossbeam、bamboo-scaffold、lantern-cable、inner-eave 等可复用自绘 raster 组件。"
+    ],
+    "evidence": [
+      {
+        "path": "reference-evidence/verified/codex-clipboard-4486b82f-20e6-4f9d-822f-4b832ca1a62d-c54500dcee3e.png",
+        "sha256": "c54500dcee3e29acabff0e93a1293da3ab2a8274f90458934d4f11fe424dbab0",
+        "kind": "user-report",
+        "provenance": "verified-reference"
+      },
+      {
+        "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+        "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+        "kind": "reference",
+        "provenance": "verified-reference"
+      },
+      {
+        "path": "PROJECT_HANDOFF.md",
+        "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "artifacts/handoff-context-20260917.md",
+        "sha256": "add0937f6784f0fa68b6616c2208fce2881a31f48b5933a9107247c860da612d",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "候选生产记录明确拆分 generated atmospheric plate 与 hand-drawn raster component layers，并保存各层源文件/哈希。",
+    "连续场景底板保持定稿的冷蓝青雾、深色吸光剪影和少量暖光，不使用高频材质纹理或纯几何山形替代。",
+    "自绘组件使用现有已认可 raster 资产或同风格新绘组件，具有可理解的柱、梁、棚架、屋檐承重关系，并以层级合成形成连续夜市空间。",
+    "输出透明候选及浅色、深色、饱和背景合成检查；透明像素 RGB 清零，不能有棋盘格、白雾 matte、halo 或边缘污染。",
+    "用户明确 ART_APPROVED 前不修改 catalog、approved-runtime 或默认 panorama 路径。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-22T04:15:00.000Z"
+}

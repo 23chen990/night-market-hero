@@ -16,7 +16,11 @@ await page.waitForFunction(() => Boolean((window as Window & { __PROTOTYPE_TEST_
 await page.waitForSelector('canvas');
 assert.equal(await page.locator('canvas').count(), 1);
 assert.equal(await page.locator('#app').getAttribute('data-ui-preload'), 'ready');
-assert.equal(await page.locator('#app').evaluate((element) => getComputedStyle(element).backgroundColor), 'rgb(8, 24, 35)');
+// The image-backed scene owns the visible background. The app shell must stay
+// transparent so the panorama/canvas can cover the full reference stage;
+// keeping the old opaque-shell assertion here makes a healthy file launch
+// report a false failure.
+assert.equal(await page.locator('#app').evaluate((element) => getComputedStyle(element).backgroundColor), 'rgba(0, 0, 0, 0)');
 assert.deepEqual(errors, []);
 
 await browser.close();

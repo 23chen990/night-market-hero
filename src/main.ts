@@ -125,9 +125,12 @@ declare global {
 }
 
 async function bootstrap(): Promise<void> {
-const querySeed = Number(new URLSearchParams(window.location.search).get('seed')) || 31;
+const query = new URLSearchParams(window.location.search);
+const querySeed = Number(query.get('seed')) || 31;
+const freshStart = query.get('fresh') === '1';
 const runSnapshotStorage = new LocalRunSnapshotStorage();
-const candidateRun = runSnapshotStorage.load();
+if (freshStart) runSnapshotStorage.clear();
+const candidateRun = freshStart ? null : runSnapshotStorage.load();
 // Never resume legacy fixed-level runs into the endless product path. A v2
 // snapshot may only restore the tutorial or the explicitly unlocked patrol.
 const restoredRun = candidateRun && ['lantern-entry', 'night-patrol'].includes(candidateRun.state.levelId)

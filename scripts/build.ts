@@ -26,6 +26,23 @@ let script = (await readFile(resolve(assetDirectory, scriptName), 'utf8'))
   .replaceAll('</body', '<\\/body')
   .replaceAll('</foreignObject', '<\\/foreignObject')
   .replaceAll('</svg', '<\\/svg');
+
+// `longmap-art-catalog.ts` intentionally keeps its component paths as
+// runtime-relative URLs so the source module remains importable in Node-based
+// tests. Vite cannot discover those files through the catalog's dynamic
+// `new URL(path, import.meta.url)` call, so inline the declared component
+// sources explicitly while producing the classic, self-contained playable.
+const catalogSource = await readFile(resolve(root, 'src/longmap-art-catalog.ts'), 'utf8');
+const catalogAssetPaths = [...catalogSource.matchAll(/(['"`])(\.\/assets\/[^'"`]+\.(?:png|webp|jpg|jpeg))\1/g)]
+  .map((match) => match[2]!)
+  .filter((path, index, paths) => paths.indexOf(path) === index);
+for (const relativePath of catalogAssetPaths) {
+  const assetPath = resolve(root, 'src', relativePath.slice(2));
+  const extension = relativePath.split('.').pop()?.toLowerCase();
+  const mime = extension === 'webp' ? 'image/webp' : extension === 'jpg' || extension === 'jpeg' ? 'image/jpeg' : 'image/png';
+  const data = `data:${mime};base64,${(await readFile(assetPath)).toString('base64')}`;
+  script = script.replaceAll(relativePath, data);
+}
 for (const asset of assets.filter((name) => /\.(png|webp|jpg|jpeg)$/i.test(name))) {
   const mime = asset.endsWith('.webp') ? 'image/webp' : asset.endsWith('.jpg') || asset.endsWith('.jpeg') ? 'image/jpeg' : 'image/png';
   const data = `data:${mime};base64,${(await readFile(resolve(assetDirectory, asset))).toString('base64')}`;
@@ -39,6 +56,9 @@ script = script.replace(/new URL\(`(data:image\/(?:png|webp|jpeg);base64,[^`]+)`
 // self-contained playable is a classic script, so every such form must become
 // the plain data URL before it is embedded.
 script = script.replace(/new URL\(``\+`(data:image\/(?:png|webp|jpeg);base64,[^`]+)`,``\+import\.meta\.url\)\.href/g, '`$1`');
+// The catalog's dynamic path is now a data URL for every available component
+// asset. Strip the module-only base resolution from the classic script.
+script = script.replace(/new URL\(([A-Za-z_$][\w$]*),import\.meta\.url\)\.href/g, '$1');
 html = html.replace(/<script[^>]+src="[^"]+"[^>]*><\/script>/, '');
 const closingBody = html.lastIndexOf('</body>');
 if (closingBody < 0) throw new Error('Build HTML is missing a closing body tag');

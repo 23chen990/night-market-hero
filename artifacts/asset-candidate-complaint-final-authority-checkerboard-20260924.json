@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "asset-candidate-complaint",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "userFeedback": "主要要参照定稿图，还有你有被格纹烘焙进去了",
+  "evidence": {
+    "styleAuthority": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+    "targetEffectReferences": [
+      "reference-evidence/incoming/codex-clipboard-81103e8e-9912-4b4e-a0ea-5f204ab882b8-4ee8cc0cd9f4.png",
+      "reference-evidence/incoming/ChatGPT-Image-2026-9-17-16_19_06-2-66b3d548860e.png",
+      "reference-evidence/incoming/ChatGPT-Image-2026-9-17-16_19_06-1-237c9c90d959.png",
+      "reference-evidence/incoming/ChatGPT-Image-2026-9-17-16_19_06-3-c1e4c3b5258d.png"
+    ],
+    "candidateBatches": [
+      "rooftops-foreground-rail-v45",
+      "rooftops-water-resources-v46"
+    ]
+  },
+  "classification": [
+    "final-style-authority-not-used-as-primary-production-reference",
+    "generated-material-too-graphic-or-too-3d",
+    "checkerboard-present-in-generation-source-preview",
+    "candidate-rejected-before-approval"
+  ],
+  "reproductionMatrix": [
+    {
+      "objectType": "water surface component",
+      "lifecycleOrStateBranch": "offline asset approval",
+      "rendererOrPresentationPath": "v46 generated RGBA candidate and approval board",
+      "deviceOrViewport": "light/dark/saturated composites",
+      "result": "REPRODUCED_STYLE_MISMATCH",
+      "evidence": "The generated water reads as a high-contrast graphic brush blob rather than the subdued layered water opening in the final style authority."
+    },
+    {
+      "objectType": "foreground market deck/rail",
+      "lifecycleOrStateBranch": "offline asset approval",
+      "rendererOrPresentationPath": "v45 generated source preview and repaired candidate",
+      "deviceOrViewport": "light/dark/saturated composites",
+      "result": "REPRODUCED_SOURCE_MATTE_RISK",
+      "evidence": "The image-generation source is RGB with a visible checkerboard preview. The repaired copy passes the current alpha heuristic, but the source must remain quarantined and the candidate must not be treated as approved until it is regenerated or independently repainted from the authority material."
+    },
+    {
+      "objectType": "lantern reflection cluster",
+      "lifecycleOrStateBranch": "offline asset approval",
+      "rendererOrPresentationPath": "v46 generated RGBA candidate",
+      "deviceOrViewport": "light/dark/saturated composites",
+      "result": "REPRODUCED_STYLE_MISMATCH",
+      "evidence": "Orange reflections are too saturated and evenly presented relative to the low-luminance, fogged reflections in the final style authority."
+    }
+  ],
+  "rootCause": [
+    "The final style authority was used as a general visual reference but not as the primary material and value reference for each generated resource.",
+    "The image-generation output supplied a checkerboard RGB preview; repairing a mask cannot make that source the authoritative production input.",
+    "The candidates were evaluated as isolated objects instead of first checking their value range, edge softness and atmospheric integration against the authority image."
+  ],
+  "requiredCorrection": [
+    "Quarantine the v45/v46 generated source previews and mark the current candidates superseded/rejected for style approval.",
+    "Produce the next water, reflection and deck resources from the final authority plus the approved v04 component language; no checkerboard RGB input may be used as a delivered asset.",
+    "Use genuinely transparent alpha-capable PNG/WebP and verify alpha plus light/dark/saturated composites before showing another approval board.",
+    "Review material/value first at the final authority's dark blue-black range; only then evaluate the small resource silhouette."
+  ],
+  "route": "formal-asset-review",
+  "status": "REJECTED_BY_USER"
+}

@@ -12,7 +12,7 @@ describe('night-city image renderer', () => {
   test('plans distinct image-backed market, rooftop, and waterfront chunks', () => {
     const plan = createNightCityRenderPlan(73, 0, 9_600);
     assert.ok(plan.chunks.length > 0);
-    assert.deepEqual(Object.keys(NIGHT_CITY_ASSET_PATHS).sort(), ['districtTransitionMist', 'foregroundEaves', 'gateCounterFrame', 'market', 'marketV2', 'rooftops', 'rooftopsV2', 'settingsGear', 'waterfront', 'waterfrontV2']);
+    assert.deepEqual(Object.keys(NIGHT_CITY_ASSET_PATHS).sort(), ['districtTransitionMist', 'foregroundEaves', 'gateCounterFrame', 'market', 'marketV2', 'rooftops', 'rooftopsTransitionV36', 'rooftopsV2', 'settingsGear', 'waterfront', 'waterfrontV2']);
     assert.deepEqual(new Set(plan.chunks.map((chunk) => chunk.district)), new Set(['market', 'rooftops']));
     const waterfrontPlan = createNightCityRenderPlan(73, 10 * 1_600, 15 * 1_600);
     assert.ok(waterfrontPlan.chunks.some((chunk) => chunk.district === 'waterfront'));
@@ -60,6 +60,7 @@ describe('night-city image renderer', () => {
     assert.ok(loaded.includes('night-city-waterfront-v1'));
     assert.ok(loaded.includes('night-city-waterfront-v2'));
     assert.ok(loaded.includes('night-city-district-transition-mist'));
+    assert.ok(loaded.includes('night-city-rooftops-transition-v36'));
     assert.equal(images.length, 0, 'preload must not make an image visible');
 
     renderer.render(scene, 73, 0, 2_000);
@@ -160,6 +161,42 @@ describe('night-city image renderer', () => {
     assert.ok(veils.length >= boundaryCount,
       'every panorama join, including same-district variants, needs a raster veil');
     assert.ok(veils.every((item) => item.alpha <= 0.1), 'transition mist must stay subtle enough to avoid a repeated vertical pillar');
+  });
+
+  test('uses the approved single full-height PNG for Rooftops variant seams', () => {
+    const loaded = new Set<string>();
+    const rendered: Array<{ key: string; width: number; height: number; alpha: number }> = [];
+    const scene = {
+      load: { image: (key: string) => loaded.add(key) },
+      textures: { exists: (key: string) => loaded.has(key) },
+      add: { image: (_x: number, _y: number, key: string) => {
+        let alpha = 1;
+        const image = {
+          setOrigin() { return image; },
+          setPosition() { return image; },
+          setDisplaySize(width: number, height: number) { rendered.push({ key, width, height, alpha }); return image; },
+          setDepth() { return image; },
+          setVisible() { return image; },
+          setAlpha(value: number) { alpha = value; return image; },
+          setScrollFactor() { return image; },
+          destroy() { return undefined; },
+        };
+        return image;
+      } },
+    };
+    const renderer = createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 });
+    const plan = createNightCityRenderPlan(73, 5 * 1_600, 9 * 1_600);
+    const rooftopSeams = plan.chunks.slice(1).filter((chunk, index) => (
+      chunk.district === 'rooftops' && plan.chunks[index]!.district === 'rooftops'
+    ));
+    assert.ok(rooftopSeams.length > 0, 'fixture must include a Rooftops variant seam');
+    renderer.render(scene, 73, 5 * 1_600, 9 * 1_600);
+    const carriers = rendered.filter((item) => item.key === 'night-city-rooftops-transition-v36');
+    assert.equal(carriers.length, rooftopSeams.length, 'each Rooftops variant seam uses one carrier image');
+    assert.ok(carriers.every((item) => item.width === 640 && item.height === 941 && item.alpha === 1),
+      'the carrier keeps the approved full-height dimensions and native alpha');
+    assert.ok(!rendered.some((item) => item.key.includes('bridge-architecture') || item.key.includes('seam-fog')),
+      'runtime must not load the bridge or fog layer candidates');
   });
 
   test('keeps both screen-space streams covered at far camera positions', () => {

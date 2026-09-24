@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "asset-review-decision",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "decision": "REJECTED_AND_PAUSED",
+  "userFeedback": "1. water-surface-segment-v1 2. lantern-reflection-cluster-v1 3. foreground-market-deck-rail-v2 这三个都不审批通过，算了你先不做水面效果不",
+  "rejectedCandidates": [
+    {
+      "id": "water-surface-segment-v1",
+      "batch": "rooftops-water-resources-v46"
+    },
+    {
+      "id": "lantern-reflection-cluster-v1",
+      "batch": "rooftops-water-resources-v46"
+    },
+    {
+      "id": "foreground-market-deck-rail-v2",
+      "batch": "rooftops-foreground-rail-v45"
+    }
+  ],
+  "pausedScope": [
+    "water-surface",
+    "lantern-reflection",
+    "foreground-market-deck-rail",
+    "water-reflection-composition"
+  ],
+  "runtime": {
+    "status": "NOT_INTEGRATED",
+    "catalogChanged": false,
+    "componentRendererChanged": false
+  },
+  "nextAction": "Do not generate, compose or integrate water-effect resources until the user explicitly resumes this scope."
+}

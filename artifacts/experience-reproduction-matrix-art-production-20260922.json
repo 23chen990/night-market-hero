@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "generated atmospheric plate",
+      "hand-drawn raster environment component",
+      "hybrid composite"
+    ],
+    "lifecycleStateBranches": [
+      "candidate-preview",
+      "approved-runtime",
+      "default-panorama-runtime"
+    ],
+    "rendererPaths": [
+      "artifact-preview",
+      "night-city-renderer.ts",
+      "component-renderer"
+    ],
+    "viewports": [
+      {
+        "label": "panorama-master",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "plate-candidate-strip",
+      "objectType": "generated atmospheric plate",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "冷蓝青雾底板连续，透明开口干净，无 UI/人物/材质噪声。",
+      "observed": "现有全图生成候选可提供连续场景，但直接 posterize 会丢失可控层次；需单独保留 generated plate。",
+      "evidence": [
+        {
+          "path": "reference-evidence/verified/codex-clipboard-4486b82f-20e6-4f9d-822f-4b832ca1a62d-c54500dcee3e.png",
+          "sha256": "c54500dcee3e29acabff0e93a1293da3ab2a8274f90458934d4f11fe424dbab0",
+          "kind": "user-report",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        }
+      ]
+    },
+    {
+      "id": "component-candidate-strip",
+      "objectType": "hand-drawn raster environment component",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "PASS",
+      "expected": "棚架、屋檐、梁柱和灯绳为独立 raster 层，可按深度组景。",
+      "observed": "现有 approved-runtime/environment 组件已具备这些结构；尚未形成新的 rooftops.lowBuildingMass 候选合成。",
+      "evidence": [
+        {
+          "path": "PROJECT_HANDOFF.md",
+          "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "hybrid-candidate-strip",
+      "objectType": "hybrid composite",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "generated atmosphere 与 hand-drawn components 叠合后形成连续、可读的低位建筑质量块。",
+      "observed": "此前 v7–v11 没有采用该配方；候选偏孤立几何或生成器细节。",
+      "evidence": [
+        {
+          "path": "reference-evidence/verified/codex-clipboard-4486b82f-20e6-4f9d-822f-4b832ca1a62d-c54500dcee3e.png",
+          "sha256": "c54500dcee3e29acabff0e93a1293da3ab2a8274f90458934d4f11fe424dbab0",
+          "kind": "user-report",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "PROJECT_HANDOFF.md",
+          "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "artifacts/handoff-context-20260917.md",
+          "sha256": "add0937f6784f0fa68b6616c2208fce2881a31f48b5933a9107247c860da612d",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "hybrid-runtime-panorama",
+      "objectType": "hybrid composite",
+      "lifecycleStateBranch": "approved-runtime",
+      "rendererPath": "night-city-renderer.ts",
+      "viewport": {
+        "label": "panorama-master",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "只有 ART_APPROVED 后才进入 catalog 与 runtime。",
+      "observed": "当前 catalogStatus=MISSING，尚未获用户 ART_APPROVED。",
+      "evidence": [
+        {
+          "path": "PROJECT_HANDOFF.md",
+          "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "hybrid-mobile-natural",
+      "objectType": "hybrid composite",
+      "lifecycleStateBranch": "default-panorama-runtime",
+      "rendererPath": "night-city-renderer.ts",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "自然输入下连续场景与遮挡层可读。",
+      "observed": "候选未接入默认路径，暂不能做自然输入感知 QA。",
+      "evidence": [
+        {
+          "path": "PROJECT_HANDOFF.md",
+          "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "用户反馈已定位为素材生产配方/参考一致性问题，不是通过继续调色或继续 posterize 整图可解决。",
+    "交接要求的最小正确方案是生成氛围底板与自绘 raster 结构组件结合，再以层级合成输出候选。",
+    "当前未接入 runtime，默认路径未被候选污染。"
+  ],
+  "remainingGaps": [
+    "需要制作一张 hybrid composite 候选并先让用户评审。",
+    "ART_APPROVED 前不能接入 catalog/runtime。",
+    "通过审批后仍需 1–3 张接入与自然输入感知 QA。"
+  ],
+  "createdAt": "2026-09-22T04:15:00.000Z"
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "generated atmospheric plate",
+      "hand-drawn component ink layer",
+      "hybrid composite"
+    ],
+    "lifecycleStateBranches": [
+      "candidate-preview",
+      "approved-runtime"
+    ],
+    "rendererPaths": [
+      "artifact-preview",
+      "night-city-renderer.ts"
+    ],
+    "viewports": [
+      {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "component-ink-preview",
+      "objectType": "hand-drawn component ink layer",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "组件作为暗蓝墨块和软边缘层嵌入底板。",
+      "observed": "v13 仍是高对比线稿贴层，边界明显。",
+      "evidence": [
+        {
+          "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v13-hybrid-ink-components/rooftops-low-building-mass-v13-hybrid-ink-components.png",
+          "sha256": "f8f25e9a95ff3e1ffd508889a2d984ce2e85408cdab4faf9d093d11446a84429",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        }
+      ]
+    },
+    {
+      "id": "hybrid-preview-light",
+      "objectType": "hybrid composite",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "浅色背景合成不显示独立贴图轮廓。",
+      "observed": "v13 浅色合成可见亮色组件轮廓与贴片感。",
+      "evidence": [
+        {
+          "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v13-hybrid-ink-components/rooftops-low-building-mass-v13-hybrid-ink-components.png",
+          "sha256": "f8f25e9a95ff3e1ffd508889a2d984ce2e85408cdab4faf9d093d11446a84429",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "hybrid-runtime",
+      "objectType": "hybrid composite",
+      "lifecycleStateBranch": "approved-runtime",
+      "rendererPath": "night-city-renderer.ts",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "批准后自然运行时读成单一场景。",
+      "observed": "尚未获 ART_APPROVED，未接入 runtime。",
+      "evidence": [
+        {
+          "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "v13 的问题是层合成与遮挡，不是用户否定混合素材路线。"
+  ],
+  "remainingGaps": [
+    "需要重新生成一张嵌入式墨块候选并进行三背景检查。",
+    "仍需用户 ART_APPROVED 才能接入。"
+  ],
+  "createdAt": "2026-09-22T04:45:00.000Z"
+}

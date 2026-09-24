@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "complaint": "v42 效果不对：仍像完整全景上贴模块，材质和层级割裂。",
+  "evidence": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-single-hybrid-v42/qa/rooftops-single-hybrid-v42-1672x941.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/README.md",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/scene.json"
+  ],
+  "matrix": [
+    {
+      "objectType": "single-scene-owner",
+      "lifecycleOrStateBranch": "offline art candidate",
+      "rendererOrPresentationPath": "v42 flat composite",
+      "deviceOrViewport": "1672x941 and 844x390",
+      "result": "REPRODUCED_REJECTED",
+      "evidence": "complete panorama + complete side module creates duplicate scene ownership"
+    },
+    {
+      "objectType": "single-scene-owner",
+      "lifecycleOrStateBranch": "offline art candidate",
+      "rendererOrPresentationPath": "v43 component-owned flat composite",
+      "deviceOrViewport": "1672x941 and 844x390",
+      "result": "PENDING_USER_REVIEW",
+      "evidence": "generated atmosphere plate + authored supports + atomic raster components"
+    },
+    {
+      "objectType": "lantern cable",
+      "lifecycleOrStateBranch": "mid-detail composition",
+      "rendererOrPresentationPath": "v43 cable after supports",
+      "deviceOrViewport": "1672x941 and 844x390",
+      "result": "PENDING_USER_REVIEW",
+      "evidence": "warm lanterns preserved; endpoints placed behind eaves/scaffold"
+    },
+    {
+      "objectType": "runtime integration",
+      "lifecycleOrStateBranch": "default browser journey",
+      "rendererOrPresentationPath": "runtime source/catalog",
+      "deviceOrViewport": "all",
+      "result": "PASS_SCOPE_GUARD",
+      "evidence": "candidate is offline only; runtime, catalog and ComponentRenderer unchanged"
+    }
+  ],
+  "acceptance": [
+    "No complete panorama input appears in the v43 manifest.",
+    "No map chain, bridge or transition asset appears.",
+    "User must approve ART_APPROVED before runtime changes."
+  ]
+}

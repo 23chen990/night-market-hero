@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "issueId": "rooftops-no-map-stitch-20260923",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "单张完整场景底板",
+      "自绘结构 raster 组件",
+      "生产的局部材质/氛围资源",
+      "最终扁平混合组景"
+    ],
+    "lifecycleStateBranches": [
+      "离线 art review",
+      "默认 Rooftops runtime preview",
+      "用户未批准候选",
+      "用户 ART_APPROVED 后的最小接入"
+    ],
+    "rendererPresentationPaths": [
+      "offline Pillow composite",
+      "NightCityRenderer complete-scene owner",
+      "legacy panorama/transition fallback"
+    ],
+    "viewports": [
+      {"label": "desktop-review", "width": 1672, "height": 941},
+      {"label": "mobile-landscape-review", "width": 844, "height": 390}
+    ]
+  },
+  "cells": [
+    {
+      "id": "single-composite-desktop",
+      "objectType": "最终扁平混合组景",
+      "lifecycleStateBranch": "离线 art review",
+      "rendererPresentationPath": "offline Pillow composite",
+      "viewport": {"label": "desktop-review", "width": 1672, "height": 941},
+      "status": "PENDING",
+      "expected": "一张完整场景图拥有统一材质；底板、结构组件、局部资源之间没有贴纸边缘或第二套透视。"
+    },
+    {
+      "id": "single-composite-mobile",
+      "objectType": "最终扁平混合组景",
+      "lifecycleStateBranch": "离线 art review",
+      "rendererPresentationPath": "offline Pillow composite",
+      "viewport": {"label": "mobile-landscape-review", "width": 844, "height": 390},
+      "status": "PENDING",
+      "expected": "缩小到移动横屏仍保留清楚的前中后景层级、飞行通道和少量暖灯。"
+    },
+    {
+      "id": "runtime-before-approval",
+      "objectType": "最终扁平混合组景",
+      "lifecycleStateBranch": "用户未批准候选",
+      "rendererPresentationPath": "NightCityRenderer complete-scene owner",
+      "viewport": {"label": "desktop-review", "width": 1672, "height": 941},
+      "status": "NOT_APPLICABLE",
+      "expected": "候选未批准前不改变运行时素材目录或默认 renderer。"
+    }
+  ],
+  "acceptance": [
+    "以单图 composite 作为验收对象，不以地图滚动或接缝指标作为验收对象。",
+    "确认场景 owner 只有一张完整底板，资源层只负责结构和材质强化。",
+    "确认用户 ART_APPROVED 前 runtime/catalog/ComponentRenderer 保持不变。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-23T00:00:00Z"
+}

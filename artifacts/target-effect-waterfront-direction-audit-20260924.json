@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "target-effect-direction-audit",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "status": "PAUSED_BY_USER",
+  "evidence": [
+    {
+      "id": "user-target-effect-reference-a-20260924",
+      "path": "reference-evidence/incoming/codex-clipboard-81103e8e-9912-4b4e-a0ea-5f204ab882b8-4ee8cc0cd9f4.png",
+      "sha256": "4ee8cc0cd9f4939454d68a32d4ec8421b5fc7baedf2a9df65508b97a7c9b4977",
+      "reviewStatus": "PENDING"
+    },
+    {
+      "id": "user-target-effect-reference-b-20260924",
+      "path": "reference-evidence/incoming/ChatGPT-Image-2026-9-17-16_19_06-2-66b3d548860e.png",
+      "sha256": "66b3d548860ef22a516e09698caf8c7c128cd88efee9a8d666fc39ae238b3f71",
+      "reviewStatus": "PENDING"
+    },
+    {
+      "id": "user-target-water-scene-a-20260924",
+      "path": "reference-evidence/incoming/ChatGPT-Image-2026-9-17-16_19_06-1-237c9c90d959.png",
+      "sha256": "237c9c90d9593bf2cd84f33b0d269079569dac55f3c053e597cfc75da55e60f2",
+      "reviewStatus": "PENDING"
+    },
+    {
+      "id": "user-target-water-scene-b-20260924",
+      "path": "reference-evidence/incoming/ChatGPT-Image-2026-9-17-16_19_06-3-c1e4c3b5258d.png",
+      "sha256": "c1e4c3b5258d591a5bac3a9b64bf0dc242641ec64fed986fcfbbc8cdf292b207",
+      "reviewStatus": "PENDING"
+    }
+  ],
+  "observations": [
+    "目标是一张有限的、密集组景的水上市集场景，不是整张可平铺地图或背景链。",
+    "前景由不等高木桩、横栏、摊台下沿、棚布和局部平台组成；底部轮廓有自然断口，不是连续的规则黑色遮挡带。",
+    "水面只从栏杆、桥桩和平台之间的开口露出；两张图的露水比例不同，水面边界被结构切碎。",
+    "暖橙灯影是水中的短促、断裂、低亮度反射，不能做成灯笼镜像或等距橙色条带。",
+    "材质统一为哑光蓝黑木、暗青蓝水面和少量暖橙高光；没有塑料高光、霓虹青边或镜面倒影。"
+  ],
+  "inferences": [
+    "底部资源应从 foreground-ground-occluder-v1 改名并改职责为局部 foreground-market-deck-rail，不再承担全宽遮挡。",
+    "水面和灯影需要分别作为可审批的透明资源；水面负责暗青蓝波纹，灯影负责少量断裂暖色反射。",
+    "最终组景可提供少水与多水两个有限构图参数，但不生产两张完整背景，也不做地图拼接。"
+  ],
+  "unknowns": [
+    "运行时首屏最终安全区和可见水面百分比仍需在目标移动画幅中验收。",
+    "水面资源的最终缩放上限和可重复次数需在离线组景中确定，避免复制纹理。"
+  ],
+  "resourceContract": [
+    {
+      "id": "water-surface-segment-v1",
+      "responsibility": "不规则上沿的暗青蓝水面片与细碎水平波纹",
+      "mustHave": [
+        "真实透明alpha",
+        "自然断口",
+        "可被桩台穿插",
+        "哑光蓝青材质"
+      ],
+      "mustNotHave": [
+        "完整水上市集",
+        "矩形蓝条",
+        "整幅水平渐变",
+        "建筑或灯笼烘焙"
+      ]
+    },
+    {
+      "id": "lantern-reflection-cluster-v1",
+      "responsibility": "独立的短促断裂暖橙水面反射组",
+      "mustHave": [
+        "三种以上长度/强度变化",
+        "波纹打断",
+        "亮度低于实灯",
+        "真实透明alpha"
+      ],
+      "mustNotHave": [
+        "灯笼几何镜像",
+        "等距重复条",
+        "整片橙色水面",
+        "绑定灯笼本体"
+      ]
+    },
+    {
+      "id": "foreground-market-deck-rail-v2",
+      "responsibility": "局部栈道栏杆、立柱、绳索和平台下沿",
+      "mustHave": [
+        "不等高立柱",
+        "水平梁和自然断点",
+        "透明缝隙",
+        "蓝黑哑光木材质"
+      ],
+      "mustNotHave": [
+        "全宽遮挡带",
+        "规则重复斜撑",
+        "完整建筑",
+        "自绘梯形底板"
+      ]
+    }
+  ],
+  "compositionAcceptance": [
+    "组景后水面只出现在目标开口；多水版本允许左侧较宽水域，右侧仍由局部平台压住。",
+    "少水版本底部以栏杆、摊台和局部平台为主，水面只从缝隙出现。",
+    "水面与反射位于结构后层，前景桩、栏杆和摊台切断其轮廓。",
+    "单资源审批页先展示透明资源和三种背景复合，再展示少水/多水落位，不先交付完整背景。"
+  ],
+  "runtimeScope": {
+    "changed": false,
+    "files": [],
+    "note": "本轮只更新参考证据和离线资源合同，未修改 generated game workspace/runtime/catalog。"
+  },
+  "candidateBatches": [
+    {
+      "id": "rooftops-foreground-rail-v45",
+      "review": "PENDING_USER_REVIEW",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-foreground-rail-v45/review.json"
+    },
+    {
+      "id": "rooftops-water-resources-v46",
+      "review": "PENDING_USER_REVIEW",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-water-resources-v46/review.json"
+    }
+  ],
+  "waterEffectsStatus": "PAUSED_BY_USER",
+  "decisionArtifact": "artifacts/asset-review-decision-water-effects-20260924.json"
+}

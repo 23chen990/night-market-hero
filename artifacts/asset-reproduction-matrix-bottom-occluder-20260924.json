@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "asset-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "candidateId": "foreground-ground-occluder-v1",
+  "sourceEvidence": "reference-evidence/incoming/codex-clipboard-c128fd14-9d73-46ee-9388-bf5dc7f0a7b3-0b8389a1c51c.png",
+  "cells": [
+    {
+      "objectType": "foreground ground/rail",
+      "lifecycleOrStateBranch": "resource approval",
+      "rendererOrPresentationPath": "v44 approval board",
+      "deviceOrViewport": "1672x941-equivalent board tile",
+      "result": "REPRODUCED_REJECTED",
+      "rootCause": "self-drawn regular trapezoid strip does not share v04 foreground rhythm"
+    },
+    {
+      "objectType": "foreground ground/rail",
+      "lifecycleOrStateBranch": "replacement candidate",
+      "rendererOrPresentationPath": "new resource candidate",
+      "deviceOrViewport": "light/dark/saturated composites",
+      "result": "PENDING_REPLACEMENT"
+    },
+    {
+      "objectType": "runtime asset",
+      "lifecycleOrStateBranch": "default browser journey",
+      "rendererOrPresentationPath": "runtime catalog and renderer",
+      "deviceOrViewport": "all",
+      "result": "PASS_SCOPE_GUARD",
+      "rootCause": "no runtime path references v44"
+    }
+  ],
+  "acceptance": [
+    "Replacement is independently reviewable before any scene composition.",
+    "The rejected v1 remains quarantined and is not reused as a style reference."
+  ]
+}

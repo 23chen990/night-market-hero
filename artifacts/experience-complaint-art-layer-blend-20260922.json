@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户指出 v13 混合候选看起来像两张图重叠：生成的连续场景底板与自绘 raster 组件的边缘、亮度和遮挡关系没有统一。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "问题已定位在候选合成的层混合/遮挡处理，只修改 artifacts 候选与验证记录，不接入 runtime、不改核心玩法。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "无关玩法与自然旅程证据",
+      "其他游戏素材",
+      "尚未批准的 runtime 接入实现"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "查看 v13 候选及浅色、深色合成。",
+      "将 v13 与已验证定稿风格 authority 对照。",
+      "检查生成底板与自绘组件的边缘、亮度和前后遮挡。"
+    ],
+    "observed": [
+      "自绘组件以完整高对比线稿直接叠在生成底板上，轮廓亮度和底板暗部不一致。",
+      "组件没有先转成宽块墨形、统一雾色，也没有按前中后景做遮挡裁切。",
+      "在浅色背景合成中能明显看到组件的贴图边框感，说明这不是单纯色调问题，而是合成路径错误。"
+    ],
+    "evidence": [
+      {
+        "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v13-hybrid-ink-components/rooftops-low-building-mass-v13-hybrid-ink-components.png",
+        "sha256": "f8f25e9a95ff3e1ffd508889a2d984ce2e85408cdab4faf9d093d11446a84429",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+        "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+        "kind": "reference",
+        "provenance": "verified-reference"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "自绘组件必须先转换为与定稿一致的深蓝黑墨块或低对比边缘层，不能直接贴原始线稿。",
+    "组件边缘需被底板雾色/遮挡自然吞入；浅色背景不出现亮边、矩形贴片或独立图层边界。",
+    "前景、中景、远景结构必须有明确遮挡顺序，生成底板与自绘结构读成一张场景。",
+    "继续保留 generated atmosphere + hand-drawn raster 的混合方案，不退回整图 posterize 或纯几何块。",
+    "ART_APPROVED 前不改 catalog、approved-runtime 和默认 panorama。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-22T04:45:00.000Z"
+}

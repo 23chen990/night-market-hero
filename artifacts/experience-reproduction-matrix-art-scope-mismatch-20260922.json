@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "approved panorama base",
+      "lowBuildingMass component",
+      "lantern cable/lantern layer",
+      "runtime composite"
+    ],
+    "lifecycleStateBranches": [
+      "candidate-preview",
+      "approved-runtime",
+      "default-panorama-runtime"
+    ],
+    "rendererPaths": [
+      "artifact-preview",
+      "night-city-renderer.ts",
+      "component-renderer"
+    ],
+    "viewports": [
+      {
+        "label": "component-strip",
+        "width": 1024,
+        "height": 384
+      },
+      {
+        "label": "panorama-runtime",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "panorama-base",
+      "objectType": "approved panorama base",
+      "lifecycleStateBranch": "default-panorama-runtime",
+      "rendererPath": "night-city-renderer.ts",
+      "viewport": {
+        "label": "panorama-runtime",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "完整夜市屋脊场景与既有灯笼构图。",
+      "observed": "rooftops-panorama-v2 已提供完整构图，不能被 lowBuildingMass 替代。",
+      "evidence": [
+        {
+          "path": "src/assets/night-city/rooftops-panorama-v2.png",
+          "sha256": "c538f5bf43e946d3d830b25a724599ed37edd129e8a885beb46e864bec121e83",
+          "kind": "reference",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "low-building-role",
+      "objectType": "lowBuildingMass component",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "component-renderer",
+      "viewport": {
+        "label": "component-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "只补低位建筑/棚架/屋檐。",
+      "observed": "v23 错误扩展为全高场景并重新生成天空/灯笼。",
+      "evidence": [
+        {
+          "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v23-full-height-preserved-lanterns/rooftops-full-scene-v23-preserved-lanterns.png",
+          "sha256": "2fccd6ad7eeaf645eae550561ceedc2573ad17382a44f3c1c923908ac080ddc7",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "PROJECT_HANDOFF.md",
+          "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "lantern-layer",
+      "objectType": "lantern cable/lantern layer",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "component-renderer",
+      "viewport": {
+        "label": "panorama-runtime",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "沿用原全景的支撑挂点与灯光节奏。",
+      "observed": "v23 将三盏灯笼重排至画面中央，脱离原结构。",
+      "evidence": [
+        {
+          "path": "src/assets/night-city/rooftops-panorama-v2.png",
+          "sha256": "c538f5bf43e946d3d830b25a724599ed37edd129e8a885beb46e864bec121e83",
+          "kind": "reference",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v23-full-height-preserved-lanterns/rooftops-full-scene-v23-preserved-lanterns.png",
+          "sha256": "2fccd6ad7eeaf645eae550561ceedc2573ad17382a44f3c1c923908ac080ddc7",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "runtime-composite",
+      "objectType": "runtime composite",
+      "lifecycleStateBranch": "approved-runtime",
+      "rendererPath": "night-city-renderer.ts",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "底图+lowBuildingMass+独立灯绳层合成为一个场景。",
+      "observed": "此前候选未按此职责合成，且未 ART_APPROVED。",
+      "evidence": [
+        {
+          "path": "src/assets/night-city/rooftops-panorama-v2.png",
+          "sha256": "c538f5bf43e946d3d830b25a724599ed37edd129e8a885beb46e864bec121e83",
+          "kind": "reference",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "PROJECT_HANDOFF.md",
+          "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "用户反馈已定位为资产职责与层级错误，不是单纯灯笼坐标或颜色问题。",
+    "正确下一步是从已认可 rooftops-panorama-v2 出发，只生成低位组件层，并保留灯笼独立层。"
+  ],
+  "remainingGaps": [
+    "需要制作职责正确的 lowBuildingMass 组件候选及底图叠加预览。",
+    "需要用户再次确认后才可 ART_APPROVED。"
+  ],
+  "createdAt": "2026-09-22T06:10:00.000Z"
+}

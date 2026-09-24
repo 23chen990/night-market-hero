@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "atomic-scene-resource-production-contract",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "supersedes": [
+    "rooftops-component-scene-v43",
+    "market-support-frame-v1"
+  ],
+  "reason": "用户指出生成的门架材质和方向均不符合预期。先锁定原子资源语言，再组景。",
+  "styleAuthority": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/README.md",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/scene.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference/v04/exports/market-v04-fixed.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png"
+  ],
+  "resourceRules": {
+    "oneResponsibilityPerImage": true,
+    "allowedRoles": [
+      "single post and brace segment",
+      "short beam segment with joinery ends",
+      "partial stall canopy edge with tie points",
+      "single foreground eave corner",
+      "low foreground grounding occluder"
+    ],
+    "forbiddenRoles": [
+      "complete gate",
+      "complete portal",
+      "complete building",
+      "complete side scene",
+      "bridge",
+      "chain",
+      "transition asset"
+    ]
+  },
+  "materialRules": {
+    "palette": "deep blue-black with restrained teal painted value variation",
+    "surface": "flat/painterly silhouette language from v04, low frequency and low contrast",
+    "edge": "clean antialiased alpha, no white matte, cyan rim, glossy bevel or 3D wood highlight",
+    "depth": "front resources hard and dark; mid resources slightly softened; no independent glow"
+  },
+  "approvalEvidence": [
+    "single-resource transparent preview",
+    "light-background composite",
+    "dark-background composite",
+    "saturated-background composite",
+    "SHA-256 and meaningful-alpha report",
+    "small placement swatch only after isolated review"
+  ],
+  "candidateBatch": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-atomic-resources-v44",
+  "status": "PENDING_USER_REVIEW",
+  "runtime": {
+    "status": "NOT_INTEGRATED",
+    "catalogChanged": false,
+    "componentRendererChanged": false,
+    "defaultJourneyChanged": false
+  }
+}

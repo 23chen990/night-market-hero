@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户指出最新候选仍然不对：灯笼位置不对，整体场景也不对。复盘确认此前把 rooftops.lowBuildingMass 从低位组件误做成完整全高场景，并把 lantern-cable 灯笼错误并入该组件，导致场景职责、构图和挂点关系全部漂移。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "根因已明确为资产职责/层级错误；修复应只重做候选生产与运行时合成预览，不修改核心玩法或 catalog。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "此前 v19–v23 的失败整场候选细节",
+      "与背景层级无关的玩法 QA",
+      "尚未批准的 runtime 接入"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "读取 PROJECT_HANDOFF.md 中的资产索引和“美术组件＋代码组景”边界。",
+      "读取 ART_ASSET_MANIFEST_V1.md 对 rooftops.lowBuildingMass 的定义。",
+      "对比已认可 rooftops-panorama-v2 与 v23 全高候选。",
+      "检查灯笼组件在 v23 的位置和层级。"
+    ],
+    "observed": [
+      "交接将 lowBuildingMass 定义为低位建筑质量块/组件，不是完整 rooftops panorama。",
+      "已认可全景本身已经包含完整夜景构图和灯笼节奏；v23 改成全高不透明场景后，重复生成了不属于该资产的天空/屋脊/灯笼。",
+      "v23 的三盏灯笼被重排到画面中央，脱离原全景的支撑结构与灯光节奏。",
+      "独立灯绳/灯笼组件应保留在上层，不能并入 lowBuildingMass。"
+    ],
+    "evidence": [
+      {
+        "path": "src/assets/night-city/rooftops-panorama-v2.png",
+        "sha256": "c538f5bf43e946d3d830b25a724599ed37edd129e8a885beb46e864bec121e83",
+        "kind": "reference",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v23-full-height-preserved-lanterns/rooftops-full-scene-v23-preserved-lanterns.png",
+        "sha256": "2fccd6ad7eeaf645eae550561ceedc2573ad17382a44f3c1c923908ac080ddc7",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "PROJECT_HANDOFF.md",
+        "sha256": "446ce85b795bc16382b05926e9aec60023aef576a2d449efab1aeb8a2d78d025",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "新的 lowBuildingMass 候选只包含低位建筑/棚架/屋檐 raster 层，职责范围与 manifest 一致。",
+    "候选必须以已认可 rooftops-panorama-v2 作为运行时底图进行合成预览，不再生成替代全场景。",
+    "灯笼位置、数量和挂点沿用已认可全景/lantern-cable 结构，不由 lowBuildingMass 重新摆放。",
+    "预览必须同时提供透明组件图和叠加到底图后的运行时合成图，不能用白色背景误判透明空区。",
+    "用户 ART_APPROVED 前不改 catalog、approved-runtime 或默认 panorama。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-22T06:10:00.000Z"
+}

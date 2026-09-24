@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reportedAt": "2026-09-23T12:41:39+08:00",
+  "report": "用户明确反馈：按 A 方案生成的 v34 仍不符合预期，要求先重新思考。",
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v34-a-composite/qa/runtime-preview-over-rooftops-panorama-v2.png",
+      "sha256": "a69d87985bc4fcacaedbd01c66e78b9557e5216897259fe93a896a72d08b9704",
+      "role": "rejected-candidate-preview",
+      "kind": "qa-artifact",
+      "provenance": "verified-run-artifact",
+      "observation": "保留 rooftops-panorama-v2 主构图，新增结构在底部以很低对比度叠加；未形成用户认可的整合结果。"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v34-a-composite/rooftops-low-building-mass-v34.png",
+      "sha256": "75ad057ae1f3fa838f7d74b4659670a54c1ec4cd6b7725549a81b59175ac719a",
+      "role": "rejected-low-building-component",
+      "kind": "qa-artifact",
+      "provenance": "verified-run-artifact",
+      "observation": "透明层只有稀疏的屋檐、棚架和竹架片段；技术 alpha 合格，但视觉职责与最终预期仍未确认。"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/rooftops-panorama-v2.png",
+      "sha256": "c538f5bf43e946d3d830b25a724599ed37edd129e8a885beb46e864bec121e83",
+      "role": "scene-authority",
+      "kind": "repository-source",
+      "provenance": "repository-source",
+      "observation": "完整 Rooftops 构图与灯笼节奏来源。"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.style-samples-approved-20260922/final-style-cleaned-v1.png",
+      "sha256": "42f12749b44c338b7ab4bd16e893a328fd72bd21cae62cbdc128f102cae81c63",
+      "role": "verified-style-authority",
+      "kind": "reference",
+      "provenance": "verified-reference",
+      "observation": "统一剪纸层次、雾气和受控边缘的风格锚点。"
+    }
+  ],
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy",
+    "art-direction-and-layer-integration",
+    "handoff-contract"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "v29 与 v34 连续候选失败，且失败涉及场景拥有者、氛围层、低位结构和长地图职责边界；先暂停生成，重新冻结视觉合同。默认 runtime 未改。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "prototype-a 历史工作区",
+      "核心玩法/经济/存档实现",
+      "已拒绝 v5-v29 候选的生成中间稿",
+      "任何未批准的 catalog/runtime 接入"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "查看 v34 1672x941 runtime review。",
+      "查看 v34 1024x384 transparent lowBuildingMass 及浅色/深色合成。",
+      "与 rooftops-panorama-v2 和 final-style-cleaned-v1 对照。"
+    ],
+    "observations": [
+      "v34 的主构图几乎完全由既有 panorama 承担，新增层在底部过于稀薄，无法证明新的 Rooftops 结构语言。",
+      "lowBuildingMass 技术上是透明低位组件，但视觉上仍像零散贴片/碎片，未形成连续且可解释的低位建筑质量块。",
+      "当前 review 没有相邻 chunk 或真实 seam/transition 语境，无法判断是否解决长地图接缝目标。"
+    ],
+    "inferences": [
+      "A 方案被执行成“旧 panorama + 很弱的叠加层”，因此同时失去结构整合感和可见改进。",
+      "v33 full-frame atmosphere 作为透明雾 overlay 的角色可能仍不符合期望；必须先重新定义单一场景拥有者和 atmosphere 的关系。"
+    ],
+    "unknowns": [
+      "用户期望的场景拥有者是完整 panorama、连续生成底板，还是二者的离线合成成品。",
+      "用户期望 lowBuildingMass 在画面中的占比、位置和结构连续性。",
+      "用户是否要求在同一 review 中展示相邻 chunk 的接缝过渡。"
+    ],
+    "evidence": [
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v34-a-composite/qa/runtime-preview-over-rooftops-panorama-v2.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v34-a-composite/rooftops-low-building-mass-v34.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.style-samples-approved-20260922/final-style-cleaned-v1.png"
+    ]
+  },
+  "acceptanceCriteria": [
+    "v34 保持 REJECTED_BY_USER，不进入 approved-runtime、catalog、ComponentRenderer 或默认旅程。",
+    "下一次生成前先冻结一条明确的场景职责合同：只能有一个完整场景拥有者；不得把两个完整不透明场景叠加。",
+    "下一候选必须在 1672x941 与 844x390 同时成立，并显示连续低位结构、负空间和灯光层级；不能只靠很弱的底部叠加声称完成。",
+    "若目标是长地图接缝，必须提供相邻 chunk/transition review；单张孤立候选不能关闭问题。",
+    "候选仍保持 ART_CANDIDATE_PENDING_USER_REVIEW，用户明确 ART_APPROVED 前不得接入 runtime。"
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-09-23T12:41:39+08:00"
+}

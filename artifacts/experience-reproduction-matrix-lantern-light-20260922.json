@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "lantern structure",
+      "lantern warm-light layer",
+      "hybrid composite"
+    ],
+    "lifecycleStateBranches": [
+      "candidate-preview",
+      "approved-runtime"
+    ],
+    "rendererPaths": [
+      "artifact-preview",
+      "night-city-renderer.ts"
+    ],
+    "viewports": [
+      {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "lantern-structure-v17",
+      "objectType": "lantern structure",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "冷暗灯绳/挂点结构。",
+      "observed": "v17 结构层存在，但灯笼也被压成冷暗。",
+      "evidence": [
+        {
+          "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v17-low-band-embedded/rooftops-low-building-mass-v17-low-band-embedded.png",
+          "sha256": "bdd87dd5f82cb2f6ed01d5b1e9fd6832df72d8506a538a7acc5a47767ef4a40f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-light-v17",
+      "objectType": "lantern warm-light layer",
+      "lifecycleStateBranch": "candidate-preview",
+      "rendererPath": "artifact-preview",
+      "viewport": {
+        "label": "candidate-strip",
+        "width": 1024,
+        "height": 384
+      },
+      "status": "REPRODUCED",
+      "expected": "每盏灯有暖黄本体与克制光晕。",
+      "observed": "v17 没有由组件分离出的暖光层。",
+      "evidence": [
+        {
+          "path": "artifacts/longmap-batch-b/rooftops.lowBuildingMass/candidate-v17-low-band-embedded/rooftops-low-building-mass-v17-low-band-embedded.png",
+          "sha256": "bdd87dd5f82cb2f6ed01d5b1e9fd6832df72d8506a538a7acc5a47767ef4a40f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        }
+      ]
+    },
+    {
+      "id": "lantern-runtime",
+      "objectType": "hybrid composite",
+      "lifecycleStateBranch": "approved-runtime",
+      "rendererPath": "night-city-renderer.ts",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "批准后自然运行时可见暖光。",
+      "observed": "尚未 ART_APPROVED，未接入。",
+      "evidence": [
+        {
+          "path": "reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "v17 的混合层分类正确，但灯笼需要独立发光子层。"
+  ],
+  "remainingGaps": [
+    "制作 v18 暖光拆层候选并验证。",
+    "用户确认后才可接入。"
+  ],
+  "createdAt": "2026-09-22T05:10:00.000Z"
+}

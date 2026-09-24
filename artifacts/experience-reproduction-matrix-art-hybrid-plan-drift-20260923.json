@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "相邻不透明 panorama 对",
+      "完整桥接/过渡场景条",
+      "自绘 raster 结构组件组",
+      "前景屋檐/灯光支撑层"
+    ],
+    "lifecycleStateBranches": [
+      "默认 Rooftops 进入",
+      "Rooftops 同区 variant seam",
+      "Rooftops→Waterfront 跨区 transition",
+      "玩家空中穿越 seam",
+      "桥接资源未就绪 fallback"
+    ],
+    "rendererPaths": [
+      "NightCityRenderer 默认运行时",
+      "v36 单图转场 overlay",
+      "初始方案的离线混合合成 review",
+      "longmap/component preview"
+    ],
+    "viewports": [
+      {
+        "label": "user-evidence-1996x1010",
+        "width": 1996,
+        "height": 1010
+      },
+      {
+        "label": "qa-desktop-1180x720",
+        "width": 1180,
+        "height": 720
+      },
+      {
+        "label": "qa-mobile-844x390",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "pair-default-user-1996",
+      "objectType": "相邻不透明 panorama 对",
+      "lifecycleStateBranch": "默认 Rooftops 进入",
+      "rendererPath": "NightCityRenderer 默认运行时",
+      "viewport": {
+        "label": "user-evidence-1996x1010",
+        "width": 1996,
+        "height": 1010
+      },
+      "status": "REPRODUCED",
+      "expected": "相邻场景的地平线、屋脊线、遮挡和光向应被一条连续空间关系连接。",
+      "observed": "用户附件红框区域仍显示两个独立建筑/块面关系，中心存在明显割裂读法。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/codex-clipboard-57bcc0e0-f906-44cf-a27c-8cc6a8bdf6c3-d8ac2b223431.png",
+          "sha256": "d8ac2b22343156fe0135e92b18dcedf21def7217248392564a026b6681dd113e",
+          "kind": "user-report",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts",
+          "sha256": "fc5c428725dbb4d437496e14647295927e7ad95bcc26419c9436a5ced0c2d854",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "v36-same-district-desktop",
+      "objectType": "完整桥接/过渡场景条",
+      "lifecycleStateBranch": "Rooftops 同区 variant seam",
+      "rendererPath": "v36 单图转场 overlay",
+      "viewport": {
+        "label": "qa-desktop-1180x720",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "REPRODUCED",
+      "expected": "完整不透明桥接场景条承担接缝，旧 panorama 退居相邻 owner，不应由弱雾覆盖。",
+      "observed": "v36 是透明/低 alpha 雾与底部结构；旧 panorama 仍承担大部分画面，形成叠加而非造桥。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.transition-candidate-v36-fullheight/review.json",
+          "sha256": "fa1e0289788d13b4765fa7a169be74dfae05521f9bdc10847dfe20a9a0ca645e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-transition-v36-integration-20260923.json",
+          "sha256": "aa44ae4619b678bab20fc5db234146290380f9f092586ee756a95d07995aa3bf",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/rooftops-transition-v36-fullheight.png",
+          "sha256": "f508f5b8f49eb2a24c2acf1a8044ba201e966731bc05473c7bf70fb7c4c66fb4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "v36-same-district-mobile",
+      "objectType": "完整桥接/过渡场景条",
+      "lifecycleStateBranch": "Rooftops 同区 variant seam",
+      "rendererPath": "v36 单图转场 overlay",
+      "viewport": {
+        "label": "qa-mobile-844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "移动横屏仍应读成一个连续桥接空间，飞行通道清楚。",
+      "observed": "尚无真实运行时自然输入截图；现有 montage 不是自然 QA 证据。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-transition-v36-integration-20260923.json",
+          "sha256": "aa44ae4619b678bab20fc5db234146290380f9f092586ee756a95d07995aa3bf",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "components-planned-desktop",
+      "objectType": "自绘 raster 结构组件组",
+      "lifecycleStateBranch": "Rooftops 同区 variant seam",
+      "rendererPath": "初始方案的离线混合合成 review",
+      "viewport": {
+        "label": "qa-desktop-1180x720",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "柱、梁、檐、桥墩/墙体等组件以明确层级与承重关系拼成可解释场景。",
+      "observed": "当前候选没有交付这套可审查组件组；v36 只有一个整体转场 PNG 和内部拆分层，不能替代组件资产生产。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916.json",
+          "sha256": "b9fe4d90e0f1a126084e6349b2769c3c906f549dc80069dd7f317ba1b22aab82",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916/asset-spec-master-20260917.md",
+          "sha256": "c8f1b07f910dab66f62d7421fcda831c757b2dadb5a1b00f0d70633b691c92af",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/handoff-context-20260917.md",
+          "sha256": "add0937f6784f0fa68b6616c2208fce2881a31f48b5933a9107247c860da612d",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "components-preview-mobile",
+      "objectType": "自绘 raster 结构组件组",
+      "lifecycleStateBranch": "玩家空中穿越 seam",
+      "rendererPath": "longmap/component preview",
+      "viewport": {
+        "label": "qa-mobile-844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "组件层应在不遮挡玩家路线的情况下提供结构连续性。",
+      "observed": "当前 longmap/component preview 与 v36 runtime seam 没有形成同一验收路径。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916.json",
+          "sha256": "b9fe4d90e0f1a126084e6349b2769c3c906f549dc80069dd7f317ba1b22aab82",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/handoff-context-20260917.md",
+          "sha256": "add0937f6784f0fa68b6616c2208fce2881a31f48b5933a9107247c860da612d",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "cross-district-fallback",
+      "objectType": "相邻不透明 panorama 对",
+      "lifecycleStateBranch": "Rooftops→Waterfront 跨区 transition",
+      "rendererPath": "NightCityRenderer 默认运行时",
+      "viewport": {
+        "label": "qa-desktop-1180x720",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "REPRODUCED",
+      "expected": "跨区接缝也应使用对应连接族的完整桥接图，不暴露旧雾遮罩作为最终表达。",
+      "observed": "v36 只覆盖连续 Rooftops 变体，其他跨区接缝仍使用 district-transition-mist。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-transition-v36-integration-20260923.json",
+          "sha256": "aa44ae4619b678bab20fc5db234146290380f9f092586ee756a95d07995aa3bf",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts",
+          "sha256": "fc5c428725dbb4d437496e14647295927e7ad95bcc26419c9436a5ced0c2d854",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/background-stitch-plan-20260916.json",
+          "sha256": "b9fe4d90e0f1a126084e6349b2769c3c906f549dc80069dd7f317ba1b22aab82",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "airborne-runtime-gap",
+      "objectType": "前景屋檐/灯光支撑层",
+      "lifecycleStateBranch": "玩家空中穿越 seam",
+      "rendererPath": "NightCityRenderer 默认运行时",
+      "viewport": {
+        "label": "qa-mobile-844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "玩家上方飞行通道与前景支撑结构应同时连续且无遮挡。",
+      "observed": "尚无到达实际 Rooftops seam 的自然输入截图，不能对该分支宣称 PASS。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/handoff-context-20260917.md",
+          "sha256": "add0937f6784f0fa68b6616c2208fce2881a31f48b5933a9107247c860da612d",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-transition-v36-integration-20260923.json",
+          "sha256": "aa44ae4619b678bab20fc5db234146290380f9f092586ee756a95d07995aa3bf",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "最初方案是“生成连续氛围/场景素材底板 + 自绘 raster 结构组件 + 离线/运行时按连接族组景”，不是在旧 panorama 上盖一条半透明雾带。",
+    "桥接图规范要求完整、能站住的建筑过渡场景；当前 v36 的职责和透明表达偏离该合同。",
+    "用户截图中的割裂感与“两个独立全景块仍各自拥有场景”的根因一致。"
+  ],
+  "remainingGaps": [
+    "重新冻结 hybrid production contract 与 owner/layer 图例。",
+    "生产并验收自绘组件图集、连续场景/氛围底板及其离线合成 review。",
+    "用户批准新候选后再替换 v36，并跑 desktop/mobile Rooftops 自然与感知 QA。"
+  ],
+  "createdAt": "2026-09-23T07:32:00Z"
+}
