@@ -21,25 +21,29 @@ async function screenshot(page: Page, path: string): Promise<{ path: string; sha
   return { path, sha256: hash(await readFile(path)) };
 }
 
-async function preparePage(page: Page, width: number, height: number, requireVisibleSurface = true): Promise<string[]> {
-  const errors: string[] = [];
+async function preparePage(page: Page, width: number, height: number, requireVisibleSurface = true): Promise<{ consoleErrors: string[]; pageErrors: string[] }> {
+  const consoleErrors: string[] = [];
+  const pageErrors: string[] = [];
   page.on('console', (message) => {
-    if (message.type() === 'error' && !message.text().includes('GPU stall')) errors.push(message.text());
+    if (message.type() === 'error' && !message.text().includes('GPU stall')) consoleErrors.push(message.text());
   });
-  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('pageerror', (error) => pageErrors.push(error.message));
   await page.addInitScript(() => localStorage.clear());
   await page.setViewportSize({ width, height });
   await page.goto(`${baseUrl}?seed=31&fresh=1`, { waitUntil: 'networkidle' });
   await page.waitForFunction(() => document.querySelector('#app')?.getAttribute('data-ui-preload') === 'ready');
   if (requireVisibleSurface) await page.locator('[data-action="grapple"]').waitFor({ state: 'visible' });
-  return errors;
+  return { consoleErrors, pageErrors };
 }
 
 async function runLandscape(browser: Awaited<ReturnType<typeof chromium.launch>>, viewport: (typeof landscapeViewports)[number]): Promise<Record<string, unknown>> {
-  const page = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1 });
+  const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
   const errors = await preparePage(page, viewport.width, viewport.height);
   const shots: Record<string, unknown> = {};
   shots.startup = await screenshot(page, resolve(evidenceDir, `${viewport.id}-startup.png`));
+  const startupTitle = (await page.locator('[data-ui="level-title"]').textContent())?.trim() ?? '';
+  assert.ok(startupTitle.length > 0 && !startupTitle.includes('无限夜巡'), `${viewport.id}: startup must remain in the tutorial journey`);
   const surface = page.locator('[data-action="grapple"]');
   const box = await surface.boundingBox();
   assert.ok(box, `${viewport.id}: formal grapple surface must be visible`);
@@ -75,28 +79,32 @@ async function runLandscape(browser: Awaited<ReturnType<typeof chromium.launch>>
   shots.nightPatrol = await screenshot(page, resolve(evidenceDir, `${viewport.id}-night-patrol.png`));
   await page.locator('[data-ui="result"]').waitFor({ state: 'visible', timeout: 12_000 });
   const failedResultTitle = (await page.locator('[data-ui="result-title"]').textContent())?.trim() ?? '';
-  assert.ok(failedResultTitle.length > 0, `${viewport.id}: night patrol must show a failure settlement without injected state`);
+  const failedResultKicker = (await page.locator('[data-ui="result-kicker"]').textContent())?.trim() ?? '';
+  assert.ok(failedResultTitle.length > 0 && failedResultKicker.includes('中断'), `${viewport.id}: night patrol must show a failure settlement without injected state`);
   shots.failureSettlement = await screenshot(page, resolve(evidenceDir, `${viewport.id}-failure-settlement.png`));
   await page.locator('[data-action="restart"]').click();
   await page.locator('[data-ui="result"]').waitFor({ state: 'hidden' });
   await page.waitForFunction(() => (document.querySelector('[data-ui="level-title"]')?.textContent ?? '').includes('无限夜巡'));
   shots.replay = await screenshot(page, resolve(evidenceDir, `${viewport.id}-replay.png`));
-  assert.deepEqual(errors, [], `${viewport.id}: natural browser path must have no console/page errors`);
-  await page.close();
+  assert.deepEqual(errors.consoleErrors, [], `${viewport.id}: natural browser path must have no console errors`);
+  assert.deepEqual(errors.pageErrors, [], `${viewport.id}: natural browser path must have no page errors`);
+  await context.close();
   return {
     viewport: `${viewport.width}x${viewport.height}`,
+    startup: { title: startupTitle },
     tutorialSettlement: { title: tutorialResultTitle, continueVisible: true },
     nightPatrol: { levelTitle: '无限夜巡', input: 'formal pointer hold/release only' },
-    failureSettlement: { title: failedResultTitle, cause: 'natural no-input patrol failure' },
+    failureSettlement: { title: failedResultTitle, kicker: failedResultKicker, cause: 'natural no-input patrol failure' },
     replay: { levelTitle: '无限夜巡', resultHidden: true },
     screenshots: shots,
-    consoleErrors: errors,
-    pageErrors: errors,
+    consoleErrors: errors.consoleErrors,
+    pageErrors: errors.pageErrors,
   };
 }
 
 async function runPortrait(browser: Awaited<ReturnType<typeof chromium.launch>>): Promise<Record<string, unknown>> {
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
   const errors = await preparePage(page, 390, 844, false);
   const orientation = page.locator('[data-ui="orientation-block"]');
   await orientation.waitFor({ state: 'visible' });
@@ -111,8 +119,9 @@ async function runPortrait(browser: Awaited<ReturnType<typeof chromium.launch>>)
   assert.equal(afterDistance, beforeDistance, 'portrait: orientation block must keep gameplay paused');
   const shotPath = resolve(evidenceDir, '390x844-orientation-paused.png');
   const shot = await screenshot(page, shotPath);
-  assert.deepEqual(errors, [], 'portrait: natural browser path must have no console/page errors');
-  await page.close();
+  assert.deepEqual(errors.consoleErrors, [], 'portrait: natural browser path must have no console errors');
+  assert.deepEqual(errors.pageErrors, [], 'portrait: natural browser path must have no page errors');
+  await context.close();
   return {
     viewport: '390x844',
     orientationPromptVisible: true,
@@ -121,8 +130,8 @@ async function runPortrait(browser: Awaited<ReturnType<typeof chromium.launch>>)
     distanceAfter: afterDistance,
     pausedByStableDistance: true,
     screenshot: shot,
-    consoleErrors: errors,
-    pageErrors: errors,
+    consoleErrors: errors.consoleErrors,
+    pageErrors: errors.pageErrors,
   };
 }
 
@@ -137,6 +146,7 @@ async function main(): Promise<void> {
       schemaVersion: 1,
       artifactType: 'natural-runtime-r1-report',
       testedCommit,
+      environment: { browser: browser.version(), viewportCases: [...landscapeViewports.map((item) => `${item.width}x${item.height}`), '390x844'], seed: 31, query: 'seed=31&fresh=1' },
       entry: { url: baseUrl, input: 'formal pointer hold/release and visible result actions; no state APIs' },
       landscapes,
       portrait,
