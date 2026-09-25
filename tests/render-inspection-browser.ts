@@ -203,6 +203,15 @@ async function main(): Promise<void> {
   const browser = await chromium.launch({ headless: true });
   const cases: CaseEvidence[] = [];
   const collectionErrors: Array<{ mode: InspectionMode; viewport: string; checkpoint: string; message: string }> = [];
+  const incompleteCases: Array<{
+    mode: InspectionMode;
+    viewport: string;
+    checkpoint: string;
+    message: string;
+    telemetry?: Telemetry;
+    consoleErrors: string[];
+    pageErrors: string[];
+  }> = [];
   let video: { path: string; sha256: string } | null = null;
   try {
     for (const mode of modes) {
@@ -210,8 +219,10 @@ async function main(): Promise<void> {
         for (const checkpoint of checkpoints) {
           const captureVideo = mode === 'default' && viewport.id === '1280x720' && checkpoint.id === 'rooftops-01-to-02';
           let context: BrowserContext | undefined;
+          let openedForDiagnostics: Pick<Awaited<ReturnType<typeof openCase>>, 'telemetry' | 'consoleErrors' | 'pageErrors'> | undefined;
           try {
             const opened = await openCase(browser, mode, checkpoint, viewport, captureVideo);
+            openedForDiagnostics = opened;
             context = opened.context;
             const { page, telemetry, consoleErrors, pageErrors } = opened;
             const caseResult = await collectCaseEvidence({
@@ -246,9 +257,21 @@ async function main(): Promise<void> {
             for (const message of caseResult.errors) collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
             if (caseResult.video) video = caseResult.video;
             cases.push(caseResult.evidence);
+            openedForDiagnostics = undefined;
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
+            if (openedForDiagnostics) {
+              incompleteCases.push({
+                mode,
+                viewport: viewport.id,
+                checkpoint: checkpoint.id,
+                message,
+                telemetry: openedForDiagnostics.telemetry,
+                consoleErrors: [...openedForDiagnostics.consoleErrors],
+                pageErrors: [...openedForDiagnostics.pageErrors],
+              });
+            }
             if (context) await context.close().catch(() => undefined);
           }
         }
@@ -279,6 +302,7 @@ async function main(): Promise<void> {
     viewports,
     modes,
     cases,
+    incompleteCases,
     video,
     status: outcome.status,
     collectionErrors,
@@ -295,7 +319,7 @@ async function main(): Promise<void> {
   const loadFailures = cases.reduce((total, item) => total + item.loadFailures.length, 0);
   const consoleErrors = cases.reduce((total, item) => total + item.consoleErrors.length, 0);
   const pageErrors = cases.reduce((total, item) => total + item.pageErrors.length, 0);
-  console.log(JSON.stringify({ reportPath, status: outcome.status, cases: cases.length, video, loadFailures, consoleErrors, pageErrors, collectionErrors }, null, 2));
+  console.log(JSON.stringify({ reportPath, status: outcome.status, cases: cases.length, incompleteCases: incompleteCases.length, video, loadFailures, consoleErrors, pageErrors, collectionErrors }, null, 2));
   if (outcome.exitCode !== 0) process.exitCode = outcome.exitCode;
 }
 
