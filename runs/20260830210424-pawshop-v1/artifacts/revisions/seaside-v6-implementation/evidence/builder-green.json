@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "phase": "GREEN",
+  "focused": {
+    "command": "pnpm test -- tests/gameplay.test.ts tests/persistence.test.ts tests/ui-shell.test.ts tests/browser-contract.test.ts",
+    "exitCode": 0,
+    "testFiles": 6,
+    "passedTests": 63,
+    "failedTests": 0
+  },
+  "gates": [
+    { "command": "pnpm lint", "exitCode": 0 },
+    { "command": "pnpm typecheck", "exitCode": 0 },
+    { "command": "pnpm test", "exitCode": 0, "testFiles": 6, "passedTests": 63, "failedTests": 0 },
+    { "command": "pnpm build", "exitCode": 0, "summary": "Vite emitted dist/index.html and 12 transformed modules", "distIndexSha256": "ac4081f1ee79d91f56907a4c95cf2c4ca2e857aa1574d8aa0ec3a5bd0fb42fd3", "distJavascriptSha256": "48b703fe3ead8ab4bfc1a1f98ca81175e71cf29d46b6ca5658cc551c15bc04db" }
+  ],
+  "verifiedBehaviors": [
+    "world workshop absent; independent 背篓容量 icon semantics present",
+    "shrimp autonomous two-unit batches capped at four",
+    "crab autonomous ready slots capped at one and upgraded to two",
+    "four products share one carrier capacity and independent shelf caps",
+    "fish→kelp→shrimp→crab gated progression and customer fallback/shortage rules",
+    "save-v4 and real save-v3 migration preserve in-flight customers, queue and tokens with v5 defaults",
+    "active-session-only trap production and clamped persisted facility timers",
+    "original Phaser Graphics primitives for shrimp, crab, trap, pot and locked silhouettes",
+    "exact seven window.__GAME_TEST__ controls and unchanged otter motion/reduced-motion contracts"
+  ],
+  "warning": "Vite emitted only the existing non-blocking Phaser chunk-size warning; no gate failed.",
+  "validGreen": true
+}

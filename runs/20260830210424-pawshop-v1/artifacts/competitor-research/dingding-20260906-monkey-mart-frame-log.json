@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "competitor-frame-observation-log",
+  "targetGame": "20260830210424-pawshop-v1",
+  "source": {
+    "manifestId": "_2026-09-06-001930-f18bb8e16798",
+    "path": "reference-evidence/incoming/_2026-09-06-001930-f18bb8e16798.mp4",
+    "sha256": "f18bb8e1679860e9c96f030db0881d73faca5615f5a94260774f9b6bf38e1bdc",
+    "frameSampling": "manual inspection at 0,20,40,60,80,100,120,150 seconds plus 1-second follow-up sampling from 84-96 and 98-102 seconds; 1246x720 landscape source"
+  },
+  "observedOnly": [
+    {"timeSeconds":0,"facts":["Two currencies are visible in the upper-left HUD: gem count and cash count.","Multiple top-right task/menu icons carry red exclamation badges.","A world object shows a 0/4 product count bubble beside a product icon.","Several world purchase markers show cash amounts 400 and 800 inside rounded icon bubbles.","A yellow timed reward tile shows 2 mins and a play button."]},
+    {"timeSeconds":20,"facts":["A checkout counter/register is visible beside a line of characters.","A product shelf shows a 0/1 bubble with a product icon.","A character carries a visible stack of the product while moving between shelf and counter.","World purchase bubbles remain attached to locations, not in a persistent bottom action bar."]},
+    {"timeSeconds":40,"facts":["A depleted garden/production bed is visible with a cash purchase bubble 690.","A second nearby purchase marker shows 800.","A left-side timed reward tile shows 10s and a play button.","The player and another character occupy the same open area while purchase nodes remain visible."]},
+    {"timeSeconds":60,"facts":["Multiple character roles are simultaneously visible around shelves and the register.","Product request bubbles use an item icon and a quantity such as 0/2.","Purchase bubbles show amounts such as 300 and 500 at world nodes.","A timed reward tile shows 2 mins with a play button and a short countdown."]},
+    {"timeSeconds":80,"facts":["A product request/status bubble shows 3/4 with a product icon.","The carried product stack is visibly layered above a character.","A nearby world marker shows 300 and another lower marker shows 490.","Several characters and production objects share the same frame without a full-screen modal."]},
+    {"timeSeconds":86,"facts":["A world task banner reads WAKE UP THE EMPLOYEE with an employee icon.","A green down arrow points toward a sleeping-status bubble at the lower edge of the world view.","The upper-left HUD still shows gem and cash counters while the shop scene continues running."],"samplingNote":"Fine-grained follow-up frame; the banner and arrow are visible, but the exact input target is not proven."},
+    {"timeSeconds":88,"facts":["The WAKE UP THE EMPLOYEE banner remains visible.","A worker-like character wearing an orange hardhat is paired with a speech bubble showing a sleeping face and a Z marker.","The sleeping cue is world-anchored and remains visible while shelves, register and other roles are active."],"samplingNote":"Fine-grained follow-up frame; proves a visible employee sleep cue, not its trigger or recovery rule."},
+    {"timeSeconds":90,"facts":["The WAKE UP THE EMPLOYEE banner is still present.","The sleeping-face bubble and green down arrow remain attached to the lower-right worker area.","A MAX marker and cash purchase bubble are visible in the same frame."],"samplingNote":"Fine-grained follow-up frame; no click/tap result is visible."},
+    {"timeSeconds":100,"facts":["A large world task banner reads WAKE UP THE ANIMAL with a chicken icon.","The word MAX is displayed at a completed/limited production area.","A nearby world marker shows 350.","A timed reward tile remains available at the left edge."]},
+    {"timeSeconds":98,"facts":["A large world task banner reads WAKE UP THE ANIMAL with a chicken icon.","The word MAX is displayed over a production bed.","A timed reward tile shows a 2 mins offer with a visible 9s countdown in the sampled frame."],"samplingNote":"Fine-grained follow-up frame; this is a separate animal/auxiliary-role sleep prompt from WAKE UP THE EMPLOYEE."},
+    {"timeSeconds":102,"facts":["The WAKE UP THE ANIMAL banner remains visible while the camera is back near the register and product shelf.","Multiple cash bundles are stacked on the counter and several characters remain active in the same scene.","The timed reward tile countdown is still visible."],"samplingNote":"Fine-grained follow-up frame; persistent banner does not reveal whether the animal was awakened."},
+    {"timeSeconds":120,"facts":["The shop floor contains a dense mix of product shelves, register, customers, and worker-like characters.","A 0/2 product request bubble is visible near a shelf.","Cash amount bubbles and register icons are anchored to nearby world locations.","A trash bin and other environmental objects are visible as part of the navigable shop space."]},
+    {"timeSeconds":150,"facts":["The register area contains multiple visible cash bundles on the counter.","A customer displays a large smile/reaction bubble after service.","Product stacks, workers, customers, and purchase markers remain simultaneously visible.","A MAX marker is shown over a filled/complete production area."]}
+  ],
+  "logicContract": {
+    "observedPressureSources":["depleted production beds","product request quantity","cash purchase thresholds","crowded worker/customer floor","employee sleep state","animal/auxiliary-role sleep state","timed reward opportunities"],
+    "observedSignals":["world-anchored icon+quantity bubbles","cash amount bubbles","customer reaction emoji","MAX completion marker","timed reward countdowns","top task exclamation badges","WAKE UP THE EMPLOYEE/ANIMAL banners","sleeping-face + Z bubble","green down-arrow target cue"],
+    "observedEscalation":["more simultaneous roles and objects","additional purchase nodes with different costs","new product request quantities","new task/banner state"],
+    "observedRecovery":["characters continue moving while tasks/markers remain visible","restock and register activity can resume without a scene reset","completed production areas remain visibly complete"],
+    "unknowns":["exact route/pathfinding algorithm","exact economy values and formulas","whether any interaction requires a tap versus proximity","whether the sampled employee/animal prompt was resolved by the player or only left the camera view","sleep trigger, duration and recovery rule","exact employee unlock prerequisites","platform-specific ads, persistence and lifecycle behavior"]
+  },
+  "transferableLogicOnly":[
+    "Use world-anchored icon+quantity+cost markers for actionable nodes.",
+    "Keep player, workers, customers, stock and register active in one continuous scene.",
+    "Show completion as a persistent world state (for example MAX/filled/active), not only a number change.",
+    "Use customer reaction and product quantity to make service outcome legible.",
+    "Treat timed rewards as optional acceleration, not a requirement for the core loop."
+  ],
+  "forbiddenCopying":["Monkey Mart branding, monkey characters, banana/corn/egg content, exact map/layout, fonts, icon shapes, text banners, MAX lettering, exact costs, ad labels, or asset silhouettes"]
+}

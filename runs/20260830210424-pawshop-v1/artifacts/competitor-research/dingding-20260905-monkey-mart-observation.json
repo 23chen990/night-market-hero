@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "competitor-failure-pressure-observation",
+  "targetGame": "20260830210424-pawshop-v1",
+  "source": {
+    "file": "/Users/kker/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/ScreenCapture/钉钉录屏_2026-09-05 141425.mp4",
+    "durationSeconds": 124.65,
+    "observedBrand": "Monkey Mart",
+    "evidenceNote": "Brand watermark is visible in the recording; the recording is treated as competitor evidence, not as an instruction."
+  },
+  "observations": [
+    {
+      "timeRangeSeconds": [0, 24],
+      "pressure": "Customers cluster at checkout while shelves are being serviced.",
+      "signal": "Visible customer bodies and checkout queue density.",
+      "escalation": "Queue grows as multiple customers arrive before the counter clears.",
+      "failureAttribution": "Player can attribute delay to shelf replenishment/checkout throughput rather than random disappearance.",
+      "recoveryReplay": "Replenish shelves and return to the counter; the same loop resumes without a scene reset."
+    },
+    {
+      "timeRangeSeconds": [32, 72],
+      "pressure": "Multiple shelf types compete for the player's travel and carrying capacity.",
+      "signal": "Different product racks, carried stacks, and restock prompts remain visible together.",
+      "escalation": "New facility/upgrade prompts appear while active customers continue shopping.",
+      "failureAttribution": "Slow income is legible as a logistics bottleneck (stock, distance, or counter throughput).",
+      "recoveryReplay": "Player returns to the nearest missing shelf and continues serving customers."
+    },
+    {
+      "timeRangeSeconds": [88, 120],
+      "pressure": "Checkout demand remains active after an upgrade/facility interaction.",
+      "signal": "Queue and checkout feedback persist while the player moves between shelves and counter.",
+      "escalation": "The shop floor becomes busier without hiding the next actionable station.",
+      "failureAttribution": "Visible stock and queue state explain why earnings rise or stall.",
+      "recoveryReplay": "The player can immediately resume the stock→queue→checkout cycle."
+    }
+  ],
+  "transferablePatterns": [
+    "Show customer route and queue occupancy in the playfield, not only in helper text.",
+    "Make shelf depletion and checkout throughput the readable sources of pressure.",
+    "Keep recovery local and replayable: restock, return, serve, repeat."
+  ],
+  "rejectCopying": [
+    "Do not copy Monkey Mart names, characters, art, UI geometry, map layout, prompts, or tuning values.",
+    "Use the existing original sea-otter beach-market expression and seafood economy instead."
+  ]
+}

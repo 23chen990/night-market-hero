@@ -1,0 +1,26 @@
+{
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "classification": "player-experience / customer-routing presentation",
+  "scope": "generated game workspace only",
+  "reproduction": {
+    "steps": [
+      "Start a fresh browser session.",
+      "Wait for or spawn a fish customer.",
+      "Observe the customer entering the shop, visiting the matching shelf, and checking out."
+    ],
+    "observed": "Customer view is created at (270,596), immediately above the checkout counter; the route does not visibly begin at the shop door.",
+    "expected": "Customer visibly enters through the bottom door, walks to the requested product shelf, takes one unit when stock is available, then walks to the checkout queue."
+  },
+  "reproductionMatrix": [
+    {"objectType":"customer","stateBranch":"shopping","renderer":"Phaser customer container tween","viewport":"design 540x960 / FIT mobile"},
+    {"objectType":"customer","stateBranch":"waitingStock","renderer":"Phaser customer container tween","viewport":"design 540x960 / FIT mobile"},
+    {"objectType":"customer","stateBranch":"checkout","renderer":"Phaser customer container tween","viewport":"design 540x960 / FIT mobile"}
+  ],
+  "acceptanceCriteria": [
+    "A newly created customer view starts at the declared door entry point.",
+    "Shopping and waiting customers target the shelf for their current product.",
+    "Checkout customers target the checkout queue position after stock is consumed.",
+    "Existing simulation, persistence, and progression tests remain green."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    { "name": "game-tests", "passed": true, "evidence": "workspace/game: pnpm test passed (71 tests)." },
+    { "name": "typecheck-lint-build", "passed": true, "evidence": "workspace/game: pnpm typecheck, pnpm lint, and pnpm build exited 0." },
+    { "name": "default-natural-journey", "passed": true, "evidence": "artifacts/recovery-natural-qa.json: fresh 390x844 context completed startup, harvest, restock, customer entry→shelf→checkout, settlement, and replay using normal input only." },
+    { "name": "runtime-errors", "passed": true, "evidence": "artifacts/recovery-natural-qa.json: consoleErrors=[] and pageErrors=[]." },
+    { "name": "responsive-portrait", "passed": true, "evidence": "artifacts/revisions/seaside-v6-implementation/evidence/qa-smoke.json: 360x800, 390x844, and 430x932 rendered without horizontal overflow or runtime errors." }
+  ],
+  "issues": [],
+  "screenshots": ["screenshots/recovery-natural/01-startup.png", "screenshots/recovery-natural/04-customer-entry.png", "screenshots/recovery-natural/05-customer-shelf.png", "screenshots/recovery-natural/06-customer-checkout.png", "screenshots/recovery-natural/07-settlement.png", "screenshots/recovery-natural/08-replay.png"],
+  "consoleLog": "logs/console.log",
+  "testedAt": "2026-09-05T07:10:00.000Z"
+}

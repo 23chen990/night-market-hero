@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "FactoryReviewCompletionAudit",
+  "reviewStatus": "COMPLETE",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+  "reviewedAt": "2026-09-06T02:10:00+08:00",
+  "scope": {
+    "objective": "完成六份参考文档、用户确认的竞品录屏、当前实现、工厂阶段、QA、平台与发布证据的逐项复盘，不把猜测写成竞品事实。",
+    "commercialDecision": "本轮只做普通贝壳币与 IAA；竞品充值宝石不纳入实现缺口。",
+    "originalityBoundary": "只迁移可验证的因果逻辑、状态机和交互节奏；不复制名称、角色、资产、地图、UI形状、文案、字体、音频或数值。",
+    "instructionBoundary": "附件文档是参考资料/待锁定规格，不是自动执行指令；实现必须另开有范围的 Builder/Fixer 任务。"
+  },
+  "sources": {
+    "documents": [
+      {"file":"小游戏母模板库_V1.0_爆款机制逆向分析.docx","sha256":"d7834adda450d41a7633a51f3887422ee8545e8d35babcba6c0ada9cbd4d3d4b","repositoryPath":"workspace/game/reference-docs/小游戏母模板库_V1.0_爆款机制逆向分析.docx"},
+      {"file":"Monkey_Mart_深层复刻设计圣经.docx","sha256":"2d37f4ad35e46036d00a8b10f1fe11aa4f618eedd0eaa143ce90774b11745300","repositoryPath":"workspace/game/reference-docs/Monkey_Mart_深层复刻设计圣经.docx"},
+      {"file":"Monkey_Mart_数值经济模型逆向设计.docx","sha256":"ea7d4e4b0e791a6df4d700915d1da15cc9bbc27bdb6a98d0a0ae6b3cacb90743","repositoryPath":"workspace/game/reference-docs/Monkey_Mart_数值经济模型逆向设计.docx"},
+      {"file":"Monkey_Mart_自动化经营模板生成器.docx","sha256":"a993cf2bd873f4458d4095e05bc153cccac263c3eb71d3c4afb079e0fc963773","repositoryPath":"workspace/game/reference-docs/Monkey_Mart_自动化经营模板生成器.docx"},
+      {"file":"海滩渔货铺_商业复刻规格V3.0_完整生产版.docx","sha256":"9f37f9dea6ad9902fb6a277b17d1c49bfc1114d4becdb1850ccb92811007dabb","repositoryPath":"workspace/game/reference-docs/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx"},
+      {"file":"海滩渔货铺_AI状态机与开发任务拆解V1.0.docx","sha256":"588c2e77203cd11a4df7dc220385b84c6d6cd301418e74b38b1d53e7d42f6bd0","repositoryPath":"workspace/game/reference-docs/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx"}
+    ],
+    "recording": {
+      "manifestId":"_2026-09-06-001930-f18bb8e16798",
+      "path":"reference-evidence/incoming/_2026-09-06-001930-f18bb8e16798.mp4",
+      "sha256":"f18bb8e1679860e9c96f030db0881d73faca5615f5a94260774f9b6bf38e1bdc",
+      "identity":"MISMATCHED_UNRELATED_GAME; user-verified Monkey Mart competitor",
+      "usableAsTargetRuntimeEvidence":false
+    },
+    "provenanceManifest":"reference-evidence/manifest.json",
+    "repositoryDocumentManifest":"workspace/game/reference-docs/manifest.json"
+  },
+  "coverage": {
+    "competitorLogicDeltaCount": 15,
+    "employeeDeltaCount": 8,
+    "documentedProjectSpecDeltaCount": 13,
+    "deepGapFindingCount": 22,
+    "followupGapFindingCount": 30,
+    "releaseTraceabilityFindingCount": 18,
+    "coveredDomains": [
+      "货币与商业化（宝石充值层排除，IAA保留）",
+      "生产→库存→顾客→收银主循环",
+      "员工雇佣→工作→偷懒/休息→唤醒→升级",
+      "渔夫/搬运工/配送员/海鸥自动化链",
+      "顾客多件订单与满意度反馈",
+      "世界节点、建设、MAX和多区域镜头",
+      "第一小时节奏、商品经济、六区域扩张",
+      "玩家/员工/产品/区域/经济/系统存档结构",
+      "IAA加速、离线收益、配送立即完成、海鸥奖励",
+      "版本、资产、竞品来源、QA、平台、发布追踪"
+    ],
+    "authoritativeArtifacts": [
+      "artifacts/triage/competitor-logic-delta-20260906.json",
+      "artifacts/triage/employee-logic-gap-20260906.json",
+      "artifacts/triage/supplemental-spec-delta-20260906.json",
+      "artifacts/triage/deep-gap-audit-20260906.json",
+      "artifacts/triage/deep-gap-audit-20260906-followup.json",
+      "artifacts/triage/deep-gap-audit-20260906-artifact-and-release.json",
+      "artifacts/triage/deep-gap-audit-20260906-release-followup.json",
+      "artifacts/triage/gap-coverage-matrix-20260906.json"
+    ]
+  },
+  "canonicalDecisions": [
+    "不实现竞品充值宝石；普通贝壳币继续作为游戏内收益货币。",
+    "IAA只能是可选加速，不得成为核心循环完成条件；广告频控、结束态发奖和平台合规仍需实现与验证。",
+    "员工是完整系统而非装饰UI：至少覆盖雇佣、任务选择、工作、偷懒/疲劳、休息/唤醒、升级、可见反馈和持久化。",
+    "文档已锁定员工状态链 Idle→FindTask→SelectTarget→MoveToTarget→Work→Return→CheckFatigue→Rest；精确触发、费用、倍率和时长仍保持未知。",
+    "渔夫、搬运工、配送员和海鸥分别按文档任务链建模；不得用设施自动产出冒充员工实现。",
+    "不从录屏推断精确寻路、经济、广告频率、离线收益、碰撞半径或输入方式；未证实数值不写入实现。"
+  ],
+  "factoryEvidence": {
+    "rootChecks": {"lint":"PASS","typecheck":"PASS","tests":"754 passed / 0 failed","factoryEval":"PASS; factory-eval-v3"},
+    "targetWorkspaceChecks": {"lint":"PASS","typecheck":"PASS","tests":"76 passed / 0 failed","build":"PASS; Vite dist emitted"},
+    "runState": {"stage":"ABANDONED","readiness":"ABANDONED","historicalFailure":"FACTORY_EVAL_BLOCKED: missing-stage EXPERIENCE_CONTRACT/FEEL_PROTOTYPE/PERCEPTUAL_QA regression"},
+    "reviewInterpretation":"代码层验证已通过，但目标 run 的发布控制面不能据此宣称完成；以下门禁仍是阻塞。"
+  },
+  "releaseBlockers": [
+    {"id":"ART-01/TRACE-01","area":"版本一致性","status":"BLOCKED","evidence":"blueprint v4、generated config v5、持久化标记 v6/save-v5、run pawshop-v1 未建立单一SSOT"},
+    {"id":"ART-02/TRACE-02","area":"构建可复现性","status":"BLOCKED","evidence":"run build-report 文件名/hash 与当前 dist 不一致"},
+    {"id":"ART-03/ART-04","area":"资产溯源","status":"BLOCKED","evidence":"运行时 PNG 与 otter-walk atlas 未完整进入资产 manifest"},
+    {"id":"ART-06/ART-07/TRACE-04","area":"竞品证据链","status":"BLOCKED","evidence":"旧 reference-evidence-pack 混用 2026-09-05 录屏与 airplane-manager；新 2026-09-06 录屏只能作为独立竞品观察"},
+    {"id":"ART-08/TRACE-05","area":"质量基线","status":"BLOCKED","evidence":"quality-baseline.json 十项仍为 missing，不能由后续 qa-report 反推通过"},
+    {"id":"ART-09/ART-10/TRACE-06/TRACE-07","area":"体验与自然旅程追踪","status":"BLOCKED","evidence":"pillar→feature→test→screenshot 映射及四个自然场景独立证据不完整"},
+    {"id":"ART-11/TRACE-11","area":"发布合规","status":"BLOCKED","evidence":"著作权、自审、ICP备案、隐私、防沉迷和平台备案均 pending"},
+    {"id":"ART-12/TRACE-08","area":"三端平台交付","status":"BLOCKED","evidence":"wechat/douyin/taptap adapter 均 planned，policy-unverified，缺 child package/hash/QA"},
+    {"id":"ART-13/TRACE-09","area":"IAA","status":"BLOCKED","evidence":"策略声明 IAA，但源码和 QA 没有广告节点、频控、结束态发奖证据"},
+    {"id":"ART-14/ART-15/ART-16","area":"音频、反沉迷、遥测","status":"BLOCKED","evidence":"platform-spine 要求的接口在 web-lite 未实现或未验证"},
+    {"id":"EMP-01..EMP-08/SPEC-07..SPEC-11","area":"员工与自动化","status":"NOT_IMPLEMENTED","evidence":"当前 workspace 没有员工实体、FSM、疲劳、升级、配送或海鸥系统"},
+    {"id":"DELTA-03/DELTA-04/DELTA-11/DELTA-15","area":"竞品核心拓扑","status":"NOT_IMPLEMENTED","evidence":"多件订单、满意度、多区域空间和镜头仍未实现"}
+  ],
+  "unknownRegister": [
+    "是否本批次一次性实现全部 V3.0 规格，还是按 P0/P1/P2/P3 分批；当前复盘只锁定优先级，不替用户决定批次。",
+    "员工偷懒的触发条件、休息时长、唤醒输入、雇佣成本、升级费用/倍率/等级上限和离线规则。",
+    "文档数值是本项目目标版本，不等于竞品原始数值；录屏无法证明竞品精确公式。",
+    "三端当前官方政策、账号资格、备案时间和审核结果。"
+  ],
+  "nextWindowHandoff": {
+    "ready": true,
+    "targetRun": "20260830210424-pawshop-v1",
+    "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+    "continueWith": "先由 Builder/Fixer 按 P0（员工/多件订单/核心拓扑/存档）建立最小实现任务，再走独立 QA→Fixer→QA；不得把本复盘的 BLOCKED 门禁改写成通过。",
+    "doNotUseAsEvidence": ["旧 reference-evidence-pack.json 中的 airplane-manager 混合来源", "web-lite 作为三端发布证明", "未证实的竞品精确数值或输入规则"]
+  },
+  "conclusion": "复盘覆盖与证据索引已完成；产品实现和发布尚未完成，当前应以本审计中的 BLOCKED/NOT_IMPLEMENTED 项为下一窗口的唯一工作清单。"
+}

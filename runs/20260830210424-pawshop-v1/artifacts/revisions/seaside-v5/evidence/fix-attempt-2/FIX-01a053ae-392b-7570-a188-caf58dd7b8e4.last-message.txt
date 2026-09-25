@@ -1,0 +1,19 @@
+第二次修复已完成，仅处理 `V5-QA-007` 至 `009`：
+
+- 真实 V4 迁移现兼容 `productId/phase`、`checkout.queue`、`shellTokens/ageMs`。
+- 浏览时长统一为 `ECONOMY.customers.browseDurationMs = 2400`，确定性首售落入 25–40 秒窗口。
+- 五张 SVG 均改用 Phaser `load.svg` 并指定明确尺寸，未修改原始美术资源。
+
+最终检查：
+
+- `npm run lint`：通过
+- `npm run typecheck`：通过
+- `npm test`：5 个文件，40/40 通过
+- `npm run build`：通过
+- 构建报告及产物哈希：通过
+
+证据：[build-report.json](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/artifacts/build-report.json)
+
+生产入口：[dist/index.html](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/dist/index.html)
+
+Chromium 控制台是否彻底消除 `texImage2D` 警告仍需下一轮独立 QA 实机复验；报告中已明确标记为待复验。

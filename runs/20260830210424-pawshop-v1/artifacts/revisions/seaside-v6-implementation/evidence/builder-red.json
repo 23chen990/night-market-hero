@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "phase": "RED",
+  "command": "pnpm test -- tests/gameplay.test.ts tests/persistence.test.ts tests/ui-shell.test.ts tests/browser-contract.test.ts",
+  "exitCode": 1,
+  "testFiles": {
+    "failed": 4,
+    "passed": 2,
+    "total": 6
+  },
+  "tests": {
+    "failed": 18,
+    "passed": 45,
+    "total": 63
+  },
+  "expectedFailureReasons": [
+    "world-space upgrade station and 浮标工坊 copy still existed",
+    "v5 shrimp/crab facility, buffer, progression and local-upgrade state was absent",
+    "four-product carrier and independent shelf contracts were absent",
+    "shrimp substitution and crab shortage behavior were absent",
+    "save-v4 to save-v5 migration fields and markers were absent",
+    "independent keyboard-accessible 背篓容量 icon panel was absent"
+  ],
+  "validRed": true
+}

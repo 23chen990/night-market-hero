@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "UserFeedbackTriage",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "classification": "player-experience / UI clutter / explicit removal",
+  "scope": "target game workspace only; remove highlighted stock and carrying HUD strips",
+  "reproduction": {
+    "steps": [
+      "Start the target game at the default 390x844 portrait viewport.",
+      "Inspect the top HUD below the title and currency pills.",
+      "Compare against the supplied screenshot with the red highlighted region."
+    ],
+    "observed": [
+      "The top HUD exposes a stock-strip with 鲜鱼/海带库存.",
+      "The top HUD exposes a carry-pill with 携带 and capacity upgrade text."
+    ],
+    "expected": "Neither highlighted strip is rendered or exposed in the default journey; local world/shelf feedback and the upgrade panel remain available."
+  },
+  "evidence": {
+    "referenceMedia": {
+      "manifestId": "codex-clipboard-1cd74dd9-9e68-4de7-af18-0978bff8faf1-d02e84b8030f",
+      "path": "reference-evidence/incoming/codex-clipboard-1cd74dd9-9e68-4de7-af18-0978bff8faf1-d02e84b8030f.png",
+      "sha256": "d02e84b8030f253b73dd01cc66f96a7a17bc5f8e93495b8a0ac3307bffbde0c7",
+      "identityStatus": "PENDING",
+      "usableAsEvidence": false
+    }
+  },
+  "reproductionMatrix": [
+    {
+      "objectType": "top stock HUD strip",
+      "lifecycleStateBranch": "startup→active play",
+      "rendererPresentationPath": "index.html #hud stock-strip + renderDom stock writes",
+      "deviceViewport": "390x844 portrait FIT",
+      "branchRepresented": true,
+      "evidence": "user screenshot; tests/ui-shell.test.ts"
+    },
+    {
+      "objectType": "top carrying HUD strip",
+      "lifecycleStateBranch": "startup→carrying goods",
+      "rendererPresentationPath": "index.html #hud carry-pill + renderDom carrying write",
+      "deviceViewport": "390x844 portrait FIT and 430x932 portrait FIT",
+      "branchRepresented": true,
+      "evidence": "user screenshot; tests/ui-shell.test.ts"
+    },
+    {
+      "objectType": "local shelf counters",
+      "lifecycleStateBranch": "stocked shelf→customer checkout",
+      "rendererPresentationPath": "world shelf sprites and contextual station cue",
+      "deviceViewport": "390x844 portrait FIT",
+      "branchRepresented": true,
+      "evidence": "existing ui-shell and customer journey tests"
+    }
+  ],
+  "route": "direct-builder",
+  "routeReason": "Localized presentation-only change limited to index.html and main.ts; no core gameplay, schema, persistence, platform adapter, or release configuration changes.",
+  "acceptanceCriteria": [
+    "index.html contains no stock-strip, carry-pill, or their child IDs.",
+    "main.ts does not write to removed DOM nodes or pulse them.",
+    "Local shelf/contextual feedback and upgrade panel remain wired.",
+    "Target game lint, typecheck, tests, and production build pass."
+  ]
+}

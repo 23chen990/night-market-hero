@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "v4-builder-contract",
+      "passed": true,
+      "evidence": "Fresh FULL_BUILD report contains contract:test-api-7, save:versioned, test:passed, and typecheck:passed; Builder thread 01a05381-41f5-7712-a247-705ef09d0946."
+    },
+    {
+      "name": "tdd-red-green-evidence",
+      "passed": true,
+      "evidence": "BUILD stdout records a real RED run with 24/31 failures before implementation, including the 7-to-8 boundary remaining at 7; the final independent rerun passed 31/31."
+    },
+    {
+      "name": "game-tests-typecheck-and-build",
+      "passed": true,
+      "evidence": "Independent rerun: 3 Vitest files and 31 tests passed; game typecheck and Vite production build exited 0."
+    },
+    {
+      "name": "factory-boundaries",
+      "passed": true,
+      "evidence": "Factory lint and root typecheck exited 0; 33 targeted request-router, open-source-research, and web-lite-runtime tests passed."
+    },
+    {
+      "name": "full-shelf-blocks-delivery",
+      "passed": true,
+      "evidence": "After loading a versioned full-shelf fixture and simulating 900 ms beside the fish shelf, browser state remained shelf=8, carried fish=2, interactionProgressMs=0."
+    },
+    {
+      "name": "customer-slot-reopens-delivery",
+      "passed": true,
+      "evidence": "A real spawned fish customer changed the full shelf from 8 to 7 while carried fish stayed 2; one newly timed delivery then restored 8 and reduced carried fish to 1."
+    },
+    {
+      "name": "typed-capacity-and-save-clamping",
+      "passed": true,
+      "evidence": "Focused model tests prove independent fish/kelp capacity 8, cross-product rejection, no banked delivery time, and legacy shelf values clamped into 0..8 while unrelated progress is preserved."
+    },
+    {
+      "name": "visible-full-feedback",
+      "passed": true,
+      "evidence": "The live fish HUD rendered ‘鲜鱼 库存 8/8 已满’ and applied the is-full state; station labels use the same shelfCounterText rule."
+    },
+    {
+      "name": "versioned-refresh-recovery",
+      "passed": true,
+      "evidence": "The browser loaded the full fixture through localStorage save-v3 and later persisted version=3 with fish shelf=8; unit tests also cover production progress and customer countdown refresh recovery."
+    },
+    {
+      "name": "single-kelp-node-and-capacity-marker-regressions",
+      "passed": true,
+      "evidence": "Regression tests retain one tide-pool investment/harvest node, no standalone construction station, and the player-attached 满载 HUD-avoidance behavior."
+    },
+    {
+      "name": "portrait-viewports",
+      "passed": true,
+      "evidence": "360x800, 390x844, and 430x932 each displayed a visible Canvas with document scrollWidth equal to viewport width and no console errors."
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "evidence": "Chromium console errors=0 and page exceptions=0 during refresh, full-shelf blocking, customer consumption, resumed delivery, screenshot, and multi-viewport checks."
+    }
+  ],
+  "issues": [],
+  "screenshots": [
+    "screenshots/shelf-full.png",
+    "screenshots/shelf-full-canvas.png",
+    "screenshots/canvas-fallback.png"
+  ],
+  "consoleLog": "logs/console.log",
+  "testedAt": "2026-08-30T16:54:00.000Z"
+}

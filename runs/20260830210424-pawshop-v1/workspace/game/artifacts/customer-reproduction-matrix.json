@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "issueId": "QA-CUSTOMER-JOURNEY-001",
+  "targetGame": "beach_fish_market_v4",
+  "dimensions": ["objectType", "lifecycleStateBranch", "rendererPresentationPath", "deviceViewport"],
+  "cells": [
+    {
+      "objectType": "customer",
+      "lifecycleStateBranch": "shopping",
+      "rendererPresentationPath": "MarketScene.syncCustomers -> createCustomerView -> customerTarget(product shelf) -> Phaser tween",
+      "deviceViewport": "540x960 portrait FIT",
+      "reportedRepresentation": "entry anchor can be skipped by immediate target tween",
+      "branchRepresented": true,
+      "statusBeforeFix": "reproduced-by-code-path"
+    },
+    {
+      "objectType": "customer",
+      "lifecycleStateBranch": "waitingStock",
+      "rendererPresentationPath": "MarketScene.syncCustomers -> customerTarget(product shelf) -> waiting visual",
+      "deviceViewport": "390x844 portrait FIT",
+      "reportedRepresentation": "pickup cause and shelf hold are not explicit",
+      "branchRepresented": true,
+      "statusBeforeFix": "requires-player-visible-retest"
+    },
+    {
+      "objectType": "customer",
+      "lifecycleStateBranch": "checkout",
+      "rendererPresentationPath": "MarketScene.syncCustomers -> customerTarget(checkout queue) -> Phaser tween",
+      "deviceViewport": "360x800, 390x844, 430x932 portrait FIT",
+      "reportedRepresentation": "customer can appear above checkout without observed door-to-shelf trace",
+      "branchRepresented": true,
+      "statusBeforeFix": "requires-player-visible-retest"
+    },
+    {
+      "objectType": "customer",
+      "lifecycleStateBranch": "replay-after-settlement",
+      "rendererPresentationPath": "customerViews map lifecycle create/destroy/recreate",
+      "deviceViewport": "540x960 portrait FIT",
+      "reportedRepresentation": "second customer must reuse the same bottom-door route",
+      "branchRepresented": true,
+      "statusBeforeFix": "requires-player-visible-retest"
+    }
+  ]
+}

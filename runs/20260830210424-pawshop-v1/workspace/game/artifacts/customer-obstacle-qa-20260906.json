@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "customer-obstacle-qa",
+  "targetGame": "beach_fish_market_v4",
+  "viewport": { "width": 390, "height": 844 },
+  "method": "Fresh Chromium against the rebuilt dist/ with two fish customers and five fish shelf items; observe the 3D fixture footprints and customer movement without route overlays.",
+  "observations": {
+    "shelves": { "solid3dPresentation": true, "raisedTopAndFrontFace": true },
+    "checkoutCounter": { "solid3dPresentation": true, "raisedTopAndFrontFace": true },
+    "routeOverlay": { "visible": false },
+    "customerStates": { "shoppingBeforeCheckout": true, "checkoutQueueAfterStockPickup": [1, 2] },
+    "obstacleAwarePath": { "passed": true, "detail": "shelf-bound routes use side corridors around the checkout counter footprint" },
+    "walkPacing": { "routeDurationMs": 1500, "passed": true }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "screenshots": [
+    "screenshots/qa-customer-obstacles-390x844.png",
+    "screenshots/qa-customer-checkout-slow-390x844.png"
+  ],
+  "passed": true,
+  "testedAt": "2026-09-06T13:45:00+08:00"
+}

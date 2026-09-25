@@ -1,0 +1,29 @@
+Implemented the complete playable idle-shop loop in the specified workspace.
+
+Key results:
+
+- Spatial fish/kelp harvesting, typed carrying, compatible shelf delivery, customer queues, checkout tokens, tide-pool investment, and capacity upgrades.
+- Single kelp node; no standalone construction station.
+- Save-v3 with throttled and key-event persistence.
+- Exactly seven `window.__GAME_TEST__` controls.
+- Responsive 9:16 UI, safe-area support, drag/keyboard input, attached collision-aware “满载” badge.
+- Real refresh recovery tested across independent processes using persistent `localStorage`.
+
+Verification:
+
+- `npm test`: 7 files, 21 tests passed.
+- `npm run typecheck`: passed.
+- `npm run build`: passed without warnings.
+- `dist/index.html`: present; 8 production files generated.
+- Asset SHA-256 hashes match the supplied manifest.
+- Build report passes the factory `BuildReportSchema`.
+
+Evidence:
+
+- [Build report](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/artifacts/build-report.json)
+- [TDD RED evidence](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/artifacts/tdd-red-evidence.json)
+- [Production build](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/dist/index.html)
+- [Gameplay model](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/game/model.ts)
+- [Refresh regressions](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/tests/process-refresh.test.ts)
+
+The generated `dist` remains a web-lite development/QA build, not a publishable WeChat, Douyin, or TapTap package.

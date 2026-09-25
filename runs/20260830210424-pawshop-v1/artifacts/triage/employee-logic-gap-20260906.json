@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "EmployeeLogicGap",
+  "targetGame": "20260830210424-pawshop-v1",
+  "sources": {
+    "documentsChecked": [
+      {"path":"/Users/kker/Downloads/小游戏母模板库_V1.0_爆款机制逆向分析.docx","employeeDetail":"仅提到 Monkey Mart 的自动化成长幻想和 IAA 加速成长"},
+      {"path":"/Users/kker/Downloads/Monkey_Mart_深层复刻设计圣经.docx","employeeDetail":"明确‘自己搬货→员工搬货→系统运行’和‘员工：权力提升感’，未写偷懒、雇佣价格或升级公式"},
+      {"path":"/Users/kker/Downloads/Monkey_Mart_数值经济模型逆向设计.docx","employeeDetail":"仅将员工效率列为核心变量，未写员工状态机"},
+      {"path":"/Users/kker/Downloads/Monkey_Mart_自动化经营模板生成器.docx","employeeDetail":"员工模块参数为效率、工作范围、自动化程度，未写偷懒行为"},
+      {"path":"/Users/kker/Downloads/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx","employeeDetail":"明确第一名员工目标、员工/配送/海鸥自动化方向；未写费用和疲劳公式"},
+      {"path":"/Users/kker/Downloads/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx","employeeDetail":"明确员工状态链 Idle→FindTask→SelectTarget→MoveToTarget→Work→Return→CheckFatigue→Rest，以及渔夫/搬运工/配送员职责"}
+    ],
+    "recording": {"manifestId":"_2026-09-06-001930-f18bb8e16798","evidence":"可观察到多个非主控角色、产品堆叠、收银/货架并发活动，以及 WAKE UP THE ANIMAL 横幅；无法仅凭录屏确认角色归属、偷懒触发或升级数值"},
+    "userRequirement": "用户明确补充：可以雇佣员工，员工会偷懒，员工有升级。此条视为用户产品要求，不伪装成文档或录屏已证明事实。"
+  },
+  "supplementaryExternalReferences": [
+    {
+      "url": "https://monkeymartgame.co.uk/guides/workers-and-staff/",
+      "role": "仅作待核对的外部线索",
+      "reportedMechanics": ["不同工作角色", "疲劳后停止工作", "唤醒操作", "耐力相关升级"],
+      "evidenceStatus": "third-party-guide-not-primary",
+      "rule": "不把该攻略的角色、等级、概率、时长或数值写入竞品事实；除非用户提供同段录屏或明确确认。"
+    },
+    {
+      "url": "https://monkeymart.gg/monkey-mart-upgrades",
+      "role": "仅作待核对的外部线索",
+      "reportedMechanics": ["Speed/Stack/Stamina 类升级名称"],
+      "evidenceStatus": "third-party-guide-not-primary",
+      "rule": "升级轴名称也只作为调查问题，不作为本项目已锁定设计。"
+    }
+  ],
+  "employeeDelta": [
+    {"id":"EMP-01","state":"未雇佣","competitorEvidence":"世界中存在可激活/唤醒动物任务横幅和带金额节点。","targetCurrent":"没有员工实体、雇佣节点或员工存档字段。","requiredLogic":"锁定→可雇佣→雇佣完成→进入工作状态","unknowns":["雇佣成本","前置条件","一次雇佣还是多员工"]},
+    {"id":"EMP-02","state":"工作任务","competitorEvidence":"录屏可见多个角色携带产品并在货架/收银区域同时活动。","targetCurrent":"只有玩家移动和设施自动产出；没有员工 task、目标选择或工作范围。","requiredLogic":"员工选择一个生产/补货/收银任务，沿可行走路径工作，任务完成后回到待命点","unknowns":["任务优先级","是否能跨产品","是否共享库存"]},
+    {"id":"EMP-03","state":"偷懒/停工","competitorEvidence":"录屏中的 WAKE UP THE ANIMAL 只能证明存在‘唤醒’类提示，不能证明偷懒触发条件或持续时间。","targetCurrent":"没有 idle/slacking 状态、计时器、动画或恢复操作。","requiredLogic":"working→slacking，slacking 导致效率下降/任务暂停，并可被玩家唤醒或等待恢复","unknowns":["随机/周期/疲劳触发","偷懒时是否完全停工","玩家恢复操作是靠近、点击还是广告","是否有满意度/士气变量"]},
+    {"id":"EMP-04","state":"员工效率","competitorEvidence":"录屏显示并发角色和不同生产区域，但不显示精确效率数值。","targetCurrent":"没有员工效率字段和产出修正。","requiredLogic":"效率影响搬运速度、生产间隔或服务速度之一，并在世界/面板中可见","unknowns":["效率作用轴","基础效率","升级倍率"]},
+    {"id":"EMP-05","state":"员工升级","competitorEvidence":"录屏存在不同成本节点和持续任务提示，但不能确认哪些节点是员工升级。","targetCurrent":"facilityUpgrades 只包含鱼网速度、虾笼速度、蟹笼容量，没有 employeeUpgrade。","requiredLogic":"员工拥有等级/经验或独立升级节点；升级改变可观察工作能力并持久化","unknowns":["升级货币","等级上限","是否按员工类型分别升级","是否需要先经历偷懒"]},
+    {"id":"EMP-06","state":"员工可见反馈","competitorEvidence":"竞品使用角色、产品堆叠、任务横幅和 emoji/图标表达状态。","targetCurrent":"目标没有员工 sprite、头顶产品、工作/偷懒/完成/升级反馈。","requiredLogic":"员工工作、偷懒、被唤醒、升级完成均有局部图标/动画，不依赖长文本"},
+    {"id":"EMP-07","state":"员工与顾客竞争","competitorEvidence":"录屏中员工/顾客/货架/收银同屏运行，形成并发压力。","targetCurrent":"顾客路线和玩家采集存在，但没有员工占用路径、库存或收银吞吐的竞争。","requiredLogic":"员工自动化降低玩家劳动，同时可能因偷懒/路径/任务优先级产生可归因瓶颈"},
+    {"id":"EMP-08","state":"员工恢复与持久化","competitorEvidence":"录屏无法证明刷新或离线后员工状态。","targetCurrent":"GameState 没有 employee 集合、状态版本或恢复规则。","requiredLogic":"刷新/后台恢复后保留雇佣、等级、工作/偷懒状态，并明确离线期间是否推进"}
+  ],
+  "strictlyObservedVsRequired": {
+    "observed": ["竞品有多角色并发活动","有 WAKE UP THE EMPLOYEE 与 WAKE UP THE ANIMAL 任务横幅","有睡眠脸、Z、绿色下箭头等世界提示","有世界锚定金额/任务提示"],
+    "documentSpecified": ["员工状态链 Idle→FindTask→SelectTarget→MoveToTarget→Work→Return→CheckFatigue→Rest","员工自动化职责至少包含渔夫、搬运工和配送员","员工模块关注效率、工作范围、自动化程度","规格目标在3-5分钟出现第一名员工"],
+    "userConfirmedRequirement": ["可雇佣员工","员工会偷懒","员工可以升级"],
+    "notYetKnown": ["偷懒触发条件、表现细节、恢复输入、雇佣成本、解锁前置、升级树、等级上限、员工数量、离线规则"],
+    "doNotInvent": "在用户没有提供上述细节或新的可验证竞品素材前，不应填写竞品精确数值、概率、时长或输入方式。"
+  },
+  "currentTargetGap": "员工系统不是当前海滩渔货铺的‘补一个 UI’问题，而是需要新增 GameState、simulation、renderer、persistence、economy、自然旅程和平台 QA 的完整模块。"
+}

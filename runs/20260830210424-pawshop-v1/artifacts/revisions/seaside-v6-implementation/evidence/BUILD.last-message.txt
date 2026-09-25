@@ -1,0 +1,27 @@
+Implemented the approved v6 Option B expansion in the target workspace only.
+
+Key changes:
+
+- Removed the world-space 浮标工坊, station radius, label, upgrade geometry, and route endpoint.
+- Added independent `upgrade.png` DOM control and keyboard-accessible `背篓容量` panel.
+- Added shrimp batch buffering and crab ready-slot production with local upgrades.
+- Added four-product shared carrier capacity and independent shelf capacities.
+- Added fish → kelp → shrimp → crab progression and customer fallback/shortage rules.
+- Added save-v4/save-v3 migration to save-v5 with state preservation and clamping.
+- Added original Phaser Graphics silhouettes for shrimp, crab, trap, pot, and locked facilities.
+- Preserved the seven `window.__GAME_TEST__` controls and otter animation/reduced-motion behavior.
+
+Verification:
+
+- RED evidence: [builder-red.json](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/artifacts/revisions/seaside-v6-implementation/evidence/builder-red.json)
+- GREEN evidence: [builder-green.json](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/artifacts/revisions/seaside-v6-implementation/evidence/builder-green.json)
+- Build report: [build-report.json](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/artifacts/build-report.json)
+
+All gates passed:
+
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm test` — 63/63 tests
+- `pnpm build`
+
+The result remains browser web-lite QA evidence only, not proof of WeChat, Douyin, or TapTap publishability.

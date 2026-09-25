@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "游戏工程静态与构建门禁",
+      "passed": true,
+      "evidence": "pnpm lint、pnpm typecheck、pnpm test、pnpm build 均 exit 0；6 个测试文件、50/50 测试通过，Vite 产出 dist/index.html。"
+    },
+    {
+      "name": "三种手机竖屏布局与输入契约",
+      "passed": true,
+      "evidence": "Chromium 360x800、390x844、430x932 均无横向溢出；window.__GAME_TEST__ 严格保持七个控制项。"
+    },
+    {
+      "name": "共享背篓、MAX 与货架硬上限",
+      "passed": true,
+      "evidence": "初始共享容量 4；满载徽标附着主角；鱼/海带合计达到容量后阻止采集；单货架 8/8 后停止投放并保留未投商品。"
+    },
+    {
+      "name": "经济档位、门控、奖励与首售节奏",
+      "passed": true,
+      "evidence": "40 币 4→6；海带未解锁时 88 币二档严格无状态变更且显示“解锁海带后开放”；解锁后 88 币 6→8 并显示“已满级”；鱼/海带 token=4/6；浏览时长 2400ms 使确定性首售进入 25–40 秒窗口。"
+    },
+    {
+      "name": "单一海带节点与投建进度",
+      "passed": true,
+      "evidence": "未解锁海带产区直接承担 96 币投建，没有第二个建设区；完成后同一位置切换为海带采集点。"
+    },
+    {
+      "name": "真实 V4 存档与运行中状态迁移",
+      "passed": true,
+      "evidence": "真实旧键和 player.inventory 可读；6/12→48/96、已解锁→96/96；customers[].productId/phase、checkout.queue、shellTokens/ageMs、ID 连续性迁移到 version 4 并写回 V5 键。"
+    },
+    {
+      "name": "PNG 透明素材与角色动画",
+      "passed": true,
+      "evidence": "背景、角色、鱼、海带、升级图标及前/后/侧各 8 帧 atlas 均成功加载；24 帧在浅色、深色、饱和色背景共 72 个合成样本透明四角与可见覆盖有效；reduced-motion 使用静态关键姿势。"
+    },
+    {
+      "name": "浏览器控制台、页面异常与纹理上传",
+      "passed": true,
+      "evidence": "最终 Chromium QA 中 console error=0、pageerror=0、texImage2D/bad image data=0；角色、背景、鱼、海带、升级纹理均肉眼可见。"
+    }
+  ],
+  "issues": [],
+  "screenshots": [
+    "artifacts/revisions/seaside-v5/screenshots/post-fix-v5-360x800.png",
+    "artifacts/revisions/seaside-v5/screenshots/post-fix-v5-390x844.png",
+    "artifacts/revisions/seaside-v5/screenshots/post-fix-v5-430x932.png",
+    "artifacts/revisions/seaside-v5/screenshots/post-fix-v5-390x844-max-upgrade.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-complete-loop.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-full-shelf.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-atlas-alpha-composites.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-reduced-motion.png"
+  ],
+  "consoleLog": "artifacts/revisions/seaside-v5/logs/v5-browser-console.log",
+  "testedAt": "2026-08-31T10:18:12+08:00"
+}

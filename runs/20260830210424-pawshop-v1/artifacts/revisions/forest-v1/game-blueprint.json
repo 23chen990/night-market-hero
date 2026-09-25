@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "gameId": "pawshop_spatial_logistics_v1",
+  "title": "小爪鲜货铺",
+  "theme": "原创小浣熊在林间鲜货铺里搬运、补货和扩建",
+  "runtime": "web-lite",
+  "template": "idle-shop-v1",
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame"
+  ],
+  "concept": "只用移动完成采集、实体堆叠、补货、顾客结账、拾取现金和投建的空间物流经营游戏",
+  "coreLoop": [
+    "移动到生产点并靠近自动采集有类型商品",
+    "商品以可见堆叠显示在小浣熊头顶",
+    "移动到对应货架自动逐件补货",
+    "顾客选货、等货、取货并前往收银台排队",
+    "玩家在收银区完成交易并让现金实体化",
+    "靠近拾取现金后投入建设区或购买容量升级",
+    "扩建解锁第二产品并制造新的缺货与排队瓶颈"
+  ],
+  "content": {
+    "productName": "林间鲜货",
+    "customerName": "森林客人",
+    "currencyName": "树叶币"
+  },
+  "balance": {
+    "startingCurrency": 0,
+    "orderReward": 3,
+    "baseUpgradeCost": 14
+  },
+  "preferences": {
+    "technicalAnalysis": "docs/spatial-idle-shop-technical-analysis.md",
+    "orientation": "responsive-landscape-first",
+    "sessionTargetMinutes": 5,
+    "player": {
+      "species": "original red panda",
+      "startingCapacity": 4,
+      "stackMustBeVisible": true
+    },
+    "products": [
+      {
+        "id": "banana",
+        "displayName": "香蕉",
+        "unlockedAtStart": true,
+        "source": "banana grove",
+        "shelf": "banana basket"
+      },
+      {
+        "id": "corn",
+        "displayName": "玉米",
+        "unlockedAtStart": false,
+        "source": "corn patch",
+        "shelf": "corn crate",
+        "unlock": "construction zone"
+      }
+    ],
+    "requiredSystems": [
+      "normalized keyboard and pointer/touch drag movement",
+      "typed multi-product carrying stack",
+      "automatic proximity harvest and compatible-shelf delivery",
+      "customer finite state machine with out-of-stock waiting and checkout queue",
+      "physical cash pile collected by proximity",
+      "progressive construction zone unlocking corn",
+      "capacity upgrade with visible effect",
+      "versioned throttled local save"
+    ],
+    "feedback": {
+      "localOnlyForRepeatingActions": true,
+      "forbidCameraFlash": true,
+      "pickupArcOrPulse": true,
+      "shelfFillMustBeVisible": true,
+      "queueAdvanceMustBeVisible": true
+    },
+    "originalityConstraints": [
+      "Do not use Monkey Mart names, code, assets, UI, map layout, tuning or unlock order",
+      "Use only the generic spatial logistics mechanic and generic produce categories",
+      "Keep all silhouettes, palette, layout, progression and numbers original"
+    ],
+    "testRequirements": [
+      "Retain all seven window.__GAME_TEST__ controls",
+      "Add deterministic controls if needed without removing the contract",
+      "Test both products, stock compatibility, queue order, cash collection, construction unlock and save recovery",
+      "Test that repeating automatic interactions never trigger a full-screen camera flash"
+    ]
+  }
+}

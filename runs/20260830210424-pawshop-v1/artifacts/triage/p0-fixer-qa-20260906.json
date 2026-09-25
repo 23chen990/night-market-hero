@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "P0FixerQaHandoff",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+  "stageFlow": ["QA", "FIX", "QA"],
+  "fixAttempt": 1,
+  "fixedIssues": ["EMP-UI", "EMP-UPGRADE-ECONOMY", "ORDER-SATISFACTION", "ORDER-SETTLEMENT"],
+  "evidence": [
+    "workspace/game/artifacts/qa-report-20260906-fixer-qa.json",
+    "workspace/game/tests/employee-order-feedback.test.ts",
+    "workspace/game/screenshots/qa-employee-390x844.png",
+    "workspace/game/screenshots/qa-employee-932x430.png"
+  ],
+  "platformStaging": {
+    "status": "staged-web-lite-adapter",
+    "manifestPaths": [
+      "workspace/game/platforms/wechat-minigame/build/manifest.json",
+      "workspace/game/platforms/douyin-minigame/build/manifest.json",
+      "workspace/game/platforms/taptap-minigame/build/manifest.json"
+    ],
+    "sha256": {
+      "wechat": "7e3d9ed762dd11727957081326328ca49dd89a880ce3cd495677dd9bb6fae482",
+      "douyin": "f8622b839dd294a9451623e69c80bf3457dc10531a4836e298f060d1d50368f4",
+      "taptap": "96ed8eede05520d61e70f49c7ee1302981b990aa89f83e7aa2ac33bdc832fd31"
+    },
+    "publishable": false
+  },
+  "runtimeAdBridge": {
+    "entrypoint": "workspace/game/src/platform/ads-runtime.ts",
+    "wiredFrom": "workspace/game/src/main.ts",
+    "webLiteResult": "sdk-unavailable without consuming cooldown",
+    "status": "platform-sdk-pending"
+  },
+  "remainingBlockers": ["TRACE-08", "TRACE-09", "WORLD-01"],
+  "areaPresentation": {
+    "status": "partial",
+    "layoutArtifact": "workspace/game/src/world/areas.ts",
+    "rendererEvidence": "workspace/game/screenshots/qa-current-390x844.png",
+    "remaining": "active-area camera remains a single-area web-lite presentation; area-specific world chains are not yet release-ready"
+  },
+  "releaseDecision": "BLOCKED",
+  "notes": [
+    "Employee upgrade uses an explicit local capability cap of level 3; no unverified competitor cost/probability was added.",
+    "IAA remains optional rewarded-only contract; platform SDK wiring is still required before release.",
+    "web-lite runtime evidence does not prove WeChat, Douyin or TapTap package publishability."
+  ],
+  "updatedAt":"2026-09-06T02:27:00+08:00"
+}

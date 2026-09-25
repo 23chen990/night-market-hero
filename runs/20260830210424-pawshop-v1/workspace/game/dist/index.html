@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#163A4A" />
+    <title>海滩渔货铺</title>
+    <script type="module" crossorigin src="/assets/index-cLlXJusV.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CnE0mKYz.css">
+  </head>
+  <body>
+    <main id="desktop-stage">
+      <section id="game-shell" aria-label="海滩渔货铺游戏" data-loading="true">
+        <div id="game-wrap">
+          <div id="game" aria-label="可移动的海滩渔货铺场景"></div>
+
+          <header id="hud" data-motion="panel" aria-live="polite">
+            <div class="brand-pill" data-motion="hud">
+              <span class="brand-kicker">海风营业中</span>
+              <strong id="title">海滩渔货铺</strong>
+            </div>
+            <div class="currency-pill" data-motion="hud">
+              <span class="shell-icon" aria-hidden="true">◒</span>
+              <strong id="coins">贝壳币 0</strong>
+            </div>
+            <div id="area-nav" aria-label="区域切换">
+              <span>区域</span>
+              <button type="button" data-area="1" aria-current="true">1</button>
+              <button type="button" data-area="2" aria-current="false">·</button>
+              <button type="button" data-area="3" aria-current="false">·</button>
+              <button type="button" data-area="4" aria-current="false">·</button>
+              <button type="button" data-area="5" aria-current="false">·</button>
+              <button type="button" data-area="6" aria-current="false">·</button>
+            </div>
+          </header>
+
+          <aside id="objective-chip" data-motion="overlay" aria-live="polite">
+            <strong id="status-title">移动开始营业</strong>
+            <span id="status-detail">拖动任意位置，或使用方向键 / WASD</span>
+          </aside>
+
+          <nav id="quick-menu" aria-label="快捷菜单" data-motion="menu">
+            <button id="upgrade-button" type="button" data-motion="icon" aria-controls="upgrade-panel" aria-expanded="false">
+              <img src="/assets/upgrade.png" alt="" /><span class="upgrade-dot" aria-hidden="true"></span><span class="sr-only">背篓容量</span>
+            </button>
+            <button id="help-button" type="button" data-motion="icon" aria-controls="help-panel" aria-expanded="false">
+              <span aria-hidden="true">?</span><span class="sr-only">玩法帮助</span>
+            </button>
+            <button id="reset-button" type="button" data-motion="icon">
+              <span aria-hidden="true">↺</span><span class="sr-only">重置进度</span>
+            </button>
+          </nav>
+
+          <section id="upgrade-panel" data-motion="panel" hidden aria-label="背篓容量升级">
+            <div class="upgrade-card">
+              <strong>升级</strong>
+              <div id="upgrade-attribute-grid" class="upgrade-attribute-grid">
+                <div id="upgrade-attribute-capacity" class="upgrade-attribute"><span aria-hidden="true">🧺</span><b>背篓</b><small id="upgrade-panel-copy">4 → 6</small></div>
+                <div id="upgrade-attribute-speed" class="upgrade-attribute"><span aria-hidden="true">🌊</span><b>采集</b><small>—</small></div>
+                <div id="upgrade-attribute-checkout" class="upgrade-attribute"><span aria-hidden="true">🪙</span><b>收银</b><small>—</small></div>
+              </div>
+              <button id="confirm-upgrade" type="button" aria-label="购买背篓升级"><span aria-hidden="true">↗</span><span class="sr-only">购买升级</span></button>
+            </div>
+          </section>
+
+          <section id="help-panel" data-motion="overlay" hidden aria-label="玩法帮助">
+            <div class="help-card" data-motion="panel">
+              <p class="eyebrow">只需移动</p>
+              <h2>捕捞 → 补货 → 收银</h2>
+              <ol>
+                <li>靠近上方渔网自动捕获鲜鱼。</li>
+                <li>把货送到对应冰盘或海带篮，库存上限 <span id="shelf-capacity-copy"></span>。</li>
+                <li>到收银台服务队列并捡起实体贝壳币。</li>
+                <li>在锁定潮池原地投入 <span id="kelp-cost-copy"></span>，解锁后同处采海带。</li>
+              </ol>
+              <button id="close-help" type="button" data-motion="button">继续营业</button>
+            </div>
+          </section>
+
+          <div id="loading-card" data-motion="overlay" role="status">
+            <img src="/assets/character.svg" alt="" />
+            <strong>小海獭正在摆摊…</strong>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

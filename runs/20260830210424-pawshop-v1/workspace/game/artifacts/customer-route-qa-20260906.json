@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "customer-route-qa",
+  "targetGame": "beach_fish_market_v4",
+  "viewport": { "width": 390, "height": 844 },
+  "method": "Fresh Chromium with a versioned save containing five fish on the shelf; deterministic __GAME_TEST__.spawnCustomer('fish'); observe entry, shelf, and checkout phases without teleporting the customer.",
+  "observations": [
+    { "phase": "entry", "expected": "customer remains at the visible door during the entry hold", "passed": true },
+    { "phase": "shelf", "expected": "customer follows a compact lane-aware path and stops at the requested fish shelf", "passed": true },
+    { "phase": "checkout", "expected": "after simulation state enters checkout, customer continues moving to the checkout queue target", "passed": true }
+  ],
+  "multiCustomer": { "passed": true, "detail": "two simultaneous fish customers rendered on distinct repeatable lanes" },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "screenshot": "screenshots/qa-customer-route-390x844.png",
+  "passed": true,
+  "testedAt": "2026-09-06T12:55:24+08:00"
+}

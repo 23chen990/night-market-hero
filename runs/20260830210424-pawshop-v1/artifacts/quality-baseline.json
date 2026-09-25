@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "checks": [
+    {
+      "id": "cold-start",
+      "passed": false,
+      "evidence": [
+        "baseline:cold-start:missing"
+      ],
+      "owner": "deterministic"
+    },
+    {
+      "id": "no-console-errors",
+      "passed": false,
+      "evidence": [
+        "baseline:no-console-errors:missing"
+      ],
+      "owner": "deterministic"
+    },
+    {
+      "id": "save-restore",
+      "passed": false,
+      "evidence": [
+        "baseline:save-restore:missing"
+      ],
+      "owner": "deterministic"
+    },
+    {
+      "id": "responsive-360",
+      "passed": false,
+      "evidence": [
+        "baseline:responsive-360:missing"
+      ],
+      "owner": "deterministic"
+    },
+    {
+      "id": "responsive-390",
+      "passed": false,
+      "evidence": [
+        "baseline:responsive-390:missing"
+      ],
+      "owner": "deterministic"
+    },
+    {
+      "id": "responsive-430",
+      "passed": false,
+      "evidence": [
+        "baseline:responsive-430:missing"
+      ],
+      "owner": "deterministic"
+    },
+    {
+      "id": "ad-contract",
+      "passed": false,
+      "evidence": [
+        "baseline:ad-contract:missing"
+      ],
+      "owner": "HumanReviewer"
+    },
+    {
+      "id": "anti-addiction",
+      "passed": false,
+      "evidence": [
+        "baseline:anti-addiction:missing"
+      ],
+      "owner": "HumanReviewer"
+    },
+    {
+      "id": "package-budget",
+      "passed": false,
+      "evidence": [
+        "baseline:package-budget:missing"
+      ],
+      "owner": "deterministic"
+    },
+    {
+      "id": "natural-play",
+      "passed": false,
+      "evidence": [
+        "baseline:natural-play:missing"
+      ],
+      "owner": "HumanReviewer"
+    }
+  ],
+  "passed": false,
+  "blockers": [
+    "cold-start",
+    "no-console-errors",
+    "save-restore",
+    "responsive-360",
+    "responsive-390",
+    "responsive-430",
+    "ad-contract",
+    "anti-addiction",
+    "package-budget",
+    "natural-play"
+  ],
+  "artifactHashes": {},
+  "checkedAt": "2026-09-05T07:03:15.506Z"
+}

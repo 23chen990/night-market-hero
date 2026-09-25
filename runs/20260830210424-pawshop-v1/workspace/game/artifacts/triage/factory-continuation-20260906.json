@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "FactoryContinuation",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+  "stageFlow": ["QA", "FIX", "QA"],
+  "fixAttempt": 1,
+  "changes": [
+    {
+      "id": "WORLD-01-partial",
+      "status": "implemented-and-tested",
+      "evidence": ["src/game/simulation.ts", "src/main.ts", "src/world/areas.ts", "tests/iaa-platform-regions.test.ts"],
+      "summary": "Added unlocked-area-only selection semantics and responsive area selector controls; web-lite camera remains anchored to the existing single-scene presentation."
+    },
+    {
+      "id": "TRACE-08-evidence",
+      "status": "implemented-and-tested",
+      "evidence": ["scripts/stage-platform-packages.mjs", "artifacts/platform-qa-20260906.json"],
+      "summary": "Staging now copies the complete dist asset set with relative asset URLs; all three staged entrypoints passed Chromium startup smoke with canvas mounted and no console/page errors."
+    },
+    {
+      "id": "SPEC-07-fsm-order",
+      "status": "implemented-and-tested",
+      "evidence": [
+        "src/game/simulation.ts",
+        "tests/employee-order-feedback.test.ts",
+        "tests/p0-systems.test.ts"
+      ],
+      "summary": "Employee findTask now always advances through selectTarget and moveToTarget before work, even on large simulation ticks; the documented task-selection chain is covered by a regression test."
+    },
+    {
+      "id": "WORLD-01-camera-origin",
+      "status": "implemented-and-tested",
+      "evidence": [
+        "src/world/areas.ts",
+        "src/main.ts",
+        "artifacts/area-camera-qa-20260906.json",
+        "screenshots/qa-area-camera-390x844.png"
+      ],
+      "summary": "All six area layouts now expose a contiguous camera origin; world objects share a translated root and a fresh Chromium run switched from unlocked area 1 to area 2 with canvas visible and no errors."
+    },
+    {
+      "id": "SPEC-10-delivery-loop",
+      "status": "implemented-and-tested",
+      "evidence": [
+        "src/game/simulation.ts",
+        "tests/delivery-system.test.ts"
+      ],
+      "summary": "Courier orders now persist through queued → inTransit → completed phases; pickup consumes shelf stock, completion credits the configured product reward, in-transit progress survives normalizeSave, and the delivery_instant rewarded branch completes the next pickup immediately."
+    },
+    {
+      "id": "SPEC-11-gull-loop",
+      "status": "implemented-and-tested",
+      "evidence": [
+        "src/game/simulation.ts",
+        "src/main.ts",
+        "tests/gull-system.test.ts"
+      ],
+      "summary": "Gull employees now run observable flying → exploring → returning phases, credit a level-based reward on return, and accept the rewarded-ad multiplier through the shared state bridge."
+    },
+    {
+      "id": "SPEC-05-offline-bonus",
+      "status": "implemented-and-tested",
+      "evidence": [
+        "src/game/simulation.ts",
+        "src/main.ts",
+        "tests/gull-system.test.ts"
+      ],
+      "summary": "The offline_double rewarded branch now persists an offline multiplier window and applies it during refresh recovery to automated gull/delivery income; the window is consumed by recovered elapsed time."
+    },
+    {
+      "id": "SPEC-06-customer-routes",
+      "status": "implemented-and-tested",
+      "evidence": [
+        "src/ui/customer-routes.ts",
+        "src/main.ts",
+        "tests/customer-route-behavior.test.ts",
+        "tests/customer-journey.test.ts",
+        "screenshots/qa-customer-route-390x844.png",
+        "artifacts/customer-obstacle-qa-20260906.json",
+        "screenshots/qa-customer-obstacles-390x844.png",
+        "screenshots/qa-customer-checkout-slow-390x844.png"
+      ],
+      "summary": "Customer presentation now holds at the entry door, follows obstacle-aware side corridors around solid 3D fixtures, hides route overlays by default, slows to a 1500ms walk, preserves the shelf stop for saved checkout customers, and keeps checkout motion ticking after state-signature stabilization."
+    }
+  ],
+  "verification": {
+    "tests": "pnpm test: 16 files, 103 tests passed",
+    "typecheck": "pnpm typecheck: exit 0",
+    "lint": "pnpm lint: exit 0",
+    "build": "pnpm build: exit 0; dist/assets/index-DgQqJrof.js",
+    "platformStaging": "pnpm stage:platforms: exit 0"
+  },
+  "remainingBlockers": [
+    {"id":"TRACE-08","severity":"release-blocking","reason":"Official WeChat/Douyin/TapTap SDK, policy, and native-device QA evidence are unavailable; staged packages remain publishable=false."},
+    {"id":"TRACE-09","severity":"release-blocking","reason":"Rewarded-ad bridge is safe and tested, but all adapters intentionally return sdk-unavailable until official SDK integration and reward receipt evidence exist."},
+    {"id":"WORLD-01","severity":"release-blocking","reason":"Area camera origins and web-lite slot switching now work, but area-specific production chains and native-platform camera/layout remain absent."},
+    {"id":"FACTORY-STAGE-GATE","severity":"release-blocking","reason":"Historical run state remains ABANDONED because EXPERIENCE_CONTRACT, FEEL_PROTOTYPE, and PERCEPTUAL_QA stages were never emitted; this continuation does not rewrite that state."}
+  ],
+  "releaseDecision": "BLOCKED",
+  "updatedAt": "2026-09-06T13:45:00+08:00"
+}

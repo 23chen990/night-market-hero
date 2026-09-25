@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "CompetitorLogicDelta",
+  "targetGame": "20260830210424-pawshop-v1",
+  "competitor": "Monkey Mart (user-verified recording)",
+  "evidenceSource": {
+    "manifestId": "_2026-09-06-001930-f18bb8e16798",
+    "path": "reference-evidence/incoming/_2026-09-06-001930-f18bb8e16798.mp4",
+    "sha256": "f18bb8e1679860e9c96f030db0881d73faca5615f5a94260774f9b6bf38e1bdc"
+  },
+  "scopeRule": "只复刻因果逻辑、状态机和交互节奏；不复制竞品表达、资产、名称、地图、字体、UI形状、文案或数值。",
+  "deltas": [
+    {"id":"DELTA-01","logic":"多货币（商业化分层）","observedCompetitor":"左上同时存在宝石与现金两种货币，宝石数量和现金数量独立显示（0s/20s/150s帧）。","targetCurrent":"目标只有贝壳币一种货币。","status":"deferred-commercial","confidence":"observed+user-confirmed","replicationQuestion":"当前不复刻宝石充值货币；保留普通贝壳币，并仅评估 IAA 加速节点。"},
+    {"id":"DELTA-02","logic":"世界节点购买","observedCompetitor":"购买节点以世界锚定的现金图标+金额+四角交互标记显示，示例400、800、690、300、500、350、210、80。","targetCurrent":"目标主要用潮池环形进度和靠近时 transient cue；没有持续的世界金额气泡和统一交互标记。","status":"partial","confidence":"observed","replicationQuestion":"需要把所有生产/扩张/员工节点都改成世界锚定的图标+价格+进度状态吗？"},
+    {"id":"DELTA-03","logic":"顾客多件订单","observedCompetitor":"顾客/动物头顶显示产品图标和数量，例如0/1、0/2、3/4。","targetCurrent":"每名顾客一次只扣一件商品，Customer 没有 order quantity/basket quantity 字段。","status":"missing","confidence":"observed","replicationQuestion":"是否复刻多件订单、购物进度和一次服务结算，而不是单件即结账？"},
+    {"id":"DELTA-04","logic":"顾客满意度反馈","observedCompetitor":"服务后出现大号笑脸反应气泡，和顾客/购物袋绑定（150s帧）。","targetCurrent":"目标只有 customerPickedUp/queue/sale 通用图形，没有顾客满意度或反应状态。","status":"missing","confidence":"observed","replicationQuestion":"是否加入满意/等待/离场等顾客反应状态，且全部使用海滩原创图标？"},
+    {"id":"DELTA-05","logic":"员工自动化","observedCompetitor":"多个非主控角色同时搬运产品、操作货架/收银；约86-91秒出现‘WAKE UP THE EMPLOYEE’，并可见睡眠脸、Z和绿色下箭头。","targetCurrent":"目标没有员工实体、员工工作范围、激活/雇佣流程；虾蟹是自动产出设施，不是可见员工。","status":"missing","confidence":"observed+documented","replicationQuestion":"复刻员工激活→自动补货/服务→效率提升→疲劳/休息的完整状态机；具体触发与数值仍需证据。"},
+    {"id":"DELTA-06","logic":"任务与提醒","observedCompetitor":"右上任务/功能图标持续存在，多个红色叹号提示可处理事项；世界内也有大型任务横幅。","targetCurrent":"目标只有短暂 objective-chip，且 view.objective/localPrompts 未完整接入运行时。","status":"missing","confidence":"observed","replicationQuestion":"是否需要常驻但克制的任务/升级提醒轨道，取代仅靠近才出现的提示？"},
+    {"id":"DELTA-07","logic":"定时加速奖励","observedCompetitor":"画面多次出现2 mins、10s、4s、7s等带播放按钮的奖励 tile，可在经营持续时领取。","targetCurrent":"目标策略写 IAA，但游戏没有广告 tile、倒计时、奖励 contract 或自然 QA。","status":"missing","confidence":"observed+artifact","replicationQuestion":"是否复刻可选广告加速节点（不拯救失败），并定义频控与奖励时机？"},
+    {"id":"DELTA-08","logic":"完成/满级状态","observedCompetitor":"生产区域完成后显示 MAX；货架/台面仍是实体对象，完成状态持续可见。","targetCurrent":"目标仅有升级面板 MAX 文本，设施世界状态不统一且 builtDevice 重复创建风险。","status":"partial","confidence":"observed+code","replicationQuestion":"是否为每个节点统一 locked→building→active→MAX 视觉状态？"},
+    {"id":"DELTA-09","logic":"现金实体堆积","observedCompetitor":"收银台/柜台上可见多捆现金实体，和收银机图标、顾客服务状态共存（120s/150s帧）。","targetCurrent":"目标生成贝壳 token 后靠近一次性汇总，缺少台面堆积/单笔来源可视化。","status":"partial","confidence":"observed+code","replicationQuestion":"是否复刻收银台实体奖励堆积，再按批次拾取？"},
+    {"id":"DELTA-10","logic":"连续营业场景","observedCompetitor":"升级/任务/广告出现时，顾客、员工、货架和收银仍在同一场景运行。","targetCurrent":"目标核心循环也不弹全屏，但升级/帮助为 DOM 浮层，设施和任务反馈不在同一世界层。","status":"partial","confidence":"observed+code","replicationQuestion":"所有投资、升级、员工激活是否都必须保持世界持续运转并避免阻塞输入？"},
+    {"id":"DELTA-11","logic":"可行走空间","observedCompetitor":"录屏显示多片区域、围栏、垃圾桶、生产床和货架，角色在其间穿行。","targetCurrent":"目标固定单屏，玩家只有边界 clamp，无货架/柜台/设施碰撞和多区相机。","status":"missing","confidence":"observed+code","replicationQuestion":"是否接受从单屏海滩改为可扩张、多区域、带碰撞和镜头跟随的地图逻辑？"},
+    {"id":"DELTA-12","logic":"生产节点状态","observedCompetitor":"生产床可显示空床、作物、数量、购买/扩展节点；不同生产点有独立成本和产出状态。","targetCurrent":"鱼网无限采集；潮池/虾蟹状态存在，但远处没有统一产出/容量/成本气泡。","status":"partial","confidence":"observed+code","replicationQuestion":"是否让每个海滩生产点都有 ready/empty/capacity/cost 的世界状态？"},
+    {"id":"DELTA-13","logic":"库存压力信号","observedCompetitor":"产品请求数量、货架库存、角色头顶堆叠同时可见，玩家可直接看到缺口。","targetCurrent":"鱼/海带 HUD有库存，但顾客无数量订单，虾蟹无主 HUD，携带堆叠存在产品显示 bug 风险。","status":"missing","confidence":"observed+code","replicationQuestion":"是否建立‘产品图标+当前/需求数量+缺货/满仓’统一信号系统？"},
+    {"id":"DELTA-14","logic":"辅助角色/动物状态","observedCompetitor":"动物/角色可被唤醒或激活，任务横幅直接指向下一行为。","targetCurrent":"目标没有同类激活任务，设施解锁条件主要在 view-model 字符串中。","status":"missing","confidence":"observed+documented","replicationQuestion":"是否用海滩生物/船工/渔夫角色复刻‘唤醒/雇佣/升级’而不是只做抽象设施？"},
+    {"id":"DELTA-15","logic":"视野与镜头","observedCompetitor":"不同时间画面显示不同地图区域，说明角色移动带来视野变化或镜头跟随。","targetCurrent":"目标 Phaser 相机固定在540×960设计画布内，无法查看扩张区。","status":"missing","confidence":"observed+code","replicationQuestion":"是否需要加入相机跟随、地图边界和新区域解锁？"}
+  ],
+  "commercialDecision": {
+    "gemPremiumCurrency": "deferred",
+    "reason": "竞品宝石用于充值；本项目当前只做 IAA，因此不把宝石系统列为本迭代逻辑缺口。",
+    "retain": "普通贝壳币与 IAA 加速节点仍需按竞品逻辑单独评估。"
+  },
+  "strictUnknowns": [
+    "录屏无法证明竞品的精确寻路算法、碰撞半径、生产周期、订单生成公式、广告频率、离线收益和存档 schema。",
+    "录屏无法证明点击/长按/邻近触发的精确输入条件。",
+    "没有这些证据时，不应自行填入竞品数值或实现细节。"
+  ],
+  "scopeConflict": {
+    "existingBlueprint": ["single-screen", "portrait-first", "one shell currency", "low complexity"],
+    "fullCompetitorLogicImpliedByRecording": ["multi-area camera/map", "world purchase nodes", "multi-item orders", "employees/activation", "timed ad accelerators", "persistent customer reactions"],
+    "commercialException":"用户已确认宝石是竞品充值货币，本项目当前只做 IAA，因此不把宝石/充值层纳入本轮完整竞品逻辑范围。",
+    "decisionStatus":"user-confirmed-in-thread",
+    "decision":"以‘完整竞品逻辑（排除宝石充值层）’覆盖当前 single-screen MVP 边界；这会改变 blueprint、economy、state schema、UI、platform and QA scope。",
+    "decisionRequired":"范围无需再次确认；实现时仍必须对未被文档/录屏证实的竞品数值和输入规则保持未知，不得自行补写。"
+  }
+}

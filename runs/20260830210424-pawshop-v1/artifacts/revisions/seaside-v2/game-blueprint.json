@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "gameId": "beach_fish_market_v2",
+  "title": "海滩渔货铺",
+  "theme": "原创小海獭在海滩渔货铺里捕捞、采集、补货和扩建",
+  "runtime": "web-lite",
+  "template": "idle-shop-v1",
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame"
+  ],
+  "concept": "只用移动完成近岸捕鱼、潮池采海带、实体堆叠、补货、顾客结账、拾取贝壳币和扩建的海滩物流经营游戏",
+  "coreLoop": [
+    "移动到近岸渔网或潮池采集点并靠近自动取货",
+    "鱼或海带以有类型可见堆叠显示在小海獭头顶",
+    "移动到对应冰盘或海带篮自动逐件补货",
+    "海边游客选货、等货、取货并前往收银台排队",
+    "玩家在收银区完成交易并让贝壳币实体化",
+    "靠近拾取贝壳币后投入建设区或购买携带容量升级",
+    "扩建解锁海带品类，并为下一阶段的虾笼预留站点"
+  ],
+  "content": {
+    "productName": "海滩渔货",
+    "customerName": "海边游客",
+    "currencyName": "贝壳币"
+  },
+  "balance": {
+    "startingCurrency": 0,
+    "orderReward": 4,
+    "baseUpgradeCost": 15
+  },
+  "preferences": {
+    "technicalAnalysis": "docs/spatial-idle-shop-technical-analysis.md",
+    "openSourceResearch": "artifacts/open-source-research.json",
+    "revision": "seaside-v2",
+    "orientation": "portrait-9:16-first",
+    "viewport": {
+      "designWidth": 540,
+      "designHeight": 960,
+      "minimumAspectRatio": "9:20",
+      "maximumAspectRatio": "3:4",
+      "safeAreaInsetsRequired": true,
+      "desktopQaShell": "centered portrait phone frame"
+    },
+    "sessionTargetMinutes": 5,
+    "player": {
+      "species": "original sea otter",
+      "startingCapacity": 4,
+      "stackMustBeVisible": true
+    },
+    "products": [
+      {
+        "id": "fish",
+        "displayName": "鲜鱼",
+        "unlockedAtStart": true,
+        "source": "nearshore fishing net",
+        "shelf": "iced fish tray"
+      },
+      {
+        "id": "kelp",
+        "displayName": "海带",
+        "unlockedAtStart": false,
+        "source": "tide pool",
+        "shelf": "kelp basket",
+        "unlock": "construction zone"
+      },
+      {
+        "id": "shrimp",
+        "displayName": "鲜虾",
+        "unlockedAtStart": false,
+        "source": "shallow-water shrimp trap",
+        "shelf": "shrimp crate",
+        "scope": "reserved for the next iteration"
+      }
+    ],
+    "requiredSystems": [
+      "normalized keyboard and pointer/touch drag movement",
+      "typed multi-product carrying stack",
+      "automatic proximity harvest and compatible-shelf delivery",
+      "customer finite state machine with out-of-stock waiting and checkout queue",
+      "physical shell-token pile collected by proximity",
+      "progressive construction zone unlocking kelp",
+      "capacity upgrade with visible effect",
+      "versioned throttled local save"
+    ],
+    "feedback": {
+      "localOnlyForRepeatingActions": true,
+      "forbidCameraFlash": true,
+      "pickupArcOrPulse": true,
+      "shelfFillMustBeVisible": true,
+      "queueAdvanceMustBeVisible": true,
+      "playerAttachedCapacityIndicator": {
+        "fullText": "满载",
+        "anchor": "above the highest carried product",
+        "visibleWhen": "carried item count equals current player capacity",
+        "upgradeAware": true,
+        "transition": "one-shot local pulse only when entering full state"
+      }
+    },
+    "originalityConstraints": [
+      "Do not use Monkey Mart names, code, assets, UI, map layout, tuning or unlock order",
+      "Use only the generic spatial logistics mechanic and generic seafood categories",
+      "Keep all silhouettes, palette, beach layout, progression and numbers original"
+    ],
+    "testRequirements": [
+      "Retain all seven window.__GAME_TEST__ controls",
+      "Add deterministic controls if needed without removing the contract",
+      "Test fish and kelp, stock compatibility, queue order, shell-token collection, construction unlock and save recovery",
+      "Test that repeating automatic interactions never trigger a full-screen camera flash",
+      "Test portrait layouts at 360x800, 390x844 and 430x932 with no horizontal overflow or covered core controls",
+      "Keep the playable beach and HUD legible inside CSS safe-area insets; landscape may show a centered portrait QA shell instead of rearranging the game",
+      "Test the player-attached 满载 indicator is hidden below capacity, appears exactly at capacity, follows the moving player, disappears after unloading, and becomes hidden again when an upgrade raises capacity above the current carried count"
+    ]
+  }
+}

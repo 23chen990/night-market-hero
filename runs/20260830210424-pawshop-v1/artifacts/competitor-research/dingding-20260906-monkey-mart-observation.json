@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "competitor-failure-pressure-contract",
+  "targetGame": "20260830210424-pawshop-v1",
+  "source": {
+    "manifestId": "_2026-09-06-001930-f18bb8e16798",
+    "path": "reference-evidence/incoming/_2026-09-06-001930-f18bb8e16798.mp4",
+    "sha256": "f18bb8e1679860e9c96f030db0881d73faca5615f5a94260774f9b6bf38e1bdc",
+    "identity": "Monkey Mart competitor; user-verified",
+    "durationSeconds": 171.03
+  },
+  "observations": [
+    {"timeRangeSeconds": [0, 45], "pressure": "Customers and staff compete for shelf/checkout throughput while the player crosses the shop floor.", "signal": "Customer bodies, item stacks, shelves, and checkout stations remain visible in the same frame.", "escalation": "More actors and stations appear as the shop expands.", "failureAttribution": "Slow earnings are attributable to a visible logistics bottleneck: stock, travel, or checkout throughput.", "recoveryReplay": "Return to the nearest depleted shelf/source, restock, then resume checkout."},
+    {"timeRangeSeconds": [45, 115], "pressure": "Multiple product shelves and upgrade/facility prompts compete for the player's next action.", "signal": "Item-specific shelf icons, carried stacks, coin amounts, and construction prompts are visible at world locations.", "escalation": "New facilities and denser customer traffic raise travel and replenishment demand.", "failureAttribution": "The player can see which shelf or route is causing the delay rather than reading a hidden meter.", "recoveryReplay": "Local restock and staff/facility actions restore the same loop without resetting the scene."},
+    {"timeRangeSeconds": [84, 102], "pressure": "A hired employee can visibly enter a sleep/slacking state, and a separate animal/auxiliary role can also present a wake-up task while the store remains active.", "signal": "WAKE UP THE EMPLOYEE / WAKE UP THE ANIMAL banners, a green down arrow, sleeping-face bubble and Z marker are shown in world space.", "escalation": "The reminder coexists with MAX production, cash thresholds, customer traffic and timed ad offers, so recovery competes with normal operations.", "failureAttribution": "The visible sleep cue identifies a non-working helper as a local automation bottleneck; the recording does not prove why it happened or how it is cleared.", "recoveryReplay": "The same scene continues without reset; exact wake interaction and whether productivity resumes immediately remain unknown."},
+    {"timeRangeSeconds": [115, 171], "pressure": "The shop stays active during upgrade/construction interactions.", "signal": "Currency changes, upgrade state, and customer demand are shown together.", "escalation": "The world becomes busier while the next actionable station remains visually findable.", "failureAttribution": "Progress or stall is explained by visible inventory, queue, and facility state.", "recoveryReplay": "After the transaction, the player immediately returns to source→shelf→customer→checkout."}
+  ],
+  "transferablePatterns": [
+    "Use world-space state cues and item-specific silhouettes so pressure is readable without long helper text.",
+    "Keep the source→inventory→customer→checkout loop active during upgrades.",
+    "Make construction/payment a short visible transition followed by a persistent functional world object.",
+    "Preserve local recovery: restock the bottleneck and replay the same loop."
+  ],
+  "rejectCopying": [
+    "Do not copy Monkey Mart names, banana content, characters, assets, map geometry, UI arrangement, prompts, or tuning values.",
+    "Apply only generic logistics/automation principles to the original sea-otter beach seafood expression."
+  ],
+  "unknowns": [
+    "Exact internal economy and unlock thresholds are not inferable from the recording and must not be copied.",
+    "Platform-specific behavior is not evidenced by this desktop recording."
+  ]
+}

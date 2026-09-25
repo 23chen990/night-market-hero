@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "QaReport",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+  "passed": false,
+  "stageFlow": ["QA", "FIX", "QA"],
+  "fixAttempt": 1,
+  "checks": [
+    {"name":"employee-world-feedback","passed":true,"evidence":"MarketScene.syncEmployees renders role/status/level badges; slacking is visible and wakeable."},
+    {"name":"employee-capability-upgrade","passed":true,"evidence":"upgradeEmployee increments efficiency 1.0→1.1→1.2, caps at level 3 and rejects further upgrades."},
+    {"name":"multi-item-settlement","passed":true,"evidence":"Basket settlement sums all order line items and increments per-product progression."},
+    {"name":"satisfaction-feedback","passed":true,"evidence":"Customer satisfaction is recorded from remaining patience at shelf pickup."},
+    {"name":"unit-tests","passed":true,"evidence":"pnpm test: 13 files, 93 tests passed."},
+    {"name":"typecheck-lint-build","passed":true,"evidence":"pnpm typecheck, pnpm lint and pnpm build exited 0."},
+    {"name":"runtime-product","passed":true,"evidence":"Chromium 390x844 and 932x430: canvas visible, no horizontal overflow, consoleErrors=[], pageErrors=[]; employee hire state reached work."}
+    ,{"name":"platform-staging","passed":true,"evidence":"pnpm stage:platforms produced isolated WeChat/Douyin/TapTap build manifests with per-platform deterministic hashes and copied runtime assets; manifests explicitly set publishable=false."},
+    {"name":"platform-browser-smoke","passed":true,"evidence":"artifacts/platform-qa-20260906.json: each build directory served as an isolated root; all three staged entrypoints returned HTTP 200, mounted one canvas, completed loading, and reported no console/page errors."},
+    {"name":"iaa-runtime-bridge","passed":true,"evidence":"runRewardedAdFlow commits cooldown/reward only after platform completion and safely returns sdk-unavailable without consuming cooldown."}
+  ],
+  "issues": [
+    {"id":"TRACE-08","severity":"release-blocking","message":"Web-lite adapter packages and deterministic hashes are staged for all three platforms and passed browser smoke; official policy verification and native-platform QA remain absent."},
+    {"id":"TRACE-09","severity":"release-blocking","message":"IAA contract and runtime bridge are tested; platform adapters safely return sdk-unavailable until official SDK integration and reward evidence exist."},
+    {"id":"WORLD-01","severity":"release-blocking","message":"Areas 1..6 are persisted and sequentially unlockable with an active-area selector; per-area production chains and native multi-area camera/layout remain absent."}
+  ],
+  "runtimeEntrypoints":["src/main.ts","src/game/simulation.ts","src/game/persistence.ts","src/platform/ads.ts","src/platform/ads-runtime.ts","src/platform/adapters.ts","src/world/areas.ts"],
+  "screenshots":["screenshots/qa-final-employee-390x844.png","screenshots/qa-current-932x430.png","screenshots/qa-final-ad-390x844.png","screenshots/platform-wechat-390x844.png","screenshots/platform-douyin-390x844.png","screenshots/platform-taptap-390x844.png"],
+  "testedAt":"2026-09-06T03:25:55+08:00"
+}

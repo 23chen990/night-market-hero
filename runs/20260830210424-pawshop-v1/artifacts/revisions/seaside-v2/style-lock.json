@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "directionId": "direction_a",
+  "direction": {
+    "id": "direction_a",
+    "name": "海风玩具渔市",
+    "summary": "原创圆润小海獭与彩色海滩鲜货摊，使用低细节、高辨识的平面图形",
+    "visualKeywords": [
+      "rounded geometric silhouettes",
+      "sunny beach market",
+      "cool seafood colors",
+      "clean readable portrait top-down layout",
+      "mobile-safe contrast"
+    ],
+    "palette": [
+      "#163A4A",
+      "#47B5C4",
+      "#F4D58D",
+      "#F28F6B",
+      "#F8FAE5"
+    ],
+    "characterStyle": "用圆头、小圆耳、浅色口鼻和短扁尾构成的原创小海獭，不模仿任何已有角色",
+    "environmentStyle": "9:16 竖屏顶视沙滩，纵向组织浅海、木制码头、冰盘和帆布摊位，交互圈以波纹和贝壳标记；横屏桌面只居中展示竖屏游戏框",
+    "uiStyle": "深海蓝半透明胶囊面板配米白文字和珊瑚色数字，只显示核心状态；顶部和底部遵守手机安全区，不遮挡可玩区域；主角达到携带上限时，在最高货物上方显示原创珊瑚色‘满载’小旗，离开满载状态立即隐藏",
+    "iconConcept": "一只原创小海獭抱着蓝色鲜鱼篮，背后是抽象海浪和遮阳蓬",
+    "forbiddenElements": [
+      "monkey protagonist",
+      "Monkey Mart logo or lettering",
+      "copied store layout",
+      "copied UI geometry",
+      "copied character proportions",
+      "full-screen repeating flashes"
+    ],
+    "productionComplexity": "low",
+    "previewPrompt": "Original mobile game art direction sheet for a top-down beach seafood shop run by a cute original sea otter, rounded geometric 2D vector shapes, fish, kelp and shrimp products, sunny sand and turquoise water palette, no logos, no resemblance to any existing game"
+  },
+  "kept": [
+    "single-screen readable logistics",
+    "small animal protagonist",
+    "visible carried product stack",
+    "generic fish, kelp and shrimp products"
+  ],
+  "changes": [
+    "Use an original sea otter on a beach instead of the archived forest red-panda direction",
+    "Use an original shoreline stall layout and shell-token economy",
+    "Use original unlock pacing and values",
+    "Use a portrait-first 9:16 mobile composition with a centered portrait QA shell on desktop",
+    "Use a player-attached 满载 marker driven by the current carrying capacity"
+  ],
+  "notes": [
+    "This seaside-v2 style lock supersedes the archived V1 input without modifying it",
+    "This is a functional vertical-slice style lock, not final production art",
+    "Favor clarity and local action feedback over decoration",
+    "Validate narrow and tall phone viewports before treating the browser build as complete"
+  ],
+  "lockedAt": "2026-08-30T21:22:00+08:00"
+}

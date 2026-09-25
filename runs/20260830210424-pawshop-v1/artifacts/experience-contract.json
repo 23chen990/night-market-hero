@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "contractId": "beach_fish_market_v4-experience-20260905",
+  "targetGame": "beach_fish_market_v4",
+  "targetWorkspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "lockedBy": "human",
+  "pillars": [
+    {"id":"route_clarity","name":"一眼看懂动线","observable":"玩家无需底部任务栏或长文即可看出顾客要去哪、货架缺什么、下一步该补哪一格。"},
+    {"id":"logistics_agency","name":"补货决策有取舍","observable":"玩家在采集、携带容量、货架空位和收银队列之间做出可观察的路线选择。"},
+    {"id":"tactile_reward","name":"每次交付都有爽感","observable":"取货、补货、顾客取货、结账、捡币和升级都在 0.5 秒内给出归因明确的视觉反馈。"},
+    {"id":"pressure_recovery","name":"压力可归因且可恢复","observable":"排队、缺货和满载会升级，但玩家能通过补货或换路线立即恢复，而不是等待隐藏计时器。"}
+  ],
+  "feedbackTiming": {"impactMs": 140, "settleMs": 420, "inputNeverBlocked": true},
+  "motionInvariants": [
+    "顾客路线必须按入口→目标货架→收银台顺序呈现；路线动画不能每帧重启。",
+    "取货/补货/结账反馈只影响视觉层，不暂停或篡改模拟时间。",
+    "所有强调动效在结束时回到基准状态，并尊重 prefers-reduced-motion。",
+    "关键 HUD 在 360x800、390x844、430x932 竖屏和横屏壳内均保持可读且不遮挡角色；不使用常驻底部行动条。"
+  ],
+  "causalRules": [
+    "顾客只有在对应货架实际扣除一件商品后，才显示取货完成并前往收银台。",
+    "货架库存、顾客队列和玩家携带量必须同时可见，且缺货/满载优先级高于装饰提示。",
+    "玩家完成一笔订单后，奖励必须与收银台、顾客和贝壳币实体在同一视觉区域关联。",
+    "升级使用图标、等级、进度、价格和 MAX/可购买状态表达效果；不依赖长说明文案。"
+  ],
+  "antiPatterns": [
+    "用常驻底部行动条或长句表达缺货、危险、下一步或结账状态。",
+    "顾客瞬移、从收银台附近出生，或在没有货架扣货时直接结账。",
+    "用全屏闪白、长时间冻结或持续抖动代替局部反馈。",
+    "新增互相重叠的建设节点、抽象升级标签或不可触达的装饰交互。"
+  ],
+  "acceptanceIds": [
+    "exp-route-01",
+    "exp-stock-pressure-02",
+    "exp-sale-juice-03",
+    "exp-next-action-04",
+    "exp-replay-05"
+  ]
+}

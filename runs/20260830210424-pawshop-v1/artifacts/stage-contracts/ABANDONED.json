@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "stage": "ABANDONED",
+  "passed": true,
+  "ownerRole": "HumanReviewer",
+  "verifierRole": "FactoryControlPlane",
+  "verifiedByRole": "FactoryControlPlane",
+  "independent": true,
+  "checkedAt": "2026-09-05T15:22:04.322Z",
+  "missing": [],
+  "observedInputs": [
+    "stage:FACTORY_EVAL",
+    "state.json"
+  ],
+  "observedArtifacts": [
+    "artifacts/abandonment-decision.json"
+  ],
+  "observedEvidence": [
+    "abandonment:decision",
+    "cost-or-fix-cap-exceeded"
+  ],
+  "artifactVersions": {
+    "artifacts/abandonment-decision.json": 1,
+    "state.json": 1
+  },
+  "failureRoute": {
+    "stage": "ABANDONED",
+    "classes": [
+      "unknown"
+    ],
+    "rationale": "Abandonment is a terminal control-plane decision."
+  }
+}

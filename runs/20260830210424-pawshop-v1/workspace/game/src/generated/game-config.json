@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "gameId": "beach_fish_market_v5",
+  "title": "海滩渔货铺",
+  "theme": "原创小海獭在海滩渔货铺里捕捞、采集、补货和扩建",
+  "orientation": "portrait-9:16-first",
+  "content": {
+    "productName": "海滩渔货",
+    "customerName": "海边游客",
+    "currencyName": "贝壳币"
+  },
+  "palette": ["#163A4A", "#47B5C4", "#F4D58D", "#F28F6B", "#F8FAE5"],
+  "economy": {
+    "products": {
+      "fish": { "saleReward": 4, "pickupIntervalMs": 520 },
+      "kelp": { "saleReward": 6, "pickupIntervalMs": 650 },
+      "shrimp": { "saleReward": 8, "productionCycleMs": 4200, "batchYield": 2, "bufferCapacity": 4 },
+      "crab": { "saleReward": 14, "productionCycleMs": 10400, "batchYield": 1, "bufferCapacity": 1 }
+    },
+    "carrier": {
+      "initialCapacity": 4,
+      "tiers": [{ "capacity": 6, "cost": 40 }, { "capacity": 8, "cost": 88 }]
+    },
+    "shelves": { "capacityPerProduct": 8, "capacityByProduct": { "fish": 8, "kelp": 8, "shrimp": 6, "crab": 3 }, "deliveryIntervalMs": 240 },
+    "customers": {
+      "firstSpawnDelayMs": 22000,
+      "browseDurationMs": 2400,
+      "preUnlockSpawnIntervalMs": 5500,
+      "postUnlockSpawnIntervalMs": 4200,
+      "stockPatienceMs": 10000
+    },
+    "kelpUnlock": { "investmentCost": 96, "investmentIntervalMsPerCoin": 220 }
+  },
+  "uiAnimationStandard": {
+    "schemaVersion": 1,
+    "strategy": "key-poses-plus-runtime-motion",
+    "motionTokensMs": {
+      "press": [80, 120],
+      "microFeedback": [120, 180],
+      "panelTransition": [180, 260],
+      "ambientLoop": [600, 1600]
+    },
+    "easing": { "enter": "ease-out", "exit": "ease-in", "emphasis": "back-out-subtle" },
+    "reducedMotionFallback": "short-crossfade-or-immediate-state"
+  },
+  "assets": {
+    "background": "./assets/background.png",
+    "character": "./assets/character.png",
+    "otterWalkFront": "./assets/otter-walk-front.png",
+    "otterWalkBack": "./assets/otter-walk-back.png",
+    "otterWalkSide": "./assets/otter-walk-side.png",
+    "fish": "./assets/fish.png",
+    "kelp": "./assets/kelp.png",
+    "upgrade": "./assets/upgrade.png"
+  }
+}

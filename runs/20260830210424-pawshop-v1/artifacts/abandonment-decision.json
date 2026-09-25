@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260830210424-pawshop-v1",
+  "stage": "FACTORY_EVAL",
+  "decision": "ABANDON",
+  "reason": "cost-cap",
+  "budget": {
+    "currency": "CNY",
+    "maxTotalCents": 30000,
+    "maxPaidTrafficCents": 10000,
+    "maxAgentTokens": 500000,
+    "maxHumanMinutes": 360,
+    "maxFixAttempts": 2,
+    "paybackWindowDays": 30,
+    "maxWallClockMinutes": 1440,
+    "maxAssetBatches": 20,
+    "maxBuildAttempts": 2,
+    "maxRepairLoops": 2
+  },
+  "usage": {
+    "totalCents": 0,
+    "paidTrafficCents": 0,
+    "agentTokens": 0,
+    "humanMinutes": 0,
+    "fixAttempts": 0,
+    "wallClockMinutes": 8583,
+    "assetBatches": 1,
+    "buildAttempts": 1,
+    "repairLoops": 0,
+    "breakdown": {
+      "agentCents": 0,
+      "imageCents": 0,
+      "humanCents": 0,
+      "paidTrafficCents": 0,
+      "adjustmentCents": 0
+    }
+  },
+  "evidence": [
+    "cost-or-fix-cap-exceeded"
+  ],
+  "decidedAt": "2026-09-05T15:22:04.321Z"
+}

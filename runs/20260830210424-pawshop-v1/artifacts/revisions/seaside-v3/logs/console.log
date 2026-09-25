@@ -1,0 +1,27 @@
+[QA 2026-08-30T14:33:50.000Z] Chromium headless portrait gameplay smoke
+[PASS] window.__GAME_TEST__ exposed all seven required controls
+[PASS] reset capacity=4, customer count increased 1->2, order created 1 shell token
+[PASS] capacity upgrade changed capacity 4->5 and capacityLevel 1->2
+[PASS] real ArrowRight input moved player deltaX=34.5154
+[PASS] 360x800 playfield ratio=0.562508, canvas=540x960, no horizontal overflow
+[PASS] 390x844 playfield ratio=0.562512, canvas=540x960, no horizontal overflow
+[PASS] 430x932 playfield ratio=0.562500, canvas=540x960, no horizontal overflow
+[PASS] canvas, top HUD, stock panel, status and movement control visible
+[PASS] console errors=0, page exceptions=0
+[QA 2026-08-30T14:55:32.000Z] Full-capacity player feedback smoke after repair attempt 2
+[PASS] 5 Vitest files and 22 tests passed; game typecheck, production build, and Playwright regression passed
+[PASS] real keyboard movement reached the fish source at logical position x=126.8095, y=151.8011
+[PASS] carrying state reached 4/4 and rendered the player-attached 满载 marker
+[PASS] capacity upgrade recomputed the state to 4/5; console errors=0, page exceptions=0
+[FAIL] at the upper-left fish source, the player-attached 满载 marker overlaps the fixed stock HUD and is partially obscured
+[STOP] repair attempt limit reached (2/2); no further automatic workspace mutation performed
+[QA V3 2026-08-30T16:17:27.000Z] Fresh FULL_BUILD gameplay revision
+[PASS] Builder contract=test-api-7, save=versioned, game tests and typecheck
+[PASS] independent game tests 21/21, game typecheck, Vite production build
+[PASS] root lint, root typecheck, targeted factory tests 38/38
+[PASS] only one locked kelp node; no STATIONS.construction, 海带建设区, or 右下角建设区
+[PASS] real movement invested 12 shell coins at kelpSource and unlocked the same node in place
+[PASS] refresh restored construction.invested=12 and construction.unlocked=true
+[PASS] full carrier 4/4 rendered 满载 outside the HUD exclusion rectangle; capacity upgrade changed it to hidden 4/5
+[PASS] 360x800, 390x844, 430x932 portrait geometry and Canvas visibility
+[PASS] console errors=0, page exceptions=0

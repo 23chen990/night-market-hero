@@ -1,0 +1,3078 @@
+{
+  "schemaVersion": 1,
+  "manifests": [
+    {
+      "schemaVersion": 1,
+      "stage": "CREATED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.512Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "REFERENCE_DEEP_RESEARCH",
+      "role": "research",
+      "sandbox": "read-only",
+      "network": "browser-read-only",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "research-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "REFERENCE_MECHANIC_LOCK",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "WAITING_FOR_REFERENCE_APPROVAL",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "COMPETITOR_RESEARCH",
+      "role": "research",
+      "sandbox": "read-only",
+      "network": "browser-read-only",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "research-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "IDEA_GENERATION",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "LOW_COST_FILTER",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PROTOTYPE_SELECTION",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "BUILD_3_PROTOTYPES",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PLAYTEST_TOURNAMENT",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.513Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "WINNER_SELECTION",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "WAITING_FOR_PROTOTYPE_APPROVAL",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "NO_PROTOTYPE_WINNER",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PROTOTYPE_REVISION_REQUESTED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "DESIGN_REJECTED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ACTION_EXPERIMENT_SPEC",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "BUILD_ACTION_PROTOTYPES",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/",
+        "runs/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PLAYTEST_ACTION_PROTOTYPES",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "WAITING_FOR_ACTION_APPROVAL",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ACTION_EXPERIMENT_APPROVED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ACTION_EXPERIMENT_REFACTOR",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ACTION_EXPERIMENT_KILLED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "OPEN_SOURCE_RESEARCH",
+      "role": "research",
+      "sandbox": "read-only",
+      "network": "browser-read-only",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "research-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "IAA_REVIEW",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PRODUCTION_COST_REVIEW",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "IAA_MONETIZATION_REVIEW",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "GREENLIGHT_GATE",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "NOT_GREENLIT",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "BLUEPRINT",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "EXPERIENCE_CONTRACT",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PRODUCT_EXPERIENCE_CONTRACT",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PERCEPTUAL_QA",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "EXPERIENCE_HYPOTHESIS",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "GRAYBOX_CORE",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "CORE_SPEC_FROZEN",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "FEEL_PROTOTYPE",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.514Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "NATURAL_PLAY_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "EXPERIENCE_REVIEW",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "FEEL_REPAIR",
+      "role": "fixer",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "NARRATIVE_CONTRACT",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "STORY_VERTICAL_SLICE",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "CHOICE_CONSEQUENCE_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "NARRATIVE_REVIEW",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "REPLAY_VALUE_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "SYSTEMS_CONTRACT",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "SYSTEMS_PROTOTYPE",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "STRATEGY_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PROGRESSION_REVIEW",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PUZZLE_CONTRACT",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PUZZLE_PROTOTYPE",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PUZZLE_FAIRNESS_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PUZZLE_REVIEW",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ART_DIRECTIONS",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "WAITING_FOR_CODEX_IMAGEGEN",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "WAITING_FOR_ART_APPROVAL",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "STYLE_LOCK",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "CONTENT_EXPANSION",
+      "role": "producer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "UI_SKELETON",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "POLISH_VERTICAL_SLICE",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "VISUAL_EVIDENCE_QA",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "CONTENT_VARIATION_QA",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "QUALITY_BASELINE_QA",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ORIGINALITY_REVIEW",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "FINAL_PROFILE_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "RELEASE_CANDIDATE",
+      "role": "release",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "release-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "release-candidate/",
+        "workspace/game/dist/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "BLIND_PLAYTEST_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "NORMAL_FLOW_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PRESENTATION_QA",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "SUPPLY_CHAIN_QA",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "WAITING_FOR_HUMAN_PLAYTEST",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ACCEPTANCE_REVIEW",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "BUSINESS_PREFLIGHT",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.515Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PRODUCTION_LINE_REVIEW",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "CERTIFICATION",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "COST_GATE",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "PLATFORM_ADAPTER_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "TARGET_PLATFORM_QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "FACTORY_EVAL",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "LIVE_MONITORING",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "release-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "LIVE_VERIFIED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "release-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "LAUNCH_METRICS",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "release-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ASSETS",
+      "role": "evidence-helper",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "design-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "FULL_BUILD",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "BUILD",
+      "role": "builder",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "QA",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "qa-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "FIX",
+      "role": "fixer",
+      "sandbox": "workspace-write",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": true,
+      "canPublish": false,
+      "allowedWriteScope": "game-workspace",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "workspace/game/",
+        "templates/"
+      ],
+      "allowedCommands": [
+        "pnpm test",
+        "pnpm typecheck",
+        "pnpm build"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "RELEASE",
+      "role": "release",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "release-artifacts",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/",
+        "release-candidate/",
+        "workspace/game/dist/"
+      ],
+      "allowedCommands": [],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "ABANDONED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "COMPLETED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    },
+    {
+      "schemaVersion": 1,
+      "stage": "FAILED",
+      "role": "reviewer",
+      "sandbox": "read-only",
+      "network": "none",
+      "canReadSecrets": false,
+      "canWriteGame": false,
+      "canPublish": false,
+      "allowedWriteScope": "run-metadata",
+      "readScope": [
+        "input/",
+        "artifacts/",
+        "human/"
+      ],
+      "allowedCommands": [
+        "pnpm test"
+      ],
+      "networkAllowlist": [],
+      "dependencyPolicy": {
+        "lockfileRequired": true,
+        "installAllowed": false,
+        "lifecycleScripts": "deny",
+        "registries": []
+      },
+      "deniedCapabilities": [
+        "shell-arbitrary",
+        "secrets",
+        "production-publish",
+        "external-upload",
+        "cross-run-write"
+      ],
+      "generatedAt": "2026-09-05T07:03:15.516Z"
+    }
+  ]
+}

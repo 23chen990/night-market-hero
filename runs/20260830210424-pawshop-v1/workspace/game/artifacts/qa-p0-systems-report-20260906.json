@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "P0SystemsQaReport",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+  "passed": false,
+  "checks": [
+    {"name":"employee-fsm","passed":true,"evidence":"tests/p0-systems.test.ts: hire → findTask → work/rest → wake"},
+    {"name":"employee-upgrade","passed":true,"evidence":"tests/p0-systems.test.ts: upgradeEmployee increments level and emits employeeUpgraded"},
+    {"name":"multi-item-order","passed":true,"evidence":"tests/p0-systems.test.ts: fish×2 + kelp×1 atomically consumes shelves and settles one order"},
+    {"name":"save-roundtrip","passed":true,"evidence":"tests/p0-systems.test.ts: employees serialized under versioned save key"},
+    {"name":"default-journey-regression","passed":true,"evidence":"existing 76 gameplay/browser tests remain green"}
+  ],
+  "commands": ["pnpm test", "pnpm typecheck", "pnpm lint", "pnpm build"],
+  "runtimeEntrypoints": ["src/main.ts", "src/game/simulation.ts", "src/game/persistence.ts"],
+  "issues": [
+    "员工角色副作用仅覆盖渔夫/搬运工最小鱼货路径；配送员/海鸥仍是事件占位，员工 UI 未接入自然旅程。",
+    "员工升级暂未定义费用/上限；多件订单满意度与按商品结算仍待后续 Fixer 批次。"
+  ],
+  "notes": [
+    "This report covers the P0 implementation batch only.",
+    "Factory review releaseBlockers remain BLOCKED and are not rewritten by this report.",
+    "No competitor-specific prices, gem recharge, or unverified input rules were added."
+  ]
+}

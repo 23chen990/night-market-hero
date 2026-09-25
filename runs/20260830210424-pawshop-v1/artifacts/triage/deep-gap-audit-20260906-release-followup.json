@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ReleaseAndTraceabilityGapAudit",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "findings": [
+    {"id":"TRACE-01","priority":"P0","area":"版本漂移","observed":"blueprint=v4，generated config=v5，persistence SAVE_KEY=v6/save-v5，run=pawshop-v1","risk":"无法判断哪一版是用户正在验收的产品；旧存档迁移与当前经济可能不一致","acceptance":"建立版本关系表，指定唯一 currentVersion，并为 v4→v5→v6 写迁移/回滚测试"},
+    {"id":"TRACE-02","priority":"P1","area":"构建产物","observed":"build-report 记录 SVG/旧 bundle，实际 dist 使用 PNG/新 bundle","risk":"QA 截图和可交付包可能不是同一个构建","acceptance":"构建报告自动读取 dist 清单、hash、bytes，并作为 QA 输入锁定"},
+    {"id":"TRACE-03","priority":"P1","area":"资产许可","observed":"asset-manifest 没有 otter-walk 三张 atlas，且只记录 SVG hash","risk":"运行时角色动画资产缺少来源/原创/哈希审计","acceptance":"所有 runtime-loaded 文件进入资产清单并验证 hash"},
+    {"id":"TRACE-04","priority":"P1","area":"竞品引用","observed":"旧 reference-evidence-pack 将 competitor observation 与 airplane-manager URL 混用，新 Monkey Mart MP4 未更新 pack","risk":"失败压力合同来源不可追溯","acceptance":"一条 observation 只绑定一个真实来源、manifestId、SHA-256，观察/推断/未知分离"},
+    {"id":"TRACE-05","priority":"P0","area":"质量基线","observed":"quality-baseline.json 10项均 missing，但 qa-report 后来声称通过","risk":"控制面可重复地判定缺证，即使产品证据存在","acceptance":"同一 build 下生成 baseline→QA→perceptual 三报告并互相引用 hash"},
+    {"id":"TRACE-06","priority":"P1","area":"场景追踪","observed":"experience pillars 与 product features 没有 pillar→feature→test→screenshot 的完整 trace","risk":"一项 feature 通过可能掩盖另一项体验柱缺失","acceptance":"所有体验柱均有至少一个自然 trace、一个截图和一个 perceptual assertion"},
+    {"id":"TRACE-07","priority":"P1","area":"自然旅程覆盖","observed":"natural-play-plan 声明4个 scenario，recovery-natural-qa 只给总览式 transitions","risk":"queue-pressure、upgrade、refresh 分支未独立验收","acceptance":"每个 scenario 独立 PASS/BLOCKED，记录正常输入、时间线和证据"},
+    {"id":"TRACE-08","priority":"P0","area":"平台交付","observed":"platform-spine adapters 全为 planned，policy-evaluation 三平台 policy-unverified","risk":"web-lite 结果无法作为小游戏发布依据","acceptance":"三平台各自 adapter/config/build/test/QA，child hash 与 release package 一致"},
+    {"id":"TRACE-09","priority":"P1","area":"广告合同","observed":"策略写 IAA，代码/QA没有广告频控、奖励结束条件、测试单元隔离证据","risk":"商业策略与实际产品不一致，后接入广告会改变核心循环","acceptance":"本迭代明确启用/不启用；启用则先写 contract+QA，不启用则删除伪承诺"},
+    {"id":"TRACE-10","priority":"P1","area":"音频合同","observed":"platform-spine要求 gestureUnlock/muteControl，workspace无音频实现和 UI","risk":"目标平台用户体验契约被虚假声明","acceptance":"补音频总线/静音/解锁测试，或从脊柱中移除未实现能力"},
+    {"id":"TRACE-11","priority":"P1","area":"反沉迷与隐私","observed":"consentGate、ageGuard、pauseOnLimit以及软件著作权/隐私/备案全 pending","risk":"无法进入平台审核","acceptance":"保留 pending 为发布阻塞，补责任人、材料和平台审查证据"},
+    {"id":"TRACE-12","priority":"P2","area":"遥测","observed":"simulation telemetry 仅本地 first milestones/networkRequests=0，未对应 crashBreadcrumbs/versionedEvents","risk":"上线后无法知道玩家在哪个瓶颈流失或崩溃","acceptance":"定义 no-PII 事件 schema 和平台发送适配，至少有本地记录测试"},
+    {"id":"TRACE-13","priority":"P2","area":"触摸输入","observed":"自然报告包含 keyboard/click，未明确纯触摸拖动和 pointercancel/visibilitychange","risk":"移动端最主要输入路径未被证明","acceptance":"纯 touch drag 完成一轮并覆盖 pointer cancel、离屏、重新进入"},
+    {"id":"TRACE-14","priority":"P1","area":"离线恢复","observed":"refresh recovery 禁止 buffered production，且没有对顾客、贝壳、投资、建成四类中断的统一策略说明","risk":"玩家回来后世界状态可能与看到的提示不一致","acceptance":"明确离线推进规则并对四类中断各做恢复测试"},
+    {"id":"TRACE-15","priority":"P2","area":"玩家控制","observed":"reset 立即清除三代存档，没有确认/撤销","risk":"误触会丢失经营进度，尤其在右下角拇指区","acceptance":"重置增加二次确认或可恢复最近存档，并补自然触摸证据"},
+    {"id":"TRACE-16","priority":"P2","area":"性能预算","observed":"dist JS约1.2MB、三张 atlas 各约384KB，packageBudget.measured=false","risk":"目标小游戏包体与低端机性能未被量化","acceptance":"记录核心包/平台包字节数、首屏加载、稳定帧时间和内存基线"},
+    {"id":"TRACE-17","priority":"P2","area":"清理生命周期","observed":"顾客和 token tween 有销毁，但 Kelp active Graphics 重复创建路径未被测试","risk":"长局内对象增长和层级残留","acceptance":"加入场景对象计数/长运行 10 分钟无增长测试"},
+    {"id":"TRACE-18","priority":"P2","area":"异常恢复","observed":"bootstrap catch 只改 loading 文本，未提供重试按钮或保留当前存档信息","risk":"资源加载失败时玩家只能自行刷新，错误不可诊断","acceptance":"错误状态提供重试、存档保留提示和可读错误原因"}
+  ],
+  "summary":"第三轮发现的关键不是再增加功能，而是让版本、资产、竞品来源、自然旅程、平台与发布合规形成一条可追溯链；目前这条链仍有多处断点。"
+}

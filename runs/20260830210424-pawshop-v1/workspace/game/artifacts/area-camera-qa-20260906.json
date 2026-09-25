@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "area-camera-qa",
+  "targetGame": "beach_fish_market_v4",
+  "viewport": { "width": 390, "height": 844 },
+  "method": "Fresh Chromium context with a minimal versioned save preloaded with areas 1 and 2 unlocked; normal area-nav click; no forced runtime state mutation.",
+  "before": { "areas": { "unlocked": [1, 2], "active": 1 }, "area2ButtonDisabled": false },
+  "after": { "areas": { "unlocked": [1, 2], "active": 2 }, "canvas": 1, "loading": "false", "consoleErrors": [], "pageErrors": [] },
+  "cameraEvidence": { "area1OriginX": 0, "area2OriginX": 540, "screenshot": "screenshots/qa-area-camera-390x844.png" },
+  "passed": true,
+  "limitations": [
+    "The current web-lite scene reuses the shared shop presentation in each area slot; area-specific production chains still require implementation.",
+    "This does not prove native platform camera behavior."
+  ],
+  "testedAt": "2026-09-06T10:52:43+08:00"
+}

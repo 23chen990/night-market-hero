@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "canvas-visible",
+      "passed": true,
+      "evidence": "390x844 Chromium"
+    },
+    {
+      "name": "hud-visible",
+      "passed": true,
+      "evidence": "default HUD visible"
+    },
+    {
+      "name": "seven-test-controls",
+      "passed": true,
+      "evidence": "[\"completeOrder\",\"getState\",\"grantCurrency\",\"resetGame\",\"setRandomSeed\",\"spawnCustomer\",\"upgradeStation\"]"
+    },
+    {
+      "name": "reset-seed",
+      "passed": true,
+      "evidence": "{\"currency\":0,\"seed\":7}"
+    },
+    {
+      "name": "spawn-customer",
+      "passed": true,
+      "evidence": "{\"id\":1,\"product\":\"fish\",\"state\":\"shopping\",\"browseRemainingMs\":2400,\"patienceRemainingMs\":10000,\"substitutionUsed\":false}"
+    },
+    {
+      "name": "grant-upgrade",
+      "passed": true,
+      "evidence": "{\"currency\":200,\"capacity\":6}"
+    },
+    {
+      "name": "complete-order-token",
+      "passed": true,
+      "evidence": "[{\"id\":1,\"value\":4,\"x\":270,\"y\":752,\"pickupRemainingMs\":300}]"
+    },
+    {
+      "name": "refresh-save-recovery",
+      "passed": true,
+      "evidence": "{\"before\":[160,6,1],\"after\":[160,6,1]}"
+    },
+    {
+      "name": "natural-checkout-visible",
+      "passed": true,
+      "evidence": "{\"checkoutReached\":true,\"status\":\"贝壳收银台\\n队列 0 · 靠近服务并捡币\"}"
+    },
+    {
+      "name": "natural-flow-complete",
+      "passed": true,
+      "evidence": "{\"screenshots\":[\"screenshots/natural-start.png\",\"screenshots/natural-shelf-stocked.png\",\"screenshots/natural-customer-entry.png\",\"screenshots/natural-customer-shelf.png\",\"screenshots/natural-customer-checkout.png\",\"screenshots/natural-settlement.png\",\"screenshots/natural-replay.png\"],\"replayObserved\":true}"
+    },
+    {
+      "name": "platform-browser-smoke",
+      "passed": true,
+      "evidence": "artifacts/platform-qa-20260906.json: each platform build directory was served as an isolated root; WeChat/Douyin/TapTap returned HTTP 200, mounted one canvas, completed loading, and reported no console/page errors."
+    },
+    {
+      "name": "area-selector-locked-state",
+      "passed": true,
+      "evidence": "artifacts/area-selector-qa-20260906.json: fresh 390x844 Chromium showed area 1 active, areas 2–6 disabled, and a forced click left serialized area state unchanged."
+    }
+  ],
+  "issues": [
+    {"id":"TRACE-08","severity":"release-blocking","message":"WeChat/Douyin/TapTap web-lite adapter packages are staged, hashed, and each passed Chromium startup smoke; official SDK/policy verification and native-platform QA remain absent."},
+    {"id":"TRACE-09","severity":"release-blocking","message":"IAA rewarded-only contract and runtime bridge are wired; current web-lite/platform adapters safely return sdk-unavailable, so official SDK integration and reward evidence remain absent."},
+    {"id":"WORLD-01","severity":"release-blocking","message":"Six-area save spine and an unlocked-area selector now exist, but area-specific production chains and native multi-area camera/layout remain absent."}
+  ],
+  "screenshots": [
+    "screenshots/qa-final-employee-390x844.png",
+    "screenshots/natural-start.png",
+    "screenshots/natural-shelf-stocked.png",
+    "screenshots/natural-customer-entry.png",
+    "screenshots/natural-customer-shelf.png",
+    "screenshots/natural-customer-checkout.png",
+    "screenshots/natural-settlement.png",
+    "screenshots/natural-replay.png"
+    ,"screenshots/platform-wechat-390x844.png"
+    ,"screenshots/platform-douyin-390x844.png"
+    ,"screenshots/platform-taptap-390x844.png"
+  ],
+  "evidence": [
+    {
+      "schemaVersion": 1,
+      "mode": "STATE_COVERAGE",
+      "actions": [
+        "__GAME_TEST__.resetGame",
+        "__GAME_TEST__.setRandomSeed",
+        "__GAME_TEST__.spawnCustomer",
+        "__GAME_TEST__.completeOrder",
+        "__GAME_TEST__.grantCurrency",
+        "__GAME_TEST__.upgradeStation"
+      ],
+      "artifacts": [
+        "artifacts/qa-report.json",
+        "screenshots/gameplay.png"
+      ],
+      "forbiddenOperations": [
+        "resetGame",
+        "setRandomSeed",
+        "spawnCustomer",
+        "completeOrder",
+        "grantCurrency",
+        "upgradeStation"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "mode": "NATURAL_E2E",
+      "actions": [
+        "page.goto",
+        "canvas.click",
+        "keyboard:ArrowLeft",
+        "keyboard:ArrowUp",
+        "keyboard:ArrowDown",
+        "keyboard:ArrowRight",
+        "page.waitForTimeout",
+        "page.screenshot",
+        "page.reload"
+      ],
+      "artifacts": [
+        "screenshots/natural-start.png",
+        "screenshots/natural-shelf-stocked.png",
+        "screenshots/natural-customer-entry.png",
+        "screenshots/natural-customer-shelf.png",
+        "screenshots/natural-customer-checkout.png",
+        "screenshots/natural-settlement.png",
+        "screenshots/natural-replay.png"
+      ],
+      "forbiddenOperations": []
+    }
+  ],
+  "naturalFlow": {
+    "schemaVersion": 1,
+    "startedFromReset": true,
+    "actions": [
+      "page.goto",
+      "canvas.click",
+      "keyboard:ArrowLeft",
+      "keyboard:ArrowUp",
+      "keyboard:ArrowDown",
+      "keyboard:ArrowRight",
+      "page.waitForTimeout",
+      "page.screenshot",
+      "page.reload"
+    ],
+    "transitions": [
+      {
+        "name": "startup",
+        "changed": true,
+        "evidence": "Fresh Chromium context rendered HUD and canvas."
+      },
+      {
+        "name": "harvest-and-stock",
+        "changed": true,
+        "evidence": "Keyboard movement reached fish source and matching shelf; natural-shelf-stocked.png."
+      },
+      {
+        "name": "customer-entry-door",
+        "changed": true,
+        "evidence": "Fresh elapsed-time spawn captured the bottom-door route stage."
+      },
+      {
+        "name": "customer-shelf-pickup",
+        "changed": true,
+        "evidence": "Product-specific shelf route and pickup cue captured after normal input."
+      },
+      {
+        "name": "customer-checkout-queue",
+        "changed": true,
+        "evidence": "Checkout route/queue cue captured after shelf stock consumption."
+      },
+      {
+        "name": "settlement",
+        "changed": true,
+        "evidence": "Player reached checkout and shell currency appeared in the HUD."
+      },
+      {
+        "name": "replay",
+        "changed": true,
+        "evidence": "Refresh returned to playable shell and accepted keyboard input."
+      }
+    ],
+    "completion": "settlement",
+    "replayObserved": true,
+    "forbiddenOperations": [],
+    "screenshots": [
+      "screenshots/natural-start.png",
+      "screenshots/natural-shelf-stocked.png",
+      "screenshots/natural-customer-entry.png",
+      "screenshots/natural-customer-shelf.png",
+      "screenshots/natural-customer-checkout.png",
+      "screenshots/natural-settlement.png",
+      "screenshots/natural-replay.png"
+    ],
+    "passed": true,
+    "blockers": [],
+    "runner": "builder-formal-fixer-playwright",
+    "runtime": "web-lite",
+    "device": {
+      "width": 390,
+      "height": 844,
+      "label": "Chromium portrait mobile"
+    },
+    "seed": "fresh-browser-context",
+    "observedAt": "2026-09-05T06:25:35.940Z"
+  },
+  "consoleLog": "logs/console.log",
+  "platformQa": "artifacts/platform-qa-20260906.json",
+  "testedAt": "2026-09-05T06:25:35.940Z",
+  "platformQaTestedAt": "2026-09-05T19:01:51.000Z"
+}

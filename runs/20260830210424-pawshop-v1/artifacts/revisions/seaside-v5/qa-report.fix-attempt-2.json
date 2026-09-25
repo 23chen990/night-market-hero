@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "真实 V4 运行中状态迁移",
+      "passed": false,
+      "evidence": "只读审计发现 V4 customers[].productId/phase、checkout.queue、shellTokens 与 V5 迁移器当前读取的字段名不一致。"
+    },
+    {
+      "name": "统一节奏配置与首售窗口",
+      "passed": false,
+      "evidence": "src/game/simulation.ts 仍重复硬编码 900ms；确定性模拟首售 23580ms，早于 25000ms 下界。"
+    },
+    {
+      "name": "Phaser SVG 纹理可见性",
+      "passed": false,
+      "evidence": "三种竖屏视口均出现 5 条 WebGL texImage2D bad image data 警告，Canvas 内背景、角色和商品 SVG 纹理缺失或发黑。"
+    }
+  ],
+  "issues": [
+    {
+      "id": "V5-QA-007",
+      "severity": "error",
+      "message": "补充真实 V4 运行中状态迁移：兼容 customers[].productId/phase、checkout.queue 和 shellTokens，保持活动顾客商品与阶段、结账队列及待拾取贝壳币；先新增真实 V4 fixture 的失败测试，再修实现。不得删除已有兼容字段。",
+      "evidence": "src/game/simulation.ts:178,240,246；当前测试只覆盖 player.inventory、upgrade.purchases 与 construction，未覆盖真实 V4 customers/checkout/shellTokens。"
+    },
+    {
+      "id": "V5-QA-008",
+      "severity": "error",
+      "message": "将顾客浏览时长纳入 ECONOMY 单一运行时配置，并把 V5 浏览时长调为 2400ms，使 22000ms 首客的确定性首售落入 25000..40000ms；simulation、generated config、源码契约测试和节奏测试必须使用同一数值，禁止继续硬编码 900。",
+      "evidence": "src/game/simulation.ts:190,343 重复 900；20ms 确定性路线首售为 23580ms，目标下界为 25000ms。"
+    },
+    {
+      "id": "V5-QA-009",
+      "severity": "error",
+      "message": "修复 Phaser Canvas 加载本地 SVG 资源的方式，确保 background、character、fish、kelp、upgrade 五张纹理均正确可见且浏览器控制台不再出现 texImage2D bad image data。优先使用 Phaser 的 SVG loader/明确尺寸；补充能防止退回错误 loader 的源码契约测试，不改 approved SVG 内容和整体美术方向。",
+      "evidence": "360x800、390x844、430x932 真实 Chromium QA：每次加载 5 条 WebGL INVALID_VALUE texImage2D bad image data；Canvas 截图中角色/商品纹理缺失。"
+    }
+  ],
+  "screenshots": [
+    "artifacts/revisions/seaside-v5/screenshots/v5-360x800.png",
+    "artifacts/revisions/seaside-v5/screenshots/v5-390x844.png",
+    "artifacts/revisions/seaside-v5/screenshots/v5-430x932.png"
+  ],
+  "consoleLog": "artifacts/revisions/seaside-v5/logs/v5-browser-console.pre-fix.log",
+  "testedAt": "2026-08-31T02:08:00+08:00"
+}

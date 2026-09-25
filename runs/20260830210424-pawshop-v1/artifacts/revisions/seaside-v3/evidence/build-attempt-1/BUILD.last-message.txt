@@ -1,0 +1,21 @@
+Implemented `beach_fish_market_v2` entirely within the current game workspace.
+
+Key results:
+
+- Complete movement-only fish/kelp logistics, customer queue, checkout, shell pickup, construction unlock, and capacity upgrades.
+- Responsive landscape/portrait UI with keyboard and touch joystick controls.
+- Versioned, throttled local persistence with immediate key-state saves.
+- All seven exact `window.__GAME_TEST__` controls retained.
+- Refresh recovery tests cover production progress and customer waiting countdown.
+- No repeating camera-flash effects; feedback remains local.
+- Manifest asset hashes match the supplied values.
+
+Verification:
+
+- `npm test` — 14/14 passed
+- `npm run typecheck` — passed
+- `npm run build` — passed
+- `npm run test:browser` — passed, including production reload recovery and portrait layout
+- Production entrypoint: [dist/index.html](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/dist/index.html)
+
+Core implementation: [main.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/main.ts), [model.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/game/model.ts), [persistence.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/game/persistence.ts). This remains a `web-lite` development/QA build, not platform-package proof.

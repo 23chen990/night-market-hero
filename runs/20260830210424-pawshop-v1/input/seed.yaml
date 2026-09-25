@@ -1,0 +1,58 @@
+title: 海滩渔货铺
+theme: 原创小海獭在海滩渔货铺里捕捞、采集、补货、服务顾客并扩建
+template: idle-shop-v1
+runtime: web-lite
+designMode: reference_reskin
+referenceMechanics:
+  schemaVersion: 1
+  lockedBy: human
+  source:
+    name: 空间物流经营机制（恢复引用）
+    url: https://poki.com/zh/g/airplane-manager
+    researchFiles:
+      - artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json
+  coreLoop:
+    - 顾客从入口进入店内并前往目标货架
+    - 玩家移动到生产点自动取得有类型商品
+    - 玩家携带商品走到匹配货架并自动补货
+    - 顾客取货后前往收银台排队结账
+    - 玩家靠近收银台逐位服务顾客并收集实体贝壳币
+  playerActions:
+    - 使用单一移动输入调度采集、补货和收银
+  progressionSystems:
+    - 货架库存与顾客队列形成物流瓶颈
+    - 贝壳币投入新货源并购买容量升级
+  unlockRules:
+    - 新货源在既有空间节点完成投资后原地解锁
+  feedbackCadence:
+    immediateSeconds: 1
+    microGoalMinSeconds: 10
+    microGoalMaxSeconds: 180
+  mustPreserveMechanics:
+    - 采集、携带、补货、顾客取货、排队和结账顺序保持可观察
+    - 顾客必须从大门进入并走向目标货架
+  adaptableMechanics:
+    - 商品、地图坐标、视觉表达、UI布局和所有数值保持原创
+  fidelityPolicy:
+    level: maximum_core_mechanics
+    preserveInputStateTransitions: true
+    preserveCoreLoopOrder: true
+    preserveProgressionTopology: true
+    preserveUnlockDependencies: true
+    preserveFailureAndRecoveryRules: true
+    preserveFeedbackTimingBands: true
+  expressionIsolation:
+    originalCode: true
+    originalAssets: true
+    originalNamesAndText: true
+    originalUiLayout: true
+    originalAudio: true
+    originalTuningValues: true
+targetPlatforms:
+  - wechat-minigame
+  - douyin-minigame
+  - taptap-minigame
+preferences:
+  recovery:
+    source: reconstructed-from-validated-run-artifacts
+    note: This seed restores the missing factory input required for future resume; it does not replace the locked blueprint.

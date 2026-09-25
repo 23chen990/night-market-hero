@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "product-experience-contract",
+  "game": "beach_fish_market_v4",
+  "features": [
+    {"id":"exp-route-01","playerAction":"用方向键/WASD或触摸拖动移动","visibleSignal":"顾客从大门沿带方向标记的路径到目标货架，取货后路径颜色转为收银色","naturalTrigger":"自然等待顾客生成并观察其完整路线","evidence":["entry→shelf→checkout route screenshot","customerPickedUp event paired with shelf position"],"blockingIf":["顾客从收银台出生","顾客未到货架就进入结账"]},
+    {"id":"exp-stock-pressure-02","playerAction":"在缺货或满载时选择采集/补货路线","visibleSignal":"货架库存徽标、缺货顾客提示、玩家满载徽标和队列长度同时可读","naturalTrigger":"自然让货架库存下降并在同一轮补货","evidence":["stock counter transition","queue and full-state screenshot"],"blockingIf":["只有帮助文字提示瓶颈","满载时继续吞货或队列消失"]},
+    {"id":"exp-sale-juice-03","playerAction":"靠近收银台完成交易并拾取贝壳币","visibleSignal":"顾客取货完成、收银台结算脉冲、贝壳币实体生成并可拾取","naturalTrigger":"自然完成至少一笔订单","evidence":["sale feedback at checkout","token pickup visible"],"blockingIf":["奖励只在内部 currency 数字里变化","长动画阻塞移动"]},
+    {"id":"exp-next-action-04","playerAction":"查看 HUD 和场景中的下一步提示","visibleSignal":"当前动作、下一动作和最近瓶颈以图标/颜色/位置突出显示","naturalTrigger":"新局启动、货架缺货、订单结算后三个时点","evidence":["startup HUD screenshot","post-sale next-action screenshot"],"blockingIf":["下一步只存在于长文本","关键按钮在移动端不可触达"]},
+    {"id":"exp-replay-05","playerAction":"完成一轮后继续移动并再次服务顾客","visibleSignal":"订单结算后队列、库存和角色仍在同一场景中更新","naturalTrigger":"自然结账后开始第二轮","evidence":["two consecutive natural loops","refresh recovery trace"],"blockingIf":["结账后卡死","刷新后回到错误状态"]}
+  ]
+}

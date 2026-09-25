@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "QaReport",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+  "passed": false,
+  "scope": "P0 systems follow-up: employee/order/save plus IAA contract, six-area spine, and three platform adapter boundaries",
+  "checks": [
+    {"name":"unit-tests","passed":true,"evidence":"pnpm test: 16 files, 103 tests passed"},
+    {"name":"typecheck","passed":true,"evidence":"pnpm typecheck exited 0"},
+    {"name":"lint","passed":true,"evidence":"pnpm lint exited 0"},
+    {"name":"web-build","passed":true,"evidence":"pnpm build emitted dist/"},
+    {"name":"runtime-product","passed":true,"evidence":"runtime-startup-qa-20260906: fresh Chromium 390x844 startup has loading=false, one canvas, windowTestApi=true, consoleErrors=[], pageErrors=[]; multi-viewport smoke remains green"},
+    {"name":"default-journey-entrypoint","passed":true,"evidence":"src/main.ts wires startup, movement, harvest, stock, customer route, checkout, settlement and replay persistence"},
+    {"name":"iaa-contract","passed":true,"evidence":"src/platform/ads.ts enforces rewarded-only placement cooldowns; offline_double, delivery_instant and gull_bonus now bind to persisted runtime state without purchase currency"},
+    {"name":"area-save-spine","passed":true,"evidence":"GameState areas persists ordered area ids 1..6; unlockArea enforces sequential unlock and area-camera-qa-20260906 covers active area 2 switching"},
+    {"name":"platform-adapter-boundary","passed":true,"evidence":"platforms/wechat-minigame, platforms/douyin-minigame and platforms/taptap-minigame build-config.json present"}
+    ,{"name":"platform-staging","passed":true,"evidence":"pnpm stage:platforms produced three isolated build/manifest.json files with per-platform deterministic hashes, copied runtime assets, and publishable=false."},
+    {"name":"platform-browser-smoke","passed":true,"evidence":"artifacts/platform-qa-20260906.json records isolated build-root HTTP 200, one canvas, loading=false, and no console/page errors for WeChat/Douyin/TapTap staged entrypoints."},
+    {"name":"delivery-and-gull-state-loops","passed":true,"evidence":"tests/delivery-system.test.ts and tests/gull-system.test.ts cover queued/inTransit/completed delivery, instant completion, gull flight phases, return reward, and offline multiplier recovery."},
+    {"name":"area-camera-switch","passed":true,"evidence":"artifacts/runtime-startup-qa-20260906.json and area-camera-qa-20260906.json: fresh Chromium switched unlocked area 1→2 with active=2, canvas=1, loading=false, consoleErrors=[], pageErrors=[]"},
+    {"name":"customer-route-runtime","passed":true,"evidence":"customer-obstacle-qa-20260906: fresh Chromium with fish stock shows solid 3D fixtures, hidden route overlays, obstacle-aware shelf corridors, 1500ms walk pacing, and two customers reaching checkout with no console/page errors"}
+  ],
+  "issues": [
+    {"id":"TRACE-08","severity":"release-blocking","message":"Three web-lite adapter packages and hashes are staged and browser-smoke tested, but official platform policy verification and native-platform QA are absent; staging is not publish proof."},
+    {"id":"TRACE-09","severity":"release-blocking","message":"IAA runtime branches now update delivery/gull/offline state, but no platform ad SDK integration or end-state reward receipt evidence is available."},
+    {"id":"WORLD-01","severity":"warning","message":"Six-area progression, contiguous camera origins and web-lite area switching are now built; per-area production chains and native-platform camera/layout are still absent."}
+  ],
+  "screenshots": ["screenshots/qa-current-390x844.png","screenshots/qa-area-camera-390x844.png","screenshots/qa-customer-route-390x844.png","screenshots/qa-customer-obstacles-390x844.png","screenshots/qa-customer-checkout-slow-390x844.png","screenshots/platform-wechat-390x844.png","screenshots/platform-douyin-390x844.png","screenshots/platform-taptap-390x844.png"],
+  "runtimeEntrypoints": ["src/main.ts", "src/game/simulation.ts", "src/game/persistence.ts", "src/platform/ads.ts", "src/platform/ads-runtime.ts", "src/platform/adapters.ts", "src/world/areas.ts"],
+  "platformConfigs": ["platforms/wechat-minigame/build-config.json", "platforms/douyin-minigame/build-config.json", "platforms/taptap-minigame/build-config.json"],
+  "testedAt": "2026-09-06T13:45:00+08:00"
+}

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "contractId": "1f19fd99359d021e",
+  "gameId": "海滩渔货铺",
+  "runtime": "web-lite",
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame",
+    "poki-web"
+  ],
+  "requiredPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame"
+  ],
+  "optionalPlatforms": [
+    "poki-web"
+  ],
+  "sharedInterfaces": {
+    "lifecycle": {
+      "launch": true,
+      "hideShow": true,
+      "errorBoundary": true
+    },
+    "input": {
+      "normalizedActions": true,
+      "touchSafeArea": true,
+      "pointerFallback": true
+    },
+    "ads": {
+      "rewarded": true,
+      "rewardCloseRequiresEnded": true,
+      "frequencyCapRequired": true,
+      "testUnitsExcludedFromRelease": true
+    },
+    "save": {
+      "versioned": true,
+      "atomic": true,
+      "restoreOnResume": true
+    },
+    "audio": {
+      "gestureUnlock": true,
+      "muteControl": true
+    },
+    "antiAddiction": {
+      "consentGate": true,
+      "ageGuard": true,
+      "pauseOnLimit": true
+    },
+    "telemetry": {
+      "versionedEvents": true,
+      "noPii": true,
+      "crashBreadcrumbs": true
+    }
+  },
+  "invariants": [
+    "rewarded-ad-grant-only-when-isEnded-true",
+    "platform-child-hash-must-match-tested-package",
+    "no-production-test-ad-units",
+    "platform-adapter-never-writes-another-child",
+    "release-package-is-promoted-without-rebuilding-core"
+  ],
+  "adapters": [
+    {
+      "platform": "wechat-minigame",
+      "required": true,
+      "adapterPath": "src/platform/wechat",
+      "configPath": "platform-config/wechat-minigame.json",
+      "buildPath": "platform-builds/wechat-minigame",
+      "packageEntrypoint": "platform-builds/wechat-minigame/game.json",
+      "status": "planned",
+      "evidence": [],
+      "artifactHash": null
+    },
+    {
+      "platform": "douyin-minigame",
+      "required": true,
+      "adapterPath": "src/platform/douyin",
+      "configPath": "platform-config/douyin-minigame.json",
+      "buildPath": "platform-builds/douyin-minigame",
+      "packageEntrypoint": "platform-builds/douyin-minigame/game.json",
+      "status": "planned",
+      "evidence": [],
+      "artifactHash": null
+    },
+    {
+      "platform": "taptap-minigame",
+      "required": true,
+      "adapterPath": "src/platform/taptap",
+      "configPath": "platform-config/taptap-minigame.json",
+      "buildPath": "platform-builds/taptap-minigame",
+      "packageEntrypoint": "platform-builds/taptap-minigame/game.json",
+      "status": "planned",
+      "evidence": [],
+      "artifactHash": null
+    },
+    {
+      "platform": "poki-web",
+      "required": false,
+      "adapterPath": "src/platform/poki",
+      "configPath": "platform-config/poki-web.json",
+      "buildPath": "platform-builds/poki-web",
+      "packageEntrypoint": "platform-builds/poki-web/game.json",
+      "status": "planned",
+      "evidence": [],
+      "artifactHash": null
+    }
+  ],
+  "packageBudget": {
+    "coreMaxBytes": 4000000,
+    "perPlatformMaxBytes": 8000000,
+    "measured": false
+  },
+  "generatedAt": "2026-09-05T07:03:15.528Z"
+}

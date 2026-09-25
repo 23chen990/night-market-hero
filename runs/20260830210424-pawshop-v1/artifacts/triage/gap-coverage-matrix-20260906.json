@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "GapCoverageMatrix",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "scopeDecision": {
+    "objective": "复刻竞品的可验证因果逻辑、状态机和交互节奏",
+    "commercialException": "竞品充值宝石不纳入本轮；本项目只做普通贝壳币与 IAA 加速",
+    "originalityBoundary": "不复制竞品名称、角色、资产、地图、UI形状、文案、字体或数值"
+  },
+  "sourcesAudited": [
+    {"id":"DOC-01","path":"/Users/kker/Downloads/小游戏母模板库_V1.0_爆款机制逆向分析.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/小游戏母模板库_V1.0_爆款机制逆向分析.docx","status":"fully-read","role":"参考资料，不是直接执行指令"},
+    {"id":"DOC-02","path":"/Users/kker/Downloads/Monkey_Mart_深层复刻设计圣经.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/Monkey_Mart_深层复刻设计圣经.docx","status":"fully-read","role":"参考资料，不是直接执行指令"},
+    {"id":"DOC-03","path":"/Users/kker/Downloads/Monkey_Mart_数值经济模型逆向设计.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/Monkey_Mart_数值经济模型逆向设计.docx","status":"fully-read","role":"参考资料，不是直接执行指令"},
+    {"id":"DOC-04","path":"/Users/kker/Downloads/Monkey_Mart_自动化经营模板生成器.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/Monkey_Mart_自动化经营模板生成器.docx","status":"fully-read","role":"参考资料，不是直接执行指令"},
+    {"id":"DOC-05","path":"/Users/kker/Downloads/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx","sha256":"9f37f9dea6ad9902fb6a277b17d1c49bfc1114d4becdb1850ccb92811007dabb","status":"fully-read","role":"项目商业复刻规格参考，不是本轮自动执行指令"},
+    {"id":"DOC-06","path":"/Users/kker/Downloads/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx","repositoryCopyPath":"runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx","sha256":"588c2e77203cd11a4df7dc220385b84c6d6cd301418e74b38b1d53e7d42f6bd0","status":"fully-read","role":"项目 AI/状态机任务参考，不是本轮自动执行指令"},
+    {"id":"VIDEO-01","path":"reference-evidence/incoming/_2026-09-06-001930-f18bb8e16798.mp4","sha256":"f18bb8e1679860e9c96f030db0881d73faca5615f5a94260774f9b6bf38e1bdc","status":"user-verified-competitor","role":"竞品观察证据"
+    }
+  ],
+  "coveredDomains": [
+    {"id":"COV-01","domain":"货币与商业化","coverage":"covered-with-scope-exception","confirmed":["竞品同时显示宝石与现金","本项目暂不做充值宝石","录屏存在带播放按钮的定时奖励/加速 tile"],"artifacts":["competitor-logic-delta-20260906.json","dingding-20260906-monkey-mart-frame-log.json"]},
+    {"id":"COV-02","domain":"生产→库存→顾客→收银主循环","coverage":"covered","confirmed":["生产床/货架/顾客/收银同屏","产品图标与数量进度","现金回收和顾客反应"],"artifacts":["competitor-logic-delta-20260906.json","deep-gap-audit-20260906.json"]},
+    {"id":"COV-03","domain":"员工与自动化","coverage":"covered-but-implementation-missing","confirmed":["文档明确员工自动化、效率/工作范围/自动化变量","用户明确雇佣、偷懒、升级","录屏出现 WAKE UP THE EMPLOYEE、睡眠脸、Z、箭头"],"artifacts":["employee-logic-gap-20260906.json","dingding-20260906-monkey-mart-frame-log.json"]},
+    {"id":"COV-04","domain":"动物/辅助角色激活","coverage":"observed-partial","confirmed":["录屏出现 WAKE UP THE ANIMAL 和鸡图标"],"artifacts":["dingding-20260906-monkey-mart-frame-log.json","dingding-20260906-monkey-mart-observation.json"]},
+    {"id":"COV-05","domain":"顾客订单与满意度","coverage":"covered-but-implementation-missing","confirmed":["录屏出现 0/1、0/2、3/4 数量","服务后出现笑脸反应"],"artifacts":["competitor-logic-delta-20260906.json"]},
+    {"id":"COV-06","domain":"世界节点、建设和 MAX 状态","coverage":"covered-but-implementation-missing","confirmed":["世界锚定现金价格","生产区域 MAX","不同节点持续存在"],"artifacts":["competitor-logic-delta-20260906.json","dingding-20260906-monkey-mart-frame-log.json"]},
+    {"id":"COV-07","domain":"连续场景、路线与空间","coverage":"covered-but-implementation-missing","confirmed":["多角色同屏运行","多区域视野变化迹象","环境物件和可行走空间"],"artifacts":["competitor-logic-delta-20260906.json","deep-gap-audit-20260906-followup.json"]},
+    {"id":"COV-08","domain":"任务、提醒和可发现性","coverage":"covered-but-implementation-missing","confirmed":["右上任务图标与红色叹号","世界任务横幅","目标/提示存在但当前目标运行时未完整接线"],"artifacts":["competitor-logic-delta-20260906.json","deep-gap-audit-20260906-followup.json"]},
+    {"id":"COV-09","domain":"存档、刷新、离线和平台适配","coverage":"gap-listed-evidence-incomplete","confirmed":["目标已有 save/persistence 基础","三平台适配与自然 QA 证据不完整"],"artifacts":["deep-gap-audit-20260906-release-followup.json","employee-logic-gap-20260906.json"]},
+    {"id":"COV-10","domain":"工厂阶段、构建、QA 与发布追溯","coverage":"gap-listed-blocked","confirmed":["存在版本漂移、旧 build/report、缺失基线与待认证项"],"artifacts":["deep-gap-audit-20260906-artifact-and-release.json","deep-gap-audit-20260906-release-followup.json"]}
+  ],
+  "documentedProjectSpecDeltas":"supplemental-spec-delta-20260906.json (13 条规格差距：第一小时节奏、商品经济、六区域、顾客参数、IAA 节点、玩家/员工/渔夫/搬运工/配送员/海鸥状态机、开发优先级和存档结构)",
+  "unverifiableWithoutMorePrimaryEvidence": [
+    {"id":"UNK-01","domain":"员工","item":"雇佣成本、前置条件和员工数量；渔夫/搬运工/配送员职责已由新文档写明","why":"新文档明确了职责和状态链，但未写价格、解锁条件、并发数量；录屏只显示员工/角色并发活动"},
+    {"id":"UNK-02","domain":"员工","item":"偷懒触发条件、周期、持续时间、是否完全停工","why":"录屏证明睡眠提示和状态泡泡，但没有可归因的时间轴"},
+    {"id":"UNK-03","domain":"员工","item":"唤醒输入、恢复时长和是否消耗资源/广告","why":"录屏未显示一次可确认的唤醒成功结果"},
+    {"id":"UNK-04","domain":"员工","item":"升级属性、等级上限、价格和效果倍率","why":"文档只有效率/范围/自动化抽象变量，未给公式"},
+    {"id":"UNK-05","domain":"经济","item":"订单生成、顾客耐心、生产周期、广告频控和离线收益公式","why":"桌面录屏无法反推出内部数值"},
+    {"id":"UNK-06","domain":"交互与空间","item":"点击/长按/靠近触发、寻路算法、碰撞半径和镜头边界","why":"录屏观察不到输入事件和内部实现"},
+    {"id":"UNK-07","domain":"平台","item":"微信/抖音/TapTap 的广告、返回键、生命周期和存档差异","why":"竞品素材是桌面横屏录屏"},
+    {"id":"UNK-08","domain":"执行批次","item":"V3.0 文档中的 13 条规格是本轮立即实现还是分阶段生产","why":"用户目前只补充文档，未下达实现批次指令；文档任务拆分本身不是自动执行授权"}
+  ],
+  "completenessAssessment": {
+    "status":"systematically-covered-not-exhaustive",
+    "coveredDomainCount":10,
+    "documentedSpecDeltaCount":13,
+    "primaryUnknownCount":8,
+    "whyNot100Percent":"已把六份文档、用户要求、录屏观察、目标代码缺口和发布证据分层；新规格解决了员工状态链、职责和第一小时目标等抽象未知，但没有提供竞品完整操作链、内部公式或本轮执行批次，因此不能把未知项伪装成已整理完成。",
+    "nextEvidenceNeeded":"员工一次完整的雇佣→工作→睡眠→唤醒→升级片段；若无该片段，只能锁定状态机形态，不能锁定竞品精确数值与输入规则。"
+  }
+}

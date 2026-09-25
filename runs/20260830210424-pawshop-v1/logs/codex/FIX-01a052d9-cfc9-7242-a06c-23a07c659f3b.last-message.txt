@@ -1,0 +1,18 @@
+Repair attempt 2 completed for `PLAYER_FULL_CAPACITY_FEEDBACK`.
+
+Implemented only the requested feedback:
+
+- Player-attached high-contrast “满载” badge above the highest carried item.
+- Correct visibility for 0/4, 3/4, 4/4, unloading, 4/5, and 5/5.
+- Badge follows player movement.
+- One preallocated local pulse triggers only when entering full state.
+- Existing HUD count and exactly seven test controls remain unchanged.
+
+Verification:
+
+- `npm test` — 22/22 passed
+- `npm run typecheck` — passed
+- `npm run build` — passed
+- `npm run test:browser` — passed
+
+Changes: [hud.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/ui/hud.ts), [main.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/main.ts), and [capacity-feedback.test.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/tests/capacity-feedback.test.ts). Fresh build: [dist/index.html](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/dist/index.html). Ready for QA rerun.

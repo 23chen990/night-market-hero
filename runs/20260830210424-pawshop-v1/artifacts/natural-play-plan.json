@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "contractId": "beach_fish_market_v4-experience-20260905",
+  "startCommand": "resetGame",
+  "inputMode": "keyboard_and_touch",
+  "forbiddenApis": ["debug teleport", "loadScenario", "setVelocity", "setPose", "state injection", "window.__GAME_TEST__ setters"],
+  "scenarios": [
+    {"id":"route-and-restock","goal":"从近岸取鱼、走到鲜鱼货架补货，并观察顾客从大门到货架再到收银台。"},
+    {"id":"queue-pressure","goal":"让至少两名顾客同时进入店内，观察缺货、队列和收银区的可见压力，并通过补货恢复。"},
+    {"id":"reward-and-upgrade","goal":"自然完成一笔订单、捡起贝壳币，再购买一次容量升级并立即继续下一轮。"},
+    {"id":"replay-after-refresh","goal":"刷新后不丢失顾客/货架/贝壳币状态，继续完成一轮补货与结账。"}
+  ],
+  "successCriteria": [
+    "默认旅程从启动进入移动、采集、补货、顾客取货、收银、拾币和升级。",
+    "每个关键状态均有画布内的图形/位置/颜色反馈，而非只依赖说明文字或底部行动条。",
+    "至少一次自然操作能看到顾客路线、货架扣货、队列推进和结账奖励的因果链。",
+    "完成或失败后玩家无需重载页面即可回到下一轮可玩的补货—结账循环。"
+  ],
+  "evidenceCheckpoints": [
+    "startup: HUD、角色、入口、货架库存和一个极简目标胶囊在首屏可见；无常驻底部行动条。",
+    "pressure: 顾客队列与缺货/满载信号在同一视口可读。",
+    "settlement: 收银台产生贝壳币实体并可被玩家靠近拾取。",
+    "replay: 结账后再次移动到采集点，循环继续且输入未被反馈动画锁死。"
+  ],
+  "oracleFree": true
+}

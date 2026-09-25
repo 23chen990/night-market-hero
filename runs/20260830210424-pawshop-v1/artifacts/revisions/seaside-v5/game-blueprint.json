@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "gameId": "beach_fish_market_v5",
+  "title": "海滩渔货铺",
+  "theme": "原创小海獭在海滩渔货铺里捕捞、采集、补货和扩建",
+  "runtime": "web-lite",
+  "template": "idle-shop-v1",
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame"
+  ],
+  "concept": "只用移动完成近岸捕鱼、潮池原地投建解锁、实体堆叠、有限货架补货、顾客结账和升级的竖屏海滩物流经营游戏",
+  "coreLoop": [
+    "移动到近岸渔网或已解锁潮池并靠近自动取货",
+    "鱼或海带以有类型可见堆叠显示在小海獭头顶",
+    "移动到对应冰盘或海带篮自动逐件补货；货架达到 8/8 后立即停止卸货并保留背篓余货",
+    "海边游客选货、等货、取货并前往收银台排队",
+    "玩家在收银区完成交易并让贝壳币实体化",
+    "把贝壳币直接投入未解锁的潮池，满 96 后同一位置切换为海带采集点",
+    "购买携带容量升级，并为下一阶段的虾笼预留站点"
+  ],
+  "content": {
+    "productName": "海滩渔货",
+    "customerName": "海边游客",
+    "currencyName": "贝壳币"
+  },
+  "balance": {
+    "startingCurrency": 0,
+    "orderReward": 4,
+    "baseUpgradeCost": 40
+  },
+  "preferences": {
+    "technicalAnalysis": "docs/spatial-idle-shop-technical-analysis.md",
+    "openSourceResearch": "artifacts/revisions/seaside-v5/open-source-research.json",
+    "balanceResearch": "artifacts/revisions/seaside-v5/balance-research.md",
+    "revision": "seaside-v5",
+    "supersedes": "seaside-v4",
+    "orientation": "portrait-9:16-first",
+    "viewport": {
+      "designWidth": 540,
+      "designHeight": 960,
+      "minimumAspectRatio": "9:20",
+      "maximumAspectRatio": "3:4",
+      "safeAreaInsetsRequired": true,
+      "desktopQaShell": "centered portrait phone frame"
+    },
+    "sessionTargetMinutes": 5,
+    "player": {
+      "species": "original sea otter",
+      "startingCapacity": 4,
+      "stackMustBeVisible": true
+    },
+    "economy": {
+      "schemaVersion": 1,
+      "sourceOfTruth": "one generated economy configuration must drive simulation, HUD, save normalization and tests",
+      "currencyName": "贝壳币",
+      "products": {
+        "fish": {
+          "saleReward": 4,
+          "pickupIntervalMs": 520
+        },
+        "kelp": {
+          "saleReward": 6,
+          "pickupIntervalMs": 650
+        }
+      },
+      "carrier": {
+        "initialCapacity": 4,
+        "capacityMode": "total items across every product type",
+        "tiers": [
+          {
+            "capacity": 6,
+            "cost": 40,
+            "requires": null
+          },
+          {
+            "capacity": 8,
+            "cost": 88,
+            "requires": "kelpUnlocked"
+          }
+        ],
+        "purchaseIntervalMs": 500,
+        "maxPurchases": 2
+      },
+      "shelves": {
+        "capacityPerProduct": 8,
+        "deliveryIntervalMs": 240
+      },
+    "customers": {
+      "firstSpawnDelayMs": 22000,
+      "browseDurationMs": 2400,
+      "preUnlockSpawnIntervalMs": 5500,
+        "postUnlockSpawnIntervalMs": 4200,
+        "postUnlockFishProbability": 0.68,
+        "postUnlockKelpProbability": 0.32,
+        "maxActive": 5,
+        "stockPatienceMs": 10000
+      },
+      "checkout": {
+        "serviceIntervalMs": 700,
+        "tokenPickupDelayMs": 300
+      },
+      "kelpUnlock": {
+        "investmentCost": 96,
+        "investmentIntervalMsPerCoin": 220
+      },
+      "milestoneWindowsMs": {
+        "firstPickup": [3000, 8000],
+        "firstStock": [8000, 20000],
+        "firstSale": [25000, 40000],
+        "firstCapacityUpgrade": [60000, 90000],
+        "kelpUnlock": [150000, 240000]
+      }
+    },
+    "products": [
+      {
+        "id": "fish",
+        "displayName": "鲜鱼",
+        "unlockedAtStart": true,
+        "source": "nearshore fishing net",
+        "shelf": "iced fish tray"
+      },
+      {
+        "id": "kelp",
+        "displayName": "海带",
+        "unlockedAtStart": false,
+        "source": "tide pool",
+        "shelf": "kelp basket",
+        "unlock": "invest 96 shell coins directly at the locked tide-pool source; no separate construction station"
+      },
+      {
+        "id": "shrimp",
+        "displayName": "鲜虾",
+        "unlockedAtStart": false,
+        "source": "shallow-water shrimp trap",
+        "shelf": "shrimp crate",
+        "scope": "reserved for the next iteration"
+      }
+    ],
+    "kelpGate": {
+      "singleSpatialNode": true,
+      "lockedNode": "kelpSource",
+      "investmentCost": 96,
+      "lockedBehavior": "proximity investment",
+      "unlockedBehavior": "proximity kelp harvest",
+      "forbidStandaloneConstructionZone": true,
+      "preserveSaveField": "construction.invested"
+    },
+    "shelfCapacity": {
+      "perProduct": 8,
+      "appliesTo": [
+        "fish",
+        "kelp"
+      ],
+      "deliveryRule": "deliver only while the matching shelf stock is below 8; once it reaches 8, stop immediately without removing another carried item",
+      "overflowRule": "never discard or convert overflow; unmatched or excess carried food remains visibly attached to the player",
+      "resumeRule": "after a customer consumes one unit and opens a slot, proximity delivery may resume on a later simulation tick",
+      "progressRule": "do not bank delivery progress while a matching shelf is full; reset the delivery timer so reopening one slot cannot cause an instant multi-item burst",
+      "persistenceRule": "on load, defensively clamp legacy or invalid shelf stock to the inclusive range 0..8 before simulation resumes",
+      "feedbackRule": "each shelf shows 库存 current/8 and appends 已满 at 8/8; the HUD also shows both current/8 values"
+    },
+    "requiredSystems": [
+      "normalized keyboard and pointer/touch drag movement",
+      "typed multi-product carrying stack whose combined item count never exceeds the one displayed carrier capacity",
+      "automatic proximity harvest and compatible-shelf delivery with a hard per-product shelf capacity of 8",
+      "customer finite state machine with a separate first-spawn delay, faster sustained demand after kelp unlock, out-of-stock waiting and checkout queue",
+      "physical shell-token pile collected by proximity",
+      "locked tide-pool investment unlocking kelp in place with no standalone construction station",
+      "explicit two-tier capacity upgrade table 4 to 6 to 8 with visible player-attached full-state feedback and a clear max-level state",
+      "product-specific fish and kelp sale rewards",
+      "versioned throttled local save with legacy inventory normalization",
+      "local first-session balance telemetry with no backend dependency"
+    ],
+    "feedback": {
+      "localOnlyForRepeatingActions": true,
+      "forbidCameraFlash": true,
+      "pickupArcOrPulse": true,
+      "shelfFillMustBeVisible": true,
+      "queueAdvanceMustBeVisible": true,
+      "playerAttachedCapacityIndicator": {
+        "fullText": "满载",
+        "visibleWhen": "carried item count equals current player capacity",
+        "upgradeAware": true,
+        "transition": "one-shot local pulse only when entering full state",
+        "placement": "above the highest carried item when clear; if a cached HUD exclusion rectangle conflicts, choose the first scene-safe attached fallback from stack-right, stack-left, or player-side-below",
+        "mustNotOverlapHud": true,
+        "mustRemainAttached": true
+      }
+    },
+    "originalityConstraints": [
+      "Do not use Monkey Mart names, code, assets, UI, map layout, tuning or unlock order",
+      "Use only the generic spatial logistics mechanic and generic seafood categories",
+      "Keep all silhouettes, palette, beach layout, progression and numbers original",
+      "Use the original Chinese 满载 badge and dynamic avoidance behavior rather than copying competitor MAX lettering or styling"
+    ],
+    "testRequirements": [
+      "Retain exactly all seven window.__GAME_TEST__ controls",
+      "Write focused failing tests before each production behavior change and record the expected RED failure",
+      "Assert STATIONS has no standalone construction member and the old lower-right location never invests currency",
+      "Test partial investment, save recovery, completion at 96 invested coins, event positions at kelpSource, no further charge after unlock, and harvesting kelp at the same source on a later simulation tick",
+      "Test main scene and HUD copy contain only one spatial kelp unlock node and never render or mention 海带建设区 or 右下角建设区",
+      "RED first: test that fish plus kelp carried inventory never exceeds the one displayed capacity, including legacy save normalization and harvesting either product while mixed-loaded",
+      "RED first: test the explicit carrier tiers 4 to 6 for 40 coins and, only after kelp unlock, 6 to 8 for 88 coins; then reject further purchases and render 已满级 without a phantom next price",
+      "RED first: test fish orders create value-4 tokens and kelp orders create value-6 tokens from the shared economy configuration",
+      "RED first: test no automatic customer spawns before 22000 ms, pre-unlock spawning repeats every 5500 ms, and post-unlock spawning repeats every 4200 ms without resetting elapsed progress incorrectly",
+      "Test unlocking kelp increases total demand cadence rather than only splitting the former customer stream",
+      "Test fish and kelp stock compatibility, queue order, shell-token collection, upgrade and save recovery",
+      "RED first: with shelf stock 8 and matching carried food, advancing delivery time must leave shelf stock and carried items unchanged; record that the pre-change model incorrectly increments beyond 8",
+      "Test the 7-to-8 boundary with at least two matching carried items: exactly one item is delivered, the shelf stops at 8, and the remaining carried item stays with the player",
+      "Test both fish and kelp shelves independently enforce capacity 8 and never accept the other product type",
+      "Test delivery progress is not accumulated while full: after a customer consumes one unit, only one newly timed delivery can refill the single free slot",
+      "Test load validation clamps negative or above-capacity shelf values into 0..8 without losing unrelated save progress",
+      "Test the station counters render 库存 current/8, append 已满 only at 8/8, and the HUD exposes both shelf capacities without obscuring the playfield",
+      "Satisfy the WebLiteRuntimeAdapter machine contract by keeping localStorage in generated TypeScript source and declaring CURRENT_SAVE_VERSION = 4 or an equivalent accepted literal save-v4 marker; test a real refresh round trip from both save-v3 and save-v4",
+      "Test the 满载 marker at 0/4, 3/4, 4/4, unload, 4/5 and 5/5",
+      "Test the marker does not intersect cached HUD exclusion rectangles at the upper-left fish source in 360x800, 390x844 and 430x932 viewports",
+      "Test first-session telemetry records first move, pickup, stock, sale, cash collection, build investment, unlock and upgrade once, plus full-carrier time, empty-shelf time, completed orders and movement distance without any network dependency",
+      "Test that repeating automatic interactions never trigger a full-screen camera flash",
+      "Keep the playable beach and HUD legible inside CSS safe-area insets with no horizontal overflow"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "constitutionId": "FACTORY_CONSTITUTION",
+  "version": "v1",
+  "requiredCompletionGates": [
+    "core",
+    "normalFlow",
+    "visualEvidence",
+    "levelDifference",
+    "humanPlaytest"
+  ],
+  "rules": [
+    "REQUIRED_STAGE_CONTRACT",
+    "UNKNOWN_ZERO_AT_RELEASE",
+    "NO_SELF_ACCEPTANCE",
+    "REGRESSION_TEST_FOR_FIX",
+    "FAIL_TO_EARLIEST_OWNER",
+    "LICENSE_ALLOWLIST_ONLY",
+    "BOUNDED_AUTOMATIC_REPAIR",
+    "PLATFORM_CHILD_ISOLATION",
+    "IMMUTABLE_CANDIDATE",
+    "FINAL_HUMAN_PLAYTEST",
+    "THREE_HUMAN_APPROVALS",
+    "QUALITY_STATUS_MATRIX",
+    "STATE_TRANSITION_AUDIT",
+    "SIDE_EFFECT_JOURNAL"
+  ],
+  "maxAutomaticRepairAttempts": 2,
+  "frozenAfterStage": "CORE_SPEC_FROZEN",
+  "generatedAt": "1970-01-01T00:00:00.000Z"
+}

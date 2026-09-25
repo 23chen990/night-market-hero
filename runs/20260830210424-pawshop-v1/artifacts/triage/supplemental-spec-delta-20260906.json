@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "SupplementalProjectSpecDelta",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "sourceClass": "user-supplied-project-spec-reference",
+  "instructionBoundary": "文档中的规格和任务拆分记录为待执行项目要求/设计参考；不把文档语句当作本轮自动执行指令，不把它们伪装成竞品录屏已证明事实。",
+  "sources": [
+    {
+      "path": "/Users/kker/Downloads/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx",
+      "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx",
+      "sha256": "9f37f9dea6ad9902fb6a277b17d1c49bfc1114d4becdb1850ccb92811007dabb",
+      "role": "commercial replication specification"
+    },
+    {
+      "path": "/Users/kker/Downloads/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx",
+      "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx",
+      "sha256": "588c2e77203cd11a4df7dc220385b84c6d6cd301418e74b38b1d53e7d42f6bd0",
+      "role": "AI/state-machine and development task decomposition"
+    }
+  ],
+  "deltas": [
+    {"id":"SPEC-01","domain":"first-hour pacing","documentRequirement":"0-1分钟捕鱼并获得100-200金币；1-3分钟首次升级；3-5分钟第一名员工；5-10分钟第二生产链；10-20分钟首次区域扩张；20-30分钟配送系统；30-60分钟形成商业生态。","targetCurrent":"当前目标首客等待约22秒、以鱼/海带/虾/蟹和单屏设施为主，没有员工、配送或六区域节奏。","status":"missing","evidenceClass":"documented-project-target","acceptance":"新局自然旅程按这些窗口逐段出现可见的生产、升级、员工、生产链、区域、配送里程碑；若调整窗口必须版本化记录理由。"},
+    {"id":"SPEC-02","domain":"product economy","documentRequirement":"小鱼5秒/10金币/库存10；螃蟹15秒/40金币/库存8；虾25秒/100金币/库存6；龙虾60秒/250金币/库存5；珍珠为稀有奖励资源。","targetCurrent":"目标当前为 fish/kelp/shrimp/crab，奖励4/6/8/14，生产周期与库存上限不同，未有龙虾/珍珠。","status":"missing-and-conflicted","evidenceClass":"documented-project-target","acceptance":"锁定 V3.0 商品表或明确版本变更；经济配置、UI、测试和蓝图统一引用同一版本。"},
+    {"id":"SPEC-03","domain":"world expansion","documentRequirement":"区域1沙滩鱼摊、区域2小码头、区域3海鲜市场、区域4加工厨房、区域5远洋码头、区域6海岛贸易；每区有新增生产/加工/订单链。","targetCurrent":"当前为固定单屏，只有潮池、虾笼、蟹笼等预留设施，没有六区域地图、镜头和加工/贸易链。","status":"missing","evidenceClass":"documented-project-target","acceptance":"区域解锁改变可行走空间、生产链或订单链，并保存解锁状态。"},
+    {"id":"SPEC-04","domain":"customer economy","documentRequirement":"顾客 Spawn→选择可购买商品→移动→购买→付款→离开；基础生成5秒/人，最大同时10-20人，购买时间2-5秒。","targetCurrent":"目标 maxActive=5，首客等待约22秒，每名顾客当前只处理一件商品，购买耗时/最大并发未按 V3.0 锁定。","status":"missing-and-conflicted","evidenceClass":"documented-project-target","acceptance":"顾客数量、购买时间和订单流程可在状态与自然运行时观测，并与商品库存/收银吞吐形成压力。"},
+    {"id":"SPEC-05","domain":"IAA rules","documentRequirement":"激励广告用于升级补足、离线收益翻倍、配送立即完成、海鸥探索奖励增加；广告服务成长、不打断核心体验。","targetCurrent":"目标声明 IAA 但无广告 tile、奖励 contract、离线翻倍、配送或海鸥系统。","status":"missing","evidenceClass":"documented-project-target","acceptance":"每个广告节点有频控、展示条件、奖励前后状态和跳过路径；不引入充值宝石。"},
+    {"id":"SPEC-06","domain":"player state machine","documentRequirement":"Idle→Move→Interact→Carry→Deliver→Reward。","targetCurrent":"目标有移动、靠近自动采集/投资、携带和结算，但没有显式状态机契约或完整 Deliver/Reward 分支。","status":"partial","evidenceClass":"documented-project-target","acceptance":"玩家状态、转换条件、打断和奖励事件可测试，并与自然输入旅程一致。"},
+    {"id":"SPEC-07","domain":"employee state machine","documentRequirement":"Idle→FindTask→SelectTarget→MoveToTarget→Work→Return→CheckFatigue→Rest。","targetCurrent":"目标没有 employee 集合、任务、目标、疲劳或 Rest 状态。","status":"missing","evidenceClass":"documented-project-target+user-confirmed","acceptance":"至少实现一名员工的完整状态链，包含雇佣、工作、偷懒/疲劳、休息/唤醒、升级和持久化。"},
+    {"id":"SPEC-08","domain":"fisher AI","documentRequirement":"寻找捕鱼点→移动→捕鱼→获得资源→寻找仓库→存储→循环。","targetCurrent":"目标只有玩家鱼网采集；没有渔夫岗位、路径、捕鱼和入库循环。","status":"missing","evidenceClass":"documented-project-target","acceptance":"渔夫自动生产并把资源送入冰鲜仓储，路径和库存变化可见且可归因。"},
+    {"id":"SPEC-09","domain":"carrier AI","documentRequirement":"检测缺货货柜→寻找最近资源→搬运→补货。","targetCurrent":"目标没有搬运员工；缺货货架主要等待玩家处理。","status":"missing","evidenceClass":"documented-project-target","acceptance":"搬运工根据缺货和距离选择目标，补货后货架状态和员工路径可见。"},
+    {"id":"SPEC-10","domain":"delivery AI","documentRequirement":"检测订单→取货→移动→完成配送→获得收入。","targetCurrent":"目标没有订单池、配送员、配送路线或配送收入。","status":"missing","evidenceClass":"documented-project-target","acceptance":"配送成为独立可恢复的收入链，并支持对应 IAA 立即完成节点。"},
+    {"id":"SPEC-11","domain":"seagull AI","documentRequirement":"定时触发→飞离→探索→返回→给予奖励。","targetCurrent":"目标没有海鸥实体、定时探索、返回和奖励记录。","status":"missing","evidenceClass":"documented-project-target","acceptance":"海鸥事件有可见触发、飞出/返回、奖励来源和广告加成分支。"},
+    {"id":"SPEC-12","domain":"development priority","documentRequirement":"P0玩家移动/捕鱼/库存/销售；P1升级/员工AI/区域扩展；P2配送/海鸥/离线收益；P3精细UI/音效/粒子。","targetCurrent":"当前实现已有部分 P0，但 P1-P2 关键模块未实现；现有 run 还存在工厂阶段阻塞。","status":"partial","evidenceClass":"documented-project-plan","acceptance":"按优先级拆成可追踪任务，核心循环和员工/区域先于 P3 表现层交付。"},
+    {"id":"SPEC-13","domain":"save schema","documentRequirement":"Player(金币、位置、等级)、Products(商品等级、库存)、Workers(类型、等级、疲劳)、Areas(解锁状态)、Economy(收益数据)、System(版本、广告记录)。","targetCurrent":"目标有 Player/Products/Economy/版本基础，但没有 Workers、Areas 完整结构和广告记录。","status":"missing","evidenceClass":"documented-project-target","acceptance":"save schema 增加 workers/areas/system-ad records，版本迁移、刷新、后台恢复和离线规则可测试。"}
+  ],
+  "newlyResolvedUnknowns": [
+    "员工状态链的抽象顺序已由文档明确：Idle→FindTask→SelectTarget→MoveToTarget→Work→Return→CheckFatigue→Rest。",
+    "员工自动化至少包含渔夫和搬运工两种职责；配送员与海鸥是额外自动化链。",
+    "IAA 节点不只用于升级补足，还包括离线收益翻倍、配送立即完成、海鸥奖励增加。",
+    "第一小时目标和六区域商业链已被写入项目规格。"
+  ],
+  "remainingUnknowns": [
+    "这些规格是否全部要求在本轮立即实现，还是分阶段生产计划；用户尚未明确执行批次。",
+    "文档数值与竞品录屏/外部攻略可能不同，不能称为竞品原始数值；需锁定本项目 V3.0 作为目标版本。",
+    "员工疲劳的具体触发、休息时长、唤醒输入、升级费用/倍率仍未在新文档中给出。"
+  ],
+  "implementationStatus": "not-implemented; specification-audit-only"
+}

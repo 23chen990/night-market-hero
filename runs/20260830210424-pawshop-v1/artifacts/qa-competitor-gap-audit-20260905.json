@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-gap-audit",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "evidenceManifest": "artifacts/evidence-provenance-competitor-20260905.json",
+  "classification": "player-experience / competitor-gap-audit",
+  "observations": [
+    "Reference recording keeps persistent HUD compact and uses world-space icon bubbles for action state.",
+    "Reference customers travel around physical aisles/fixtures, pause at a product point, then approach the checkout side; they do not cross the checkout counter.",
+    "Reference payment and facility unlock use icon+amount progress, a short payment animation, and a persistent constructed-device visual.",
+    "Reference product/customer cues are semantically distinct by item icon and character reaction; they are not one generic label treatment."
+  ],
+  "inferences": [
+    "The target game's current station plaques, route lines, and customer cue text are carrying rules that should be visual state.",
+    "The target game's direct line interpolation is not sufficient to communicate walkable space or service boundaries.",
+    "The target game's progression needs a visible state machine: locked, eligible, paying, building, active, maxed."
+  ],
+  "issues": [
+    { "id": "QA-GAP-CUE-012", "severity": "error", "message": "Product/customer feedback is not semantically distinct enough between fish and kelp; generic head/status presentation remains.", "evidence": "source main.ts: shared customer cue and station label path; competitor frames 00-03 show item-specific icon bubbles" },
+    { "id": "QA-GAP-UPGRADE-013", "severity": "error", "message": "Upgrade availability and stage progression are not expressed as dedicated visual states with a clear unlock moment.", "evidence": "source main.ts/index.html: upgrade panel has text copy and one capacity action; competitor frame 00 shows dedicated facility objective affordance" },
+    { "id": "QA-GAP-PAY-014", "severity": "error", "message": "Investment payment lacks a visible coin-to-node transaction sequence and construction-complete transition.", "evidence": "source main.ts: investment feedback is a generic primitive pulse; competitor progression frames show amount and facility conversion" },
+    { "id": "QA-GAP-DEVICE-015", "severity": "error", "message": "Completed construction does not clearly materialize a persistent, functional device visual distinct from the locked node.", "evidence": "source main.ts: kelp source remains a ring/ellipse treatment; required built-device branch is not visually explicit" },
+    { "id": "QA-GAP-MOTION-016", "severity": "error", "message": "Customers use direct interpolation between endpoints without aisle waypoints, occupancy spacing, or checkout-side boundary semantics.", "evidence": "source main.ts: customerRouteGraphics.lineBetween and route target interpolation; competitor frames 01-03 show natural aisle movement" },
+    { "id": "QA-GAP-LAYOUT-017", "severity": "error", "message": "Persistent labels and route lines compete with actors and station objects at mobile viewport; information hierarchy is not icon-first.", "evidence": "target screenshots/recovery-natural/05-customer-shelf.png and user screenshot callouts" }
+  ],
+  "reproductionMatrix": [
+    { "objectType": "fish-vs-kelp cue", "lifecycleStateBranch": "carrying|shelf-stocked|customer-request", "rendererPresentationPath": "HUD + customer cue + shelf label", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "upgrade/facility", "lifecycleStateBranch": "locked|eligible|paying|built|active|maxed", "rendererPresentationPath": "HTML upgrade panel + Phaser world node", "deviceViewport": "390x844 and 430x932 portrait FIT", "branchRepresented": true },
+    { "objectType": "customer", "lifecycleStateBranch": "entry→shopping→waitingStock→checkout", "rendererPresentationPath": "customer route tween + route graphics + checkout target", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "station labels", "lifecycleStateBranch": "startup|nearby|settlement", "rendererPresentationPath": "stationLabels map + nearbyStatus DOM chip", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true }
+  ],
+  "recommendedFixOrder": ["QA-GAP-LAYOUT-017", "QA-GAP-MOTION-016", "QA-GAP-CUE-012", "QA-GAP-UPGRADE-013", "QA-GAP-PAY-014", "QA-GAP-DEVICE-015"],
+  "acceptanceCriteria": [
+    "Persistent explanatory plaques are removed from the default playfield; icon/count/color/progress carries the rule.",
+    "Customer movement visibly follows walkable waypoints with eased travel and queue-side checkout; no counter crossing.",
+    "Fish and kelp cues use distinct iconography and state treatments.",
+    "Upgrade/facility states show locked→eligible→paying→built→active→maxed with a dedicated visual unlock moment.",
+    "Payment animates currency into the node, then the completed device persists visually and after refresh.",
+    "Every issue is rechecked with natural input and player-visible screenshots at 390x844 and 430x932."
+  ]
+}

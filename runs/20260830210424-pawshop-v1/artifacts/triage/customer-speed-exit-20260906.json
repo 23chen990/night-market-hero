@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "UserFeedbackTriage",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "classification": "core-loop / customer lifecycle / player-experience",
+  "scope": "customer route presentation and post-checkout lifecycle only",
+  "reproduction": {
+    "steps": [
+      "Start a fresh game at 390x844 portrait.",
+      "Allow a customer to enter and walk from the bottom door to the requested shelf.",
+      "Stock the requested product, let the customer reach checkout, and complete checkout.",
+      "Observe movement speed and the customer immediately after settlement."
+    ],
+    "observed": [
+      "Customer route still feels too fast for readable shelf and checkout attribution.",
+      "Checkout removes the customer from simulation and the visual fades them out instead of showing a door exit."
+    ],
+    "expected": "Customers use a calmer route duration and remain visible in a leaving state while walking from checkout to CUSTOMER_ENTRY, then are removed only after reaching the door."
+  },
+  "reproductionMatrix": [
+    {
+      "objectType": "customer movement",
+      "lifecycleStateBranch": "entry→shopping→waitingStock→checkout",
+      "rendererPresentationPath": "MarketScene.updateCustomerRoute + customer-routes routePosition",
+      "deviceViewport": "390x844 portrait FIT",
+      "branchRepresented": true,
+      "evidence": "user report; tests/customer-route-behavior.test.ts"
+    },
+    {
+      "objectType": "served customer exit",
+      "lifecycleStateBranch": "checkout→leaving→removed",
+      "rendererPresentationPath": "processCheckout + processCustomers + MarketScene.syncCustomers",
+      "deviceViewport": "390x844 portrait FIT and 430x932 portrait FIT",
+      "branchRepresented": true,
+      "evidence": "user report; tests/gameplay.test.ts; tests/p0-systems.test.ts"
+    }
+  ],
+  "route": "formal-fixer",
+  "routeReason": "Core customer state machine and default journey are affected; existing run already has one FIX attempt, so this is the second and final repair attempt.",
+  "acceptanceCriteria": [
+    "Customer shelf route duration is at least 2.4 seconds.",
+    "Checkout changes the served customer to leaving rather than deleting immediately.",
+    "Leaving customers stay visible for 1.5 seconds and target CUSTOMER_ENTRY before removal.",
+    "Focused deterministic tests, lint, typecheck and build pass; QA retest must exercise the natural journey."
+  ]
+}

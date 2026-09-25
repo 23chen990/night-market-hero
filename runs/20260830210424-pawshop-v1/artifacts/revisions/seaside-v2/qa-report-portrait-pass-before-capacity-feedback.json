@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "builder-contract",
+      "passed": true,
+      "evidence": "Builder verification: contract:test-api-7, save:versioned, test:passed, typecheck:passed."
+    },
+    {
+      "name": "unit-and-production-build",
+      "passed": true,
+      "evidence": "Independent rerun: 4 Vitest files and 16 tests passed; game typecheck exited 0; Vite production build exited 0."
+    },
+    {
+      "name": "deterministic-gameplay-smoke",
+      "passed": true,
+      "evidence": "Reset capacity=4; spawn increased customers 1 to 2; completeOrder created one physical shell token; grant plus upgrade increased capacity to 5; ArrowRight moved player by 34.5154 logical pixels."
+    },
+    {
+      "name": "portrait-360x800",
+      "passed": true,
+      "evidence": "Playfield ratio=0.562508, canvas=540x960, bounds within viewport, scrollWidth=innerWidth=360, canvas/HUD/status visible."
+    },
+    {
+      "name": "portrait-390x844",
+      "passed": true,
+      "evidence": "Playfield ratio=0.562512, canvas=540x960, bounds within viewport, scrollWidth=innerWidth=390, canvas/HUD/status visible."
+    },
+    {
+      "name": "portrait-430x932",
+      "passed": true,
+      "evidence": "Playfield ratio=0.562500, canvas=540x960, bounds within viewport, scrollWidth=innerWidth=430, canvas/HUD/status visible."
+    },
+    {
+      "name": "runtime-errors-and-flash",
+      "passed": true,
+      "evidence": "Chromium console errors=0 and page exceptions=0; focused regression test confirms repeating automatic interactions emit local product-picked events and no camera-flash."
+    }
+  ],
+  "issues": [],
+  "screenshots": [
+    "screenshots/gameplay.png"
+  ],
+  "consoleLog": "logs/console.log",
+  "testedAt": "2026-08-30T14:33:50.000Z"
+}

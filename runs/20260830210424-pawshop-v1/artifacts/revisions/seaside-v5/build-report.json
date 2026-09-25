@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "success": true,
+  "runtime": "web-lite",
+  "template": "idle-shop-v1",
+  "codexThreadId": "01a053ae-392b-7570-a188-caf58dd7b8e4",
+  "workspace": "workspace/game",
+  "webBuild": "dist",
+  "files": [
+    "dist/index.html",
+    "dist/assets/background.png",
+    "dist/assets/background.svg",
+    "dist/assets/character.png",
+    "dist/assets/character.svg",
+    "dist/assets/fish.png",
+    "dist/assets/fish.svg",
+    "dist/assets/index-CzTbUN4v.css",
+    "dist/assets/index-BNS_2wXX.js",
+    "dist/assets/kelp.png",
+    "dist/assets/kelp.svg",
+    "dist/assets/otter-walk-back.png",
+    "dist/assets/otter-walk-front.png",
+    "dist/assets/otter-walk-side.png",
+    "dist/assets/upgrade.png",
+    "dist/assets/upgrade.svg"
+  ],
+  "verification": [
+    "fix-attempt:2",
+    "red-first:exit-1:9-failed:22-passed",
+    "red-source-of-truth:exit-1:1-failed:5-passed",
+    "red-fix-attempt-2:exit-1:4-failed:23-passed",
+    "issues:V5-QA-001,V5-QA-002,V5-QA-003,V5-QA-004,V5-QA-005,V5-QA-006",
+    "issues:V5-QA-007,V5-QA-008,V5-QA-009",
+    "lint:npm-run-lint:exit-0",
+    "typecheck:npm-run-typecheck:exit-0",
+    "tests:pnpm-test:exit-0:6-files:50-tests",
+    "build:npm-run-build:exit-0:12-modules",
+    "contract:test-api-7",
+    "save:versioned-v4",
+    "migration:real-seaside-v4-fixture",
+    "migration:v4-inflight-customers-queue-shell-tokens",
+    "balance:single-runtime-source",
+    "cadence:browse-duration-2400:first-sale-window-25000-40000",
+    "assets:fixed-size-rgba-png-runtime-textures",
+    "assets:meaningful-alpha-light-dark-saturated-composites",
+    "browser:chromium-360x800-390x844-430x932",
+    "browser:texImage2D-0:console-error-0:pageerror-0",
+    "browser:complete-loop-full-shelf-migration-refresh-recovery",
+    "animation:three-direction-eight-frame-atlases:12fps-elapsed-time-sampling",
+    "animation:semantic-terminal-consistency-30-60-120hz",
+    "animation:adjacent-ping-pong-loop:reduced-motion-static-key-pose",
+    "animation:24-frames-72-alpha-composites",
+    "dist-index-sha256:2022fb576feb53472bc7d96a634263ee0f5533219d74b00510c35b9014087618",
+    "dist-js-sha256:f49d5d73ef22e2eaa0703cf663fc71762c2dc3e0fc0670a069b902057a35418a"
+  ],
+  "builtAt": "2026-08-31T03:28:47+08:00",
+  "repairEvidence": {
+    "redFirst": {
+      "command": "npm test -- tests/gameplay.test.ts tests/persistence.test.ts tests/ui-shell.test.ts tests/browser-contract.test.ts",
+      "exitCode": 1,
+      "failedTests": 9,
+      "passedTests": 22
+    },
+    "redFollowup": {
+      "command": "npm test -- tests/browser-contract.test.ts",
+      "exitCode": 1,
+      "failedTests": 1,
+      "passedTests": 5,
+      "reason": "save normalization still interpreted literal carrier tiers outside ECONOMY"
+    },
+    "fixAttempt2": {
+      "redFirst": {
+        "command": "npm test -- tests/persistence.test.ts tests/gameplay.test.ts tests/browser-contract.test.ts",
+        "exitCode": 1,
+        "failedTests": 4,
+        "passedTests": 23,
+        "issues": ["V5-QA-007", "V5-QA-008", "V5-QA-009"]
+      },
+      "focusedGreen": {
+        "command": "npm test -- tests/persistence.test.ts tests/gameplay.test.ts tests/browser-contract.test.ts",
+        "exitCode": 0,
+        "summary": "3 files, 27 tests passed"
+      },
+      "browserReverification": "superseded by builderNightRound1 independent Chromium pass"
+    },
+    "builderNightRound1": {
+      "redFirst": {
+        "command": "pnpm test -- tests/browser-contract.test.ts tests/asset-textures.test.ts",
+        "exitCode": 1,
+        "failedTests": 3,
+        "passedTests": 39,
+        "reason": "runtime manifest and Phaser loader still depended on browser-time SVG rasterization"
+      },
+      "focusedGreen": {
+        "command": "pnpm test -- tests/browser-contract.test.ts tests/asset-textures.test.ts",
+        "exitCode": 0,
+        "summary": "6 files, 42 tests passed"
+      },
+      "browserReverification": {
+        "command": "PAWSHOP_QA_URL=http://127.0.0.1:4176/ node runs/20260830210424-pawshop-v1/artifacts/revisions/seaside-v5/evidence/builder-night-round1/run-browser-qa.mjs",
+        "exitCode": 0,
+        "summary": "5 checks and 10 screenshots passed; texImage2D=0, console error=0, pageerror=0",
+        "report": "artifacts/revisions/seaside-v5/evidence/builder-night-round1/qa-report.json"
+      }
+    },
+    "builderNightAnimationRound2": {
+      "checkpoint": "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/checkpoint.green-baseline.json",
+      "redFirst": {
+        "command": "pnpm test -- tests/ui-motion.test.ts tests/browser-contract.test.ts tests/asset-textures.test.ts",
+        "exitCode": 1,
+        "failedTests": 9,
+        "passedTests": 41,
+        "reason": "three atlases, preload contract and elapsed-time character sampler were intentionally absent"
+      },
+      "visualFollowupRed": {
+        "command": "pnpm test -- tests/ui-motion.test.ts",
+        "exitCode": 1,
+        "failedTests": 1,
+        "passedTests": 49,
+        "reason": "idle and reduced-motion fallback still used the old head-only character texture"
+      },
+      "focusedGreen": {
+        "command": "pnpm test",
+        "exitCode": 0,
+        "summary": "6 files, 50 tests passed"
+      },
+      "browserReverification": {
+        "command": "PAWSHOP_QA_URL=http://127.0.0.1:4183/ node runs/20260830210424-pawshop-v1/artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/run-animation-qa.mjs",
+        "exitCode": 0,
+        "summary": "5 checks and 12 screenshots passed; texImage2D=0, console error=0, pageerror=0",
+        "report": "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/qa-report.json"
+      }
+    },
+    "finalChecks": [
+      { "command": "pnpm lint", "exitCode": 0 },
+      { "command": "pnpm typecheck", "exitCode": 0 },
+      { "command": "pnpm test", "exitCode": 0, "summary": "6 files, 50 tests passed" },
+      { "command": "pnpm build", "exitCode": 0, "summary": "12 modules transformed; dist/index.html emitted" }
+    ],
+    "warnings": [
+      "Vite reported a non-blocking Phaser bundle-size warning above 500 kB; no QA issue requested code splitting."
+    ]
+  }
+}

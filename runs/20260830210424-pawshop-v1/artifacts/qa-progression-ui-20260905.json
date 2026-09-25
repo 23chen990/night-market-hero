@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-issue-set",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "route": "formal-fixer",
+  "sourceEvidence": [
+    "user screenshot: codex-clipboard-fba203d7-4eed-4546-a0ea-725d3375b6fc.png",
+    "user screenshot: codex-clipboard-bc087f08-4c3a-44d8-ad71-ce384484a3a5.png",
+    "user screenshot: codex-clipboard-9d84702e-2def-47ac-a651-929c1247ea27.png",
+    "user screenshot: codex-clipboard-0e3895bf-3247-4512-a75f-318dd1e75170.png",
+    "user screenshot: codex-clipboard-d19ae3ab-417d-4696-96f8-87feb425da80.png"
+  ],
+  "issues": [
+    { "id": "QA-PRODUCT-CUE-008", "severity": "error", "message": "Fish and kelp use the same generic head/status UI; product identity must be conveyed by distinct product icon, silhouette, color and count treatment.", "evidence": "fish/kelp stock states in screenshot set" },
+    { "id": "QA-PROGRESSION-009", "severity": "error", "message": "Upgrade availability is not stage-gated with a dedicated visual unlock state; locked, available and maxed progression need distinct icon UI.", "evidence": "upgrade examples show icon+price progression and locked/available distinction" },
+    { "id": "QA-PAYMENT-010", "severity": "error", "message": "Payment/investment lacks a visible coin-to-node transaction animation and construction completion transition.", "evidence": "currency stack and completed-device examples in screenshot set" },
+    { "id": "QA-BUILD-STATE-011", "severity": "error", "message": "After construction completes, the new device/source must appear as a persistent functional visual object, not only a changed number or label.", "evidence": "completed device state example contrasted with current tide-pool presentation" }
+  ],
+  "reproductionMatrix": [
+    { "objectType": "carried product cue", "lifecycleStateBranch": "carrying fish|carrying kelp", "rendererPresentationPath": "player-attached stack HUD/cue", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "upgrade node", "lifecycleStateBranch": "locked→eligible→purchased→max", "rendererPresentationPath": "upgrade button/panel and world node", "deviceViewport": "390x844 portrait FIT and 430x932 portrait FIT", "branchRepresented": true },
+    { "objectType": "investment payment", "lifecycleStateBranch": "partial payment→threshold completion", "rendererPresentationPath": "coin entity tween + tide-pool node", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "constructed device", "lifecycleStateBranch": "locked→built/active", "rendererPresentationPath": "world source renderer and state badge", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true }
+  ],
+  "acceptanceCriteria": [
+    "Fish and kelp carried/shelf cues use distinct product icons and visual treatments; no generic shared head badge is used for both.",
+    "Upgrade UI has visually distinct locked, stage-eligible, purchasable, purchased and maxed states; availability is driven by progression state, not explanatory prose.",
+    "Investment visibly animates shell coins into the node, shows partial progress, and on threshold completion transitions the node into a persistent active device visual.",
+    "The completed device remains visible and functional after refresh and the next natural interaction uses the same world object.",
+    "Add RED tests before implementation, then run GREEN, build, exact natural-input traces and perceptual QA for every matrix cell."
+  ]
+}

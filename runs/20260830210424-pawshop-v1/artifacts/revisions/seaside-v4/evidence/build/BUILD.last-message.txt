@@ -1,0 +1,27 @@
+Implemented the playable `beach_fish_market_v4` web-lite game exclusively in the current workspace.
+
+Key results:
+
+- Complete fishing, typed carrying, capped restocking, customer queue, checkout, physical shell-token collection, tide-pool investment/unlock, and capacity upgrade loop.
+- Save v3 with throttled persistence, defensive migration, production-progress recovery, and waiting-countdown recovery.
+- Exactly seven deterministic `window.__GAME_TEST__` controls.
+- Responsive portrait UI, safe-area handling, dynamic 满载 HUD avoidance, elapsed-time RAF motion, preload gating, and reduced-motion fallback.
+- No standalone kelp construction station or full-screen interaction flashes.
+
+Verification:
+
+- `npm test`: 31/31 passed
+- `npm run typecheck`: passed
+- `npm run build`: passed
+- Build report validated with the factory’s `BuildReportSchema`
+
+Files:
+
+- [Game state and persistence](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/game-state.ts:1)
+- [Playable scene and test API](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/main.ts:28)
+- [Animation runtime](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/ui-motion.ts:1)
+- [Regression tests](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/tests/gameplay.test.ts:31)
+- [Validated build report](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/artifacts/build-report.json:1)
+- [Production entrypoint](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/dist/index.html)
+
+Automated browser launch was blocked before page load by the managed macOS process sandbox and is recorded as such—not counted as passing evidence. This output is web-lite QA evidence only; it does not claim publishable WeChat, Douyin, or TapTap packages.

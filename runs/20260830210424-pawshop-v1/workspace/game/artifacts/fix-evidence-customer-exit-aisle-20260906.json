@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "FixEvidence",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "route": "formal-fixer",
+  "attempt": 2,
+  "issueId": "USER-CUSTOMER-EXIT-CUTTHROUGH-20260906",
+  "filesChanged": [
+    "src/ui/customer-routes.ts",
+    "tests/customer-route-behavior.test.ts"
+  ],
+  "change": "Exit route now uses right-aisle waypoints (x=410, y=800) before the bottom door, avoiding the checkout counter obstacle.",
+  "checks": {
+    "tests": "110 passed / 16 files",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "remainingEvidenceGaps": [
+    "Independent natural-input screenshot of the exit branch is still required.",
+    "The supplied screenshot remains PENDING identity review."
+  ]
+}

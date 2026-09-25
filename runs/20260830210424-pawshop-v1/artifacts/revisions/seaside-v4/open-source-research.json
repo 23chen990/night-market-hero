@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame"
+  ],
+  "queries": [
+    "Phaser 3.90.0 official repository immutable revision and MIT license",
+    "Cocos Engine 3.8.8 official repository immutable revision and MIT license",
+    "Phaser virtual joystick infrastructure immutable revision and license",
+    "TapTap Mini Game Cocos Creator 3.8 adapter official documentation and license evidence"
+  ],
+  "candidates": [
+    {
+      "id": "phaser-3.90.0",
+      "name": "Phaser 3.90.0",
+      "repositoryUrl": "https://github.com/phaserjs/phaser",
+      "revision": "a9965625f49cf366584f454556b039e06e8adad6",
+      "license": "MIT",
+      "licenseEvidenceUrl": "https://github.com/phaserjs/phaser/blob/a9965625f49cf366584f454556b039e06e8adad6/LICENSE.md",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Reuse only the factory-pinned Phaser runtime for the isolated browser development and QA build. It can exercise the shared pure-TypeScript simulation and responsive input, but it is not platform-package evidence and must not be represented as a WeChat, Douyin, or TapTap Mini Game adapter.",
+      "maintenanceRisk": "low",
+      "securityRisks": [
+        "A browser runtime does not provide mini-game BOM/DOM adaptation or platform APIs",
+        "The production package must not depend on dynamically downloaded scripts"
+      ],
+      "attributionRequirements": [
+        "Preserve the Phaser MIT copyright and permission notice in third-party notices for distributed builds containing Phaser"
+      ],
+      "decision": "REUSE"
+    },
+    {
+      "id": "cocos-engine-3.8.8",
+      "name": "Cocos Engine 3.8.8",
+      "repositoryUrl": "https://github.com/cocos/cocos-engine",
+      "revision": "411f98df047c25902f93440d4b22925c2fb65461",
+      "license": "MIT for the runtime engine; Cocos Creator editor terms must be reviewed separately",
+      "licenseEvidenceUrl": "https://github.com/cocos/cocos-engine/blob/411f98df047c25902f93440d4b22925c2fb65461/LICENSE.md",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Approved production runtime candidate after the browser vertical slice passes. Cocos Creator 3.8.x has official WeChat and Douyin build flows, and TapTap documents a Cocos 3.8.x conversion plugin that produces a Tap Mini Game zip from the WeChat build.",
+      "maintenanceRisk": "medium",
+      "securityRisks": [
+        "Cocos Creator editor licensing is separate from the MIT runtime engine license",
+        "Platform plugins and adapters require independent version, license, and integrity verification before installation",
+        "Each platform build still requires real-device validation"
+      ],
+      "attributionRequirements": [
+        "Preserve the Cocos Engine MIT copyright and permission notice",
+        "Review and comply with the installed Cocos Creator editor agreement before production distribution"
+      ],
+      "decision": "REUSE"
+    },
+    {
+      "id": "phaser3-rex-notes-175bb05",
+      "name": "phaser3-rex-notes virtual joystick and helpers",
+      "repositoryUrl": "https://github.com/rexrainbow/phaser3-rex-notes",
+      "revision": "175bb05a36ec4395536c331b4c3f688d147b881b",
+      "license": "MIT",
+      "licenseEvidenceUrl": "https://github.com/rexrainbow/phaser3-rex-notes/blob/175bb05a36ec4395536c331b4c3f688d147b881b/LICENSE",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "The repository contains reusable Phaser input helpers, but this game already has a small tested radial drag implementation. Adding the library would increase dependency surface without improving platform portability.",
+      "maintenanceRisk": "medium",
+      "securityRisks": [
+        "Large helper collection creates unnecessary transitive surface for a single joystick behavior",
+        "Phaser-specific input code would be discarded during the Cocos production migration"
+      ],
+      "attributionRequirements": [
+        "Would require preserving the Rex MIT notice if reused"
+      ],
+      "decision": "REJECT"
+    }
+  ],
+  "outcome": "REUSE_APPROVED",
+  "selectedCandidateIds": [
+    "phaser-3.90.0",
+    "cocos-engine-3.8.8"
+  ],
+  "rationale": "Reuse only the already pinned Phaser engine for browser development/QA and the Cocos 3.8.8 runtime as the later three-platform production target. No third-party idle-shop, supermarket, character, UI, map, economy, content, or balancing code is approved. The official TapTap Cocos conversion plugin 1.2.2 is documented but is not approved by this open-source artifact because no public immutable repository and direct license evidence were found; it must undergo a separate binary/plugin review before installation.",
+  "researchedAt": "2026-08-30T13:20:35Z"
+}

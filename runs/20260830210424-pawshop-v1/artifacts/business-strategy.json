@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "strategyId": "strategy-8eda3b57b3f1b1a1",
+  "entity": "personal",
+  "monetization": "IAA",
+  "appDistribution": false,
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame",
+    "poki-web"
+  ],
+  "platformPriority": [
+    "douyin-minigame",
+    "wechat-minigame",
+    "taptap-minigame",
+    "poki-web"
+  ],
+  "traffic": {
+    "organicFirst": true,
+    "paidEnabled": false,
+    "maxBudgetCents": 0,
+    "paidShareCap": 0,
+    "channels": [
+      "platform-discovery",
+      "short-video",
+      "community",
+      "cross-promo"
+    ]
+  },
+  "launch": {
+    "maxTitlesInFlight": 1,
+    "minimumObservedDays": 3,
+    "iterateAtMostOnce": true,
+    "killSignals": [
+      "crash-rate-over-threshold",
+      "paid-cac-not-recovered",
+      "repeated-core-experience-failure",
+      "unresolved-platform-or-rights-blocker"
+    ]
+  },
+  "credentialChecklist": [
+    "platform account ownership",
+    "developer/mini-game access",
+    "IAA provider account and payout path",
+    "privacy and filing materials"
+  ],
+  "rightsChecklist": [
+    "reference expression separated from original expression",
+    "asset source and license evidence recorded",
+    "third-party names/logos excluded",
+    "unverified infrastructure rejected"
+  ],
+  "assumptions": [
+    "short-session 2D/lightweight products",
+    "IAA is optional and never required to complete the core loop",
+    "organic discovery is attempted before scaling paid traffic",
+    "platform rules and account eligibility are verified by a human before release"
+  ],
+  "generatedAt": "2026-09-05T07:03:15.497Z"
+}

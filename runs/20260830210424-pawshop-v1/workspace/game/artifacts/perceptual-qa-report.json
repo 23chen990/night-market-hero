@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "perceptual-qa-report",
+  "game": "beach_fish_market_v5",
+  "passed": true,
+  "features": [
+    {
+      "featureId": "customer-route-entry",
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "screenshotEvidence": [
+        "screenshots/natural-customer-entry.png"
+      ],
+      "evidence": [
+        "Bottom-door entry route captured in a fresh browser context."
+      ],
+      "notes": []
+    },
+    {
+      "featureId": "customer-shelf-pickup-checkout",
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "screenshotEvidence": [
+        "screenshots/natural-customer-shelf.png",
+        "screenshots/natural-customer-checkout.png"
+      ],
+      "evidence": [
+        "Product cue and shelf-to-checkout transition captured after normal movement."
+      ],
+      "notes": []
+    },
+    {
+      "featureId": "settlement-replay",
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "screenshotEvidence": [
+        "screenshots/natural-settlement.png",
+        "screenshots/natural-replay.png"
+      ],
+      "evidence": [
+        "Settlement and replay captured after refresh."
+      ],
+      "notes": []
+    }
+  ],
+  "checkedAt": "2026-09-05T06:25:35.940Z"
+}

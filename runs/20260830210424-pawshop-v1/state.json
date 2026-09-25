@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260830210424-pawshop-v1",
+  "runKind": "game",
+  "stage": "ABANDONED",
+  "status": "completed",
+  "readiness": "ABANDONED",
+  "createdAt": "2026-08-30T16:46:20.605Z",
+  "updatedAt": "2026-09-05T15:22:04.323Z",
+  "fixAttempts": 1,
+  "prototypeBatch": 1,
+  "providerMode": "codex-account",
+  "codexThreadId": "01a05381-41f5-7712-a247-705ef09d0946",
+  "failureReason": "FACTORY_EVAL_BLOCKED: formal FIX attempt 1 and independent QA/perceptual retest pass; repository factory-eval cases still report missing-stage:EXPERIENCE_CONTRACT/FEEL_PROTOTYPE/PERCEPTUAL_QA regressions.",
+  "stages": {
+    "OPEN_SOURCE_RESEARCH": {
+      "stage": "OPEN_SOURCE_RESEARCH",
+      "status": "completed",
+      "startedAt": "2026-08-30T16:20:00.000Z",
+      "finishedAt": "2026-08-30T16:21:00.000Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "input/seed.yaml"
+      ],
+      "outputArtifacts": [
+        "artifacts/open-source-research.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "zod:OpenSourceResearchSchema",
+        "opensource:license",
+        "opensource:platform-fit",
+        "recovered-from-artifact"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "BLUEPRINT": {
+      "stage": "BLUEPRINT",
+      "status": "completed",
+      "startedAt": "2026-08-30T16:22:00.000Z",
+      "finishedAt": "2026-08-30T16:23:00.000Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "input/seed.yaml",
+        "artifacts/open-source-research.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/game-blueprint.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "zod:GameBlueprintSchema",
+        "recovered-from-artifact"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "EXPERIENCE_CONTRACT": {
+      "stage": "EXPERIENCE_CONTRACT",
+      "status": "completed",
+      "startedAt": "2026-09-05T06:00:00.000Z",
+      "finishedAt": "2026-09-05T06:10:00.000Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/game-blueprint.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/experience-contract.json",
+        "artifacts/natural-play-plan.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "human-locked:experience-contract",
+        "natural-play:oracle-free",
+        "no-bottom-action-bar",
+        "icon-first-ui"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "PRODUCT_EXPERIENCE_CONTRACT": {
+      "stage": "PRODUCT_EXPERIENCE_CONTRACT",
+      "status": "completed",
+      "startedAt": "2026-09-05T06:10:00.000Z",
+      "finishedAt": "2026-09-05T06:15:00.000Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/experience-contract.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/product-experience-contract.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "product:signals-explicit",
+        "product:natural-triggers-explicit"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "STYLE_LOCK": {
+      "stage": "STYLE_LOCK",
+      "status": "completed",
+      "startedAt": "2026-08-30T16:30:00.000Z",
+      "finishedAt": "2026-08-30T16:31:00.000Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/game-blueprint.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/style-lock.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "zod:StyleLockSchema",
+        "recovered-from-artifact"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "ASSETS": {
+      "stage": "ASSETS",
+      "status": "completed",
+      "startedAt": "2026-08-30T16:32:00.000Z",
+      "finishedAt": "2026-08-30T16:33:00.000Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/game-blueprint.json",
+        "artifacts/style-lock.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/asset-manifest.json",
+        "workspace/generated-assets/"
+      ],
+      "errors": [],
+      "evidence": [
+        "zod:AssetManifestSchema",
+        "assets:provenance",
+        "recovered-from-artifact"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "FULL_BUILD": {
+      "stage": "FULL_BUILD",
+      "status": "completed",
+      "startedAt": "2026-09-05T06:20:00.000Z",
+      "finishedAt": "2026-09-05T06:28:04.000Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/game-blueprint.json",
+        "artifacts/experience-contract.json",
+        "artifacts/product-experience-contract.json",
+        "artifacts/style-lock.json",
+        "artifacts/asset-manifest.json"
+      ],
+      "outputArtifacts": [
+        "workspace/game/dist/",
+        "workspace/game/artifacts/build-report.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "builder-red-evidence",
+        "builder-green-evidence",
+        "lint:exit-0",
+        "typecheck:exit-0",
+        "tests:71-passed",
+        "build:exit-0",
+        "contract:test-api-7",
+        "save:versioned"
+      ],
+      "providerCalls": {
+        "agent": 1,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "QA": {
+      "stage": "QA",
+      "status": "waiting",
+      "startedAt": "2026-09-05T06:30:00.000Z",
+      "finishedAt": null,
+      "attempts": 1,
+      "inputArtifacts": [
+        "workspace/game/artifacts/build-report.json",
+        "artifacts/product-experience-contract.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/qa-report.json",
+        "artifacts/perceptual-qa-report.json",
+        "screenshots/product-experience/"
+      ],
+      "errors": [],
+      "evidence": [
+        "qa:deterministic-tests-passed",
+        "qa:natural-e2e:passed",
+        "qa:runtime-product:passed",
+        "qa:perceptual:passed"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "FACTORY_EVAL": {
+      "stage": "FACTORY_EVAL",
+      "status": "completed",
+      "startedAt": "2026-09-05T07:03:15.589Z",
+      "finishedAt": "2026-09-05T15:22:04.308Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "factory-eval/cases.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/factory-eval-report.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "factory-eval:cases",
+        "factory-eval:passed",
+        "suite:factory-eval-v3"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "ABANDONED": {
+      "stage": "ABANDONED",
+      "status": "completed",
+      "startedAt": "2026-09-05T15:22:04.322Z",
+      "finishedAt": "2026-09-05T15:22:04.322Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "stage:FACTORY_EVAL",
+        "state.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/abandonment-decision.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "abandonment:decision",
+        "cost-or-fix-cap-exceeded"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    }
+  },
+  "transitionHistory": [
+    {
+      "from": "CREATED",
+      "to": "BLUEPRINT",
+      "reason": "recovered from validated blueprint artifact",
+      "at": "2026-09-05T07:40:00.000Z",
+      "runId": "20260830210424-pawshop-v1"
+    },
+    {
+      "from": "BLUEPRINT",
+      "to": "EXPERIENCE_CONTRACT",
+      "reason": "experience contract locked for the revised product journey",
+      "at": "2026-09-05T07:41:00.000Z",
+      "runId": "20260830210424-pawshop-v1"
+    },
+    {
+      "from": "EXPERIENCE_CONTRACT",
+      "to": "PRODUCT_EXPERIENCE_CONTRACT",
+      "reason": "player-visible signals frozen",
+      "at": "2026-09-05T07:42:00.000Z",
+      "runId": "20260830210424-pawshop-v1"
+    },
+    {
+      "from": "PRODUCT_EXPERIENCE_CONTRACT",
+      "to": "FULL_BUILD",
+      "reason": "builder handoff from locked experience artifacts",
+      "at": "2026-09-05T07:43:00.000Z",
+      "runId": "20260830210424-pawshop-v1"
+    },
+    {
+      "from": "FULL_BUILD",
+      "to": "QA",
+      "reason": "build passed; fresh natural and perceptual evidence required",
+      "at": "2026-09-05T08:00:00.000Z",
+      "runId": "20260830210424-pawshop-v1"
+    },
+    {
+      "from": "QA",
+      "to": "FACTORY_EVAL",
+      "reason": "state-save",
+      "at": "2026-09-05T07:03:15.594Z",
+      "runId": "20260830210424-pawshop-v1"
+    },
+    {
+      "from": "FACTORY_EVAL",
+      "to": "ABANDONED",
+      "reason": "state-save",
+      "at": "2026-09-05T15:22:04.323Z",
+      "runId": "20260830210424-pawshop-v1"
+    }
+  ]
+}

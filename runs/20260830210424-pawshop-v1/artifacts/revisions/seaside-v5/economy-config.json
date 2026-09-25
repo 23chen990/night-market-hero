@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "revision": "seaside-v5",
+  "source": "artifacts/revisions/seaside-v5/balance-research.md",
+  "startingCurrency": 0,
+  "products": {
+    "fish": {
+      "saleReward": 4,
+      "pickupIntervalMs": 520
+    },
+    "kelp": {
+      "saleReward": 6,
+      "pickupIntervalMs": 650
+    }
+  },
+  "carrier": {
+    "capacityMode": "shared-total",
+    "initialCapacity": 4,
+    "tiers": [
+      {
+        "capacity": 6,
+        "cost": 40,
+        "requires": null
+      },
+      {
+        "capacity": 8,
+        "cost": 88,
+        "requires": "kelpUnlocked"
+      }
+    ],
+    "purchaseIntervalMs": 500
+  },
+  "shelves": {
+    "capacityPerProduct": 8,
+    "deliveryIntervalMs": 240
+  },
+  "customers": {
+    "firstSpawnDelayMs": 22000,
+    "browseDurationMs": 2400,
+    "preUnlockSpawnIntervalMs": 5500,
+    "postUnlockSpawnIntervalMs": 4200,
+    "postUnlockFishProbability": 0.68,
+    "postUnlockKelpProbability": 0.32,
+    "maxActive": 5,
+    "stockPatienceMs": 10000
+  },
+  "checkout": {
+    "serviceIntervalMs": 700,
+    "tokenPickupDelayMs": 300
+  },
+  "kelpUnlock": {
+    "investmentCost": 96,
+    "investmentIntervalMsPerCoin": 220
+  },
+  "milestoneWindowsMs": {
+    "firstPickup": [3000, 8000],
+    "firstStock": [8000, 20000],
+    "firstSale": [25000, 40000],
+    "firstCapacityUpgrade": [60000, 90000],
+    "kelpUnlock": [150000, 240000]
+  },
+  "migration": {
+    "targetSaveVersion": 4,
+    "legacySaveKeys": [
+      "ai-game-factory:beach_fish_market_v4:save-v3"
+    ],
+    "legacyKelpCost": 12,
+    "legacyKelpProgressPolicy": "preserve percentage progress when locked; force 96 when already unlocked",
+    "legacyCapacityPolicy": "map to the smallest legal tier that preserves carried inventory when possible; deterministically normalize any remaining overflow"
+  }
+}

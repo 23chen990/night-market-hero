@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "AreaSelectorQaEvidence",
+  "runId": "20260830210424-pawshop-v1",
+  "targetWorkspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "testedAt": "2026-09-06T03:18:29+08:00",
+  "viewport": {"width":390,"height":844},
+  "method": "Fresh Chromium page loaded the web-lite entrypoint, waited for Phaser startup, inspected all area controls, force-clicked the locked second-area control, and compared serialized area state before/after.",
+  "observed": {
+    "canvas": 1,
+    "loading": "false",
+    "before": {"unlocked":[1],"active":1},
+    "buttons": [
+      {"text":"1","disabled":false,"current":"true"},
+      {"text":"·","disabled":true,"current":"false"},
+      {"text":"·","disabled":true,"current":"false"},
+      {"text":"·","disabled":true,"current":"false"},
+      {"text":"·","disabled":true,"current":"false"},
+      {"text":"·","disabled":true,"current":"false"}
+    ],
+    "afterLocked": {"unlocked":[1],"active":1},
+    "stateUnchanged": true,
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "passed": true,
+  "limitation": "This proves locked-area interaction semantics only; it does not prove missing per-area production chains or native multi-area camera presentation."
+}

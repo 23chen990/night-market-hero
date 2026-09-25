@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-issue-set",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "route": "formal-fixer",
+  "sourceEvidence": ["user screenshot: codex-clipboard-d4917ef0-c126-40b9-b2a6-f8ad95fe07f6.png"],
+  "issues": [
+    { "id": "QA-VIS-TEXT-004", "severity": "error", "message": "Persistent explanatory plaques dominate the playfield and overlap actors/stations; critical states must be conveyed by icon, color, count, and animation, with only minimal optional helper text.", "evidence": "red callouts on tide-pool, net, fish shelf, customer queue, and checkout labels" },
+    { "id": "QA-SPATIAL-ROUTE-005", "severity": "error", "message": "Customer presentation snaps or moves too quickly from the door toward the shelf and uses rigid direct lines instead of a believable navigable aisle route.", "evidence": "customer appears at shelf while route line bypasses aisle context; natural movement lacks visible travel duration" },
+    { "id": "QA-SPATIAL-COLLISION-006", "severity": "error", "message": "Customer route can cross the checkout counter and enter the service area; checkout must be a blocking service boundary with a queue-side approach.", "evidence": "customer/path geometry in attached screenshot crosses central checkout area toward stock zone" },
+    { "id": "QA-LAYOUT-OCCLUSION-007", "severity": "error", "message": "World labels, customer sprites, route lines, and shelf counters overlap at 390x844 portrait; layout needs safe zones and depth ordering.", "evidence": "multiple red callouts and overlapping customer/shelf text in attached screenshot" }
+  ],
+  "reproductionMatrix": [
+    { "objectType": "customer", "lifecycleStateBranch": "entry→shopping", "rendererPresentationPath": "customer route tween + aisle collision geometry", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "customer", "lifecycleStateBranch": "shopping→checkout", "rendererPresentationPath": "shelf pickup transition + checkout queue approach", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "checkout boundary", "lifecycleStateBranch": "customer route collision", "rendererPresentationPath": "Phaser scene geometry / route target selection", "deviceViewport": "390x844 portrait FIT and 430x932 portrait FIT", "branchRepresented": true },
+    { "objectType": "world UI labels", "lifecycleStateBranch": "startup|waitingStock|settlement", "rendererPresentationPath": "station label and HUD presentation", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true }
+  ],
+  "acceptanceCriteria": [
+    "Remove persistent explanatory plaques from the playfield; stations communicate state with icon/count/progress/color, and any helper text is transient and non-critical.",
+    "A customer visibly spends time traveling from the bottom door through an aisle waypoint to the requested shelf; no instant snap or straight-line path through unrelated stations.",
+    "Checkout counter is a no-cross boundary; customers approach from the queue side and never traverse into the stock/service area.",
+    "At 390x844 and 430x932, customer sprites, shelf state, route cues and HUD have non-overlapping safe zones with stable depth ordering.",
+    "Add failing regression tests before implementation, then rebuild and rerun exact natural-input and perceptual QA matrix cells."
+  ]
+}

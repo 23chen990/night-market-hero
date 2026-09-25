@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "三种手机竖屏布局与黑块检测",
+      "passed": true,
+      "evidence": "360x800、390x844、430x932 均无页面溢出，Canvas 近黑像素占比均低于 8%。"
+    },
+    {
+      "name": "完整经营循环与满仓边界",
+      "passed": true,
+      "evidence": "真实键盘移动完成自动捕鱼→满载→补货→顾客入队→收银→拾币；8/8 货架保持上限并保留携带溢出。"
+    },
+    {
+      "name": "存档迁移与刷新恢复",
+      "passed": true,
+      "evidence": "真实 V3 运行态迁移保留容量、混合背包、建设进度、队列和贝壳币；刷新保留关键状态，5 秒离线推进捕鱼至容量上限。"
+    },
+    {
+      "name": "透明素材三背景合成",
+      "passed": true,
+      "evidence": "角色、鲜鱼、海带、升级图标均为 256×256 RGBA PNG；在浅色、深色、饱和色背景上透明四角保持背景且可见像素覆盖有效。"
+    },
+    {
+      "name": "浏览器控制台与页面异常",
+      "passed": true,
+      "evidence": "texImage2D/bad image data=0，console error=0，pageerror=0。"
+    }
+  ],
+  "issues": [],
+  "screenshots": [
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-360x800.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-360x800-canvas.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-390x844.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-390x844-canvas.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-430x932.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-430x932-canvas.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-full-carrier.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-complete-loop.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-full-shelf-boundary.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-round1/screenshots/round1-alpha-composites.png"
+  ],
+  "consoleLog": "artifacts/revisions/seaside-v5/evidence/builder-night-round1/logs/browser-console.json",
+  "testedAt": "2026-08-30T19:00:25.824Z"
+}

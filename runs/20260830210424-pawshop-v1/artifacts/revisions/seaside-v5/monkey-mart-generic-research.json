@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "monkey_mart_generic_mechanics_research",
+  "status": "READ_ONLY_RESEARCH",
+  "target": {
+    "runId": "20260830210424-pawshop-v1",
+    "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+    "revision": "seaside-v5",
+    "gameTitle": "海滩渔货铺"
+  },
+  "scope": {
+    "benchmark": "Monkey Mart",
+    "purpose": "提取可原创实现的空间经营关系与爽点节奏，供现有游戏 Builder 选择；不复制第三方表达，也不直接修改游戏。",
+    "workspaceWriteAllowed": false,
+    "newGameAllowed": false
+  },
+  "sources": [
+    {
+      "id": "SRC-POKI-OFFICIAL",
+      "kind": "official_game_page",
+      "url": "https://poki.com/en/g/monkey-mart",
+      "localPath": null,
+      "accessedAt": "2026-08-31T03:40:00+08:00",
+      "confidence": "high",
+      "observations": [
+        "靠近作物、货架与收银台会自动执行收集、补货和收款，移动选点本身就是输入。",
+        "开局从一种作物、一个货架和一条队列逐步变为多任务压力。",
+        "Stack、Speed、Stamina 分别作用于携带/存储、移动/加工和疲劳/故障，升级围绕可见瓶颈。"
+      ],
+      "reuseBoundary": "仅抽象机制关系；不复制猴子角色、商品表、地图、UI、关卡数量、升级等级或数值。"
+    },
+    {
+      "id": "SRC-DEFOLD-INTERVIEW",
+      "kind": "developer_interview",
+      "url": "https://defold.com/2023/03/22/Monkey-Mart-is-bananas/",
+      "localPath": null,
+      "accessedAt": "2026-08-31T03:40:00+08:00",
+      "confidence": "high",
+      "observations": [
+        "开发者先做移动、收集、搬运原型，再用简单 FSM 驱动顾客和助手。",
+        "Web 版以单店游玩时长标定，第一店目标约 20–25 分钟，前 5–10 分钟重点避免无聊。",
+        "开发者明确指出移动端需要按不同游玩时长重新平衡。"
+      ],
+      "reuseBoundary": "只采用分层原型、FSM 与按时长标定的方法，不复制其具体平衡或商店拓扑。"
+    },
+    {
+      "id": "SRC-HAW-HYBRID-CASUAL",
+      "kind": "academic_repository",
+      "url": "https://reposit.haw-hamburg.de/handle/20.500.12738/19148",
+      "localPath": null,
+      "accessedAt": "2026-08-31T03:40:00+08:00",
+      "confidence": "medium",
+      "observations": [
+        "该硕士论文公开了混合休闲游戏设计与实现研究，可用于验证短循环、长期成长和移动端易进入性的组合方向。",
+        "论文仅作为品类方法参考，不提供可直接移植到本项目的竞品数值。"
+      ],
+      "reuseBoundary": "只做方法论参考；不复制论文中的游戏内容、文案或实现。"
+    },
+    {
+      "id": "SRC-USER-REPORT",
+      "kind": "user_supplied_report",
+      "url": null,
+      "localPath": "/Users/kker/.codex/attachments/13ad599a-50ca-47d5-b5a1-60fdce8fc7a7/pasted-text.txt",
+      "accessedAt": "2026-08-31T03:40:00+08:00",
+      "confidence": "medium",
+      "observations": [
+        "用户报告强调移动代替交互键、生产—搬运—上架—购买—收银—再投资闭环和可见堆叠反馈。",
+        "报告是设计分析输入，不是第三方代码、素材或精确数值授权。"
+      ],
+      "reuseBoundary": "将其视为待验证的分析，不把报告中的第三方表达当作可复制资产。"
+    },
+    {
+      "id": "SRC-LOCAL-BALANCE",
+      "kind": "local_deterministic_research",
+      "url": null,
+      "localPath": "runs/20260830210424-pawshop-v1/artifacts/revisions/seaside-v5/balance-research.md",
+      "accessedAt": "2026-08-31T03:40:00+08:00",
+      "confidence": "high",
+      "observations": [
+        "本地建模把背篓容量、货架容量、路径时间、客流和商品价值放进同一吞吐模型。",
+        "容量升级若不减少缺货或往返，只是便利性升级，不能用虚假收入回本证明定价。"
+      ],
+      "reuseBoundary": "这是本项目原创建模，可供 Builder 使用，但仍需真人试玩和遥测收敛。"
+    }
+  ],
+  "genericMechanicRelationships": [
+    {
+      "id": "REL-MOVE-TO-ACT",
+      "input": "玩家只选择移动方向与停留位置",
+      "stateTransition": "进入站点半径后自动积累计时并执行收集、投放、收银或建设",
+      "downstreamPressure": "同一时间多个站点都可能缺货、排队或可投资",
+      "playerDecision": "用路径、先后顺序与停留时长分配注意力",
+      "satisfaction": "操作门槛低，但每次抵达都触发明确动作反馈，形成连续的小完成感"
+    },
+    {
+      "id": "REL-PHYSICAL-INVENTORY",
+      "input": "靠近生产点持续收集",
+      "stateTransition": "商品进入有上限的共享携带空间并在主角身上可视堆叠",
+      "downstreamPressure": "满载会阻断继续收集，迫使玩家选择货架或改走其他路线",
+      "playerDecision": "决定何时结束收集、优先补哪类货架",
+      "satisfaction": "堆叠增长、满载标记和快速卸货把抽象容量变成可见的装满—释放爽点"
+    },
+    {
+      "id": "REL-SHELF-DEMAND",
+      "input": "玩家把携带商品逐件放入有限货架",
+      "stateTransition": "货架库存上升、顾客从货架取货后进入结账",
+      "downstreamPressure": "客流持续消耗库存；缺货会造成等待或流失，满架则禁止继续投放",
+      "playerDecision": "在补货、收银和建设之间处理最紧迫瓶颈",
+      "satisfaction": "满架整齐陈列与连续顾客取货提供秩序感，缺货被快速补回提供救火感"
+    },
+    {
+      "id": "REL-CASH-REINVEST",
+      "input": "完成销售并收集可见货币",
+      "stateTransition": "货币投入扩容、产区或自动化节点，节点从进度态切换为可用态",
+      "downstreamPressure": "每次扩张同时引入更高需求或更长物流链",
+      "playerDecision": "选择先解决当前瓶颈，还是投资下一条收益链",
+      "satisfaction": "现金落地、投币进度和场景永久变化把短循环收益转成中期成长"
+    },
+    {
+      "id": "REL-BOTTLENECK-UPGRADE",
+      "input": "玩家在经历满载、缺货、排队或慢加工后购买对应升级",
+      "stateTransition": "容量、速度或自动化只改变被体验过的瓶颈",
+      "downstreamPressure": "旧瓶颈缓解后，新商品与更快客流暴露下一瓶颈",
+      "playerDecision": "判断最影响当前吞吐的限制因素",
+      "satisfaction": "升级前后的往返数、等待数或缺货率立刻不同，产生我解决了问题的因果爽感"
+    }
+  ],
+  "satisfactionCadence": [
+    {
+      "band": "immediate",
+      "minSeconds": 0.2,
+      "maxSeconds": 1.0,
+      "feedback": ["逐件收集/卸货", "计数跳变", "轻微缩放与音效"],
+      "sourceIds": ["SRC-POKI-OFFICIAL", "SRC-USER-REPORT"]
+    },
+    {
+      "band": "short_loop",
+      "minSeconds": 5,
+      "maxSeconds": 15,
+      "feedback": ["一次装满—搬运—清空", "货架从缺货到整齐", "顾客开始结账"],
+      "sourceIds": ["SRC-POKI-OFFICIAL", "SRC-LOCAL-BALANCE"]
+    },
+    {
+      "band": "first_complete_loop",
+      "minSeconds": 25,
+      "maxSeconds": 40,
+      "feedback": ["首次销售", "首次现金可收", "看见下一投资目标"],
+      "sourceIds": ["SRC-LOCAL-BALANCE", "SRC-HAW-HYBRID-CASUAL"]
+    },
+    {
+      "band": "meaningful_upgrade",
+      "minSeconds": 60,
+      "maxSeconds": 240,
+      "feedback": ["容量减少一次往返", "新产区永久开放", "客流或商品价值发生结构变化"],
+      "sourceIds": ["SRC-DEFOLD-INTERVIEW", "SRC-LOCAL-BALANCE"]
+    }
+  ],
+  "originalAdaptationPoints": [
+    "把农产品供应链原创改为海边渔获、潮池海带及后续海产，不沿用原作商品与加工表。",
+    "用竖屏海岸动线、共享背篓、有限冰盘和贝壳币投建表达物流，不复刻原作地图布局。",
+    "用海獭或其他原创动物、原创色板、原创 UI 和动作帧表达满载与经营反馈。",
+    "以本项目确定性模拟和真人遥测重新标定价格、节奏与解锁关系，不引用竞品具体数值。",
+    "可把升级从菜单改为世界内投币节点，让成长继续由移动和空间选择完成。"
+  ],
+  "expressionBoundaries": {
+    "genericAllowed": [
+      "靠近自动交互",
+      "生产—搬运—上架—顾客—收银—再投资的抽象循环",
+      "有限容量、排队、缺货、升级和自动化等通用品类机制",
+      "有限状态机驱动顾客与助手"
+    ],
+    "mustNotCopy": [
+      "Monkey Mart 名称、猴子角色造型、商品名单、关卡/商店数量和故事设定",
+      "地图几何、站点位置、UI 布局、图标、色彩、字体、动画、音效和文案",
+      "具体升级等级、价格、收益、概率、时长、解锁顺序或广告触发",
+      "第三方代码、素材、截图、模型、贴图或反编译结果"
+    ]
+  },
+  "openSourceInfrastructure": [
+    {
+      "name": "Phaser",
+      "version": "3.90.0",
+      "repositoryUrl": "https://github.com/phaserjs/phaser",
+      "immutableRevision": "a9965625f49cf366584f454556b039e06e8adad6",
+      "licenseSpdx": "MIT",
+      "directLicenseEvidence": "https://github.com/phaserjs/phaser/blob/a9965625f49cf366584f454556b039e06e8adad6/LICENSE.md",
+      "decision": "REUSE",
+      "approvedScope": ["隔离的 web-lite 开发与浏览器 QA 运行时"],
+      "platformFit": "不构成微信、抖音或 TapTap 小游戏包的适配与发布证据。",
+      "attribution": "分发包含 Phaser 的构建时保留 MIT 版权与许可文本。"
+    },
+    {
+      "name": "Cocos Engine",
+      "version": "3.8.8",
+      "repositoryUrl": "https://github.com/cocos/cocos-engine",
+      "immutableRevision": "411f98df047c25902f93440d4b22925c2fb65461",
+      "licenseSpdx": "MIT",
+      "directLicenseEvidence": "https://github.com/cocos/cocos-engine/blob/411f98df047c25902f93440d4b22925c2fb65461/LICENSE.md",
+      "decision": "REFERENCE_ONLY",
+      "approvedScope": [],
+      "platformFit": "可作为后续生产迁移候选；编辑器条款、平台插件、真实设备构建与商店合规仍须分别审查。",
+      "attribution": "使用运行时需保留 MIT 文本；Cocos Creator 编辑器条款另行审阅。"
+    },
+    {
+      "name": "phaser3-rex-notes",
+      "version": "immutable commit",
+      "repositoryUrl": "https://github.com/rexrainbow/phaser3-rex-notes",
+      "immutableRevision": "175bb05a36ec4395536c331b4c3f688d147b881b",
+      "licenseSpdx": "MIT",
+      "directLicenseEvidence": "https://github.com/rexrainbow/phaser3-rex-notes/blob/175bb05a36ec4395536c331b4c3f688d147b881b/LICENSE",
+      "decision": "REJECT",
+      "approvedScope": [],
+      "platformFit": "当前自研触控摇杆已足够且有测试；增加大型辅助集合只扩大依赖面。",
+      "attribution": "若未来改为使用，必须保留其 MIT 文本；本轮不使用。"
+    }
+  ],
+  "featureRecommendations": [
+    {
+      "id": "REC-EMPTY-SHELF-TRIAGE",
+      "name": "缺货优先级提示",
+      "decision": "BUILDER_OPTIONAL",
+      "playerValue": "当两种货架同时变化时，以轻量脉冲提示最缺货且正在等客的货架，降低竖屏视野外信息丢失，同时保留玩家路线选择。",
+      "implementationCost": "low：复用现有货架库存、顾客状态和 HUD 图层，不新增依赖或后台。",
+      "testMethod": "确定性构造两货架库存与等待顾客；断言仅最紧迫货架提示、补货后切换、无缺货时隐藏；在 360x800 检查不遮挡摇杆与 MAX。",
+      "notAdoptingReasons": ["若提示直接画出最优路线会削弱自主判断", "当前只有单货架阶段时价值有限"]
+    },
+    {
+      "id": "REC-FIRST-CASH-CASCADE",
+      "name": "首次连续收币反馈",
+      "decision": "BUILDER_OPTIONAL",
+      "playerValue": "首批顾客结账时把贝壳币逐枚汇入计数并显示总增量，强化从补货到收入的因果链，不改变经济数值。",
+      "implementationCost": "low：在现有 token 拾取和反馈事件上增加节流与合并显示。",
+      "testMethod": "固定 30/60/120Hz 下输入相同 token 队列，断言最终货币、事件顺序和总增量一致；reduced-motion 下禁用多余位移。",
+      "notAdoptingReasons": ["若动画阻塞拾取会拖慢循环", "过量粒子可能影响低端小游戏性能"]
+    },
+    {
+      "id": "REC-ONE-ROLE-HELPER",
+      "name": "单职责短路径助手",
+      "decision": "DEFER",
+      "playerValue": "在玩家充分体验手动补货后，仅自动处理最重复的一段短路径，让玩家转向多商品调度。",
+      "implementationCost": "medium：需要助手 FSM、碰撞/避让、存档、升级门槛、动画和三端性能预算。",
+      "testMethod": "比较解锁前后每分钟往返、缺货率与玩家仍需做的有效选择；验证刷新恢复、无死锁、货架满时不丢物。",
+      "notAdoptingReasons": ["当前 V5 切片尚未证明两商品压力需要自动化", "过早加入会让主角失去工作并扩大平台迁移成本"]
+    }
+  ],
+  "conclusion": {
+    "lockedInsight": "核心不是复制超市内容，而是让移动选择驱动自动动作，让多个持续变化的空间任务产生轻压力，再用可见容量、货架、现金和永久节点变化提供多尺度反馈。",
+    "implementationDecision": "研究结束；不写入 workspace。由对应 Builder 在后续明确授权的 revision 中最多选择一项低风险建议，并重新走测试优先与 QA。",
+    "platformClaim": "当前仅有 web-lite 开发与 QA 证据，不代表微信、抖音或 TapTap 小游戏可发布。"
+  }
+}

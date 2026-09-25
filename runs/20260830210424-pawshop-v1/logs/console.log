@@ -1,0 +1,12 @@
+Chromium gameplay QA (2026-08-31, Asia/Shanghai)
+Viewport: 390x844 mobile/touch
+Console errors: 0
+Page exceptions: 0
+Test API: completeOrder, getState, grantCurrency, resetGame, setRandomSeed, spawnCustomer, upgradeStation
+Full-shelf fixture after refresh: fish shelf=8, carried fish=2, interactionProgressMs=0
+Visible counter: 鲜鱼 库存 8/8 已满
+Customer opened slot: fish shelf=7, carried fish=2
+Timed delivery resumed: fish shelf=8, carried fish=1
+Persisted save: version=3, fish shelf=8
+Responsive checks: 360x800, 390x844, 430x932; visible Canvas, zero horizontal overflow, zero console errors
+Capture note: headless Chromium WebGL displayed the same SVG-texture black-capture artifact already present in seaside-v3 QA; Canvas2D fallback capture confirms the scene palette and station geometry without changing production code.

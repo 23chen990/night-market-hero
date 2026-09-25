@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "runtime-startup-qa",
+  "targetGame": "beach_fish_market_v4",
+  "url": "http://[::1]:5194/",
+  "viewport": { "width": 390, "height": 844 },
+  "method": "Fresh Chromium context against the built dist/ directory; second run preloaded the versioned save with areas 1 and 2 unlocked and clicked the normal area-nav button.",
+  "startup": {
+    "loading": "false",
+    "canvasCount": 1,
+    "windowTestApi": true,
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "areaSwitch": {
+    "before": { "unlocked": [1, 2], "active": 1, "area2ButtonDisabled": false },
+    "after": { "unlocked": [1, 2], "active": 2, "canvasCount": 1, "loading": "false", "consoleErrors": [], "pageErrors": [] }
+  },
+  "passed": true,
+  "limitations": [
+    "This validates web-lite startup and the implemented camera-origin area switch only; it does not prove native SDK behavior or per-area production-chain content."
+  ],
+  "testedAt": "2026-09-06T11:29:00+08:00"
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "UserFeedbackTriage",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "classification": "player-experience / reference-review / scope-clarification",
+  "scope": "target game workspace only; no source mutation performed during review",
+  "reproduction": {
+    "steps": [
+      "Review the four supplied Monkey Mart reference documents as external design analysis.",
+      "Review the supplied 海滩渔货铺商业复刻规格 V3.0 and AI 状态机/开发任务拆解 V1.0 as project-spec references.",
+      "Inspect the supplied DingTalk recording after evidence ingestion.",
+      "Compare the target run artifacts, current runtime entrypoint, and existing QA issue sets."
+    ],
+    "observed": [
+      "The recording visibly contains a banana supermarket scene and is not an identifiable beach seafood-market run.",
+      "The recording is user-verified as the Monkey Mart competitor; it is unusable as target-game evidence but usable as competitor observation evidence.",
+      "The supplied documents recommend an automation-growth loop and now add explicit project targets for first-hour pacing, six regions, product economy, IAA reward types, and player/worker/animal state machines.",
+      "Existing formal QA issues already cover persistent plaques/route competition, missing distinct feedback bundles, product identity, upgrade gating, investment animation, and persistent built-device presentation."
+    ],
+    "expected": "Reference material is separated from executable requirements; target-game claims are based only on verified target-run evidence; any implementation change is tied to a validated issue and exact acceptance checks."
+  },
+  "evidence": {
+    "documents": [
+      {"path": "/Users/kker/Downloads/小游戏母模板库_V1.0_爆款机制逆向分析.docx", "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/小游戏母模板库_V1.0_爆款机制逆向分析.docx", "role": "external mechanism reference", "instructionStatus": "not an instruction"},
+      {"path": "/Users/kker/Downloads/Monkey_Mart_深层复刻设计圣经.docx", "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/Monkey_Mart_深层复刻设计圣经.docx", "role": "external mechanism reference", "instructionStatus": "not an instruction"},
+      {"path": "/Users/kker/Downloads/Monkey_Mart_数值经济模型逆向设计.docx", "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/Monkey_Mart_数值经济模型逆向设计.docx", "role": "external balancing reference", "instructionStatus": "not an instruction"},
+      {"path": "/Users/kker/Downloads/Monkey_Mart_自动化经营模板生成器.docx", "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/Monkey_Mart_自动化经营模板生成器.docx", "role": "external template reference", "instructionStatus": "not an instruction"},
+      {"path": "/Users/kker/Downloads/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx", "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_商业复刻规格V3.0_完整生产版.docx", "sha256": "9f37f9dea6ad9902fb6a277b17d1c49bfc1114d4becdb1850ccb92811007dabb", "role": "project commercial replication specification reference", "instructionStatus": "not an instruction; user supplied as reference"},
+      {"path": "/Users/kker/Downloads/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx", "repositoryCopyPath": "runs/20260830210424-pawshop-v1/workspace/game/reference-docs/海滩渔货铺_AI状态机与开发任务拆解V1.0.docx", "sha256": "588c2e77203cd11a4df7dc220385b84c6d6cd301418e74b38b1d53e7d42f6bd0", "role": "project AI/state-machine task decomposition reference", "instructionStatus": "not an instruction; user supplied as reference"}
+    ],
+    "recording": {
+      "manifestId": "_2026-09-06-001930-f18bb8e16798",
+      "path": "reference-evidence/incoming/_2026-09-06-001930-f18bb8e16798.mp4",
+      "identityStatus": "MISMATCHED_UNRELATED_GAME",
+      "reviewStatus": "VERIFIED",
+      "usableAsEvidence": false,
+      "sha256": "f18bb8e1679860e9c96f030db0881d73faca5615f5a94260774f9b6bf38e1bdc",
+      "role": "verified competitor observation"
+    }
+  },
+  "reproductionMatrix": [
+    {"objectType": "customer route / shelf presentation", "lifecycleStateBranch": "entry→shopping→waitingStock→checkout", "rendererPresentationPath": "Phaser customer container + route graphics + status plaques", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true, "evidence": "artifacts/qa-ui-feel-20260905.json"},
+    {"objectType": "product identity cue", "lifecycleStateBranch": "carrying/shelf fish|kelp|shrimp|crab", "rendererPresentationPath": "player stack + shelf sprites + HUD", "deviceViewport": "390x844 and 430x932 portrait FIT", "branchRepresented": true, "evidence": "artifacts/qa-progression-ui-20260905.json"},
+    {"objectType": "upgrade/investment/build state", "lifecycleStateBranch": "locked→eligible→partial→active→maxed", "rendererPresentationPath": "HUD upgrade panel + world node + Phaser feedback", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true, "evidence": "artifacts/qa-progression-ui-20260905.json"},
+    {"objectType": "supplied recording", "lifecycleStateBranch": "verified competitor game", "rendererPresentationPath": "DingTalk MP4 recording", "deviceViewport": "1246x720 landscape", "branchRepresented": false, "evidence": "reference-evidence/manifest.json; user-verified competitor"}
+  ],
+  "acceptanceCriteria": [
+    "Do not claim the recording proves a pawshop defect; it is verified competitor evidence only and remains unusable as target-game evidence.",
+    "Any implementation route must preserve the existing formal QA issue IDs and exact matrix cells.",
+    "Target-game runtime changes require RED tests first, one rebuild per attempt, natural-input evidence, and perceptual retest.",
+    "Reference-derived changes must preserve original beach, seafood, naming, visuals, and tuning rather than copying Monkey Mart expression."
+  ],
+  "recommendedNextDecision": "Use the new V3.0 and state-machine documents to lock the full competitor-logic scope (excluding premium gem recharge); keep exact competitor values/inputs that are absent from all primary evidence explicitly unknown."
+}

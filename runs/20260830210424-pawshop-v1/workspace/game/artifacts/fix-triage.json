@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "issueId": "QA-CUSTOMER-JOURNEY-001",
+  "targetGame": "beach_fish_market_v4",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+  "reproduction": {
+    "summary": "A customer presentation does not provide a reliable player-visible bottom-door entry and explicit product shelf pickup transition before checkout.",
+    "evidence": "Validated FIX delegation: current customer view starts above checkout instead of at the declared door; route/pickup transition lacks explicit visible evidence.",
+    "defaultJourney": "startup -> customer enters from bottom door -> walks to product shelf -> consumes shelf stock -> checkout queue -> settlement -> replay"
+  },
+  "classification": {
+    "area": "core-loop/player-experience",
+    "severity": "release-blocking",
+    "rootCauseStatus": "under-test",
+    "scope": "customer route presentation and lifecycle synchronization only"
+  },
+  "acceptanceCriteria": [
+    "Every newly presented customer is visibly anchored at CUSTOMER_ENTRY before movement begins.",
+    "The route visibly targets the requested product shelf and retains the product cue.",
+    "The visual branch stays at the shelf while the simulation is waitingStock and only targets checkout after shelf stock is consumed.",
+    "A completed customer remains replayable: later customers can enter through the same door and complete the same route.",
+    "No unrelated economy, save, platform, or factory files are modified."
+  ],
+  "verification": {
+    "status": "passed",
+    "focusedRegression": "tests/customer-journey.test.ts",
+    "qaReports": [
+      "artifacts/qa-report.json",
+      "artifacts/qa-natural-journey-report.json",
+      "artifacts/perceptual-qa-report.json"
+    ],
+    "naturalScreenshots": [
+      "screenshots/natural-customer-entry.png",
+      "screenshots/natural-customer-shelf.png",
+      "screenshots/natural-customer-checkout.png",
+      "screenshots/natural-settlement.png",
+      "screenshots/natural-replay.png"
+    ],
+    "remainingEvidenceGaps": [
+      "Platform-specific WeChat, Douyin and TapTap packaging was not exercised by this web-lite FIX QA run."
+    ]
+  }
+}

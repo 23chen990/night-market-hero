@@ -1,0 +1,22 @@
+All six QA issues are fixed within the current game workspace.
+
+- Added kelp-gated 6→8 upgrade behavior and UI messaging.
+- Migrated the real seaside-v4 key/shape, including inventory tiers and tide-pool percentages.
+- Centralized runtime balance interpretation in `ECONOMY`.
+- Changed 满载 detection to `carrying >= capacity`.
+- Added a real ESLint command.
+- Preserved all seven `window.__GAME_TEST__` controls.
+
+Validation:
+
+- `npm run lint` — passed
+- `npm run typecheck` — passed
+- `npm test` — 5 files, 37/37 passed
+- `npm run build` — passed; `dist/index.html` emitted
+- Build report and output hashes validated
+
+Evidence: [build-report.json](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/artifacts/build-report.json)
+
+Production entry: [dist/index.html](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/dist/index.html)
+
+Vite retains a non-blocking Phaser bundle-size warning; no QA issue requested code splitting.

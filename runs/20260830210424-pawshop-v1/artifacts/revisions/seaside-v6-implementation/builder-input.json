@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "role": "BuilderAgent",
+  "status": "APPROVED_FOR_IMPLEMENTATION",
+  "approval": {
+    "userText": "漂浮工厂的能力实际上换成升级的icon吧，然后做吧",
+    "interpretedDecision": "approve recommended option B implementation, replacing the world-space floating workshop carrier ability with an independent upgrade icon",
+    "approvedAt": "2026-08-31T11:30:00+08:00"
+  },
+  "target": {
+    "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1",
+    "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+    "allowedWriteRoots": [
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/artifacts/revisions/seaside-v6-implementation/evidence"
+    ],
+    "forbiddenWriteRoots": [
+      "all other runs",
+      "game2",
+      "decryption projects",
+      "factory src, templates and shared tests"
+    ]
+  },
+  "sourceArtifacts": {
+    "openSourceResearch": "artifacts/revisions/seaside-v5/open-source-research.json",
+    "blueprint": "artifacts/revisions/seaside-v5/game-blueprint.json",
+    "economy": "artifacts/revisions/seaside-v5/economy-config.json",
+    "styleLock": "artifacts/revisions/seaside-v5/style-lock.json",
+    "assetManifest": "artifacts/revisions/seaside-v5/asset-manifest.json",
+    "approvedDesignReview": "artifacts/revisions/seaside-v6-design-review/expansion-design-proposal.json"
+  },
+  "implementationScope": {
+    "required": [
+      "remove the world-space 浮标工坊 station, label, interaction radius and route-line implication",
+      "preserve purchaseCarrierUpgrade and the exact seven-item test API, but invoke visible carrier purchases through an independent DOM upgrade icon and compact panel",
+      "implement fish to kelp to shrimp to crab progressive unlock",
+      "implement active-session autonomous shrimp batch buffering and crab ready-slot buffering",
+      "implement independent shrimp and crab shelves, customer demand and shortage behavior",
+      "implement local fish-net speed, shrimp-soak-speed and crab-ready-capacity upgrades",
+      "migrate save-v4 and the existing real save-v3 chain to save-v5 without losing existing state",
+      "preserve fish, kelp, movement, checkout, physical tokens, mobile layout and otter animation"
+    ],
+    "explicitlyOutOfScope": [
+      "offline trap production while the app is closed",
+      "employees, backend services, database, queue service or technology tree",
+      "shelf upgrades, checkout upgrades or kelp production upgrades",
+      "new dependencies",
+      "formal generated shrimp or crab image assets",
+      "WeChat, Douyin or TapTap publishability claims"
+    ]
+  },
+  "upgradeOwnership": {
+    "globalCarrierEntry": "independent upgrade icon using the existing approved upgrade.png; icon panel explicitly says 背篓容量 and never appears as a world building",
+    "worldWorkshop": "remove entirely; no capability, label, station or path endpoint remains",
+    "fishNet": "local station upgrade changes pickup interval 520ms to 440ms only",
+    "shrimpTrap": "local station upgrade changes soak cycle 4200ms to 3500ms only",
+    "crabPot": "local station upgrade changes ready capacity 1 to 2 only"
+  },
+  "products": [
+    { "id": "fish", "saleReward": 4, "shelfCapacity": 8, "productionMode": "continuous proximity pickup", "productionCycleMs": 520, "batchYield": 1, "sourceBufferCapacity": 0, "carrierSlotsPerUnit": 1, "unlockCost": 0, "prerequisite": "unlocked at start" },
+    { "id": "kelp", "saleReward": 6, "shelfCapacity": 8, "productionMode": "continuous proximity pickup after same-node investment", "productionCycleMs": 650, "batchYield": 1, "sourceBufferCapacity": 0, "carrierSlotsPerUnit": 1, "unlockCost": 96, "prerequisite": "first sale then existing tide-pool investment" },
+    { "id": "shrimp", "saleReward": 8, "shelfCapacity": 6, "productionMode": "active-session autonomous soak adds a batch to visible station buffer", "productionCycleMs": 4200, "batchYield": 2, "sourceBufferCapacity": 4, "carrierSlotsPerUnit": 1, "unlockCost": 144, "prerequisite": "kelp unlocked and 18 completed total sales" },
+    { "id": "crab", "saleReward": 14, "shelfCapacity": 3, "productionMode": "active-session autonomous latch adds one to visible ready count", "productionCycleMs": 10400, "batchYield": 1, "sourceBufferCapacity": 1, "carrierSlotsPerUnit": 1, "unlockCost": 268, "prerequisite": "shrimp unlocked and 10 completed shrimp sales" }
+  ],
+  "facilityUpgrades": [
+    { "id": "fishNetSpeed", "cost": 48, "before": "520ms pickup interval", "after": "440ms pickup interval", "ownership": "facility-local" },
+    { "id": "shrimpTrapSpeed", "cost": 80, "before": "4200ms soak cycle", "after": "3500ms soak cycle", "ownership": "facility-local" },
+    { "id": "crabPotReadyCapacity", "cost": 98, "before": "ready capacity 1", "after": "ready capacity 2", "ownership": "facility-local" }
+  ],
+  "progression": {
+    "order": ["fish", "kelp", "shrimp", "crab"],
+    "shrimpSalesGate": 18,
+    "crabShrimpSalesGate": 10,
+    "disclosureRules": [
+      "show at most one text-heavy primary objective and one secondary red-dot signal",
+      "do not show crab requirement text before shrimp is unlocked",
+      "locked source investment consumes no coins until its familiar sales prerequisite is complete",
+      "new customer demand starts atomically with source and shelf availability"
+    ]
+  },
+  "customerRules": {
+    "demandAfterAllUnlock": { "fish": 0.48, "kelp": 0.25, "shrimp": 0.19, "crab": 0.08 },
+    "shrimpFallback": "after half of stock patience, switch at most once to an in-stock fish or kelp product; otherwise continue waiting",
+    "crabShortage": "use 14000ms patience and never substitute",
+    "caps": [
+      "retain global maxActive 5 for first tuning",
+      "at most one waiting shrimp customer and one waiting crab customer; excess new-product demand falls back to fish at spawn",
+      "retain FIFO checkout and 700ms player-proximity service"
+    ]
+  },
+  "persistence": {
+    "proposedVersion": 5,
+    "newSaveKey": "ai-game-factory:beach_fish_market_v6:save-v5",
+    "migrationInputs": [
+      "ai-game-factory:beach_fish_market_v5:save-v4",
+      "ai-game-factory:beach_fish_market_v4:save-v3"
+    ],
+    "mustPreserve": [
+      "currency, current carrier tier and capacity",
+      "fish and kelp carrying and shelves",
+      "kelp construction progress and unlock",
+      "player position",
+      "in-flight customers, checkout queue and shell tokens",
+      "next IDs, random seed, simulation time and telemetry"
+    ],
+    "defaults": [
+      "shrimp and crab carrying/shelves zero",
+      "shrimp and crab locked with zero investment and empty buffers",
+      "facility upgrade levels false",
+      "total completed sales derived from trustworthy telemetry.completedOrders; shrimp sales zero",
+      "timers clamped to the current configured cycle and buffers clamped to visible capacity"
+    ]
+  },
+  "uiRules": {
+    "upgradeIcon": [
+      "use the existing approved /assets/upgrade.png as an independent DOM icon, not a scene station",
+      "anchor in the existing lower-right safe-area quick-control region without covering the status card or drag field",
+      "show a red dot only when the next carrier tier exists, prerequisite is met and currency is sufficient",
+      "open a compact panel with 背篓容量 current→next, one cost and one confirm button; max state says 已满级",
+      "button and confirm target are at least 44 CSS px and keyboard focusable"
+    ],
+    "facilityPrompts": [
+      "fish net locally states 渔网速度 520→440ms · 48",
+      "shrimp trap locally states 浸泡 4.2→3.5秒 · 80",
+      "crab pot locally states 待取上限 1→2 · 98",
+      "local prompts appear only after the player has experienced the corresponding facility and never imply carrier capacity"
+    ],
+    "portraitConstraints": [
+      "keep 9:16-first and safe-area CSS",
+      "no horizontal overflow at 360x800, 390x844 and 430x932",
+      "do not add four persistent stock counters to the top HUD; use local shelf counts and at most two compact operational signals",
+      "only the next locked facility shows requirement copy"
+    ],
+    "animationConstraints": [
+      "preserve three-direction eight-frame otter animation and reduced-motion static pose",
+      "use elapsed-time visual feedback and preload existing textures before first visibility",
+      "do not serialize visual-only animation state"
+    ]
+  },
+  "testFirstContract": {
+    "redCommands": [
+      "pnpm test -- tests/gameplay.test.ts tests/persistence.test.ts tests/ui-shell.test.ts tests/browser-contract.test.ts",
+      "record exit code, failed and passed counts, and expected missing-feature reasons before production edits"
+    ],
+    "requiredFailingBehaviors": [
+      "world workshop is absent and independent upgrade icon semantics exist",
+      "shrimp batches by two and stops at four",
+      "crab latches one and stops at ready cap, then cap upgrade reaches two",
+      "four products share one carrier capacity and independent shelves",
+      "progression order and customer fallback rules",
+      "save-v4 to save-v5 preserves in-flight state and defaults new fields"
+    ],
+    "greenGates": [
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm test",
+      "pnpm build"
+    ],
+    "exactTestApi": ["resetGame", "getState", "spawnCustomer", "completeOrder", "grantCurrency", "upgradeStation", "setRandomSeed"]
+  },
+  "assetPolicy": {
+    "newFormalImages": false,
+    "reuse": [
+      "existing background, fish, kelp, character atlases and upgrade.png",
+      "existing style-lock palette and flat-vector geometry"
+    ],
+    "placeholders": [
+      "draw original shrimp, crab, trap, pot and locked silhouettes with Phaser Graphics primitives in code",
+      "do not use emoji, third-party assets, copied silhouettes or downloaded content"
+    ],
+    "transparencyRule": "no new raster transparency deliverable is produced in this build; any later formal transparent asset requires meaningful-alpha verification and light/dark/saturated composites"
+  },
+  "deliverables": [
+    "modified workspace/game only through BuilderAgent",
+    "captured RED and GREEN command evidence under artifacts/revisions/seaside-v6-implementation/evidence",
+    "updated workspace/game/artifacts/build-report.json",
+    "no automatic commit"
+  ]
+}
+

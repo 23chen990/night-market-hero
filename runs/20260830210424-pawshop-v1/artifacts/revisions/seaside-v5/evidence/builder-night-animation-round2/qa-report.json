@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "三竖屏实玩与黑块回归",
+      "passed": true,
+      "evidence": "360x800、390x844、430x932 均以真实键盘往返触发移动动画；无溢出，Canvas 近黑像素占比均低于 8%。"
+    },
+    {
+      "name": "角色 atlas 预加载、循环与 reduced-motion",
+      "passed": true,
+      "evidence": "三张 2048x256 atlas 均返回 HTTP 200；移动中两个时点的 Canvas 哈希不同；reduced-motion 上下文回退可见且无异常。"
+    },
+    {
+      "name": "核心经营、满仓、迁移与刷新兼容",
+      "passed": true,
+      "evidence": "移动动画启用后，自动捕鱼→补货→排队→收银→拾币仍完整；8/8 保留溢出，V3 存档与刷新恢复保持兼容。"
+    },
+    {
+      "name": "24 帧透明度与三背景合成",
+      "passed": true,
+      "evidence": "前/后/侧各 8 帧均以 2048x256 解码；浅色、深色、饱和色共 72 个合成样本透明四角与可见覆盖全部有效。"
+    },
+    {
+      "name": "控制台、页面异常与纹理上传",
+      "passed": true,
+      "evidence": "texImage2D/bad image data=0，console error=0，pageerror=0。"
+    }
+  ],
+  "issues": [],
+  "screenshots": [
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-360x800.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-360x800-canvas.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-390x844.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-390x844-canvas.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-430x932.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-430x932-canvas.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-moving-frame-a.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-moving-frame-b.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-reduced-motion.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-complete-loop.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-full-shelf.png",
+    "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/screenshots/animation-atlas-alpha-composites.png"
+  ],
+  "consoleLog": "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/logs/browser-console.json",
+  "testedAt": "2026-08-30T19:28:12.072Z"
+}

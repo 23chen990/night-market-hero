@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "recovery-natural-qa",
+  "game": "beach_fish_market_v4",
+  "runtime": "web-lite",
+  "mode": "NATURAL_E2E",
+  "input": [
+    "page.goto",
+    "canvas.click",
+    "keyboard:ArrowUp",
+    "keyboard:ArrowLeft",
+    "keyboard:ArrowDown",
+    "keyboard:ArrowRight",
+    "page.waitForTimeout",
+    "page.screenshot",
+    "page.reload"
+  ],
+  "forbiddenOperations": [
+    "window.__GAME_TEST__",
+    "resetGame",
+    "setRandomSeed",
+    "spawnCustomer",
+    "completeOrder",
+    "grantCurrency",
+    "upgradeStation"
+  ],
+  "transitions": [
+    {
+      "name": "startup",
+      "passed": true,
+      "evidence": "Fresh browser context rendered the canvas, HUD and compact objective chip."
+    },
+    {
+      "name": "harvest",
+      "passed": true,
+      "evidence": "Normal ArrowUp input reached the upper fishing source and the scene remained interactive."
+    },
+    {
+      "name": "restock",
+      "passed": true,
+      "evidence": "Shelf HUD after normal movement: 鲜鱼 4/8"
+    },
+    {
+      "name": "customer-entry",
+      "passed": true,
+      "evidence": "Natural elapsed time produced a customer route from the visible bottom door."
+    },
+    {
+      "name": "customer-shelf",
+      "passed": true,
+      "evidence": "Customer route remained visible through the requested shelf stop before checkout."
+    },
+    {
+      "name": "customer-checkout",
+      "passed": true,
+      "evidence": "Customer route advanced to the checkout area after the shelf interaction."
+    },
+    {
+      "name": "settlement",
+      "passed": true,
+      "evidence": "Checkout area HUD after normal movement: 贝壳币 12"
+    },
+    {
+      "name": "replay",
+      "passed": true,
+      "evidence": "Refresh returned to the playable shell without a page exception."
+    }
+  ],
+  "screenshots": [
+    "screenshots/recovery-natural/01-startup.png",
+    "screenshots/recovery-natural/02-fish-source.png",
+    "screenshots/recovery-natural/03-fish-shelf.png",
+    "screenshots/recovery-natural/04-customer-entry.png",
+    "screenshots/recovery-natural/05-customer-shelf.png",
+    "screenshots/recovery-natural/06-customer-checkout.png",
+    "screenshots/recovery-natural/07-settlement.png",
+    "screenshots/recovery-natural/08-replay.png"
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "layout": {
+    "scrollWidth": 0,
+    "viewportWidth": 390
+  },
+  "passed": true,
+  "observedAt": "2026-09-05T16:14:34.752Z"
+}

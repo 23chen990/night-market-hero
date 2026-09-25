@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-issue-set",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "route": "formal-fixer",
+  "issues": [
+    { "id": "QA-UI-HIERARCHY-001", "severity": "error", "message": "Persistent world-state plaques obscure customers and shelves; replace explanatory text with icon/count/state treatments.", "evidence": "attached screenshot /screenshots/recovery-natural/05-customer-shelf.png" },
+    { "id": "QA-UI-ROUTE-002", "severity": "error", "message": "Multiple customer routes and labels compete visually; active customer route must be primary and inactive routes subdued.", "evidence": "attached screenshot /screenshots/recovery-natural/05-customer-shelf.png" },
+    { "id": "QA-FEEL-SALE-003", "severity": "error", "message": "Restock, pickup, checkout and upgrade lack distinct short feedback bundles; add causal player-visible motion feedback without blocking input.", "evidence": "artifacts/product-experience-contract.json features exp-stock-pressure-02 and exp-sale-juice-03" }
+  ],
+  "reproductionMatrix": [
+    { "objectType": "shelf/customer-label", "lifecycleStateBranch": "waitingStock|shopping", "rendererPresentationPath": "MarketScene.syncCustomers + world-space status plaques", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "customer-route", "lifecycleStateBranch": "entry→shelf→checkout", "rendererPresentationPath": "customer route line/tween rendering", "deviceViewport": "390x844 portrait FIT", "branchRepresented": true },
+    { "objectType": "sale/upgrade feedback", "lifecycleStateBranch": "pickup|settlement|upgrade", "rendererPresentationPath": "HUD + Phaser tween/particle presentation", "deviceViewport": "390x844 portrait FIT and 430x932 portrait FIT", "branchRepresented": true }
+  ],
+  "acceptanceCriteria": [
+    "No persistent black explanatory plaques overlap customers, shelves, or paths; critical states remain readable via icon, color, count, or progress.",
+    "Only the active customer route is fully emphasized; inactive routes are visually subordinate and the door→shelf→checkout order is legible within two seconds.",
+    "Restock, pickup, checkout, and upgrade each produce a distinct player-visible feedback bundle that settles within 500 ms and does not block movement.",
+    "Add focused regression tests, rebuild once, then rerun deterministic, natural-input, and perceptual QA on the exact matrix cells."
+  ]
+}

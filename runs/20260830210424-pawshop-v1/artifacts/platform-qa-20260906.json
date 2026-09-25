@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "PlatformQaEvidence",
+  "targetGame": "20260830210424-pawshop-v1",
+  "scope": "staged-web-lite-adapter",
+  "testedAt": "2026-09-05T19:01:51.000Z",
+  "viewport": { "width": 390, "height": 844, "deviceScaleFactor": 1 },
+  "method": "Playwright Chromium loaded each staged platform build with that build directory as the static-server root, with no repository public assets available. Each run waited for network idle plus 1200ms and checked HTTP status, canvas mount, loading completion, state bootstrap, console errors, and page errors.",
+  "results": [
+    {"platform":"wechat","entrypoint":"workspace/game/platforms/wechat-minigame/build/index.html","status":200,"canvas":1,"loading":"false","area":{"unlocked":[1],"active":1},"errors":[],"pageErrors":[],"screenshot":"workspace/game/screenshots/platform-wechat-390x844.png"},
+    {"platform":"douyin","entrypoint":"workspace/game/platforms/douyin-minigame/build/index.html","status":200,"canvas":1,"loading":"false","area":{"unlocked":[1],"active":1},"errors":[],"pageErrors":[],"screenshot":"workspace/game/screenshots/platform-douyin-390x844.png"},
+    {"platform":"taptap","entrypoint":"workspace/game/platforms/taptap-minigame/build/index.html","status":200,"canvas":1,"loading":"false","area":{"unlocked":[1],"active":1},"errors":[],"pageErrors":[],"screenshot":"workspace/game/screenshots/platform-taptap-390x844.png"}
+  ],
+  "passed": true,
+  "limitations": [
+    "This is a staged web-lite smoke test only; it does not prove official WeChat, Douyin, or TapTap SDK/policy compliance or publishability.",
+    "All adapters intentionally report sdk-unavailable until platform SDK wiring and credentials are supplied."
+  ]
+}

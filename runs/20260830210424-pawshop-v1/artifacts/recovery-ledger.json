@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "factory-recovery-ledger",
+  "runId": "20260830210424-pawshop-v1",
+  "targetGame": "beach_fish_market_v4",
+  "targetWorkspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "reconstructedAt": "2026-09-05T08:00:00.000Z",
+  "reason": "state.json and the original input seed were absent from the run directory.",
+  "reconstructedFiles": [
+    "state.json",
+    "input/seed.yaml"
+  ],
+  "sourceArtifacts": [
+    "artifacts/game-blueprint.json",
+    "artifacts/open-source-research.json",
+    "artifacts/style-lock.json",
+    "artifacts/asset-manifest.json",
+    "workspace/game/artifacts/build-report.json",
+    "artifacts/experience-contract.json",
+    "artifacts/product-experience-contract.json",
+    "artifacts/natural-play-plan.json"
+  ],
+  "recoveredStages": [
+    "OPEN_SOURCE_RESEARCH",
+    "BLUEPRINT",
+    "EXPERIENCE_CONTRACT",
+    "PRODUCT_EXPERIENCE_CONTRACT",
+    "STYLE_LOCK",
+    "ASSETS",
+    "FULL_BUILD"
+  ],
+  "currentCheckpoint": {
+    "stage": "QA",
+    "status": "waiting",
+    "readiness": "WAITING",
+    "requiredEvidence": [
+      "fresh natural-input startup → route → shelf → checkout → replay trace (passed)",
+      "player-visible perceptual screenshots for each declared experience feature"
+    ]
+  },
+  "evidence": [
+    "pnpm factory validate input/seed.yaml: exit 0",
+    "pnpm factory status 20260830210424-pawshop-v1: schema-valid",
+    "pnpm factory inspect 20260830210424-pawshop-v1: artifact inventory readable",
+    "workspace/game: 71 tests, typecheck, lint and build passed",
+    "artifacts/recovery-natural-qa.mjs: natural-input route and replay passed with zero console/page errors"
+  ],
+  "blockers": [
+    "perceptual QA screenshots for the revised icon-first UI are not yet recorded",
+    "the recovered natural report is not yet rebound into the factory's canonical perceptual-qa-report.json",
+    "web-lite evidence does not establish WeChat, Douyin or TapTap package publishability"
+  ],
+  "nextCommand": "FACTORY_MODE=codex-account pnpm factory resume 20260830210424-pawshop-v1"
+}

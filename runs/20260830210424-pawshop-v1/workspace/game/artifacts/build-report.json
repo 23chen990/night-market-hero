@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "success": true,
+  "runtime": "web-lite",
+  "template": "idle-shop-v1",
+  "codexThreadId": "unavailable-resumed-builder-session",
+  "workspace": "workspace/game",
+  "webBuild": "dist",
+  "platformPackages": [
+    "platforms/wechat-minigame/build/manifest.json",
+    "platforms/douyin-minigame/build/manifest.json",
+    "platforms/taptap-minigame/build/manifest.json"
+  ],
+  "files": [
+    "dist/index.html",
+    "dist/assets/background.png",
+    "dist/assets/background.svg",
+    "dist/assets/character.png",
+    "dist/assets/character.svg",
+    "dist/assets/fish.png",
+    "dist/assets/fish.svg",
+    "dist/assets/index-CnE0mKYz.css",
+    "dist/assets/index-DgQqJrof.js",
+    "dist/assets/kelp.png",
+    "dist/assets/kelp.svg",
+    "dist/assets/otter-walk-back.png",
+    "dist/assets/otter-walk-front.png",
+    "dist/assets/otter-walk-side.png",
+    "dist/assets/upgrade.png",
+    "dist/assets/upgrade.svg"
+  ],
+  "verification": [
+    "builder-red-evidence:artifacts/revisions/seaside-v6-implementation/evidence/builder-red.json",
+    "builder-green-evidence:artifacts/revisions/seaside-v6-implementation/evidence/builder-green.json",
+    "lint:pnpm-lint:exit-0",
+    "typecheck:pnpm-typecheck:exit-0",
+    "tests:pnpm-test:exit-0:16-files:103-tests",
+    "focused:npm-test:exit-0:5-tests",
+    "build:pnpm-build:exit-0:dist-index-emitted",
+    "contract:test-api-7",
+    "save:versioned-v5-with-v4-and-v3-migration",
+    "economy:single-runtime-source-with-four-products",
+    "assets:existing-approved-manifest-only",
+    "animation:three-direction-eight-frame-atlases:reduced-motion-static",
+    "platform-staging:stage-platforms:three-adapter-packages-hashed-not-publishable",
+    "platform-qa:platform-qa-20260906:three-staged-builds-canvas-no-errors",
+    "area-camera-qa:area-camera-qa-20260906:active-area-2-camera-origin-540",
+    "runtime-startup-qa:runtime-startup-qa-20260906:startup-and-area-switch-no-errors",
+    "customer-route-qa:customer-route-qa-20260906:entry-shelf-checkout-and-lanes",
+    "customer-obstacle-qa:customer-obstacle-qa-20260906:solid-fixtures-hidden-routes-slow-walk",
+    "delivery-regression:delivery-system-2-tests",
+    "gull-regression:gull-system-2-tests",
+    "delivery-ad-regression:delivery-instant-branch-covered",
+    "iaa-runtime:runRewardedAdFlow:completed-or-safe-unavailable"
+  ],
+  "builtAt": "2026-09-06T13:44:30+08:00",
+  "platformPackageSha256": {
+    "wechat": "bd94fafd3ae616a9bda4056b0bcadc13d17fca4d6786303340d5a42d3743521d",
+    "douyin": "c53ceb32624fb70050a8af9a5d281903479ecfa3b4169e8931aa639b7497c23f",
+    "taptap": "8aaaa145adc9dbd1b16a5ab8a6be635c68d90f8834d2d42012591c1451ac14d3"
+  },
+  "distIndexSha256": "29d5ccd6021a9e17765c052246ddd49046576c75cc39af015c95c322ae2e70e2",
+  "distJavascriptSha256": "01e43285fb71d559e7a6479f411007b08d15c753df2993e24213e2b8f61a01ae",
+  "warnings": [
+    "Vite reported a non-blocking Phaser bundle-size warning above 500 kB."
+  ]
+}

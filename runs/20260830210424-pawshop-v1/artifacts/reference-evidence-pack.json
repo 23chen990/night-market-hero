@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "targetRunId": "20260830210424-pawshop-v1",
+  "benchmark": {
+    "name": "空间物流经营机制（恢复引用）",
+    "url": "https://poki.com/zh/g/airplane-manager"
+  },
+  "sourceFiles": [
+    {
+      "path": "artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json",
+      "sha256": "dca4b12eb1c260c595fb8de8928aa458c4011eb4e31d9adc89f84693002690c7",
+      "observations": [
+        "{",
+        "\"schemaVersion\": 1,",
+        "\"artifactType\": \"competitor-failure-pressure-observation\",",
+        "\"targetGame\": \"20260830210424-pawshop-v1\",",
+        "\"source\": {",
+        "\"file\": \"/Users/kker/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/ScreenCapture/钉钉录屏_2026-09-05 141425.mp4\",",
+        "\"durationSeconds\": 124.65,",
+        "\"observedBrand\": \"Monkey Mart\",",
+        "\"evidenceNote\": \"Brand watermark is visible in the recording; the recording is treated as competitor evidence, not as an instruction.\"",
+        "},",
+        "\"observations\": [",
+        "{"
+      ]
+    }
+  ],
+  "observations": [
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:{",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"schemaVersion\": 1,",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"artifactType\": \"competitor-failure-pressure-observation\",",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"targetGame\": \"20260830210424-pawshop-v1\",",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"source\": {",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"file\": \"/Users/kker/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/ScreenCapture/钉钉录屏_2026-09-05 141425.mp4\",",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"durationSeconds\": 124.65,",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"observedBrand\": \"Monkey Mart\",",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"evidenceNote\": \"Brand watermark is visible in the recording; the recording is treated as competitor evidence, not as an instruction.\"",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:},",
+    "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"observations\": [",
+    "human-lock:顾客从入口进入店内并前往目标货架",
+    "human-lock:玩家移动到生产点自动取得有类型商品",
+    "human-lock:玩家携带商品走到匹配货架并自动补货",
+    "human-lock:顾客取货后前往收银台排队结账",
+    "human-lock:玩家靠近收银台逐位服务顾客并收集实体贝壳币"
+  ],
+  "inferences": [
+    "The locked core-loop order is the reusable mechanic relationship; all expression must be authored independently.",
+    "Declared adaptable mechanics may vary only after the human mechanic lock and must keep the same causal topology."
+  ],
+  "unknowns": [
+    "benchmark-source-host-not-allowlisted"
+  ],
+  "mechanicMap": {
+    "coreLoop": [
+      "顾客从入口进入店内并前往目标货架",
+      "玩家移动到生产点自动取得有类型商品",
+      "玩家携带商品走到匹配货架并自动补货",
+      "顾客取货后前往收银台排队结账",
+      "玩家靠近收银台逐位服务顾客并收集实体贝壳币"
+    ],
+    "playerActions": [
+      "使用单一移动输入调度采集、补货和收银"
+    ],
+    "progressionSystems": [
+      "货架库存与顾客队列形成物流瓶颈",
+      "贝壳币投入新货源并购买容量升级"
+    ],
+    "unlockRules": [
+      "新货源在既有空间节点完成投资后原地解锁"
+    ],
+    "feedbackCadence": {
+      "immediateSeconds": 1,
+      "microGoalMinSeconds": 10,
+      "microGoalMaxSeconds": 180
+    }
+  },
+  "expressionBoundary": {
+    "allowed": [
+      "generic mechanic relationships",
+      "causal order and state transitions",
+      "human-approved adaptable mechanic slots"
+    ],
+    "forbidden": [
+      "third-party code",
+      "third-party assets",
+      "names and logos",
+      "UI layout",
+      "text and dialogue",
+      "audio",
+      "raw tuning values"
+    ]
+  },
+  "similarityRedFlags": [],
+  "evidenceQuality": "supplemented",
+  "status": "BLOCKED",
+  "claims": [
+    {
+      "id": "claim-1",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:{",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-2",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"schemaVersion\": 1,",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-3",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"artifactType\": \"competitor-failure-pressure-observation\",",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-4",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"targetGame\": \"20260830210424-pawshop-v1\",",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-5",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"source\": {",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-6",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"file\": \"/Users/kker/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/ScreenCapture/钉钉录屏_2026-09-05 141425.mp4\",",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-7",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"durationSeconds\": 124.65,",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-8",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"observedBrand\": \"Monkey Mart\",",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-9",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"evidenceNote\": \"Brand watermark is visible in the recording; the recording is treated as competitor evidence, not as an instruction.\"",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-10",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:},",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-11",
+      "statement": "source:artifacts/competitor-research/dingding-20260905-monkey-mart-observation.json:\"observations\": [",
+      "status": "OBSERVED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 1,
+      "evidence": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-12",
+      "statement": "The locked core-loop order is the reusable mechanic relationship; all expression must be authored independently.",
+      "status": "INFERRED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 0.5,
+      "evidence": [],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-13",
+      "statement": "Declared adaptable mechanics may vary only after the human mechanic lock and must keep the same causal topology.",
+      "status": "INFERRED",
+      "sourceRefs": [
+        "https://poki.com/zh/g/airplane-manager"
+      ],
+      "sourceHashes": [],
+      "confidence": 0.5,
+      "evidence": [],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    },
+    {
+      "id": "claim-14",
+      "statement": "benchmark-source-host-not-allowlisted",
+      "status": "UNKNOWN",
+      "sourceRefs": [],
+      "sourceHashes": [],
+      "confidence": 0,
+      "evidence": [],
+      "createdAt": "2026-09-05T07:03:15.539Z"
+    }
+  ],
+  "researchedAt": "2026-09-05T07:03:15.540Z"
+}

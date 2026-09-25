@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "seaside-v6-design-review",
+  "status": "PROPOSED_AWAITING_APPROVAL",
+  "scope": {
+    "runPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1",
+    "gameWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+    "writeBoundary": "workspace/game remains read-only; only this new review artifact directory is written",
+    "forbiddenActions": [
+      "do not modify game code, configuration, tests or assets",
+      "do not start BuilderAgent or FixerAgent",
+      "do not generate production image assets",
+      "do not implement shrimp or crab before explicit APPROVE",
+      "do not touch any other run, game2 or decryption project"
+    ]
+  },
+  "evidenceReviewed": {
+    "demo": [
+      "actual current dist opened at http://127.0.0.1:4191/ in Chromium",
+      "390x844 screenshot captured after #game-shell[data-loading=false]",
+      "actual screenshot: screenshots/current-demo-390x844.png",
+      "annotated screenshot: screenshots/current-demo-390x844-annotated.png"
+    ],
+    "sourceFiles": [
+      "workspace/game/src/game/economy.ts",
+      "workspace/game/src/game/simulation.ts",
+      "workspace/game/src/game/persistence.ts",
+      "workspace/game/src/main.ts",
+      "workspace/game/src/ui/view-model.ts",
+      "workspace/game/src/ui/motion.ts",
+      "workspace/game/src/style.css",
+      "workspace/game/index.html"
+    ],
+    "tests": [
+      "workspace/game/tests/gameplay.test.ts",
+      "workspace/game/tests/persistence.test.ts",
+      "workspace/game/tests/ui-shell.test.ts",
+      "workspace/game/tests/browser-contract.test.ts",
+      "workspace/game/tests/ui-motion.test.ts",
+      "workspace/game/tests/asset-textures.test.ts"
+    ],
+    "runArtifacts": [
+      "artifacts/revisions/seaside-v5/open-source-research.json",
+      "artifacts/revisions/seaside-v5/game-blueprint.json",
+      "artifacts/revisions/seaside-v5/economy-config.json",
+      "artifacts/revisions/seaside-v5/build-report.json",
+      "artifacts/revisions/seaside-v5/qa-report.json",
+      "artifacts/revisions/seaside-v5/evidence/builder-night-animation-round2/qa-report.json"
+    ],
+    "qaBaseline": "seaside-v5 reports lint, typecheck, build and 50/50 tests passing, plus Chromium QA at 360x800, 390x844 and 430x932; web-lite is QA evidence only, not publishability evidence for the three target mini-game platforms"
+  },
+  "currentSystemRelationshipGraph": {
+    "nodes": [
+      { "id": "fishSource", "label": "近岸渔网", "layer": "production", "currentState": "always unlocked; proximity produces one fish every configured pickup interval", "evidence": ["simulation.ts STATIONS.fishSource and processHarvest", "view-model.ts title 近岸渔网"] },
+      { "id": "kelpSource", "label": "锁定潮池/海带采集点", "layer": "production", "currentState": "same spatial node first receives 96 coins, then becomes a proximity kelp source", "evidence": ["simulation.ts processInvestment and processHarvest", "game-blueprint kelpGate.singleSpatialNode"] },
+      { "id": "carrier", "label": "玩家共享背篓", "layer": "logistics", "currentState": "fish plus kelp share one total capacity of 4, 6 or 8", "evidence": ["simulation.ts carryingCount", "economy.ts carrier tiers"] },
+      { "id": "fishShelf", "label": "鲜鱼冰盘", "layer": "retail", "currentState": "accepts fish only; hard capacity 8", "evidence": ["simulation.ts processDelivery", "ui-shell.test.ts shelf copy"] },
+      { "id": "kelpShelf", "label": "海带篮", "layer": "retail", "currentState": "accepts kelp only; hard capacity 8", "evidence": ["simulation.ts processDelivery", "gameplay.test.ts cross-delivery guard"] },
+      { "id": "customers", "label": "海边游客", "layer": "customer", "currentState": "choose one product, browse, wait for matching stock, then queue or leave after patience expires", "evidence": ["simulation.ts chooseCustomerProduct and processCustomers"] },
+      { "id": "checkout", "label": "贝壳收银台", "layer": "checkout", "currentState": "player proximity services FIFO queue and creates physical shell tokens", "evidence": ["simulation.ts processCheckout and createToken"] },
+      { "id": "currency", "label": "贝壳币", "layer": "currency", "currentState": "physical token pickup becomes spendable currency", "evidence": ["simulation.ts processTokens"] },
+      { "id": "upgrade", "label": "浮标工坊", "layer": "upgrade", "currentState": "a scene station that spends currency only on global player carrier capacity", "evidence": ["simulation.ts STATIONS.upgrade and processUpgrade", "view-model.ts station id upgrade"] }
+    ],
+    "edges": [
+      { "from": "fishSource", "to": "carrier", "relation": "proximity harvest adds fish", "condition": "carrier total below capacity" },
+      { "from": "kelpSource", "to": "carrier", "relation": "proximity harvest adds kelp", "condition": "kelp unlocked and carrier total below capacity" },
+      { "from": "carrier", "to": "fishShelf", "relation": "automatic compatible delivery", "condition": "carrying fish and shelf below 8" },
+      { "from": "carrier", "to": "kelpShelf", "relation": "automatic compatible delivery", "condition": "carrying kelp and shelf below 8" },
+      { "from": "fishShelf", "to": "customers", "relation": "fish customer consumes one stocked unit", "condition": "after browsing or while waiting" },
+      { "from": "kelpShelf", "to": "customers", "relation": "kelp customer consumes one stocked unit", "condition": "after browsing or while waiting" },
+      { "from": "customers", "to": "checkout", "relation": "successful shoppers enter FIFO queue", "condition": "matching stock was consumed" },
+      { "from": "checkout", "to": "currency", "relation": "service creates physical tokens and pickup credits currency", "condition": "player remains near checkout" },
+      { "from": "currency", "to": "kelpSource", "relation": "direct spatial investment unlocks kelp", "condition": "locked and invested below 96" },
+      { "from": "currency", "to": "upgrade", "relation": "pays carrier tier price", "condition": "next tier exists and prerequisite is met" },
+      { "from": "upgrade", "to": "carrier", "relation": "raises global shared capacity", "condition": "4 to 6 for 40; 6 to 8 for 88 after kelp unlock" }
+    ],
+    "mermaid": "flowchart TD\n  Fish[近岸渔网] -->|靠近捕鱼| Carrier[玩家共享背篓 4/6/8]\n  Currency[贝壳币] -->|锁定时投入 96| Kelp[同一潮池节点]\n  Kelp -->|解锁后靠近采集| Carrier\n  Carrier -->|鱼 only| FishShelf[鲜鱼冰盘 0..8]\n  Carrier -->|海带 only| KelpShelf[海带篮 0..8]\n  FishShelf --> Customers[单商品顾客]\n  KelpShelf --> Customers\n  Customers --> Queue[收银队列]\n  Queue -->|玩家靠近服务| Tokens[实体贝壳币]\n  Tokens -->|玩家靠近拾取| Currency\n  Currency --> Workshop[浮标工坊]\n  Workshop -->|只提升玩家携带容量| Carrier",
+    "diagnosisSummary": "the current closed loop is production point to player transport to matching shelf to customer to checkout to physical currency; currency branches to the kelp unlock and to global carrier capacity, while the fish net has no upgrade state or upgrade edge"
+  },
+  "floatingWorkshopDiagnosis": {
+    "observedName": "the user-observed floating factory is rendered and labeled in source as 浮标工坊",
+    "internalSystem": "STATIONS.upgrade at x=420,y=805; UI station id upgrade; purchaseCarrierUpgrade and processUpgrade",
+    "actualBehavior": "it spends 40 coins for shared carrier capacity 4 to 6, then after kelp unlock spends 88 for 6 to 8; it changes no fish-net speed, yield, storage or quality",
+    "isFishNetUpgrade": false,
+    "confusionCauses": [
+      "a player-global capacity upgrade is embodied as a large world-space production-like building",
+      "the HUD already describes the same carrying upgrade, so one concept is represented in two UI layers",
+      "main.ts draws a continuous guide path from the upper-left fish-net area through the shop toward the lower-right workshop",
+      "the upgrade image is a buoy/industrial emblem placed inside the playable map, visually compatible with fishing infrastructure",
+      "the workshop label is partially competed with by the bottom status overlay at phone scale, leaving the building silhouette more prominent than its explanation",
+      "there is no nearby fish-net upgrade badge to explicitly state that the net itself currently has no upgrade"
+    ],
+    "evidence": [
+      "simulation.ts lines 85-92 define fishSource and upgrade as separate stations",
+      "simulation.ts lines 527-555 show the upgrade only modifies capacityTier and capacity",
+      "view-model.ts lines 37-46 call the station 浮标工坊 while the detailed label says 携带容量",
+      "main.ts lines 292-321 draw the net, workshop and connecting path",
+      "screenshots/current-demo-390x844-annotated.png reproduces the conflict in the actual demo"
+    ],
+    "requiredCorrection": [
+      "remove carrier capacity purchasing from the world-space workshop and expose it through a standalone backpack icon",
+      "keep fish-net upgrades, if approved, attached to the fish-net station with explicit axis copy such as 捕捞速度 +15%",
+      "never use one building to express both player capacity and fish-net production",
+      "do not imply any fish-net upgrade before a real tested fish-net upgrade state exists"
+    ]
+  },
+  "userLockedDecisions": [
+    { "id": "D1", "decision": "carrier capacity uses an independent backpack icon entry", "designConsequence": "capacity is a player-owned global ability and leaves the world-station graph" },
+    { "id": "D2", "decision": "fish-net upgrades belong to the fish-net station and show prompts nearby", "designConsequence": "the prompt must name its exact axis: speed, yield, storage or quality" },
+    { "id": "D3", "decision": "one building cannot represent both backpack and fish-net upgrades", "designConsequence": "upgrade ownership is explicit and mutually exclusive" },
+    { "id": "D4", "decision": "new systems unlock progressively", "designConsequence": "only the next locked facility is visually explained; later facilities remain hidden or quiet silhouettes" }
+  ],
+  "productRelationshipTable": [
+    { "id": "fish", "displayName": "鲜鱼", "role": "baseline throughput and reliable cashflow", "frequency": "high", "progressionBand": "start and entire session", "productionFacility": "nearshore fishing net", "productionPattern": "continuous proximity pickup; preserve current behavior", "suggestedWait": "1.0 fish-cycle baseline", "batchYield": "1 unit per pickup cycle", "carrierSlotsPerUnit": 1, "shelfCapacity": "preserve 8", "customerEffect": "largest demand share and fallback commodity", "differentiation": "fastest, easiest and most predictable route" },
+    { "id": "kelp", "displayName": "海带", "role": "first expansion and demand diversification", "frequency": "high", "progressionBand": "late 0-3m to early 3-8m", "productionFacility": "same tide-pool node used for its unlock", "productionPattern": "slightly slower proximity gather; preserve current behavior", "suggestedWait": "1.15-1.35 fish cycles", "batchYield": "1 unit per pickup cycle", "carrierSlotsPerUnit": 1, "shelfCapacity": "preserve 8", "customerEffect": "increases total customer cadence rather than only splitting fish demand", "differentiation": "first spatial investment and higher unit value than fish" },
+    { "id": "shrimp", "displayName": "鲜虾", "role": "mid-game route-planning commodity", "frequency": "medium", "progressionBand": "3-8m", "productionFacility": "original shallow-water shrimp trap cluster", "productionPattern": "recommended option B: trap soaks while player is elsewhere and stores small two-unit batches", "suggestedWait": "6.5-9.5 fish cycles per two-unit batch", "batchYield": "2 units, station buffer capped at 4", "carrierSlotsPerUnit": 1, "shelfCapacity": "5-6; recommend 6", "customerEffect": "moderate demand; one fallback substitution prevents a new-stock shortage from freezing the shop", "differentiation": "changes the route from standing harvest to timed revisit and batch pickup" },
+    { "id": "crab", "displayName": "礁蟹", "role": "low-frequency premium commodity and long-route anchor", "frequency": "low", "progressionBand": "8-15m", "productionFacility": "original reef-edge crab pot", "productionPattern": "recommended option B: slow autonomous latch; one ready crab at base, second ready slot only via facility upgrade", "suggestedWait": "17-25 fish cycles per crab", "batchYield": "1 unit; ready capacity 1 then 2 after facility upgrade", "carrierSlotsPerUnit": 1, "shelfCapacity": "3-4; recommend 3", "customerEffect": "small premium demand share, longer patience and no substitution", "differentiation": "creates a deliberate low-frequency high-value revisit without adding inventory weight rules" }
+  ],
+  "facilityUpgradeOwnership": [
+    { "id": "carrier", "displayName": "背篓容量", "owner": "player", "entryLocation": "standalone backpack icon in the bottom-right quick menu safe area", "upgradeAxis": "shared total item capacity only", "promptRule": "red dot only when the next tier is unlocked, affordable and not maxed", "forbiddenMeaning": "must never appear as part of the fish net, shrimp trap, crab pot or another production building" },
+    { "id": "fishNet", "displayName": "近岸渔网", "owner": "facility", "entryLocation": "small upgrade badge anchored just outside the fish-net interaction radius", "upgradeAxis": "pickup speed only in the first expansion", "promptRule": "show one line such as 捕捞速度 +15% · cost only when eligible", "forbiddenMeaning": "must not change carrier capacity or imply backpack ownership" },
+    { "id": "kelpPool", "displayName": "潮池海带点", "owner": "facility", "entryLocation": "at the tide-pool node after unlock", "upgradeAxis": "defer in this phase; keep the unlock investment distinct from an upgrade", "promptRule": "no upgrade badge until a real kelp upgrade is approved", "forbiddenMeaning": "unlock progress must not be mislabeled as production level" },
+    { "id": "shrimpTrap", "displayName": "浅滩虾笼", "owner": "facility", "entryLocation": "beside the trap cluster", "upgradeAxis": "option B reduces soak cycle by about 15-20 percent", "promptRule": "show 虾笼浸泡更快 and exact next-cycle effect locally", "forbiddenMeaning": "must not affect crab, player capacity or all production globally" },
+    { "id": "crabPot", "displayName": "礁边蟹笼", "owner": "facility", "entryLocation": "beside the reef-edge pot", "upgradeAxis": "option B adds one ready storage slot, not speed", "promptRule": "show 待取上限 1→2 locally", "forbiddenMeaning": "must not masquerade as quality, price or carrier capacity" },
+    { "id": "shelves", "displayName": "商品货架", "owner": "shop", "entryLocation": "at each matching shelf only", "upgradeAxis": "no shelf upgrade in this phase", "promptRule": "always show local current/capacity; full state says 已满", "forbiddenMeaning": "must not share an upgrade badge with its production facility" },
+    { "id": "checkout", "displayName": "贝壳收银台", "owner": "shop", "entryLocation": "at checkout", "upgradeAxis": "no checkout upgrade in this phase", "promptRule": "show only queue length and service status", "forbiddenMeaning": "must not compete with the current main unlock objective" }
+  ],
+  "unlockDependencyGraph": {
+    "order": ["fish", "kelp", "shrimp", "crab"],
+    "nodes": [
+      { "id": "fish", "prerequisite": "none", "visibleObjective": "捕获并卖出第一份鲜鱼", "secondaryObjective": "learn carrying and matching-shelf delivery", "revealRule": "visible at session start" },
+      { "id": "kelp", "prerequisite": "complete the first sale, then invest at the already-visible locked tide pool", "visibleObjective": "投入贝壳币解锁潮池", "secondaryObjective": "backpack 4 to 6 may appear only when affordable", "revealRule": "locked tide pool may be visible from start because it is the single current expansion target" },
+      { "id": "shrimp", "prerequisite": "kelp unlocked and approximately 16-22 completed total sales; recommend 18 for the first tuning pass", "visibleObjective": "完成海货售卖目标，修复浅滩虾笼", "secondaryObjective": "optional carrier red dot if capacity upgrade is affordable", "revealRule": "reveal its locked silhouette only after kelp unlock; before that show no requirement text" },
+      { "id": "crab", "prerequisite": "shrimp trap active and approximately 8-12 shrimp sales; recommend 10 for the first tuning pass", "visibleObjective": "售出鲜虾，启用礁边蟹笼", "secondaryObjective": "none unless backpack upgrade becomes affordable", "revealRule": "do not show crab requirement text before shrimp is active; then reveal the reef-edge silhouette" }
+    ],
+    "edges": [
+      { "from": "fish", "to": "kelp", "relation": "first sale teaches the loop before spatial investment", "condition": "first sale complete" },
+      { "from": "kelp", "to": "shrimp", "relation": "first expansion plus familiar sales goal", "condition": "kelp unlocked and total sales target met" },
+      { "from": "shrimp", "to": "crab", "relation": "master batch restocking before premium low-frequency stock", "condition": "shrimp active and shrimp sales target met" }
+    ],
+    "objectiveDisplayRules": [
+      "show at most one text-heavy primary objective and one secondary signal",
+      "a red dot is a secondary signal and must not be paired with another secondary text card",
+      "never display shrimp and crab lock requirements simultaneously",
+      "use sales counts, facility unlock and cumulative revenue only; no branching technology tree",
+      "unlock payment appears only after its familiar prerequisite goal is completed"
+    ]
+  },
+  "relativeEconomyRanges": {
+    "baselines": [
+      "F-cycle means the current fish pickup interval of 520ms; ranges are ratios, not copied third-party values",
+      "F-price means the current fish sale reward of 4; current kelp is already 1.5 F-price",
+      "K means the current kelp unlock investment of 96",
+      "all final values require deterministic simulation against first-session telemetry before implementation approval"
+    ],
+    "products": [
+      { "productId": "fish", "productionCycleRelativeToFish": { "min": 1, "max": 1, "unit": "F-cycle", "rationale": "preserve the learned baseline" }, "cycleMode": "continuous proximity pickup", "yieldPerCycle": "1", "salePriceRelativeToFish": { "min": 1, "max": 1, "unit": "F-price", "rationale": "reliable cashflow baseline" }, "shelfCapacity": "8 fixed", "unlockCostRelativeToCurrentKelpGate": { "min": 0, "max": 0.01, "unit": "K", "rationale": "unlocked at start" }, "facilityUpgradeCost": "10-14 fish sale rewards for the first speed tier", "expectedPaybackMinutes": { "min": 2.5, "max": 4, "unit": "minutes", "rationale": "visible within the same session without becoming mandatory" } },
+      { "productId": "kelp", "productionCycleRelativeToFish": { "min": 1.15, "max": 1.35, "unit": "F-cycle", "rationale": "contains the current 650/520 relationship" }, "cycleMode": "continuous proximity pickup after in-place unlock", "yieldPerCycle": "1", "salePriceRelativeToFish": { "min": 1.35, "max": 1.65, "unit": "F-price", "rationale": "contains the current 6/4 relationship" }, "shelfCapacity": "8 fixed", "unlockCostRelativeToCurrentKelpGate": { "min": 1, "max": 1, "unit": "K", "rationale": "preserve current 96 investment" }, "facilityUpgradeCost": "none in this phase", "expectedPaybackMinutes": { "min": 2.5, "max": 4.5, "unit": "minutes", "rationale": "current unlock should repay through increased demand and higher reward" } },
+      { "productId": "shrimp", "productionCycleRelativeToFish": { "min": 6.5, "max": 9.5, "unit": "F-cycle per two-unit batch", "rationale": "creates a revisit cadence rather than a renamed fish stream" }, "cycleMode": "autonomous active-session soak with saved timer and station buffer", "yieldPerCycle": "2; buffer 4", "salePriceRelativeToFish": { "min": 1.75, "max": 2.25, "unit": "F-price", "rationale": "pays for longer routing without eclipsing crab" }, "shelfCapacity": "5-6; recommend 6", "unlockCostRelativeToCurrentKelpGate": { "min": 1.4, "max": 1.8, "unit": "K", "rationale": "reachable in 3-8m after the learned kelp gate" }, "facilityUpgradeCost": "8-12 shrimp sale rewards for 15-20% faster soak", "expectedPaybackMinutes": { "min": 3, "max": 5, "unit": "minutes", "rationale": "optional optimization, not a prerequisite for crab" } },
+      { "productId": "crab", "productionCycleRelativeToFish": { "min": 17, "max": 25, "unit": "F-cycle per crab", "rationale": "low-frequency premium revisit" }, "cycleMode": "autonomous active-session latch with one ready slot", "yieldPerCycle": "1; ready cap 1, upgrade cap 2", "salePriceRelativeToFish": { "min": 3, "max": 4, "unit": "F-price", "rationale": "meaningful premium without invalidating base goods" }, "shelfCapacity": "3-4; recommend 3", "unlockCostRelativeToCurrentKelpGate": { "min": 2.4, "max": 3.2, "unit": "K", "rationale": "fits the 8-15m band after shrimp mastery" }, "facilityUpgradeCost": "6-9 crab sale rewards for ready cap 1 to 2", "expectedPaybackMinutes": { "min": 4, "max": 6, "unit": "minutes", "rationale": "a longer strategic payoff appropriate to premium stock" } }
+    ],
+    "globalUpgradeRanges": [
+      { "id": "carrier-existing", "costRange": "preserve current 40 for 4→6 and 88 for 6→8 until telemetry disproves them", "paybackTarget": "capacity friction should visibly improve within 1-3 delivery loops", "gate": "second tier remains after kelp unlock" },
+      { "id": "carrier-future", "costRange": "if 8→10 is later approved, target 16-22 fish sale rewards rather than exposing it immediately", "paybackTarget": "3-5 minutes", "gate": "only after shrimp is active and full-carrier telemetry justifies the tier" },
+      { "id": "shop", "costRange": "no shelf or checkout upgrade cost in this phase", "paybackTarget": "not applicable", "gate": "avoid simultaneous upgrade surfaces" }
+    ],
+    "safetyChecks": [
+      "reserve enough post-unlock currency or allow immediate fish sales so buying a facility never blocks all income",
+      "never require an unstocked shrimp or crab sale to unlock the facility that produces it",
+      "all goods use one carrier slot; capacity four must still allow at least one complete batch pickup and mixed restock route",
+      "shrimp buffer stops at cap and does not bank hidden overflow",
+      "crab ready cap stops at one or two and does not silently discard production",
+      "new demand starts only after its shelf and source are usable",
+      "cap active customers and per-product waiting customers so the checkout queue cannot grow without bound",
+      "model affordability, empty-shelf time, full-carrier time and queue length across deterministic 15-minute simulations"
+    ]
+  },
+  "first15MinutesPacing": [
+    { "window": "0-3m", "primaryExperience": "learn and repeat fish catch, delivery, customer, checkout and coin pickup; discover kelp investment", "mainGoal": "first sale, then unlock the tide pool", "secondaryGoal": "show backpack red dot only when 4→6 is affordable", "expectedUnlocks": ["fish at start", "kelp near the end of this window or shortly after"], "failurePrevention": ["no shrimp or crab text", "retain current first-customer delay and first-sale window", "do not force a capacity purchase before the first expansion"] },
+    { "window": "3-8m", "primaryExperience": "balance fish and kelp, then learn timed shrimp-trap revisits and batch restocking", "mainGoal": "reach the familiar total-sales target and activate the shallow-water shrimp trap", "secondaryGoal": "optional backpack or fish-net upgrade signal, never both", "expectedUnlocks": ["shrimp around 5-7m after kelp and approximately 18 total sales"], "failurePrevention": ["shrimp demand begins only after source and shelf activate", "shrimp can substitute once when empty", "buffer cap prevents invisible production loss", "keep crab requirement hidden"] },
+    { "window": "8-15m", "primaryExperience": "add a slow premium crab route without abandoning base goods", "mainGoal": "sell approximately 10 shrimp and activate the reef-edge crab pot", "secondaryGoal": "optional local crab-pot ready-cap upgrade after the crab loop is understood", "expectedUnlocks": ["crab around 10-12m", "no additional major system before 15m"], "failurePrevention": ["crab demand remains low", "crab customers wait longer but active waiters are capped", "fish remains the fallback and throughput anchor", "checkout cap and queue telemetry guard against runaway demand"] }
+  ],
+  "uiEntryAndPromptRules": {
+    "backpackEntry": {
+      "placement": "add one 44px backpack icon as the first item in the existing bottom-right quick-menu cluster, above the bottom safe-area inset and outside the joystick touch origin",
+      "appearance": "player-owned backpack silhouette, visually distinct from buoy, net, trap and pot; no building base or world interaction radius",
+      "redDotRule": "show only when a next carrier tier exists, its prerequisite is satisfied, the player can afford it and no upgrade panel is open; hide when locked, unaffordable or maxed",
+      "interaction": "tap opens a compact anchored card with current capacity, next capacity, one price and one confirm action; close on outside tap or movement drag",
+      "safeAreaRule": "retain the current bottom-right safe-area anchor; validate 360x800, 390x844 and 430x932 with 44px minimum target and no overlap with status card"
+    },
+    "facilityPrompts": [
+      { "facility": "fish net", "placement": "just outside the net interaction circle, not on the route line", "visibleWhen": "facility upgrade is unlocked and affordable, or player is within local inspection radius", "copyPattern": "渔网速度 +15% · cost" },
+      { "facility": "shrimp trap", "placement": "anchored beside the trap readiness indicator", "visibleWhen": "shrimp active and first two batches have been collected", "copyPattern": "浸泡时间 X→Y · cost" },
+      { "facility": "crab pot", "placement": "anchored beside the ready-slot indicator", "visibleWhen": "crab active and first crab has been sold", "copyPattern": "待取上限 1→2 · cost" }
+    ],
+    "lockedFacilityRule": "show only the next facility as a quiet silhouette with one familiar condition such as 售出鲜虾 6/10; after the condition is met, replace it with one investment line; never show multiple locked price tags",
+    "informationBudget": [
+      "one primary objective card plus at most one secondary red-dot signal",
+      "do not add four permanent product counters to the top HUD; keep local shelf counters and use the existing strip for at most two urgent operational signals after shrimp unlock",
+      "each local prompt contains facility name, one upgrade axis and one cost only",
+      "do not show quality, speed, storage and yield together",
+      "locked crab remains free of explanatory text until shrimp is active"
+    ],
+    "oneHandRule": "movement remains drag-anywhere; the backpack and quick menu stay in the reachable lower-right cluster, while all production upgrades remain discoverable through movement near their facility"
+  },
+  "options": [
+    {
+      "id": "A",
+      "name": "低复杂度：四条同构采集链",
+      "complexity": "low",
+      "summary": "reuse the current proximity harvest, matching shelf, one-product customer and checkout loop; shrimp and crab differ mainly by interval, price, shelf cap and demand weight",
+      "resourceBehaviors": [
+        "fish and kelp remain unchanged",
+        "shrimp comes from a shallow-water shrimp trap but produces one unit only while the player stands nearby",
+        "crab comes from a reef-edge crab pot and produces one unit only while the player stands nearby",
+        "all four products occupy one carrier slot and use independent shelves"
+      ],
+      "facilityBehaviors": [
+        "fish-net, shrimp-trap and crab-pot prompts are local",
+        "each facility's only first upgrade axis is pickup speed",
+        "backpack capacity is removed from the world station and uses the independent icon",
+        "no autonomous buffers or new timer semantics"
+      ],
+      "customerAndShelfRules": [
+        "each customer requests one product from unlocked weighted demand",
+        "every new product has an independent shelf",
+        "out-of-stock customers wait for the existing patience window then leave",
+        "unlocking a product increases total spawn cadence within the current active-customer cap"
+      ],
+      "unlockFlow": [
+        "fish at start",
+        "kelp through the current in-place investment",
+        "shrimp after kelp plus a total-sales goal and local investment",
+        "crab after shrimp plus a shrimp-sales goal and local investment"
+      ],
+      "logisticsRule": "one unit per carrier slot for every product; route variety comes only from source and shelf positions",
+      "evaluation": {
+        "playerComprehensionCost": { "score": 1, "note": "nearly identical to the existing fish and kelp loop" },
+        "novelty": { "score": 2, "note": "new map destinations and prices, but little new decision-making" },
+        "implementationCost": { "score": 2, "note": "mostly extend ProductId records, stations, shelves, demand and assets" },
+        "testCost": { "score": 2, "note": "existing generic harvest and delivery tests can be parameterized" },
+        "saveMigrationRisk": { "score": 2, "note": "new fields default cleanly; no station buffers" },
+        "mobileUiRisk": { "score": 3, "note": "four local stations and shelves still create density even without new panels" },
+        "extensibility": { "score": 2, "note": "a fifth product would feel even more like a reskin" }
+      },
+      "mainRisks": [
+        "shrimp and crab may feel like renamed fish with slower numbers",
+        "four standing-harvest loops increase walking without adding scheduling decisions",
+        "facility speed upgrades become repetitive and hard to distinguish"
+      ],
+      "acceptanceSignals": [
+        "new players can explain every loop after one encounter",
+        "no regression to current fish and kelp behavior",
+        "implementation can reuse existing deterministic test structure"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "中等复杂度：批量虾笼与低频蟹笼",
+      "complexity": "medium",
+      "summary": "keep transport, shelves, customers and checkout familiar, but make shrimp a small autonomous batch buffer and crab a slow ready-slot facility so each adds a new route-planning relationship",
+      "resourceBehaviors": [
+        "fish remains continuous proximity throughput and kelp remains the first in-place expansion",
+        "shrimp trap soaks during active play while the player is elsewhere, adds two shrimp per cycle and stops at a visible buffer of four",
+        "crab pot slowly becomes ready with one crab and stops; its local upgrade raises ready capacity to two rather than speeding every cycle",
+        "all products still occupy one carrier slot, avoiding weight arithmetic"
+      ],
+      "facilityBehaviors": [
+        "fish-net local upgrade affects speed only",
+        "shrimp-trap local upgrade affects soak time only",
+        "crab-pot local upgrade affects ready storage only",
+        "backpack capacity remains a player-owned independent icon",
+        "facility readiness is visible in-world without opening a panel"
+      ],
+      "customerAndShelfRules": [
+        "fish is the highest-weight baseline, kelp remains high frequency, shrimp is medium and crab is low",
+        "each product has an independent shelf; shrimp shelf recommends 6 and crab shelf recommends 3",
+        "a shrimp customer waiting on empty stock may switch once to an available fish or kelp item after half patience",
+        "a crab customer waits longer and does not substitute, making premium scarcity legible",
+        "cap simultaneous waiters for each new product and keep the existing global active-customer cap until telemetry supports change"
+      ],
+      "unlockFlow": [
+        "fish at start",
+        "kelp around the end of 0-3m through the existing gate",
+        "shrimp in 3-8m after kelp and a familiar total-sales goal",
+        "crab in 8-15m after a familiar shrimp-sales goal",
+        "later facility text stays hidden until it becomes the next target"
+      ],
+      "logisticsRule": "one unit per carrier slot; the new choice is when to revisit a ready facility and how much shared capacity to reserve, not how to calculate item weights",
+      "evaluation": {
+        "playerComprehensionCost": { "score": 3, "note": "one new readiness/buffer concept for shrimp and one ready-slot concept for crab" },
+        "novelty": { "score": 4, "note": "batch timing and premium revisits materially change route planning" },
+        "implementationCost": { "score": 3, "note": "adds saved facility timers, buffers, readiness visuals and one substitution transition" },
+        "testCost": { "score": 4, "note": "requires timer caps, buffer behavior, substitution and migration coverage" },
+        "saveMigrationRisk": { "score": 3, "note": "new authoritative station state must be versioned and normalized" },
+        "mobileUiRisk": { "score": 3, "note": "readiness must be shown locally without adding persistent HUD clutter" },
+        "extensibility": { "score": 4, "note": "future goods can choose distinct production patterns without changing the core loop" }
+      },
+      "mainRisks": [
+        "players may assume autonomous production continues offline unless copy says 营业中蓄货 or offline behavior is explicitly designed",
+        "full shrimp buffer or crab ready slot may feel like lost production if cap feedback is weak",
+        "new demand could create shelf starvation and queue instability",
+        "save migration must preserve every existing fish/kelp customer and token while adding facility state"
+      ],
+      "acceptanceSignals": [
+        "players revisit shrimp instead of standing there continuously",
+        "crab sales feel valuable but never become the main throughput source",
+        "fish remains economically relevant after all four unlock",
+        "the top HUD height and one-hand movement area do not grow"
+      ]
+    }
+  ],
+  "recommendation": {
+    "optionId": "B",
+    "name": "中等复杂度：批量虾笼与低频蟹笼",
+    "reasons": [
+      "it changes the operating relationship rather than only changing sprite, timer and price",
+      "shrimp introduces a clear timed-revisit batch loop in the 3-8m window",
+      "crab introduces a low-frequency premium ready-slot decision in the 8-15m window",
+      "the familiar transport, matching shelf, customer, checkout and physical-currency loop remains intact",
+      "one-slot logistics avoids breaking current movement and restocking rhythm",
+      "upgrade ownership becomes teachable: player capacity in backpack icon, speed at net/trap, storage at crab pot"
+    ],
+    "nonNegotiableConstraints": [
+      "do not implement until explicit APPROVE",
+      "do not change existing fish, kelp, save recovery or animation behavior without red-first regression tests",
+      "do not treat web-lite QA as target-platform publishability",
+      "do not add offline production in this phase unless separately approved",
+      "do not expose all facility upgrades at once"
+    ],
+    "phasedDelivery": [
+      "phase 1 after approval: separate backpack entry and clarify fish-net ownership without adding shrimp or crab behavior",
+      "phase 2: add shrimp source, shelf, demand, save fields and deterministic QA",
+      "phase 3: unlock crab only after shrimp metrics and mobile layout pass",
+      "each phase must be independently resumable and idempotent"
+    ]
+  },
+  "saveMigrationImpact": {
+    "targetVersion": "proposed save-v5 / CURRENT_SAVE_VERSION 5, subject to implementation approval",
+    "newAuthoritativeFields": [
+      "carrying.shrimp and carrying.crab",
+      "shelves.shrimp and shelves.crab",
+      "facilities.shrimpTrap with unlocked, invested, buffer and soakRemainingMs",
+      "facilities.crabPot with unlocked, invested, readyCount, readyCapacity and latchRemainingMs",
+      "facility upgrade levels for fishNet, shrimpTrap and crabPot",
+      "progression completedSalesByProduct and nextObjective id",
+      "customer product enum extended to shrimp and crab plus optional substitutionUsed"
+    ],
+    "defaultsForLegacySave": [
+      "shrimp and crab carrying and shelf stock default to zero",
+      "shrimp and crab facilities default locked with zero investment and empty buffers",
+      "new facility upgrade levels default zero",
+      "existing fish and kelp values, construction progress, customers, queue, tokens, IDs, telemetry, random seed and player position remain unchanged",
+      "derive historical total sales only when trustworthy telemetry exists; otherwise start new progression counters at zero without removing currency or unlocks"
+    ],
+    "migrationRules": [
+      "read version first and apply an explicit v4-to-v5 pure migration before normalization",
+      "extend product records deterministically instead of relying on missing-key coercion",
+      "clamp new shelf and facility buffers to their configured caps",
+      "preserve total carried count within the saved carrier capacity; legacy saves contain no shrimp or crab so no existing item is displaced",
+      "preserve every in-flight fish/kelp customer and checkout ID; reject or normalize unknown product values without deleting unrelated state",
+      "write back only after successful validation and refresh-round-trip tests"
+    ],
+    "compatibilityGuarantees": [
+      "current save-v4 key remains readable",
+      "real seaside-v4 save-v3 fixture remains readable through the existing migration chain",
+      "existing 4/6/8 capacity tiers and current unlocked kelp progress remain stable",
+      "visual-only readiness animation is never serialized as authoritative state",
+      "refresh recovery cannot generate more shrimp or crab than the visible station cap"
+    ],
+    "riskLevel": "medium"
+  },
+  "risksAndTestPlan": {
+    "risks": [
+      { "id": "R1", "risk": "new products become sprite swaps", "likelihood": "medium", "impact": "high", "mitigation": "use option B batch and ready-slot behaviors with distinct upgrade axes" },
+      { "id": "R2", "risk": "carrier capacity becomes a soft lock after batch pickup", "likelihood": "medium", "impact": "high", "mitigation": "keep one slot per unit, batch size two and source buffer caps; simulate capacity 4 routes" },
+      { "id": "R3", "risk": "shrimp or crab demand starts before usable stock", "likelihood": "medium", "impact": "high", "mitigation": "activate demand only after source and shelf unlock atomically" },
+      { "id": "R4", "risk": "checkout queue grows uncontrollably", "likelihood": "medium", "impact": "high", "mitigation": "retain active-customer cap, cap new-product waiters and simulate worst-case shelf starvation" },
+      { "id": "R5", "risk": "save migration loses in-flight v4 state", "likelihood": "low", "impact": "high", "mitigation": "real-fixture red tests and byte-level before/after field assertions" },
+      { "id": "R6", "risk": "four products overflow the portrait HUD", "likelihood": "high", "impact": "medium", "mitigation": "keep product stock local and top HUD limited to two urgent signals" },
+      { "id": "R7", "risk": "facility and global upgrades become mixed again", "likelihood": "medium", "impact": "high", "mitigation": "ownership table, separate UI entry contracts and screenshot assertions" },
+      { "id": "R8", "risk": "players assume traps produce while the app is closed", "likelihood": "medium", "impact": "medium", "mitigation": "scope to active-session timers and use explicit copy; separately approve any offline recovery" },
+      { "id": "R9", "risk": "new station visuals interfere with otter animation or touch path", "likelihood": "medium", "impact": "medium", "mitigation": "retain animation state isolation and perform path/touch QA at all three portrait sizes" }
+    ],
+    "tests": [
+      { "category": "economy and production", "redFirstCases": ["shrimp adds exactly two per completed soak and stops at buffer four", "crab adds one per latch and stops at ready cap", "facility upgrades affect only their declared axis"], "evidenceRequired": ["deterministic unit tests", "15-minute seeded balance trace"] },
+      { "category": "carrier and delivery", "redFirstCases": ["all four products share one total capacity", "each unit consumes exactly one slot", "matching shelves reject other products", "full shelves preserve carried overflow"], "evidenceRequired": ["mixed four-product boundary tests", "capacity 4, 6 and 8 route tests"] },
+      { "category": "customers", "redFirstCases": ["new demand remains zero before atomic facility unlock", "shrimp substitutes at most once", "crab never substitutes", "waiter and active-customer caps hold under starvation"], "evidenceRequired": ["seeded demand distribution tests", "queue upper-bound trace"] },
+      { "category": "unlock progression", "redFirstCases": ["fish to kelp to shrimp to crab order cannot be skipped", "only one locked requirement is exposed", "a product is never required before its source exists"], "evidenceRequired": ["state-transition tests", "UI view-model snapshots"] },
+      { "category": "upgrade semantics", "redFirstCases": ["backpack icon changes only player capacity", "fish-net prompt changes only speed", "shrimp prompt changes only soak time", "crab prompt changes only ready capacity"], "evidenceRequired": ["ownership contract tests", "actual browser screenshots with local callouts"] },
+      { "category": "save migration", "redFirstCases": ["save-v4 and real save-v3 migrate through to proposed v5", "existing customers, queue and tokens survive", "new fields default and clamp", "refresh cannot overflow station buffers"], "evidenceRequired": ["real legacy fixtures", "save-refresh-save round trips"] },
+      { "category": "mobile UI and input", "redFirstCases": ["backpack icon remains 44px and inside safe area", "status card and quick menu do not overlap", "no horizontal overflow", "drag movement remains usable under every new prompt"], "evidenceRequired": ["Chromium 360x800, 390x844, 430x932 screenshots", "pointer and keyboard smoke QA"] },
+      { "category": "regression and motion", "redFirstCases": ["existing fish/kelp tests remain green", "three-direction eight-frame otter animation remains deterministic", "reduced motion remains static", "test API contract is deliberately versioned rather than silently expanded"], "evidenceRequired": ["lint, typecheck, full tests and build", "console error, pageerror and texture-upload checks"] }
+    ],
+    "requiredGates": [
+      "open-source research artifact must be reviewed again before any revised technical design or new dependency decision",
+      "RED evidence before every behavior change",
+      "lint exit 0",
+      "typecheck exit 0",
+      "all tests exit 0",
+      "web build exit 0",
+      "three portrait browser QA with machine-readable report",
+      "workspace-specific platform adapters remain isolated; web-lite does not prove WeChat, Douyin or TapTap publishability"
+    ]
+  },
+  "pendingApprovalItems": [
+    { "id": "P1", "question": "approve option B as the implementation baseline, with active-session autonomous shrimp batches and a slow crab ready slot?", "recommendedAnswer": "yes; it is the minimum change that makes shrimp and crab new operating relationships instead of reskins", "impactIfChanged": "choosing A lowers implementation and migration cost but also sharply lowers novelty and extensibility" },
+    { "id": "P2", "question": "approve one carrier slot per unit for fish, kelp, shrimp and crab, with shrimp shelf 6 and crab shelf 3 as first tuning targets?", "recommendedAnswer": "yes; it preserves current movement and restocking rhythm while facility timing supplies the differentiation", "impactIfChanged": "weighted cargo would require new stack UI, partial-batch rules and substantially more soft-lock testing" },
+    { "id": "P3", "question": "approve shrimp one-time fallback substitution and crab longer wait with no substitution, plus the proposed 3-8m and 8-15m unlock bands?", "recommendedAnswer": "yes; this makes new demand behavior visible without a complex customer system", "impactIfChanged": "uniform waiting is simpler but makes unlocking a product feel mostly like an income multiplier" }
+  ],
+  "implementationGate": {
+    "approved": false,
+    "requiredApprovalToken": "APPROVE",
+    "statement": "This artifact is design-only. No game implementation, asset generation, BuilderAgent or FixerAgent action is authorized until the user explicitly replies APPROVE."
+  }
+}

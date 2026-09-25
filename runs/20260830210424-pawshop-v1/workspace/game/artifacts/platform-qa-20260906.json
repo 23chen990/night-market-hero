@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "scope": "staged-web-lite-adapter",
+  "testedAt": "2026-09-05T19:01:51.000Z",
+  "viewport": { "width": 390, "height": 844, "deviceScaleFactor": 1 },
+  "method": "Playwright Chromium loads each staged platform build with that build directory as the static-server root (no repository public assets), waits for network idle plus 1200ms, checks HTTP status, canvas mount, loading completion, state bootstrap, console errors, and page errors.",
+  "results": [
+    {
+      "platform": "wechat",
+      "entrypoint": "platforms/wechat-minigame/build/index.html",
+      "status": 200,
+      "canvas": 1,
+      "loading": "false",
+      "area": { "unlocked": [1], "active": 1 },
+      "errors": [],
+      "pageErrors": [],
+      "screenshot": "screenshots/platform-wechat-390x844.png"
+    },
+    {
+      "platform": "douyin",
+      "entrypoint": "platforms/douyin-minigame/build/index.html",
+      "status": 200,
+      "canvas": 1,
+      "loading": "false",
+      "area": { "unlocked": [1], "active": 1 },
+      "errors": [],
+      "pageErrors": [],
+      "screenshot": "screenshots/platform-douyin-390x844.png"
+    },
+    {
+      "platform": "taptap",
+      "entrypoint": "platforms/taptap-minigame/build/index.html",
+      "status": 200,
+      "canvas": 1,
+      "loading": "false",
+      "area": { "unlocked": [1], "active": 1 },
+      "errors": [],
+      "pageErrors": [],
+      "screenshot": "screenshots/platform-taptap-390x844.png"
+    }
+  ],
+  "passed": true,
+  "limitations": [
+    "This is a web-lite staging smoke test only; it does not prove official WeChat, Douyin, or TapTap SDK/policy compliance or publishability.",
+    "All adapters intentionally report sdk-unavailable until platform SDK wiring and credentials are supplied."
+  ]
+}

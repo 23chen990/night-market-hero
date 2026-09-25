@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "issueId": "QA-CUSTOMER-JOURNEY-001",
+  "route": "formal-fixer",
+  "expectedRed": {
+    "command": "npm test -- tests/customer-journey.test.ts",
+    "observed": true,
+    "failures": [
+      "customer presentation source had no customerRoutes entry-held route state",
+      "customer lifecycle emitted queueAdvanced without customerPickedUp shelf evidence"
+    ]
+  },
+  "edgeCaseRed": {
+    "command": "npm test -- tests/customer-journey.test.ts",
+    "observed": true,
+    "failures": [
+      "loaded checkout customers initialized with customer.state could skip the normalized entry route"
+    ]
+  },
+  "finalGreen": {
+    "command": "npm test -- tests/customer-journey.test.ts",
+    "passedTests": 5,
+    "failedTests": 0
+  }
+}

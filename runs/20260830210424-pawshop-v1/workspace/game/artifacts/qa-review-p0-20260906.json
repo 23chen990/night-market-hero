@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "P0QAReview",
+  "targetGame": "20260830210424-pawshop-v1",
+  "checks": {"test":"PASS (80/80)","typecheck":"PASS","lint":"PASS","build":"PASS"},
+  "functionalFindings": [
+    {"id":"EMP-UI","status":"FAIL","evidence":"src/main.ts employee hooks are test-wired; no employee rendering in MarketScene"},
+    {"id":"EMP-UPGRADE-ECONOMY","status":"FAIL","evidence":"upgradeEmployee currently increments level without cost/cap contract"},
+    {"id":"ORDER-SATISFACTION","status":"FAIL","evidence":"satisfaction is initialized/normalized but not updated or surfaced"},
+    {"id":"ORDER-SETTLEMENT","status":"PARTIAL","evidence":"multi-item stock deduction is atomic; settlement remains keyed to customer.product"}
+  ],
+  "releaseGate": {"status":"BLOCKED","evidence":"factory-review-completion-audit-20260906.json unchanged"}
+}

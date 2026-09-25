@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "stage": "FACTORY_EVAL",
+  "passed": true,
+  "ownerRole": "QAAgent",
+  "verifierRole": "HumanReviewer",
+  "verifiedByRole": "HumanReviewer",
+  "independent": true,
+  "checkedAt": "2026-09-05T15:22:04.311Z",
+  "missing": [],
+  "observedInputs": [
+    "factory-eval/cases.json"
+  ],
+  "observedArtifacts": [
+    "artifacts/factory-eval-report.json"
+  ],
+  "observedEvidence": [
+    "factory-eval:cases",
+    "factory-eval:passed",
+    "suite:factory-eval-v3"
+  ],
+  "artifactVersions": {
+    "artifacts/factory-eval-report.json": 1,
+    "factory-eval/cases.json": 1
+  },
+  "failureRoute": {
+    "stage": "FACTORY_EVAL",
+    "classes": [
+      "build",
+      "qa",
+      "unknown"
+    ],
+    "rationale": "Factory changes must be fixed in the factory, not in a generated game."
+  }
+}

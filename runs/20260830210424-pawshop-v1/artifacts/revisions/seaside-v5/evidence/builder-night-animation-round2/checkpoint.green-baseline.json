@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "checkpointId": "seaside-v5-green-before-character-animation",
+  "targetGame": "海滩渔货铺",
+  "targetWorkspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "status": "green",
+  "createdAt": "2026-08-31T03:15:17+08:00",
+  "baseline": {
+    "unit": {
+      "command": "pnpm test",
+      "testFiles": 6,
+      "tests": 42,
+      "failed": 0
+    },
+    "staticChecks": {
+      "lint": 0,
+      "typecheck": 0,
+      "build": 0
+    },
+    "browser": {
+      "engine": "Chromium / Phaser 3.90 WebGL",
+      "viewports": ["360x800", "390x844", "430x932"],
+      "blackBlockCount": 0,
+      "textureUploadWarningCount": 0,
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "completeBusinessLoop": true,
+      "fullShelfBoundary": true,
+      "legacyMigration": true,
+      "refreshRecovery": true,
+      "meaningfulAlphaComposites": true
+    }
+  },
+  "evidence": {
+    "qaReport": "artifacts/revisions/seaside-v5/evidence/builder-night-round1/qa-report.json",
+    "qaDetails": "artifacts/revisions/seaside-v5/evidence/builder-night-round1/qa-details.json",
+    "consoleLog": "artifacts/revisions/seaside-v5/evidence/builder-night-round1/logs/browser-console.json",
+    "buildReport": "workspace/game/artifacts/build-report.json"
+  },
+  "criticalHashes": {
+    "workspace/game/src/main.ts": "8cb6c9ed354f593347011b7f60b5ec665e90f19854912546f027eb5fc9ab3c19",
+    "workspace/game/src/generated/game-config.json": "df28ac2270ac0137bd8dce1238c753c2bc4dccc1245e37eff318ce7e32f373c7",
+    "workspace/game/public/assets/background.png": "c16760c15cd8aa561fbb1a5dbc6d9ac1922085d30cb60e72f0f5834c475d86e1",
+    "workspace/game/public/assets/character.png": "b2f60d3fdbed8bfe72dd16543eb6dab3a8a6bd13cdc1cf5d0ed5c59072612ab2",
+    "workspace/game/public/assets/fish.png": "fe77be7164528d1b48ef1fdc1bf111e7efdf7dd84c7110917e3d33e702907b6e",
+    "workspace/game/public/assets/kelp.png": "2505d88ab45afed8c5fb5d0bf361691e931763332c3f9977389b4e071166da82",
+    "workspace/game/public/assets/upgrade.png": "516e27fe9d59ba3178dc3c1a9611c0063c52b756f7fa645147d886816b94efaa",
+    "workspace/game/dist/index.html": "a835f8a7237d0e5c3aba323aced1b2308237f3a7057cccec7a6873d996f29211",
+    "workspace/game/dist/assets/index-CGMrzVzt.js": "92bd9b1d1ce74d0cf3314ae58a9314503fddf209e74b6bf97b41ffe5c7af4467"
+  },
+  "authorizedIncrement": {
+    "selected": "8-frame character movement animation",
+    "excluded": ["large map integration", "shrimp", "employees", "advertising", "new economy systems"],
+    "rollbackOnRegression": true
+  }
+}

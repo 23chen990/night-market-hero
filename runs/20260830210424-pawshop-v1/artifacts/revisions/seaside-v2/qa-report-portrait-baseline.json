@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "portrait-first-playfield",
+      "passed": false,
+      "evidence": "src/style.css defines #game-wrap as aspect-ratio: 16 / 9 and changes it to 16 / 10 under max-aspect-ratio: 4 / 5; this contradicts the validated portrait-9:16-first blueprint."
+    },
+    {
+      "name": "portrait-regression-coverage",
+      "passed": false,
+      "evidence": "Existing UI tests only assert a generic max-aspect-ratio media query and do not cover 360x800, 390x844, or 430x932 viewport geometry, overflow, HUD visibility, or safe-area behavior."
+    },
+    {
+      "name": "existing-builder-contract",
+      "passed": true,
+      "evidence": "The baseline Builder report records test:passed, typecheck:passed, save:versioned, and all seven test API controls."
+    }
+  ],
+  "issues": [
+    {
+      "id": "PORTRAIT_LAYOUT_MISMATCH",
+      "severity": "error",
+      "message": "Convert the game to a 540x960 portrait-first phone composition. The playfield must remain 9:16 in 360x800, 390x844, and 430x932 viewports; desktop and landscape should center the same portrait QA shell instead of switching to a horizontal map. Preserve gameplay logic and all seven test controls.",
+      "evidence": "Validated blueprint orientation=portrait-9:16-first, while generated src/style.css uses 16/9 and 16/10 playfields and contains a landscape two-column rearrangement. Add failing focused tests before implementation, then verify no horizontal overflow, no clipped HUD/core stations, safe-area padding, visible canvas, and no full-screen repeating flash."
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Static acceptance audit; no runtime console failure was required to establish the orientation mismatch.",
+  "testedAt": "2026-08-30T13:43:00.000Z"
+}

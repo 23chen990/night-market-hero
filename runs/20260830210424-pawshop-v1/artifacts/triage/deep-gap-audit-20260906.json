@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "DeepGapAudit",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "method": {
+    "sources": [
+      "四份 Monkey Mart 外部机制/经济/模板文档",
+      "用户确认的 Monkey Mart 竞品录屏 manifestId=_2026-09-06-001930-f18bb8e16798",
+      "当前 workspace/game 源码、截图、76 个单元/契约测试",
+      "既有 QA issue sets: qa-ui-feel-20260905, qa-progression-ui-20260905, qa-competitor-gap-audit-20260905"
+    ],
+    "rule": "文档和竞品只提供可迁移机制观察，不升级为本项目硬需求；本项目结论必须绑定目标 run 代码或 QA 证据。"
+  },
+  "findings": [
+    {"id":"ECON-01","area":"经济节奏","priority":"P1","reference":"数值模型要求首分钟理解循环、五分钟首次升级、十分钟首次自动化","current":"economy.ts:24 首客等待22000ms；首个背篓升级40贝壳币；海带解锁96贝壳币","gap":"首个可感知成长可能晚于5分钟，且没有十分钟自动化节点","evidence":"src/game/economy.ts:12-15,24,35","acceptance":"自然新局在5分钟内完成首次有意义升级；10分钟内出现可操作自动化或明确解释的阶段目标"},
+    {"id":"ECON-02","area":"经济一致性","priority":"P1","reference":"蓝图历史要求潮池12贝壳币；外部文档强调前期差一点可买","current":"当前运行配置为96，legacyV4仍保留12","gap":"配置语义与历史蓝图/用户预期分叉，无法解释为何从12变96","evidence":"src/game/economy.ts:35,47; artifacts/game-blueprint.json preferences.kelpGate.investmentCost=12","acceptance":"锁定一个版本化经济方案，并在 UI/测试/蓝图中使用同一数值；删除或明确 legacy 分支"},
+    {"id":"ECON-03","area":"自动化","priority":"P1","reference":"劳动→升级→员工→老板感","current":"有鱼网/虾笼/蟹笼自动产出，但没有玩家可雇佣的搬运/补货员工","gap":"自动化不是玩家决策结果，缺少手动变自动的明显转折","evidence":"src/game/economy.ts:41-44; index.html:51-60","acceptance":"至少一个员工/自动补货模块有购买条件、工作范围、效率、可见工作状态和持久化"},
+    {"id":"ECON-04","area":"扩张","priority":"P1","reference":"一个货架→多个区域→空间成长","current":"扩展节点仅为潮池/预留虾蟹设施，主视图仍是固定单屏布局","gap":"解锁没有改变可行走空间、顾客路径或生产布局","evidence":"src/main.ts:343-370; economy.ts:36-45","acceptance":"扩张至少改变一个世界空间/路径/生产节点，并在刷新后保持"},
+    {"id":"LOOP-01","area":"核心循环","priority":"P1","reference":"生产→库存→销售→收入→升级反馈闭环","current":"首客22秒后才出现；新局截图只有空货架和静态 HUD","gap":"开局到第一笔交易的等待过长，核心循环前段缺乏教学性动作","evidence":"economy.ts:24; screenshots/final-390x844.png","acceptance":"新玩家在前30秒内能完成采集→补货→看到顾客需求的连续动作"},
+    {"id":"LOOP-02","area":"瓶颈归因","priority":"P1","reference":"空货架是任务提示；压力来源必须可见","current":"库存数字有显示，但缺货、等待、补货优先级主要依赖 transient objective chip/文字","gap":"玩家无法一眼判断当前最值得处理的瓶颈","evidence":"src/ui/view-model.ts:15-82; index.html:34-37","acceptance":"缺货货架、等待顾客、满载玩家、待收贝壳至少各有独立图标/颜色/进度状态"},
+    {"id":"ROUTE-01","area":"顾客路线","priority":"P1","reference":"竞品用可见货架/队列/走位制造物流压力","current":"顾客通过 CUSTOMER_ENTRY→固定 waypoint→目标点，非活动路线透明度0.2","gap":"多个顾客叠加时路线、占位和服务顺序仍难读；waitingStock 的停留原因不够强","evidence":"src/main.ts:551-584; qa-ui-feel-20260905.json","acceptance":"活动路线唯一高亮；等待货架显示缺货图标；队列占位不重叠且2秒内可读"},
+    {"id":"ROUTE-02","area":"空间语义","priority":"P1","reference":"世界本身是 UI，动线应表达可走空间","current":"路线图形是直线/折线叠加，货架、柜台、角色没有碰撞/通道语义","gap":"玩家看到的是导航线，不是可理解的店内空间","evidence":"src/main.ts:575-583; qa-competitor-gap-audit-20260905.json QA-GAP-MOTION-016","acceptance":"路线绕开设施并表达入口→货架→收银边界；拥挤时仍能归因于距离/队列"},
+    {"id":"PRODUCT-01","area":"产品辨识","priority":"P1","reference":"不同产品要有独立图标、轮廓、颜色、数量反馈","current":"货架图形已分鱼/海带/虾/蟹，但顾客身体颜色随机，HUD只显示鱼/海带","gap":"顾客需求、携带堆叠、货架库存三处产品语义不统一；虾蟹未进入 HUD 主反馈","evidence":"index.html:24-30; src/main.ts:532-540; qa-progression-ui-20260905.json","acceptance":"每种产品在顾客头顶、玩家堆叠、货架、HUD都使用同一图标语义和数量状态"},
+    {"id":"PROG-01","area":"升级状态机","priority":"P1","reference":"锁定→可购买→支付→建成→激活→满级","current":"HTML升级按钮只显示容量一条主线，采集/收银属性为“—”","gap":"升级可用性和能力变化不完整，玩家无法判断下一阶段改变什么","evidence":"index.html:51-60; src/ui/view-model.ts:69-82","acceptance":"每个升级节点显示锁定条件、当前、下一值、价格、购买中、已完成、满级状态"},
+    {"id":"PROG-02","area":"投资交易","priority":"P1","reference":"支付应是可见的金币→节点过程","current":"有 coinToNode tween，但同一通用 cue 处理 investment/upgrade/解锁","gap":"部分投入、达到阈值、节点转化没有独立视觉节拍","evidence":"src/main.ts:672-717; qa-progression-ui-20260905.json QA-PAYMENT-010","acceptance":"每次投入显示金额减少、硬币飞向节点、进度增加；最后一枚触发一次建成演出"},
+    {"id":"PROG-03","area":"建成设施","priority":"P1","reference":"建成后新设备应是持续可工作的世界对象","current":"kelp active 分支临时绘制 builtDevice/tufts；虾蟹设施仍以统一 silhouette 为主","gap":"设备功能、产出、可交互状态与视觉对象不完全绑定","evidence":"src/main.ts:494-520; qa-progression-ui-20260905.json QA-BUILD-STATE-011","acceptance":"建成设备有独立造型、产出动画、库存/工作状态，并与保存状态一致"},
+    {"id":"FEEL-01","area":"反馈","priority":"P1","reference":"收钱、补货、升级、员工、扩张应有不同 juice","current":"handleFeedback 将多类事件压成 product/settlement/upgrade/warning 四种通用图形","gap":"pickup、stocked、sale、cashCollected、upgrade 的因果反馈易混淆","evidence":"src/main.ts:672-719; qa-ui-feel-20260905.json QA-FEEL-SALE-003","acceptance":"采集、补货、取货、结算、投资、建成、升级各有不同图标/位置/动画，均≤500ms且不阻塞移动"},
+    {"id":"FEEL-02","area":"反馈可追踪性","priority":"P2","reference":"数字必须有来源","current":"贝壳实体会生成，但玩家收取后主要看到 HUD 数字变化","gap":"实体贝壳→总币→升级支付之间缺少连续因果链","evidence":"src/main.ts:645-669; index.html:20-22","acceptance":"拾取时显示 +N 飞向币袋；支付时显示 -N 飞向目标；数字与事件一一对应"},
+    {"id":"UI-01","area":"视觉层级","priority":"P1","reference":"世界就是 UI，关键状态不应被解释牌遮挡","current":"已有 QA 指出 persistent plaques/route labels 与角色、货架重叠","gap":"场景对象和说明文字争夺主视觉，非活动状态仍占注意力","evidence":"qa-ui-feel-20260905.json QA-UI-HIERARCHY-001/002; screenshots/recovery-natural/05-customer-shelf.png","acceptance":"默认视图移除持续黑色说明牌；状态使用图标、数字、颜色和局部短提示"},
+    {"id":"UI-02","area":"下一步可见性","priority":"P1","reference":"下一动作应在世界中可发现","current":"只有顶部 objective-chip 和右下角图标菜单；关键站点没有统一 next-action 状态","gap":"玩家需记住帮助面板规则并自行建立地图","evidence":"index.html:34-49,63-75; critique cognitive-load checklist","acceptance":"当前瓶颈站点出现局部箭头/脉冲/图标；帮助文字仅作补充"},
+    {"id":"UI-03","area":"移动端","priority":"P1","reference":"竞品在忙碌场景仍保持下一动作可找","current":"390x844 可运行，但顶部 HUD、路线、库存、顾客、提示同时出现时密度高","gap":"已通过无溢出不等于已通过可读性；横屏/小屏证据不足","evidence":"qa-report.json 仅覆盖 portrait；game-playtest 要求 portrait+landscape perceptual gate","acceptance":"360x800/390x844/430x932 肖像与横屏均完成自然可读性证据"},
+    {"id":"ONBOARD-01","area":"新手引导","priority":"P1","reference":"通过行动而非墙面文字教循环","current":"首次帮助面板是四条说明；自动捕鱼/补货/结账需要用户先理解地图","gap":"开局缺少分段目标、即时成功确认和失败恢复","evidence":"index.html:63-74; screenshots/final-390x844.png","acceptance":"前3个动作以局部视觉目标引导，每完成一步立即确认，并允许跳过/重看"},
+    {"id":"ACCESS-01","area":"可访问性","priority":"P2","reference":"—","current":"Phaser Canvas 主玩法依赖拖动/键盘；HTML按钮有 sr-only，但 Canvas 状态不会被读屏完整表达","gap":"Sam 无法通过屏幕阅读器理解货架库存、顾客状态、路线和失败原因","evidence":"index.html:16-49; src/main.ts Canvas rendering","acceptance":"关键状态同步到 aria-live 文本；按钮/焦点/对比度在移动端验证"},
+    {"id":"SAVE-01","area":"持久化","priority":"P1","reference":"老板感来自持续运行和可恢复进度","current":"localStorage 版本化存在，但中断在投资/建成/顾客路线中间的恢复证据不完整","gap":"刷新后视觉路线和世界对象是否与状态一致仍有分支风险","evidence":"src/game/persistence.ts; existing qa reports","acceptance":"覆盖投资中、刚建成、顾客 waitingStock、checkout token 未拾取四种刷新恢复"},
+    {"id":"PLATFORM-01","area":"平台适配","priority":"P0","reference":"目标为微信/抖音/TapTap 小游戏","current":"现有证据为 web-lite；未见三平台 adapter/config/build/QA 包","gap":"浏览器通过不能证明可发布","evidence":"artifacts/qa-report.json; game-blueprint.json targetPlatforms","acceptance":"每个平台在同一 run 下有隔离 adapter/config/tests/build report；至少完成构建级验证"},
+    {"id":"EVAL-01","area":"工厂状态","priority":"P0","reference":"—","current":"state.json 为 ABANDONED；原因是 factory-eval 缺少 EXPERIENCE_CONTRACT/FEEL_PROTOTYPE/PERCEPTUAL_QA 回归","gap":"已有游戏 QA 通过不等于 run 可交付","evidence":"runs/20260830210424-pawshop-v1/state.json","acceptance":"修复工厂评估缺失阶段并重新生成可验证 stage artifacts；不能只改游戏源码"}
+  ],
+  "cognitiveLoad": {
+    "failedItems": ["singleFocus","visualHierarchy","oneThingAtATime","workingMemory","progressiveDisclosure"],
+    "failureCount": 5,
+    "rating": "critical",
+    "reason":"顾客、路线、货架、HUD、升级、帮助和局部提示在同一屏同时竞争；玩家需记住站点关系和升级条件。"
+  },
+  "heuristicScore": {
+    "scores": {"visibility":2,"matchRealWorld":3,"userControl":3,"consistency":2,"errorPrevention":3,"recognition":2,"flexibility":2,"minimalism":1,"errorRecovery":2,"help":2},
+    "total":22,
+    "band":"acceptable-but-significant-improvement-needed"
+  },
+  "recommendedRoute": "formal-fixer",
+  "routeReason": "问题覆盖核心循环、经济、升级、持久化、平台与默认运行旅程；且当前 run 已有一次正式修复记录和 factory-eval 阻塞。"
+}

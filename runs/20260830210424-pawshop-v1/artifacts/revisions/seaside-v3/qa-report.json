@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "v3-builder-contract",
+      "passed": true,
+      "evidence": "Fresh FULL_BUILD report: contract:test-api-7, save:versioned, test:passed, and typecheck:passed; Builder thread 01a0535a-3613-7790-bdd5-eb372eb3abe4."
+    },
+    {
+      "name": "game-tests-and-build",
+      "passed": true,
+      "evidence": "Independent rerun: 7 Vitest files and 21 tests passed; game typecheck and Vite production build exited 0."
+    },
+    {
+      "name": "factory-boundaries",
+      "passed": true,
+      "evidence": "Factory lint and root typecheck exited 0; 38 targeted agent-boundary, web-lite-runtime, request-router, and state-machine tests passed."
+    },
+    {
+      "name": "single-kelp-investment-node",
+      "passed": true,
+      "evidence": "Initial browser state shows one locked 潮池投建 0/12 node. DOM copy contains neither 海带建设区 nor 右下角建设区; rules expose no STATIONS.construction member."
+    },
+    {
+      "name": "kelp-in-place-unlock-and-save",
+      "passed": true,
+      "evidence": "Real keyboard movement reached kelpSource at approximately (439.45,254.97); 12 shell coins changed the same node from locked investment to unlocked harvest. Reload restored invested=12 and unlocked=true."
+    },
+    {
+      "name": "full-capacity-hud-avoidance",
+      "passed": true,
+      "evidence": "Real movement filled the carrier to 4/4. The 满载 badge rectangle (102.89,247.58,48,24) did not intersect the HUD rectangle (9,84.33,372,114.67); upgrading to capacity 5 hid it at 4/5."
+    },
+    {
+      "name": "deterministic-economy-controls",
+      "passed": true,
+      "evidence": "Exactly seven window.__GAME_TEST__ controls remain; spawnCustomer and completeOrder produced an observable customer and currency transition."
+    },
+    {
+      "name": "portrait-viewports",
+      "passed": true,
+      "evidence": "360x800, 390x844, and 430x932 all measured approximately 9:16, had no horizontal overflow, and displayed a visible Canvas."
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "evidence": "Chromium console errors=0 and page exceptions=0 during investment, unlock, refresh, full-capacity, upgrade, economy, and viewport checks."
+    }
+  ],
+  "issues": [],
+  "screenshots": [
+    "screenshots/gameplay-kelp-locked.png",
+    "screenshots/gameplay.png",
+    "screenshots/gameplay-capacity-full-v3.png"
+  ],
+  "consoleLog": "logs/console.log",
+  "testedAt": "2026-08-30T16:17:27.000Z"
+}

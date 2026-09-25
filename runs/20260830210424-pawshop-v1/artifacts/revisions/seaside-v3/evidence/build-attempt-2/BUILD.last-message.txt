@@ -1,0 +1,18 @@
+已完成，仅修改目标游戏工作区。
+
+- 完整空间经营循环、单节点潮池解锁、顾客排队、实体贝壳币、容量升级与竖屏 UI：[main.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/main.ts)
+- 版本化存档、节流持久化及刷新恢复：[model.ts](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/src/game/model.ts)
+- 七项 `window.__GAME_TEST__` 控制全部保留。
+- 回归与 UI 测试：[tests](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/tests)
+- 构建报告：[build-report.json](/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game/artifacts/build-report.json)
+
+最终验证：
+
+- `npm test`：15/15 通过
+- `npm run typecheck`：通过
+- `npm run build`：通过
+- `dist/index.html` 与全部 8 个报告产物一致
+- 生产预览入口、JS、CSS、角色资产：HTTP 200
+- `BuildReportSchema`：通过
+
+额外浏览器截图烟测受宿主 macOS 沙箱阻止浏览器进程启动；指定的测试、类型检查和生产构建均已成功。

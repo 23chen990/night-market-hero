@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "perceptual-qa-report",
+  "game": "beach_fish_market_v4",
+  "passed": true,
+  "features": [
+    { "featureId": "exp-route-01", "playerVisible": true, "naturalTriggerVerified": true, "screenshotEvidence": ["screenshots/recovery-natural/04-customer-entry.png", "screenshots/recovery-natural/05-customer-shelf.png", "screenshots/recovery-natural/06-customer-checkout.png"], "evidence": ["Fresh natural run visibly showed the customer entering through the bottom door, stopping at the target shelf, then continuing to checkout."], "notes": [] },
+    { "featureId": "exp-stock-pressure-02", "playerVisible": true, "naturalTriggerVerified": true, "screenshotEvidence": ["screenshots/recovery-natural/03-fish-shelf.png", "screenshots/recovery-natural/05-customer-shelf.png"], "evidence": ["Natural restock and customer demand visibly changed shelf count while queue/carry HUD remained readable."], "notes": [] },
+    { "featureId": "exp-sale-juice-03", "playerVisible": true, "naturalTriggerVerified": true, "screenshotEvidence": ["screenshots/recovery-natural/06-customer-checkout.png", "screenshots/recovery-natural/07-settlement.png"], "evidence": ["Natural checkout visibly produced settlement feedback and increased the shell currency HUD from 0 to 12."], "notes": [] },
+    { "featureId": "exp-next-action-04", "playerVisible": true, "naturalTriggerVerified": true, "screenshotEvidence": ["screenshots/recovery-natural/01-startup.png", "screenshots/recovery-natural/07-settlement.png"], "evidence": ["Compact top objective chip and icon-first bottom affordances communicate the current shop state without a persistent bottom action bar or prose upgrade controls."], "notes": [] },
+    { "featureId": "exp-replay-05", "playerVisible": true, "naturalTriggerVerified": true, "screenshotEvidence": ["screenshots/recovery-natural/08-replay.png"], "evidence": ["After settlement, a fresh reload returned to the playable shop shell with no page error."], "notes": [] }
+  ],
+  "checkedAt": "2026-09-05T07:41:00.000Z"
+}

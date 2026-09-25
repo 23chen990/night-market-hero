@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "DirectBuilderEvidence",
+  "targetGame": "20260830210424-pawshop-v1",
+  "workspace": "runs/20260830210424-pawshop-v1/workspace/game",
+  "route": "direct-builder",
+  "filesChanged": ["index.html", "src/main.ts", "tests/ui-shell.test.ts"],
+  "checks": {
+    "focusedTests": "107 passed / 16 files",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "distHtmlRemovedIds": ["stock-strip", "carry-pill", "fish-stock", "kelp-stock", "carrying"]
+  },
+  "remainingEvidenceGaps": [
+    "Supplied screenshot remains PENDING identity review and is not treated as target runtime proof.",
+    "Full natural-input perceptual retest is not claimed by this direct presentation-only repair."
+  ]
+}

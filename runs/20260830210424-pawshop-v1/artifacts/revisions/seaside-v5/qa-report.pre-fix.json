@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "current-unit-tests",
+      "passed": true,
+      "evidence": "Independent pnpm test completed with 5 files and 32 tests passing, but the tests omit the explicit failures below."
+    },
+    {
+      "name": "current-typecheck",
+      "passed": true,
+      "evidence": "Independent pnpm typecheck exited 0."
+    },
+    {
+      "name": "current-production-build",
+      "passed": true,
+      "evidence": "Independent pnpm build exited 0 and emitted dist/index.html; the Builder invocation itself timed out and did not emit a successful validated V5 build report."
+    },
+    {
+      "name": "researched-v5-balance-contract",
+      "passed": false,
+      "evidence": "Read-only source audit found missing tier gating, incorrect real V4 save migration, stale literal UI values and no game lint command."
+    }
+  ],
+  "issues": [
+    {
+      "id": "V5-QA-001",
+      "severity": "error",
+      "message": "Write a failing test first, then require kelpUnlocked before the 88-coin 6→8 carrier upgrade. Before kelp unlock, purchaseCarrierUpgrade and proximity purchase must not deduct currency or change capacity; the UI must say 解锁海带后开放. After kelp unlock it may purchase normally, and capacity 8 must show 已满级 with no next price.",
+      "evidence": "src/game/economy.ts tiers have no requires field; src/game/simulation.ts purchaseCarrierUpgrade only checks tier existence and currency; the current gameplay test buys both tiers while kelp is locked."
+    },
+    {
+      "id": "V5-QA-002",
+      "severity": "error",
+      "message": "Write a failing real-fixture migration test first, then migrate the actual seaside-v4 save key and shape into save-v4. The legacy key is ai-game-factory:beach_fish_market_v4:save-v3. Read player.capacity, player.inventory, upgrade.purchases, construction, shelves and currency from the V4 structure, preserve legal carried goods, and write the migrated state to the V5 key.",
+      "evidence": "src/game/persistence.ts incorrectly uses ai-game-factory:beach_fish_market_v5:save-v3. src/game/simulation.ts normalizeSave reads top-level capacity/carrying and does not read the actual V4 player.inventory shape, so a real existing save is missed or loses carried goods."
+    },
+    {
+      "id": "V5-QA-003",
+      "severity": "error",
+      "message": "Write failing migration tests first, then preserve legacy V4 tide-pool percentage: locked invested 6/12 must become 48/96; unlocked legacy state must become 96/96. Shared carried inventory must map to the smallest legal 4/6/8 tier that preserves up to 8 carried items when possible; only totals above 8 may be deterministically normalized.",
+      "evidence": "src/game/simulation.ts directly clamps legacy invested to 0..96 and prioritizes fish while truncating kelp. tests/gameplay.test.ts incorrectly treats a version-3 invested value of 63 as a valid legacy fixture."
+    },
+    {
+      "id": "V5-QA-004",
+      "severity": "error",
+      "message": "Write source-of-truth tests first, then remove runtime balance literals outside src/game/economy.ts. Scene/HUD copy must read the 96 investment cost, product rewards, carrier tiers and cadence from ECONOMY. Keep generated game-config as build input metadata, not a second independently interpreted formula or value source.",
+      "evidence": "src/main.ts currently renders the literal strings /96 in station copy instead of ECONOMY.kelpUnlock.investmentCost."
+    },
+    {
+      "id": "V5-QA-005",
+      "severity": "error",
+      "message": "Write a failing UI-model test first, then treat carrying >= capacity as full for the player-attached 满载 indicator. Preserve all existing HUD exclusion placement behavior and the seven window.__GAME_TEST__ controls.",
+      "evidence": "src/ui/view-model.ts getFullBadgeModel uses carrying === capacity, so defensive over-capacity states can hide the full warning."
+    },
+    {
+      "id": "V5-QA-006",
+      "severity": "error",
+      "message": "Add a real lint script for the game workspace without adding a production dependency, and run lint, typecheck, all tests and build. The final build report must record RED-first evidence for these fixes and the final command results.",
+      "evidence": "workspace/game/package.json currently provides test, typecheck and build but no lint script, contrary to repository completion requirements."
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "artifacts/revisions/seaside-v5/logs/pre-fix-console.log",
+  "testedAt": "2026-08-31T01:36:00+08:00"
+}
