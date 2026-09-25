@@ -21,6 +21,11 @@ import {
   type RenderInspectionCheckpoint,
 } from './dev-render-inspection.ts';
 import type { RunPlanChunkDescriptor } from './run-plan.ts';
+import {
+  NOT_MEASURED_V36_VISIBILITY,
+  V36RequestObservation,
+  type Measurement,
+} from './dev-render-observation.ts';
 
 interface InspectionTelemetry {
   artifactType: 'render-inspection-snapshot';
@@ -38,11 +43,10 @@ interface InspectionTelemetry {
   components: ComponentRendererStats;
   requestedTextureKeys: string[];
   loadedTextureKeys: string[];
-  visibleTextureKeys: string[];
   loadFailures: Array<{ key: string; url: string; message?: string }>;
-  v36Requested: false;
-  v36Visible: false;
-  v36Drawn: false;
+  v36Requested: Measurement<boolean>;
+  v36Visible: Measurement<boolean>;
+  v36Drawn: Measurement<boolean>;
 }
 
 interface InspectionSettings {
@@ -79,8 +83,8 @@ export class RenderInspectionScene extends Phaser.Scene {
   });
   private readonly requestedTextureKeys = new Set<string>();
   private readonly loadedTextureKeys = new Set<string>();
-  private readonly visibleTextureKeys = new Set<string>();
   private readonly loadFailures: Array<{ key: string; url: string; message?: string }> = [];
+  private readonly v36RequestObservation = new V36RequestObservation();
   private panOffset = 0;
   private ready = false;
 
@@ -97,8 +101,15 @@ export class RenderInspectionScene extends Phaser.Scene {
       });
     });
     const adapter = this.createAdapter();
-    this.nightCityRenderer.preload(adapter);
-    this.componentRenderer.preload(adapter);
+    this.v36RequestObservation.begin('Phaser load.image adapter calls during renderer preload');
+    try {
+      this.nightCityRenderer.preload(adapter);
+      this.componentRenderer.preload(adapter);
+      this.v36RequestObservation.complete();
+    } catch (error) {
+      this.v36RequestObservation.fail(error instanceof Error ? error.message : String(error));
+      throw error;
+    }
   }
 
   public create(): void {
@@ -133,20 +144,13 @@ export class RenderInspectionScene extends Phaser.Scene {
       load: {
         image: (key: string, url: string): void => {
           this.requestedTextureKeys.add(key);
+          this.v36RequestObservation.record(key, url);
           this.load.image(key, url);
         },
       },
       add: {
         image: (x: number, y: number, key: string): RenderImage => {
-          const image = this.add.image(x, y, key);
-          const originalSetVisible = image.setVisible.bind(image);
-          image.setVisible = (visible: boolean): Phaser.GameObjects.Image => {
-            if (visible) this.visibleTextureKeys.add(key);
-            else this.visibleTextureKeys.delete(key);
-            originalSetVisible(visible);
-            return image;
-          };
-          return image;
+          return this.add.image(x, y, key);
         },
       },
       textures: {
@@ -180,11 +184,13 @@ export class RenderInspectionScene extends Phaser.Scene {
       components,
       requestedTextureKeys: [...this.requestedTextureKeys].sort(),
       loadedTextureKeys: [...this.loadedTextureKeys].sort(),
-      visibleTextureKeys: [...this.visibleTextureKeys].sort(),
       loadFailures: [...this.loadFailures],
-      v36Requested: false,
-      v36Visible: false,
-      v36Drawn: false,
+      v36Requested: this.v36RequestObservation.read(),
+      v36Visible: NOT_MEASURED_V36_VISIBILITY,
+      v36Drawn: {
+        status: 'NOT_MEASURED',
+        scope: 'no Image lifecycle, camera-crop, occlusion, or GPU draw observation in R1.1',
+      },
     });
   }
 

@@ -32,11 +32,26 @@ interface Telemetry {
   components: unknown;
   requestedTextureKeys: string[];
   loadedTextureKeys: string[];
-  visibleTextureKeys: string[];
   loadFailures: Array<{ key: string; url: string; message?: string }>;
-  v36Requested: boolean;
-  v36Visible: boolean;
-  v36Drawn: boolean;
+  v36Requested: {
+    status: 'MEASURED' | 'NOT_MEASURED' | 'FAILED';
+    value?: boolean;
+    scope?: string;
+    observedCallCount?: number;
+    reason?: string;
+  };
+  v36Visible: {
+    status: 'MEASURED' | 'NOT_MEASURED' | 'FAILED';
+    value?: boolean;
+    scope?: string;
+    reason?: string;
+  };
+  v36Drawn: {
+    status: 'MEASURED' | 'NOT_MEASURED' | 'FAILED';
+    value?: boolean;
+    scope?: string;
+    reason?: string;
+  };
 }
 
 interface CaseEvidence {
@@ -50,11 +65,15 @@ interface CaseEvidence {
   components: unknown;
   requestedTextureKeys: string[];
   loadedTextureKeys: string[];
-  visibleTextureKeys: string[];
   loadFailures: Telemetry['loadFailures'];
   consoleErrors: string[];
   pageErrors: string[];
-  v36: { requested: boolean; visible: boolean; drawn: boolean };
+  v36: {
+    requested: Telemetry['v36Requested'];
+    visible: Telemetry['v36Visible'];
+    drawn: Telemetry['v36Drawn'];
+  };
+  collectionErrors: string[];
 }
 
 function sha256(bytes: Buffer): string {
@@ -111,51 +130,71 @@ async function main(): Promise<void> {
   await mkdir(evidenceDir, { recursive: true });
   const browser = await chromium.launch({ headless: true });
   const cases: CaseEvidence[] = [];
+  const collectionErrors: Array<{ mode: InspectionMode; viewport: string; checkpoint: string; message: string }> = [];
   let video: { path: string; sha256: string } | null = null;
   try {
     for (const mode of modes) {
       for (const viewport of viewports) {
         for (const checkpoint of checkpoints) {
           const captureVideo = mode === 'default' && viewport.id === '1280x720' && checkpoint.id === 'rooftops-01-to-02';
-          const opened = await openCase(browser, mode, checkpoint, viewport, captureVideo);
-          const { page, telemetry, consoleErrors, pageErrors, context } = opened;
-          if (telemetry.seed !== RENDER_INSPECTION_SEED) throw new Error(`Unexpected seed at ${mode}/${viewport.id}/${checkpoint.id}`);
-          if (telemetry.mode !== mode || telemetry.checkpoint !== checkpoint.id) throw new Error(`Unexpected telemetry identity at ${mode}/${viewport.id}/${checkpoint.id}`);
-          if (telemetry.v36Requested || telemetry.v36Visible || telemetry.v36Drawn) throw new Error(`v36 participated at ${mode}/${viewport.id}/${checkpoint.id}`);
-          if (telemetry.requestedTextureKeys.some((key) => key.includes('v36'))) throw new Error(`v36 texture requested at ${mode}/${viewport.id}/${checkpoint.id}`);
-          const screenshotPath = resolve(evidenceDir, 'screenshots', mode, viewport.id, `${checkpoint.id}.png`);
-          const screenshot = await writeScreenshot(page, screenshotPath);
-          if (captureVideo) {
-            await page.locator('[data-inspection="pan-right"]').click();
-            await page.waitForTimeout(220);
-            await page.locator('[data-inspection="pan-left"]').click();
-            await page.waitForTimeout(220);
-            await page.locator('[data-inspection="pan-center"]').click();
-            await page.waitForTimeout(220);
+          let context: BrowserContext | undefined;
+          try {
+            const opened = await openCase(browser, mode, checkpoint, viewport, captureVideo);
+            context = opened.context;
+            const { page, telemetry, consoleErrors, pageErrors } = opened;
+            const caseErrors: string[] = [];
+            if (telemetry.seed !== RENDER_INSPECTION_SEED) caseErrors.push(`Unexpected seed: ${telemetry.seed}`);
+            if (telemetry.mode !== mode || telemetry.checkpoint !== checkpoint.id) caseErrors.push('Unexpected telemetry identity');
+            if (telemetry.v36Requested.status !== 'MEASURED') caseErrors.push(`v36 request observation status=${telemetry.v36Requested.status}`);
+            else if (telemetry.v36Requested.value === true) caseErrors.push('v36 request observed in the adapter call window');
+            if (telemetry.v36Visible.status !== 'NOT_MEASURED') caseErrors.push(`v36 visibility observation status=${telemetry.v36Visible.status}`);
+            if (telemetry.v36Drawn.status !== 'NOT_MEASURED') caseErrors.push(`v36 draw observation status=${telemetry.v36Drawn.status}`);
+            if (telemetry.requestedTextureKeys.some((key) => key.includes('v36'))) caseErrors.push('v36 texture key appeared in requestedTextureKeys');
+            if (telemetry.loadFailures.length > 0) caseErrors.push(`Phaser load failures: ${telemetry.loadFailures.length}`);
+            if (consoleErrors.length > 0) caseErrors.push(`console errors: ${consoleErrors.length}`);
+            if (pageErrors.length > 0) caseErrors.push(`page errors: ${pageErrors.length}`);
+            if (caseErrors.length > 0) {
+              for (const message of caseErrors) collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
+            }
+            const screenshotPath = resolve(evidenceDir, 'screenshots', mode, viewport.id, `${checkpoint.id}.png`);
+            const screenshot = await writeScreenshot(page, screenshotPath);
+            if (captureVideo) {
+              await page.locator('[data-inspection="pan-right"]').click();
+              await page.waitForTimeout(220);
+              await page.locator('[data-inspection="pan-left"]').click();
+              await page.waitForTimeout(220);
+              await page.locator('[data-inspection="pan-center"]').click();
+              await page.waitForTimeout(220);
+            }
+            const videoHandle = page.video();
+            await context.close();
+            context = undefined;
+            if (captureVideo && videoHandle) {
+              const videoPath = await videoHandle.path();
+              video = { path: videoPath, sha256: sha256(await readFile(videoPath)) };
+            }
+            cases.push({
+              mode,
+              viewport,
+              checkpoint: checkpoint.id,
+              boundaryX: telemetry.boundaryX,
+              sceneFamilies: telemetry.chunks,
+              screenshot,
+              nightCity: telemetry.nightCity,
+              components: telemetry.components,
+              requestedTextureKeys: telemetry.requestedTextureKeys,
+              loadedTextureKeys: telemetry.loadedTextureKeys,
+              loadFailures: telemetry.loadFailures,
+              consoleErrors,
+              pageErrors,
+              v36: { requested: telemetry.v36Requested, visible: telemetry.v36Visible, drawn: telemetry.v36Drawn },
+              collectionErrors: caseErrors,
+            });
+          } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
+            if (context) await context.close().catch(() => undefined);
           }
-          const videoHandle = page.video();
-          await context.close();
-          if (captureVideo && videoHandle) {
-            const videoPath = await videoHandle.path();
-            video = { path: videoPath, sha256: sha256(await readFile(videoPath)) };
-          }
-          cases.push({
-            mode,
-            viewport,
-            checkpoint: checkpoint.id,
-            boundaryX: telemetry.boundaryX,
-            sceneFamilies: telemetry.chunks,
-            screenshot,
-            nightCity: telemetry.nightCity,
-            components: telemetry.components,
-            requestedTextureKeys: telemetry.requestedTextureKeys,
-            loadedTextureKeys: telemetry.loadedTextureKeys,
-            visibleTextureKeys: telemetry.visibleTextureKeys,
-            loadFailures: telemetry.loadFailures,
-            consoleErrors,
-            pageErrors,
-            v36: { requested: telemetry.v36Requested, visible: telemetry.v36Visible, drawn: telemetry.v36Drawn },
-          });
         }
       }
     }
@@ -184,16 +223,23 @@ async function main(): Promise<void> {
     modes,
     cases,
     video,
+    status: collectionErrors.length === 0 ? 'PASS' : 'FAILED',
+    collectionErrors,
     notes: [
       '截图和录像使用真实 Chromium、Phaser loader、NightCityRenderer 和 ComponentRenderer。',
       'longmap 对照是现有 legacy component overlay；完整场景底板与自绘 raster 资源的单张混合组景尚未接入 runtime。',
-      'v36 的请求、显示和绘制标记在每个案例均为 false；缺失/加载失败按实际结果保留。',
+      'v36Requested 只测量 Phaser load.image 适配器调用窗口；v36Visible 和 v36Drawn 明确为 NOT_MEASURED。',
+      '缺失/加载失败、控制台错误和页面异常按实际结果保留；非零错误会使采集任务失败。',
       '本报告不代表自然游玩到达，也不代表屋脊接缝已修复。',
     ],
   };
   const reportPath = resolve(evidenceDir, 'report.json');
   await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
-  console.log(JSON.stringify({ reportPath, cases: cases.length, video, loadFailures: cases.reduce((total, item) => total + item.loadFailures.length, 0), consoleErrors: cases.reduce((total, item) => total + item.consoleErrors.length, 0), pageErrors: cases.reduce((total, item) => total + item.pageErrors.length, 0) }, null, 2));
+  const loadFailures = cases.reduce((total, item) => total + item.loadFailures.length, 0);
+  const consoleErrors = cases.reduce((total, item) => total + item.consoleErrors.length, 0);
+  const pageErrors = cases.reduce((total, item) => total + item.pageErrors.length, 0);
+  console.log(JSON.stringify({ reportPath, status: collectionErrors.length === 0 ? 'PASS' : 'FAILED', cases: cases.length, video, loadFailures, consoleErrors, pageErrors, collectionErrors }, null, 2));
+  if (collectionErrors.length > 0) process.exitCode = 1;
 }
 
 await main();

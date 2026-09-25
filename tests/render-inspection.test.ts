@@ -66,3 +66,17 @@ test('the dev-only HTML is not the formal self-contained build entry', async () 
   assert.match(html, /src\/main\.ts/);
   assert.doesNotMatch(html, /dev\/render-inspection/);
 });
+
+test('R1 telemetry exposes measured request state and explicit unmeasured visibility state', async () => {
+  const browserSource = await readFile(new URL('../src/dev-render-inspection-browser.ts', import.meta.url), 'utf8');
+  const collector = await readFile(new URL('./render-inspection-browser.ts', import.meta.url), 'utf8');
+  assert.match(browserSource, /v36RequestObservation\.read\(\)/);
+  assert.match(browserSource, /v36Visible: NOT_MEASURED_V36_VISIBILITY/);
+  assert.match(browserSource, /v36Drawn: \{\s*status: 'NOT_MEASURED'/);
+  assert.doesNotMatch(browserSource, /visibleTextureKeys/);
+  assert.match(collector, /telemetry\.v36Requested\.status !== 'MEASURED'/);
+  assert.match(collector, /telemetry\.v36Visible\.status !== 'NOT_MEASURED'/);
+  assert.match(collector, /telemetry\.v36Drawn\.status !== 'NOT_MEASURED'/);
+  assert.doesNotMatch(collector, /if \(telemetry\.v36Requested \|\| telemetry\.v36Visible \|\| telemetry\.v36Drawn\)/);
+  assert.match(collector, /process\.exitCode = 1/);
+});
