@@ -54,6 +54,8 @@ test('the R1 entry is isolated from formal bootstrap, state APIs, and player per
   assert.doesNotMatch(source, /from ['"].*main/);
   assert.doesNotMatch(source, /LocalRunSnapshotStorage|LocalProgressStorage|__GAME_TEST__|__FORMAL_TEST__|__PROTOTYPE_TEST__/);
   assert.match(html, /开发渲染预览，非自然游玩证据/);
+  assert.match(html, /legacy overlay/);
+  assert.match(html, /完整底板.*自绘 raster 资源/);
   assert.match(html, /src="\/src\/dev-render-inspection\.ts"/);
 });
 

@@ -168,6 +168,11 @@ async function main(): Promise<void> {
     testedCommit,
     generatedAt: new Date().toISOString(),
     entry: { url: baseUrl, label: '开发渲染预览，非自然游玩证据' },
+    longmapMode: {
+      status: 'legacy-component-overlay-diagnostic',
+      hybridComposition: 'unavailable-and-not-integrated',
+      note: '当前 mode=longmap 复用现有 ComponentRenderer overlay；不代表已批准的单张混合组景。',
+    },
     seed: RENDER_INSPECTION_SEED,
     checkpoints: checkpoints.map(({ id, boundaryX, leftChunk, rightChunk }) => ({
       id,
@@ -181,6 +186,7 @@ async function main(): Promise<void> {
     video,
     notes: [
       '截图和录像使用真实 Chromium、Phaser loader、NightCityRenderer 和 ComponentRenderer。',
+      'longmap 对照是现有 legacy component overlay；完整场景底板与自绘 raster 资源的单张混合组景尚未接入 runtime。',
       'v36 的请求、显示和绘制标记在每个案例均为 false；缺失/加载失败按实际结果保留。',
       '本报告不代表自然游玩到达，也不代表屋脊接缝已修复。',
     ],
