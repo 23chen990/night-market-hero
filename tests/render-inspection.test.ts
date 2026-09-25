@@ -10,6 +10,11 @@ import {
   createRenderInspectionCheckpoints,
   parseInspectionMode,
 } from '../src/dev-render-inspection.ts';
+import {
+  collectCaseEvidence,
+  collectionOutcome,
+  type Telemetry,
+} from './render-inspection-browser.ts';
 
 test('derives the three R1 checkpoints from the authoritative RunPlan', () => {
   const checkpoints = createRenderInspectionCheckpoints();
@@ -55,7 +60,7 @@ test('the R1 entry is isolated from formal bootstrap, state APIs, and player per
   assert.doesNotMatch(source, /LocalRunSnapshotStorage|LocalProgressStorage|__GAME_TEST__|__FORMAL_TEST__|__PROTOTYPE_TEST__/);
   assert.match(html, /开发渲染预览，非自然游玩证据/);
   assert.match(html, /legacy overlay/);
-  assert.match(html, /完整底板.*自绘 raster 资源/);
+  assert.match(html, /当前 longmap 模式仅用于现有组件叠加诊断，不代表最终组景方案、资源批准或默认启用/);
   assert.match(html, /src="\/src\/dev-render-inspection\.ts"/);
 });
 
@@ -78,5 +83,79 @@ test('R1 telemetry exposes measured request state and explicit unmeasured visibi
   assert.match(collector, /telemetry\.v36Visible\.status !== 'NOT_MEASURED'/);
   assert.match(collector, /telemetry\.v36Drawn\.status !== 'NOT_MEASURED'/);
   assert.doesNotMatch(collector, /if \(telemetry\.v36Requested \|\| telemetry\.v36Visible \|\| telemetry\.v36Drawn\)/);
-  assert.match(collector, /process\.exitCode = 1/);
+  assert.match(collector, /collectionOutcome\(collectionErrors\)/);
+  assert.match(collector, /process\.exitCode = outcome\.exitCode/);
+});
+
+function lateErrorTelemetry(): Telemetry {
+  return {
+    artifactType: 'render-inspection-snapshot',
+    seed: RENDER_INSPECTION_SEED,
+    mode: 'default',
+    checkpoint: 'market-to-rooftops',
+    checkpointLabel: 'market-to-rooftops',
+    boundaryX: 8_000,
+    camera: { left: 7_164, right: 8_836, panOffset: 0 },
+    chunks: [],
+    nightCity: {},
+    components: {},
+    requestedTextureKeys: [],
+    loadedTextureKeys: [],
+    loadFailures: [],
+    v36Requested: { status: 'MEASURED', value: false },
+    v36Visible: { status: 'NOT_MEASURED' },
+    v36Drawn: { status: 'NOT_MEASURED' },
+  };
+}
+
+test('late console errors after telemetry fail the case and collection outcome', async () => {
+  const consoleErrors: string[] = [];
+  const result = await collectCaseEvidence({
+    mode: 'default',
+    viewport: { id: '1280x720', width: 1_280, height: 720 },
+    checkpoint: { id: 'market-to-rooftops' },
+    telemetry: lateErrorTelemetry(),
+    consoleErrors,
+    pageErrors: [],
+    capture: async () => {
+      consoleErrors.push('late console error during screenshot/pan');
+      return { screenshot: { path: '/tmp/fake.png', sha256: 'fake' } };
+    },
+  });
+  assert.deepEqual(result.evidence.consoleErrors, ['late console error during screenshot/pan']);
+  assert.deepEqual(result.errors, ['console errors: 1']);
+  assert.deepEqual(collectionOutcome(result.errors), { status: 'FAILED', exitCode: 1 });
+});
+
+test('late page errors after telemetry fail the case and collection outcome', async () => {
+  const pageErrors: string[] = [];
+  const result = await collectCaseEvidence({
+    mode: 'default',
+    viewport: { id: '1280x720', width: 1_280, height: 720 },
+    checkpoint: { id: 'market-to-rooftops' },
+    telemetry: lateErrorTelemetry(),
+    consoleErrors: [],
+    pageErrors,
+    capture: async () => {
+      pageErrors.push('late page error during screenshot/pan');
+      return { screenshot: { path: '/tmp/fake.png', sha256: 'fake' } };
+    },
+  });
+  assert.deepEqual(result.evidence.pageErrors, ['late page error during screenshot/pan']);
+  assert.deepEqual(result.errors, ['page errors: 1']);
+  assert.deepEqual(collectionOutcome(result.errors), { status: 'FAILED', exitCode: 1 });
+});
+
+test('a case without late errors remains a passing collection outcome', async () => {
+  const result = await collectCaseEvidence({
+    mode: 'default',
+    viewport: { id: '1280x720', width: 1_280, height: 720 },
+    checkpoint: { id: 'market-to-rooftops' },
+    telemetry: lateErrorTelemetry(),
+    consoleErrors: [],
+    pageErrors: [],
+    capture: async () => ({ screenshot: { path: '/tmp/fake.png', sha256: 'fake' } }),
+  });
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(collectionOutcome(result.errors), { status: 'PASS', exitCode: 0 });
 });

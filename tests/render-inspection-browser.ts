@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { chromium, type BrowserContext, type Page } from '@playwright/test';
 import {
   createRenderInspectionCheckpoints,
@@ -20,7 +21,7 @@ const viewports = [
 const modes: readonly InspectionMode[] = ['default', 'longmap'];
 const checkpoints = createRenderInspectionCheckpoints();
 
-interface Telemetry {
+export interface Telemetry {
   artifactType: string;
   seed: number;
   mode: InspectionMode;
@@ -55,7 +56,7 @@ interface Telemetry {
   };
 }
 
-interface CaseEvidence {
+export interface CaseEvidence {
   mode: InspectionMode;
   viewport: { id: string; width: number; height: number };
   checkpoint: string;
@@ -77,6 +78,27 @@ interface CaseEvidence {
   collectionErrors: string[];
 }
 
+export interface CaseCaptureResult {
+  screenshot: { path: string; sha256: string };
+  video?: { path: string; sha256: string };
+}
+
+export interface CaseCollectionInput {
+  mode: InspectionMode;
+  viewport: { id: string; width: number; height: number };
+  checkpoint: { id: string };
+  telemetry: Telemetry;
+  consoleErrors: string[];
+  pageErrors: string[];
+  capture: () => Promise<CaseCaptureResult>;
+}
+
+export interface CaseCollectionResult {
+  evidence: CaseEvidence;
+  errors: string[];
+  video?: { path: string; sha256: string };
+}
+
 function sha256(bytes: Buffer): string {
   return createHash('sha256').update(bytes).digest('hex');
 }
@@ -85,6 +107,55 @@ async function writeScreenshot(page: Page, filePath: string): Promise<{ path: st
   await mkdir(dirname(filePath), { recursive: true });
   await page.screenshot({ path: filePath, fullPage: true });
   return { path: filePath, sha256: sha256(await readFile(filePath)) };
+}
+
+/**
+ * Finalizes a case only after screenshot and any bounded pan capture complete.
+ * The listener arrays are intentionally read here, rather than at telemetry time,
+ * so late browser errors affect the case, report, and process result together.
+ */
+export async function collectCaseEvidence(input: CaseCollectionInput): Promise<CaseCollectionResult> {
+  const captured = await input.capture();
+  await new Promise<void>((resolve) => setTimeout(resolve, 0));
+  const { mode, viewport, checkpoint, telemetry, consoleErrors, pageErrors } = input;
+  const caseErrors: string[] = [];
+  if (telemetry.seed !== RENDER_INSPECTION_SEED) caseErrors.push(`Unexpected seed: ${telemetry.seed}`);
+  if (telemetry.mode !== mode || telemetry.checkpoint !== checkpoint.id) caseErrors.push('Unexpected telemetry identity');
+  if (telemetry.v36Requested.status !== 'MEASURED') caseErrors.push(`v36 request observation status=${telemetry.v36Requested.status}`);
+  else if (telemetry.v36Requested.value === true) caseErrors.push('v36 request observed in the adapter call window');
+  if (telemetry.v36Visible.status !== 'NOT_MEASURED') caseErrors.push(`v36 visibility observation status=${telemetry.v36Visible.status}`);
+  if (telemetry.v36Drawn.status !== 'NOT_MEASURED') caseErrors.push(`v36 draw observation status=${telemetry.v36Drawn.status}`);
+  if (telemetry.requestedTextureKeys.some((key) => key.includes('v36'))) caseErrors.push('v36 texture key appeared in requestedTextureKeys');
+  caseErrors.push(...collectionErrorsForRuntime({
+    loadFailures: telemetry.loadFailures.length,
+    consoleErrors: consoleErrors.length,
+    pageErrors: pageErrors.length,
+  }));
+  return {
+    evidence: {
+      mode,
+      viewport,
+      checkpoint: checkpoint.id,
+      boundaryX: telemetry.boundaryX,
+      sceneFamilies: telemetry.chunks,
+      screenshot: captured.screenshot,
+      nightCity: telemetry.nightCity,
+      components: telemetry.components,
+      requestedTextureKeys: telemetry.requestedTextureKeys,
+      loadedTextureKeys: telemetry.loadedTextureKeys,
+      loadFailures: telemetry.loadFailures,
+      consoleErrors: [...consoleErrors],
+      pageErrors: [...pageErrors],
+      v36: { requested: telemetry.v36Requested, visible: telemetry.v36Visible, drawn: telemetry.v36Drawn },
+      collectionErrors: caseErrors,
+    },
+    errors: caseErrors,
+    video: captured.video,
+  };
+}
+
+export function collectionOutcome(collectionErrors: readonly unknown[]): { status: 'PASS' | 'FAILED'; exitCode: 0 | 1 } {
+  return collectionErrors.length === 0 ? { status: 'PASS', exitCode: 0 } : { status: 'FAILED', exitCode: 1 };
 }
 
 async function waitForTelemetry(page: Page): Promise<Telemetry> {
@@ -143,56 +214,38 @@ async function main(): Promise<void> {
             const opened = await openCase(browser, mode, checkpoint, viewport, captureVideo);
             context = opened.context;
             const { page, telemetry, consoleErrors, pageErrors } = opened;
-            const caseErrors: string[] = [];
-            if (telemetry.seed !== RENDER_INSPECTION_SEED) caseErrors.push(`Unexpected seed: ${telemetry.seed}`);
-            if (telemetry.mode !== mode || telemetry.checkpoint !== checkpoint.id) caseErrors.push('Unexpected telemetry identity');
-            if (telemetry.v36Requested.status !== 'MEASURED') caseErrors.push(`v36 request observation status=${telemetry.v36Requested.status}`);
-            else if (telemetry.v36Requested.value === true) caseErrors.push('v36 request observed in the adapter call window');
-            if (telemetry.v36Visible.status !== 'NOT_MEASURED') caseErrors.push(`v36 visibility observation status=${telemetry.v36Visible.status}`);
-            if (telemetry.v36Drawn.status !== 'NOT_MEASURED') caseErrors.push(`v36 draw observation status=${telemetry.v36Drawn.status}`);
-            if (telemetry.requestedTextureKeys.some((key) => key.includes('v36'))) caseErrors.push('v36 texture key appeared in requestedTextureKeys');
-            caseErrors.push(...collectionErrorsForRuntime({
-              loadFailures: telemetry.loadFailures.length,
-              consoleErrors: consoleErrors.length,
-              pageErrors: pageErrors.length,
-            }));
-            if (caseErrors.length > 0) {
-              for (const message of caseErrors) collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
-            }
-            const screenshotPath = resolve(evidenceDir, 'screenshots', mode, viewport.id, `${checkpoint.id}.png`);
-            const screenshot = await writeScreenshot(page, screenshotPath);
-            if (captureVideo) {
-              await page.locator('[data-inspection="pan-right"]').click();
-              await page.waitForTimeout(220);
-              await page.locator('[data-inspection="pan-left"]').click();
-              await page.waitForTimeout(220);
-              await page.locator('[data-inspection="pan-center"]').click();
-              await page.waitForTimeout(220);
-            }
-            const videoHandle = page.video();
-            await context.close();
-            context = undefined;
-            if (captureVideo && videoHandle) {
-              const videoPath = await videoHandle.path();
-              video = { path: videoPath, sha256: sha256(await readFile(videoPath)) };
-            }
-            cases.push({
+            const caseResult = await collectCaseEvidence({
               mode,
               viewport,
-              checkpoint: checkpoint.id,
-              boundaryX: telemetry.boundaryX,
-              sceneFamilies: telemetry.chunks,
-              screenshot,
-              nightCity: telemetry.nightCity,
-              components: telemetry.components,
-              requestedTextureKeys: telemetry.requestedTextureKeys,
-              loadedTextureKeys: telemetry.loadedTextureKeys,
-              loadFailures: telemetry.loadFailures,
+              checkpoint,
+              telemetry,
               consoleErrors,
               pageErrors,
-              v36: { requested: telemetry.v36Requested, visible: telemetry.v36Visible, drawn: telemetry.v36Drawn },
-              collectionErrors: caseErrors,
+              capture: async () => {
+                const screenshotPath = resolve(evidenceDir, 'screenshots', mode, viewport.id, `${checkpoint.id}.png`);
+                const screenshot = await writeScreenshot(page, screenshotPath);
+                if (captureVideo) {
+                  await page.locator('[data-inspection="pan-right"]').click();
+                  await page.waitForTimeout(220);
+                  await page.locator('[data-inspection="pan-left"]').click();
+                  await page.waitForTimeout(220);
+                  await page.locator('[data-inspection="pan-center"]').click();
+                  await page.waitForTimeout(220);
+                }
+                const videoHandle = page.video();
+                if (!context) throw new Error('Browser context closed before case capture completed');
+                await context.close();
+                context = undefined;
+                if (captureVideo && videoHandle) {
+                  const videoPath = await videoHandle.path();
+                  return { screenshot, video: { path: videoPath, sha256: sha256(await readFile(videoPath)) } };
+                }
+                return { screenshot };
+              },
             });
+            for (const message of caseResult.errors) collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
+            if (caseResult.video) video = caseResult.video;
+            cases.push(caseResult.evidence);
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
@@ -204,6 +257,7 @@ async function main(): Promise<void> {
   } finally {
     await browser.close();
   }
+  const outcome = collectionOutcome(collectionErrors);
   const report = {
     schemaVersion: 1,
     artifactType: 'render-inspection-qa-report',
@@ -213,7 +267,7 @@ async function main(): Promise<void> {
     longmapMode: {
       status: 'legacy-component-overlay-diagnostic',
       hybridComposition: 'unavailable-and-not-integrated',
-      note: '当前 mode=longmap 复用现有 ComponentRenderer overlay；不代表已批准的单张混合组景。',
+      note: '当前 longmap 模式仅用于现有组件叠加诊断，不代表最终组景方案、资源批准或默认启用。',
     },
     seed: RENDER_INSPECTION_SEED,
     checkpoints: checkpoints.map(({ id, boundaryX, leftChunk, rightChunk }) => ({
@@ -226,11 +280,11 @@ async function main(): Promise<void> {
     modes,
     cases,
     video,
-    status: collectionErrors.length === 0 ? 'PASS' : 'FAILED',
+    status: outcome.status,
     collectionErrors,
     notes: [
       '截图和录像使用真实 Chromium、Phaser loader、NightCityRenderer 和 ComponentRenderer。',
-      'longmap 对照是现有 legacy component overlay；完整场景底板与自绘 raster 资源的单张混合组景尚未接入 runtime。',
+      '当前 longmap 模式仅用于现有组件叠加诊断，不代表最终组景方案、资源批准或默认启用。',
       'v36Requested 只测量 Phaser load.image 适配器调用窗口；v36Visible 和 v36Drawn 明确为 NOT_MEASURED。',
       '缺失/加载失败、控制台错误和页面异常按实际结果保留；非零错误会使采集任务失败。',
       '本报告不代表自然游玩到达，也不代表屋脊接缝已修复。',
@@ -241,8 +295,10 @@ async function main(): Promise<void> {
   const loadFailures = cases.reduce((total, item) => total + item.loadFailures.length, 0);
   const consoleErrors = cases.reduce((total, item) => total + item.consoleErrors.length, 0);
   const pageErrors = cases.reduce((total, item) => total + item.pageErrors.length, 0);
-  console.log(JSON.stringify({ reportPath, status: collectionErrors.length === 0 ? 'PASS' : 'FAILED', cases: cases.length, video, loadFailures, consoleErrors, pageErrors, collectionErrors }, null, 2));
-  if (collectionErrors.length > 0) process.exitCode = 1;
+  console.log(JSON.stringify({ reportPath, status: outcome.status, cases: cases.length, video, loadFailures, consoleErrors, pageErrors, collectionErrors }, null, 2));
+  if (outcome.exitCode !== 0) process.exitCode = outcome.exitCode;
 }
 
-await main();
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  await main();
+}
