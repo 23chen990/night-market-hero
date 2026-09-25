@@ -8,6 +8,20 @@ export interface Measurement<T> {
   reason?: string;
 }
 
+export interface RuntimeCollectionErrorCounts {
+  loadFailures: number;
+  consoleErrors: number;
+  pageErrors: number;
+}
+
+export function collectionErrorsForRuntime(counts: RuntimeCollectionErrorCounts): string[] {
+  const errors: string[] = [];
+  if (counts.loadFailures > 0) errors.push(`Phaser load failures: ${counts.loadFailures}`);
+  if (counts.consoleErrors > 0) errors.push(`console errors: ${counts.consoleErrors}`);
+  if (counts.pageErrors > 0) errors.push(`page errors: ${counts.pageErrors}`);
+  return errors;
+}
+
 const V36_KEY_MARKER = 'rooftops-transition-v36';
 const V36_PATH_MARKER = 'rooftops-transition-v36-fullheight.png';
 
@@ -67,4 +81,3 @@ export const NOT_MEASURED_V36_VISIBILITY: Measurement<boolean> = Object.freeze({
   status: 'NOT_MEASURED',
   scope: 'no Image lifecycle, camera-crop, occlusion, or GPU draw observation in R1.1',
 });
-

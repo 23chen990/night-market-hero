@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
   V36RequestObservation,
+  collectionErrorsForRuntime,
   isV36ResourceReference,
 } from '../src/dev-render-observation.ts';
 
@@ -41,3 +42,8 @@ test('reports collection failure without a boolean fallback', () => {
   assert.equal(measurement.reason, 'adapter threw before the collection window closed');
 });
 
+test('turns load, console, and page errors into explicit collection failures', () => {
+  assert.deepEqual(collectionErrorsForRuntime({ loadFailures: 1, consoleErrors: 0, pageErrors: 0 }), ['Phaser load failures: 1']);
+  assert.deepEqual(collectionErrorsForRuntime({ loadFailures: 0, consoleErrors: 2, pageErrors: 0 }), ['console errors: 2']);
+  assert.deepEqual(collectionErrorsForRuntime({ loadFailures: 0, consoleErrors: 0, pageErrors: 3 }), ['page errors: 3']);
+});

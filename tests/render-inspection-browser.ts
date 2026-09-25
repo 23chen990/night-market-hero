@@ -7,6 +7,7 @@ import {
   RENDER_INSPECTION_SEED,
   type InspectionMode,
 } from '../src/dev-render-inspection.ts';
+import { collectionErrorsForRuntime } from '../src/dev-render-observation.ts';
 
 const workspace = process.env.WORKSPACE ?? process.cwd();
 const baseUrl = process.env.BASE_URL ?? 'http://127.0.0.1:4178/dev/render-inspection.html';
@@ -150,9 +151,11 @@ async function main(): Promise<void> {
             if (telemetry.v36Visible.status !== 'NOT_MEASURED') caseErrors.push(`v36 visibility observation status=${telemetry.v36Visible.status}`);
             if (telemetry.v36Drawn.status !== 'NOT_MEASURED') caseErrors.push(`v36 draw observation status=${telemetry.v36Drawn.status}`);
             if (telemetry.requestedTextureKeys.some((key) => key.includes('v36'))) caseErrors.push('v36 texture key appeared in requestedTextureKeys');
-            if (telemetry.loadFailures.length > 0) caseErrors.push(`Phaser load failures: ${telemetry.loadFailures.length}`);
-            if (consoleErrors.length > 0) caseErrors.push(`console errors: ${consoleErrors.length}`);
-            if (pageErrors.length > 0) caseErrors.push(`page errors: ${pageErrors.length}`);
+            caseErrors.push(...collectionErrorsForRuntime({
+              loadFailures: telemetry.loadFailures.length,
+              consoleErrors: consoleErrors.length,
+              pageErrors: pageErrors.length,
+            }));
             if (caseErrors.length > 0) {
               for (const message of caseErrors) collectionErrors.push({ mode, viewport: viewport.id, checkpoint: checkpoint.id, message });
             }
