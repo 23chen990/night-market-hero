@@ -1,0 +1,39 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna-structure",
+  "scope": "Main recorded summary of independent Luna round 1; source pixels preserved under qa/review-round-1",
+  "status": "NEEDS_WORK",
+  "findings": [
+    {
+      "severity": "low",
+      "summary": "Central roof reused near-framing art with cropped top/left edges.",
+      "evidence": [
+        "qa/review-round-1/screen.png: middle roof at x366 y41 w496 h221 has visible rectangular start; original roof alpha contacts top/left canvas."
+      ],
+      "recommendation": "Use an interior roof variant with transparent margins and independently retest this branch."
+    }
+  ],
+  "checks": [
+    {
+      "name": "facade, canopy, rope and scaffold mounts",
+      "passed": true,
+      "evidence": "Source and assembled pixels inspected; posts, beams and rope connections remain coherent."
+    },
+    {
+      "name": "alpha composites",
+      "passed": true,
+      "evidence": "Six parts on light/dark/saturated backgrounds showed no checkerboard, matte, fringes or halos."
+    },
+    {
+      "name": "middle roof canvas edge",
+      "passed": false,
+      "evidence": "Hard cut in central roof persists in desktop and mobile views."
+    }
+  ],
+  "limitations": [
+    "Offline art review only; no runtime integration or formal FIX completion.",
+    "90% similarity unmeasured; no percentage certified.",
+    "This is the main agent condensed record of the matching structured Luna response."
+  ]
+}

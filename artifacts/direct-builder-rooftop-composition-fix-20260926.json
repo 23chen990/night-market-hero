@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "generated-game-repair-handoff",
+  "targetGame": "23chen990/night-market-hero",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "triage": {
+    "issue": "屋顶 v55 素材以独立图片叠放，缺少与灯笼电缆相同的自绘可变跨度",
+    "source": "artifacts/triage-rooftop-composition-20260926.json",
+    "classification": "composition-wiring-mismatch",
+    "scope": "ComponentRenderer 屋顶组的视觉连接层与回收测试"
+  },
+  "route": {
+    "selected": "direct-builder",
+    "reason": "根因已在 ComponentRenderer 局部复现；修复只涉及渲染器和对应测试，不改变核心玩法、状态机、存档、平台适配、发布配置或默认正式旅程。",
+    "contextIntentionallyOmitted": [
+      "已撤回或未批准的 v53/v54 屋顶候选",
+      "水效果 PAUSED_BY_USER",
+      "与屋顶组合无因果关系的既有灯笼素材生成与其他未提交改动"
+    ]
+  },
+  "implementation": {
+    "assetLayer": "v55 source-derived transparent roof silhouettes remain independent reusable image placements",
+    "codeLayer": "same-chunk adjacent rooftop anchors receive variable-width Phaser line spans, with pooled lines released/reused alongside image groups",
+    "lanternBehavior": "unchanged"
+  },
+  "acceptanceCriteria": [
+    "屋檐、屋顶冠部、承托块继续使用已批准透明素材",
+    "每个可见屋顶 chunk 的相邻素材之间存在正跨度代码连接段",
+    "离开视口时连接段隐藏并在返回时复用",
+    "灯笼素材与代码电缆行为保持不变",
+    "默认正式旅程与核心玩法不变"
+  ],
+  "filesChangedByThisRoute": [
+    "src/component-renderer.ts",
+    "tests/component-renderer.test.ts",
+    "artifacts/triage-rooftop-composition-20260926.json",
+    "qa-evidence/rooftops-v55-runtime/rooftop-connector-runtime-20260926.json",
+    "artifacts/direct-builder-rooftop-composition-fix-20260926.json"
+  ],
+  "runtimeWiredEntrypointFiles": [
+    "src/main.ts",
+    "src/component-renderer.ts",
+    "src/longmap-art-catalog.ts",
+    "src/longmap-scene-recipes.ts"
+  ],
+  "tests": {
+    "targetedRed": "pnpm test -- --test-name-pattern='rooftop components use a code-drawn structural span' (failed before connector implementation)",
+    "targetedGreen": "rooftop connector test passes; connector hides on chunk release and reuses the original line",
+    "full": "pnpm test (269 passed, 10 skipped, 0 failed)",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
+  },
+  "runtime": {
+    "status": "PASS",
+    "command": "Playwright Chromium browser import against the Vite preview",
+    "browser": "Chromium, viewport 1180x720, http://127.0.0.1:5173/?longmap=1&seed=31&fresh=1",
+    "sceneFamily": "rooftops-01/low-tile-ridges",
+    "chunk": "chain-0/rooftops-01/low-tile-ridges",
+    "visibleAssetKeys": [
+      "longmap-component-rooftops-curved-eave",
+      "longmap-component-rooftops-roof-support-block",
+      "longmap-component-rooftops-roof-crown"
+    ],
+    "connectorSpans": 2,
+    "evidence": [
+      "qa-evidence/rooftops-v55-runtime/longmap-rooftops-v55-connector-runtime-20260926.json",
+      "qa-evidence/rooftops-v55-runtime/rooftop-connector-runtime-20260926.json"
+    ],
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "screenshot": "qa-evidence/rooftops-v55-runtime/longmap-rooftops-v55-connector-runtime-20260926.png"
+  },
+  "evidenceGaps": [
+    "组件预览与夜巡自然输入均到达目标 rooftop chunk；默认有限正式流程仍保留原默认路径。",
+    "web-lite 运行证据不等同于微信、抖音或 TapTap 平台包发布验证。"
+  ],
+  "status": "PASS"
+}

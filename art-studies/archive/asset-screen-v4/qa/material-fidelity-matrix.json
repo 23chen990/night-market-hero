@@ -1,0 +1,662 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "inner-eave",
+      "paifang",
+      "canopy",
+      "lantern",
+      "scaffold",
+      "facade"
+    ],
+    "lifecycleStateBranches": [
+      "original-material",
+      "prepared-copy",
+      "assembled-screen"
+    ],
+    "rendererPaths": [
+      "source-comparison",
+      "offline-canvas"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "inner-eave-original-material",
+      "objectType": "inner-eave",
+      "lifecycleStateBranch": "original-material",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna source audit finds the form locally compatible, without claiming complete scene or close-up suitability.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "inner-eave-prepared-copy",
+      "objectType": "inner-eave",
+      "lifecycleStateBranch": "prepared-copy",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Prepared-copy cleanup is not independently approved for overall art fidelity; do not extrapolate original-source compatibility.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "inner-eave-assembled-screen",
+      "objectType": "inner-eave",
+      "lifecycleStateBranch": "assembled-screen",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna full-frame audit confirms enlargement, repetition, placement or missing host-structure issues; overall visual acceptance remains unmet.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "paifang-original-material",
+      "objectType": "paifang",
+      "lifecycleStateBranch": "original-material",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna source audit finds the form locally compatible, without claiming complete scene or close-up suitability.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "paifang-prepared-copy",
+      "objectType": "paifang",
+      "lifecycleStateBranch": "prepared-copy",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Prepared-copy cleanup is not independently approved for overall art fidelity; do not extrapolate original-source compatibility.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "paifang-assembled-screen",
+      "objectType": "paifang",
+      "lifecycleStateBranch": "assembled-screen",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna full-frame audit confirms enlargement, repetition, placement or missing host-structure issues; overall visual acceptance remains unmet.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-original-material",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "original-material",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna source audit finds the form locally compatible, without claiming complete scene or close-up suitability.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-prepared-copy",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "prepared-copy",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Prepared-copy cleanup is not independently approved for overall art fidelity; do not extrapolate original-source compatibility.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-assembled-screen",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "assembled-screen",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna full-frame audit confirms enlargement, repetition, placement or missing host-structure issues; overall visual acceptance remains unmet.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-original-material",
+      "objectType": "lantern",
+      "lifecycleStateBranch": "original-material",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna source audit finds the form locally compatible, without claiming complete scene or close-up suitability.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-prepared-copy",
+      "objectType": "lantern",
+      "lifecycleStateBranch": "prepared-copy",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Prepared-copy cleanup is not independently approved for overall art fidelity; do not extrapolate original-source compatibility.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-assembled-screen",
+      "objectType": "lantern",
+      "lifecycleStateBranch": "assembled-screen",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna full-frame audit confirms enlargement, repetition, placement or missing host-structure issues; overall visual acceptance remains unmet.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-original-material",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "original-material",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna source audit finds the form locally compatible, without claiming complete scene or close-up suitability.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-prepared-copy",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "prepared-copy",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Prepared-copy cleanup is not independently approved for overall art fidelity; do not extrapolate original-source compatibility.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-assembled-screen",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "assembled-screen",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "Luna full-frame audit confirms enlargement, repetition, placement or missing host-structure issues; overall visual acceptance remains unmet.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-original-material",
+      "objectType": "facade",
+      "lifecycleStateBranch": "original-material",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "No complete source for near facade or midground door-side exists in approved inventory.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-prepared-copy",
+      "objectType": "facade",
+      "lifecycleStateBranch": "prepared-copy",
+      "rendererPath": "source-comparison",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "No complete source for near facade or midground door-side exists in approved inventory.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-assembled-screen",
+      "objectType": "facade",
+      "lifecycleStateBranch": "assembled-screen",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "分离本体、缩放与缺失原因后给出该部位具体判断。",
+      "observed": "No complete source for near facade or midground door-side exists in approved inventory.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+          "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+          "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+          "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Eaves and canopy exceed native alpha-bound widths by about2x in near roles.",
+    "Lantern, beam and scaffold original forms can be retained in appropriate local roles.",
+    "Complete facades are missing.",
+    "Current assembly also contains unsupported relationships."
+  ],
+  "remainingGaps": [
+    "Overall90% fidelity is unproven and not accepted.",
+    "No-new-image constraint remains in force."
+  ],
+  "createdAt": "2026-09-30T17:06:20.899075Z"
+}

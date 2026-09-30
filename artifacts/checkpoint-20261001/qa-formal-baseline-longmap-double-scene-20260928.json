@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {"name":"default startup has one static owner","passed":true,"evidence":"qa-baseline-longmap-double-scene-20260928/default-844x390-telemetry.json and default-1180x720-telemetry.json report cityRenderer=image-stream and componentRenderer=disabled."},
+    {"name":"default natural hold does not reveal legacy code geometry","passed":false,"evidence":"qa-baseline-longmap-double-scene-20260928/default-844x390-attached.png and default-1180x720-attached.png show translucent code-drawn rectangle/triangle/diagonal scaffold while attachedAnchorId is set."},
+    {"name":"longmap preview has one scene owner","passed":false,"evidence":"qa-baseline-longmap-double-scene-20260928/longmap-844x390-telemetry.json and longmap-1180x720-telemetry.json report cityRenderer=image-stream and componentRenderer=component-overlay in the same frame."},
+    {"name":"natural input has no console or page errors","passed":true,"evidence":"All four fresh baseline cells report consoleErrors=0, pageErrors=0 and requestFailures=0."},
+    {"name":"terminal and replay journey evidence","passed":false,"evidence":"Baseline observed active play and release only; post-fix terminal/replay evidence is still required."}
+  ],
+  "issues": [
+    {"id":"experience-complaint-longmap-double-scene-20260928/default-legacy-geometry","severity":"error","message":"Default attached branch still renders legacy sceneObjects geometry over the raster city scene.","evidence":"qa-baseline-longmap-double-scene-20260928/default-844x390-attached.png; default-1180x720-attached.png"},
+    {"id":"experience-complaint-longmap-double-scene-20260928/longmap-two-owners","severity":"error","message":"?longmap=1 renders image-stream and component-overlay together, producing two scene layers.","evidence":"qa-baseline-longmap-double-scene-20260928/longmap-844x390-attached.png; longmap-1180x720-attached.png"}
+  ],
+  "screenshots": [
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-844x390-attached.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-1180x720-attached.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-844x390-attached.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-1180x720-attached.png"
+  ],
+  "consoleLog": "Fresh Playwright baseline: consoleErrors=0, pageErrors=0, requestFailures=0 in default and longmap cells at 844x390 and 1180x720.",
+  "testedAt": "2026-09-28T05:05:59Z",
+  "evidence": [
+    {"schemaVersion":1,"mode":"NATURAL_E2E","actions":["fresh browser startup","normal pointer hold on grapple input","release pointer","repeat at 844x390 and 1180x720","repeat with ?longmap=1"],"artifacts":["runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-844x390-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-1180x720-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-844x390-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-1180x720-attached.png"],"forbiddenOperations":[],"runtime":"Phaser/Vite web-lite","device":{"width":844,"height":390,"label":"mobile landscape"},"seed":31,"runner":"independent QA baseline agent"},
+    {"schemaVersion":1,"mode":"NATURAL_E2E","actions":["fresh browser startup","normal pointer hold on grapple input","release pointer","repeat with ?longmap=1"],"artifacts":["runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-1180x720-telemetry.json","runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-1180x720-telemetry.json"],"forbiddenOperations":[],"runtime":"Phaser/Vite web-lite","device":{"width":1180,"height":720,"label":"desktop landscape"},"seed":31,"runner":"independent QA baseline agent"}
+  ],
+  "naturalFlow": {
+    "schemaVersion":1,
+    "startedFromReset":true,
+    "actions":["fresh startup","hold grapple input","release input"],
+    "transitions":[{"name":"startup-to-playing","changed":true,"evidence":"state=playing in baseline telemetry"},{"name":"pointer-hold-to-attached","changed":true,"evidence":"attachedAnchorId=node-1/node-2 in baseline telemetry"},{"name":"release-to-playing","changed":true,"evidence":"release screenshots and telemetry show inputHeld=false/status=playing"}],
+    "completion":"none",
+    "replayObserved":false,
+    "forbiddenOperations":[],
+    "screenshots":["runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-844x390-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-844x390-attached.png"],
+    "passed":false,
+    "blockers":["terminal and replay were not completed in baseline","duplicate scene owner and legacy geometry reproduced"],
+    "runner":"independent QA baseline agent",
+    "runtime":"Phaser/Vite web-lite",
+    "device":{"width":844,"height":390,"label":"mobile landscape"},
+    "seed":31,
+    "observedAt":"2026-09-28T05:05:59Z"
+  }
+}

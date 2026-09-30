@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "formal-fixer-repair-evidence",
+  "route": "formal-fixer",
+  "attempt": 1,
+  "issueId": "experience-complaint-longmap-double-scene-20260928",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "baseline": {
+    "qaReport": "runs/mobile-chart-adaptation-20260830/artifacts/qa-formal-baseline-longmap-double-scene-20260928.json",
+    "qaReportSha256": "4ddb1ea7893dfe935e370d5d6502454f4270e977685d81f8bc050c47cb480834",
+    "independentReport": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/baseline-report.json",
+    "independentReportSha256": "e15136347bbcf8362b6c2ebbdcdbcb347e3346cb0316ba3de99777850d8098f1"
+  },
+  "hypothesis": "The duplicate scene was caused by two runtime owners: the image stream plus an opt-in component overlay, while the attached branch also painted legacy sceneObjects through Phaser Graphics. Use the approved image stream as the only static owner, keep component art isolated from FlightScene until a complete hybrid scene is ART_APPROVED, and reserve Graphics for dynamic feedback.",
+  "filesChangedThisAttempt": [
+    "src/main.ts",
+    "tests/runtime-assets-wiring.test.ts",
+    "tests/user-feedback-revision.test.ts"
+  ],
+  "implementation": {
+    "sceneOwner": "night-city-image-stream",
+    "sceneLayerCount": 1,
+    "sceneOverlay": "none",
+    "longmapQuery": "same single owner as default; component renderer disabled",
+    "legacyTerrainCall": "removed from FlightScene render path",
+    "dynamicFeedback": "rope, anchors, pickups, tutorial, chase, gate and character remain rendered",
+    "physicsAndState": "unchanged"
+  },
+  "tests": {
+    "targetedAndFull": {
+      "command": "pnpm test -- tests/runtime-assets-wiring.test.ts tests/user-feedback-revision.test.ts tests/component-renderer.test.ts tests/night-city-renderer.test.ts",
+      "passed": true,
+      "summary": "280 tests: 270 passed, 10 skipped, 0 failed"
+    },
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "passed": true
+    },
+    "lint": {
+      "command": "pnpm lint",
+      "passed": true
+    },
+    "build": {
+      "command": "pnpm build",
+      "passed": true,
+      "output": "dist/index.html and 夜市飞侠-护印突围-试玩版.html"
+    }
+  },
+  "retest": {
+    "report": "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/retest-report.json",
+    "reportSha256": "a3b1c68f025cd92417805301722d0d9f566b26a7e67aac209ef398b854933955",
+    "sha256Manifest": "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/sha256.json",
+    "singleOwner": true,
+    "noComponentOverlay": true,
+    "attachedNaturalInputObserved": true,
+    "noRuntimeErrors": true,
+    "terminalObserved": true,
+    "replayObserved": true,
+    "perceptualStatus": "PASS_FOR_REPORTED_DOUBLE_SCENE_BRANCH",
+    "screenshots": [
+      "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-mobile-844x390-attached.png",
+      "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-desktop-1180x720-attached.png",
+      "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-mobile-844x390-attached.png",
+      "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-desktop-1180x720-attached.png",
+      "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-terminal-desktop.png",
+      "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-replay-desktop.png"
+    ],
+    "defaultJourney": "startup → natural hold/release → settlement → replay",
+    "formalQaReport": "runs/mobile-chart-adaptation-20260830/artifacts/qa-formal-retest-longmap-single-scene-20260928.json",
+    "formalQaReportSha256": "37aed473b3da2ae92bb58a58f3f3b8b8c0bccadde57eda27033a13e8237421f1"
+  },
+  "remainingEvidenceGaps": [
+    "No ART_APPROVED complete hybrid component scene exists; the existing approved panorama is the sole static material owner for this repair.",
+    "Pixel-level 80–90% similarity to the supplied browser screenshot still needs a human visual sign-off after the single-scene correction; platform packages are not tested by this web-lite QA."
+  ],
+  "status": "QA_RETEST_PASSED_WITH_ART_REVIEW_GAP",
+  "recordedAt": "2026-09-28T05:20:00Z",
+  "runtimeWiredEntrypoints": [
+    "src/main.ts",
+    "src/night-city-renderer.ts",
+    "src/camera-layout.ts"
+  ]
+}

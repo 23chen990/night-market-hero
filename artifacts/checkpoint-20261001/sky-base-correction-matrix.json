@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "background",
+      "assembled-architecture"
+    ],
+    "lifecycleStateBranches": [
+      "rejected-static-preview",
+      "revised-preview-horizontal-scroll"
+    ],
+    "rendererPaths": [
+      "offline build_preview.py",
+      "future isolated preview"
+    ],
+    "viewports": [
+      {
+        "label": "desktop-preview",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "mobile-preview",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "desktop-preview-background",
+      "objectType": "background",
+      "lifecycleStateBranch": "rejected-static-preview",
+      "rendererPath": "offline build_preview.py",
+      "viewport": {
+        "label": "desktop-preview",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "独立天空底图加代码和素材共同搭建的唯一街道。",
+      "observed": "完整夜市全景占据底图；天空并非独立背景。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/build_preview.py",
+          "sha256": "f737cac45a2d1a099fdbea6b103cae877b34baab7b00a1c11e811ae859d94e28",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-1672x941.png",
+          "sha256": "c1b0c5105e1216f19e69a7eb67aa97291c0c750607dbd41b127713a0559c5774",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "desktop-preview-assembled-architecture",
+      "objectType": "assembled-architecture",
+      "lifecycleStateBranch": "rejected-static-preview",
+      "rendererPath": "offline build_preview.py",
+      "viewport": {
+        "label": "desktop-preview",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "独立天空底图加代码和素材共同搭建的唯一街道。",
+      "observed": "建筑已画在全景内；新增的代码层只有路线和锚点。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/build_preview.py",
+          "sha256": "f737cac45a2d1a099fdbea6b103cae877b34baab7b00a1c11e811ae859d94e28",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-1672x941.png",
+          "sha256": "c1b0c5105e1216f19e69a7eb67aa97291c0c750607dbd41b127713a0559c5774",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "mobile-preview-background",
+      "objectType": "background",
+      "lifecycleStateBranch": "rejected-static-preview",
+      "rendererPath": "offline build_preview.py",
+      "viewport": {
+        "label": "mobile-preview",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "独立天空底图加代码和素材共同搭建的唯一街道。",
+      "observed": "完整夜市全景占据底图；天空并非独立背景。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/build_preview.py",
+          "sha256": "f737cac45a2d1a099fdbea6b103cae877b34baab7b00a1c11e811ae859d94e28",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-844x390.png",
+          "sha256": "4a3525d4ae7b13dfb12a8187f34ce38e6adcaddcc294a4f23d8f048c55329dcd",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "mobile-preview-assembled-architecture",
+      "objectType": "assembled-architecture",
+      "lifecycleStateBranch": "rejected-static-preview",
+      "rendererPath": "offline build_preview.py",
+      "viewport": {
+        "label": "mobile-preview",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "独立天空底图加代码和素材共同搭建的唯一街道。",
+      "observed": "建筑已画在全景内；新增的代码层只有路线和锚点。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/build_preview.py",
+          "sha256": "f737cac45a2d1a099fdbea6b103cae877b34baab7b00a1c11e811ae859d94e28",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-844x390.png",
+          "sha256": "4a3525d4ae7b13dfb12a8187f34ce38e6adcaddcc294a4f23d8f048c55329dcd",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "desktop-preview-future-scroll",
+      "objectType": "assembled-architecture",
+      "lifecycleStateBranch": "revised-preview-horizontal-scroll",
+      "rendererPath": "future isolated preview",
+      "viewport": {
+        "label": "desktop-preview",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "连续移动时建筑支撑、遮挡与天空始终一致。",
+      "observed": "尚未制作修正后的可移动预览，不将旧静态图计作此项证据。",
+      "evidence": []
+    },
+    {
+      "id": "mobile-preview-future-scroll",
+      "objectType": "assembled-architecture",
+      "lifecycleStateBranch": "revised-preview-horizontal-scroll",
+      "rendererPath": "future isolated preview",
+      "viewport": {
+        "label": "mobile-preview",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "连续移动时建筑支撑、遮挡与天空始终一致。",
+      "observed": "尚未制作修正后的可移动预览，不将旧静态图计作此项证据。",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "离线脚本采用完整夜市全景且未组装建筑；与用户要求不符。"
+  ],
+  "remainingGaps": [
+    "用户回忆的天空具体版本未逐一确认；v33 是记录和内容匹配的建议复用候选。",
+    "修正后构图及80–90%视觉目标尚待新预览验证。"
+  ],
+  "createdAt": "2026-09-28T07:50:41.126282Z"
+}

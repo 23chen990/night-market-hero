@@ -1,0 +1,52 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "deliverable": "material gaps and composition plan",
+  "userDecision": "PLAN_ONLY_NO_NEW_IMAGES",
+  "generatedWorkspaceModified": false,
+  "artTargetAchieved": false,
+  "generatedNewArtAssets": false,
+  "outputs": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/material-plan.html",
+      "sha256": "475ae4bb2999044af0613e1742e1c2b5dfe0e93eefbc72b36e7d0570d59f4f1b"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/material-plan.png",
+      "sha256": "d143388540dff461b0861dddea0ab2e73de4ad4cbb36ba1c17840db516fd493d"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/material-plan.md",
+      "sha256": "6e902b1267fc1745f3043c4fbcbd91d0e36be95b674db4e5cea3fc02b7b6bcba"
+    }
+  ],
+  "sources": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+      "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/triage.json",
+      "sha256": "c7733e10c08a5742d41c606ec87eaccef00e35cc448ed96b50dffe139178488e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/reproduction-matrix.json",
+      "sha256": "c22f98c2e92602ef2ed97af05dd7429ee4a563fc75c136c51010cbd0fe497025"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/workspace-isolation.json",
+      "sha256": "318a22b9d09d62c8a71d9514a5da271d7bdaff107f4301a8f799ceef556d221e"
+    }
+  ],
+  "checkScope": "Code checks cover the internal isolated composition study only, not final-art fidelity. Only the plan is delivered.",
+  "codeChecks": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "offlineControls": "PASS"
+  },
+  "artStatus": "NOT_APPROVED",
+  "pending": [
+    "No new art will be generated until user changes current plan-only scope.",
+    "Complex facade and middle-building assets remain missing.",
+    "Only one inventory audit completed; the broader composition agent was stopped after user narrowed delivery to the completed plan. No second independent pass is claimed."
+  ]
+}

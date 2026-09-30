@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户反馈当前画面与原图差距较大，未达到预期90%相似度，并询问现有素材图本身是否也有问题。本轮转为素材本体、放大比例、组合与素材缺口的区分诊断。仍不生成新素材，不接入游戏。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "既有美术投诉的追加素材诊断；保留 formal-fixer 路由和未通过状态，当前只做离线素材审查。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "玩法、物理、经济、存档",
+      "平台发布及运行时历史修复",
+      "其他游戏素材"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "读 v2 实际源素材清单",
+      "比对同 run 已确定素材及审批版本",
+      "查看整体构图与已绑定最终风格图"
+    ],
+    "observed": [
+      "Eaves and canopy exceed native alpha-bound widths by about2x in near roles.",
+      "Lantern, beam and scaffold original forms can be retained in appropriate local roles.",
+      "Complete facades are missing.",
+      "Current assembly also contains unsupported relationships."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+        "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/source-manifest.json",
+        "sha256": "07d25fd7c44bcf342c26cef3fcff83c70fa04d4afcbb60f904b4976bb1ed41bc",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json",
+        "sha256": "416958529a890a3c726fbe6e2f3c5fdd898b90ad11a2e301378ff5adb14575ce",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "按部位并排比较定稿裁切、素材原件、实际组景；不能仅凭已审批推断适合当前还原。",
+    "区分素材本体差异、放大和组合问题、缺失完整建筑三个原因。",
+    "结论给出保留/调整用途/重做候选；不生成新图、不集成游戏、不宣称90%达成。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-30T17:06:20.899075Z"
+}

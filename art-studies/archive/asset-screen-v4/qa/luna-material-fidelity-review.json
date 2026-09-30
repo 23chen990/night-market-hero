@@ -1,0 +1,53 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "Luna worker",
+  "scope": "Native material fidelity audit; root summary of luna_material_audit result",
+  "status": "NEEDS_WORK",
+  "findings": [
+    {
+      "severity": "medium",
+      "summary": "Eave and canopy source forms are compatible locally, but close-up enlargement and repetition exceed their detail/variation.",
+      "evidence": [
+        "qa/material-audit-crops.json: innerEave 358px useful width displayed711px, 1.99x; canopy322px displayed633px, 1.97x.",
+        "material-audit.jpg: repeated eave/canopy local forms."
+      ],
+      "recommendation": "Restrict these sources to local roles; retain complete shapes. Large near framing and broad cloth need suitable detail and variants before final matching."
+    },
+    {
+      "severity": "low",
+      "summary": "Lantern and structural sources can be retained.",
+      "evidence": [
+        "Lantern maxScale0.1; scaffold0.6; beam1.15.",
+        "Original PNGs preserve meaningful transparency and recognizable complete objects."
+      ],
+      "recommendation": "Keep the lantern, beam and scaffold in their proper local roles; adjust mounting, light and placement."
+    },
+    {
+      "severity": "high",
+      "summary": "Complete near facade and midground building sources remain absent.",
+      "evidence": [
+        "material-audit.jpg facade row has no original source.",
+        "screen.png retains explicit simple dark gap areas."
+      ],
+      "recommendation": "Leave these gaps disclosed; do not substitute generic grids or a full panorama."
+    }
+  ],
+  "checks": [
+    {
+      "name": "original_forms_inspected",
+      "passed": true,
+      "evidence": "Original eave, canopy, lantern; comparison crops and screen inspected."
+    },
+    {
+      "name": "90_percent_target_proven",
+      "passed": false,
+      "evidence": "Material scope and missing facade still prevent whole-frame matching."
+    }
+  ],
+  "limitations": [
+    "Read-only review; no new images or game integration.",
+    "No numerical similarity certification.",
+    "This stored record is the main agent summary of the Luna response; the full response is preserved in the conversation."
+  ]
+}

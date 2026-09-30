@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户拒绝 sky-street-v2：感觉效果不是很对，差得很远，已经确定的素材图没有用上。继续要求现有素材+代码、灰蓝天空、单一长地图的独立预览。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "第二次离线画面候选被用户拒绝，需先核对素材和整体美术差异，再修正并独立复查。仅 run 级离线美术 artifact 的 QA→修正→QA；不启动生成游戏 FIX 或修改其默认运行流程。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "玩法、物理、经济、存档",
+      "平台发布及运行时历史修复",
+      "其他游戏素材"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "读 v2 实际源素材清单",
+      "比对同 run 已确定素材及审批版本",
+      "查看整体构图与已绑定最终风格图"
+    ],
+    "observed": [
+      "v2仅使用天空和7项环境素材；竹架、牌坊横梁、内檐、灯串、屋顶局部未载入。",
+      "v2还裁掉完整摊棚的大部分支撑，重复的代码楼体和均匀窗格不符合定稿。",
+      "原台账与素材核对表均未发现可代替代码楼体的完整临街外立面/中景门面。",
+      "本轮用户选择暂不补图，先看素材缺口和搭建方案；90%视觉目标仍未达成。"
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json",
+        "sha256": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/street-start.png",
+        "sha256": "fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "已确定素材须逐项映射至可见场景位置；排除项必须说明用途不适用理由，不能把审批目录当完整清单。",
+    "灰蓝天空作为唯一底图，完整夜市图仅供风格对照、不渲染。",
+    "以已确定屋顶、牌坊、内檐、棚布、推车、竹架、幡布和灯笼保留原有视觉细节；代码负责连接和布局。",
+    "整体密度、建筑高差、遮挡、暖灯与蓝灰暗部需对照最终风格图，不能用无错位等局部通过代替整体验收。",
+    "单屏及手机预览、连续地图可正常查看；同一建筑只组装一次。",
+    "不修改目标游戏 workspace；不声称未经视觉认可的80–90%还原达成。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-28T08:56:35.972Z"
+}

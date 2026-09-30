@@ -20,9 +20,20 @@ interface FakeImage {
   destroy(): void;
 }
 
+interface FakeLine {
+  x1: number; x2: number; visible: boolean;
+  setTo(x1: number, y1: number, x2: number, y2: number): FakeLine;
+  setLineWidth(_width: number): FakeLine;
+  setStrokeStyle(_color: number, _alpha?: number): FakeLine;
+  setDepth(_depth: number): FakeLine;
+  setVisible(visible: boolean): FakeLine;
+  destroy(): void;
+}
+
 function fakeScene() {
   const loaded = new Set<string>();
   const images: FakeImage[] = [];
+  const lines: FakeLine[] = [];
   const scene = {
     load: { image(key: string) { loaded.add(key); } },
     textures: { exists(key: string) { return loaded.has(key); } },
@@ -40,12 +51,27 @@ function fakeScene() {
       };
       images.push(image);
       return image;
+    }, line(_x: number, _y: number, x1: number, y1: number, x2: number, y2: number) {
+      void y1; void y2;
+      const line: FakeLine = { x1, x2, visible: false,
+        setTo(nextX1, nextY1, nextX2, nextY2) { line.x1 = nextX1; line.x2 = nextX2; void nextY1; void nextY2; return line; },
+        setLineWidth() { return line; }, setStrokeStyle() { return line; }, setDepth() { return line; },
+        setVisible(visible) { line.visible = visible; return line; }, destroy() { line.visible = false; } };
+      lines.push(line); return line;
     } },
   };
-  return { scene, images };
+  return { scene, images, lines };
 }
 
 describe('component scenery foundation', () => {
+  test('approved lantern cable uses the single sprite contract', () => {
+    const entry = getLongmapArt('lighting.lanternCable');
+    assert.ok(entry, 'lantern cable catalog entry must exist');
+    assert.equal(entry!.status, 'AVAILABLE');
+    assert.match(entry!.path ?? '', /assets\/approved-runtime\/environment\/market-lantern-sprite-v1\.png$/);
+    assert.equal(entry!.runtimeKey, 'longmap-component-lighting-lantern-sprite');
+  });
+
   test('authored recipes are deterministic and differ by scene family', () => {
     const chunk = runPlanChunkAtIndex(73, 0);
     assert.deepEqual(getLongmapSceneRecipe(chunk.sceneFamily), getLongmapSceneRecipe(chunk.sceneFamily));
@@ -83,13 +109,39 @@ describe('component scenery foundation', () => {
     for (const assetId of [
       'rooftops.lowBuildingMass',
       'rooftops.highBuildingMass',
-      'rooftops.foregroundEaveOccluder',
-      'rooftops.highLanternSupportFrame',
+      'rooftops.curvedEave',
+      'rooftops.roofSupportBlock',
       'rooftops.crossStreetNegativeSpace',
-      'rooftops.darkCanopy',
+      'rooftops.roofCrown',
     ]) assert.ok(rooftopAssets.has(assetId), `missing atomic rooftop component ${assetId}`);
     for (const assetId of ['rooftops.tileRoof', 'rooftops.attic', 'rooftops.silhouette']) {
       assert.equal(rooftopAssets.has(assetId), false, `legacy full-building asset remains: ${assetId}`);
+    }
+  });
+
+  test('v55 source-derived rooftop components are available and used by rooftop recipes', async () => {
+    const expected = [
+      ['rooftops.curvedEave', 'rooftops-curved-eave-v1.png', 'longmap-component-rooftops-curved-eave', [385, 284]],
+      ['rooftops.roofCrown', 'rooftops-roof-crown-v1.png', 'longmap-component-rooftops-roof-crown', [199, 205]],
+      ['rooftops.roofSupportBlock', 'rooftops-roof-support-block-v1.png', 'longmap-component-rooftops-roof-support-block', [220, 205]],
+    ] as const;
+    const rooftopFamilies = [
+      'rooftops-01/low-tile-ridges',
+      'rooftops-02/stepped-eaves',
+      'rooftops-03/cross-street-roof-bridge',
+      'rooftops-04/open-high-ridge',
+    ];
+    const rooftopAssets = new Set(rooftopFamilies.flatMap((family) =>
+      getLongmapSceneRecipe(family)!.placements.map((placement) => placement.assetId)));
+    for (const [assetId, fileName, runtimeKey, nominalCanvas] of expected) {
+      const entry = getLongmapArt(assetId);
+      assert.ok(entry, `missing v55 catalog entry ${assetId}`);
+      assert.equal(entry!.status, 'AVAILABLE');
+      assert.equal(entry!.runtimeKey, runtimeKey);
+      assert.deepEqual(entry!.nominalCanvas, nominalCanvas);
+      assert.match(entry!.path ?? '', new RegExp(`assets/approved-runtime/environment/${fileName}$`));
+      assert.ok(rooftopAssets.has(assetId), `rooftop recipes do not use ${assetId}`);
+      await import('node:fs/promises').then(({ access }) => access(new URL(entry!.path!)));
     }
   });
 
@@ -102,6 +154,37 @@ describe('component scenery foundation', () => {
     assert.ok(stats.missingAssetCount > 0, 'the first authored scene intentionally references future art');
     assert.ok(images.length > 0, 'approved component art should still render');
     assert.ok(images.every((image) => image.key.startsWith('longmap-component-')));
+  });
+
+  test('lantern cable expands to pooled sprites with scale-derived connector span', () => {
+    const { scene, images, lines } = fakeScene();
+    const renderer = createComponentRenderer({ enabled: true, prefetchChunks: 0, maxRetainedComponents: 64 });
+    renderer.preload(scene);
+    renderer.render(scene, 73, 0, 1_600);
+    const lanternImages = images.filter((image) => image.key === 'longmap-component-lighting-lantern-sprite');
+    assert.ok(lanternImages.length >= 3, 'lantern cable must render a small deterministic group');
+    assert.ok(lines.some((line) => line.visible && line.x2 > line.x1), 'connector line must have a positive span');
+    const firstSpan = lines.find((line) => line.visible)!.x2 - lines.find((line) => line.visible)!.x1;
+    renderer.render(scene, 73, 160_000, 161_600);
+    renderer.render(scene, 73, 0, 1_600);
+    const secondSpan = lines.find((line) => line.visible)!.x2 - lines.find((line) => line.visible)!.x1;
+    assert.equal(secondSpan, firstSpan, 'deterministic placement geometry must preserve connector span');
+  });
+
+  test('rooftop components use a code-drawn structural span between asset anchors', () => {
+    const { scene, lines } = fakeScene();
+    const renderer = createComponentRenderer({ enabled: true, prefetchChunks: 0, maxRetainedComponents: 64 });
+    renderer.preload(scene);
+    const rooftopChunk = runPlanChunkAtIndex(73, 6);
+    renderer.render(scene, 73, rooftopChunk.startX, rooftopChunk.endX);
+    assert.ok(lines.some((line) => line.visible && line.x2 > line.x1), 'rooftop group must include a positive-span code-drawn connector');
+    const connector = lines.find((line) => line.visible && line.x2 > line.x1);
+    assert.ok(connector);
+    renderer.render(scene, 73, 0, 1_600);
+    assert.equal(connector!.visible, false, 'rooftop connector must be hidden when its chunk leaves the viewport');
+    renderer.render(scene, 73, rooftopChunk.startX, rooftopChunk.endX);
+    assert.equal(lines.filter((line) => line.visible && line.x2 > line.x1).length, 1);
+    assert.equal(lines[0], connector, 'rooftop connector should be recycled with its image group');
   });
 
   test('pool remains bounded while scrolling away and reuses released components', () => {

@@ -1,0 +1,28 @@
+{
+  "route": "formal-fixer",
+  "attempt": 1,
+  "issueId": "asset-scope-lantern-cable-v50",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "approval": "ART_APPROVED: market-lantern-sprite-v1",
+  "filesChanged": [
+    "src/longmap-art-catalog.ts",
+    "src/component-renderer.ts",
+    "src/assets/approved-runtime/environment/market-lantern-sprite-v1.png",
+    "tests/component-renderer.test.ts"
+  ],
+  "implementation": "lighting.lanternCable is an approved single sprite; each placement expands to three pooled sprites and a code-drawn Phaser line. Connector span derives from placement scale and scaleY; release, pooling and destroy paths are covered.",
+  "tests": [
+    "pnpm typecheck",
+    "pnpm test -- --test-name-pattern='component scenery foundation' (266 passed, 10 skipped)",
+    "fake line/group test verifies three sprites and positive deterministic span",
+    "pnpm lint (passes)",
+    "pnpm typecheck (passes)"
+  ],
+  "runtimeEvidence": {
+    "pending": "fresh browser check at ?longmap=1 required by QA"
+  },
+  "remainingGaps": [
+    "Full lint, test, build and fresh browser smoke still required by QA."
+  ]
+}

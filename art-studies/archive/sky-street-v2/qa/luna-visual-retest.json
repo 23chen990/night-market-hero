@@ -1,0 +1,55 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna_worker",
+  "scope": "Targeted static visual retest of the four findings from luna-visual-review.json at 2026-09-28T16:34:07+08:00. Inspected the regenerated street-start.png, street-center.png, street-end.png (1672x941) and phone-center.png (844x390) with view_image. Current export hashes: start ce502749ef1a557d71e765dcd918a9dc6c61345a254143717b2ab8520039eb26, center b6591e30c7fa9c953cfad3f66a7f0be7feecc693b64294a27907dade4e511257, end 9a157ac32dbfd2b8fde6e6396a532568d479423910b4ee440b654d5e4150121e, phone d6149f5aa4769738e94ecba113d75fd29b890b3a97f5f38cfd02959fa27ce56f. No similarity percentage signoff is made.",
+  "status": "PASS",
+  "findings": [],
+  "checks": [
+    {
+      "name": "regular stall lantern mounts",
+      "passed": true,
+      "evidence": "In all three desktop exports and phone-center.png, cloth-stall lamps sit below the canopy hem with a visible short beam and hanging line. The lamp body no longer reads as embedded in the cloth."
+    },
+    {
+      "name": "roofed stall lantern mount",
+      "passed": true,
+      "evidence": "The roofed stall instances in street-start.png, street-center.png and street-end.png place the lamp below the roof with a visible cord; the mount remains readable after reduction in phone-center.png."
+    },
+    {
+      "name": "flight study band readability",
+      "passed": true,
+      "evidence": "The cable strings and lanterns are visibly raised, while the interior towers and support columns sit lower and quieter. The central band around the declared y≈435 study line reads as an open passage in the desktop frames and remains legible in the 844x390 phone frame."
+    },
+    {
+      "name": "stall and cable repetition",
+      "passed": true,
+      "evidence": "Across the three desktop exports, stall widths and heights vary and cable lamp counts/spacing are no longer a uniform beat. The phone-center composition retains market density without showing a single copied foreground module cadence."
+    },
+    {
+      "name": "roofed stall material edge integration",
+      "passed": true,
+      "evidence": "The roofed stall copies are fog-tinted and softened in the refreshed exports; their roof and frame now sit within the same cool depth treatment as adjacent code-built roofs instead of reading as a hard pasted cutout."
+    },
+    {
+      "name": "roof and wall connections",
+      "passed": true,
+      "evidence": "The full-height towers and smaller roofed buildings in the regenerated desktop frames meet their walls cleanly, with no visible detached roof plates or new gaps."
+    },
+    {
+      "name": "duplicate or ghost architecture",
+      "passed": true,
+      "evidence": "No whole-scene duplicate, ghost facade or repeated panorama plate is visible in the adjacent exports. The consolidated support posts read as single supports with shared cable endpoints."
+    },
+    {
+      "name": "sky and assembled architecture separation",
+      "passed": true,
+      "evidence": "The refreshed art still uses the continuous atmosphere sky plus constructed buildings and atomic materials; browser-check.json reports completePanoramaInputs=0 and sceneLayers existing-sky, code-architecture and atomic-materials."
+    }
+  ],
+  "limitations": [
+    "PASS means no blocking structural or presentation defect was visible in these four static exports after the targeted fixes. It does not verify runtime collision geometry, player contrast during motion, or an active horizontal pan.",
+    "The darker lower foreground and the qualitative style relationship remain art-candidate limitations; this retest does not claim an 80–90% similarity score.",
+    "Any later export regeneration changes the evidence version and requires a new targeted visual pass."
+  ]
+}

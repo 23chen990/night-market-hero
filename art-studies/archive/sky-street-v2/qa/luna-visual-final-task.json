@@ -1,0 +1,22 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "Final version check. The four current export hashes differ from your earlier retest report. Implementation is now frozen. Inspect the actual current street-start.png, street-center.png, street-end.png, phone-center.png with view_image and record exact current SHA-256 hashes. Recheck lamp mounts, corridor, support consolidation, joined roofs/walls and absence of duplicate whole scene. Keep baseline and earlier retest unchanged. No further optional art polishing or exact similarity percentage.",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2",
+  "ownership": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-visual-final.json"
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Do not modify implementation or other reports. Exports are now frozen.",
+    "Read qa/review-contract.mjs and validate output against ReviewSchema using root node resolution before handing back.",
+    "Only exchange structured artifacts; final reply must be JSON containing reportPath and status.",
+    "No generated game workspace writes; write only assigned QA artifact files.",
+    "Do not spawn further agents."
+  ],
+  "acceptance": [
+    "Judge current exports for each of the four original findings.",
+    "Preserve useful art limitations; no gameplay/collision QA claim.",
+    "Current files may be used for art candidate delivery without claiming 80–90% signoff only if no blocking structural/presentation defect remains."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-visual-final.json"
+}

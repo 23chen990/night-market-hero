@@ -1,0 +1,76 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna-fidelity",
+  "scope": "Main condensed record of independent Luna round2; exact current screenshots and measurements are hashed in checkpoint.json",
+  "status": "NEEDS_WORK",
+  "findings": [
+    {
+      "severity": "high",
+      "summary": "Eave weight, gate layers and tile material remain weaker than target.",
+      "evidence": [
+        "screen.png: roofMid x350 y60 w530 has fixed margins; beam x501 y210 w468 remains flat; left/right roof underside is thin."
+      ],
+      "recommendation": "Preserve transparent roof margins; increase eave thickness and layered brackets in a future art iteration."
+    },
+    {
+      "severity": "high",
+      "summary": "Overall depth remains insufficient; local near facade risks losing readable edges.",
+      "evidence": [
+        "Same large near region luma18.21 versus reference8.31; middle foreground33.28 versus24.55; lower foreground21.78 versus10.61."
+      ],
+      "recommendation": "Use directional highlights and local contrast; lower blue fill in foreground while keeping distance fog."
+    },
+    {
+      "severity": "high",
+      "summary": "Balcony and distant facade remain too flat; bright arch is partly occluded.",
+      "evidence": [
+        "nearFacade x-37 y168 w376 h517; midFacade x1313 y377 w291 h452; horizontal platform y571 masks part of arch."
+      ],
+      "recommendation": "Deepen balcony projection and rebalance arch visibility and wall brightness."
+    },
+    {
+      "severity": "medium",
+      "summary": "Central cloth and market layers remain shallower and less dense than target.",
+      "evidence": [
+        "clothCenter x681 y488 w464 h193; its natural contour remains at roughly649–680 versus deeper target layers."
+      ],
+      "recommendation": "Further art design needed for sag, rear cloth, ropes and occlusion."
+    },
+    {
+      "severity": "medium",
+      "summary": "Lamp distribution improved but local height/width still differ.",
+      "evidence": [
+        "Left body x182..239 y250..306 is slightly wide/low; right body y301..337 improved; middle lights high and low foreground lamp still low."
+      ],
+      "recommendation": "Future local lamp tuning; keep dynamic grapple circles out of environment art."
+    }
+  ],
+  "checks": [
+    {
+      "name": "exact current desktop/mobile/reference coverage",
+      "passed": true,
+      "evidence": "Current screen.png, screen-mobile.png, portrait page and verified style reference inspected."
+    },
+    {
+      "name": "round2 targeted corrections",
+      "passed": true,
+      "evidence": "roofMid borderAlpha=0; local tint, central sag, right lamp height and left lamp width corrected."
+    },
+    {
+      "name": "overall visual fidelity",
+      "passed": false,
+      "evidence": "Five reference differences remain; no90% acceptance."
+    },
+    {
+      "name": "mobile document preview",
+      "passed": true,
+      "evidence": "844x476 image and390px-wide document preserve composition; this is not portrait gameplay."
+    }
+  ],
+  "limitations": [
+    "Read-only offline art review. Not game runtime, platform or release acceptance.",
+    "This is the main agent condensed record of the matching structured Luna response.",
+    "90% similarity is unmeasured and unapproved."
+  ]
+}

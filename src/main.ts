@@ -31,7 +31,6 @@ import { CHARACTERS, missionForProgress } from './progression';
 import { speedFeelProfile, settlementCoins, gateCheckpointXForSegment, segmentIndexAtX } from './endless';
 import { createCameraLayout, projectCamera, LOGICAL_VIEWPORT } from './camera-layout';
 import { createNightCityRenderer, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
-import { createComponentRenderer, isLongmapPreviewEnabled } from './component-renderer';
 import './style.css';
 import grappleAttachedIcon from './assets/approved-ui/grapple-attached-v1.png';
 import destinationArrowIcon from './assets/approved-ui/destination-arrow-v1.png';
@@ -58,7 +57,6 @@ import stallCanopyAsset from './assets/approved-runtime/environment/stall-canopy
 import paifangCrossbeamAsset from './assets/approved-runtime/environment/paifang-crossbeam-v1.png';
 import bambooScaffoldAsset from './assets/approved-runtime/environment/bamboo-scaffold-v1.png';
 import innerEaveAsset from './assets/approved-runtime/environment/inner-eave-v1.png';
-import lanternCableAsset from './assets/approved-runtime/environment/lantern-cable-v1.png';
 import pushcartAsset from './assets/approved-runtime/environment/pushcart-v1.png';
 import blankBannerAsset from './assets/approved-runtime/environment/blank-banner-v1.png';
 import coveredAlleyFrameAsset from './assets/approved-runtime/environment/covered-alley-frame-v1.png';
@@ -260,7 +258,7 @@ const uiMotionAssets = [
   tutorialHighRouteIcon, tutorialLowRouteIcon, grappleAttachBurst, landingDust, nearMissArc,
   speedStreaks, impactShards, escapeRing, protagonistSwingAsset, pursuerRunAsset,
   stallCanopyAsset, paifangCrossbeamAsset, bambooScaffoldAsset, innerEaveAsset,
-  lanternCableAsset, pushcartAsset, blankBannerAsset, coveredAlleyFrameAsset,
+  pushcartAsset, blankBannerAsset, coveredAlleyFrameAsset,
   hubMoneyShell, hubMoneyValue, hubGateStrip, hubBackKey, hubInventoryRing,
   hubInventoryTalisman, hubInventoryScroll, hubInventoryPlay,
   hubAnchorButton,
@@ -668,9 +666,6 @@ class FlightScene extends Phaser.Scene {
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
   private readonly nightCityRenderer = createNightCityRenderer({ prefetchChunks: 1, maxRetainedChunks: 8 });
-  // Preview URL: ?longmap=1. The default formal journey keeps this layer off.
-  private readonly componentPreviewEnabled = isLongmapPreviewEnabled(typeof window !== 'undefined' ? window.location.search : '');
-  private readonly componentRenderer = createComponentRenderer({ enabled: this.componentPreviewEnabled, prefetchChunks: 1, maxRetainedComponents: 64 });
   private cameraLayout = createCameraLayout({ width: REFERENCE_STAGE_WIDTH, height: REFERENCE_STAGE_HEIGHT, lookAhead: 0.32 });
 
   constructor() {
@@ -684,7 +679,6 @@ class FlightScene extends Phaser.Scene {
     this.load.image('module-paifang-crossbeam', paifangCrossbeamAsset);
     this.load.image('module-bamboo-scaffold', bambooScaffoldAsset);
     this.load.image('module-inner-eave', innerEaveAsset);
-    this.load.image('module-lantern-cable', lanternCableAsset);
     this.load.image('module-pushcart', pushcartAsset);
     this.load.image('module-blank-banner', blankBannerAsset);
     this.load.image('module-covered-alley-frame', coveredAlleyFrameAsset);
@@ -693,7 +687,6 @@ class FlightScene extends Phaser.Scene {
     // visibility.  The renderer keeps images hidden until Phaser reports the
     // corresponding texture as ready.
     this.nightCityRenderer.preload(this);
-    if (this.componentPreviewEnabled) this.componentRenderer.preload(this);
   }
 
   create(): void {
@@ -754,16 +747,21 @@ class FlightScene extends Phaser.Scene {
     app.dataset.cityDistrict = cityStats.district ?? 'market';
     app.dataset.cityChunkCount = String(cityStats.chunkCount);
     app.dataset.cityRenderer = cityStats.renderer;
-    const componentStats = this.componentRenderer.render(this, state.seed,
-      this.cameras.main.scrollX, this.cameras.main.scrollX + worldViewportWidth);
-    app.dataset.componentRenderer = componentStats.renderer;
-    app.dataset.componentVisibleCount = String(componentStats.visibleCount);
-    app.dataset.componentRetainedCount = String(componentStats.retainedCount);
-    app.dataset.missingAssetCount = String(componentStats.missingAssetCount);
-    app.dataset.longmapChunkId = componentStats.longmapChunkId ?? 'none';
-    app.dataset.longmapChainIndex = String(componentStats.longmapChainIndex ?? -1);
-    app.dataset.longmapChunkKind = componentStats.longmapChunkKind ?? 'none';
-    app.dataset.longmapSceneFamily = componentStats.longmapSceneFamily ?? 'none';
+    // One renderer owns the complete static scene on every journey, including
+    // the legacy `?longmap=1` query.  The component renderer remains available
+    // to its isolated tests and future approved art work, but it is never
+    // mounted beside the approved panorama stream at runtime.
+    app.dataset.sceneOwner = 'night-city-image-stream';
+    app.dataset.sceneLayerCount = '1';
+    app.dataset.sceneOverlay = 'none';
+    app.dataset.componentRenderer = 'disabled';
+    app.dataset.componentVisibleCount = '0';
+    app.dataset.componentRetainedCount = '0';
+    app.dataset.missingAssetCount = '0';
+    app.dataset.longmapChunkId = 'none';
+    app.dataset.longmapChainIndex = '-1';
+    app.dataset.longmapChunkKind = 'none';
+    app.dataset.longmapSceneFamily = 'none';
     this.protagonistSprite.setPosition(state.player.x, state.player.y).setRotation(Math.atan2(state.player.vy, state.player.vx));
     this.pursuerSprite.setPosition(state.pursuer.x, state.pursuer.y).setRotation(0).setVisible(state.pursuer.visible);
     app.dataset.guardOnScreen = String(state.pursuer.x >= this.cameras.main.scrollX
@@ -773,18 +771,14 @@ class FlightScene extends Phaser.Scene {
     const graphics = this.drawing;
     if (!graphics) return;
     graphics.clear();
-    graphics.setAlpha(state.attachedAnchorId || state.activeChaseEvent || state.levelIndex === 0 ? 0.38 : 0);
+    // Dynamic feedback owns its own alpha.  A scene-wide multiplier made the
+    // rope, anchors, pickup cues, and chase telegraphs look like a second
+    // translucent map when the player held jump.
+    graphics.setAlpha(1);
     this.drawSpeedFeel(graphics, state, this.cameras.main.scrollX, worldViewportWidth, worldViewportHeight);
-    // Route bars/flags from the old blockout are compatibility-only.  The
-    // authored world route is communicated by live anchors, rope, terrain and
-    // the streamed district plates, so no static decoration is painted here.
-    const terrainPrefetch = 180;
-    for (const terrain of state.sceneObjects) {
-      const visibleFrom = this.cameras.main.scrollX - terrainPrefetch;
-      const visibleTo = this.cameras.main.scrollX + worldViewportWidth + terrainPrefetch;
-      if (terrain.bounds.x + terrain.bounds.width < visibleFrom || terrain.bounds.x > visibleTo) continue;
-      this.drawActiveTerrain(graphics, { ...state, activeTerrain: terrain });
-    }
+    // Static route/terrain blockout is intentionally not painted here.  The
+    // approved image stream is the only scene owner; this pass is reserved for
+    // live gameplay feedback that must remain visible while jumping.
     this.drawStrictReferencePursuer(graphics, state);
     this.drawChaseObstacle(graphics, state);
     this.drawActivePickups(graphics, state, this.cameras.main.scrollX, worldViewportWidth);
@@ -844,8 +838,6 @@ class FlightScene extends Phaser.Scene {
     for (const scaffold of state.sceneObjects.filter((item) => item.kind === '竹架').slice(0, 2)) {
       addModule('module-bamboo-scaffold', scaffold.bounds.x, scaffold.bounds.y, scaffold.bounds.width, scaffold.bounds.height, 0.86);
     }
-    addModule('module-lantern-cable', 250, 218, 280, 104, 0.86);
-    addModule('module-lantern-cable', 1040, 220, 280, 104, 0.82);
     addModule('module-pushcart', 380, 566, 176, 120, 0.86);
     addModule('module-pushcart', 1220, 566, 176, 120, 0.82);
     addModule('module-blank-banner', 648, 208, 86, 148, 0.82);

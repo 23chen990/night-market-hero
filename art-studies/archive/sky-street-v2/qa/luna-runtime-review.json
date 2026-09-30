@@ -1,0 +1,89 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna_worker",
+  "scope": "独立艺术预览 sky-street-v2 的离线控件、隔离性与响应式可用性检查；不作为游戏玩法 QA 或平台发布证明。",
+  "status": "PASS",
+  "findings": [],
+  "checks": [
+    {
+      "name": "TaskSchema validation",
+      "passed": true,
+      "evidence": "Validated qa/luna-runtime-task.json with qa/review-contract.mjs TaskSchema before execution."
+    },
+    {
+      "name": "Offline preview startup",
+      "passed": true,
+      "evidence": "Playwright file URL reached previewReady=true; canvas#view count=1 and visible; runtimeIntegrated=false; completePanoramaInputs=0."
+    },
+    {
+      "name": "Next and previous controls",
+      "passed": true,
+      "evidence": "Normal button clicks moved cameraX 0 -> 900 -> 0."
+    },
+    {
+      "name": "Slider control",
+      "passed": true,
+      "evidence": "Normal slider click at 42% yielded cameraX=1382 within maxCameraX=3300.759493670886; End reached maxCameraX."
+    },
+    {
+      "name": "Mouse drag both directions",
+      "passed": true,
+      "evidence": "Canvas leftward drag moved cameraX 1382 -> 1501.113924050633; rightward drag moved 1501.113924050633 -> 1453.4683544303798."
+    },
+    {
+      "name": "Auto play and pause",
+      "passed": true,
+      "evidence": "Auto play changed label to 暂停漫游 and cameraX 1454.2183544303798 -> 1476.8083544303797; after pause cameraX remained 1479.3083544303797 over 180ms."
+    },
+    {
+      "name": "Breakdown toggle",
+      "passed": true,
+      "evidence": "画面组成 opened the breakdown with aria-expanded=true and closed it with aria-expanded=false."
+    },
+    {
+      "name": "390x844 portrait responsive usability",
+      "passed": true,
+      "evidence": "scrollWidth/client width=[390,390]; horizontalOverflow=false; all required controls visible, positive-sized, and horizontally contained; screenshot qa/luna-runtime-390x844.png."
+    },
+    {
+      "name": "844x390 landscape responsive usability",
+      "passed": true,
+      "evidence": "scrollWidth/client width=[844,844]; horizontalOverflow=false; all required controls visible, positive-sized, and horizontally contained; screenshot qa/luna-runtime-844x390.png."
+    },
+    {
+      "name": "Source assets contain no panorama input",
+      "passed": true,
+      "evidence": "source-manifest.json reports 8 assets, completePanoramaInputs=0, no panorama/pano basenames, no missing sources."
+    },
+    {
+      "name": "Source asset hashes",
+      "passed": true,
+      "evidence": "All 8 sourceSha256 values matched the current source files."
+    },
+    {
+      "name": "Workspace isolation hash comparison",
+      "passed": true,
+      "evidence": "All 268 qa/workspace-before.json hashes matched actual files under /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero; mismatches=0."
+    },
+    {
+      "name": "Console and page errors",
+      "passed": true,
+      "evidence": "Across desktop, 390x844, and 844x390 runs: pageerror=[] and console.error=[]."
+    },
+    {
+      "name": "No external network",
+      "passed": true,
+      "evidence": "Across all runs: HTTP(S) requests=[] and requestFailures=[]."
+    },
+    {
+      "name": "Evidence capture",
+      "passed": true,
+      "evidence": "Run recorded at 2026-09-28T08:13:10.055Z–08:13:14.165Z with Node v24.14.0, Playwright 1.62.1, Chromium; detailed evidence in qa/luna-runtime-evidence.json."
+    }
+  ],
+  "limitations": [
+    "This is an isolated visual study and does not verify gameplay, collision, persistence, or platform packages.",
+    "Responsive screenshots are full-page captures; the landscape page content extends below the 390px viewport and remains reachable by page scroll (scroll height 659px)."
+  ]
+}

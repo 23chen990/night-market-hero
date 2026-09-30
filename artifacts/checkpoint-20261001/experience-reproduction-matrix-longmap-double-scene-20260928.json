@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "opaque panorama chunk",
+      "legacy code-drawn terrain blockout",
+      "longmap component sprite/connector overlay",
+      "dynamic gameplay graphics",
+      "CSS/app shell"
+    ],
+    "lifecycleStateBranches": [
+      "default startup / idle",
+      "normal hold-to-grapple / attached swing",
+      "?longmap=1 preview",
+      "terminal or replay"
+    ],
+    "rendererPaths": [
+      "NightCityRenderer image-stream",
+      "FlightScene Phaser.Graphics",
+      "ComponentRenderer component-overlay",
+      "CSS scene-layer / transparent canvas"
+    ],
+    "viewports": [
+      {
+        "label": "user-screenshot-source",
+        "width": 2826,
+        "height": 1952
+      },
+      {
+        "label": "logical-desktop",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "default-panorama-idle-logical-desktop",
+      "objectType": "opaque panorama chunk",
+      "lifecycleStateBranch": "default startup / idle",
+      "rendererPath": "NightCityRenderer image-stream",
+      "viewport": {
+        "label": "logical-desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "单一不透明全景场景覆盖逻辑舞台，组件预览关闭。",
+      "observed": "default-final telemetry 报告 city-renderer=image-stream、component-renderer=disabled、missingAssetCount=0；未发现 CSS 露底。",
+      "evidence": [
+        {
+          "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/default-final-telemetry.json",
+          "sha256": "1d87658999973e8daa6a0f225ff1e3af0be190e44568946f70cbab30e2788c10",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts",
+          "sha256": "fc5c428725dbb4d437496e14647295927e7ad95bcc26419c9436a5ced0c2d854",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "default-legacy-terrain-attached-logical-desktop",
+      "objectType": "legacy code-drawn terrain blockout",
+      "lifecycleStateBranch": "normal hold-to-grapple / attached swing",
+      "rendererPath": "FlightScene Phaser.Graphics",
+      "viewport": {
+        "label": "logical-desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "旧静态教学地形不应作为第二套背景出现；代码层只保留动态反馈。",
+      "observed": "attachedAnchorId 非空时 graphics alpha=.38；renderState 遍历全部 sceneObjects，drawActiveTerrain 绘制竹架和窄巷。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "16c24b24e31e210bde06dcb3f131a90a1fb918207d7ae085105e51860126e76e",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/natural-swing-telemetry.json",
+          "sha256": "39644cf28f2379b1f77b0e2cb64800cfc04ea6ee8f50fc475dcb61f909269708",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "default-legacy-terrain-attached-user-screenshot",
+      "objectType": "legacy code-drawn terrain blockout",
+      "lifecycleStateBranch": "normal hold-to-grapple / attached swing",
+      "rendererPath": "FlightScene Phaser.Graphics",
+      "viewport": {
+        "label": "user-screenshot-source",
+        "width": 2826,
+        "height": 1952
+      },
+      "status": "REPRODUCED",
+      "expected": "用户截图只应显示一套已批准的混合场景和动态反馈。",
+      "observed": "截图红框内的斜杆脚手架、半透明墙体与代码 drawActiveTerrain 的竹架/窄巷几何一致；具体 URL 和 tick 未保留。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/codex-clipboard-1817a7bd-ee7d-4db5-97b0-bfcec37f0c37-efe1416f8d2f.png",
+          "sha256": "efe1416f8d2fbe2e8e055a6b6cfa90f58c361b3080b4ae2d9286138526ed757d",
+          "kind": "runtime-capture",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "16c24b24e31e210bde06dcb3f131a90a1fb918207d7ae085105e51860126e76e",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "longmap-preview-overlay-landscape-mobile",
+      "objectType": "longmap component sprite/connector overlay",
+      "lifecycleStateBranch": "?longmap=1 preview",
+      "rendererPath": "ComponentRenderer component-overlay",
+      "viewport": {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "预览分支若存在，必须独占最终混合场景；不得叠加旧全景所有者。",
+      "observed": "http-longmap telemetry 同时报告 image-stream 和 component-overlay，visibleCount=6、missingAssetCount=6。",
+      "evidence": [
+        {
+          "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/http-longmap-telemetry.json",
+          "sha256": "78de2f482d09528035ba56d59730780bbf3960b2bfc5b0503f1e7dd3377193c3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/component-renderer.ts",
+          "sha256": "e4ea28eaaf7fbe3d3c3801c206bf53f6ae843321ef398791427449883730aedc",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts",
+          "sha256": "fc5c428725dbb4d437496e14647295927e7ad95bcc26419c9436a5ced0c2d854",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "dynamic-rope-anchor-attached-landscape-mobile",
+      "objectType": "dynamic gameplay graphics",
+      "lifecycleStateBranch": "normal hold-to-grapple / attached swing",
+      "rendererPath": "FlightScene Phaser.Graphics",
+      "viewport": {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "锚点、绳索和操作反馈可见，但不携带旧静态背景几何。",
+      "observed": "natural-swing telemetry 记录正常输入后 attachedAnchorId=node-1、无 console/page error；动态层本身可运行。",
+      "evidence": [
+        {
+          "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/natural-swing-telemetry.json",
+          "sha256": "39644cf28f2379b1f77b0e2cb64800cfc04ea6ee8f50fc475dcb61f909269708",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "16c24b24e31e210bde06dcb3f131a90a1fb918207d7ae085105e51860126e76e",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "css-shell-default-landscape-mobile",
+      "objectType": "CSS/app shell",
+      "lifecycleStateBranch": "default startup / idle",
+      "rendererPath": "CSS scene-layer / transparent canvas",
+      "viewport": {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "舞台外壳透明，只保留必要的安全色，不制造第二张地图。",
+      "observed": "style.css 将 .scene-layer、#game、canvas 和 #app 设为 transparent；现有 default telemetry 无页面错误。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/style.css",
+          "sha256": "aedebc028cd7694649011a99f43e408139f208badc15576492ff36e503100611",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/default-final-telemetry.json",
+          "sha256": "1d87658999973e8daa6a0f225ff1e3af0be190e44568946f70cbab30e2788c10",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "terminal-replay-background-owner-landscape-mobile",
+      "objectType": "opaque panorama chunk",
+      "lifecycleStateBranch": "terminal or replay",
+      "rendererPath": "NightCityRenderer image-stream",
+      "viewport": {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "结算和重玩仍使用同一唯一场景所有者，不能回退到旧 blockout 或预览层。",
+      "observed": "现有证据没有覆盖用户指出的 attached branch 在 terminal/replay 的自然输入表现；需要 QA retest。",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "“跳跃时露出代码背景”由 Phaser Graphics 的 alpha 门和旧 sceneObjects 绘制触发，不是相机纵向滚动露出 CSS 底色。",
+    "“两个地图叠在一起”在 ?longmap=1 是确定的 image-stream＋component-overlay 双所有者；默认路径仍保留 image-stream，并非用户要求的最终混合长地图。",
+    "已有屋顶连接线局部测试只证明组件层内部连接，不证明默认正式旅程或统一混合场景已完成。"
+  ],
+  "remainingGaps": [
+    "当前截图的确切 URL、seed、tick 和 branch 未保留；需 QA 用同一入口自然输入重拍。",
+    "尚未验证修复后的启动→核心操作→终局/结算→重玩和三种目标平台包。",
+    "尚无本次请求对应的统一混合场景 ART_APPROVED 记录，不能把现有组件预览提升为默认成品。"
+  ],
+  "createdAt": "2026-09-28T00:00:00.000Z"
+}

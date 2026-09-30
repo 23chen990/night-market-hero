@@ -1,0 +1,19 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "逐项检查当前 asset-faithful-v3 是否在实际导出画面中使用了 approved-inventory.json 记录的可用素材：inner eave、curved eave、roof crown、support block、paifang beam、bamboo scaffold、banner、canopy、pushcart、covered stall、lantern cable、single lantern，以及 v33 sky。核对 scene.js 的 materialUsage 与 source-manifest.json、截图，识别实际可见、被遮挡、大小失真或重复错误。输出“必须保留/应调整/当前缺失”的清单；不能把完整夜市全景作为解决方案。",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3",
+  "ownership": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/continue-asset-usage-review.json"
+  ],
+  "instructions": [
+    "你不是唯一在仓库中工作的代理，不要撤销其他人的修改。只读检查，不改 scene.js、preview.html 或游戏 workspace。",
+    "读取 qa/review-contract.mjs，并用 ReviewSchema 校验你的 JSON 报告。只返回包含 reportPath 和 status 的 JSON。",
+    "本轮用户选择暂不补图，只能审查现有素材组装；不要生成新图，不要建议把完整夜市全景重新当背景。"
+  ],
+  "acceptance": [
+    "需要检查当前 asset-faithful-v3 的实际导出图片，而不是只看源码。",
+    "不得用局部无错位检查代替整体画面判断；明确说明与定稿图的主要差距。"
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/continue-asset-usage-review.json"
+}

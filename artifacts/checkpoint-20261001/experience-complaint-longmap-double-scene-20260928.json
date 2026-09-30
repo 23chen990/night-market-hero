@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户要求先分析：此前约定的“代码组景＋素材贴图”的长地图没有成为唯一场景所有者；截图作为运行效果证据显示静态全景、旧代码地形和（可能的）组件预览在同一画面中。截图中的红框、浏览器地址栏和文字只作为证据，不作为玩法指令。",
+  "classification": [
+    "core-experience",
+    "reference-fidelity",
+    "visual-hierarchy",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "问题命中默认运行路径的渲染所有权，并且已有多轮只修预览组件的尝试；需要 QA→FixerAgent→QA 重新验证，而不是继续做局部素材接线。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "与双地图显示无因果关系的经济、广告、存档和平台适配代码",
+      "未获本次用户确认的 Rooftops 候选素材生产细节",
+      "此前只验证 ?longmap=1 连接线的局部测试结果"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "在目标 workspace 用 fresh browser 打开默认入口 ?seed=31&fresh=1，并记录 844x390 或 1672x941 的渲染 telemetry。",
+      "通过正常指针按住游戏操作面，使 attachedAnchorId 从 null 变为 node-1，再松开。",
+      "对照截图检查同一帧是否出现竹架斜杆、红色绑点和窄巷矩形；同时检查 app 的 data-city-renderer 与 data-component-renderer。",
+      "再打开 ?seed=31&longmap=1，比较全景流和组件预览是否同时可见。"
+    ],
+    "observed": [
+      "默认入口 telemetry 为 city-renderer=image-stream、component-renderer=disabled；这说明默认不是组件长地图，而是旧的全景流仍是背景所有者。",
+      "正常按住操作时 attachedAnchorId 被设置，FlightScene 将 Phaser Graphics alpha 设为 0.38，并遍历所有 sceneObjects；drawActiveTerrain 用 fillRect、fillTriangle、lineBetween 绘制旧竹架/窄巷，因此跳跃/摆荡触发时会看到第二套代码场景。",
+      "?longmap=1 telemetry 同时报告 city-renderer=image-stream 与 component-renderer=component-overlay（visible=6、missing=6），所以预览入口确实是全景图加组件层的双地图。",
+      "CSS scene-layer 和 canvas 均为透明；当前证据不支持把问题归因于 CSS 背景或相机纵向露底。",
+      "用户截图与上述代码几何相符，但截图 URL/state branch 未被保留，因此对截图本身标记为部分复现。"
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/codex-clipboard-1817a7bd-ee7d-4db5-97b0-bfcec37f0c37-efe1416f8d2f.png",
+        "sha256": "efe1416f8d2fbe2e8e055a6b6cfa90f58c361b3080b4ae2d9286138526ed757d",
+        "kind": "runtime-capture",
+        "provenance": "verified-reference"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+        "sha256": "16c24b24e31e210bde06dcb3f131a90a1fb918207d7ae085105e51860126e76e",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+        "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/default-final-telemetry.json",
+        "sha256": "1d87658999973e8daa6a0f225ff1e3af0be190e44568946f70cbab30e2788c10",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/http-longmap-telemetry.json",
+        "sha256": "78de2f482d09528035ba56d59730780bbf3960b2bfc5b0503f1e7dd3377193c3",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/natural-swing-telemetry.json",
+        "sha256": "39644cf28f2379b1f77b0e2cb64800cfc04ea6ee8f50fc475dcb61f909269708",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "默认正式入口只保留一个明确的场景渲染所有者；不得让旧全景流、组件预览或旧教学地形在同一默认帧同时承担背景装饰。",
+    "保持“代码组景＋素材贴图”边界：代码只负责经过确认的动态反馈、连接跨度、锚点、绳索和可归因交互；旧竹架/窄巷这类静态大块 blockout 必须由批准的贴图/混合场景承担，或明确成为唯一经批准的场景组景层。",
+    "正常按住/跳跃/摆荡时不再出现截图中第二套半透明矩形、斜杆和红色绑点；锚点、绳索和必要的危险提示仍可见且可读。",
+    "带 ?longmap=1 的入口要么被明确标为仅调试且不进入默认旅程，要么切换到同一套最终混合场景；不能继续以 image-stream＋component-overlay 作为成品。",
+    "在 2826x1952 证据尺寸、1672x941 逻辑尺寸和 844x390 横屏尺寸，以自然输入完成启动→核心操作→结算/失败→重玩；默认入口和组件分支的 console/page errors 均为 0。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-28T00:00:00.000Z"
+}

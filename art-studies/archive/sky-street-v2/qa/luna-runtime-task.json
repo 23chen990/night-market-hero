@@ -1,0 +1,23 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "Independently verify offline art-preview controls and isolation. Use @playwright/test from repo, file URL preview.html. Check mouse drag in both directions, next/previous, slider, auto play/pause, breakdown toggle, 390px portrait and 844x390 landscape page usability, console errors, no external network. Check source assets have no panorama input and compare qa/workspace-before.json hashes to actual workspace. Existing check-preview.cjs is helpful but do additional normal-control checks of your own.",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2",
+  "ownership": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-runtime-review.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-runtime-*"
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Do not revert others or modify their files. Implementation may be refined while you review; record evidence time/version.",
+    "Read qa/review-contract.mjs and validate output against ReviewSchema using root node resolution before handing back.",
+    "Only exchange structured artifacts; final reply must be JSON containing reportPath and status.",
+    "No generated game workspace writes; write only assigned QA artifact files.",
+    "Do not spawn further agents."
+  ],
+  "acceptance": [
+    "Do not label this gameplay QA; it is an isolated visual study.",
+    "Report responsive/clipped controls or failures with exact evidence.",
+    "Do not modify implementation or generated workspace."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-runtime-review.json"
+}

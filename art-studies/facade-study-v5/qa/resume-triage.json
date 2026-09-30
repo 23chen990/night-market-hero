@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "续接原窗口被中断的代码门面一屏研究；补完已写出的 surfaces.js，修正屋檐、棚布、木楼、灯串的比例和连接，并交付独立审查证据与可复现源码。原窗口当前范围仍为离线美术研究。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "继承已验证美术投诉和既有 formal-fixer 路由；本次完成离线候选研究，不完成或冒充游戏运行时 FIX。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "其他游戏、共享工厂重构",
+      "无关玩法、存档、经济历史",
+      "未核验来源的图像与录屏"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "恢复原窗口最后一轮用户指令",
+      "打开 facade-study-v5 及已核验定稿",
+      "检查 surfaces.js 未进入 build.py / scene.js 的候选分支"
+    ],
+    "observed": [
+      "近景仍使用放大的同一屋檐和棚布素材。",
+      "门面上层窗格、右侧拱门比例与目标差异明显。",
+      "surfaces.js 已生成代码大轮廓但未被构建或绘制。"
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+        "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+        "kind": "reference",
+        "provenance": "verified-reference"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+        "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "代码屋檐与三种棚布轮廓进入离线候选，单图与组合分支均有真实像素证据。",
+    "灯串、棚布、挑廊的连接关系经独立审查。",
+    "桌面、横屏手机、竖屏手机正常按钮操作，无外部请求或页面异常。",
+    "透明代码部件验证有效 alpha，检查三种底色合成。",
+    "记录整体相似度仍未获确认及任何独立审查缺口；运行时接入状态明确。",
+    "游戏源码保持原样，所有代码与研究候选在目标游戏公开仓库可复现。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-30T19:18:08.675Z"
+}

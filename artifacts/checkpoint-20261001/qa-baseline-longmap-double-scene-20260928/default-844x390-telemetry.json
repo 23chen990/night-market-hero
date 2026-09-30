@@ -1,0 +1,4651 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-natural-browser-cell",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "issueId": "experience-complaint-longmap-double-scene-20260928",
+  "route": "default",
+  "viewport": {
+    "width": 844,
+    "height": 390,
+    "label": "844x390"
+  },
+  "url": "http://127.0.0.1:4178/?seed=31&fresh=1",
+  "startup": {
+    "timestamp": 1790571758272,
+    "dataset": {
+      "uiPreload": "ready",
+      "uiStateMotion": "state-change",
+      "visualStandard": "ui-f-night-market-interior",
+      "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+      "orientation": "LANDSCAPE_16_9",
+      "rendering": "MINIMAL_FLAT_2D",
+      "persistentTutorial": "false",
+      "cityDistrict": "market",
+      "cityChunkCount": "3",
+      "cityRenderer": "image-stream",
+      "referenceStage": "1672x941",
+      "orientationBlocked": "false",
+      "componentRenderer": "disabled",
+      "componentVisibleCount": "0",
+      "componentRetainedCount": "0",
+      "missingAssetCount": "0",
+      "longmapChunkId": "none",
+      "longmapChainIndex": "-1",
+      "longmapChunkKind": "none",
+      "longmapSceneFamily": "none",
+      "guardOnScreen": "false",
+      "distanceMeters": "0",
+      "combo": "0",
+      "comboTier": "1",
+      "mutation": "none",
+      "vehicle": "none",
+      "skySegment": "false",
+      "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+      "activeCharacter": "街灯客",
+      "missions": "gate-1,gate-3,combo-3",
+      "recordMeters": "0",
+      "skyEntry": "false",
+      "tutorialPhase": "hook",
+      "levelIndex": "0",
+      "chasePhase": "safe",
+      "route": "low",
+      "segment": "safe-tutorial",
+      "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+      "routePhase": "approach",
+      "routeCommitment": "none",
+      "obstacleKind": "none",
+      "obstaclePhase": "none"
+    },
+    "state": {
+      "tick": 80,
+      "elapsed": 0.6666666666666667,
+      "status": "playing",
+      "levelId": "lantern-entry",
+      "inputHeld": false,
+      "inputTransitions": 0,
+      "attachedAnchorId": null,
+      "player": {
+        "x": 210.53166666666647,
+        "y": 649.6666666666666,
+        "vx": 238.33333333333258,
+        "vy": 401.66666666666646
+      },
+      "segment": "safe-tutorial",
+      "route": "low",
+      "routeTraversal": {
+        "phase": "approach",
+        "committedRoute": null
+      },
+      "activeTerrain": {
+        "kind": "布棚",
+        "bounds": {
+          "x": 35,
+          "y": 515,
+          "width": 220,
+          "height": 92
+        },
+        "behaviorState": "ready"
+      },
+      "sceneObjects": [
+        {
+          "kind": "布棚",
+          "bounds": {
+            "x": 35,
+            "y": 515,
+            "width": 220,
+            "height": 92
+          },
+          "behaviorState": "ready"
+        },
+        {
+          "kind": "竹架",
+          "bounds": {
+            "x": 340,
+            "y": 460,
+            "width": 200,
+            "height": 200
+          },
+          "behaviorState": "ready"
+        },
+        {
+          "kind": "窄巷",
+          "bounds": {
+            "x": 700,
+            "y": 400,
+            "width": 150,
+            "height": 260
+          },
+          "behaviorState": "ready"
+        }
+      ],
+      "chaseObstacle": null,
+      "progress": 0.07627958937198061,
+      "distanceMeters": 0
+    },
+    "canvasCount": 1
+  },
+  "attached": {
+    "timestamp": 1790571758601,
+    "dataset": {
+      "uiPreload": "ready",
+      "uiStateMotion": "state-change",
+      "visualStandard": "ui-f-night-market-interior",
+      "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+      "orientation": "LANDSCAPE_16_9",
+      "rendering": "MINIMAL_FLAT_2D",
+      "persistentTutorial": "false",
+      "cityDistrict": "market",
+      "cityChunkCount": "3",
+      "cityRenderer": "image-stream",
+      "referenceStage": "1672x941",
+      "orientationBlocked": "false",
+      "componentRenderer": "disabled",
+      "componentVisibleCount": "0",
+      "componentRetainedCount": "0",
+      "missingAssetCount": "0",
+      "longmapChunkId": "none",
+      "longmapChainIndex": "-1",
+      "longmapChunkKind": "none",
+      "longmapSceneFamily": "none",
+      "guardOnScreen": "false",
+      "distanceMeters": "0",
+      "combo": "0",
+      "comboTier": "1",
+      "mutation": "none",
+      "vehicle": "none",
+      "skySegment": "false",
+      "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+      "activeCharacter": "街灯客",
+      "missions": "gate-1,gate-3,combo-3",
+      "recordMeters": "0",
+      "skyEntry": "false",
+      "tutorialPhase": "release",
+      "levelIndex": "0",
+      "chasePhase": "safe",
+      "route": "low",
+      "segment": "safe-tutorial",
+      "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+      "routePhase": "approach",
+      "routeCommitment": "none",
+      "obstacleKind": "none",
+      "obstaclePhase": "none"
+    },
+    "state": {
+      "tick": 116,
+      "elapsed": 0.9666666666666657,
+      "status": "playing",
+      "levelId": "lantern-entry",
+      "inputHeld": true,
+      "inputTransitions": 1,
+      "attachedAnchorId": "node-2",
+      "player": {
+        "x": 334.94542640139275,
+        "y": 578.6104944670088,
+        "vx": 7.5573571801308415,
+        "vy": 8.222601777868917
+      },
+      "segment": "safe-tutorial",
+      "route": "low",
+      "routeTraversal": {
+        "phase": "approach",
+        "committedRoute": null
+      },
+      "activeTerrain": {
+        "kind": "布棚",
+        "bounds": {
+          "x": 35,
+          "y": 515,
+          "width": 220,
+          "height": 92
+        },
+        "behaviorState": "ready"
+      },
+      "sceneObjects": [
+        {
+          "kind": "布棚",
+          "bounds": {
+            "x": 35,
+            "y": 515,
+            "width": 220,
+            "height": 92
+          },
+          "behaviorState": "ready"
+        },
+        {
+          "kind": "竹架",
+          "bounds": {
+            "x": 340,
+            "y": 460,
+            "width": 200,
+            "height": 200
+          },
+          "behaviorState": "ready"
+        },
+        {
+          "kind": "窄巷",
+          "bounds": {
+            "x": 700,
+            "y": 400,
+            "width": 150,
+            "height": 260
+          },
+          "behaviorState": "ready"
+        }
+      ],
+      "chaseObstacle": null,
+      "progress": 0.1213452323032579,
+      "distanceMeters": 0
+    },
+    "canvasCount": 1
+  },
+  "released": {
+    "timestamp": 1790571766305,
+    "dataset": {
+      "uiPreload": "ready",
+      "uiStateMotion": "state-change",
+      "visualStandard": "ui-f-night-market-interior",
+      "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+      "orientation": "LANDSCAPE_16_9",
+      "rendering": "MINIMAL_FLAT_2D",
+      "persistentTutorial": "false",
+      "cityDistrict": "market",
+      "cityChunkCount": "4",
+      "cityRenderer": "image-stream",
+      "referenceStage": "1672x941",
+      "orientationBlocked": "false",
+      "componentRenderer": "disabled",
+      "componentVisibleCount": "0",
+      "componentRetainedCount": "0",
+      "missingAssetCount": "0",
+      "longmapChunkId": "none",
+      "longmapChainIndex": "-1",
+      "longmapChunkKind": "none",
+      "longmapSceneFamily": "none",
+      "guardOnScreen": "false",
+      "distanceMeters": "0",
+      "combo": "0",
+      "comboTier": "1",
+      "mutation": "none",
+      "vehicle": "none",
+      "skySegment": "false",
+      "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+      "activeCharacter": "街灯客",
+      "missions": "gate-1,gate-3,combo-3,gate-5",
+      "recordMeters": "0",
+      "skyEntry": "false",
+      "tutorialPhase": "off",
+      "levelIndex": "0",
+      "chasePhase": "safe",
+      "route": "low",
+      "segment": "gate-climax",
+      "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+      "routePhase": "complete",
+      "routeCommitment": "none",
+      "obstacleKind": "roof-net",
+      "obstaclePhase": "missed"
+    },
+    "state": {
+      "tick": 1038,
+      "elapsed": 8.65000000000015,
+      "status": "failed",
+      "levelId": "lantern-entry",
+      "inputHeld": false,
+      "inputTransitions": 22,
+      "attachedAnchorId": null,
+      "player": {
+        "x": 3378.814280863583,
+        "y": 903.4744390204253,
+        "vx": 548.4659453475923,
+        "vy": 636.2272446178109
+      },
+      "segment": "gate-climax",
+      "route": "low",
+      "routeTraversal": {
+        "phase": "complete",
+        "committedRoute": null
+      },
+      "activeTerrain": {
+        "kind": "竹架",
+        "bounds": {
+          "x": 1120,
+          "y": 430,
+          "width": 240,
+          "height": 190
+        },
+        "behaviorState": "broken"
+      },
+      "sceneObjects": [
+        {
+          "kind": "布棚",
+          "bounds": {
+            "x": 800,
+            "y": 500,
+            "width": 230,
+            "height": 102
+          },
+          "behaviorState": "ready"
+        },
+        {
+          "kind": "竹架",
+          "bounds": {
+            "x": 1120,
+            "y": 430,
+            "width": 240,
+            "height": 190
+          },
+          "behaviorState": "broken"
+        },
+        {
+          "kind": "窄巷",
+          "bounds": {
+            "x": 1650,
+            "y": 390,
+            "width": 160,
+            "height": 280
+          },
+          "behaviorState": "ready"
+        }
+      ],
+      "chaseObstacle": {
+        "kind": "roof-net",
+        "phase": "missed",
+        "bounds": {
+          "x": 1691.6000000000001,
+          "y": 250,
+          "width": 260,
+          "height": 170
+        }
+      },
+      "progress": 1,
+      "distanceMeters": 0
+    },
+    "canvasCount": 1
+  },
+  "terminal": {
+    "timestamp": 1790571766305,
+    "dataset": {
+      "uiPreload": "ready",
+      "uiStateMotion": "state-change",
+      "visualStandard": "ui-f-night-market-interior",
+      "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+      "orientation": "LANDSCAPE_16_9",
+      "rendering": "MINIMAL_FLAT_2D",
+      "persistentTutorial": "false",
+      "cityDistrict": "market",
+      "cityChunkCount": "4",
+      "cityRenderer": "image-stream",
+      "referenceStage": "1672x941",
+      "orientationBlocked": "false",
+      "componentRenderer": "disabled",
+      "componentVisibleCount": "0",
+      "componentRetainedCount": "0",
+      "missingAssetCount": "0",
+      "longmapChunkId": "none",
+      "longmapChainIndex": "-1",
+      "longmapChunkKind": "none",
+      "longmapSceneFamily": "none",
+      "guardOnScreen": "false",
+      "distanceMeters": "0",
+      "combo": "0",
+      "comboTier": "1",
+      "mutation": "none",
+      "vehicle": "none",
+      "skySegment": "false",
+      "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+      "activeCharacter": "街灯客",
+      "missions": "gate-1,gate-3,combo-3,gate-5",
+      "recordMeters": "0",
+      "skyEntry": "false",
+      "tutorialPhase": "off",
+      "levelIndex": "0",
+      "chasePhase": "safe",
+      "route": "low",
+      "segment": "gate-climax",
+      "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+      "routePhase": "complete",
+      "routeCommitment": "none",
+      "obstacleKind": "roof-net",
+      "obstaclePhase": "missed"
+    },
+    "state": {
+      "tick": 1038,
+      "elapsed": 8.65000000000015,
+      "status": "failed",
+      "levelId": "lantern-entry",
+      "inputHeld": false,
+      "inputTransitions": 22,
+      "attachedAnchorId": null,
+      "player": {
+        "x": 3378.814280863583,
+        "y": 903.4744390204253,
+        "vx": 548.4659453475923,
+        "vy": 636.2272446178109
+      },
+      "segment": "gate-climax",
+      "route": "low",
+      "routeTraversal": {
+        "phase": "complete",
+        "committedRoute": null
+      },
+      "activeTerrain": {
+        "kind": "竹架",
+        "bounds": {
+          "x": 1120,
+          "y": 430,
+          "width": 240,
+          "height": 190
+        },
+        "behaviorState": "broken"
+      },
+      "sceneObjects": [
+        {
+          "kind": "布棚",
+          "bounds": {
+            "x": 800,
+            "y": 500,
+            "width": 230,
+            "height": 102
+          },
+          "behaviorState": "ready"
+        },
+        {
+          "kind": "竹架",
+          "bounds": {
+            "x": 1120,
+            "y": 430,
+            "width": 240,
+            "height": 190
+          },
+          "behaviorState": "broken"
+        },
+        {
+          "kind": "窄巷",
+          "bounds": {
+            "x": 1650,
+            "y": 390,
+            "width": 160,
+            "height": 280
+          },
+          "behaviorState": "ready"
+        }
+      ],
+      "chaseObstacle": {
+        "kind": "roof-net",
+        "phase": "missed",
+        "bounds": {
+          "x": 1691.6000000000001,
+          "y": 250,
+          "width": 260,
+          "height": 170
+        }
+      },
+      "progress": 1,
+      "distanceMeters": 0
+    },
+    "canvasCount": 1
+  },
+  "final": {
+    "timestamp": 1790571766446,
+    "dataset": {
+      "uiPreload": "ready",
+      "uiStateMotion": "state-change",
+      "visualStandard": "ui-f-night-market-interior",
+      "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+      "orientation": "LANDSCAPE_16_9",
+      "rendering": "MINIMAL_FLAT_2D",
+      "persistentTutorial": "false",
+      "cityDistrict": "market",
+      "cityChunkCount": "4",
+      "cityRenderer": "image-stream",
+      "referenceStage": "1672x941",
+      "orientationBlocked": "false",
+      "componentRenderer": "disabled",
+      "componentVisibleCount": "0",
+      "componentRetainedCount": "0",
+      "missingAssetCount": "0",
+      "longmapChunkId": "none",
+      "longmapChainIndex": "-1",
+      "longmapChunkKind": "none",
+      "longmapSceneFamily": "none",
+      "guardOnScreen": "false",
+      "distanceMeters": "0",
+      "combo": "0",
+      "comboTier": "1",
+      "mutation": "none",
+      "vehicle": "none",
+      "skySegment": "false",
+      "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+      "activeCharacter": "街灯客",
+      "missions": "gate-1,gate-3,combo-3,gate-5",
+      "recordMeters": "0",
+      "skyEntry": "false",
+      "tutorialPhase": "off",
+      "levelIndex": "0",
+      "chasePhase": "safe",
+      "route": "low",
+      "segment": "gate-climax",
+      "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+      "routePhase": "complete",
+      "routeCommitment": "none",
+      "obstacleKind": "roof-net",
+      "obstaclePhase": "missed"
+    },
+    "state": {
+      "tick": 1038,
+      "elapsed": 8.65000000000015,
+      "status": "failed",
+      "levelId": "lantern-entry",
+      "inputHeld": false,
+      "inputTransitions": 22,
+      "attachedAnchorId": null,
+      "player": {
+        "x": 3378.814280863583,
+        "y": 903.4744390204253,
+        "vx": 548.4659453475923,
+        "vy": 636.2272446178109
+      },
+      "segment": "gate-climax",
+      "route": "low",
+      "routeTraversal": {
+        "phase": "complete",
+        "committedRoute": null
+      },
+      "activeTerrain": {
+        "kind": "竹架",
+        "bounds": {
+          "x": 1120,
+          "y": 430,
+          "width": 240,
+          "height": 190
+        },
+        "behaviorState": "broken"
+      },
+      "sceneObjects": [
+        {
+          "kind": "布棚",
+          "bounds": {
+            "x": 800,
+            "y": 500,
+            "width": 230,
+            "height": 102
+          },
+          "behaviorState": "ready"
+        },
+        {
+          "kind": "竹架",
+          "bounds": {
+            "x": 1120,
+            "y": 430,
+            "width": 240,
+            "height": 190
+          },
+          "behaviorState": "broken"
+        },
+        {
+          "kind": "窄巷",
+          "bounds": {
+            "x": 1650,
+            "y": 390,
+            "width": 160,
+            "height": 280
+          },
+          "behaviorState": "ready"
+        }
+      ],
+      "chaseObstacle": {
+        "kind": "roof-net",
+        "phase": "missed",
+        "bounds": {
+          "x": 1691.6000000000001,
+          "y": 250,
+          "width": 260,
+          "height": 170
+        }
+      },
+      "progress": 1,
+      "distanceMeters": 0
+    },
+    "canvasCount": 1
+  },
+  "holdCount": 11,
+  "cycleStates": [
+    {
+      "cycle": 0,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571758565,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "hook",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "safe-tutorial",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "approach",
+          "routeCommitment": "none",
+          "obstacleKind": "none",
+          "obstaclePhase": "none"
+        },
+        "state": {
+          "tick": 111,
+          "elapsed": 0.9249999999999992,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 0,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 263.1851666666663,
+            "y": 783.7416666666666,
+            "vx": 235.74999999999895,
+            "vy": 629.0000000000001
+          },
+          "segment": "safe-tutorial",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "approach",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 35,
+              "y": 515,
+              "width": 220,
+              "height": 92
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 35,
+                "y": 515,
+                "width": 220,
+                "height": 92
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": null,
+          "progress": 0.09535694444444431,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 0,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571759322,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "1",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "safe-tutorial",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "approach",
+          "routeCommitment": "none",
+          "obstacleKind": "none",
+          "obstaclePhase": "none"
+        },
+        "state": {
+          "tick": 203,
+          "elapsed": 1.691666666666663,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 2,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 490.7544543075798,
+            "y": 678.290930507049,
+            "vx": 484.15052808537786,
+            "vy": 166.9725309013481
+          },
+          "segment": "safe-tutorial",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "approach",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 35,
+              "y": 515,
+              "width": 220,
+              "height": 92
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 35,
+                "y": 515,
+                "width": 220,
+                "height": 92
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": null,
+          "progress": 0.17780958489405066,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 0,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571759413,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "1",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "safe-tutorial",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "approach",
+          "routeCommitment": "none",
+          "obstacleKind": "none",
+          "obstaclePhase": "none"
+        },
+        "state": {
+          "tick": 215,
+          "elapsed": 1.7916666666666627,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 2,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 532.3448163895889,
+            "y": 699.7548502638505,
+            "vx": 483.1505280853781,
+            "vy": 254.97253090134822
+          },
+          "segment": "safe-tutorial",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "approach",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 35,
+              "y": 515,
+              "width": 220,
+              "height": 92
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 35,
+                "y": 515,
+                "width": 220,
+                "height": 92
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": null,
+          "progress": 0.19287855666289452,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 1,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571759424,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "1",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "safe-tutorial",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "approach",
+          "routeCommitment": "none",
+          "obstacleKind": "none",
+          "obstaclePhase": "none"
+        },
+        "state": {
+          "tick": 216,
+          "elapsed": 1.799999999999996,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 2,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 535.8067979519785,
+            "y": 701.9407324658061,
+            "vx": 483.06719475204477,
+            "vy": 262.30586423468156
+          },
+          "segment": "safe-tutorial",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "approach",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 35,
+              "y": 515,
+              "width": 220,
+              "height": 92
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 35,
+                "y": 515,
+                "width": 220,
+                "height": 92
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": null,
+          "progress": 0.19413289780868787,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 1,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571759978,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "2",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "first-pursuit",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "approach",
+          "routeCommitment": "none",
+          "obstacleKind": "barricade",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 282,
+          "elapsed": 2.3499999999999943,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 4,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 946.9440491211692,
+            "y": 734.3953528821902,
+            "vx": 799.3030043571546,
+            "vy": -28.710522033528864
+          },
+          "segment": "first-pursuit",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "approach",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 340,
+              "y": 460,
+              "width": 200,
+              "height": 200
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 35,
+                "y": 515,
+                "width": 220,
+                "height": 92
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "barricade",
+            "phase": "active",
+            "bounds": {
+              "x": 965.9999999999999,
+              "y": 480,
+              "width": 76,
+              "height": 210
+            }
+          },
+          "progress": 0.3430956699714381,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 1,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571760071,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "2",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "first-pursuit",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "approach",
+          "routeCommitment": "none",
+          "obstacleKind": "barricade",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 293,
+          "elapsed": 2.4416666666666607,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 4,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1009.9163526313248,
+            "y": 735.7968883624501,
+            "vx": 798.3863376904875,
+            "vy": 51.956144633137804
+          },
+          "segment": "first-pursuit",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "approach",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 340,
+              "y": 460,
+              "width": 200,
+              "height": 200
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 35,
+                "y": 515,
+                "width": 220,
+                "height": 92
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "barricade",
+            "phase": "active",
+            "bounds": {
+              "x": 965.9999999999999,
+              "y": 480,
+              "width": 76,
+              "height": 210
+            }
+          },
+          "progress": 0.3659117219678713,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 2,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571760083,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "2",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "first-pursuit",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "approach",
+          "routeCommitment": "none",
+          "obstacleKind": "barricade",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 295,
+          "elapsed": 2.4583333333333273,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 4,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1021.3580984715551,
+            "y": 736.846157439669,
+            "vx": 798.2196710238208,
+            "vy": 66.62281129980447
+          },
+          "segment": "first-pursuit",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "approach",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 340,
+              "y": 460,
+              "width": 200,
+              "height": 200
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 35,
+                "y": 515,
+                "width": 220,
+                "height": 92
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "barricade",
+            "phase": "active",
+            "bounds": {
+              "x": 965.9999999999999,
+              "y": 480,
+              "width": 76,
+              "height": 210
+            }
+          },
+          "progress": 0.3700572820549113,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 2,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571760704,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "3",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "split",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "land"
+        },
+        "state": {
+          "tick": 370,
+          "elapsed": 3.083333333333325,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 6,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1486.095013256779,
+            "y": 601.024760872578,
+            "vx": 611.6978946840346,
+            "vy": -483.61425186486866
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "split",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "land",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5384402221944852,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 2,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571760789,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "3",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 380,
+          "elapsed": 3.166666666666658,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 6,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1529.9005151535794,
+            "y": 564.0846843282834,
+            "vx": 610.8645613507009,
+            "vy": -410.2809185315355
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5543117808527461,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 3,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571760800,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "3",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 381,
+          "elapsed": 3.1749999999999914,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 6,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1534.2777806210372,
+            "y": 560.726787784965,
+            "vx": 610.7812280173675,
+            "vy": -402.9475851982022
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5558977466018251,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 3,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571761420,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 456,
+          "elapsed": 3.799999999999989,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 8,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1556.7595556557021,
+            "y": 532.8321880040204,
+            "vx": 158.43888016089406,
+            "vy": -114.43611445310577
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5824700235668527,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 3,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571761504,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 466,
+          "elapsed": 3.883333333333322,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 8,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1568.0814948450106,
+            "y": 526.6569562440394,
+            "vx": 157.60554682756063,
+            "vy": -41.10278111977246
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5824700235668527,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 4,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571761515,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 467,
+          "elapsed": 3.8916666666666555,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 8,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1569.2104040417194,
+            "y": 526.3755441791524,
+            "vx": 157.5222134942273,
+            "vy": -33.76944778643912
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5824700235668527,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 4,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571762161,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 545,
+          "elapsed": 4.541666666666682,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 10,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1554.8783760581164,
+            "y": 587.7821737294971,
+            "vx": -234.03528093369317,
+            "vy": -116.95810419382869
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5830539205669828,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 4,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571762255,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 556,
+          "elapsed": 4.633333333333353,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 10,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1536.3891780778438,
+            "y": 581.0943475117294,
+            "vx": -234.95194760035994,
+            "vy": -36.291437527162046
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5830539205669828,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 5,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571762265,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 557,
+          "elapsed": 4.641666666666687,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 10,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1534.7047585644857,
+            "y": 580.8530299767808,
+            "vx": -235.0352809336933,
+            "vy": -28.958104193828714
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5830539205669828,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 5,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571762876,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "split",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 630,
+          "elapsed": 5.250000000000051,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 12,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1480.8629745793692,
+            "y": 570.2297820461555,
+            "vx": 48.291567825422355,
+            "vy": 30.188880412936
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "split",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5830539205669828,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 5,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571762970,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "split",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 642,
+          "elapsed": 5.350000000000056,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 12,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1484.9694660790221,
+            "y": 578.0153367541158,
+            "vx": 47.29156782542233,
+            "vy": 118.18888041293597
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "split",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5830539205669828,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 6,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571762982,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "split",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 643,
+          "elapsed": 5.358333333333389,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 12,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1485.3077917595488,
+            "y": 579.0613552020013,
+            "vx": 47.20823449208899,
+            "vy": 125.5222137462693
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "split",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "布棚",
+            "bounds": {
+              "x": 800,
+              "y": 500,
+              "width": 230,
+              "height": 102
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 700,
+                "y": 400,
+                "width": 150,
+                "height": 260
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.5830539205669828,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 6,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571763601,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "1",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 717,
+          "elapsed": 5.975000000000087,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 14,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1753.6438955483443,
+            "y": 669.2986929234041,
+            "vx": 560.2123027094244,
+            "vy": 264.9135531347329
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "窄巷",
+            "bounds": {
+              "x": 1650,
+              "y": 390,
+              "width": 160,
+              "height": 280
+            },
+            "behaviorState": "concealed"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "concealed"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.6353782230247624,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 6,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571763689,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "1",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 728,
+          "elapsed": 6.066666666666758,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 14,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1797.7678820786039,
+            "y": 697.6157686274213,
+            "vx": 559.2956360427573,
+            "vy": 345.5802198013994
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "窄巷",
+            "bounds": {
+              "x": 1650,
+              "y": 390,
+              "width": 160,
+              "height": 280
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.6513651746661608,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 7,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571763699,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "3",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "1",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "route-alternation",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "branch",
+          "routeCommitment": "low",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "active"
+        },
+        "state": {
+          "tick": 729,
+          "elapsed": 6.075000000000092,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 14,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 1801.7755702480215,
+            "y": 700.556714903544,
+            "vx": 559.212302709424,
+            "vy": 352.9135531347327
+          },
+          "segment": "route-alternation",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "branch",
+            "committedRoute": "low"
+          },
+          "activeTerrain": {
+            "kind": "窄巷",
+            "bounds": {
+              "x": 1650,
+              "y": 390,
+              "width": 160,
+              "height": 280
+            },
+            "behaviorState": "ready"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 340,
+                "y": 460,
+                "width": 200,
+                "height": 200
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "active",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.6528172355971092,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 7,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571764272,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "2",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 797,
+          "elapsed": 6.6416666666667865,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 16,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 2274.1010963508143,
+            "y": 721.4947252885503,
+            "vx": 833.5951551384017,
+            "vy": -95.52665820605588
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.8239496725908747,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 7,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571764364,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "2",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 809,
+          "elapsed": 6.7416666666667915,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 16,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 2334.2808803580124,
+            "y": 716.7087261346113,
+            "vx": 832.5951551384012,
+            "vy": -7.526658206055898
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.8457539421587001,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 8,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571764376,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "2",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 810,
+          "elapsed": 6.750000000000125,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 16,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 2339.2926015252788,
+            "y": 716.7071150940053,
+            "vx": 832.5118218050678,
+            "vy": -0.19332487272256493
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.8475697831613329,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 8,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571764968,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "3",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 882,
+          "elapsed": 7.350000000000155,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 18,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 2723.532926562297,
+            "y": 649.0151616321974,
+            "vx": 728.9527541061683,
+            "vy": -360.62748486926813
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 0.9867872922327162,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 8,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571765052,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "3",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 892,
+          "elapsed": 7.4333333333334926,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 18,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 2767.3882906928216,
+            "y": 622.3239823375361,
+            "vx": 728.1194207728346,
+            "vy": -287.294151535935
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 1,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 9,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571765063,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "3",
+          "comboTier": "2",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 893,
+          "elapsed": 7.441666666666826,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 18,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 2771.7710679392076,
+            "y": 619.9909755191811,
+            "vx": 728.0360874395012,
+            "vy": -279.9608182026017
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 1,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 9,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571765661,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 965,
+          "elapsed": 8.04166666666685,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 20,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 3086.012649678984,
+            "y": 612.6144845976202,
+            "vx": 722.0360874394985,
+            "vy": 248.03918179739853
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 1,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 9,
+      "phase": "after",
+      "sample": {
+        "timestamp": 1790571765748,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 976,
+          "elapsed": 8.133333333333512,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 20,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 3133.7927693892275,
+            "y": 639.3847429290483,
+            "vx": 721.1194207728314,
+            "vy": 328.705848464065
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 1,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 10,
+      "phase": "before",
+      "sample": {
+        "timestamp": 1790571765759,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "coin",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 977,
+          "elapsed": 8.141666666666845,
+          "status": "playing",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 20,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 3138.1334066356135,
+            "y": 642.1850694440267,
+            "vx": 721.036087439498,
+            "vy": 336.0391817973983
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 1,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    },
+    {
+      "cycle": 10,
+      "phase": "release",
+      "sample": {
+        "timestamp": 1790571766305,
+        "dataset": {
+          "uiPreload": "ready",
+          "uiStateMotion": "state-change",
+          "visualStandard": "ui-f-night-market-interior",
+          "characterReferenceSha256": "adb2a97b3f72d9233aa807a3f7833d4f2633c6e3210b570750ded32c04f2c3eb",
+          "orientation": "LANDSCAPE_16_9",
+          "rendering": "MINIMAL_FLAT_2D",
+          "persistentTutorial": "false",
+          "cityDistrict": "market",
+          "cityChunkCount": "4",
+          "cityRenderer": "image-stream",
+          "referenceStage": "1672x941",
+          "orientationBlocked": "false",
+          "componentRenderer": "disabled",
+          "componentVisibleCount": "0",
+          "componentRetainedCount": "0",
+          "missingAssetCount": "0",
+          "longmapChunkId": "none",
+          "longmapChainIndex": "-1",
+          "longmapChunkKind": "none",
+          "longmapSceneFamily": "none",
+          "guardOnScreen": "false",
+          "distanceMeters": "0",
+          "combo": "0",
+          "comboTier": "1",
+          "mutation": "none",
+          "vehicle": "none",
+          "skySegment": "false",
+          "characterRoster": "街灯客,走绳伎,双钩客,提灯童,铁索僧",
+          "activeCharacter": "街灯客",
+          "missions": "gate-1,gate-3,combo-3,gate-5",
+          "recordMeters": "0",
+          "skyEntry": "false",
+          "tutorialPhase": "off",
+          "levelIndex": "0",
+          "chasePhase": "safe",
+          "route": "low",
+          "segment": "gate-climax",
+          "levelOneSegmentOrder": "safe-tutorial>first-pursuit>route-alternation>gate-climax",
+          "routePhase": "complete",
+          "routeCommitment": "none",
+          "obstacleKind": "roof-net",
+          "obstaclePhase": "missed"
+        },
+        "state": {
+          "tick": 1038,
+          "elapsed": 8.65000000000015,
+          "status": "failed",
+          "levelId": "lantern-entry",
+          "inputHeld": false,
+          "inputTransitions": 22,
+          "attachedAnchorId": null,
+          "player": {
+            "x": 3378.814280863583,
+            "y": 903.4744390204253,
+            "vx": 548.4659453475923,
+            "vy": 636.2272446178109
+          },
+          "segment": "gate-climax",
+          "route": "low",
+          "routeTraversal": {
+            "phase": "complete",
+            "committedRoute": null
+          },
+          "activeTerrain": {
+            "kind": "竹架",
+            "bounds": {
+              "x": 1120,
+              "y": 430,
+              "width": 240,
+              "height": 190
+            },
+            "behaviorState": "broken"
+          },
+          "sceneObjects": [
+            {
+              "kind": "布棚",
+              "bounds": {
+                "x": 800,
+                "y": 500,
+                "width": 230,
+                "height": 102
+              },
+              "behaviorState": "ready"
+            },
+            {
+              "kind": "竹架",
+              "bounds": {
+                "x": 1120,
+                "y": 430,
+                "width": 240,
+                "height": 190
+              },
+              "behaviorState": "broken"
+            },
+            {
+              "kind": "窄巷",
+              "bounds": {
+                "x": 1650,
+                "y": 390,
+                "width": 160,
+                "height": 280
+              },
+              "behaviorState": "ready"
+            }
+          ],
+          "chaseObstacle": {
+            "kind": "roof-net",
+            "phase": "missed",
+            "bounds": {
+              "x": 1691.6000000000001,
+              "y": 250,
+              "width": 260,
+              "height": 170
+            }
+          },
+          "progress": 1,
+          "distanceMeters": 0
+        },
+        "canvasCount": 1
+      }
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "consoleWarnings": [
+    "[.WebGL-0x13c004c5a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "[.WebGL-0x13c004c5a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "[.WebGL-0x13c004c5a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "[.WebGL-0x13c004c5a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+  ],
+  "requestFailures": []
+}

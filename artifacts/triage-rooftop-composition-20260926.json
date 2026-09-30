@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "generated-game-triage",
+  "targetGame": "23chen990/night-market-hero",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "classification": "composition-wiring-mismatch",
+  "route": "direct-builder",
+  "reproduction": {
+    "evidence": "User reports that the rooftop assets appear as images stacked together and reiterates the approved self-drawn plus asset composition requirement.",
+    "entry": "?longmap=1&seed=31&fresh=1",
+    "renderer": "component-overlay",
+    "viewport": "1180x720",
+    "observed": "rooftops.curvedEave, rooftops.roofCrown and rooftops.roofSupportBlock are mounted as independent image placements without a code-drawn span/connector between their structural anchor points."
+  },
+  "reproductionMatrix": [
+    {
+      "objectType": "rooftop atomic component",
+      "lifecycle": "preload -> render -> scroll/recycle",
+      "rendererPath": "ComponentRenderer image placement",
+      "deviceViewport": "Chromium 1180x720",
+      "result": "reproduced: asset sprites are independent with no structural drawing bridge"
+    },
+    {
+      "objectType": "lantern cable group",
+      "lifecycle": "preload -> render -> scroll/recycle",
+      "rendererPath": "ComponentRenderer lantern group plus line",
+      "deviceViewport": "Chromium 1180x720",
+      "result": "reference branch: code-drawn connector exists"
+    }
+  ],
+  "acceptanceCriteria": [
+    "Rooftop asset sprites remain reusable source-derived components.",
+    "A code-drawn structural span connects the rooftop component anchors within each rooftop chunk.",
+    "The renderer recycles connector lines with the same lifecycle as rooftop images.",
+    "Lantern sprite and code-drawn cable behavior remains unchanged.",
+    "No core gameplay, persistence, platform adapter, or release configuration changes."
+  ],
+  "fix": {
+    "status": "PASS",
+    "implementation": "保留 v55 透明屋顶轮廓素材，按同一 chunk 的相邻锚点创建可回收的 Phaser line 结构跨度；图片负责屋檐/冠部/承托块，代码负责随布局变化的连接段。",
+    "files": [
+      "src/component-renderer.ts",
+      "tests/component-renderer.test.ts"
+    ],
+    "red": "pnpm test -- --test-name-pattern='rooftop components use a code-drawn structural span'：断言失败，未找到正跨度 connector",
+    "green": "同一测试通过；连接线在 chunk 离开视口时隐藏，返回时复用原 line 对象",
+    "runtimeEvidence": [
+      "qa-evidence/rooftops-v55-runtime/longmap-rooftops-v55-connector-runtime-20260926.json",
+      "qa-evidence/rooftops-v55-runtime/rooftop-connector-runtime-20260926.json"
+    ],
+    "consoleErrors": 0,
+    "pageErrors": 0
+  },
+  "verification": {
+    "tests": {
+      "status": "PASS",
+      "passed": 269,
+      "skipped": 10,
+      "failed": 0
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
+  }
+}

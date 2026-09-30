@@ -31,9 +31,19 @@ export interface ComponentRenderImage {
   destroy(): void;
 }
 
+export interface ComponentRenderLine {
+  setTo(x1: number, y1: number, x2: number, y2: number): ComponentRenderLine;
+  setLineWidth(width: number): ComponentRenderLine;
+  setStrokeStyle(color: number, alpha?: number): ComponentRenderLine;
+  setDepth(depth: number): ComponentRenderLine;
+  setVisible(visible: boolean): ComponentRenderLine;
+  destroy(): void;
+}
+
 export interface ComponentSceneLike {
   load: { image(key: string, url: string): void };
-  add: { image(x: number, y: number, key: string): ComponentRenderImage };
+  // Phaser's line primitive is optional so lightweight test scenes can omit it.
+  add: { image(x: number, y: number, key: string): ComponentRenderImage; line?: (x: number, y: number, x1: number, y1: number, x2: number, y2: number, color: number, alpha?: number) => ComponentRenderLine };
   textures?: { exists(key: string): boolean };
 }
 
@@ -59,6 +69,15 @@ interface RetainedComponent {
   id: string;
   runtimeKey: string;
   image: ComponentRenderImage;
+}
+
+interface RetainedLanternGroup {
+  images: RetainedComponent[];
+  connector: ComponentRenderLine | null;
+}
+
+interface RetainedRooftopGroup {
+  connectors: ComponentRenderLine[];
 }
 
 interface DesiredComponent {
@@ -90,7 +109,10 @@ export class ComponentRenderer {
   private readonly prefetchChunks: number;
   private readonly maxRetainedComponents: number;
   private readonly retained = new Map<string, RetainedComponent>();
+  private readonly lanternGroups = new Map<string, RetainedLanternGroup>();
+  private readonly rooftopGroups = new Map<string, RetainedRooftopGroup>();
   private readonly freeByKey = new Map<string, ComponentRenderImage[]>();
+  private readonly freeRoofLines: ComponentRenderLine[] = [];
   private preloaded = false;
   private lastStats: ComponentRendererStats = {
     renderer: 'disabled',
@@ -135,6 +157,23 @@ export class ComponentRenderer {
     const bucket = this.freeByKey.get(component.runtimeKey) ?? [];
     bucket.push(component.image);
     this.freeByKey.set(component.runtimeKey, bucket);
+  }
+
+  private releaseLanternGroup(group: RetainedLanternGroup): void {
+    for (const image of group.images) this.release(image);
+    group.connector?.setVisible(false);
+  }
+
+  private releaseRooftopGroup(group: RetainedRooftopGroup): void {
+    for (const connector of group.connectors) {
+      connector.setVisible(false);
+      this.freeRoofLines.push(connector);
+    }
+  }
+
+  private acquireRoofLine(scene: ComponentSceneLike, x1: number, y1: number, x2: number, y2: number): ComponentRenderLine | null {
+    const line = this.freeRoofLines.pop() ?? scene.add.line?.(0, 0, x1, y1, x2, y2, 0x101d2d, 0.86) ?? null;
+    return line;
   }
 
   private evictOverflow(): void {
@@ -185,12 +224,33 @@ export class ComponentRenderer {
     }
     const boundedDesired = desired.slice(0, this.maxRetainedComponents);
     const desiredIds = new Set(boundedDesired.map((item) => item.id));
+    const rooftopItemsByChunk = new Map<string, DesiredComponent[]>();
+    for (const item of boundedDesired) {
+      if (!item.placement.assetId.startsWith('rooftops.')) continue;
+      const items = rooftopItemsByChunk.get(item.chunk.chunkId) ?? [];
+      items.push(item);
+      rooftopItemsByChunk.set(item.chunk.chunkId, items);
+    }
+    for (const [id, group] of this.lanternGroups) {
+      if (desiredIds.has(id)) continue;
+      this.releaseLanternGroup(group);
+      this.lanternGroups.delete(id);
+    }
+    for (const [chunkId, group] of this.rooftopGroups) {
+      if (rooftopItemsByChunk.has(chunkId)) continue;
+      this.releaseRooftopGroup(group);
+      this.rooftopGroups.delete(chunkId);
+    }
     for (const [id, component] of this.retained) {
       if (desiredIds.has(id)) continue;
       this.retained.delete(id);
       this.release(component);
     }
     for (const item of boundedDesired) {
+      if (item.placement.assetId === 'lighting.lanternCable') {
+        this.renderLanternGroup(scene, item);
+        continue;
+      }
       let retained = this.retained.get(item.id);
       if (!retained || retained.runtimeKey !== item.runtimeKey) {
         if (retained) {
@@ -212,6 +272,7 @@ export class ComponentRenderer {
         .setVisible(true);
       retained.image.setFlipX?.(placement.flipX);
     }
+    for (const [chunkId, items] of rooftopItemsByChunk) this.renderRooftopGroup(scene, chunkId, items);
     this.evictOverflow();
     const focusX = (safeLeft + safeRight) / 2;
     const focused = chunks.find((chunk) => focusX >= chunk.startX && focusX < chunk.endX)
@@ -230,6 +291,78 @@ export class ComponentRenderer {
     return this.lastStats;
   }
 
+  private renderLanternGroup(scene: ComponentSceneLike, item: DesiredComponent): void {
+    const { placement, imageAsset, chunk } = item;
+    const [width, height] = imageAsset.nominalCanvas;
+    const span = Math.max(180, Math.round((220 + placement.scale * 260) * Math.max(0.7, placement.scaleY)));
+    const baseX = chunk.startX + placement.x;
+    const lanternY = placement.y;
+    let group = this.lanternGroups.get(item.id);
+    if (!group) {
+      const images: RetainedComponent[] = [];
+      for (let index = 0; index < 3; index += 1) {
+        const image = this.acquire(scene, item.runtimeKey);
+        if (!image) continue;
+        images.push({ id: `${item.id}:lantern:${index}`, runtimeKey: item.runtimeKey, image });
+      }
+      const connector = scene.add.line?.(0, 0, baseX, lanternY - height * placement.scaleY * 0.38, baseX + span, lanternY - height * placement.scaleY * 0.38, 0x3a2418, 0.92) ?? null;
+      group = { images, connector };
+      this.lanternGroups.set(item.id, group);
+    }
+    const y = lanternY;
+    group.images.forEach((component, index) => {
+      const x = baseX + (span * index) / 2;
+      component.image.setOrigin(0.5, 0.5).setPosition(x, y)
+        .setDisplaySize(width * placement.scale * 0.22, height * placement.scaleY * 0.22)
+        .setDepth(depthFor(placement.depthBand)).setAlpha(placement.occlusionRole === 'foreground' ? 0.94 : 0.86).setVisible(true);
+      component.image.setFlipX?.(placement.flipX);
+    });
+    group.connector?.setTo(baseX, y - height * placement.scaleY * 0.1, baseX + span, y - height * placement.scaleY * 0.1)
+      .setLineWidth(Math.max(2, placement.scale * 5)).setStrokeStyle(0x3a2418, 0.9).setDepth(depthFor(placement.depthBand) - 0.1).setVisible(true);
+  }
+
+  /**
+   * Rooftop sprites provide the authored silhouettes while these spans supply
+   * the variable-width roof structure between them. Keeping the span in code
+   * prevents separate source crops from reading as a stack of floating images.
+   */
+  private renderRooftopGroup(scene: ComponentSceneLike, chunkId: string, items: DesiredComponent[]): void {
+    const ordered = [...items].sort((left, right) => left.placement.x - right.placement.x);
+    let group = this.rooftopGroups.get(chunkId);
+    if (!group) {
+      group = { connectors: [] };
+      this.rooftopGroups.set(chunkId, group);
+    }
+    while (group.connectors.length < Math.max(0, ordered.length - 1)) {
+      const connector = this.acquireRoofLine(scene, 0, 0, 1, 0);
+      if (!connector) break;
+      group.connectors.push(connector);
+    }
+    for (let index = 0; index < group.connectors.length; index += 1) {
+      const connector = group.connectors[index];
+      const left = ordered[index];
+      const right = ordered[index + 1];
+      if (!left || !right) {
+        connector.setVisible(false);
+        continue;
+      }
+      const [leftWidth, leftHeight] = left.imageAsset.nominalCanvas;
+      const [rightWidth, rightHeight] = right.imageAsset.nominalCanvas;
+      const leftX = left.chunk.startX + left.placement.x + leftWidth * left.placement.scale;
+      const rightX = right.chunk.startX + right.placement.x;
+      const startX = Math.min(leftX, rightX - Math.max(12, rightWidth * right.placement.scale * 0.08));
+      const endX = Math.max(rightX, startX + 24);
+      const startY = left.placement.y + leftHeight * left.placement.scaleY * 0.62;
+      const endY = right.placement.y + rightHeight * right.placement.scaleY * 0.62;
+      const width = Math.max(6, Math.min(16, Math.round(Math.min(left.placement.scale, right.placement.scale) * 14)));
+      connector.setTo(startX, startY, endX, endY)
+        .setLineWidth(width)
+        .setStrokeStyle(0x101d2d, 0.86)
+        .setDepth(depthFor('mid-scenery') - 0.2)
+        .setVisible(true);
+    }
+  }
+
   getStats(): ComponentRendererStats {
     return { ...this.lastStats, retainedCount: this.retained.size, visibleCount: this.retained.size };
   }
@@ -238,6 +371,12 @@ export class ComponentRenderer {
     for (const component of this.retained.values()) component.image.destroy();
     for (const bucket of this.freeByKey.values()) for (const image of bucket) image.destroy();
     this.retained.clear();
+    for (const group of this.lanternGroups.values()) { group.connector?.destroy(); }
+    this.lanternGroups.clear();
+    for (const group of this.rooftopGroups.values()) for (const connector of group.connectors) connector.destroy();
+    this.rooftopGroups.clear();
+    for (const connector of this.freeRoofLines) connector.destroy();
+    this.freeRoofLines.length = 0;
     this.freeByKey.clear();
     this.lastStats = { ...this.lastStats, visibleCount: 0, retainedCount: 0 };
   }

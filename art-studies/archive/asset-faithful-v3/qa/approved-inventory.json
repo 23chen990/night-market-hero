@@ -1,0 +1,292 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "assets": [
+    {
+      "id": "scene-owner-rooftops-panorama-v2",
+      "label": "Rooftops panorama v2 (style reference only)",
+      "role": "Opaque 1672x941 prior Rooftops composition used only as a style/reference authority; current user authority forbids rendering this full panorama in runtime or preview.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/rooftops-panorama-v2.png",
+        "sha256": "c538f5bf43e946d3d830b25a724599ed37edd129e8a885beb46e864bec121e83"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/rooftops-single-hybrid-production-contract-v42.json (ACTIVE; inputs.completeSceneOwner=src/assets/night-city/rooftops-panorama-v2.png)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/experience-complaint-art-scope-mismatch-20260922.json (repository source evidence marks this file role=scene-authority with the same sha256; the rejected v42 decision applies to the composite candidate, not this existing base)"
+      ],
+      "usedInV2": false,
+      "recommendedUse": "Use only for offline review/comparison of palette, silhouette and authored composition. Do not load or render this full panorama in the runtime or the corrected offline preview; the v33 gray-blue sky is the only permitted preview base."
+    },
+    {
+      "id": "environment-bamboo-scaffold-v1",
+      "label": "Bamboo scaffold v1",
+      "role": "Approved mid-depth bamboo scaffold for the market-to-rooftops transition.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/bamboo-scaffold-v1.png",
+        "sha256": "8078dc15e082fbd77b6546818c35abc329a5b7f9d758b799405ca0f1c55fc8e8"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 66)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": false,
+      "recommendedUse": "Place at transition scaffold anchors over the v33 gray-blue sky preview base, with visible supports and the documented mid depth. Do not use it to invent a full building or roof mass."
+    },
+    {
+      "id": "environment-blank-banner-v1",
+      "label": "Blank banner v1",
+      "role": "Approved foreground blank hanging banner for market-02 and signage framing.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/blank-banner-v1.png",
+        "sha256": "69b7965b569d54eb1ac1e993d56a0fa13a72c3bb9e91aead50a0e48c9e09cef2"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 70)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Use as a transparent foreground banner in market-02 or a supported sign mount; keep it readable without adding text-dependent geometry."
+    },
+    {
+      "id": "environment-covered-alley-frame-v1",
+      "label": "Covered alley frame v1",
+      "role": "Approved foreground covered-alley frame for market-04 and the market return.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/covered-alley-frame-v1.png",
+        "sha256": "9aec58607616302cbc17d3d828a211ba23ce179ee41f33b3e8b1182237a44349"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 71)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Use as a supported foreground frame over the v33 sky base around market-04/return-to-market while keeping HUD and the flight corridor clear."
+    },
+    {
+      "id": "environment-inner-eave-v1",
+      "label": "Inner eave v1",
+      "role": "Approved foreground inner-eave frame for market-03 and market/rooftops transitions.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/inner-eave-v1.png",
+        "sha256": "c2e4cdd642e5f71f053f7f54ac28425352c9523f3c7dac22649bd84cebb05816"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 67)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": false,
+      "recommendedUse": "Use as a near foreground eave frame over the v33 sky base at documented transition and market-teahouse mounts; preserve transparency, support and occlusion depth."
+    },
+    {
+      "id": "environment-lantern-cable-v1",
+      "label": "Lantern cable v1",
+      "role": "Approved foreground lantern cable for market-01/04, transitions, rooftops-03 and waterfront-04; visual only, no automatic collision.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/lantern-cable-v1.png",
+        "sha256": "216a69f59514fb74d447e11d211952437a9f6c6f9184ab3fda1663e390ab4fc7"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 68)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": false,
+      "recommendedUse": "Use as an independent upper depth layer over the v33 sky base with visible anchors. Keep connector and physics logic separate; do not bake lantern placement into a building mass."
+    },
+    {
+      "id": "environment-market-lantern-sprite-v1",
+      "label": "Market single lantern sprite v1",
+      "role": "Approved complete single hanging lantern sprite; connector span remains code-drawn.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/market-lantern-sprite-v1.png",
+        "sha256": "02df189ac86431e77db0983a1570379692ae86cda402ad7401c80414ac237591"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-lantern-sprite-v52/art-approval.json (status=ART_APPROVED, decision=ART_APPROVED_BY_USER, exactUserMessage=可以, sha256=02df...)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-lantern-sprite-v52/asset-manifest.json (complete single lantern role; runtime.status=INTEGRATED; source crop/cable candidate explicitly superseded)"
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Use one complete sprite per explicitly approved hook point over the v33 sky base, with the connector drawn separately. Do not use a multi-lantern cable segment or recreate the full panorama lantern arrangement."
+    },
+    {
+      "id": "environment-paifang-crossbeam-v1",
+      "label": "Paifang crossbeam v1",
+      "role": "Approved foreground paifang crossbeam for market-04.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/paifang-crossbeam-v1.png",
+        "sha256": "8c53188cf1fb0d0f9f8d0c2fad1a4e0b4d3c9b726221891121cf0b32168f3e0a"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 65)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": false,
+      "recommendedUse": "Use as a supported foreground paifang beam over the v33 sky base in market-04; keep it below HUD and avoid using it as a generic roof/building substitute."
+    },
+    {
+      "id": "environment-pushcart-v1",
+      "label": "Pushcart v1",
+      "role": "Approved mid-depth market pushcart for market-01 and the market return.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/pushcart-v1.png",
+        "sha256": "2286eb9b524139ac0ef96310e47104ec0ef8378ac52462e11bf98a4f30ba6b91"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 69)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Use as a sparse mid-depth cart over the v33 sky base behind the player in market-01 or return-to-market; do not stretch it into architecture."
+    },
+    {
+      "id": "environment-rooftops-curved-eave-v1",
+      "label": "Rooftops curved eave v1",
+      "role": "Approved v55 near-camera curved tiled eave atom for rooftops-01/02/04.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/rooftops-curved-eave-v1.png",
+        "sha256": "259f9bc9b9dcff605e7d35248a3cce11fad13cacd46788fae65f2c59fbd5836a"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-v55-integration-20260926.json (approval.decision=ART_APPROVED_BY_USER; user requested v55 integration; assetEvidence gives this exact hash and dimensions)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/qa/alpha-report.json (v55 alpha report: meaningful alpha and no transparent RGB residue)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/assets/rooftops-curved-eave-v1.png"
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Layer over the v33 gray-blue sky base as a near-camera supported eave at rooftops-01/02/04. Preserve the central flight corridor and use the asset as an atom, never as a tiled full facade."
+    },
+    {
+      "id": "environment-rooftops-roof-crown-v1",
+      "label": "Rooftops roof crown v1",
+      "role": "Approved v55 midground roof crown atom for rooftops-02/03/04.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/rooftops-roof-crown-v1.png",
+        "sha256": "e4eb12336554aec11dcb584c3b10e40e866399c3a5eeeeeb4a81c79e82c1a0a3"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-v55-integration-20260926.json (approval.decision=ART_APPROVED_BY_USER; assetEvidence gives current workspace hash e4eb... and 199x205 dimensions)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/qa/alpha-report.json (v55 alpha QA evidence; note its historical crown hash/size entry is stale versus the current workspace byte source)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/assets/rooftops-roof-crown-v1.png"
+      ],
+      "usedInV2": false,
+      "recommendedUse": "Use sparsely over the v33 sky base as the approved midground roof crown in rooftops-02/03/04, anchored to a suitable support. Do not repeat it into a generic building skyline."
+    },
+    {
+      "id": "environment-rooftops-roof-support-block-v1",
+      "label": "Rooftops roof support block v1",
+      "role": "Approved v55 complex roof support block atom for rooftops recipes.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/rooftops-roof-support-block-v1.png",
+        "sha256": "294150c6650e9701fbd7fdacf22dab681609b19ce3b6404222a4cd78392cc002"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/direct-builder-rooftops-v55-integration-20260926.json (approval.decision=ART_APPROVED_BY_USER; assetEvidence gives this exact hash and dimensions)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/qa/alpha-report.json (v55 alpha report: meaningful alpha and no transparent RGB residue)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/assets/rooftops-roof-support-block-v1.png"
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Use over the v33 sky base below or beside eaves/crowns where the v55 recipe calls for visible support. Keep the support block attached to a real roof/beam and never float it as a replacement facade."
+    },
+    {
+      "id": "environment-stall-canopy-v1",
+      "label": "Stall canopy v1",
+      "role": "Approved mid-depth stall canopy for market-01/02.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/stall-canopy-v1.png",
+        "sha256": "4d5707fc07bd9450b93f33e672a4d19b0e23bc48a8bd7bec0f6b7d679c6f3936"
+      },
+      "approvalStatus": "APPROVED",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/docs/ART_ASSET_MANIFEST_V1.md#L58-L71 (approved runtime table: REUSE; row 64)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/approved-resources-night-market-hero-20260925.zip (approved-resources-night-market-hero-20260925.zip; byte source package)"
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Use as a supported mid-depth stall canopy over the v33 sky base in market-01/02 and transitions. Keep it as a local market atom, not a building mass."
+    },
+    {
+      "id": "candidate-atmosphere-plate-v33",
+      "label": "v33 gray-blue sky plate (user-authorized offline preview base)",
+      "role": "User-authorized offline-preview-only 1672x941 gray-blue sky/fog plate; no full panorama or complex foreground/midground architecture.",
+      "file": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v33-fog-minimal/generated-atmosphere-plate-v33.png",
+        "sha256": "019f554a800caec4270161e97c188849167538f2293b4fc55f9519ca45040664"
+      },
+      "approvalStatus": "USER_AUTHORIZED_PREVIEW",
+      "approvalEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v33-fog-minimal/review.json (candidateStatus=ART_CANDIDATE_PENDING_USER_REVIEW; approval=PENDING_USER_ART_APPROVAL; runtime NOT_INTEGRATED)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json (v2 used this pending source as id=sky; source hash matches)",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/user-rendering-policy.json (current fidelity policy; complex forms require suitable approved image materials)",
+        "Current explicit user authority for this correction (2026-09-28): v33 gray-blue sky is authorized as the sole offline preview base; full panorama rendering is forbidden."
+      ],
+      "usedInV2": true,
+      "recommendedUse": "Use as the sole opaque base for the corrected offline preview. Add only approved transparent atoms whose roles match; do not render the full panorama, and do not infer missing complex architecture from generic code shapes."
+    }
+  ],
+  "styleAuthority": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+    "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11"
+  },
+  "excluded": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-atomic-resources-v44/",
+      "reason": "PENDING_USER_REVIEW; candidate atomic components were not approved or integrated, so they are not in the approved environment set."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-foreground-rail-v45/",
+      "reason": "REJECTED_BY_USER; foreground rail candidate is quarantined and cannot be used."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-water-resources-v46/",
+      "reason": "REJECTED_BY_USER; water patch/reflection resources are outside the requested sky-based hybrid and were not integrated."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-authority-components-v47/",
+      "reason": "WITHHELD_BY_USER_PAUSE; water/rail candidates remain paused and are not production-approved."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-nonwater-components-v48/",
+      "reason": "PENDING_USER_REVIEW; counter/banner/cable/cart candidates have no final user approval and are not runtime sources."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-structural-components-v49/",
+      "reason": "PENDING_USER_REVIEW; structural candidates are not final runtime sources."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-nonwater-components-v50/assets/market-lantern-cable-segment-v2.png",
+      "reason": "REVOKED_BY_USER_FEEDBACK after an earlier ART_APPROVED marker; user explicitly requested a single-lantern sprite with code-drawn connector."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-lantern-sprite-v51/assets/market-lantern-sprite-v4.png",
+      "reason": "PENDING_USER_APPROVAL and superseded because the crop removed original lantern elements; v52 complete single sprite is the approved source."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v53/",
+      "reason": "Rejected style direction (realistic 3D modeled components); do not use the v53 files."
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v54/",
+      "reason": "Candidate remained pending user approval; v55 source-derived files are the approved current roof atoms."
+    }
+  ],
+  "findings": [
+    "The v2 source manifest is /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json: completePanoramaInputs=0. It uses the v33 atmosphere plate as id=sky plus only seven current environment files (eave, support, canopy, single lantern, pushcart, blank banner, covered alley); bamboo scaffold, paifang beam, inner eave, lantern cable and v55 roof crown are absent. Under the current explicit user authority, v33 is the permitted sole base for the corrected offline preview.",
+    "The v2 scene source (sky-street-v2/scene.js, sha256 a8a2e9a4f7165dc96e2b725afd90b820968b33e1a2542a86bb7b2259b341526c) draws generic building masses/windows/landmarks in code while the approved art manifest marks complex facade and rooftops masses missing. This is the wrong ownership for a high-fidelity facade and explains the visual mismatch.",
+    "The prior Rooftops panorama v2 (sha256 c538f5bf43e946d3d830b25a724599ed37edd129e8a885beb46e864bec121e83) is retained as style/reference evidence only. Legacy contract language that called it completeSceneOwner is superseded by the current explicit user authority: the full panorama must not be loaded or rendered anywhere, including the corrected offline preview.",
+    "The v2 manifest records crops: eave [17,67,381,284] -> 364x217, support [0,0,220,122], canopy [46,117,374,207], lantern [236,146,714,1371], cart [57,146,418,325], banner [129,64,251,360], covered-alley [0,104,397,336]. These copies are not byte-identical to the approved source files. Empty transparent margins may be trimmed, but a crop is wrong when it cuts non-empty canopy/support/eave structure or its mount/pivot; retain all semantic pixels and document any alpha-tight crop.",
+    "ART_ASSET_MANIFEST_V1.md#L77-L94 lists market.facadeModule, market.teahouseFront, rooftops.lowBuildingMass, rooftops.highBuildingMass, rooftops.foregroundEaveOccluder, rooftops.highLanternSupportFrame, rooftops.crossStreetNegativeSpace and rooftops.darkCanopy as MISSING. These gaps require suitable approved image materials that match the final style. Neither the full panorama nor unlike generic code buildings may be used as a substitute; the v33 sky base alone does not close the gap.",
+    "The v52 single lantern is explicitly user approved and integrated, while v50's cable segment was later revoked and v51's crop was pending/superseded. Keep the single lantern and code-drawn connector separate from the v33 sky base and do not recreate the panorama's lantern arrangement.",
+    "v55 curved eave, roof crown and support block are the current user-approved source-derived roof atoms. The v55 alpha report contains a stale historical crown hash/size entry; the current workspace file hash e4eb12336554aec11dcb584c3b10e40e866399c3a5eeeeeb4a81c79e82c1a0a3 and the direct-builder handoff are authoritative for the integrated byte source.",
+    "Recommended representative offline preview: use v33 gray-blue sky as the sole opaque base, place v55 eave/crown/support and matching approved market atoms at their documented depths, and keep code limited to simple connecting posts/ropes/anchors. Do not draw generic facades or procedural roof skylines; procure suitable approved image materials for the missing complex forms before extending the longmap.",
+    "Batch status boundary: v44/v48/v49 remain pending, v45/v46 are rejected, v47 is withheld, v50 is revoked, v51 is superseded pending, v53 is rejected for style, v54 has no final user approval, and v55 is approved. None of the excluded versions should be promoted by filename or by a historical approval marker."
+  ]
+}

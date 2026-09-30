@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-runtime-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/tmp/night-market-hero-publish-20261001-yATPs8",
+  "route": "publication-baseline-qa",
+  "passed": true,
+  "checks": [
+    {
+      "viewport": "1280x720",
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "tick": 827,
+        "inputTransitions": 52
+      },
+      "nightPatrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "terminal": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/desktop-1280x720-startup.png",
+          "sha256": "7df3e6fc51b21bf16eb99a3dd0b3ad8e46c1eb3d2a3e08ce7ae65b87b09b3f0f"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/desktop-1280x720-tutorial-terminal.png",
+          "sha256": "37699bc2f432b8bde00efa45bebcc71a21fdf13292bc59aa902d577306401fe7"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/desktop-1280x720-night-patrol.png",
+          "sha256": "391c719223f7de231da6457eedf14bf38867a16c985843ab57957cf993d99339"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/desktop-1280x720-night-patrol-failed.png",
+          "sha256": "969e775156e29329c75e83c9a65605bf98dbe56b7110ad17014f305a1181678a"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/desktop-1280x720-night-patrol-replay.png",
+          "sha256": "35794c2c0fe9648967f0fd4f4bbecc99f2d07ea5512adbe398fc8b980feeba2f"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": "844x390",
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "tick": 707,
+        "inputTransitions": 36
+      },
+      "nightPatrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "terminal": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/landscape-844x390-startup.png",
+          "sha256": "3759a9836c140575e0a03bd504af78b211a3403b3f98228ee75191d621960230"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/landscape-844x390-tutorial-terminal.png",
+          "sha256": "c797f851806b8e98a815d901ad8eb7c862b9d81390f25317233f83faf0822a8c"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/landscape-844x390-night-patrol.png",
+          "sha256": "bb42707aaf1836bc24cf702c3bdfb23d211aecc844049aae5d78e525b07a22c3"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/landscape-844x390-night-patrol-failed.png",
+          "sha256": "28b6e479998b831da18038201c44ff2052d9353c346dc491e8090098a3bdf707"
+        },
+        {
+          "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/landscape-844x390-night-patrol-replay.png",
+          "sha256": "6e465ca86b9475de95b7c497788df7947baa0c6dfc851965d37b823ba5b58766"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "portrait": {
+    "viewport": "390x844",
+    "orientationVisible": true,
+    "frozen": true,
+    "screenshot": {
+      "path": "/private/tmp/night-market-hero-publish-20261001-yATPs8/art-studies/facade-study-v5/qa/runtime-natural-20261001/portrait-390x844.png",
+      "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+    },
+    "errors": []
+  },
+  "runtimeWiredEntrypointFiles": [
+    "/tmp/night-market-hero-publish-20261001-yATPs8/src/main.ts",
+    "/tmp/night-market-hero-publish-20261001-yATPs8/src/game-core.ts",
+    "/tmp/night-market-hero-publish-20261001-yATPs8/src/run-snapshot.ts"
+  ],
+  "evidenceGaps": [
+    "Offline code facade study is not integrated; this report covers the current runtime journey only.",
+    "Web-lite evidence does not establish WeChat, Douyin, or TapTap package publishability."
+  ]
+}

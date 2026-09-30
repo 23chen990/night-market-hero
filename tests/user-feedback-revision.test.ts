@@ -65,10 +65,11 @@ test('endless mode has no completion percentage UI or terminal copy', async () =
   assert.match(html, /data-ui="progress"/);
 });
 
-test('terrain rendering prefetches only nearby objects and telegraphs canopies', async () => {
+test('static terrain blockout is not painted over the approved image stream', async () => {
   const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
-  assert.match(main, /terrain\.bounds\.x \+ terrain\.bounds\.width < visibleFrom/);
-  assert.match(main, /terrain\.kind === '布棚'/);
+  assert.doesNotMatch(main, /for \(const terrain of state\.sceneObjects\)/);
+  assert.doesNotMatch(main, /this\.drawActiveTerrain\(graphics, \{ \.\.\.state, activeTerrain: terrain \}\)/);
+  assert.match(main, /sceneOwner/);
   const style = await readFile(new URL('../src/style.css', import.meta.url), 'utf8');
   assert.match(style, /\.guard-presence\s*\{[\s\S]*left:\s*max\(/);
   assert.match(style, /\.left-edge-alert\s*\{[\s\S]*border-radius/);

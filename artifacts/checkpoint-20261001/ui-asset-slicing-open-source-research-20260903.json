@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ui-asset-slicing-open-source-research",
+  "targetGame": "夜市飞侠",
+  "runId": "mobile-chart-adaptation-20260830",
+  "researchedAt": "2026-09-03",
+  "problem": "精确拆分用户 HUD 截图中的外圈、符纸和广告 Icon，同时保留原始像素、坐标、边缘和透明度。",
+  "candidates": [
+    {
+      "name": "Krita",
+      "repositoryUrl": "https://github.com/KDE/krita",
+      "immutableRevision": "858d352e52e68831693067763b9cdaf8bb9a05ce",
+      "version": "v6.0.3",
+      "directLicenseEvidence": "https://github.com/KDE/krita",
+      "licenseSpdx": "GPL-3.0-or-later",
+      "fit": "APPROVED_AS_AUTHORING_TOOL",
+      "capabilities": ["raster layers", "transparency masks", "paths/selections", "guides", "non-destructive editing"],
+      "risk": "Do not ship Krita or its plugins in the game; use it only as a local authoring tool. Exported artwork remains the user's work.",
+      "attributionDuties": ["If Krita binaries or modified Krita code are redistributed, retain GPL notices; no Krita code enters the game runtime."],
+      "decision": "REUSE",
+      "approvedScope": ["Manual layer/mask construction when a user authorizes masking or supplies a layered source; inspect at 100% zoom before export."]
+    },
+    {
+      "name": "GIMP",
+      "repositoryUrl": "https://github.com/GNOME/gimp",
+      "immutableRevision": "edbd1ea7384e63efa8fe326dd79ffe4fbe6722db",
+      "version": "GIMP_3_2_0",
+      "directLicenseEvidence": "https://github.com/GNOME/gimp/blob/GIMP_3_2_0/LICENSE",
+      "licenseSpdx": "GPL-3.0-or-later (core; components vary)",
+      "fit": "APPROVED_AS_AUTHORING_TOOL",
+      "capabilities": ["paths", "layer masks", "channels", "guides", "color-to-alpha", "Python/plugin automation"],
+      "risk": "The GitHub repository is a read-only mirror of GNOME's GitLab source; use a tagged release and avoid untrusted plugins/scripts.",
+      "attributionDuties": ["If GIMP binaries or modified GIMP code are redistributed, preserve GPL/LGPL and component notices; no GIMP code enters the game runtime."],
+      "decision": "REUSE",
+      "approvedScope": ["Manual path/selection and layer-mask authoring; deterministic export after measured reference coordinates are locked."]
+    },
+    {
+      "name": "ImageMagick",
+      "repositoryUrl": "https://github.com/ImageMagick/ImageMagick",
+      "immutableRevision": "32bbfb10c47c0247162a8a1b777b9b637d6b8425",
+      "version": "main at research time",
+      "directLicenseEvidence": "https://github.com/ImageMagick/ImageMagick/blob/main/LICENSE",
+      "licenseSpdx": "ImageMagick License (Apache-2.0-derived)",
+      "fit": "APPROVED_AS_DETERMINISTIC_EXPORT_AND_QA",
+      "capabilities": ["exact crop geometry", "alpha channel operations", "repage/offset preservation", "background composites", "CLI automation"],
+      "risk": "It cannot decide the correct foreground boundary; never use color removal as proof of a correct layer. Pin a release for automation and process only trusted local files.",
+      "attributionDuties": ["Include the ImageMagick license/acknowledgement if the software itself is redistributed; generated image outputs are not ImageMagick code."],
+      "decision": "REUSE",
+      "approvedScope": ["Export from manually verified masks/crops, preserve reference-space offsets, generate three-background alpha QA composites."]
+    },
+    {
+      "name": "SLImTAG",
+      "repositoryUrl": "https://github.com/GDelCorso/SLImTAG",
+      "immutableRevision": "4ce4661378958bffad5cf7153d60b44355f2ac26",
+      "version": "main at research time",
+      "directLicenseEvidence": "https://github.com/GDelCorso/SLImTAG/blob/main/LICENSE",
+      "licenseSpdx": "MIT",
+      "fit": "CONDITIONAL_ONLY",
+      "capabilities": ["multiple masks", "manual brush/erase", "connected components", "mask save/load with original image position", "optional SAM point prompts"],
+      "risk": "The optional SAM/connected-component paths are segmentation guesses and can alter the boundary; current strict pixel-preserving mode does not permit them without explicit manual-mask approval.",
+      "attributionDuties": ["Retain MIT copyright and permission notice if the tool or code is redistributed."],
+      "decision": "REJECT_FOR_CURRENT_PASS",
+      "approvedScope": []
+    },
+    {
+      "name": "sprite-slicer",
+      "repositoryUrl": "https://github.com/mdddj/sprite-slicer",
+      "immutableRevision": "5351fa5bf83bda0ae871364d6a6ef3282c939030",
+      "version": "0.1.0",
+      "directLicenseEvidence": "https://github.com/mdddj/sprite-slicer/blob/main/Cargo.toml",
+      "licenseSpdx": "MIT OR Apache-2.0",
+      "fit": "REJECTED_FOR_CURRENT_SOURCE",
+      "capabilities": ["grid slicing", "transparent-frame detection", "frame normalization", "GIF preview"],
+      "risk": "Designed for transparent sprite sheets or regular grids; it does not solve layer separation in an opaque HUD screenshot and its background-removal option would be an unverified approximation here.",
+      "attributionDuties": ["Retain the selected MIT or Apache-2.0 notice if the crate is redistributed."],
+      "decision": "REJECT",
+      "approvedScope": []
+    }
+  ],
+  "conclusion": {
+    "recommendedWorkflow": ["Krita or GIMP for human-controlled masks/layers", "ImageMagick for exact coordinate export and QA", "no automatic segmentation in strict mode"],
+    "currentBlocker": "The authoritative talisman crop is RGB 478x494 with alpha unavailable; ring/talisman/ad runtime PNGs lack user-confirmed source mapping.",
+    "nextRequiredInput": "A transparent PNG for each layer or a Figma/PSD file with separate layers; alternatively explicit approval for a manual-mask approximation.",
+    "noNewRuntimeDependency": true
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "artifactType": "luna-runtime-preview-evidence",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2",
+  "scope": "isolated visual art preview only; no gameplay or platform QA",
+  "startedAt": "2026-09-28T08:13:10.055Z",
+  "finishedAt": "2026-09-28T08:13:14.165Z",
+  "runtime": {
+    "node": "v24.14.0",
+    "playwright": "1.62.1",
+    "browser": "Chromium",
+    "previewUrl": "file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/preview.html"
+  },
+  "previewHashes": {
+    "preview.html": "34f0762e623fc36635bf8153d0a3d8053bf2a1f32d9b5bbfef31a6825440ae4e",
+    "source-manifest.json": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640"
+  },
+  "controls": {
+    "startup": "previewReady=true; runtimeIntegrated=false; completePanoramaInputs=0; canvas#view count=1 and visible",
+    "next": "cameraX 0 -> 900",
+    "previous": "cameraX 900 -> 0",
+    "slider": "42% click cameraX=1382; End cameraX=3300.759493670886=maxCameraX",
+    "mouseDrag": "leftward drag 1382 -> 1501.113924050633; rightward drag 1501.113924050633 -> 1453.4683544303798",
+    "autoPlayPause": "auto play label changed to 暂停漫游 and cameraX 1454.2183544303798 -> 1476.8083544303797; paused cameraX remained 1479.3083544303797",
+    "breakdown": "画面组成 toggled visible/aria-expanded true, then hidden/aria-expanded false"
+  },
+  "responsive": {
+    "portrait-390x844": {
+      "scroll": [390, 844],
+      "horizontalOverflow": false,
+      "allControlsVisible": true,
+      "allControlsHorizontallyContained": true,
+      "canvas": [390, 180]
+    },
+    "landscape-844x390": {
+      "scroll": [844, 659],
+      "horizontalOverflow": false,
+      "allControlsVisible": true,
+      "allControlsHorizontallyContained": true,
+      "canvas": [844, 390]
+    }
+  },
+  "source": {
+    "assetCount": 8,
+    "completePanoramaInputs": 0,
+    "panoramaBasenames": [],
+    "missing": [],
+    "hashMismatches": []
+  },
+  "workspaceHashComparison": {
+    "expectedCount": 268,
+    "mismatchCount": 0,
+    "mismatches": []
+  },
+  "networkAndConsole": {
+    "externalHttpRequests": [],
+    "requestFailures": [],
+    "pageErrors": [],
+    "consoleErrors": []
+  },
+  "screenshots": [
+    {
+      "path": "qa/luna-runtime-desktop.png",
+      "dimensions": [1440, 1102],
+      "sha256": "8494d09255e922bbb005749c038b36c4a02c42caafc8156775f67741e88ad5e9"
+    },
+    {
+      "path": "qa/luna-runtime-390x844.png",
+      "dimensions": [390, 844],
+      "sha256": "4831c9f45494f2e82e809bd19cf06467a1f091c0d20012196b92427cdca95a39"
+    },
+    {
+      "path": "qa/luna-runtime-844x390.png",
+      "dimensions": [844, 659],
+      "sha256": "f4ef9b70757a5d6578d872f095e66b1e09eb2398ab188ef12542a0e12f59050b"
+    }
+  ]
+}

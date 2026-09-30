@@ -1,0 +1,71 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna-fidelity",
+  "scope": "Main recorded summary of independent Luna round 1; source pixels preserved under qa/review-round-1",
+  "status": "NEEDS_WORK",
+  "findings": [
+    {
+      "severity": "high",
+      "summary": "Roof coverage/curvature and central eave weight differ from reference.",
+      "evidence": [
+        "qa/review-round-1/screen.png: left/right roof and central beam silhouettes are shallower and more regular."
+      ],
+      "recommendation": "Use deeper nonuniform eaves and preserve layered supports."
+    },
+    {
+      "severity": "high",
+      "summary": "Foreground is too bright and loses depth.",
+      "evidence": [
+        "Near timber sample x0..360 y120..560: candidate luma22.4 versus reference8.3; canopies retain excessive blue."
+      ],
+      "recommendation": "Darken near parts locally; preserve distance fog."
+    },
+    {
+      "severity": "high",
+      "summary": "Facade, balcony and distant arch remain flat and regular.",
+      "evidence": [
+        "nearFacade x-37 y168 w376 h517; midFacade x1313 y377 w291 h452."
+      ],
+      "recommendation": "Add projecting balcony shadows and reduce distant wall emphasis."
+    },
+    {
+      "severity": "medium",
+      "summary": "Central canopy has too little sag and overlapping depth.",
+      "evidence": [
+        "clothCenter x681 y488 w464 h193."
+      ],
+      "recommendation": "Deepen center contour and keep near/distant canopy occlusion."
+    },
+    {
+      "severity": "medium",
+      "summary": "Upper-right lamp is about45px too low; left lamp too narrow.",
+      "evidence": [
+        "Main right lantern body y339..375 versus reference292..331; left body x203..225 versus reference189..236."
+      ],
+      "recommendation": "Raise right rope lamp and widen left lamp. Suggested tiny circles in reference require branch classification before adopting."
+    }
+  ],
+  "checks": [
+    {
+      "name": "actual desktop/mobile/reference pixels inspected",
+      "passed": true,
+      "evidence": "screen.png, screen-mobile.png, portrait page, interrupted baseline and verified reference inspected."
+    },
+    {
+      "name": "overall reference fidelity",
+      "passed": false,
+      "evidence": "Five specific differences remain; no90% acceptance."
+    },
+    {
+      "name": "mobile page layout",
+      "passed": true,
+      "evidence": "Complete16:9 study remains visible without cropping; portrait is a document preview, not game runtime."
+    }
+  ],
+  "limitations": [
+    "Offline art review only; no runtime integration or formal FIX completion.",
+    "90% similarity unmeasured; no percentage certified.",
+    "This is the main agent condensed record of the matching structured Luna response."
+  ]
+}
