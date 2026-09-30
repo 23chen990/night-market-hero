@@ -18,7 +18,7 @@ npm run typecheck
 npm run lint
 ```
 
-本轮使用工厂已有开发依赖验证。独立 `package.json` 尚未声明 lint 所需 `@eslint/js`、类型检查所需 `@types/node`，也无提交的锁文件。独立新安装需要下一位 agent 先处理这些已记录元数据缺口；本轮停改后未修改声明。
+独立安装已验证：`package.json` 已声明 lint 所需 `@eslint/js` 与类型检查所需 `@types/node`，并提交 `package-lock.json`（lockfileVersion 3）。可在干净目录 `npm ci` 后运行 `npm run lint`、`npm run typecheck`、`npm run build`、`npm test`、`npm run test:file`。完整命令、退出码与日志见 `qa-evidence/next-stage/env-baseline/fresh-install-20261001/report.json`。
 
 ```bash
 python3 art-studies/facade-study-v5/build.py

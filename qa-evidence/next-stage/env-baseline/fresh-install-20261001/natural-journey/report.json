@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-runtime-r1-report",
+  "testedCommit": "dd3268e2f19ca67728f5015fcacb08fce7aab188",
+  "environment": {
+    "browser": "153.0.8010.12",
+    "viewportCases": [
+      "1280x720",
+      "844x390",
+      "390x844"
+    ],
+    "seed": 31,
+    "query": "seed=31&fresh=1"
+  },
+  "entry": {
+    "url": "http://127.0.0.1:4178/",
+    "input": "formal pointer hold/release and visible result actions; no state APIs"
+  },
+  "landscapes": [
+    {
+      "viewport": "1280x720",
+      "startup": {
+        "title": "第1关 · 灯棚初试"
+      },
+      "tutorialSettlement": {
+        "title": "灯棚初试 · 突围成功",
+        "continueVisible": true
+      },
+      "nightPatrol": {
+        "levelTitle": "无限夜巡",
+        "input": "formal pointer hold/release only"
+      },
+      "failureSettlement": {
+        "title": "游侠跌入摊棚间",
+        "kicker": "护印突围中断",
+        "cause": "natural no-input patrol failure"
+      },
+      "replay": {
+        "levelTitle": "无限夜巡",
+        "resultHidden": true
+      },
+      "screenshots": {
+        "startup": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/1280x720-startup.png",
+          "sha256": "5767a3e9670f81b4b77bc721e4f17069a72a87ca0bda7cc0591d9ad7507dca52"
+        },
+        "tutorialSettlement": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/1280x720-tutorial-settlement.png",
+          "sha256": "a7443898fd20c9083daf5bb588ae967a3532ed4e8a5380e92d1fccc38e3f251d"
+        },
+        "nightPatrol": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/1280x720-night-patrol.png",
+          "sha256": "527f50866cdbc028556cadfba171ac8de8c5ee917b1ce4fe4a7f1c9969668e5d"
+        },
+        "failureSettlement": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/1280x720-failure-settlement.png",
+          "sha256": "b8cfba21cb4f15a9420b9b986c697e639a4838e60f495818337a531a3a41dc2e"
+        },
+        "replay": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/1280x720-replay.png",
+          "sha256": "1ae726134017f98a49c5e49b437e02d3e04777cd120983537a84c673ab630fcc"
+        }
+      },
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "viewport": "844x390",
+      "startup": {
+        "title": "第1关 · 灯棚初试"
+      },
+      "tutorialSettlement": {
+        "title": "灯棚初试 · 突围成功",
+        "continueVisible": true
+      },
+      "nightPatrol": {
+        "levelTitle": "无限夜巡",
+        "input": "formal pointer hold/release only"
+      },
+      "failureSettlement": {
+        "title": "游侠跌入摊棚间",
+        "kicker": "护印突围中断",
+        "cause": "natural no-input patrol failure"
+      },
+      "replay": {
+        "levelTitle": "无限夜巡",
+        "resultHidden": true
+      },
+      "screenshots": {
+        "startup": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/844x390-startup.png",
+          "sha256": "74d656e892af0b9fd81a131acb13f2c201ae554fd42ebb27f121b8f54ee7d121"
+        },
+        "tutorialSettlement": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/844x390-tutorial-settlement.png",
+          "sha256": "5e60527dcb1d175b3b8e36ec77ef25888ce54ab31a81c99d7a5fb70544193e25"
+        },
+        "nightPatrol": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/844x390-night-patrol.png",
+          "sha256": "27f38d904905d81339c4b253b3b62ecbd0f9f1ef7894bf2a25a138d86ea1f933"
+        },
+        "failureSettlement": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/844x390-failure-settlement.png",
+          "sha256": "6f3cefcdcd9bf331f837e382e9b7d3e9228eb2b3a80196bc4ee6299dca3e94d5"
+        },
+        "replay": {
+          "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/844x390-replay.png",
+          "sha256": "44e17da06909a4ad104920dba8fa4b56ef2f02f272e6dc2a22e71f864c3d1ea0"
+        }
+      },
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ],
+  "portrait": {
+    "viewport": "390x844",
+    "orientationPromptVisible": true,
+    "orientationBlocked": true,
+    "distanceBefore": "0m",
+    "distanceAfter": "0m",
+    "pausedByStableDistance": true,
+    "screenshot": {
+      "path": "/Users/kker/WorkBuddy/2026-10-01-04-39-00/night-market-hero-envbaseline/qa-evidence/next-stage/env-baseline/fresh-install-20261001/natural-journey/390x844-orientation-paused.png",
+      "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+    },
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "evidenceGaps": [
+    "This natural journey checks the existing gameplay route; it is separate from the dev render inspection report.",
+    "Rooftops art remains a rendering inspection subject; this run does not claim a seam repair."
+  ]
+}
