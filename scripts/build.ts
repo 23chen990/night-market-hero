@@ -56,6 +56,10 @@ script = script.replace(/new URL\(`(data:image\/(?:png|webp|jpeg);base64,[^`]+)`
 // self-contained playable is a classic script, so every such form must become
 // the plain data URL before it is embedded.
 script = script.replace(/new URL\(``\+`(data:image\/(?:png|webp|jpeg);base64,[^`]+)`,``\+import\.meta\.url\)\.href/g, '`$1`');
+// Vite 8.3.x emits the inlined template-literal URL with only the base split
+// off (`new URL(`data:...`,``+import.meta.url).href`).  Collapse that form to
+// the plain data URL as well so the classic script stays self-contained.
+script = script.replace(/new URL\(`(data:image\/(?:png|webp|jpeg);base64,[^`]+)`,``\+import\.meta\.url\)\.href/g, '`$1`');
 // The catalog's dynamic path is now a data URL for every available component
 // asset. Strip the module-only base resolution from the classic script.
 script = script.replace(/new URL\(([A-Za-z_$][\w$]*),import\.meta\.url\)\.href/g, '$1');
