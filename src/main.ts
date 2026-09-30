@@ -1349,6 +1349,10 @@ inputSurface.addEventListener('pointercancel', (event) => {
   activePointerIds.delete(event.pointerId);
   releaseOwnedGrapple();
 });
+inputSurface.addEventListener('lostpointercapture', (event) => {
+  activePointerIds.delete(event.pointerId);
+  releaseOwnedGrapple();
+});
 pauseButton.addEventListener('click', () => {
   if (orientationBlocked || core.getState().status !== 'playing') return;
   const paused = !core.getState().paused;

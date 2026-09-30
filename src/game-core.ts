@@ -1082,6 +1082,7 @@ export class GrappleGame {
       firecrackerStunUntilTick: snapshot.firecrackerStunUntilTick ?? 0,
       itemUsage: snapshot.itemUsage ?? { talisman: 0, firecracker: 0 },
       receiverPaid: snapshot.receiverPaid ?? false,
+      inputHeld: false,
     });
     this.accumulator = 0;
     this.events = [];
