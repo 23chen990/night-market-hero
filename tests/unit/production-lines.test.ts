@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ProductionLineContractSchema, ProductionLineSchema, getProductionLineContract, inferProductionLine, inferProductionLineFromText, lockProductionLine } from '../../src/core/production-lines.js';
+import { ProductionLineContractSchema, ProductionLineSchema, getProductionLineContract, inferProductionLine, inferProductionLineFromText, lockProductionLine, productionLineForTemplate } from '../../src/core/production-lines.js';
 
 describe('production line contracts', () => {
   it('maps different experience goals to different playable acceptance plans', () => {
@@ -22,6 +22,12 @@ describe('production line contracts', () => {
     const locked = lockProductionLine(inferProductionLineFromText('slice and dodge falling objects'));
     expect(ProductionLineContractSchema.parse(locked).line).toBe('cut-stack-dodge');
     expect(locked.acceptanceDimensions).toEqual(expect.arrayContaining(['drop trajectory']));
+  });
+
+  it('treats an explicit mother template as stronger evidence than generic title text', () => {
+    expect(productionLineForTemplate('cut-stack-dodge-v1')).toBe('cut-stack-dodge');
+    expect(productionLineForTemplate('idle-shop-v1')).toBe('idle-management');
+    expect(productionLineForTemplate('spatial-shop-v1')).toBe('idle-management');
   });
 
   it('exposes reusable kernel, content topology and progression shell for each line', () => {

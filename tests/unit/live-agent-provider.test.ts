@@ -35,6 +35,21 @@ class FakeRunner implements StructuredAgentRunner {
 }
 
 describe('OpenAIAgentProvider', () => {
+  it('keeps code-only research source limits separate from missing mechanics', async () => {
+    const runner = new FakeRunner([{ schemaVersion: 1, targetRunId: 'run', behaviorChecks: [], observations: [], inferences: [], unknowns: ['Missing recovery rule'], status: 'BLOCKED' }]);
+    const provider = new OpenAIAgentProvider({ runner, apiKey: 'test-key', model: 'test-model', timeoutMs: 100 });
+    await provider.analyzeReferenceEvidence({} as never, {
+      runRoot: '/tmp/run', outputPath: '/tmp/out.json', logDir: '/tmp/logs', stage: 'REFERENCE_DEEP_RESEARCH', sandbox: 'read-only',
+      inputPaths: ['artifacts/reference-evidence-pack.json', 'artifacts/reference-code-analysis.json'],
+    });
+    const instructions = runner.inputs[0]!.instructions;
+    expect(instructions).toContain('code-analysis');
+    expect(instructions).toContain('qa-target');
+    expect(instructions).toContain('evidenceLimitations');
+    expect(instructions).not.toContain('the observed mobile viewport');
+    expect(instructions).toMatch(/natural.*perceptual QA/i);
+  });
+
   it('parses the fixed structured-output envelope payload as JSON', () => {
     expect(parseAgentPayload('{"schemaVersion":1}')).toEqual({ schemaVersion: 1 });
     expect(parseAgentPayload('not-json')).toBe('not-json');

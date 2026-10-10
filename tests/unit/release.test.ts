@@ -69,6 +69,7 @@ it('freezes a candidate before human acceptance and reuses the exact game files'
     { id: 'promo', kind: 'marketing', path: 'assets/promo.png', prompt: 'promo', status: 'generated', sha256: 'hash' },
   ] }));
 
+  await expect(packageReleaseCandidate(runRoot, blueprint, { expectedBuildHash: '0'.repeat(64) })).rejects.toThrow(/QA.*hash|hash.*QA/u);
   const frozen = await packageReleaseCandidate(runRoot, blueprint);
   expect(frozen.candidate.coreHash).toHaveLength(64);
   const frozenHtml = await readFile(path.join(runRoot, 'release-candidate/web/index.html'), 'utf8');

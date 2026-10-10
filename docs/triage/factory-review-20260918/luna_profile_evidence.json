@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_profile_evidence",
+  "role": "FactoryMaintainer",
+  "route": "shared-factory",
+  "repository": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "ownership": [
+    "src/core/action-feel-stage.ts",
+    "src/schemas/profile-stage.ts",
+    "src/factory.ts (only executeActionFeelProfileStage, its dispatch, and FEEL_REPAIR branch)",
+    "tests/unit/action-feel-stage.test.ts",
+    "tests/integration/action-feel-evidence.test.ts (new if useful)"
+  ],
+  "triagePath": "docs/triage/factory-review-20260918/triage.json",
+  "reproductionMatrixPath": "docs/triage/factory-review-20260918/reproduction-matrix.json",
+  "findings": [
+    "actionTournament is deterministic fixture QA using loadScenario and advanceTicks. It is mislabeled NATURAL_PLAY_QA and is the sole input approving naturalPlay.",
+    "No drawing in the fallback makes all screenshots blank but experience APPROVED. runVisualEvidenceGate currently only participates in final completion, not this gate.",
+    "Adapter embeds the game name and cut-stack mechanics, while dispatch selects by missing stage name rather than supported line/template.",
+    "FEEL_REPAIR deletes all candidates, clears evidence and repeats an unchanged hypothesis.",
+    "Root integration probe (Zod validated docs/triage/factory-review-20260918/integration-probe.json) reaches NATURAL_PLAY_QA waiting with metrics PASS / player evidence BLOCKED as intended. Repeated resume incorrectly increments naturalAttempts 1 -> 2 then throws Stage NATURAL_PLAY_QA exceeded its bounded retry policy, while candidate outputs are unchanged.",
+    "Root ran the new integration test at 17:12:29: currently fails at buildProfileStageEvidence with checks[1].evidence empty, because the shared verifier returns a BLOCKED summary with evidence: [] for missing report. Missing evidence should produce nonempty diagnostic text from blockers, not crash schema validation.",
+    "Final code review found FEEL_REPAIR evidenceBlocked returns from the stored old review without re-reading newly supplied evidence, so a missing-perceptual pause cannot recover. The metrics-only branch marks feel:distinct-hypothesis from a generic attempt-number message, resets the three profile statuses, and resumes unchanged candidates while reusing stale tournament output.",
+    "Review of the latest draft against the existing acceptance: ActionFeelEngineeringBuildBindingSchema currently binds candidate hashes but still omits the engineering report SHA-256. Also the positive recovery test changes candidate B, leaves it stale, then changes the natural trace; that second assertion can be blocked solely by the stale candidate and cannot prove natural-trace invalidation."
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Preserve all existing edits; do not revert others. Only edit owned shared factory paths. Do not modify runs/*/workspace or invoke model providers.",
+    "Use test-driven-development skill: red test with expected failure first, minimal fix, then green. Read repository architecture and reuse existing natural-flow/perceptual schemas and gate helpers.",
+    "Keep deterministic engineering measurements separate from natural player acceptance. Missing independent natural and perceptual evidence must produce actionable BLOCKED/repair status; never infer natural pass or oracle-free from six fixture metrics. Reuse identity/build/hash verification where possible. A lightweight blocked adapter is preferable to inventing a fresh runner or fabricating PASS.",
+    "Wire early screenshot rejection and fail-closed experience review. Ensure resume revalidates old approved profile evidence before advancing to art/build. Do not accept unbound passing booleans from another candidate.",
+    "Parameterize game title and line-specific input. Explicitly reject/stop unsupported line/template/profile combinations before creating cut-stack prototypes.",
+    "When evidence is missing, preserve the current candidates and stage history and wait for actual QA/repair evidence. Do not automatically delete candidates or loop the same rebuild hypothesis. Real failed metrics with a recommendation must not throw only because recommendation != NONE.",
+    "Use only Zod-validated structured JSON for coordination/result. Output FactoryRepairResultSchema from coordination-schema.ts and save at outputPath.",
+    "Integration clarification: do not retain 符刃夜行 as an optional/default targetGame fallback. Require the actual target title or use a clearly generic non-game name only in explicitly synthetic tests. Existing callers should pass the blueprint title; legacy tests must be updated rather than retaining cross-game contamination.",
+    "Review feedback on the in-progress helper: actionFeelNaturalEvidence/perceptual evidence must bind the selected candidate workspace (workspace/feel-prototype-{slot}), its current dist hash and matching contract, not workspace/game. Use PerceptualQaReportSchema plus existing verifyPerceptualQaReview to validate actual file hashes/coverage. A Record<string,unknown> with passed/authorIndependent and arbitrary screenshot entries is not enough. Natural evidence must match candidate build hash, have a present hashed trace, and declared viewport; fail closed if the needed candidate contract is missing. Do not invent a weakened parallel evidence schema.",
+    "Remove the remaining example-specific sharedGeometryFixture and coreAction wording as well as the title. Generic cut-stack terms may remain. The six existing hook/release fixture metrics are engineering-only and cannot prove the declared cut/support/hazard core loop; preserve this limitation explicitly.",
+    "Final support check: missing productionLine/template/profile is unknown, not implicitly supported. The real factory must match the full cut-stack-dodge + cut-stack-dodge-v1 + ACTION_FEEL tuple before candidate creation. Add the missing-metadata negative case and require callers/tests to pass the tuple; avoid optional legacy defaults that reintroduce routing ambiguity.",
+    "Fix the reproduced pause/resume attempt bug from integration-probe.json. Waiting only for missing evidence must not repeat the unchanged engineering test or consume a new stage attempt. Recheck incoming natural/perceptual/visual evidence without auto-rebuilding; once inputs/build actually change, use the appropriate invalidation/retest. Add a real factory integration test that resumes a blocked mock full-validation run at least three times and asserts unchanged build hashes, attempts, no art/build advance, and no FIX count reset.",
+    "Ownership split for completion: luna_provider_provenance is now implementing ONLY src/core/action-feel-evidence.ts and tests/unit/action-feel-evidence.test.ts under validated task luna_profile_bound_files.json. It exports verifyActionFeelPlayerEvidence({runRoot,candidate,naturalReport?,perceptualReport?,contract?}) -> {naturalPlay,perceptual}, and hashActionFeelCandidateBuild(workspace). Read that task for exact API. Remove your ad-hoc raw boolean validators and wire this helper with artifact reads; candidate contract path should be artifacts/action-feel-product-experience-contract.json. You retain factory orchestration, profile schema/core, and pause/resume integration tests. Do not edit the helper/test files.",
+    "Follow-up within the same ownership: add RED integration tests for FEEL_REPAIR evidence arrival and unchanged threshold failure. Re-evaluate newly supplied candidate-bound natural/perceptual artifacts before deciding to keep waiting. When all current evidence passes, recover the profile review and continue without a fictitious repair attempt. Keep prior failed review evidence. Missing or invalid evidence must remain idempotent. For a threshold defect, stop with an explicit repair-required triage unless a genuinely new evidence-backed repair hypothesis/changed candidate is available; do not report a generic attempt message as distinct, auto-rebuild identical bytes, or reuse old engineering metrics after candidate dist changes. You do not need to create a new production repair adapter in this bounded patch. Correct triage wording that claims fixture metrics were measured from natural input. Prove valid evidence arrival can progress, not only that missing evidence is rejected. No provider calls or existing run workspace edits.",
+    "Final test review: in the positive recovery integration case, assert an explicit legitimate next stage/status (and that no failure occurred), rather than only stage != FEEL_REPAIR, since FAILED would satisfy that assertion. Reuse this case to show previously completed/approved profile stages cannot bypass revalidation after the bound perceptual report is removed or its bytes become stale. Keep this test synthetic and do not touch a real run.",
+    "One related attempt-accounting edge: evidence-only resume that verifies newly arrived files should not consume another engineering execution attempt either. The current NATURAL_PLAY_QA waiting precheck falls through to begin(), which increments attempts even though the cached tournament is reused; repeated valid/missing/valid evidence cycles can still exhaust the stage policy. Reuse the existing stage record for observation-only recovery; count a new attempt only when actual QA execution occurs. Extend the existing recovery test to cover repeat evidence invalidation/restoration if practical.",
+    "The already requested stale-engineering requirement is still unaddressed in the current diff: a cached action-feel-natural-play-qa.json has no binding to candidate dist bytes. Supplying new natural/perceptual reports for changed bytes could approve old engineering metrics. Add a minimal Zod-validated engineering report/build binding when the tournament actually runs; on reuse compare all candidate build hashes and the engineering report hash. Missing/stale legacy bindings must block or require an explicit engineering retest, never retroactively certify the current bytes. A conservative actionable wait is sufficient; no new repair adapter is needed. Add a focused synthetic regression for changed candidate dist plus refreshed player evidence with old engineering metrics.",
+    "Close these existing checks before final: bind and verify the exact engineering report file hash; capture build hashes around QA so a changing build cannot be retroactively bound after measurement. In synthetic tests, restore the modified candidate bytes before testing stale natural/perceptual evidence, and assert the intended blocker. Do not add new scope beyond the already requested report/build binding and recovery regressions."
+  ],
+  "acceptanceChecks": [
+    "Fixture-only all-pass report cannot produce APPROVED.",
+    "Blank/missing/stale visual or natural/perceptual evidence cannot advance on first run or resume.",
+    "A title from a second game is used; an unrelated action line cannot enter the cut-stack adapter.",
+    "Missing evidence does not destroy prototypes or reset formal fix attempts.",
+    "Run targeted regression tests and typecheck. Record RED and GREEN commands/results in structured output.",
+    "A forged/stale/mismatched candidate build hash, missing screenshot file, or report for workspace/game instead of the selected feel candidate cannot approve the profile.",
+    "Repeated resume while player evidence is absent remains waiting without exhausting the bounded attempt policy.",
+    "A FEEL_REPAIR pause caused solely by missing perceptual evidence advances after valid candidate-bound evidence arrives, preserving candidate hashes and FIX count.",
+    "A threshold failure with unchanged candidate/evidence remains repair-required without generic repeated rebuilds, attempts resets, or false distinct-hypothesis completion."
+  ],
+  "omittedContext": [
+    "整段会话",
+    "无关录屏和其他游戏素材",
+    "已有生成工作区的非相关源码"
+  ],
+  "outputPath": "docs/triage/factory-review-20260918/luna-profile-result.json"
+}

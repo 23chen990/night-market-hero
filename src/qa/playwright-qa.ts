@@ -13,6 +13,7 @@ import {
 } from '../schemas/index.js';
 import { evaluateNaturalFlow } from '../core/qa-evidence.js';
 import { qaModeForProductionLine } from './production-line-qa.js';
+import { runCutStackDodgePlaywrightQa } from './cut-stack-playwright-qa.js';
 
 async function loadGameplayRevision(runRoot: string): Promise<GameplayRevisionLock | undefined> {
   let blueprintSource: string;
@@ -263,7 +264,9 @@ export async function runPlaywrightQa(runtime: RuntimeAdapter, workspace: string
     const contract = JSON.parse(await readFile(path.join(runRoot, 'artifacts/production-line-contract.json'), 'utf8')) as { line?: unknown };
     declaredLine = contract.line;
   } catch { /* legacy roots without a line contract use the idle compatibility runner */ }
-  if (declaredLine !== undefined && qaModeForProductionLine(declaredLine) === 'line-specific-required') {
+  const lineQaMode = declaredLine === undefined ? undefined : qaModeForProductionLine(declaredLine);
+  if (lineQaMode === 'cut-stack-dodge') return runCutStackDodgePlaywrightQa(runtime, workspace, runRoot);
+  if (declaredLine !== undefined && lineQaMode === 'line-specific-required') {
     const line = String(declaredLine);
     const evidence = [{ schemaVersion: 1 as const, mode: 'NATURAL_E2E' as const, actions: ['line-specific-runner:missing'], artifacts: ['artifacts/production-line-play-plan.json'], forbiddenOperations: [] }];
     return {

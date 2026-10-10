@@ -16,6 +16,35 @@ export function snapshotModelPolicy(stages: StageName[] = [...StageNameSchema.op
   });
 }
 
+/** Check that an immutable run snapshot still matches the active factory route. */
+export function evaluateModelPolicySnapshot(value: unknown) {
+  const snapshot = ModelPolicySnapshotSchema.parse(value);
+  const blockers: string[] = [];
+  let current: ModelPolicySnapshot | undefined;
+  try {
+    const stages = snapshot.stages.map((item) => StageNameSchema.parse(item.stage));
+    current = snapshotModelPolicy(stages);
+  } catch {
+    blockers.push('snapshot-stage-invalid');
+  }
+  if (current) {
+    if (snapshot.signature !== current.signature) blockers.push('signature-mismatch');
+    for (const expected of snapshot.stages) {
+      const actual = current.stages.find((item) => item.stage === expected.stage);
+      if (!actual) {
+        blockers.push(`stage-missing:${expected.stage}`);
+        continue;
+      }
+      if (actual.model !== expected.model) blockers.push(`stage-model-mismatch:${expected.stage}`);
+      if (actual.tier !== expected.tier) blockers.push(`stage-tier-mismatch:${expected.stage}`);
+      if (actual.reasoning !== expected.reasoning) blockers.push(`stage-reasoning-mismatch:${expected.stage}`);
+      if (actual.sandbox !== expected.sandbox || actual.role !== expected.role) blockers.push(`stage-boundary-mismatch:${expected.stage}`);
+      if (actual.maxInputChars !== expected.maxInputChars || actual.handoffMaxChars !== expected.handoffMaxChars) blockers.push(`stage-budget-mismatch:${expected.stage}`);
+    }
+  }
+  return { passed: blockers.length === 0, blockers: [...new Set(blockers)], snapshot, current };
+}
+
 /** Escalation changes the model tier only; it never silently grants a new role. */
 export function executionPolicyAfterFailure(stageValue: StageName, attempt: number, failureKind: ModelFailureKind = 'CAPABILITY_ERROR', allowedTiers?: readonly ModelTier[]) {
   const stage = StageNameSchema.parse(stageValue); const base = executionPolicyForStage(stage); const escalated = nextModelAfterFailure(stage, attempt, failureKind, allowedTiers);

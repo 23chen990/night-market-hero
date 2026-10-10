@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_image_prompt_scope",
+  "route": "shared-factory",
+  "routeReason": "The reproduced cross-game image-prompt defect is localized to the shared Codex image provider and template asset definitions; the follow-up patch stays within the four authorized files and does not modify any generated game workspace.",
+  "status": "IMPLEMENTED",
+  "filesChanged": [
+    "src/providers/codex-imagegen.ts",
+    "src/core/asset-definitions.ts",
+    "tests/unit/codex-imagegen-provider.test.ts",
+    "tests/unit/asset-definitions.test.ts"
+  ],
+  "omittedContext": [
+    "整段会话",
+    "参考媒体及用户文件",
+    "无关生成游戏源码"
+  ],
+  "tests": [
+    {
+      "command": "pnpm vitest run tests/unit/codex-imagegen-provider.test.ts tests/unit/asset-definitions.test.ts",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "New regression assertions failed against the old implementation: forced stall composition, shared pastel/dark reference rules, example-game asset vocabulary, and missing alpha/background instructions were all observed."
+    },
+    {
+      "command": "pnpm vitest run tests/unit/codex-imagegen-provider.test.ts tests/unit/asset-definitions.test.ts",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "10/10 provider and asset-definition tests passed after the minimal prompt and vocabulary changes."
+    },
+    {
+      "command": "pnpm vitest run tests/unit/codex-imagegen-provider.test.ts tests/unit/asset-definitions.test.ts",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "Follow-up regression assertions failed before the second patch: locked character/camera, environment/material, UI and kept fields were absent, while cut-stack prompts still forced side-on/first-level wording and offered unsupported WebP."
+    },
+    {
+      "command": "pnpm vitest run tests/unit/codex-imagegen-provider.test.ts tests/unit/asset-definitions.test.ts",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "10/10 provider and asset-definition tests passed after forwarding all locked visual fields, removing forced viewpoint/first-level wording, and requiring PNG-only alpha output."
+    },
+    {
+      "command": "pnpm eslint src/providers/codex-imagegen.ts src/core/asset-definitions.ts tests/unit/codex-imagegen-provider.test.ts tests/unit/asset-definitions.test.ts",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Authorized files pass ESLint."
+    },
+    {
+      "command": "pnpm vitest run tests/unit/codex-imagegen-provider.test.ts tests/unit/asset-definitions.test.ts tests/unit/web-lite-runtime.test.ts tests/integration/codex-account-orchestrator.test.ts",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "34/34 related provider, asset-definition, runtime, and Codex orchestration tests passed."
+    },
+    {
+      "command": "pnpm tsc --noEmit",
+      "phase": "VERIFY",
+      "exitCode": 2,
+      "summary": "Repository typecheck remains blocked by unrelated concurrent changes: src/factory.ts is missing targetGame in an existing call, and tests/unit/action-feel-stage.test.ts has six missing blockers fields; no error references the owned image-prompt files after the local test-type fix."
+    }
+  ],
+  "remainingGaps": [
+    "The repository-wide typecheck must be repaired by the owner of the concurrent factory/action-feel changes before the overall branch can claim a clean verify.",
+    "No live image generation was invoked, per task instructions; generated PNG alpha and compositing checks remain downstream runtime/art-quality evidence."
+  ]
+}

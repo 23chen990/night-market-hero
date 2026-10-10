@@ -9,6 +9,8 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { PrototypeBuildReport } from '../schemas/gameplay-experiment.js';
 import type { ActionMechanicExperimentSpec, ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
+import { PerceptualQaReportSchema, ProductExperienceContractSchema, type PerceptualQaReport, type ProductExperienceContract } from '../schemas/product-experience.js';
+import { sha256File, sha256Text } from '../core/files.js';
 
 export type PrototypeControl = { kind: 'choice' | 'action' | 'lantern'; value: string; label: string };
 const META_ACTIONS = new Set(['reset', 'restart', 'next', 'new', 'new-night']);
@@ -26,6 +28,156 @@ export function isPrototypeTerminalState(state: unknown) {
 }
 
 export function repeatedPrototypeActions<T>(input: T) { return Array.from({ length: 5 }, () => input); }
+
+function perceptualCaseId(featureId: string, viewport: { width: number; height: number; label: string }) {
+  return `${featureId}@${viewport.width}x${viewport.height}:${viewport.label}`;
+}
+
+/** Build a matrix-complete report. File identity is checked separately by the gate. */
+export function buildPerceptualQaReport(
+  rawContract: ProductExperienceContract,
+  observations: PerceptualQaReport['cases'],
+  options: { buildHash: string; runtime: 'web-lite' | 'cocos-3d'; reviewer: PerceptualQaReport['reviewer']; authorIndependent: boolean },
+): PerceptualQaReport {
+  const contract = ProductExperienceContractSchema.parse(rawContract);
+  const blockers: string[] = [];
+  const observationIds = observations.map((item) => perceptualCaseId(item.featureId, item.viewport));
+  if (new Set(observationIds).size !== observationIds.length) blockers.push('perceptual:duplicate-cases');
+  const byId = new Map(observations.map((item) => [perceptualCaseId(item.featureId, item.viewport), item]));
+  const cases = contract.features.flatMap((feature) => feature.requiredViewports.map((viewport) => {
+    const id = perceptualCaseId(feature.id, viewport);
+    const observation = byId.get(id);
+    if (observation) return observation;
+    blockers.push(`perceptual:case-missing:${feature.id}@${viewport.label}`);
+    return {
+      featureId: feature.id,
+      sourceCheckIds: feature.sourceCheckIds,
+      objectType: feature.objectType,
+      stateBranch: feature.stateBranch,
+      viewport,
+      playerVisible: false,
+      naturalTriggerVerified: false,
+      eventOrderVerified: false,
+      negativeAssertionsPassed: false,
+      perceptualPassed: false,
+      observedSignal: 'not observed',
+      observedEventOrder: [],
+      screenshots: [],
+      evidence: ['no exact runtime observation was recorded for this feature and viewport'],
+      notes: ['capture and independently review this exact object/state branch'],
+    };
+  }));
+  for (const item of cases) {
+    const id = perceptualCaseId(item.featureId, item.viewport);
+    if (!item.playerVisible || !item.naturalTriggerVerified || !item.eventOrderVerified || !item.negativeAssertionsPassed || !item.perceptualPassed) blockers.push(`perceptual:experience-blocked:${id}`);
+    if (item.screenshots.length === 0 || !item.trace) blockers.push(`perceptual:evidence-missing:${id}`);
+  }
+  if (options.reviewer === 'DeterministicCapture' || !options.authorIndependent) blockers.push('perceptual:independent-review-required');
+  return PerceptualQaReportSchema.parse({
+    schemaVersion: 2,
+    artifactType: 'perceptual-qa-report',
+    targetGame: contract.targetGame,
+    targetRunId: contract.targetRunId,
+    targetWorkspace: contract.targetWorkspace,
+    runtimeEntrypoints: contract.runtimeEntrypoints,
+    contractHash: sha256Text(JSON.stringify(contract)),
+    buildHash: options.buildHash,
+    runtime: options.runtime,
+    reviewer: options.reviewer,
+    authorIndependent: options.authorIndependent,
+    passed: blockers.length === 0,
+    blockers: [...new Set(blockers)],
+    cases,
+    checkedAt: new Date().toISOString(),
+  });
+}
+
+/**
+ * Contract-driven browser runner. It deliberately uses natural DOM input only;
+ * when a feature cannot be located it emits a blocking observation instead of
+ * claiming success from hidden state or test APIs.
+ */
+export async function runPerceptualQa(runtime: RuntimeAdapter, workspace: string, runRoot: string, rawContract: ProductExperienceContract, buildHash: string): Promise<PerceptualQaReport> {
+  const contract = ProductExperienceContractSchema.parse(rawContract);
+  const preview = await runtime.startPreview(workspace);
+  const observations: PerceptualQaReport['cases'] = [];
+  const evidenceDir = path.join(runRoot, 'screenshots/product-experience');
+  const traceDir = path.join(runRoot, 'logs/product-experience');
+  await mkdir(evidenceDir, { recursive: true });
+  await mkdir(traceDir, { recursive: true });
+  const browser = await chromium.launch({ headless: true });
+  try {
+    for (const feature of contract.features) {
+      for (const viewport of feature.requiredViewports) {
+        const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
+        const page = await context.newPage();
+        const slug = `${feature.id}-${viewport.width}x${viewport.height}`.replaceAll(/[^a-z0-9_-]+/giu, '-');
+        try {
+          await page.goto(preview.url, { waitUntil: 'networkidle' });
+          const beforeText = await page.locator('body').innerText().catch(() => '');
+          const beforePath = `screenshots/product-experience/${slug}-before.png`;
+          await page.screenshot({ path: path.join(runRoot, beforePath), fullPage: true });
+          let action = 'no playable control found';
+          try {
+            const control = await clickPrototypeControl(page, 0);
+            action = `${control.kind}:${control.value} (${control.label})`;
+          } catch { /* capture remains useful but blocked */ }
+          await page.waitForTimeout(150);
+          const afterText = await page.locator('body').innerText().catch(() => '');
+          const afterPath = `screenshots/product-experience/${slug}-after.png`;
+          await page.screenshot({ path: path.join(runRoot, afterPath), fullPage: true });
+          const tracePath = `logs/product-experience/${slug}.json`;
+          const traceBody = `${JSON.stringify({
+            schemaVersion: 1,
+            startedFromReset: true,
+            actions: action === 'no playable control found' ? [] : [action],
+            transitions: [{ name: feature.id, changed: afterText !== beforeText, evidence: afterText !== beforeText ? 'body text changed after one generic input' : 'no body-text change observed' }],
+            completion: 'none',
+            replayObserved: false,
+            forbiddenOperations: [],
+            screenshots: [beforePath, afterPath],
+            passed: false,
+            blockers: ['independent perceptual review and feature-specific natural journey required'],
+            buildHash,
+            runtime: contract.runtime,
+            device: viewport,
+            seed: 1,
+            runner: 'deterministic-capture-only',
+            observedAt: new Date().toISOString(),
+          }, null, 2)}\n`;
+          await writeFile(path.join(runRoot, tracePath), traceBody);
+          observations.push({
+            featureId: feature.id,
+            sourceCheckIds: feature.sourceCheckIds,
+            objectType: feature.objectType,
+            stateBranch: feature.stateBranch,
+            viewport,
+            playerVisible: false,
+            naturalTriggerVerified: false,
+            eventOrderVerified: false,
+            negativeAssertionsPassed: false,
+            perceptualPassed: false,
+            observedSignal: afterText !== beforeText ? 'generic body-text delta captured; pixel meaning unreviewed' : 'no visible text delta captured',
+            observedEventOrder: [],
+            screenshots: [
+              { path: beforePath, sha256: await sha256File(path.join(runRoot, beforePath)) },
+              { path: afterPath, sha256: await sha256File(path.join(runRoot, afterPath)) },
+            ],
+            trace: { path: tracePath, sha256: sha256Text(traceBody) },
+            evidence: [`capture-only input: ${action}`, 'automatic capture does not judge visibility, causality, event order or layout quality'],
+            notes: ['QAAgent or HumanReviewer must inspect this exact branch and replace this capture report'],
+          });
+        } finally {
+          await context.close();
+        }
+      }
+    }
+  } finally {
+    await browser.close();
+    await preview.stop();
+  }
+  return buildPerceptualQaReport(contract, observations, { buildHash, runtime: contract.runtime, reviewer: 'DeterministicCapture', authorIndependent: false });
+}
 
 export async function clickPrototypeControl(page: Page, turn: number): Promise<PrototypeControl> {
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -77,6 +229,9 @@ export class LocalRuntimeProvider implements RuntimeProvider {
   }
 }
 export class PlaywrightQAProvider implements QAProvider {
+  perceptualQa({ runtime, workspace, runRoot, contract, buildHash }: { runtime: RuntimeAdapter; workspace: string; runRoot: string; contract: ProductExperienceContract; buildHash: string }) {
+    return runPerceptualQa(runtime, workspace, runRoot, contract, buildHash);
+  }
   playtest({ runtime, workspace, runRoot }: { runtime: RuntimeAdapter; workspace: string; runRoot: string }) { return runPlaywrightQa(runtime, workspace, runRoot); }
   async playtestTournament({ runtime, report, runRoot }: { runtime: RuntimeAdapter; report: PrototypeBuildReport; runRoot: string }) {
     const browser = await chromium.launch({ headless: true }); const comparisons = [];
@@ -150,6 +305,58 @@ export class PlaywrightQAProvider implements QAProvider {
   }
 }
 export class MockQAProvider implements QAProvider {
+  async perceptualQa({ contract, runRoot, buildHash }: { runtime: RuntimeAdapter; workspace: string; runRoot: string; contract: ProductExperienceContract; buildHash: string }) {
+    const observations: PerceptualQaReport['cases'] = [];
+    await mkdir(path.join(runRoot, 'screenshots/product-experience'), { recursive: true });
+    await mkdir(path.join(runRoot, 'logs/product-experience'), { recursive: true });
+    for (const feature of contract.features) {
+      for (const viewport of feature.requiredViewports) {
+        const slug = `${feature.id}-${viewport.width}x${viewport.height}`.replaceAll(/[^a-z0-9_-]+/giu, '-');
+        const screenshotPath = `screenshots/product-experience/${slug}.png`;
+        const screenshotBody = `mock perceptual fixture ${feature.id} ${viewport.width}x${viewport.height}`;
+        await writeFile(path.join(runRoot, screenshotPath), screenshotBody);
+        const tracePath = `logs/product-experience/${slug}.json`;
+        const traceBody = JSON.stringify({
+          schemaVersion: 1,
+          startedFromReset: true,
+          actions: [`natural input: ${feature.playerAction}`, 'natural input: replay'],
+          transitions: [{ name: feature.id, changed: true, evidence: feature.visibleSignal }],
+          completion: 'settlement',
+          replayObserved: true,
+          forbiddenOperations: [],
+          screenshots: [screenshotPath],
+          passed: true,
+          blockers: [],
+          buildHash,
+          runtime: contract.runtime,
+          device: viewport,
+          seed: 1,
+          runner: 'mock-qa-fixture',
+          observedAt: new Date().toISOString(),
+        });
+        await writeFile(path.join(runRoot, tracePath), traceBody);
+        observations.push({
+          featureId: feature.id,
+          sourceCheckIds: feature.sourceCheckIds,
+          objectType: feature.objectType,
+          stateBranch: feature.stateBranch,
+          viewport,
+          playerVisible: true,
+          naturalTriggerVerified: true,
+          eventOrderVerified: true,
+          negativeAssertionsPassed: true,
+          perceptualPassed: true,
+          observedSignal: feature.visibleSignal,
+          observedEventOrder: feature.expectedEventOrder,
+          screenshots: [{ path: screenshotPath, sha256: sha256Text(screenshotBody) }],
+          trace: { path: tracePath, sha256: sha256Text(traceBody) },
+          evidence: ['synthetic mock QA fixture bound to a real file and natural-flow artifact'],
+          notes: [],
+        });
+      }
+    }
+    return buildPerceptualQaReport(contract, observations, { buildHash, runtime: contract.runtime, reviewer: 'QAAgent', authorIndependent: true });
+  }
   async playtest() { return { schemaVersion: 1, passed: true, checks: [{ name: 'stub-contract', passed: true, evidence: 'QA stub selected by integration test' }], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date().toISOString() }; }
   async playtestTournament({ report }: { report: PrototypeBuildReport }) {
     const criterion = (score: number, evidence: string) => ({ score, evidence });

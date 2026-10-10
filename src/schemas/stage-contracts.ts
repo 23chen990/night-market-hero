@@ -30,7 +30,9 @@ export const StageFailureRouteSchema = z.object({
 export type StageFailureRoute = z.infer<typeof StageFailureRouteSchema>;
 
 export const StageRetryPolicySchema = z.object({
-  maxAttempts: z.number().int().positive().max(3).default(1),
+  maxAttempts: z.number().int().positive().nullable().default(1),
+  /** True when the stage has no fixed attempt-count ceiling. */
+  unboundedUntilPass: z.boolean().default(false),
   retryableClasses: z.array(Text).default([]),
   preserveOutputs: z.boolean().default(false),
   backoffSeconds: z.number().int().nonnegative().max(300).default(0),
@@ -58,9 +60,9 @@ export const StageContractSchema = z.object({
   evidenceRequired: z.array(StageEvidenceSpecSchema).min(1),
   passCriteria: z.array(Text).min(1),
   failureRoute: StageFailureRouteSchema,
-  maxAttempts: z.number().int().positive().max(3),
+  maxAttempts: z.number().int().positive().nullable(),
   verifierRole: StageRoleSchema.default('FactoryControlPlane'),
-  retryPolicy: StageRetryPolicySchema.default({ maxAttempts: 1, retryableClasses: [], preserveOutputs: false, backoffSeconds: 0 }),
+  retryPolicy: StageRetryPolicySchema.default({ maxAttempts: 1, unboundedUntilPass: false, retryableClasses: [], preserveOutputs: false, backoffSeconds: 0 }),
   sideEffects: StageSideEffectsSchema.default({ workspaceWrite: false, externalNetwork: false, externalUpload: false, publish: false, idempotent: true }),
   contextBudgetChars: z.number().int().positive(),
   approvalRequired: z.boolean(),

@@ -10,6 +10,7 @@ describe('factory operating profile', () => {
     expect(profile.requiredTargets).toEqual(['wechat-minigame', 'douyin-minigame', 'taptap-minigame']);
     expect(profile.optionalTargets).toContain('poki-web');
     expect(profile.platformPolicyRequired).toBe(false);
+    expect(profile.budget.maxFixAttempts).toBeUndefined();
   });
 
   it('merges only validated overrides and never enables uncapped paid traffic', () => {

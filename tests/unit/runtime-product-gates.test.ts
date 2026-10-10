@@ -2,9 +2,11 @@ import { chmod, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { RuntimeProductGateSchema, deriveRuntimeProductGate, evaluateRuntimeProductGate, verifyRuntimeWiredFiles } from '../../src/core/runtime-product-gates.js';
+import { RuntimeProductGateSchema, deriveRuntimeProductGate, evaluateRuntimeProductGate, failClosedRuntimeProductPlaceholder, isRuntimeProductPlaceholder, resolveRuntimeProductGate, verifyRuntimeWiredFiles } from '../../src/core/runtime-product-gates.js';
 
 const roots: string[] = [];
+const buildHashA = 'a'.repeat(64);
+const buildHashB = 'b'.repeat(64);
 afterEach(async () => {
   // Restore execute bits before recursive delete so chmod(0) fixtures can be cleaned up.
   await Promise.all(roots.splice(0).map(async (root) => {
@@ -79,10 +81,11 @@ const goodFlow = {
 };
 
 describe('deriveRuntimeProductGate rejects incomplete natural flows', () => {
-  const derive = (naturalFlow: unknown, browserEvidence: string[] = ['screenshots/natural.png']) => deriveRuntimeProductGate({
+  const derive = (naturalFlow: unknown, browserEvidence: string[] = ['screenshots/natural.png'], currentBuildHash?: string) => deriveRuntimeProductGate({
     naturalFlow,
     runtimeWiredFiles: ['workspace/game/index.html'],
     browserEvidence,
+    ...(currentBuildHash ? { currentBuildHash } : {}),
   });
 
   /** Pin the gate to a specific blocker id. Derive does not expose blockers on
@@ -137,6 +140,18 @@ describe('deriveRuntimeProductGate rejects incomplete natural flows', () => {
     expect(gate.replay).toContain('replay');
   });
 
+  it('rejects a complete projection when the natural trace is failed or blocked', () => {
+    expect(derive({ ...goodFlow, passed: false, blockers: [] }).passed).toBe(false);
+    expect(derive({ ...goodFlow, passed: true, blockers: ['natural-action-trace-too-short'] }).passed).toBe(false);
+  });
+
+  it('copies build identity only from natural-flow evidence and enforces an expected hash', () => {
+    const bound = derive({ ...goodFlow, buildHash: buildHashA });
+    expect(bound.buildHash).toBe(buildHashA);
+    expect(derive(goodFlow).buildHash).toBeUndefined();
+    expect(derive({ ...goodFlow, buildHash: buildHashA }, ['screenshots/natural.png'], buildHashB).passed).toBe(false);
+  });
+
   it('rejects a trace with an unsupported schema version (natural-flow-schema-invalid)', () => {
     const gate = derive({ schemaVersion: 2 });
     expect(gate.passed).toBe(false);
@@ -147,8 +162,8 @@ describe('deriveRuntimeProductGate rejects incomplete natural flows', () => {
 
   it('rejects when browser evidence is missing (browser-evidence-missing)', () => {
     // browserEvidence.min(1) is enforced by the base schema, so derive cannot
-    // emit a failed gate object with an empty list — it throws instead. That
-    // still locks the "no browser evidence ⇒ cannot pass" ratchet.
+    // emit a failed gate object with an empty list — it throws instead. The
+    // resolver must catch this without inventing a passing evidence path.
     expect(() => derive(goodFlow, [])).toThrow(/browserEvidence|Too small/u);
   });
 });
@@ -285,5 +300,118 @@ describe('RuntimeProductGateSchema rejects passed reports with missing journey e
   });
   it('rejects a passed report whose journey has no terminal outcome', () => {
     expect(() => RuntimeProductGateSchema.parse({ ...good, journey: ['启动', '教学关', '无限夜巡', '检查点门', '再跑一次'], passed: true })).toThrow(/terminal evidence/u);
+  });
+});
+
+describe('resolveRuntimeProductGate keeps the primary path above rescue', () => {
+  const completeNatural = {
+    ...goodFlow,
+    buildHash: buildHashA,
+    observedAt: new Date(0).toISOString(),
+  };
+
+  it('preserves a passed gate only with matching build and wiring evidence', () => {
+    const existing = evaluateRuntimeProductGate({ ...good, buildHash: buildHashA });
+    const preserved = resolveRuntimeProductGate({
+      existing,
+      currentBuildHash: buildHashA,
+      runtimeWiredFiles: [...good.runtimeWiredFiles],
+      browserEvidence: [...good.browserEvidence],
+    });
+    expect(preserved).toEqual(existing);
+    expect(preserved.passed).toBe(true);
+  });
+
+  it('rejects preservation when the current build hash changes', () => {
+    const existing = evaluateRuntimeProductGate({ ...good, buildHash: buildHashA });
+    const rejected = resolveRuntimeProductGate({
+      existing,
+      currentBuildHash: buildHashB,
+      runtimeWiredFiles: [...good.runtimeWiredFiles],
+      browserEvidence: [...good.browserEvidence],
+    });
+    expect(rejected.passed).toBe(false);
+    expect(rejected).not.toEqual(existing);
+  });
+
+  it('rejects preservation when the current wiring set changes', () => {
+    const existing = evaluateRuntimeProductGate({ ...good, buildHash: buildHashA });
+    const rejected = resolveRuntimeProductGate({
+      existing,
+      currentBuildHash: buildHashA,
+      runtimeWiredFiles: ['workspace/game/index.html'],
+      browserEvidence: [...good.browserEvidence],
+    });
+    expect(rejected.passed).toBe(false);
+    expect(rejected).not.toEqual(existing);
+  });
+
+  it('rejects preservation of an unbound legacy passed gate', () => {
+    const existing = evaluateRuntimeProductGate(good);
+    const rejected = resolveRuntimeProductGate({
+      existing,
+      currentBuildHash: buildHashA,
+      runtimeWiredFiles: [...good.runtimeWiredFiles],
+      browserEvidence: [...good.browserEvidence],
+    });
+    expect(rejected.passed).toBe(false);
+    expect(isRuntimeProductPlaceholder(rejected)).toBe(true);
+  });
+
+  it('preserves a useful failed diagnostic when no new trace is supplied', () => {
+    const existing = failClosedRuntimeProductPlaceholder('prior natural trace failed');
+    const preserved = resolveRuntimeProductGate({
+      existing,
+      currentBuildHash: buildHashB,
+      runtimeWiredFiles: [],
+      browserEvidence: [],
+    });
+    expect(preserved).toEqual(existing);
+    expect(preserved.passed).toBe(false);
+  });
+
+  it('evaluates a failed new trace before any existing passed gate', () => {
+    const existing = evaluateRuntimeProductGate({ ...good, buildHash: buildHashA });
+    const rejected = resolveRuntimeProductGate({
+      existing,
+      naturalFlow: { ...completeNatural, passed: false, blockers: [] },
+      currentBuildHash: buildHashA,
+      runtimeWiredFiles: ['workspace/game/index.html'],
+      browserEvidence: ['screenshots/natural.png'],
+    });
+    expect(rejected.passed).toBe(false);
+    expect(rejected).not.toEqual(existing);
+  });
+
+  it('keeps missing browser evidence fail-closed without inventing a path', () => {
+    const existing = evaluateRuntimeProductGate({ ...good, buildHash: buildHashA });
+    const rejected = resolveRuntimeProductGate({
+      existing,
+      naturalFlow: completeNatural,
+      currentBuildHash: buildHashA,
+      runtimeWiredFiles: [...good.runtimeWiredFiles],
+      browserEvidence: [],
+    });
+    expect(rejected.passed).toBe(false);
+    expect(rejected).not.toEqual(existing);
+    expect(rejected.browserEvidence).not.toContain('artifacts/runtime-product-journey.json');
+  });
+
+  it('derives from a complete natural trace when the existing report is a placeholder', () => {
+    const gate = resolveRuntimeProductGate({
+      existing: failClosedRuntimeProductPlaceholder(),
+      naturalFlow: completeNatural,
+      runtimeWiredFiles: ['workspace/game/index.html'],
+      browserEvidence: ['screenshots/natural.png'],
+    });
+    expect(isRuntimeProductPlaceholder(gate)).toBe(false);
+    expect(gate.passed).toBe(true);
+    expect(gate.runtimeWiredFiles).toEqual(['workspace/game/index.html']);
+  });
+
+  it('stays fail-closed when there is no natural trace and no wired files', () => {
+    const gate = resolveRuntimeProductGate({ runtimeWiredFiles: [], browserEvidence: [] });
+    expect(gate.passed).toBe(false);
+    expect(isRuntimeProductPlaceholder(gate)).toBe(true);
   });
 });

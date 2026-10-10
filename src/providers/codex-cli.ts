@@ -25,6 +25,8 @@ export type CodexExecRequest = {
   maxRetries?: number;
   /** Optional per-stage override; absent means the provider default. */
   model?: string;
+  /** Optional routed reasoning effort, passed as a strict CLI config override. */
+  reasoning?: 'low' | 'medium' | 'high' | 'max';
   /** Optional stage metadata enables the same role/sandbox guard used by the factory. */
   stage?: string;
   role?: 'research' | 'producer' | 'builder' | 'fixer' | 'reviewer' | 'evidence-helper' | 'release';
@@ -76,11 +78,12 @@ export function buildCodexProcessEnv(mode: 'trusted' | 'research' = 'trusted'): 
   return environment;
 }
 
-export function buildCodexExecArgs(input: { cwd: string; sandbox: CodexSandbox; schemaPath?: string; outputPath: string; resumeThreadId?: string; model?: string }) {
+export function buildCodexExecArgs(input: { cwd: string; sandbox: CodexSandbox; schemaPath?: string; outputPath: string; resumeThreadId?: string; model?: string; reasoning?: 'low' | 'medium' | 'high' | 'max' }) {
   const args = input.resumeThreadId
     ? ['exec', 'resume', input.resumeThreadId, '--json', '-c', `sandbox_mode="${input.sandbox}"`]
     : ['exec', '--json', '--sandbox', input.sandbox, '--cd', input.cwd];
   if (input.model) args.push('--model', input.model);
+  if (input.reasoning) args.push('-c', `model_reasoning_effort="${input.reasoning}"`);
   if (input.schemaPath) args.push('--output-schema', input.schemaPath);
   args.push('--output-last-message', input.outputPath, '-');
   return args;
@@ -200,7 +203,16 @@ export class CodexCliProvider {
       const abort = () => { child.kill('SIGTERM'); };
       options.signal?.addEventListener('abort', abort, { once: true });
       const timeout = options.timeoutMs ?? this.timeoutMs;
-      const timer = setTimeout(() => { if (!settled) { child.kill('SIGTERM'); settled = true; options.signal?.removeEventListener('abort', abort); reject(new Error(`codex exec timed out after ${timeout}ms`)); } }, timeout);
+      const timer = setTimeout(() => {
+        if (settled) return;
+        settled = true;
+        options.signal?.removeEventListener('abort', abort);
+        child.kill('SIGTERM');
+        // Keep partial output on the same redacted audit path as an ordinary
+        // process failure. A null exit code still prevents accepting even a
+        // completed-looking partial response after the deadline.
+        resolve({ code: null, signal: 'SIGTERM', stdout, stderr: `${stderr}\ncodex exec timed out after ${timeout}ms\n` });
+      }, timeout);
       child.stdin.end(options.stdin ?? '');
     });
   }
@@ -208,6 +220,7 @@ export class CodexCliProvider {
   async assertChatGptLogin() {
     let result: ProcessResult;
     try { result = await this.runProcess(['login', 'status'], { timeoutMs: Math.min(this.timeoutMs, 10_000), env: buildCodexProcessEnv('trusted') }); } catch { throw new Error('Codex CLI is not available; install Codex CLI and run codex login'); }
+    if (result.code === null) throw new Error('Codex CLI is not available; login status could not be verified');
     if (result.code !== 0 || !`${result.stdout}\n${result.stderr}`.includes('Logged in using ChatGPT')) throw new Error('Codex CLI is not logged in with ChatGPT; run codex login');
     return { method: 'chatgpt' as const, message: 'Logged in using ChatGPT' };
   }
@@ -236,7 +249,7 @@ export class CodexCliProvider {
     let lastError: Error | undefined;
     const maxRetries = Math.min(1, Math.max(0, request.maxRetries ?? this.maxRetries));
     for (let attempt = 1; attempt <= maxRetries + 1; attempt += 1) {
-      const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: request.outputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model });
+      const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: request.outputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model, reasoning: request.reasoning });
       try {
         const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: request.prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv });
         const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);

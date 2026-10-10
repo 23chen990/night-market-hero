@@ -5,6 +5,16 @@ import { sha256File } from './files.js';
 
 export function createArtifactLedger(): ArtifactLedger { return ArtifactLedgerSchema.parse({ schemaVersion: 1, entries: [], updatedAt: new Date().toISOString() }); }
 
+type ArtifactRecordInput = Pick<ArtifactLedgerEntry, 'path' | 'sha256' | 'producerStage' | 'inputHashes'>;
+type StageEmissionInput = {
+  producerStage: string;
+  outputs: Array<Pick<ArtifactLedgerEntry, 'path' | 'sha256' | 'inputHashes'>>;
+};
+
+function cloneLedgerEntries(ledger: ArtifactLedger): ArtifactLedgerEntry[] {
+  return ledger.entries.map((entry) => ({ ...entry, inputHashes: { ...entry.inputHashes }, invalidatedBy: [...entry.invalidatedBy] }));
+}
+
 function invalidateDependents(entries: ArtifactLedgerEntry[], changedPath: string, changedHash: string) {
   let changed = true;
   while (changed) {
@@ -31,9 +41,8 @@ function invalidateDependents(entries: ArtifactLedgerEntry[], changedPath: strin
   }
 }
 
-export function recordArtifact(ledgerValue: ArtifactLedger, input: Pick<ArtifactLedgerEntry, 'path' | 'sha256' | 'producerStage' | 'inputHashes'>): ArtifactLedger {
-  const ledger = ArtifactLedgerSchema.parse(ledgerValue); const entries = ledger.entries.map((entry) => ({ ...entry, inputHashes: { ...entry.inputHashes }, invalidatedBy: [...entry.invalidatedBy] }));
-  const existing = entries.find((entry) => entry.path === input.path); const now = new Date().toISOString();
+function applyArtifactRecord(entries: ArtifactLedgerEntry[], input: ArtifactRecordInput, now: string) {
+  const existing = entries.find((entry) => entry.path === input.path);
   if (existing) {
     const changed = existing.sha256 !== input.sha256;
     const wasInvalidated = existing.status === 'INVALIDATED';
@@ -45,6 +54,37 @@ export function recordArtifact(ledgerValue: ArtifactLedger, input: Pick<Artifact
     else if (!changed && wasInvalidated) { existing.status = 'INVALIDATED'; }
     else { existing.status = 'VALID'; existing.invalidatedBy = []; invalidateDependents(entries, input.path, input.sha256); }
   } else entries.push({ ...input, status: 'VALID', invalidatedBy: [], recordedAt: now });
+}
+
+export function recordArtifact(ledgerValue: ArtifactLedger, input: ArtifactRecordInput): ArtifactLedger {
+  const ledger = ArtifactLedgerSchema.parse(ledgerValue); const entries = cloneLedgerEntries(ledger); const now = new Date().toISOString();
+  applyArtifactRecord(entries, input, now);
+  return ArtifactLedgerSchema.parse({ schemaVersion: 1, entries, updatedAt: now });
+}
+
+/**
+ * Commit every output emitted by one successfully validated stage as one
+ * ledger transaction.  `recordArtifact` intentionally keeps an unchanged,
+ * invalidated entry invalid because a generic re-record does not prove that
+ * its owning stage ran.  This operation is the explicit proof that the stage
+ * did run: only the listed outputs have their invalidation cleared.  Any
+ * dependents (or sibling outputs) invalidated while the batch is applied are
+ * cleared only when they are also in this same emission set, so an output from
+ * a stage that did not run remains stale.
+ */
+export function recordStageEmission(ledgerValue: ArtifactLedger, input: StageEmissionInput): ArtifactLedger {
+  const ledger = ArtifactLedgerSchema.parse(ledgerValue);
+  const entries = cloneLedgerEntries(ledger);
+  const now = new Date().toISOString();
+  const emittedPaths = new Set(input.outputs.map((output) => output.path));
+  if (emittedPaths.size !== input.outputs.length) throw new Error('stage emission output paths must be unique');
+
+  for (const output of input.outputs) applyArtifactRecord(entries, { ...output, producerStage: input.producerStage }, now);
+  for (const entry of entries) {
+    if (!emittedPaths.has(entry.path)) continue;
+    entry.status = 'VALID';
+    entry.invalidatedBy = [];
+  }
   return ArtifactLedgerSchema.parse({ schemaVersion: 1, entries, updatedAt: now });
 }
 

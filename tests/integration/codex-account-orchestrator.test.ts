@@ -73,6 +73,30 @@ afterEach(async () => {
 });
 
 describe('codex-account orchestration', () => {
+  it.each(['builder-call', 'build-report', 'repair-history'] as const)('rejects pre-build research reprojection after %s without mutating the run', async (kind) => {
+    const { root, seed } = await setup();
+    const executor = new FakeExecutor();
+    const factory = createFactory({ root, mode: 'codex-account', qaMode: 'stub', codexExecutor: executor });
+    const runId = await factory.newRun(seed);
+    const state = await factory.status(runId);
+    const record = {
+      status: 'completed' as const, startedAt: new Date().toISOString(), finishedAt: new Date().toISOString(), attempts: 2,
+      inputArtifacts: [], outputArtifacts: [], errors: [], evidence: [], providerCalls: { agent: 2, image: 0 }, tokenUsage: { inputTokens: 120, outputTokens: 30, totalTokens: 150 },
+    };
+    state.stages.REFERENCE_DEEP_RESEARCH = { ...record, stage: 'REFERENCE_DEEP_RESEARCH' };
+    if (kind === 'builder-call') state.stages.FULL_BUILD = { ...record, stage: 'FULL_BUILD', attempts: 1, providerCalls: { agent: 1, image: 0 } };
+    if (kind === 'repair-history') state.fixAttempts = 2;
+    const runRoot = path.join(root, 'runs', runId);
+    if (kind === 'build-report') await writeFile(path.join(runRoot, 'artifacts/build-report.json'), '{"preserve":"report"}');
+    const stateFile = path.join(runRoot, 'state.json');
+    const before = JSON.stringify(state);
+    await writeFile(stateFile, before);
+
+    await expect(factory.recoverReferenceResearch(runId, { reprojectCompleted: true })).rejects.toThrow('requires a pre-build run');
+    expect(await readFile(stateFile, 'utf8')).toBe(before);
+    expect(executor.labels).toEqual([]);
+  });
+
   it('rejects resuming a codex-account run from mock mode before running a Mock stage', async () => {
     const { root, seed } = await setup();
     const codexFactory = createFactory({ root, repositoryRoot: process.cwd(), mode: 'codex-account', qaMode: 'stub', codexExecutor: new FakeExecutor(), previewImageProvider: new MockImageProvider(), assetImageProvider: new MockImageProvider() });

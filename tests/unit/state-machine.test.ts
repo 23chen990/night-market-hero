@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { canTransition, MAX_FIX_ATTEMPTS } from '../../src/core/state-machine.js';
+import { canTransition } from '../../src/core/state-machine.js';
 
 describe('state machine', () => {
   it('allows the deterministic happy path and rejects skips', () => {
@@ -19,9 +19,10 @@ describe('state machine', () => {
     expect(canTransition('PROTOTYPE_SELECTION', 'ART_DIRECTIONS')).toBe(false);
   });
 
-  it('limits automatic repairs to two attempts', () => {
-    expect(MAX_FIX_ATTEMPTS).toBe(2);
-    expect(canTransition('QA', 'FIX', { fixAttempts: 2 })).toBe(false);
+  it('does not impose a fixed automatic repair-attempt ceiling', () => {
+    expect(canTransition('QA', 'FIX', { fixAttempts: 5 })).toBe(true);
+    expect(canTransition('QA', 'FIX', { fixAttempts: 6 })).toBe(true);
+    expect(canTransition('QA', 'FIX', { fixAttempts: 1_000 })).toBe(true);
   });
 
   it('routes a reference reskin through a human mechanic lock without ideation or prototype tournament stages', () => {

@@ -4,6 +4,7 @@ import {
   CostBudgetSchema,
   CostUsageSchema,
   FailureReportSchema,
+  FixCapBlockerSchema,
   PlatformReleaseMatrixSchema,
   QaEvidenceSchema,
   ReleaseCandidateSchema,
@@ -69,6 +70,12 @@ describe('factory operating contracts', () => {
     expect(evaluateCostGate(budget, usage)).toMatchObject({ passed: false, blockers: ['total-cost'] });
   });
 
+  it('does not create a fix-attempt blocker when the budget omits an explicit repair ceiling', () => {
+    const budget = CostBudgetSchema.parse({ currency: 'CNY', maxTotalCents: 100_00, maxPaidTrafficCents: 40_00, maxAgentTokens: 100_000, maxHumanMinutes: 180, paybackWindowDays: 14 });
+    const usage = CostUsageSchema.parse({ totalCents: 0, paidTrafficCents: 0, agentTokens: 1, humanMinutes: 0, fixAttempts: 1_000 });
+    expect(evaluateCostGate(budget, usage)).toMatchObject({ passed: true, blockers: [] });
+  });
+
   it('requires natural play evidence to be free of state-forcing operations', () => {
     expect(() => QaEvidenceSchema.parse({
       schemaVersion: 1,
@@ -99,6 +106,21 @@ describe('factory operating contracts', () => {
     });
     expect(FailureReportSchema.parse(failure).routeTo).toBe('TARGET_PLATFORM_QA');
     expect(failure.hypotheses).toHaveLength(2);
+  });
+
+  it('records a schema-valid blocker when automatic FIX reaches its cap', () => {
+    const blocker = FixCapBlockerSchema.parse({
+      schemaVersion: 1,
+      stage: 'FIX',
+      status: 'BLOCKED',
+      attempts: 5,
+      maxAutomaticAttempts: 5,
+      reason: 'qa-failed-after-automatic-fix-cap',
+      nextAction: 'human-review-required',
+      message: 'QA failed after 5 automatic fixes; automatic retries are stopped.',
+    });
+    expect(blocker).toMatchObject({ stage: 'FIX', status: 'BLOCKED', attempts: 5, nextAction: 'human-review-required' });
+    expect(() => FixCapBlockerSchema.parse({ ...blocker, status: 'FAILED' })).toThrow();
   });
 
   it('accepts monetization as a first-class failure class', () => {

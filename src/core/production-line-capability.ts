@@ -15,7 +15,7 @@ type Capability = {
  */
 const CAPABILITIES: Record<ProductionLine, Capability> = {
   'single-finger-action': { expectedTemplates: ['single-finger-action-v1'], implementedTemplates: [], runtimes: ['web-lite'] },
-  'cut-stack-dodge': { expectedTemplates: ['cut-stack-dodge-v1'], implementedTemplates: [], runtimes: ['web-lite'] },
+  'cut-stack-dodge': { expectedTemplates: ['cut-stack-dodge-v1'], implementedTemplates: ['cut-stack-dodge-v1'], runtimes: ['web-lite'] },
   'idle-management': { expectedTemplates: ['idle-management-v1', 'idle-shop-v1', 'spatial-shop-v1', 'spatial-shop-3d-v1'], implementedTemplates: ['idle-shop-v1', 'spatial-shop-v1', 'spatial-shop-3d-v1'], runtimes: ['web-lite', 'cocos-3d'] },
   'choice-life': { expectedTemplates: ['choice-life-v1'], implementedTemplates: [], runtimes: ['web-lite'] },
   'rule-puzzle': { expectedTemplates: ['rule-puzzle-v1'], implementedTemplates: [], runtimes: ['web-lite'] },

@@ -226,7 +226,7 @@ describe('BuilderAgent gameplay revision forwarding', () => {
 });
 
 describe('FULL_BUILD retry budget', () => {
-  it('resets automatic fix attempts before starting a new build', async () => {
+  it('retains automatic fix attempts when retrying the build without a new human review flow', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'factory-build-retry-'));
     const factory = factoryModule.createFactory({ root, repositoryRoot: process.cwd(), mode: 'mock', qaMode: 'stub' });
     const runId = await factory.demo(path.join(process.cwd(), 'examples/seeds/ghost-night-market.yaml'));
@@ -237,6 +237,6 @@ describe('FULL_BUILD retry budget', () => {
 
     const retried = await factory.retry(runId, 'FULL_BUILD');
 
-    expect(retried.fixAttempts).toBe(0);
+    expect(retried.fixAttempts).toBe(2);
   }, 30_000);
 });

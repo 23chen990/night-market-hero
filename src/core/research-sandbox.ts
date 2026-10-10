@@ -1,4 +1,5 @@
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { copyFile, lstat, mkdir, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ContextPacketSchema } from './context-budget.js';
 import { assertSafeContextInputPath } from './execution-boundary.js';
@@ -74,6 +75,28 @@ export async function prepareResearchSandbox(context: AgentExecutionContext): Pr
     inputHashes[inputPath] = sha256Text(content);
   }
 
+  const mediaFiles: Array<{ path: string; sha256: string }> = [];
+  for (const [index, media] of (context.mediaInputs ?? []).entries()) {
+    const relative = assertSafeContextInputPath(media.path);
+    if (!relative.startsWith('reference-evidence/derived/') || !/\.(?:png|jpe?g|webp)$/iu.test(relative)) throw new Error(`research media must stay inside derived reference evidence: ${relative}`);
+    if (!/^[a-f0-9]{64}$/iu.test(media.sha256)) throw new Error(`research media requires a SHA-256 hash: ${relative}`);
+    const source = path.resolve(runRoot, relative);
+    if (!isWithin(runRoot, source)) throw new Error(`research media escapes run root: ${relative}`);
+    const sourceStat = await lstat(source);
+    if (!sourceStat.isFile() || sourceStat.isSymbolicLink()) throw new Error(`research media must be a regular file: ${relative}`);
+    const [realRunRoot, realSource] = await Promise.all([realpath(runRoot), realpath(source)]);
+    if (!isWithin(realRunRoot, realSource)) throw new Error(`research media resolves outside run root: ${relative}`);
+    const actualHash = createHash('sha256').update(await readFile(realSource)).digest('hex');
+    if (actualHash !== media.sha256.toLowerCase()) throw new Error(`research media hash mismatch: ${relative}`);
+    const target = path.resolve(root, relative);
+    if (!isWithin(root, target)) throw new Error(`research media target escapes sandbox: ${relative}`);
+    await mkdir(path.dirname(target), { recursive: true, mode: 0o700 });
+    await copyFile(realSource, target);
+    allowedFiles.push(relative);
+    inputHashes[`media:${index}:${relative}`] = actualHash;
+    mediaFiles.push({ path: relative, sha256: actualHash });
+  }
+
   // Keep a small human/machine-readable manifest inside the isolated root;
   // it contains no raw source text and makes the boundary inspectable after a
   // failed or resumed run.
@@ -85,6 +108,7 @@ export async function prepareResearchSandbox(context: AgentExecutionContext): Pr
     rootRelative: path.relative(runRoot, root).replaceAll(path.sep, '/'),
     allowedFiles,
     inputHashes,
+    mediaFiles,
     createdAt: new Date().toISOString(),
   });
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, { encoding: 'utf8', mode: 0o600 });

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "factory-control-plane",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "reportedAt": "2026-09-07T00:00:00+08:00",
+  "classification": "process-experience / quality-observability",
+  "scope": "Shared factory diagnosis and operating advice; no generated-game workspace selected for modification.",
+  "reproduction": {
+    "input": "现在的工厂流程其实很多，但是很多时候我让小游戏按照工厂流程做，工厂流程做的却很差，我也不知是哪一步有问题，我该怎么办",
+    "evidence": [
+      "User reports recurring unsatisfactory outcomes and cannot identify the responsible stage.",
+      "No particular game, build version, object/state branch, screenshot or recording was supplied in this request."
+    ]
+  },
+  "reproductionMatrix": {
+    "objectType": "factory stage and generated-product handoff",
+    "lifecycleStateBranches": ["requirements", "research", "contract", "implementation", "natural QA", "acceptance"],
+    "presentationPaths": ["stage status", "artifact evidence", "default playable build"],
+    "deviceViewports": ["UNKNOWN: no specific game reproduction supplied"],
+    "coverage": "Repository inspection can establish enforcement and evidence gaps; it cannot establish player-visible game defects without a bound run and runtime reproduction."
+  },
+  "observedFindings": [
+    {
+      "id": "F1",
+      "finding": "runFactoryEvalSuite checks routing profiles, support decisions, required stages and forbidden serialized outcomes; this function does not generate or play a game.",
+      "source": "src/core/factory-eval.ts:327",
+      "implication": "A passing factory eval is routing evidence, not evidence that the generated product meets player expectations."
+    },
+    {
+      "id": "F2",
+      "finding": "The generic runPerceptualQa runner uses a 1280x900 viewport, prototype DOM controls, body text changes and visibleSignal token matching. It captures screenshots but does not analyze their visual content in this function.",
+      "source": "src/providers/runtime-qa.ts:47",
+      "implication": "This runner alone cannot establish visual quality, action feel, feature-specific causal feedback or mobile readability. Separate game-specific runtime and perceptual evidence must be checked."
+    },
+    {
+      "id": "F3",
+      "finding": "The operating-model review says to return failures to the earliest responsible artifact stage, while the player-acceptance workflow says failure in any dimension returns to FIX.",
+      "sources": ["docs/factory-operating-model-review.md:137", "docs/player-acceptance-workflow.md:29"],
+      "implication": "The documents disagree about repair routing. This inspection does not establish which instruction governed any particular historical repair."
+    },
+    {
+      "id": "F4",
+      "finding": "All eight benchmark cases in factory-eval/cases.json have humanScore set to null.",
+      "source": "factory-eval/cases.json",
+      "implication": "This corpus does not contain completed human score calibration; that does not establish whether human reviews exist elsewhere."
+    }
+  ],
+  "hypotheses": [
+    {
+      "cause": "Some completion claims may use evidence that proves workflow execution but does not cover the rejected player experience.",
+      "status": "UNCONFIRMED_FOR_ANY_SPECIFIC_GAME",
+      "requiredCheck": "Bind one rejected experience to an exact run and build, reproduce it with normal input, and trace the acceptance claim back through its evidence and upstream artifacts."
+    }
+  ],
+  "recommendedNextAction": {
+    "scope": "One user-selected unsatisfactory game and one to three concrete rejected experiences; generated-game changes require the applicable Builder/Fixer route after diagnosis.",
+    "outputColumns": ["expected experience", "observed experience", "earliest incorrect or unsupported artifact", "why the existing gate passed or did not run", "responsible stage", "exact retest evidence"],
+    "method": [
+      "Freeze the exact run, workspace, source/build identity and active pipeline configuration.",
+      "Use the existing triage and evidence-provenance workflow; keep unknown evidence explicitly unknown.",
+      "Trace each rejected experience across research, contract, builder input, runtime implementation and QA evidence.",
+      "Repair the earliest established cause while preserving formal FIX obligations where applicable.",
+      "Retest the same object/state/presentation/device branch with natural input and independent perceptual review.",
+      "Use the accepted before/after case to calibrate the relevant production line; require multiple-case evidence before generalizing a global rule."
+    ]
+  },
+  "verification": {
+    "lint": { "command": "pnpm lint", "exitCode": 0 },
+    "typecheck": { "command": "pnpm typecheck", "exitCode": 0 },
+    "tests": { "command": "pnpm test", "exitCode": 0, "passedFiles": 147, "passedTests": 759 },
+    "limitations": [
+      "No generated-game source, factory runtime code or existing user changes were modified for this diagnosis.",
+      "No target-specific natural gameplay reproduction or reference-media analysis was performed.",
+      "Static findings and passing repository tests do not close the reported product-quality complaint."
+    ]
+  },
+  "acceptanceCriteria": [
+    "Separate observed repository facts, historical run evidence, hypotheses and remaining unknowns.",
+    "Identify an actionable method to locate the earliest incorrect or unsupported stage output.",
+    "Explain what the existing factory evaluation actually verifies and what it does not verify.",
+    "Recommend a bounded single-game calibration before cross-game workflow expansion.",
+    "Do not declare a generated-game defect or factory repair complete from static inspection."
+  ],
+  "status": "OPEN"
+}

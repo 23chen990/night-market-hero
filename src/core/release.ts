@@ -45,6 +45,8 @@ export function evaluateReleaseUnknownGate(value: unknown, strict = false, artif
 }
 
 export type ReleaseOptions = {
+  /** Build identity recorded by the completed QA attempt. */
+  expectedBuildHash?: string;
   enforceAcceptance?: boolean;
   enforceOperatingGates?: boolean;
   certificationRequired?: boolean;
@@ -102,6 +104,12 @@ async function assertSafeBuildTree(runRoot: string, directory: string): Promise<
     }
   };
   await walk(directory);
+}
+
+/** Hash the validated current build using the release package identity algorithm. */
+export async function hashRunBuild(runRoot: string): Promise<string> {
+  const build = await resolveBuildOutput(runRoot);
+  return hashDirectory(build.directory, runRoot);
 }
 
 async function resolveBuildOutput(runRoot: string): Promise<{ directory: string; runtime: 'web-lite' | 'cocos-3d' }> {
@@ -386,6 +394,7 @@ export async function packageReleaseCandidate(runRoot: string, blueprint: GameBl
   const buildOutput = await resolveBuildOutput(runRoot);
   const workspaceDist = buildOutput.directory;
   const testedCoreHash = await hashDirectory(workspaceDist, runRoot);
+  if (options.expectedBuildHash !== undefined && options.expectedBuildHash !== testedCoreHash) throw new Error('QA build hash does not match the candidate bytes');
   const matrix = await readJsonFile(path.join(runRoot, 'artifacts/platform-release-matrix.json')).catch(() => undefined) as PlatformReleaseMatrix | undefined;
   if (matrix) {
     const parsedMatrix = PlatformReleaseMatrixSchema.parse(matrix);

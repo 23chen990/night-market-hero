@@ -1,0 +1,60 @@
+# 在 GitHub 上零安装构建夜市飞侠的 debug APK，用于过 TapTap 资质审核。
+#
+# 触发方式（在 GitHub 仓库页面操作）：
+#   1. 把本仓库推送到 GitHub
+#   2. 切到 Actions 页 → 选 "Build TapTap APK" → Run workflow
+#   3. 完成后在 Artifacts 下载 night-market-hero-debug-apk
+#
+# 也可以：把代码 push 到 main 分支，workflow 会自动跑。
+# 注意：APK 是 debug 签名版，仅用于资质审核与内部验证。
+#       正式发布前请换用 release 签名。
+
+name: Build TapTap APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-night-market-hero-apk.yml'
+      - 'runs/mobile-chart-adaptation-20260830/workspace/prototype-a/platforms/taptap-android/**'
+      - 'runs/mobile-chart-adaptation-20260830/workspace/prototype-a/夜市飞侠-护印突围-试玩版.html'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 + Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          java-version: '17'
+
+      - name: Re-import game HTML into assets
+        working-directory: runs/mobile-chart-adaptation-20260830/workspace/prototype-a/platforms/taptap-android
+        run: |
+          set -e
+          sudo apt-get update -y >/dev/null 2>&1 || true
+          python3 tools/import_game.py
+
+      - name: Build debug APK
+        working-directory: runs/mobile-chart-adaptation-20260830/workspace/prototype-a/platforms/taptap-android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Show APK info
+        working-directory: runs/mobile-chart-adaptation-20260830/workspace/platforms/taptap-android
+        run: |
+          APK="runs/mobile-chart-adaptation-20260830/workspace/prototype-a/platforms/taptap-android/app/build/outputs/apk/debug/app-debug.apk"
+          ls -lh "$APK"
+          sha256sum "$APK"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: night-market-hero-debug-apk
+          path: runs/mobile-chart-adaptation-20260830/workspace/prototype-a/platforms/taptap-android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

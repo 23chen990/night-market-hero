@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "scope": "shared-factory",
+  "outcome": "PASS",
+  "checkedAt": "2026-09-18T09:48:04.833Z",
+  "commands": [
+    {
+      "command": "pnpm lint",
+      "exitCode": 0,
+      "durationMs": 4083,
+      "log": "docs/triage/factory-review-20260918/verification-2026-09-18T09-46-53-969Z/lint.log",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    {
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "durationMs": 4756,
+      "log": "docs/triage/factory-review-20260918/verification-2026-09-18T09-46-53-969Z/typecheck.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "command": "pnpm test --reporter=json --outputFile docs/triage/factory-review-20260918/verification-2026-09-18T09-46-53-969Z/vitest-results.json",
+      "exitCode": 0,
+      "durationMs": 61473,
+      "log": "docs/triage/factory-review-20260918/verification-2026-09-18T09-46-53-969Z/tests.log",
+      "sha256": "5ad1554b79883b3a75c5ffbb605193feffa5507acc4d2e6589044ec4e99ee076"
+    },
+    {
+      "command": "pnpm exec tsx docs/triage/factory-review-20260918/verify-historical-evidence.ts",
+      "exitCode": 0,
+      "durationMs": 540,
+      "log": "docs/triage/factory-review-20260918/verification-2026-09-18T09-46-53-969Z/historical-regression.log",
+      "sha256": "b2131a295dfff570aecaecbddc9b460b19451c86eae497ee53a5ea405082e833"
+    }
+  ],
+  "testSummary": {
+    "total": 1006,
+    "passed": 1006,
+    "failed": 0,
+    "pending": 0,
+    "success": true
+  },
+  "workerReports": [
+    {
+      "taskId": "luna_provider_provenance",
+      "status": "IMPLEMENTED",
+      "path": "docs/triage/factory-review-20260918/luna-provider-result.json",
+      "sha256": "b18522194703292667a6ea28efeabd5e32c42c036a5cc3011a18dc64ab58e3e4",
+      "filesChanged": [
+        "src/agents/index.ts",
+        "tests/unit/action-prototype-builder.test.ts"
+      ]
+    },
+    {
+      "taskId": "luna_image_prompt_scope",
+      "status": "IMPLEMENTED",
+      "path": "docs/triage/factory-review-20260918/luna-image-result.json",
+      "sha256": "8c5ad25fba4920cfbdc487d736065354e4ecfcb31cd8abf8ae2aa05ee4024774",
+      "filesChanged": [
+        "src/providers/codex-imagegen.ts",
+        "src/core/asset-definitions.ts",
+        "tests/unit/codex-imagegen-provider.test.ts",
+        "tests/unit/asset-definitions.test.ts"
+      ]
+    },
+    {
+      "taskId": "luna_profile_evidence",
+      "status": "IMPLEMENTED",
+      "path": "docs/triage/factory-review-20260918/luna-profile-result.json",
+      "sha256": "40623e6046152710446c3cdc8c607ae6fa3f343cd9265c909f6eef958d0ebb73",
+      "filesChanged": [
+        "src/core/action-feel-stage.ts",
+        "src/schemas/profile-stage.ts",
+        "src/factory.ts",
+        "tests/unit/action-feel-stage.test.ts",
+        "tests/integration/action-feel-evidence.test.ts"
+      ]
+    },
+    {
+      "taskId": "luna_profile_bound_files",
+      "status": "IMPLEMENTED",
+      "path": "docs/triage/factory-review-20260918/luna-bound-evidence-result.json",
+      "sha256": "cb3e0c59bbef8293f7e17cc7b27998d63ff841b5cdd42813c15510a5e8880617",
+      "filesChanged": [
+        "src/core/action-feel-evidence.ts",
+        "tests/unit/action-feel-evidence.test.ts",
+        "docs/triage/factory-review-20260918/luna-bound-evidence-result.json"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/agents/index.ts",
+      "sha256": "fc25f26cf60122ca123e35f4670945bfda2aaf8b85d59624faebedc3413c0bd8"
+    },
+    {
+      "path": "src/core/action-feel-evidence.ts",
+      "sha256": "ca7ebeec51bbff0074c68cd6acbcc6913d7a3f23abe8d13a10d8dc5f9fba6f3a"
+    },
+    {
+      "path": "src/core/action-feel-stage.ts",
+      "sha256": "b9b3d2be8b05a356582b9039649061a60847d7dd5c8fc2dce67fe3edd93f83b4"
+    },
+    {
+      "path": "src/core/asset-definitions.ts",
+      "sha256": "b44f44423cecae84e8593492e8f439b46ec282f1b9307de190ef76504747c997"
+    },
+    {
+      "path": "src/factory.ts",
+      "sha256": "2182c9c9bee0c4c4567302c3c203718d1040ceecba825b489fedd44cee86ebeb"
+    },
+    {
+      "path": "src/providers/codex-imagegen.ts",
+      "sha256": "f09be906c52864c05eec13c0e1e52dbf6ab292506b4fac7264c6782de126ce90"
+    },
+    {
+      "path": "src/schemas/profile-stage.ts",
+      "sha256": "7b99669cffa0861e9f166dea4e9e4e6d76f7801af4973985e20e45ab319db4ea"
+    },
+    {
+      "path": "tests/integration/action-feel-evidence.test.ts",
+      "sha256": "cb02372221703603fa95e7cba3cb63074342f3d34ee1bc1929a834795da149bb"
+    },
+    {
+      "path": "tests/unit/action-feel-evidence.test.ts",
+      "sha256": "febcf0b150f493d69ccd3e8cbbab2ff3b48a080f1f7257517d37462f46b71b31"
+    },
+    {
+      "path": "tests/unit/action-feel-stage.test.ts",
+      "sha256": "327642ac06a78baa5306e83c500fc62d45eb4c9f8a18debe5c816e8a876a8359"
+    },
+    {
+      "path": "tests/unit/action-prototype-builder.test.ts",
+      "sha256": "d8f8aee46943fe45c3333f50a0a858bf41bae214aa02b028a4b759ebe45cacd6"
+    },
+    {
+      "path": "tests/unit/asset-definitions.test.ts",
+      "sha256": "afc9100c1b844b57a856e135fe32d95c92d5e541a6ad0fe085e7a62e8eebe9fb"
+    },
+    {
+      "path": "tests/unit/codex-imagegen-provider.test.ts",
+      "sha256": "c3faf6086b806dd0d305a54b62609c9187ca4c87b643f75b760ae2556ce0b058"
+    }
+  ],
+  "historicalRegression": {
+    "path": "docs/triage/factory-review-20260918/historical-gate-verification.json",
+    "sha256": "b2131a295dfff570aecaecbddc9b460b19451c86eae497ee53a5ea405082e833"
+  },
+  "productionRun": {
+    "runId": "20260918071718-974ee21f",
+    "stage": "FAILED",
+    "status": "failed",
+    "failureReason": "Error: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 19th, 2026 4:11 PM.",
+    "statePath": "runs/20260918071718-974ee21f/state.json",
+    "stateSha256": "d3aaf161a26f92548370b8445450b2fb265e4396be449929a1b728a7234506a4",
+    "resumed": false
+  },
+  "gameQualityAccepted": false,
+  "limitations": [
+    "Factory integration uses explicit Mock providers and synthetic QA artifacts; it does not prove actual player experience.",
+    "The production run was not resumed; its last stored failure is the BLUEPRINT provider usage limit.",
+    "Real candidate natural input, visible failure/replay, independent perceptual review and live image alpha/compositing remain required.",
+    "The six legacy action engineering metrics are not a complete cut/support/hazard gameplay acceptance suite; line-specific runtime QA remains required.",
+    "This round does not establish WeChat, Douyin or TapTap package readiness."
+  ]
+}

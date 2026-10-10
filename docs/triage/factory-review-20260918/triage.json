@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "符刃夜行",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260918050528-974ee21f/workspace/feel-prototype-a",
+  "report": "用户指出生图及实际表现与竞品参考不符，并要求先复盘，再使用 Luna 子代理改进跨游戏工厂流程。",
+  "classification": [
+    "qa-false-positive",
+    "factory-routing",
+    "core-experience",
+    "reference-fidelity"
+  ],
+  "scope": {
+    "route": "shared-factory",
+    "rationale": "已复现共享 Builder 降级与 profile 审批串联错误，先修工厂，不修改任何已有生成游戏。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "整段会话",
+      "无关录屏和其他游戏素材",
+      "已有生成工作区的非相关源码"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "读取旧运行的 action-feel-build-report，三候选均标记 provider-transient-fallback。",
+      "检查 actionPrototypeHtml：有状态与测试 API，但没有 Canvas 绘制或自然时间推进。",
+      "查看截图 action-A.png，画面为空；查看 action-playwright-qa 的 loadScenario 和 advanceTicks 路径。",
+      "查看体验报告及编排调用：确定性报告被命名为自然 QA，体验仍为 APPROVED。"
+    ],
+    "observed": [
+      "可见 Canvas 为空；测试数值仍可由状态注入产生。",
+      "buildActionFeelExperienceReview 仅使用六个工程指标，不要求自然旅程、可见画面或独立感知报告。",
+      "action-feel-stage 的标题和语义写死为符刃夜行，编排可将其他 ACTION_FEEL 产线带入切栈模板。",
+      "FEEL_REPAIR 会删除候选并重复同一修复假设；模型容量故障可被降级产物掩盖。",
+      "生图提示对全部 reference_reskin 游戏强制明亮粉彩/侧视低多边形 3D 并禁止暗色；预览写死摊位，切栈资产写死符刃/雾夜，覆盖不同游戏的美术锁定。",
+      "独立临时 full-validation Mock 运行已正确阻断缺失自然证据；但相同输入连续 resume 使 NATURAL_PLAY_QA attempts 从 1 增至 2，随后误报 bounded retry exceeded。候选输出未变，未进入美术。"
+    ],
+    "evidence": [
+      {
+        "path": "runs/20260918050528-974ee21f/screenshots/action-A.png",
+        "sha256": "2148007a582c1ddd67f12a014431c84eb17ea8c5c5f5682dfc8f3244e33b2a0e",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/20260918050528-974ee21f/artifacts/action-feel-build-report.json",
+        "sha256": "0482b1b8a40c28e8036c5aa2205e51f9370742137508236a00b0298de93d6388",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/20260918050528-974ee21f/artifacts/action-feel-natural-play-qa.json",
+        "sha256": "03a3a5d70828798592088f1aeeaa5f20bc8f19ec7fe7dc4daa27681e0030a474",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/20260918050528-974ee21f/artifacts/experience-review.json",
+        "sha256": "b13b89ae6f9d62f8efed983cf8feed656a3c65a2785264715bc3315ee1ff3764",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "src/agents/index.ts",
+        "sha256": "8b28665efb0f1e5348ebda1cb2bc4fbe9833a097621690c9896cbd9539ea5079",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/core/action-feel-stage.ts",
+        "sha256": "2239ec6a484919d49bee6db0f6f83aabb93cfad44faf128fe81dca5e6ee03fe2",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/factory.ts",
+        "sha256": "dfae9c07ba350b54e2817b921e3470719b68ccbb7b960a8c55c9e0c1a4077b1f",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/qa/action-playwright-qa.ts",
+        "sha256": "738a7007d7dfde54393173e75ea5eff4fd03b5fba61e632909197c46c383798c",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/providers/codex-imagegen.ts",
+        "sha256": "b42aa919999aa60aa897f2859c69461c804bda91b43076f78a67f305d54eb54b",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/core/asset-definitions.ts",
+        "sha256": "7d9435c5d19bff6a4bf2563dbf5ffca95c01f8e865a5a44cf79b582ec1b25c51",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "docs/triage/factory-review-20260918/integration-probe.json",
+        "sha256": "b80a8a4aaa34538dd9e65ae0f77771405d9508926a184707896c6ceac814d442",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "真实模型故障保留并传播，不生成可冒充真实候选的备用页面。",
+    "确定性场景测试不能批准 naturalPlay，缺失或失败的自然/感知证据阻断审批。",
+    "空图或不可读截图阻断体验通过，旧 APPROVED 不能绕过恢复校验。",
+    "非切栈产线不会落入切栈适配器，运行标题来自目标游戏。",
+    "失败现场和用户文件保留，缺证据不触发无差别自动删除重建。",
+    "新增回归先失败后通过，最终 lint/typecheck/相关测试和浏览器证据可复核。",
+    "生图任务从目标游戏与已锁定美术派生；第二款游戏不能继承符刃夜行题材、摊位或预置粉彩风格。",
+    "等待缺失自然/感知证据的 resume 保持幂等，不重复未变工程测试，不消耗新增执行或 FIX 次数。"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-09-18T08:36:26.544Z"
+}

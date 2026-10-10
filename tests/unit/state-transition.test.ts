@@ -17,4 +17,14 @@ describe('durable state transition audit', () => {
     expect(evaluateTransitionHistory(history, { plannedStages: ['CREATED', 'BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW'] })).toMatchObject({ passed: true, blockers: [] });
     expect(evaluateTransitionHistory([...history, { from: 'PRODUCTION_LINE_REVIEW', to: 'CREATED', reason: 'tampered', at: new Date().toISOString() }]).passed).toBe(false);
   });
+
+  it('accepts a hash-bound cost continuation back to the recorded planned stage', () => {
+    const at = new Date().toISOString();
+    const history = [
+      StateTransitionRecordSchema.parse({ from: 'REFERENCE_DEEP_RESEARCH', to: 'ABANDONED', reason: 'cost-cap', at }),
+      StateTransitionRecordSchema.parse({ from: 'ABANDONED', to: 'REFERENCE_DEEP_RESEARCH', reason: `cost-cap-authorized:${'a'.repeat(64)}`, at }),
+    ];
+    expect(evaluateTransitionHistory(history, { plannedStages: ['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK'] })).toMatchObject({ passed: true, blockers: [] });
+    expect(evaluateTransitionHistory([{ ...history[1]!, reason: 'state-save' }], { plannedStages: ['REFERENCE_DEEP_RESEARCH'] }).passed).toBe(false);
+  });
 });

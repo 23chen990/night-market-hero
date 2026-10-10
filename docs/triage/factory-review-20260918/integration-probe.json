@@ -1,0 +1,80 @@
+{
+  "fixtureRoot": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-review-integration-EFmGv5",
+  "runId": "20260918085901-9a7d40b1",
+  "firstStage": "WAITING_FOR_REFERENCE_APPROVAL",
+  "lastStage": "NATURAL_PLAY_QA",
+  "status": "waiting",
+  "review": null,
+  "natural": {
+    "schemaVersion": 1,
+    "stage": "NATURAL_PLAY_QA",
+    "targetRunId": "20260918085901-9a7d40b1",
+    "targetGame": "独立回归样本",
+    "targetWorkspace": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-review-integration-EFmGv5/runs/20260918085901-9a7d40b1/workspace/game",
+    "profile": "ACTION_FEEL",
+    "productionLine": "cut-stack-dodge",
+    "status": "BLOCKED",
+    "sourceArtifacts": [
+      {
+        "path": "artifacts/action-feel-natural-play-qa.json",
+        "sha256": "ce3b78b0377679fd57253b51eebc53102b88262f05bbf6debfe5304c0529277c"
+      }
+    ],
+    "checks": [
+      {
+        "id": "feel:engineering-thresholds",
+        "passed": true,
+        "evidence": "Deterministic engineering QA recommendation: B. This report is not natural-play approval."
+      },
+      {
+        "id": "feel:natural-input",
+        "passed": false,
+        "evidence": "Independent fresh-context natural-flow evidence is missing."
+      },
+      {
+        "id": "feel:visual-evidence",
+        "passed": false,
+        "evidence": "screenshots:missing"
+      }
+    ],
+    "independentEvidence": {
+      "visual": {
+        "passed": false,
+        "evidence": [
+          "screenshots:missing"
+        ],
+        "blockers": [
+          "visual:evidence-missing-or-blank",
+          "visual:selected-candidate-screenshot-missing:B",
+          "visual:screenshot-hash-missing:screenshots:missing"
+        ],
+        "targetRunId": "20260918085901-9a7d40b1",
+        "targetGame": "独立回归样本",
+        "targetWorkspace": "/var/folders/f2/s76hhpss3llc2_zw9g63x7380000gn/T/factory-review-integration-EFmGv5/runs/20260918085901-9a7d40b1/workspace/feel-prototype-b",
+        "experimentId": "feel-20260918085901-9a7d40b1",
+        "playerVisible": false
+      }
+    },
+    "createdAt": "2026-09-18T08:59:01.998Z"
+  },
+  "resumeProbe": {
+    "before": {
+      "stage": "NATURAL_PLAY_QA",
+      "naturalAttempts": 1
+    },
+    "attempts": [
+      {
+        "stage": "NATURAL_PLAY_QA",
+        "status": "waiting",
+        "naturalAttempts": 2,
+        "prototypeAttempts": 1,
+        "fixAttempts": 0,
+        "artStarted": false
+      },
+      {
+        "error": "Error: Stage NATURAL_PLAY_QA exceeded its bounded retry policy"
+      }
+    ],
+    "outputsUnchanged": true
+  }
+}

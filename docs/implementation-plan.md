@@ -105,8 +105,8 @@ Web-lite 只是开发和 QA 证据；没有微信、抖音、TapTap 各自的适
 | Reviewer | Luna Max | 独立 QA、归因、Artifact 审查、中等修复 | 改写冻结规格 |
 | Fast | Spark | 单点 Bug、UI 微调、补测试、JSON/截图整理 | 设计核心玩法、物理、剧情、经济或关卡 |
 
-升级必须受阶段允许层级和两次失败上限约束：Spark 失败升 Luna，语义不确定再升 Terra，触及核心体验
-才升 Sol；连续两次仍失败暂停人工。角色、沙箱和文件范围不能随模型升级改变。Research 只读不可信外部
+升级必须受阶段允许层级和单次调用两次失败上限约束：Spark 失败升 Luna，语义不确定再升 Terra，触及核心体验
+才升 Sol；连续两次仍失败暂停人工。该模型升级限制独立于 FIX 阶段最多五轮的自动修复上限。角色、沙箱和文件范围不能随模型升级改变。Research 只读不可信外部
 内容并写研究 Artifact；Builder/Fixer 才能写当前 run 的生成游戏工作区；QA/Release 不得写游戏。
 
 ## 安全、交接与证据

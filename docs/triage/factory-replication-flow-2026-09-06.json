@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "factory-control-plane",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "reportedAt": "2026-09-06T00:00:00+08:00",
+  "classification": "process-experience / replication-fidelity",
+  "scope": "shared factory workflow; no generated-game workspace selected",
+  "reproduction": {
+    "input": "User wants a straightforward reference-game recreation and reports that the factory has many stages whose value is unclear and that generated results are often unsatisfactory.",
+    "evidence": [
+      "fast-reskin currently plans 36 mandatory stages for reference_reskin runs",
+      "ReferenceMechanicSpec permits source.researchFiles to be empty, so a reference URL can exist without bound gameplay evidence",
+      "Existing automated tests validate factory behavior but do not establish reference-to-build fidelity"
+    ]
+  },
+  "hypotheses": [
+    {
+      "cause": "The fast lane optimizes governance and release evidence rather than perceptual and mechanical similarity.",
+      "confidence": 0.96
+    },
+    {
+      "cause": "The builder receives a human mechanic summary but not a required, verified reference behavior trace or media set.",
+      "confidence": 0.91
+    },
+    {
+      "cause": "There is no explicit fidelity gate that compares input/state transitions, failure pressure, feedback timing, and recovery against the reference.",
+      "confidence": 0.9
+    }
+  ],
+  "acceptanceCriteria": [
+    "A reference preview run exposes no more than eight user-visible gates.",
+    "Every gate states its purpose, input, output, and evidence in plain language.",
+    "The builder receives verified reference behavior evidence, not only a URL and prose summary.",
+    "The preview cannot pass unless core-loop order, action/state branches, failure/recovery, and feedback timing are covered.",
+    "Full platform, compliance, and release checks remain available as a separate release path."
+  ],
+  "status": "OPEN"
+}

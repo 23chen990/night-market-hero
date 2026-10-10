@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_profile_review_resume_counter",
+  "role": "FactoryMaintainer",
+  "route": "shared-factory",
+  "repository": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "ownership": [
+    "src/factory.ts: EXPERIENCE_REVIEW begin and FEEL_REPAIR evidence-only recovery",
+    "tests/integration/action-feel-evidence.test.ts: existing positive recovery case"
+  ],
+  "triagePath": "docs/triage/factory-review-20260918/triage.json",
+  "reproductionMatrixPath": "docs/triage/factory-review-20260918/reproduction-matrix.json",
+  "findings": [
+    "Natural evidence recovery now reuses attempts correctly, but the sibling EXPERIENCE_REVIEW branch still calls begin() without reuseWaitingAttempt after FEEL_REPAIR sets its completed review record to pending. First perceptual recovery consumes review attempt 2; another valid/missing/valid cycle can exceed the review stage retry policy even though no new QA execution occurred."
+  ],
+  "instructions": [
+    "You are not alone; preserve all changes. Only edit the two owned locations. No existing run workspace/provider invocation.",
+    "Make one focused RED/GREEN follow-up: extend the existing synthetic recovery case immediately after initial WAITING_FOR_ART_APPROVAL to remove and restore the perceptual report at least twice. Use test art-approval file only to cause the completed-profile revalidation, remove that art-approval file before resuming FEEL_REPAIR so recovery stops at WAITING_FOR_ART_APPROVAL. Assert the intended perceptual blocker and unchanged EXPERIENCE_REVIEW, NATURAL_PLAY_QA, FEEL_REPAIR and FIX attempt counts.",
+    "Minimal expected fix: observation-only EXPERIENCE_REVIEW recovery should reuse its existing record just like NATURAL_PLAY_QA; a waiting status and begin reuseWaitingAttempt are available. Do not change unrelated stage counting or add a new adapter.",
+    "After targeted integration tests and typecheck/lint pass, return an updated FactoryRepairResultSchema merging your earlier profile result tests and files, with taskId luna_profile_evidence, at the original output path. This closes the same pause/resume acceptance; do not broaden scope."
+  ],
+  "acceptanceChecks": [
+    "Repeated perceptual report invalidation/restoration remains waiting while missing and progresses to WAITING_FOR_ART_APPROVAL when valid, without exceeding any attempt policy or increasing observation-only review attempts.",
+    "Existing missing evidence, stale build/report/trace and threshold regressions still pass."
+  ],
+  "omittedContext": [
+    "Generated workspaces and user media",
+    "Unrelated factory stages"
+  ],
+  "outputPath": "docs/triage/factory-review-20260918/luna-profile-result.json"
+}

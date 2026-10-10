@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildContextPacket, buildHandoffPacket, HandoffPacketSchema } from '../../src/core/context-budget.js';
+import { buildContextPacket, buildHandoffPacket, HandoffPacketSchema, verifyContextPacketIntegrity, verifyHandoffPacketIntegrity } from '../../src/core/context-budget.js';
+import { sha256Text } from '../../src/core/files.js';
 
 describe('context budget', () => {
   it('deduplicates inputs and caps the handoff payload', () => {
@@ -58,5 +59,33 @@ describe('context budget', () => {
     });
     expect(packet.contextPacketHash).toBe(contextHash);
     expect(HandoffPacketSchema.parse(packet).contextPacketHash).toBe(contextHash);
+  });
+
+  it('signs the schema-canonical summary after trimming whitespace and truncation', () => {
+    const whitespace = buildContextPacket({ stage: 'BLUEPRINT', summary: ' Compile reference data ', inputs: [], maxChars: 1_200 });
+    const truncated = buildContextPacket({ stage: 'BLUEPRINT', summary: 'summary '.repeat(600), inputs: [], maxChars: 300 });
+
+    expect(whitespace.summary).toBe('Compile reference data');
+    expect(truncated.summary.endsWith(' ')).toBe(false);
+    expect(verifyContextPacketIntegrity(whitespace)).toEqual({ passed: true, blockers: [] });
+    expect(verifyContextPacketIntegrity(truncated)).toEqual({ passed: true, blockers: [] });
+    expect(whitespace.totalChars).toBe(whitespace.summary.length + whitespace.inputs.reduce((total, item) => total + item.excerpt.length, 0));
+    expect(truncated.totalChars).toBe(truncated.summary.length + truncated.inputs.reduce((total, item) => total + item.excerpt.length, 0));
+  });
+
+  it('keeps handoff summary hash and token metadata aligned after final budget trimming', () => {
+    const packet = buildHandoffPacket({
+      fromStage: ' QA ',
+      toStage: ' FIX ',
+      summary: 'summary '.repeat(600),
+      artifacts: [],
+      changedFiles: [],
+      commandsRun: [],
+      maxChars: 128,
+    });
+
+    if (packet.summaryHash !== undefined) expect(packet.summaryHash).toBe(sha256Text(packet.summary));
+    expect(packet.estimatedTokens).toBe(Math.max(1, Math.ceil(packet.summary.length / 4)));
+    expect(verifyHandoffPacketIntegrity(packet)).toEqual({ passed: true, blockers: [] });
   });
 });

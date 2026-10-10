@@ -65,6 +65,24 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
   }
   if (!Array.isArray(context.inputPaths)) throw new ExecutionBoundaryError('inputPaths must be an array');
   context.inputPaths.forEach((item, index) => assertRelativeArtifact(item, `inputPaths[${index}]`));
+  if (context.mediaInputs !== undefined) {
+    if (!Array.isArray(context.mediaInputs)) throw new ExecutionBoundaryError('mediaInputs must be an array');
+    if (policyForStage(context.stage).role !== 'research') throw new ExecutionBoundaryError('mediaInputs are restricted to research stages');
+    for (const [index, media] of context.mediaInputs.entries()) {
+      if (!media || typeof media !== 'object') throw new ExecutionBoundaryError(`mediaInputs[${index}] must be an object`);
+      const mediaPath = assertRelativeArtifact(media.path, `mediaInputs[${index}].path`);
+      if (!mediaPath.startsWith('reference-evidence/derived/') || !/\.(?:png|jpe?g|webp)$/iu.test(mediaPath)) throw new ExecutionBoundaryError('mediaInputs must be images inside derived reference evidence');
+      if (typeof media.sha256 !== 'string' || !/^[a-f0-9]{64}$/iu.test(media.sha256)) throw new ExecutionBoundaryError(`mediaInputs[${index}] requires a SHA-256 hash`);
+    }
+  }
+  if (context.targetGameId !== undefined && (typeof context.targetGameId !== 'string' || context.targetGameId.trim().length === 0)) {
+    throw new ExecutionBoundaryError('targetGameId cannot be empty');
+  }
+  if (context.targetWorkspaceRelative !== undefined) assertRelativeArtifact(context.targetWorkspaceRelative, 'targetWorkspaceRelative');
+  if (context.requiredArtifacts !== undefined) {
+    if (!Array.isArray(context.requiredArtifacts) || context.requiredArtifacts.length === 0) throw new ExecutionBoundaryError('requiredArtifacts must be a non-empty array');
+    context.requiredArtifacts.forEach((item, index) => assertRelativeArtifact(item, `requiredArtifacts[${index}]`));
+  }
   const policy = policyForStage(context.stage);
   if (context.sandbox !== policy.sandbox) throw new ExecutionBoundaryError(`${policy.role} stage ${context.stage} requires ${policy.sandbox}`);
   if (context.model !== undefined && (typeof context.model !== 'string' || context.model.trim().length === 0)) throw new ExecutionBoundaryError('model override cannot be empty');
@@ -105,6 +123,10 @@ export function safeExecutionContext(value: AgentExecutionContext): SafeExecutio
     outputPath: checked.outputPath,
     logDir: checked.logDir,
     inputPaths: checked.inputPaths.map((item) => item.replaceAll('\\', '/')),
+    mediaInputs: checked.mediaInputs?.map((item) => ({ path: item.path.replaceAll('\\', '/'), sha256: item.sha256.toLowerCase() })),
+    targetGameId: checked.targetGameId,
+    targetWorkspaceRelative: checked.targetWorkspaceRelative,
+    requiredArtifacts: checked.requiredArtifacts?.map((item) => item.replaceAll('\\', '/')),
     stage: checked.stage,
     model: checked.model,
     reasoning: checked.reasoning,

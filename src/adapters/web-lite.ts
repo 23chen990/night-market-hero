@@ -1,13 +1,20 @@
 import { spawn } from 'node:child_process';
-import { mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
+import { lstat, mkdir, readFile, realpath, rename, rm, symlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { RuntimeAdapter } from './runtime.js';
 import type { AssetManifest, GameBlueprint, StyleLock } from '../schemas/index.js';
-import { clearDir, copyTree, exists, listFiles } from '../core/files.js';
+import { copyTree, exists, listFiles, writeJsonAtomic } from '../core/files.js';
 
 function command(bin: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const env = bin === 'pnpm' || bin === 'corepack'
+    const env = (() => {
+      const cleanEnv = { ...process.env };
+      // A parent `pnpm` process may export this switch globally. It is only
+      // meaningful for package-manager invocations and must not leak into
+      // factory-pinned test/typecheck/build binaries.
+      delete cleanEnv.pnpm_config_verify_deps_before_run;
+      return bin === 'pnpm' || bin === 'corepack'
       // pnpm 11 verifies dependency state before every run and rebuilds
       // node_modules when it disagrees (verifyDepsBeforeRun defaults to
       // "install"). Generated workspaces share the factory's node_modules
@@ -15,8 +22,9 @@ function command(bin: string, args: string[], cwd: string): Promise<void> {
       // dependency tree mid-run. pnpm reads this toggle from the
       // pnpm_config_* env namespace, not npm_config_*. Disable it for spawned
       // package-manager commands only; interactive pnpm keeps its defaults.
-      ? { ...process.env, pnpm_config_verify_deps_before_run: 'false' }
-      : process.env;
+        ? { ...cleanEnv, pnpm_config_verify_deps_before_run: 'false' }
+        : cleanEnv;
+    })();
     const child = spawn(bin, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'], env });
     let output = '';
     let settled = false;
@@ -58,6 +66,104 @@ const playableMimeTypes: Record<string, string> = {
   '.woff2': 'font/woff2',
 };
 
+function archiveTimestamp() {
+  return new Date().toISOString().replace(/[-:]/gu, '').replace(/\.\d{3}Z$/u, 'Z');
+}
+
+function isWithin(parent: string, candidate: string): boolean {
+  const relative = path.relative(path.resolve(parent), path.resolve(candidate));
+  return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
+}
+
+/**
+ * Validate every existing component of a generated workspace path before any
+ * mutation. The nearest run workspace root is the physical ownership anchor;
+ * ancestors above it (including platform aliases such as macOS /var) are not
+ * writable by this operation. A missing suffix is safe to create inside it.
+ */
+async function assertSafeWorkspacePath(workspace: string): Promise<{ workspace: string; parent: string }> {
+  const resolvedWorkspace = path.resolve(workspace);
+  const parent = path.dirname(resolvedWorkspace);
+  const ownerRoot = path.basename(parent) === 'workspace' ? path.dirname(parent) : parent;
+  const root = path.parse(ownerRoot).root;
+  if (ownerRoot === root) throw new Error('web-lite workspace owner must not be a filesystem root');
+  let ownerEntry;
+  try {
+    ownerEntry = await lstat(ownerRoot);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') throw new Error(`web-lite workspace owner is missing: ${ownerRoot}`);
+    throw error;
+  }
+  if (ownerEntry.isSymbolicLink()) throw new Error(`web-lite workspace owner must not be a symlink: ${ownerRoot}`);
+  if (!ownerEntry.isDirectory()) throw new Error(`web-lite workspace owner must be a directory: ${ownerRoot}`);
+  const ownerReal = await realpath(ownerRoot);
+  const relative = path.relative(ownerRoot, resolvedWorkspace);
+  if (!isWithin(ownerRoot, resolvedWorkspace)) throw new Error('web-lite workspace must remain inside its owning run');
+  let current = ownerRoot;
+  for (const component of relative.split(path.sep)) {
+    if (!component || component === '.') continue;
+    current = path.join(current, component);
+    let entry;
+    try {
+      entry = await lstat(current);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') break;
+      throw error;
+    }
+    if (entry.isSymbolicLink()) {
+      throw new Error(`web-lite workspace path must not contain symlink: ${path.relative(ownerRoot, current)}`);
+    }
+    if (!entry.isDirectory()) throw new Error(`web-lite workspace path component must be a directory: ${path.relative(ownerRoot, current)}`);
+    if (!isWithin(ownerReal, await realpath(current))) throw new Error(`web-lite workspace path resolves outside its owner: ${path.relative(ownerRoot, current)}`);
+  }
+  await mkdir(parent, { recursive: true });
+  return { workspace: resolvedWorkspace, parent };
+}
+
+/**
+ * Move a prior generated workspace aside atomically. Rename preserves failed
+ * partial files and symlinks without traversing or dereferencing them.
+ */
+async function archiveExistingWorkspace(workspace: string, parent: string, template: string): Promise<void> {
+  let workspaceEntry;
+  try {
+    workspaceEntry = await lstat(workspace);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return;
+    throw error;
+  }
+  if (workspaceEntry.isSymbolicLink()) throw new Error('web-lite workspace must not be a symlink');
+  if (!workspaceEntry.isDirectory()) throw new Error('web-lite workspace must be a directory');
+
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const archive = path.join(parent, `${path.basename(workspace)}.archive-${archiveTimestamp()}-${randomUUID()}`);
+    try {
+      await lstat(archive);
+      continue;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    }
+    try {
+      await rename(workspace, archive);
+      await writeJsonAtomic(`${archive}.manifest.json`, {
+        schemaVersion: 1,
+        artifactType: 'web-lite-workspace-archive',
+        sourceWorkspace: workspace,
+        archiveWorkspace: archive,
+        template,
+        preservation: 'rename',
+        links: 'preserved',
+        archivedAt: new Date().toISOString(),
+      });
+      return;
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code !== 'EEXIST' && code !== 'ENOTEMPTY') throw error;
+    }
+  }
+  throw new Error(`web-lite could not allocate a unique archive for ${workspace}`);
+}
+
 async function packageFinderPlayable(output: string): Promise<void> {
   const indexFile = path.join(output, 'index.html');
   let html = await readFile(indexFile, 'utf8');
@@ -97,14 +203,17 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     const templateDirectories: Record<string, string> = {
       'idle-shop-v1': 'idle-shop-v1',
       'spatial-shop-v1': 'spatial-shop-v1',
+      'cut-stack-dodge-v1': 'cut-stack-dodge-v1',
     };
     const templateDirectory = templateDirectories[template];
     if (!templateDirectory) throw new Error(`Unsupported web-lite template: ${template}`);
-    await clearDir(workspace); await copyTree(path.join(this.repositoryRoot, 'templates/web-lite', templateDirectory), workspace);
-    await rm(path.join(workspace, 'node_modules'), { recursive: true, force: true });
-    await rm(path.join(workspace, 'dist'), { recursive: true, force: true });
+    const safeWorkspace = await assertSafeWorkspacePath(workspace);
+    await archiveExistingWorkspace(safeWorkspace.workspace, safeWorkspace.parent, template);
+    await copyTree(path.join(this.repositoryRoot, 'templates/web-lite', templateDirectory), safeWorkspace.workspace);
+    await rm(path.join(safeWorkspace.workspace, 'node_modules'), { recursive: true, force: true });
+    await rm(path.join(safeWorkspace.workspace, 'dist'), { recursive: true, force: true });
     // Generated projects reuse the factory's pinned dependency store; the release build is self-contained.
-    await symlink(path.join(this.repositoryRoot, 'node_modules'), path.join(workspace, 'node_modules'), 'dir');
+    await symlink(path.join(this.repositoryRoot, 'node_modules'), path.join(safeWorkspace.workspace, 'node_modules'), 'dir');
   }
   async applyBlueprint(workspace: string, blueprint: GameBlueprint, styleLock: StyleLock) {
     await mkdir(path.join(workspace, 'src/generated'), { recursive: true });
@@ -123,11 +232,19 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
     const sourceFiles = (await listFiles(sourceRoot)).filter((file) => file.endsWith('.ts'));
     const sources = await Promise.all(sourceFiles.map((file) => readFile(path.join(sourceRoot, file), 'utf8')));
     const source = sources.join('\n');
-    const testApi = ['resetGame', 'getState', 'spawnCustomer', 'completeOrder', 'grantCurrency', 'upgradeStation', 'setRandomSeed'];
+    const cutStackDodge = source.includes("MOTHER_TEMPLATE_ID = 'cut-stack-dodge-v1'");
+    const testApi = cutStackDodge
+      ? ['resetGame', 'getState', 'setRandomSeed', 'advanceTicks', 'tap', 'replay', 'getEvents']
+      : ['resetGame', 'getState', 'spawnCustomer', 'completeOrder', 'grantCurrency', 'upgradeStation', 'setRandomSeed'];
     const missingApi = testApi.filter((name) => !source.includes(name));
     if (missingApi.length > 0) throw new Error(`Builder test API is missing: ${missingApi.join(', ')}`);
+    if (cutStackDodge && !/window\.__REFERENCE_LEVEL_TEST__\s*=\s*\{\s*getSnapshot\s*,\s*getNaturalInputTarget\s*\}/su.test(source)) {
+      throw new Error('Cut-stack-dodge Builder must expose the read-only reference-level probe with exactly two methods');
+    }
     if (!source.includes('localStorage') || !/(?:CURRENT_SAVE_VERSION\s*=\s*\d+|version\s*:\s*\d+|save-v\d+)/.test(source)) throw new Error('Builder must implement a versioned local save');
-    const checks = ['contract:test-api-7', 'save:versioned'];
+    const checks = cutStackDodge
+      ? ['contract:cut-stack-dodge-v1', 'contract:test-api-read-observe', 'save:versioned']
+      : ['contract:test-api-7', 'save:versioned'];
     if (!options.requireScripts) return checks;
 
     const packageJson = JSON.parse(await readFile(path.join(workspace, 'package.json'), 'utf8')) as { scripts?: Record<string, string> };

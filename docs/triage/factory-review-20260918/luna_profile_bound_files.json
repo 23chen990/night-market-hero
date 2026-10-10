@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_profile_bound_files",
+  "role": "FactoryMaintainer",
+  "route": "shared-factory",
+  "repository": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "ownership": [
+    "src/core/action-feel-evidence.ts (new)",
+    "tests/unit/action-feel-evidence.test.ts (new)"
+  ],
+  "triagePath": "docs/triage/factory-review-20260918/triage.json",
+  "reproductionMatrixPath": "docs/triage/factory-review-20260918/reproduction-matrix.json",
+  "findings": [
+    "The profile adapter needs independent natural/perceptual evidence whose candidate identity, current dist hash, actual screenshot/trace files and exact branch coverage are verified. The factory owner is handling pause/resume/wiring; this file-level verifier can be implemented independently."
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Do not revert other edits. Own only the new core helper and its tests; never edit factory.ts, schemas/profile-stage.ts, existing action-feel-stage.ts, or generated game workspaces.",
+    "Implement exported type ActionFeelCandidateIdentity {slot: A|B|C; workspace: string (absolute); targetRunId: string; targetGame: string; experimentId: string}. Export async verifyActionFeelPlayerEvidence(input: {runRoot:string; candidate:ActionFeelCandidateIdentity; naturalReport?:unknown; perceptualReport?:unknown; contract?:unknown}): Promise<{naturalPlay:ProfileIndependentEvidence; perceptual:ProfileIndependentEvidence}>. Export hashActionFeelCandidateBuild(workspace:string) for producer/test reproducibility.",
+    "Use existing ProfileIndependentEvidenceSchema for returned summaries, NaturalFlowEvidenceSchema for traces, ProductExperienceContractSchema and PerceptualQaReportSchema with verifyPerceptualQaReview for perceptual evidence. No weakened self-report schema.",
+    "Natural report wrapper must be Zod validated: schemaVersion 1, exact targetRunId/targetGame/targetWorkspace/experimentId/slot, current buildHash, trace {path,sha256}, screenshots [{path,sha256}] (at least two). The trace is a file parsed by NaturalFlowEvidenceSchema with matching buildHash, runtime web-lite, device present, reset, normal actions, terminal/settlement, replay, no forbiddenOperations and no fixture/deterministic runner. Validate actual bytes and file hashes. Trace screenshot paths must be covered by wrapper hashes. Run runVisualEvidenceGate to reject blank/unreadable captures. Missing data returns blocked summaries instead of throwing.",
+    "Compute current candidate dist hash with the same scheme as factory hashBuildDirectory: sorted relative regular-file paths mapped to file:sha256 joined by newline, sha256Text of that string. Require candidate.workspace to be a real non-symlink descendant of runRoot/workspace. Evidence files must remain inside run root and reject symlinks/path escapes.",
+    "For perceptual evidence require a valid candidate-bound contract and invoke verifyPerceptualQaReview({runRoot,workspace:candidate.workspace,contract,buildHash,report:perceptualReport}); additionally verify contract targetRunId/targetGame/workspace matches candidate. Missing contract/report stays blocked. Summaries include candidate identity/experimentId, verified flags, evidence paths and blockers.",
+    "Use test-first development: missing, wrong build, wrong workspace/run, missing screenshot, fixture trace, and stale bytes all fail closed. Include a fully bound positive fixture. Do not invoke providers. Run focused tests and typecheck; root runs final full suite.",
+    "Return FactoryRepairResultSchema-validated artifact at outputPath."
+  ],
+  "acceptanceChecks": [
+    "No missing/forged/stale/cross-candidate evidence can return passed.",
+    "Valid bound natural and independent perceptual fixture returns passed using existing verifiers.",
+    "The helper does not change any run/workspace files.",
+    "Owned tests pass and export signatures match the declared integration API."
+  ],
+  "omittedContext": [
+    "完整会话",
+    "无关生成游戏源码",
+    "真实媒体内容"
+  ],
+  "outputPath": "docs/triage/factory-review-20260918/luna-bound-evidence-result.json"
+}

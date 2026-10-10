@@ -11,10 +11,10 @@ export type ExecutionPolicy = ModelPolicy & {
 };
 
 const defaults: Record<ModelTier, { model: string; reasoning: ModelPolicy['reasoning'] }> = {
-  frontier: { model: 'gpt-5.6-sol', reasoning: 'max' },
-  builder: { model: 'gpt-5.6-terra', reasoning: 'max' },
-  reviewer: { model: 'gpt-5.6-luna', reasoning: 'high' },
-  fast: { model: 'gpt-5.3-codex-spark', reasoning: 'low' },
+  frontier: { model: 'gpt-5.6-luna', reasoning: 'max' },
+  builder: { model: 'gpt-5.6-luna', reasoning: 'max' },
+  reviewer: { model: 'gpt-5.6-luna', reasoning: 'max' },
+  fast: { model: 'gpt-5.6-luna', reasoning: 'max' },
 };
 
 function reasoningForTier(tier: ModelTier): ModelPolicy['reasoning'] {
@@ -36,7 +36,18 @@ const reviewerStages = new Set<StageName>(['CREATED', 'REFERENCE_MECHANIC_LOCK',
 // UI skeletons encode hierarchy, ad placement and first-viewport comprehension;
 // keep them on the reviewer tier. Spark remains appropriate for mechanical
 // evidence formatting and deterministic coverage checks only.
-const fastStages = new Set<StageName>(['VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA', 'ASSETS']);
+const fastStages = new Set<StageName>([
+  'VISUAL_EVIDENCE_QA',
+  'CONTENT_VARIATION_QA',
+  'ASSETS',
+  'PRESENTATION_QA',
+  'SUPPLY_CHAIN_QA',
+  'COST_GATE',
+  'FACTORY_EVAL',
+  'QUALITY_BASELINE_QA',
+]);
+frontierStages.add('PRODUCT_EXPERIENCE_CONTRACT');
+fastStages.add('PERCEPTUAL_QA');
 const builderStages = new Set<StageName>(['FULL_BUILD', 'BUILD', 'BUILD_3_PROTOTYPES', 'BUILD_ACTION_PROTOTYPES', 'FEEL_PROTOTYPE', 'STORY_VERTICAL_SLICE', 'SYSTEMS_PROTOTYPE', 'PUZZLE_PROTOTYPE', 'GRAYBOX_CORE', 'POLISH_VERTICAL_SLICE']);
 const fixerStages = new Set<StageName>(['FIX', 'FEEL_REPAIR']);
 const producerStages = new Set<StageName>(['IDEA_GENERATION', 'LOW_COST_FILTER', 'PROTOTYPE_SELECTION', 'WINNER_SELECTION', 'PRODUCTION_COST_REVIEW', 'IAA_REVIEW', 'IAA_MONETIZATION_REVIEW', 'GREENLIGHT_GATE', 'BLUEPRINT', 'EXPERIENCE_HYPOTHESIS', 'EXPERIENCE_CONTRACT', 'NARRATIVE_CONTRACT', 'SYSTEMS_CONTRACT', 'PUZZLE_CONTRACT', 'CONTENT_EXPANSION']);
@@ -64,7 +75,7 @@ export function modelPolicySignature(stages: StageName[] = [...StageNameSchema.o
 
 export function classifyModelFailure(message: string): ModelFailureKind {
   const text = String(message).toLowerCase();
-  if (/(?:timeout|timed out|rate limit|429|temporar|econnreset|503|network)/u.test(text)) return 'TRANSIENT';
+  if (/(?:timeout|timed out|rate limit|usage limit|quota|try again at|at capacity|429|temporar|econnreset|503|network)/u.test(text)) return 'TRANSIENT';
   if (/(?:policy|permission|forbidden|license|copyright|unsafe|blocked by)/u.test(text)) return 'POLICY_BLOCK';
   if (/(?:schema|invalid input|spec|acceptance standard|unknown requirement)/u.test(text)) return 'SPEC_ERROR';
   if (/(?:tool|command|enoent|playwright|cannot spawn|file not found)/u.test(text)) return 'TOOL_ERROR';

@@ -29,8 +29,12 @@ describe('artifact schemas', () => {
     expect(seed.targetPlatforms).toEqual(['wechat-minigame', 'douyin-minigame', 'taptap-minigame']);
   });
 
-  it('requires a human-authored mechanic lock for the default reference-reskin workflow', () => {
-    expect(() => SeedSchema.parse({ title: '我要当美女', theme: '原创都市变美逆袭', template: 'idle-shop-v1' })).toThrow(/referenceMechanics/i);
+  it('defaults a seed without reference mechanics to the original prototype workflow', () => {
+    expect(SeedSchema.parse({ title: 'Original', theme: 'ghosts', template: 'idle-shop-v1' }).designMode).toBe('prototype_tournament');
+    expect(() => SeedSchema.parse({ title: 'Reference', theme: 'ghosts', template: 'idle-shop-v1', designMode: 'reference_reskin' })).toThrow(/referenceMechanics/i);
+  });
+
+  it('infers reference mode only when a human-authored mechanic lock is supplied', () => {
 
     const referenceMechanics = ReferenceMechanicSpecSchema.parse({
       schemaVersion: 1,

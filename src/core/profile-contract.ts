@@ -9,6 +9,15 @@ import {
   type ProfileExperienceContract,
 } from '../schemas/index.js';
 import { PrimaryExperienceProfileSchema } from '../schemas/experience-profile.js';
+// Keep one canonical product-experience schema. The former local handoff
+// schema diverged from the factory artifact and let Builder and QA validate
+// two incompatible meanings under the same exported name.
+export { ProductExperienceContractSchema } from '../schemas/product-experience.js';
+export type { ProductExperienceContract } from '../schemas/product-experience.js';
+
+export function buildProductEvidenceInstruction() {
+  return 'For every feature, report implementation evidence separately from player-visible product evidence and natural trigger evidence. A state field, event, or unit test alone is not player-visible proof: include the visible signal, the natural player action, and screenshot/trace evidence. Never claim a feature complete when it is only wired internally.';
+}
 
 type PrimaryExperienceProfile = z.infer<typeof PrimaryExperienceProfileSchema>;
 type SupportedProfile = Exclude<PrimaryExperienceProfile, 'SOCIAL_EMOTION' | 'EXPLORATION_DISCOVERY'>;

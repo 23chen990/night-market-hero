@@ -1,5 +1,5 @@
 import type { StageName } from '../schemas/index.js';
-import { StageContractAuditSchema, type StageContractAudit } from '../schemas/stage-contracts.js';
+import { StageContractAuditSchema, type StageContract, type StageContractAudit } from '../schemas/stage-contracts.js';
 import { contractPathMatches, evaluateStageContract, getStageContract } from './stage-contracts.js';
 
 export type ControlStageObservation = {
@@ -13,6 +13,8 @@ export type ControlStageAuditOptions = {
   minimumArtifacts?: Record<string, number>;
   /** Require every declared output to carry its schema version. */
   strictVersions?: boolean;
+  /** Allow a lane-specific control contract while retaining the same audit shape. */
+  contract?: StageContract;
 };
 
 /**
@@ -22,7 +24,7 @@ export type ControlStageAuditOptions = {
  * waiting stage remains visibly incomplete instead of being treated as pass.
  */
 export function buildControlStageAudit(stageValue: StageName, observed: ControlStageObservation, options: ControlStageAuditOptions = {}): StageContractAudit {
-  const stage = getStageContract(stageValue);
+  const stage = options.contract ?? getStageContract(stageValue);
   const base = evaluateStageContract(stage, {
     inputs: observed.inputs,
     artifacts: observed.artifacts,

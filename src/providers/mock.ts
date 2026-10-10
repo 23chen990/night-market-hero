@@ -1,11 +1,104 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { sha256Text } from '../core/files.js';
+import { sha256File, sha256Text } from '../core/files.js';
+import { deriveAssetDefinitions } from '../core/asset-definitions.js';
 import type { AgentExecutionContext, AgentProvider, AgentProviderResult, CodexProvider, ImageProvider } from './interfaces.js';
-import type { ArtApproval, ArtDirections, GameBlueprint, ReferenceMechanicSpec, Seed, StyleLock } from '../schemas/index.js';
+import { ReferenceFrameManifestSchema, ReferenceLevelReconstructionSchema, type ArtApproval, type ArtDirections, type GameBlueprint, type ReferenceEvidencePack, type ReferenceMechanicSpec, type Seed, type StyleLock } from '../schemas/index.js';
 import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament } from '../schemas/gameplay-experiment.js';
 
 export class MockAgentProvider implements AgentProvider {
+  async analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext): Promise<AgentProviderResult> {
+    const source = pack.sourceFiles[0];
+    if (!source) return { value: { schemaVersion: 1, targetRunId: pack.targetRunId, behaviorChecks: [], observations: [], inferences: [], unknowns: ['No bound reference source is available for behavior analysis.'], levelReconstruction: null, status: 'BLOCKED' }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };
+    const cases = [
+      ['input_state', 'primary controllable object', 'ready → primary input → resolved state', 'normal primary tap', 'primary input changes the declared controllable state', 'play object', ['input accepted', 'object state visibly changes']],
+      ['spatial_relation', 'target and support pair', 'approach → contact → support consequence', 'normal primary tap at the visible target', 'contact resolves against the declared target/support relationship', 'target/support pair', ['contact shown at target', 'support consequence remains world-local']],
+      ['failure_recovery', 'declared danger object', 'safe approach → danger contact → failure → retry', 'normal input that visibly reaches danger, then retry', 'danger contact causes an attributable failure and retry resets cleanly', 'danger object', ['danger telegraph is visible', 'contact causes failure', 'retry restores ready state']],
+      ['feedback_sequence', 'successful target', 'intact → contact → resolution → reward', 'normal input that reaches the target', 'success feedback follows contact and resolution in causal order', 'resolved target', ['contact cue', 'object resolution', 'world-local reward']],
+      ['terminal_replay', 'finish and replay control', 'finish approach → settlement → replay → ready', 'normal input through finish, then visible replay control', 'the declared loop reaches settlement and replay returns to a fresh ready state', 'finish result', ['finish result appears', 'settlement appears', 'replay returns to ready']],
+    ] as const;
+    const failurePressureContract = {
+      schemaVersion: 1 as const,
+      purpose: 'Record source-bound reference pressure for deterministic orchestration tests.',
+      evidence: [{
+        id: 'reference-pressure', competitor: pack.benchmark.name, sourceRefs: [source.path],
+        observed: ['A visible danger branch ends the current attempt.'],
+        inferred: ['The approach creates a timing decision.'], applicability: 'adapt' as const,
+        applicabilityRationale: 'Preserve causal pressure with original expression and values.',
+        rejectExpression: ['names', 'assets', 'UI layout', 'audio', 'numeric tuning'], confidence: 'high' as const,
+      }],
+      rules: [{
+        id: 'reference-pressure-rule', pressureType: 'hazard' as const,
+        trigger: 'The controllable object reaches the visible danger object.',
+        playerSignal: 'The danger object is visible before contact.',
+        escalation: 'Forward motion reduces the remaining response window.',
+        failureOutcome: 'The attempt enters a visible failed state.',
+        attribution: 'Impact feedback is anchored to the danger contact.',
+        recovery: 'The visible retry control restores the ready state.',
+        sourceEvidenceRefs: ['reference-pressure'],
+        implementationImplications: ['Keep danger visible before contact.', 'Expose natural-input retry.'],
+      }],
+      noCopyBoundary: ['Do not copy third-party names, assets, UI, audio, content, or numeric tuning.'],
+    };
+    let levelReconstruction = null;
+    if (context?.inputPaths.includes('artifacts/reference-frame-manifest.json')) {
+      const frameManifestPath = path.join(context.runRoot, 'artifacts/reference-frame-manifest.json');
+      const frameManifest = ReferenceFrameManifestSchema.parse(JSON.parse(await readFile(frameManifestPath, 'utf8')));
+      const frameManifestSha256 = await sha256File(frameManifestPath);
+      const phases = ['ready', 'input', 'interaction', 'terminal', 'replay'] as const;
+      const checkpointAt = (index: number) => Math.min(frameManifest.source.durationMs - 1, Math.round((frameManifest.source.durationMs - 1) * index / (phases.length - 1)));
+      const checkpoints = phases.map((phase, index) => ({
+        id: `reference-${phase}`,
+        phase,
+        atMs: checkpointAt(index),
+        sourceFrameIds: [frameManifest.frames[Math.min(frameManifest.frames.length - 1, Math.round((frameManifest.frames.length - 1) * index / (phases.length - 1)))]!.id],
+        input: phase === 'input'
+          ? { actionId: 'primary-action', kind: 'tap' as const, targetObjectId: 'player-object', gestureDirection: 'none' as const, sourcePointNormalized: { x: 0.25, y: 0.5 }, confidence: 1 }
+          : phase === 'replay'
+            ? { actionId: 'replay', kind: 'tap' as const, targetObjectId: 'replay-control', gestureDirection: 'none' as const, sourcePointNormalized: { x: 0.5, y: 0.75 }, confidence: 1 }
+            : { actionId: null, kind: 'none' as const, targetObjectId: null, gestureDirection: 'none' as const, sourcePointNormalized: null, confidence: 1 },
+        camera: { mode: phase === 'replay' ? 'cut' as const : 'follow' as const, focusObjectIds: ['player-object'], motion: phase === 'ready' ? 'static' as const : phase === 'replay' ? 'cut' as const : 'forward' as const, confidence: 1 },
+        objects: [
+          { semanticId: 'player-object', role: 'player' as const, lifecycle: phase === 'ready' ? 'ready' as const : phase === 'terminal' ? 'settled' as const : 'moving' as const, boundsNormalized: { x: 0.15, y: 0.4, width: 0.1, height: 0.1 }, rotationDegrees: 0, visible: true, confidence: 1 },
+          { semanticId: 'target-object', role: 'cuttable' as const, lifecycle: phase === 'interaction' ? 'resolved' as const : phase === 'terminal' || phase === 'replay' ? 'hidden' as const : 'ready' as const, boundsNormalized: { x: 0.5, y: 0.5, width: 0.15, height: 0.15 }, rotationDegrees: 0, visible: phase !== 'terminal' && phase !== 'replay', confidence: 1 },
+          { semanticId: 'support-object', role: 'support' as const, lifecycle: 'ready' as const, boundsNormalized: { x: 0.4, y: 0.7, width: 0.35, height: 0.1 }, rotationDegrees: 0, visible: phase !== 'replay', confidence: 1 },
+          { semanticId: 'hazard-object', role: 'hazard' as const, lifecycle: phase === 'terminal' || phase === 'replay' ? 'hidden' as const : 'ready' as const, boundsNormalized: { x: 0.66, y: 0.55, width: 0.1, height: 0.2 }, rotationDegrees: 0, visible: phase !== 'terminal' && phase !== 'replay', confidence: 1 },
+          { semanticId: 'finish-object', role: 'finish' as const, lifecycle: phase === 'terminal' ? 'resolved' as const : phase === 'replay' ? 'hidden' as const : 'ready' as const, boundsNormalized: { x: 0.86, y: 0.2, width: 0.05, height: 0.6 }, rotationDegrees: 0, visible: phase !== 'replay', confidence: 1 },
+          { semanticId: 'replay-control', role: 'replay-control' as const, lifecycle: phase === 'terminal' ? 'ready' as const : phase === 'replay' ? 'resolved' as const : 'hidden' as const, boundsNormalized: { x: 0.4, y: 0.78, width: 0.2, height: 0.1 }, rotationDegrees: 0, visible: phase === 'terminal' || phase === 'replay', confidence: 1 },
+        ],
+        visibleFeedback: [{ id: `feedback-${phase}`, anchorObjectId: phase === 'interaction' ? 'target-object' : 'player-object', order: 1, event: `${phase} state is player-visible` }],
+      }));
+      levelReconstruction = ReferenceLevelReconstructionSchema.parse({
+        schemaVersion: 1, artifactType: 'reference-level-reconstruction', targetRunId: pack.targetRunId, targetGame: frameManifest.targetGame, workspace: frameManifest.workspace,
+        source: { frameManifestPath: 'artifacts/reference-frame-manifest.json', frameManifestSha256, recordingSha256: frameManifest.source.sha256, viewport: { width: frameManifest.source.width, height: frameManifest.source.height } },
+        checkpoints,
+        spatialRelations: [{ id: 'target-supported', fromObjectId: 'target-object', relation: 'supported-by', toObjectId: 'support-object', checkpointIds: ['reference-ready', 'reference-input'], observed: true }],
+        interactionSequence: [{ order: 1, actionId: 'primary-action', kind: 'tap', targetObjectId: 'player-object', fromCheckpointId: 'reference-ready', toCheckpointId: 'reference-interaction', responseClass: 'immediate', expectedStateChange: 'the primary action moves the player object through the target object' }],
+        cameraSequence: [{ order: 1, checkpointId: 'reference-ready', mode: 'follow', focusObjectRole: 'player' }, { order: 2, checkpointId: 'reference-terminal', mode: 'follow', focusObjectRole: 'player' }],
+        terminal: { checkpointId: 'reference-terminal', result: 'level-complete', causeVisible: true, settlementVisible: true },
+        replay: { checkpointId: 'reference-replay', actionId: 'replay', targetObjectId: 'replay-control', returnsToCheckpointId: 'reference-ready' },
+        observations: ['Synthetic mock reconstruction is for orchestration tests only.'], inferences: [], unknowns: [], status: 'READY', blockers: [], analyzedAt: new Date().toISOString(),
+      });
+    }
+    return { value: {
+      schemaVersion: 1,
+      targetRunId: pack.targetRunId,
+      behaviorChecks: cases.map(([dimension, objectType, stateBranch, playerInput, expectedStateChange, anchor, eventOrder]) => ({
+        id: `reference-${dimension}`,
+        dimension,
+        sourceRefs: [{ path: source.path, sha256: source.sha256, locator: source.observations[0] ?? 'bound source' }],
+        objectType,
+        stateBranch,
+        playerInput,
+        expectedStateChange,
+        spatialRelationship: 'Preserve the observed causal attachment/support/reachability relationship using original layout values.',
+        visibleFeedback: { anchor, eventOrder: [...eventOrder] },
+        viewport: { width: 390, height: 844 },
+      })),
+      observations: ['Mock analyzer produced source-bound cases for the five required behavior dimensions.'],
+      inferences: [], unknowns: [], failurePressureContract, levelReconstruction, status: 'READY',
+    }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };
+  }
   async generateCompetitorResearch(seed: Seed): Promise<AgentProviderResult> {
     const retrievedAt = new Date(0).toISOString();
     const sourceRecords = ['compact-shop', 'collection-idle', 'story-market'].map((sourceId, index) => ({
@@ -17,11 +110,39 @@ export class MockAgentProvider implements AgentProvider {
       contentHash: sha256Text(`${seed.theme}:${sourceId}:${index}`),
       notes: ['structured metadata only'],
     }));
+    const failurePressureContract = {
+      schemaVersion: 1 as const,
+      purpose: 'Record generic service-loop pressure without copying any competitor expression or tuning.',
+      evidence: sourceRecords.map((source) => ({
+        id: `pressure-${source.sourceId}`,
+        competitor: source.sourceId,
+        sourceRefs: [source.sourceId],
+        observed: ['A short repeatable service loop creates a visible next task.'],
+        inferred: ['An unmet service step can increase perceived pressure.'],
+        applicability: 'adapt' as const,
+        applicabilityRationale: 'Adapt the causal pressure relationship using original content and values.',
+        rejectExpression: ['names', 'assets', 'UI layout', 'text', 'tuning values'],
+        confidence: 'low' as const,
+      })),
+      rules: sourceRecords.map((source, index) => ({
+        id: `pressure-rule-${index + 1}`,
+        pressureType: 'timing' as const,
+        trigger: 'A customer request remains unresolved while the service loop continues.',
+        playerSignal: 'Show the requested product and queue state next to the active customer.',
+        escalation: 'Keep additional requests visible so the player can choose a recovery action.',
+        failureOutcome: 'The request times out or leaves without rewarding the player.',
+        attribution: 'The unresolved request and its missing product remain visible at the time of failure.',
+        recovery: 'Restock or change route, then serve the next request without a full reset.',
+        sourceEvidenceRefs: [`pressure-${source.sourceId}`],
+        implementationImplications: ['Keep pressure local to the customer and stock state.', 'Do not use hidden timers as the only signal.'],
+      })),
+      noCopyBoundary: ['Do not copy competitor names, characters, assets, map layout, UI shapes, text, fonts, audio or numeric tuning.'],
+    };
     return { value: { schemaVersion: 1, observations: ['Each benchmark exposes a short repeatable service loop.'], inferences: ['Optional rewarded ads may fit a short session when they do not interrupt the core action.'], unknowns: ['Exact retention and ad yield require live measurement.'], sourceRecords, market: `${seed.theme} casual idle-shop games`, competitors: [
       { name: 'Compact Shop Reference', positioning: 'short-session service loop', coreLoop: ['serve customers', 'upgrade station'], monetization: ['optional rewarded ads'], strengths: ['clear goals'], weaknesses: ['limited variety'] },
       { name: 'Collection Idle Reference', positioning: 'collection-led idle progression', coreLoop: ['collect products', 'expand catalog'], monetization: ['rewarded ads', 'interstitial ads'], strengths: ['long-term goals'], weaknesses: ['slow onboarding'] },
       { name: 'Story Market Reference', positioning: 'narrative market simulation', coreLoop: ['serve visitors', 'unlock stories'], monetization: ['optional rewarded ads'], strengths: ['memorable theme'], weaknesses: ['high content cost'] },
-    ], opportunities: ['three-minute sessions', `original ${seed.theme} presentation`], risks: ['crowded casual category'], differentiationThesis: `${seed.theme} content combined with deterministic three-minute shop sessions.` }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };
+    ], opportunities: ['three-minute sessions', `original ${seed.theme} presentation`], risks: ['crowded casual category'], differentiationThesis: `${seed.theme} content combined with deterministic three-minute shop sessions.`, failurePressureContract }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };
   }
   async generateOpenSourceResearch(seed: Seed): Promise<AgentProviderResult> {
     return { value: {
@@ -71,7 +192,7 @@ export class MockAgentProvider implements AgentProvider {
   async generateBlueprint(seed: Seed, _context?: AgentExecutionContext, gameplay?: GameplayIdea | ReferenceMechanicSpec) {
     const reference = gameplay && 'lockedBy' in gameplay ? gameplay : undefined;
     const idea = gameplay && 'name' in gameplay ? gameplay : undefined;
-    return { value: { schemaVersion: 1, gameId: seed.title.toLowerCase().replace(/\s+/g, '-'), title: seed.title, theme: seed.theme, runtime: seed.runtime, template: seed.template, designMode: seed.designMode, referenceMechanics: reference, spatialShop: seed.spatialShop, targetPlatforms: seed.targetPlatforms, concept: reference ? `${seed.theme}题材下对人类已锁定机制关系的原创表现实现` : idea ? `${seed.theme}下的${idea.name}` : `${seed.theme}主题的轻量点击经营游戏`, coreLoop: reference?.coreLoop ?? ['顾客出现', '玩家做选择', '压力状态变化', '获得即时反馈', '进入下一轮'], content: { productName: '焕新计划', customerName: '都市访客', currencyName: '闪耀值' }, balance: { startingCurrency: 0, orderReward: 5, baseUpgradeCost: 10 }, preferences: seed.preferences }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };
+    return { value: { schemaVersion: 1, gameId: _context?.targetGameId ?? seed.title.toLowerCase().replace(/\s+/g, '-'), ...(seed.identity?.canonicalGameId ? { canonicalGameId: seed.identity.canonicalGameId } : {}), ...(seed.identity?.variantId ? { variantId: seed.identity.variantId } : {}), title: seed.title, theme: seed.theme, runtime: seed.runtime, template: seed.template, designMode: seed.designMode, referenceMechanics: reference, spatialShop: seed.spatialShop, targetPlatforms: seed.targetPlatforms, concept: reference ? `${seed.theme}题材下对人类已锁定机制关系的原创表现实现` : idea ? `${seed.theme}下的${idea.name}` : `${seed.theme}主题的轻量点击经营游戏`, coreLoop: reference?.coreLoop ?? ['顾客出现', '玩家做选择', '压力状态变化', '获得即时反馈', '进入下一轮'], content: { productName: '焕新计划', customerName: '都市访客', currencyName: '闪耀值' }, balance: { startingCurrency: 0, orderReward: 5, baseUpgradeCost: 10 }, preferences: seed.preferences }, metrics: { provider: 'mock', model: 'deterministic', calls: 0 } };
   }
   async generateArtDirections(blueprint: GameBlueprint) {
     const specs = [
@@ -105,13 +226,13 @@ export class MockImageProvider implements ImageProvider {
 
   async produce({ outputDir, blueprint, styleLock }: { outputDir: string; blueprint: GameBlueprint; styleLock: StyleLock }) {
     await mkdir(outputDir, { recursive: true });
-    const definitions = [['customer', 'character'], ['product', 'product'], ['background', 'background'], ['upgrade', 'ui'], ['promo', 'marketing']] as const;
+    const definitions = deriveAssetDefinitions(blueprint);
     const assets = [];
-    for (const [id, kind] of definitions) {
-      const color = styleLock.direction.palette[definitions.indexOf([id, kind] as never) % styleLock.direction.palette.length] ?? '#F6C768';
+    for (const [index, [id, kind, purpose]] of definitions.entries()) {
+      const color = styleLock.direction.palette[index % styleLock.direction.palette.length] ?? '#F6C768';
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><rect width="512" height="512" rx="48" fill="${styleLock.direction.palette[0]}"/><circle cx="256" cy="220" r="120" fill="${color}"/><text x="256" y="430" text-anchor="middle" fill="white" font-family="sans-serif" font-size="36">${blueprint.title} · ${id}</text></svg>`;
       const file = path.join(outputDir, `${id}.svg`); await writeFile(file, svg);
-      assets.push({ id, kind, path: `assets/${id}.svg`, prompt: `${styleLock.direction.previewPrompt}; isolated ${kind}`, status: 'generated', generationMethod: 'procedural-placeholder' as const, sourceEvidence: ['mock:deterministic-placeholder'], sha256: sha256Text(svg) });
+      assets.push({ id, kind, path: `assets/${id}.svg`, prompt: `${styleLock.direction.previewPrompt}; ${purpose}`, status: 'generated', generationMethod: 'procedural-placeholder' as const, sourceEvidence: ['mock:deterministic-placeholder'], sha256: sha256Text(svg) });
     }
     return { schemaVersion: 1, assets, provider: 'mock-svg' };
   }

@@ -122,6 +122,16 @@ export function reserveForStage(stage: string, override?: Partial<CostStageReser
   return CostStageReserveSchema.parse({ ...base, ...(override ?? {}) });
 }
 
+export function stageReserveOverrideFromEnv(
+  stage: string,
+  environment: Record<string, string | undefined> = process.env,
+): Partial<CostStageReserve> | undefined {
+  const normalizedStage = stage.trim().toUpperCase().replace(/[^A-Z0-9]+/gu, '_');
+  const value = Number(environment[`FACTORY_${normalizedStage}_AGENT_TOKEN_RESERVE`]);
+  if (!Number.isFinite(value) || value <= 0) return undefined;
+  return { agentTokens: Math.trunc(value) };
+}
+
 export function projectStageUsage(currentValue: CostUsage, stage: string, reserveOverride?: Partial<CostStageReserve>, rateCardValue?: CostRateCard): CostUsage {
   const current = CostUsageSchema.parse(currentValue);
   const reserve = reserveForStage(stage, reserveOverride);
@@ -164,7 +174,7 @@ function exceeded(budget: CostBudget, usage: CostUsage): CostBlocker[] {
   if (usage.paidTrafficCents > budget.maxPaidTrafficCents) result.push('paid-traffic');
   if (usage.agentTokens > budget.maxAgentTokens) result.push('agent-tokens');
   if (usage.humanMinutes > budget.maxHumanMinutes) result.push('human-time');
-  if (usage.fixAttempts > budget.maxFixAttempts) result.push('fix-attempts');
+  if (budget.maxFixAttempts !== undefined && usage.fixAttempts > budget.maxFixAttempts) result.push('fix-attempts');
   if ((usage.wallClockMinutes ?? 0) > (budget.maxWallClockMinutes ?? Number.POSITIVE_INFINITY)) result.push('wall-clock');
   if ((usage.assetBatches ?? 0) > (budget.maxAssetBatches ?? Number.POSITIVE_INFINITY)) result.push('asset-batches');
   if ((usage.buildAttempts ?? 0) > (budget.maxBuildAttempts ?? Number.POSITIVE_INFINITY)) result.push('build-attempts');

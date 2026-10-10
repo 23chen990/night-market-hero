@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "researchId": "ccgs-skill-reference-2026-10-03",
+  "targetGame": "shared-mini-game-factory",
+  "targetWorkspace": "docs/architecture.md and .agents/skills (shared factory only)",
+  "researchedAt": "2026-10-03T00:00:00+08:00",
+  "candidates": [
+    {
+      "name": "Claude Code Game Studios skill and workflow template",
+      "repositoryUrl": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+      "immutableRevision": "b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d",
+      "version": "v1.1.2",
+      "directLicenseEvidence": "https://github.com/Donchitos/Claude-Code-Game-Studios/blob/b21fa0f7f289fc3e726cf36fb12b9bc1e7a51e4d/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Useful as a local factory control-plane and workflow reference; it is not a web-lite game runtime dependency."
+        },
+        "wechatMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "The template does not provide a verified WeChat Mini Game adapter for this factory; use only its process ideas in the control plane."
+        },
+        "douyinMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "The template does not provide a verified Douyin Mini Game adapter for this factory; use only its process ideas in the control plane."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "The template does not provide a verified TapTap Mini Game adapter for this factory; use only its process ideas in the control plane."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "Retain the upstream MIT copyright and permission notice if substantial source code is copied.",
+        "Record the pinned upstream revision whenever this process reference is revised."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "User-facing rigor modes and thin-front-door routing as a process reference",
+        "Skill and agent behavioral testing as a process reference",
+        "Run-and-observe, playtest, and evidence review patterns as a documentation reference"
+      ],
+      "rationale": "Reuse the workflow lessons only. Keep the factory's Zod artifacts, resumable state machine, workspace permissions, platform adapters, and generated-game content independent. Do not copy external code, assets, names, UI, balance values, or engine-specific implementation."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": ["Claude Code Game Studios skill and workflow template"],
+    "rejectedCandidateNames": [],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Register CCGS as a pinned, reference-only skill/workflow source. Use it to redesign the factory front door, visible rigor modes, and skill-testing documentation; do not add it as a runtime dependency or copy its .claude agents and skills into generated game workspaces."
+  }
+}

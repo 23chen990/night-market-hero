@@ -19,13 +19,22 @@ CREATED → 产线/业务/研究 → 蓝图与体验假设 → CORE_SPEC_FROZEN
 ```
 
 `pipelineMode: fast-reskin` 是本地快速候选线；`pipelineMode: full-validation` 不允许跳过已声明的
-profile 阶段。当前真正有模板和运行适配器的只有 `idle-shop-v1`、`spatial-shop-v1`、
-`spatial-shop-3d-v1`。动作/切割、叙事和解谜已注册契约与指标，但能力检查会在缺模板时暂停，不能
+profile 阶段。当前有模板和运行适配器的包括 `idle-shop-v1`、`spatial-shop-v1`、
+`spatial-shop-3d-v1`、`cut-stack-dodge-v1`。有模板不代表自然体验和视觉验收已通过；
+其他玩法及专项适配器的能力检查会在缺少实现时暂停，不能
 把 idle 模板当作替代品。
 
 兼容实验可通过 `designMode: prototype_tournament` 显式进入旧的
 `COMPETITOR_RESEARCH -> IDEA_GENERATION -> ... -> WAITING_FOR_PROTOTYPE_APPROVAL`
 路径，但 RequestRouter 和普通新 seed 都不会默认选择它。
+
+共享工厂的用户入口现在把请求先分成五个 lane：`ORIGINAL_PROTOTYPE`（普通“做一个新游戏”请求）、
+`REFERENCE_ADAPTATION`（明确写出参考/竞品/复刻意图）、`PRODUCTIZATION`、`REVISION` 和 `RELEASE`。
+入口路由与 `pipeline-plan.json` 共用原型入口和参考预览阶段清单，避免前门声称的顺序与实际 run 不一致；
+原创 lane 在原型竞赛和人工选择前不宣称 greenlight，参考 lane 仍先锁定证据和机制后再做一个候选。
+对已有游戏缺少 run id 的请求，`pnpm factory route` 会返回活跃 run 候选和可复制的命令；`pnpm factory runs --active`
+提供同一份索引。`operating-status` 及该索引同时显示 `readiness`、当前等待原因、下一步动作和恢复/审批命令，
+让 `state.json` 的内部阶段不会成为用户必须猜测的操作界面。
 
 对已有 demo 的后续请求不再默认把“批准”解释为发布许可。RequestRouter 将“demo 已批准后扩展关卡/完善玩法/产品化”识别为
 `PRODUCTIZATION_REVISION`，其计划顺序固定为
@@ -36,6 +45,16 @@ profile 阶段。当前真正有模板和运行适配器的只有 `idle-shop-v1`
 
 体验阶段使用三个可复用的 Zod artifact：`ExperienceContract`（应该感觉如何）、`NaturalPlayPlan`（普通玩家如何验证）和
 `ExperienceReviewReport`（机制、手感、自然游玩、表现分别是否通过）。它们独立于具体引擎和题材，可用于放置、动作、经营和叙事游戏。
+
+当前动作手感适配器要求产线、模板与体验类型完整匹配
+`cut-stack-dodge / cut-stack-dodge-v1 / ACTION_FEEL`。候选名称来自目标游戏；其他动作产线缺少适配器时明确暂停。
+确定性场景测量只证明工程指标。审批还要求绑定当前候选构建的自然游玩轨迹、非空白截图和独立感知审核；
+已完成的 profile 在恢复到美术前也会重新核验证据。证据缺失时保留候选，指标失败时保留分诊与失败报告，
+没有新的修复依据不能自动重建相同内容。
+
+动作候选记录 Provider、运行、工作区、方案和完整构建文件的来源哈希。模型失败直接暴露原始错误，
+只有显式 Mock Provider 可产生标注为夹具的输出。候选失效时先归档；生图提示依据目标游戏与已批准的美术锁定派生，
+不把示例游戏的题材、镜头或配色写成全工厂默认值。
 
 体验合同进一步由 `ExperienceProfile` 驱动，而不是让所有游戏共用动作手感标准。当前 profile 包括
 `ACTION_FEEL`、`NARRATIVE_AGENCY`、`STRATEGIC_SYSTEM`、`PUZZLE_CLARITY`、`SOCIAL_EMOTION` 和
@@ -75,6 +94,10 @@ FULL_BUILD 已失败，并从 `logs/codex/BUILD.attempt-1.stdout.jsonl` 读取�
 `artifacts/open-source-research.json`；技术蓝图 `game-blueprint.json` 必须把它列为输入 Artifact。
 没有合适候选是合法结论，但缺少仓库 URL、固定版本、许可证证据或风险判断的候选不得进入复用清单。
 
+共享工厂的流程与 Skill 参考另有固定记录：[`CCGS Skill 参考索引`](./research/ccgs-skill-reference-20261003.md)
+和对应的 Zod Artifact。它只允许借鉴用户前门、严谨度分层、Skill 测试和自然试玩证据模式；不把 CCGS
+代码、外部 Skill、素材或引擎流程接入生成游戏，也不把它视为任何目标平台适配器。
+
 人工门不是错误：生成四个方向和静态 review 页面后，状态为
 `WAITING_FOR_ART_APPROVAL`。`resume` 只在 `human/art-approval.yaml` 存在且有效时继续。
 
@@ -97,6 +120,12 @@ Codex CLI 尚无稳定的非交互图片输出路径契约，因此 imagegen 也
 - `CodexImagegenProvider`：写图片接力任务并验证实际 PNG；方向预览固定四张，正式素材使用相同门禁。
 - `WebLiteRuntimeAdapter` / `Cocos3dRuntimeAdapter`：从版本化模板创建项目、启动预览和构建 Web 或
   Cocos 产物。Web-lite 只用于浏览器玩法验证和自动 QA，不是微信、抖音或 TapTap 的可发布包。
+- `reference-recording` / `reference-level`：把已核验录屏确定性提取为 run 内帧清单，研究角色据此提交 Zod 校验的语义关卡重建；Builder 接收去除原始坐标与第三方表达后的对象、检查点、粗粒度摆放、空间关系、动作、镜头、终态和重玩契约。独立 QA 只用正常指针输入采集只读运行时轨迹，并生成绑定 build hash 的逐项比较门。
+- `reference-level-runtime` / `reference-level-binding`：把已就绪的语义合同确定性编译为 `artifacts/reference-level-runtime-data.json`，绑定 run、游戏、工作区、生产线解析 hash 和源合同 hash。Builder 在模型调用前写入运行时对应的数据路径，并在构建、修复与复核时检查文件未被改写；浏览器 QA 的每个 checkpoint 必须报告从加载数据取得的 `runtimeBinding`。恢复运行时重验同一绑定；过期数据或已构建旧 run 缺少数据时保留现场并阻断，不能静默重写。此层提供跨产线的数据交接与身份门禁，具体模板仍需把语义关系接入真实玩法和原创数值；绑定通过不代表视觉、手感或平台发布通过。
+- `run-preservation`：产线合同或素材词表纠正前，先把旧文件移动到本 run 的 `history/factory-migrations/`，记录逐文件 SHA-256 和搬移状态。Web-lite Builder 重建前将整个旧游戏工作区保留为同目录的唯一归档；包括用户文件和失败现场，不覆盖上一次归档。
+- `reference-level-layout`：切割产线把语义身份与原创数值分开。Builder 编写 `src/generated/reference-level-layout.json`，必须匹配运行数据 hash、玩家 ID 和全部物理对象 ID/角色；模板的实际模拟和绘制读取这份布局，存档同时绑定数据与布局。Builder、Fixer 交接及 QA 都重验布局；此布局 schema 当前仅覆盖切割产线的 web-lite 模板。关卡分支、镜头、可见反馈与自然试玩仍需独立验证。
+- `factory reproject-reference <run-id>`：仅限尚未调用 Builder、没有构建报告或 FIX 历史的 run。复用已完成研究的原始模型输出和已验证录屏清单，保留旧转换结果后重新生成语义合同；不调用研究模型、不增加或清零模型/FIX 尝试次数。普通恢复仍不能重跑已完成研究。已实现游戏的变更继续走正式 QA 和修复流程。
+- 显式 stage retry 先归档旧 QA、截图和发布证据，再重建所需阶段；不会清零 run 的自动 FIX 次数。缺失的关系端点需要 `reference-object-review.json` 绑定原始研究和精确源帧，不能用不可见占位对象自动关闭证据缺口。
 - `PlatformSpine` 与平台子包目录：为微信、抖音、TapTap（可选海外 H5）分别保存适配器、配置、包哈希、
   真机/等价设备证据；任何一个子包都不能继承另一个平台的通过状态。
 - `FileRunStore`：创建 run、原子保存状态和 Artifact、记录 JSONL 日志。
@@ -137,8 +166,10 @@ release candidate，不能标记任一渠道 ready。
 ## 失败、QA 与发行
 
 QA 启动已构建 Web 预览，Playwright 优先调用测试接口验证经营闭环，再验证 Canvas 可见、无
-console error，并保存截图和日志。失败报告成为 Fixer 的唯一修复范围；最多两轮。超过上限则
-`FAILED`，不发布。Release 先冻结并复制已验证的 Web 候选及报告到 `release-candidate/`，再按配置要求
+console error，并保存截图和日志。失败报告成为 Fixer 的修复范围；自动 FIX 不设固定次数上限。
+每轮保留 QA 与修复证据、单调增加尝试次数，只有存在新的、有证据支持的修复假设时才能继续。
+用户停止、配置的成本/时间/Token/平台上限、外部硬限制或没有可行新假设时停止；不能反复重建未变代码或降低验收标准。
+Release 先冻结并复制已验证的 Web 候选及报告到 `release-candidate/`，再按配置要求
 核验每个目标平台的独立子包；没有平台证据时只能保留候选，不能宣称渠道发布。
 
 Builder 的 `test`、`typecheck` 与生产构建结果必须出现在 `build-report.json` 的

@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { buildReferenceEvidencePack, evaluateReferenceEvidence } from '../../src/core/reference-evidence.js';
-import { ReferenceEvidencePackSchema } from '../../src/schemas/reference-evidence.js';
+import { buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis } from '../../src/core/reference-evidence.js';
+import { ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema } from '../../src/schemas/reference-evidence.js';
+import { referenceBehaviorChecks, referenceFailurePressureContract } from '../fixtures/reference-behavior.js';
 
 const reference = {
   schemaVersion: 1 as const, lockedBy: 'human' as const,
@@ -16,6 +18,371 @@ const reference = {
 };
 
 describe('reference evidence pack', () => {
+  it('normalizes completed research instruction aliases before strict schema validation', () => {
+    const source = { path: 'artifacts/reference-code-analysis.json', sha256: 'd'.repeat(64) };
+    const pack = ReferenceEvidencePackSchema.parse({
+      schemaVersion: 1,
+      targetRunId: 'run-alias',
+      benchmark: { name: 'Reference', url: 'https://example.com/game' },
+      sourceFiles: [{ ...source, observations: ['verified code analysis'] }],
+      observations: ['verified code analysis'],
+      inferences: [],
+      unknowns: [],
+      mechanicMap: {
+        coreLoop: ['ready', 'stock', 'serve', 'continue'],
+        playerActions: ['move'],
+        progressionSystems: ['expand'],
+        unlockRules: ['pay'],
+        mustPreserveMechanics: ['movement interaction'],
+        feedbackCadence: { immediateSeconds: 1, microGoalMinSeconds: 2, microGoalMaxSeconds: 10 },
+      },
+      behaviorChecks: [],
+      failurePressureContract: null,
+      expressionBoundary: { allowed: ['generic mechanics'], forbidden: ['code', 'assets', 'names', 'text', 'UI', 'audio'] },
+      similarityRedFlags: [],
+      evidenceQuality: 'supplemented',
+      status: 'READY',
+      claims: [],
+      researchedAt: new Date(0).toISOString(),
+    });
+
+    const normalized = ReferenceBehaviorAnalysisSchema.parse(normalizeReferenceBehaviorAnalysis({
+      schemaVersion: 1,
+      artifactType: 'reference-behavior-analysis',
+      targetRunId: 'run-alias',
+      targetGame: 'continuation',
+      reference: { name: 'Reference', url: 'https://example.com/game' },
+      qaTargetViewport: { width: 540, height: 960, basis: 'qa-target' },
+      behaviorChecks: [{
+        id: 'check-alias',
+        dimension: 'input_state',
+        status: 'OBSERVED',
+        evidenceBasis: 'code-analysis',
+        viewportBasis: 'qa-target',
+        objectType: 'player and station',
+        lifecycleStateBranch: 'station ready and player in range',
+        normalPlayerInput: 'move into range',
+        expectedStateChange: 'station transfers stock',
+        causalSpatialRelationship: 'player overlaps station range',
+        feedbackAnchor: 'station stock',
+        eventOrder: ['enter range', 'transfer stock'],
+        evidence: [{
+          sourceRefs: [source.path, source.sha256],
+          claimId: 'stock-transfer',
+          locator: { script: 'reference-code/pkg/scripts/game.lua', startLine: 10, endLine: 20 },
+        }],
+      }],
+      observations: [{ id: 'observation-1', statement: 'Observed rule', sourceRefs: [source.path, source.sha256] }],
+      inferences: [{ id: 'inference-1', statement: 'Inferred rule', sourceClaimIds: ['stock-transfer'] }],
+      unknowns: [{ id: 'unknown-1', status: 'BLOCKED', statement: 'Missing terminal rule', requiredFor: 'terminal_replay' }],
+      evidenceLimitations: ['Pixels were not observed.'],
+      failurePressureContract: {
+        status: 'READY',
+        referenceGame: 'Reference',
+        evidence: [{ id: 'pressure-1', classification: 'observed', statement: 'Observed pressure', sourceRefs: [source.path, source.sha256] }],
+        rules: [{
+          id: 'rule-1',
+          applicability: 'adapt',
+          trigger: 'station is empty',
+          visiblePlayerSignal: 'customer waits',
+          escalation: 'queue grows',
+          attributableFailureOutcome: 'service stalls',
+          recoveryReplay: 'restock the station',
+          implementationImplications: 'use original presentation',
+          sourceEvidenceRefs: ['pressure-1'],
+        }],
+        boundaryAgainstCopyingExpression: 'Do not copy expression.',
+      },
+      levelReconstruction: null,
+      seedOnlyDesignProposals: [],
+      conflictsForHumanApproval: [],
+      expressionBoundary: { allowed: ['mechanics'], forbidden: ['expression'] },
+      runtimeAcceptanceNote: 'QA is still required.',
+      status: 'BLOCKED',
+    }, pack));
+
+    expect(normalized.behaviorChecks[0]).toMatchObject({
+      stateBranch: 'station ready and player in range',
+      playerInput: 'move into range',
+      spatialRelationship: 'player overlaps station range',
+      visibleFeedback: { anchor: 'station stock', eventOrder: ['enter range', 'transfer stock'] },
+      viewport: { width: 540, height: 960 },
+    });
+    expect(normalized.behaviorChecks[0]!.sourceRefs).toEqual([{
+      path: source.path,
+      sha256: source.sha256,
+      locator: 'claim stock-transfer; reference-code/pkg/scripts/game.lua:10-20',
+    }]);
+    expect(normalized.observations).toEqual(['Observed rule']);
+    expect(normalized.inferences).toEqual(['Inferred rule']);
+    expect(normalized.unknowns).toEqual(['Missing terminal rule']);
+    expect(normalized.failurePressureContract).toMatchObject({
+      schemaVersion: 1,
+      purpose: 'Source-bound failure-pressure analysis for Reference.',
+      noCopyBoundary: ['Do not copy expression.'],
+      evidence: [{
+        id: 'pressure-1',
+        competitor: 'Reference',
+        observed: ['Observed pressure'],
+        inferred: [],
+        applicability: 'adapt',
+        confidence: 'medium',
+      }],
+      rules: [{
+        id: 'rule-1',
+        pressureType: 'other',
+        playerSignal: 'customer waits',
+        failureOutcome: 'service stalls',
+        recovery: 'restock the station',
+        sourceEvidenceRefs: ['pressure-1'],
+        implementationImplications: ['use original presentation'],
+      }],
+    });
+  });
+
+  it('normalizes derived-frame citations and rule references before Zod validation', () => {
+    const source = { path: 'reference-evidence/verified/level.mp4', sha256: 'a'.repeat(64) };
+    const checks = referenceBehaviorChecks(source);
+    checks[0]!.sourceRefs[0] = {
+      path: 'reference-evidence/derived/level/frame-00010-001250ms.jpg',
+      sha256: source.sha256,
+      locator: 'frame-00010 at 1250 ms',
+    };
+    const pressure = referenceFailurePressureContract(source);
+    pressure.evidence[0]!.sourceRefs = ['reference-evidence/derived/level/frame-00010-001250ms.jpg', source.sha256];
+    pressure.rules[0]!.sourceEvidenceRefs = ['reference-evidence/derived/level/frame-00010-001250ms.jpg', source.sha256];
+    const pack = ReferenceEvidencePackSchema.parse({
+      schemaVersion: 1,
+      targetRunId: 'run-1',
+      benchmark: { name: 'Reference', url: 'https://example.com/game' },
+      sourceFiles: [{ ...source, observations: ['verified recording'] }],
+      observations: ['verified recording'],
+      inferences: [],
+      unknowns: [],
+      mechanicMap: { coreLoop: ['ready', 'act', 'resolve', 'replay'], playerActions: ['tap'], progressionSystems: ['course'], unlockRules: ['finish'], mustPreserveMechanics: ['tap response'], feedbackCadence: { immediateSeconds: 1, microGoalMinSeconds: 2, microGoalMaxSeconds: 10 } },
+      behaviorChecks: [],
+      failurePressureContract: null,
+      expressionBoundary: { allowed: ['generic mechanics'], forbidden: ['code', 'assets', 'names', 'text', 'UI', 'audio'] },
+      similarityRedFlags: [],
+      evidenceQuality: 'supplemented',
+      status: 'READY',
+      claims: [],
+      researchedAt: new Date(0).toISOString(),
+    });
+    const normalized = ReferenceBehaviorAnalysisSchema.parse(normalizeReferenceBehaviorAnalysis({
+      schemaVersion: 1,
+      targetRunId: 'run-1',
+      behaviorChecks: checks,
+      observations: ['observed behavior'],
+      inferences: [],
+      unknowns: [],
+      failurePressureContract: pressure,
+      levelReconstruction: null,
+      status: 'READY',
+    }, pack));
+
+    expect(normalized.behaviorChecks[0]!.sourceRefs[0]).toMatchObject(source);
+    expect(normalized.behaviorChecks[0]!.sourceRefs[0]!.locator).toContain('frame-00010');
+    expect(normalized.failurePressureContract?.evidence[0]!.sourceRefs).toEqual([source.path, source.sha256]);
+    expect(normalized.failurePressureContract?.rules[0]!.sourceEvidenceRefs).toEqual(['reference-hazard-pressure']);
+  });
+
+  it('binds a derived-frame locator to the sole verified recording even when the frame hash differs', () => {
+    const source = { path: 'reference-evidence/verified/level.mp4', sha256: 'c'.repeat(64) };
+    const pack = ReferenceEvidencePackSchema.parse({
+      schemaVersion: 1,
+      targetRunId: 'run-1',
+      benchmark: { name: 'Reference', url: 'https://example.com/game' },
+      sourceFiles: [{ ...source, observations: ['verified recording'] }],
+      observations: ['verified recording'],
+      inferences: [],
+      unknowns: [],
+      mechanicMap: {
+        coreLoop: ['ready', 'act', 'resolve', 'replay'],
+        playerActions: ['tap'],
+        progressionSystems: ['course'],
+        unlockRules: ['finish'],
+        mustPreserveMechanics: ['tap response'],
+        feedbackCadence: { immediateSeconds: 1, microGoalMinSeconds: 2, microGoalMaxSeconds: 10 },
+      },
+      behaviorChecks: [],
+      failurePressureContract: null,
+      expressionBoundary: { allowed: ['generic mechanics'], forbidden: ['code', 'assets', 'names', 'text', 'UI', 'audio'] },
+      similarityRedFlags: [],
+      evidenceQuality: 'supplemented',
+      status: 'READY',
+      claims: [],
+      researchedAt: new Date(0).toISOString(),
+    });
+    const normalized = ReferenceBehaviorAnalysisSchema.parse(normalizeReferenceBehaviorAnalysis({
+      schemaVersion: 1,
+      targetRunId: 'run-1',
+      behaviorChecks: [{
+        ...referenceBehaviorChecks(source)[0]!,
+        sourceRefs: [{
+          path: 'reference-evidence/derived/level/frame-00000.jpg',
+          sha256: 'd'.repeat(64),
+          locator: 'frame-00000',
+        }],
+      }],
+      observations: [],
+      inferences: [],
+      unknowns: ['derived frame locator is normalized'],
+      status: 'BLOCKED',
+    }, pack));
+    expect(normalized.behaviorChecks[0]!.sourceRefs[0]).toMatchObject(source);
+    expect(normalized.behaviorChecks[0]!.sourceRefs[0]!.locator).toBe('frame-00000');
+  });
+
+  it('maps pressure rules by semantic identity when every row shares the same sources', () => {
+    const source = { path: 'reference-evidence/verified/level.mp4', sha256: 'b'.repeat(64) };
+    const pack = ReferenceEvidencePackSchema.parse({
+      schemaVersion: 1, targetRunId: 'run-1', benchmark: { name: 'Reference', url: 'https://example.com/game' },
+      sourceFiles: [{ ...source, observations: ['recording'] }], observations: ['recording'], inferences: [], unknowns: [],
+      mechanicMap: { coreLoop: ['ready', 'act', 'resolve', 'replay'], playerActions: ['tap'], progressionSystems: ['course'], unlockRules: ['finish'], mustPreserveMechanics: ['timing'], feedbackCadence: { immediateSeconds: 1, microGoalMinSeconds: 2, microGoalMaxSeconds: 10 } },
+      behaviorChecks: [], failurePressureContract: null,
+      expressionBoundary: { allowed: ['generic mechanics'], forbidden: ['code', 'assets', 'names', 'text', 'UI', 'audio'] }, similarityRedFlags: [], evidenceQuality: 'supplemented', status: 'READY', claims: [], researchedAt: new Date(0).toISOString(),
+    });
+    const pressure = referenceFailurePressureContract(source);
+    pressure.evidence = ['contact', 'timing', 'terminal-replay'].map((kind) => ({ ...pressure.evidence[0]!, id: `pressure-evidence-${kind}`, sourceRefs: [source.path, source.sha256] }));
+    pressure.rules = ['timing', 'terminal-replay'].map((kind) => ({ ...pressure.rules[0]!, id: `${kind}-pressure`, sourceEvidenceRefs: [source.path, source.sha256] }));
+    const normalized = normalizeReferenceBehaviorAnalysis({ schemaVersion: 1, targetRunId: 'run-1', behaviorChecks: referenceBehaviorChecks(source), observations: [], inferences: [], unknowns: [], failurePressureContract: pressure, levelReconstruction: null, status: 'READY' }, pack) as { failurePressureContract: { rules: Array<{ id: string; sourceEvidenceRefs: string[] }> } };
+    expect(normalized.failurePressureContract.rules).toEqual([
+      expect.objectContaining({ id: 'timing-pressure', sourceEvidenceRefs: ['pressure-evidence-timing'] }),
+      expect.objectContaining({ id: 'terminal-replay-pressure', sourceEvidenceRefs: ['pressure-evidence-terminal-replay'] }),
+    ]);
+  });
+
+  it('does not treat a hashed note or recording as an analyzed behavior contract', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-unanalysed-'));
+    try {
+      await mkdir(path.join(root, 'input'));
+      await writeFile(path.join(root, 'input/reference-notes.txt'), 'The game has targets and rewards.');
+      const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference, runRoot: root });
+      const result = evaluateReplicaPreviewEvidence(pack);
+      expect(result.passed).toBe(false);
+      expect(result.blockers).toContain('preview:behavior-checks-missing');
+      expect(result.blockers).toContain('preview:failure-pressure-contract-missing');
+      expect(result.fidelity.failureRecoveryRules).not.toContain('milestone');
+    } finally { await rm(root, { recursive: true, force: true }); }
+  });
+
+  it('retains the human-preserved mechanics and progression in the Builder fidelity contract', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-preserved-'));
+    try {
+      const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference, runRoot: root });
+      expect(evaluateReplicaPreviewEvidence(pack).fidelity).toMatchObject({
+        mustPreserveMechanics: reference.mustPreserveMechanics,
+        progressionSystems: reference.progressionSystems,
+        unlockRules: reference.unlockRules,
+      });
+    } finally { await rm(root, { recursive: true, force: true }); }
+  });
+
+  it('blocks replica preview when no verified local evidence is bound to the reference', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-evidence-preview-blocked-'));
+    const withoutFiles = { ...reference, source: { ...reference.source, researchFiles: [] } };
+    const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference: withoutFiles, runRoot: root, requireSupplemental: true });
+    const result = evaluateReplicaPreviewEvidence(pack);
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain('preview:reference-evidence-provenance-missing');
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('accepts replica preview only when mechanic fidelity dimensions and source hashes are present', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-evidence-preview-ready-'));
+    await mkdir(path.join(root, 'input'), { recursive: true });
+    await writeFile(path.join(root, 'input/reference-notes.txt'), 'Observed input, failure, recovery and feedback timing.');
+    const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference, runRoot: root, requireSupplemental: true });
+    pack.behaviorChecks = referenceBehaviorChecks(pack.sourceFiles[0]!);
+    pack.failurePressureContract = referenceFailurePressureContract(pack.sourceFiles[0]!);
+    const result = evaluateReplicaPreviewEvidence(pack);
+    expect(result.passed).toBe(true);
+    expect(result.fidelity.coreLoopOrder).toEqual(reference.coreLoop);
+    expect(result.fidelity.inputStateTransitions).toContain(pack.behaviorChecks[0]!.expectedStateChange);
+    expect(result.fidelity.failureRecoveryRules.length).toBeGreaterThan(0);
+    expect(result.fidelity.feedbackTimingBands.immediateSeconds).toBe(1);
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('accepts only a verified target recording from the run provenance manifest', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-evidence-provenance-'));
+    const recording = path.join(root, 'reference.mp4');
+    const storedPath = 'reference-evidence/incoming/reference.mp4';
+    const bytes = 'verified-reference-recording';
+    await writeFile(recording, bytes);
+    await mkdir(path.join(root, 'reference-evidence/incoming'), { recursive: true });
+    await writeFile(path.join(root, storedPath), bytes);
+    const sha256 = createHash('sha256').update(bytes).digest('hex');
+    const expected = { targetGame: 'run-1-game', workspace: path.join(root, 'workspace/game') };
+    const manifest = {
+      schemaVersion: 1,
+      ...expected,
+      entries: [{ id: 'target-recording', sourcePath: recording, storedPath, purpose: 'gameplay-reference', sha256, ...expected, identityStatus: 'VERIFIED_TARGET', reviewStatus: 'VERIFIED', usableAsEvidence: true }],
+    };
+    const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference: { ...reference, source: { ...reference.source, researchFiles: [] } }, runRoot: root, requireSupplemental: true, provenanceManifest: manifest, provenanceExpected: expected });
+    expect(pack.sourceFiles).toEqual(expect.arrayContaining([expect.objectContaining({ path: storedPath, sha256 })]));
+    expect(evaluateReplicaPreviewEvidence(pack).passed).toBe(false);
+    pack.behaviorChecks = referenceBehaviorChecks(pack.sourceFiles[0]!);
+    pack.failurePressureContract = referenceFailurePressureContract(pack.sourceFiles[0]!);
+    expect(evaluateReplicaPreviewEvidence(pack).passed).toBe(true);
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('does not treat verified platform QA files as competitor gameplay evidence', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-evidence-purpose-'));
+    await mkdir(path.join(root, 'reference-evidence/incoming'), { recursive: true });
+    const gameplay = 'reference-evidence/incoming/gameplay.txt';
+    const platform = 'reference-evidence/incoming/platform.log';
+    await writeFile(path.join(root, gameplay), 'observed gameplay loop');
+    await writeFile(path.join(root, platform), 'device startup error');
+    const expected = { targetGame: 'run-1-game', workspace: path.join(root, 'workspace/game') };
+    const manifest = {
+      schemaVersion: 1,
+      ...expected,
+      entries: [
+        { id: 'gameplay', sourcePath: path.join(root, gameplay), storedPath: gameplay, purpose: 'gameplay-reference', sha256: createHash('sha256').update('observed gameplay loop').digest('hex'), ...expected, identityStatus: 'VERIFIED_TARGET', reviewStatus: 'VERIFIED', usableAsEvidence: true },
+        { id: 'platform', sourcePath: path.join(root, platform), storedPath: platform, purpose: 'platform-qa', sha256: createHash('sha256').update('device startup error').digest('hex'), ...expected, identityStatus: 'VERIFIED_TARGET', reviewStatus: 'VERIFIED', usableAsEvidence: true },
+      ],
+    };
+    const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference: { ...reference, source: { ...reference.source, researchFiles: [] } }, runRoot: root, requireSupplemental: true, provenanceManifest: manifest, provenanceExpected: expected });
+    expect(pack.sourceFiles.map((source) => source.path)).toEqual([gameplay]);
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('binds a verified reference code package as research source evidence', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-evidence-code-'));
+    await mkdir(path.join(root, 'reference-evidence/verified'), { recursive: true });
+    const codePackage = 'reference-evidence/verified/reference-code-package-aaaaaaaaaaaa.json';
+    await writeFile(path.join(root, codePackage), '{"artifactType":"reference-code-package"}');
+    const expected = { targetGame: 'run-1-game', workspace: path.join(root, 'workspace/game') };
+    const manifest = {
+      schemaVersion: 1,
+      ...expected,
+      entries: [{ id: 'code-package-pkg', sourcePath: path.join(root, codePackage), storedPath: codePackage, purpose: 'code-reference', sha256: createHash('sha256').update('{"artifactType":"reference-code-package"}').digest('hex'), ...expected, identityStatus: 'VERIFIED_TARGET', reviewStatus: 'VERIFIED', usableAsEvidence: true }],
+    };
+    const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference: { ...reference, source: { ...reference.source, researchFiles: [] } }, runRoot: root, requireSupplemental: true, provenanceManifest: manifest, provenanceExpected: expected });
+    expect(pack.sourceFiles).toEqual([expect.objectContaining({ path: codePackage, observations: ['provenance:code-package-pkg:code-reference'] })]);
+    expect(pack.unknowns).not.toContain('evidence-provenance:no-verified-target-evidence');
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('blocks a pending or mismatched provenance manifest instead of using nearby media', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-evidence-provenance-blocked-'));
+    const recording = path.join(root, 'reference.mp4');
+    await writeFile(recording, 'pending-reference-recording');
+    const expected = { targetGame: 'run-1-game', workspace: path.join(root, 'workspace/game') };
+    const manifest = {
+      schemaVersion: 1,
+      ...expected,
+      entries: [{ id: 'pending-recording', sourcePath: recording, sha256: createHash('sha256').update('pending-reference-recording').digest('hex'), ...expected, identityStatus: 'UNKNOWN', reviewStatus: 'PENDING', usableAsEvidence: false }],
+    };
+    const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference: { ...reference, source: { ...reference.source, researchFiles: [] } }, runRoot: root, requireSupplemental: true, provenanceManifest: manifest, provenanceExpected: expected });
+    expect(pack.unknowns).toContain('evidence-provenance:no-verified-target-evidence');
+    expect(evaluateReplicaPreviewEvidence(pack).passed).toBe(false);
+    await rm(root, { recursive: true, force: true });
+  });
+
   it('keeps observations, inferences and unknowns separate and hashes local source files', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'reference-evidence-'));
     const fs = await import('node:fs/promises');

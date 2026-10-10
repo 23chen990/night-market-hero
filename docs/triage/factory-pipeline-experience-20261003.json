@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "factory-control-plane",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "report": "用户反馈小游戏流水线整体不好用。本次没有绑定具体生成游戏、截图或单次运行；先复现工厂路由与运行状态，确认是否存在默认路径误判、输入门槛过高和阶段恢复摩擦。",
+  "classification": ["factory-routing"],
+  "scope": {
+    "route": "shared-factory",
+    "rationale": "问题指向共享请求路由、默认生产路径和控制面体验，可能影响所有后续 run。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": ["无关生成游戏工作区内容", "未绑定的历史对话和外部项目资料"]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "在仓库根目录运行 pnpm factory route '做一个新小游戏'。",
+      "在仓库根目录运行 pnpm factory route '把现有 demo 做成可发布版本'，不提供 --run。",
+      "检查近期 runs/*/state.json 的状态和当前阶段。"
+    ],
+    "observed": [
+      "通用的新游戏请求被路由到 REFERENCE_DEEP_RESEARCH → REFERENCE_MECHANIC_LOCK → WAITING_FOR_REFERENCE_APPROVAL，并在 rationale 中被描述为 reference game；请求本身没有提供参考游戏。",
+      "现有 demo 的自然语言请求在缺少 --run 时直接返回 targetRunId is required，未给出可操作的 run 选择提示。",
+      "近期 run 状态中可见多个 waiting、failed 和长期停留在 FIX 的记录；这说明需要进一步区分真实失败、等待人工输入和历史遗留状态。",
+      "尚未绑定单个用户生成游戏做自然玩家体验复现，因此无法据此接受任何具体产品体验根因。"
+    ],
+    "evidence": [
+      {
+        "path": "src/core/request-router.ts",
+        "sha256": "85a0ab501d46a37b0209402faba853a13d4cbeb4425ff076f7224aeec6342e99",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/schemas/stage-name.ts",
+        "sha256": "a7d9a9445ee8c3118374815aa3512bddf8ed81b37cb28cd846581d9a9c3e02cc",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "runs/20260930102235-341617ac/state.json",
+        "sha256": "7fcc2654611f1012e8c3c46e6617b51e9de1dd9500131ce56c2fa60f6ea4aeb5",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/20260930161010-79985df5/state.json",
+        "sha256": "d53a4ce03ef5019dd97db11e44012e7e07cca27fe1f6a1dd13bf99ac1b65c9a5",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/triage/factory-replication-flow-2026-09-06.json",
+        "sha256": "7b137cfbb28d2899692d4219600692da95f1c91a0878a271b9c3c60022451419",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "docs/triage/factory-quality-diagnosis-2026-09-07.json",
+        "sha256": "b63acad129e0634a83448542926d01865ce48df12d001ce9c50cb8f3ada7fe40",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "通用新游戏请求不会默认进入参考复刻研究；只有明确指定参考或复刻意图时才进入 REFERENCE_DEEP_RESEARCH。",
+    "现有游戏请求缺少 run id 时给出可执行的 run 选择或状态查询路径，不直接暴露 Zod 校验错误。",
+    "用户可从一次简短请求理解当前 run、下一步动作、等待原因和恢复命令。",
+    "默认快线保留必要的核心体验与自然流程证据，同时不要求用户经过未声明的额外人工门。",
+    "至少用一个干净 run 完成 startup → 核心动作 → 终局/结算 → replay 的自然旅程，并记录可复核证据。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-10-02T16:00:00Z"
+}

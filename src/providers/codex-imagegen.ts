@@ -1,6 +1,7 @@
 import { readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ensureDir, sha256File } from '../core/files.js';
+import { deriveAssetDefinitions } from '../core/asset-definitions.js';
 import { ArtPreviewManifestSchema, AssetManifestSchema, type ArtDirections, type GameBlueprint, type StyleLock } from '../schemas/index.js';
 import type { ImageProvider } from './interfaces.js';
 
@@ -74,7 +75,7 @@ function previewTask(directions: ArtDirections, outputDir: string) {
 $imagegen
 
 - 用途：小游戏工厂人工美术审批用方向预览，不是正式游戏素材
-- 构图：16:10 横向关键视觉，角色、摊位环境和一小块 UI 语言同屏可见
+- 构图：16:10 横向关键视觉，按该方向的生成提示呈现核心主体、环境语言和 UI/交互语言；不要凭空添加方向字段未定义的环境、角色或经营元素
 - 风格：${item.summary}；${item.characterStyle}；${item.environmentStyle}；${item.uiStyle}
 - 色彩：${item.palette.join(', ')}
 - 禁止项：${item.forbiddenElements.join('；') || '第三方角色、品牌和水印'}
@@ -91,15 +92,12 @@ ${blocks}
 `;
 }
 
-const assetDefinitions = [
-  ['customer', 'character', '顾客角色，透明或干净背景'],
-  ['product', 'product', '售卖商品图标，透明或干净背景'],
-  ['background', 'background', '可循环使用的夜市场景背景'],
-  ['upgrade', 'ui', '升级按钮或徽章 UI'],
-  ['promo', 'marketing', '原创宣传主视觉'],
-] as const;
-
 function assetTask(blueprint: GameBlueprint, styleLock: StyleLock, outputDir: string) {
+  const assetDefinitions = deriveAssetDefinitions(blueprint);
+  const referencePresentation = blueprint.designMode === 'reference_reskin' && blueprint.referenceMechanics
+    ? `
+- 参考机制边界：仅保留该游戏已锁定的核心流程和输入/状态关系（${blueprint.referenceMechanics.coreLoop.join(' → ')}）；所有表达、资产、名称、UI、文字和数值必须原创
+` : '';
   const blocks = assetDefinitions.map(([id, kind, purpose]) => `## ${id}.png
 
 $imagegen
@@ -107,10 +105,19 @@ $imagegen
 - 用途：${purpose}
 - 类型：${kind}
 - 游戏：${blueprint.title}；${blueprint.theme}
+- 生命周期与运行角色：该素材必须在默认核心流程中以可辨识的 ${id} 角色出现，并支持其 ready、接触、解决或终点状态（按角色适用）
 - 锁定风格：${styleLock.direction.summary}；${styleLock.direction.visualKeywords.join(', ')}
+- 锁定角色与镜头：${styleLock.direction.characterStyle}
+- 锁定环境与材质：${styleLock.direction.environmentStyle}
+- 锁定 UI 语言：${styleLock.direction.uiStyle}
+- 审批保留项：${styleLock.kept.join('；') || '无额外保留项'}
 - 色彩：${styleLock.direction.palette.join(', ')}
 - 修改意见：${[...styleLock.changes, ...styleLock.notes].join('；') || '无'}
 - 禁止项：${styleLock.direction.forbiddenElements.join('；') || '第三方角色、品牌和水印'}
+- ${kind === 'background'
+    ? '背景处理：保留适合该方向的完整背景画布，不要强制透明，也不要加入棋盘格预览'
+    : '透明度要求：输出真正带 alpha 通道的 PNG，必须包含可验证的透明像素；禁止棋盘格预览或将棋盘格烘焙到图像背景'}
+${referencePresentation}
 - 输出文件名：${id}.png
 - 输出目录：${outputDir}
 `).join('\n');
@@ -158,6 +165,7 @@ export class CodexImagegenProvider implements ImageProvider {
     const taskPath = path.join(runRoot, 'art-review/asset-imagegen-task.md');
     await ensureDir(path.dirname(taskPath));
     await writeFile(taskPath, assetTask(blueprint, styleLock, outputDir));
+    const assetDefinitions = deriveAssetDefinitions(blueprint);
     const filenames = assetDefinitions.map(([id]) => `${id}.png`);
     await requireGeneratedPngs({ outputDir, filenames, taskPath });
     const assets = await Promise.all(assetDefinitions.map(async ([id, kind, purpose]) => {

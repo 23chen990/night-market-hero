@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260918071718-974ee21f",
+  "checkedAt": "2026-09-18T08:42:31.461Z",
+  "state": {
+    "stage": "FAILED",
+    "status": "failed",
+    "blueprintStatus": "failed",
+    "fixAttempts": 0
+  },
+  "production": {
+    "line": "cut-stack-dodge",
+    "template": "cut-stack-dodge-v1",
+    "profile": "ACTION_FEEL",
+    "runtime": "web-lite",
+    "resolutionHash": "223bd5439f19a5636eb5e8bc354ee89c69588139a3a2a3ed6a73647025cbc7c9"
+  },
+  "model": {
+    "policyModels": [
+      "gpt-5.6-luna"
+    ],
+    "actualBlueprintModel": "gpt-5.6-luna",
+    "actualBlueprintReasoning": "max"
+  },
+  "latestRecordedBlocker": "Error: You've hit your usage limit. Visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at Sep 19th, 2026 4:11 PM.",
+  "gameOutputAccepted": false,
+  "runStateModified": false
+}

@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "符刃夜行",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260918050528-974ee21f/workspace/feel-prototype-a",
+  "axes": {
+    "objectTypes": [
+      "action candidate A canvas",
+      "profile approval",
+      "image task"
+    ],
+    "lifecycleStateBranches": [
+      "deterministic finish-crossing capture",
+      "fresh startup -> ordinary input",
+      "natural terminal -> replay",
+      "fixture metrics -> experience approval",
+      "approved style -> image prompt",
+      "missing evidence -> repeated resume"
+    ],
+    "rendererPaths": [
+      "fallback HTML canvas",
+      "factory profile adapter",
+      "CodexImagegenProvider task text"
+    ],
+    "viewports": [
+      {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "fixture-capture",
+      "objectType": "action candidate A canvas",
+      "lifecycleStateBranch": "deterministic finish-crossing capture",
+      "rendererPath": "fallback HTML canvas",
+      "viewport": {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "截图包含实际绘制的玩家和关卡",
+      "observed": "纯色 canvas；源码无绘制语句。",
+      "evidence": [
+        {
+          "path": "runs/20260918050528-974ee21f/screenshots/action-A.png",
+          "sha256": "2148007a582c1ddd67f12a014431c84eb17ea8c5c5f5682dfc8f3244e33b2a0e",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "src/agents/index.ts",
+          "sha256": "8b28665efb0f1e5348ebda1cb2bc4fbe9833a097621690c9896cbd9539ea5079",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "natural-startup",
+      "objectType": "action candidate A canvas",
+      "lifecycleStateBranch": "fresh startup -> ordinary input",
+      "rendererPath": "fallback HTML canvas",
+      "viewport": {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "自然启动及输入有可见响应",
+      "observed": "新浏览器正常指针输入后 Canvas 已绘制像素为 0，tick 仍为 0，位置未变化；无控制台错误。",
+      "evidence": [
+        {
+          "path": "runs/20260918050528-974ee21f/artifacts/action-feel-natural-play-qa.json",
+          "sha256": "03a3a5d70828798592088f1aeeaa5f20bc8f19ec7fe7dc4daa27681e0030a474",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "src/qa/action-playwright-qa.ts",
+          "sha256": "738a7007d7dfde54393173e75ea5eff4fd03b5fba61e632909197c46c383798c",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "runs/20260918050528-974ee21f/artifacts/factory-review-20260918/natural-reproduction.json",
+          "sha256": "8665c61ad8aa99e8815904a50e1c1fd558ddc0a96bf015a3336c896217b7b38a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "natural-replay",
+      "objectType": "action candidate A canvas",
+      "lifecycleStateBranch": "natural terminal -> replay",
+      "rendererPath": "fallback HTML canvas",
+      "viewport": {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "真实终态及重玩路径可见",
+      "observed": "只有 loadScenario/advanceTicks 夹具证据，未验证该自然分支。",
+      "evidence": [
+        {
+          "path": "runs/20260918050528-974ee21f/artifacts/action-feel-natural-play-qa.json",
+          "sha256": "03a3a5d70828798592088f1aeeaa5f20bc8f19ec7fe7dc4daa27681e0030a474",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "src/qa/action-playwright-qa.ts",
+          "sha256": "738a7007d7dfde54393173e75ea5eff4fd03b5fba61e632909197c46c383798c",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "gate-approval",
+      "objectType": "profile approval",
+      "lifecycleStateBranch": "fixture metrics -> experience approval",
+      "rendererPath": "factory profile adapter",
+      "viewport": {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "缺自然/感知证据时拒绝通过",
+      "observed": "旧报告 mechanics/feel/naturalPlay 为 PASS，decision 为 APPROVED。",
+      "evidence": [
+        {
+          "path": "runs/20260918050528-974ee21f/artifacts/experience-review.json",
+          "sha256": "b13b89ae6f9d62f8efed983cf8feed656a3c65a2785264715bc3315ee1ff3764",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "src/core/action-feel-stage.ts",
+          "sha256": "2239ec6a484919d49bee6db0f6f83aabb93cfad44faf128fe81dca5e6ee03fe2",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "src/factory.ts",
+          "sha256": "dfae9c07ba350b54e2817b921e3470719b68ccbb7b960a8c55c9e0c1a4077b1f",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "cross-game-image-prompt",
+      "objectType": "image task",
+      "lifecycleStateBranch": "approved style -> image prompt",
+      "rendererPath": "CodexImagegenProvider task text",
+      "viewport": {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "保持每款游戏已批准的美术约束和资产角色",
+      "observed": "所有 reference_reskin 被统一注入粉彩低多边形 3D，切栈和预览词汇残留单游戏表达。",
+      "evidence": [
+        {
+          "path": "src/providers/codex-imagegen.ts",
+          "sha256": "b42aa919999aa60aa897f2859c69461c804bda91b43076f78a67f305d54eb54b",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "src/core/asset-definitions.ts",
+          "sha256": "7d9435c5d19bff6a4bf2563dbf5ffca95c01f8e865a5a44cf79b582ec1b25c51",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "waiting-resume-budget",
+      "objectType": "profile approval",
+      "lifecycleStateBranch": "missing evidence -> repeated resume",
+      "rendererPath": "factory profile adapter",
+      "viewport": {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "同一候选缺证据时保留等待与尝试次数",
+      "observed": "工程/自然测试分离已生效，但恢复会消耗 QA 次数并误失败；此行为仅为控制流程复现，无新增画面证据。",
+      "evidence": [
+        {
+          "path": "docs/triage/factory-review-20260918/integration-probe.json",
+          "sha256": "b80a8a4aaa34538dd9e65ae0f77771405d9508926a184707896c6ceac814d442",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "备用 HTML 缺少绘制实现，状态夹具仍可通过工程阈值。",
+    "审批缺少独立自然和感知证据前置条件。",
+    "共享生图提示含硬编码的单游戏审美，违背多游戏工厂边界。",
+    "独立 fresh browser 指针输入复现无可见对象、无自然运动，非仅静态源码推断。",
+    "缺证据等待的恢复路径仍需避免重复执行和错误消费重试窗口。"
+  ],
+  "remainingGaps": [
+    "实际符刃夜行自然切割/支撑/失败/重玩仍未验收。",
+    "横屏、其他手机尺寸和竞品对象/摆放对照仍未验收。",
+    "正式美术资源与运行时接线需要后续独立验收。"
+  ],
+  "createdAt": "2026-09-18T08:36:26.544Z"
+}

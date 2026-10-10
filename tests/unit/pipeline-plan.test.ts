@@ -3,6 +3,62 @@ import { assertStagePlannedOrLegacy, buildPipelinePlan, missingMandatoryProfileS
 import { FactoryOperatingProfileSchema } from '../../src/schemas/operating-profile.js';
 
 describe('pipeline plan', () => {
+  it.each([
+    ['minimal', 'replica-preview'],
+    ['standard', 'fast-reskin'],
+    ['full', 'full-validation'],
+  ] as const)('maps %s rigor to the implemented %s lane', (rigor, mode) => {
+    const plan = buildPipelinePlan({ rigor, designMode: 'reference_reskin', productionLine: 'idle-management' });
+    expect(plan).toMatchObject({ rigor, mode });
+  });
+
+  it('rejects an unavailable minimal original lane instead of quietly escalating cost', () => {
+    expect(() => buildPipelinePlan({ rigor: 'minimal', designMode: 'prototype_tournament', productionLine: 'idle-management' })).toThrow(/standard|full/i);
+    expect(() => buildPipelinePlan({ rigor: 'full', mode: 'replica-preview', designMode: 'reference_reskin', productionLine: 'idle-management' })).toThrow(/conflict/i);
+  });
+  it('defaults reference-reskin requests to a compact replica preview lane', () => {
+    const plan = buildPipelinePlan({ designMode: 'reference_reskin', productionLine: 'idle-management' });
+    expect(plan.mode).toBe('replica-preview');
+    expect(plan.mandatoryStages).toEqual([
+      'REFERENCE_DEEP_RESEARCH',
+      'REFERENCE_MECHANIC_LOCK',
+      'WAITING_FOR_REFERENCE_APPROVAL',
+      'BLUEPRINT',
+      'PRODUCT_EXPERIENCE_CONTRACT',
+      'CORE_SPEC_FROZEN',
+      'FULL_BUILD',
+      'QA',
+      'WAITING_FOR_HUMAN_PLAYTEST',
+      'COMPLETED',
+    ]);
+    expect(plan.mandatoryStages.length).toBeLessThanOrEqual(10);
+    expect(plan.deferredStages).toEqual(expect.arrayContaining(['OPEN_SOURCE_RESEARCH', 'IAA_REVIEW', 'TARGET_PLATFORM_QA', 'RELEASE']));
+    expect(plan.deferredStages).not.toContain('WAITING_FOR_HUMAN_PLAYTEST');
+    expect(plan.deferredStages).not.toContain('FIX');
+    expect(plan.optionalStages).toContain('FIX');
+    expect(plan.stageGuides).toEqual(expect.arrayContaining([
+      expect.objectContaining({ stage: 'REFERENCE_DEEP_RESEARCH', purpose: expect.any(String), inputs: expect.any(Array), outputs: expect.any(Array), evidence: expect.any(Array) }),
+      expect.objectContaining({ stage: 'QA', purpose: expect.any(String), inputs: expect.any(Array), outputs: expect.any(Array), evidence: expect.any(Array) }),
+    ]));
+    const qaGuide = plan.stageGuides.find((guide) => guide.stage === 'QA');
+    expect(qaGuide?.inputs).toEqual(expect.arrayContaining([
+      'artifacts/reference-level-reconstruction.json (when recording)',
+      'artifacts/reference-level-implementation-contract.json (when recording)',
+    ]));
+    expect(qaGuide?.outputs).toEqual(expect.arrayContaining([
+      'artifacts/reference-level-runtime-trace.json (when recording)',
+      'artifacts/reference-level-comparison-gate.json (when recording)',
+    ]));
+    expect(qaGuide?.evidence).toEqual(expect.arrayContaining([
+      'recording checkpoint/object/placement/relation/action/camera/terminal/replay comparison',
+      'bounded formal FIX retry on comparison failure',
+    ]));
+  });
+
+  it('rejects replica preview for the legacy prototype tournament design mode', () => {
+    expect(() => buildPipelinePlan({ mode: 'replica-preview', designMode: 'prototype_tournament', productionLine: 'idle-management' })).toThrow(/reference_reskin|replica-preview/i);
+  });
+
   it('classifies mandatory stages as allowed', () => {
     const plan = buildPipelinePlan({ mode: 'fast-reskin', designMode: 'reference_reskin', productionLine: 'idle-management' });
     expect(stageExecutionPolicy(plan, 'QA')).toEqual({ allowed: true, classification: 'mandatory' });
@@ -16,6 +72,12 @@ describe('pipeline plan', () => {
     expect(stageExecutionPolicy(plan, 'NARRATIVE_CONTRACT')).toEqual({ allowed: false, classification: 'unlisted' });
     expect(() => assertStagePlannedOrLegacy(plan, 'BUILD_3_PROTOTYPES')).toThrow(/skipped/);
     expect(() => assertStagePlannedOrLegacy(plan, 'NARRATIVE_CONTRACT')).toThrow(/unlisted/);
+  });
+
+  it('allows recorded repair routes even when they are absent from the happy-path plan', () => {
+    const plan = buildPipelinePlan({ mode: 'full-validation', designMode: 'reference_reskin', productionLine: 'cut-stack-dodge', primaryProfile: 'ACTION_FEEL' });
+    expect(stageExecutionPolicy(plan, 'FEEL_REPAIR')).toEqual({ allowed: true, classification: 'optional' });
+    expect(assertStagePlannedOrLegacy(plan, 'FEEL_REPAIR')).toEqual({ allowed: true, classification: 'optional' });
   });
 
   it('classifies legacy plan execution as allowed with explicit legacy marker', () => {

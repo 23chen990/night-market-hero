@@ -30,9 +30,11 @@ export function buildContextPacket(input: { stage: string; summary: string; inpu
   let selected: ContextPacket['inputs'] = [];
   const omitted: string[] = [];
   const maxChars = Math.max(64, Math.trunc(input.maxChars));
-  let summary = input.summary.slice(0, Math.min(4_000, maxChars));
+  const stage = input.stage.trim();
+  let summary = input.summary.trim().slice(0, Math.min(4_000, maxChars)).trim() || 'context';
   let totalChars = summary.length;
-  const ordered = [...input.inputs].sort((a, b) => ({ required: 0, important: 1, optional: 2 }[a.priority] - { required: 0, important: 1, optional: 2 }[b.priority]));
+  const normalizedInputs = input.inputs.map((item) => ({ ...item, path: item.path.trim() }));
+  const ordered = [...normalizedInputs].sort((a, b) => ({ required: 0, important: 1, optional: 2 }[a.priority] - { required: 0, important: 1, optional: 2 }[b.priority]));
   for (const item of ordered) {
     if (seen.has(item.path)) continue;
     seen.add(item.path);
@@ -48,8 +50,8 @@ export function buildContextPacket(input: { stage: string; summary: string; inpu
     const estimatedTokens = Math.max(1, Math.ceil((summary.length + selected.reduce((sum, item) => sum + item.excerpt.length, 0)) / 4));
     const packetWithoutIntegrity = {
     schemaVersion: 1 as const,
-    stage: input.stage,
-    summary: summary || 'context',
+    stage,
+    summary,
     inputs: selected,
     omitted: omitted.slice(0, 64),
     totalChars,
@@ -85,7 +87,7 @@ export function buildContextPacket(input: { stage: string; summary: string; inpu
         if (!omitted.includes(item.path)) omitted.push(item.path);
       }
     } else if (summary.length > 32) {
-      const nextSummary = summary.slice(0, Math.max(16, Math.floor(summary.length * 0.65)));
+      const nextSummary = summary.slice(0, Math.max(16, Math.floor(summary.length * 0.65))).trim() || 'context';
       totalChars -= summary.length - nextSummary.length;
       summary = nextSummary;
     } else {
@@ -109,7 +111,7 @@ export function buildContextPacket(input: { stage: string; summary: string; inpu
           omitted.splice(keep);
           omitted.push(`…${input.inputs.length - selected.length} more omitted`);
         } else if (summary.length > 1) {
-          summary = summary.slice(0, Math.max(1, Math.floor(summary.length * 0.65)));
+          summary = summary.slice(0, Math.max(1, Math.floor(summary.length * 0.65))).trim() || 'context';
           totalChars = summary.length + selected.reduce((sum, item) => sum + item.excerpt.length, 0);
         } else {
           // At this point only required path metadata (possibly with an empty
@@ -126,7 +128,12 @@ export function buildContextPacket(input: { stage: string; summary: string; inpu
 
 export function buildHandoffPacket(input: { fromStage: string; toStage: string; summary: string; artifacts: Array<{ path: string; content: string }>; changedFiles: string[]; commandsRun: string[]; contextPacketHash?: string; maxChars: number }) {
   const maxChars = Math.max(128, Math.trunc(input.maxChars));
-  let summary = input.summary.trim().slice(0, Math.min(4_000, maxChars)) || 'handoff';
+  const fromStage = input.fromStage.trim();
+  const toStage = input.toStage.trim();
+  const artifacts = input.artifacts.map((artifact) => ({ ...artifact, path: artifact.path.trim() }));
+  const changedFiles = input.changedFiles.map((file) => file.trim());
+  const commandsRun = input.commandsRun.map((command) => command.trim());
+  let summary = input.summary.trim().slice(0, Math.min(4_000, maxChars)).trim() || 'handoff';
   let artifactLimit = Math.min(32, input.artifacts.length);
   let changedLimit = Math.min(64, input.changedFiles.length);
   let commandLimit = Math.min(32, input.commandsRun.length);
@@ -137,30 +144,32 @@ export function buildHandoffPacket(input: { fromStage: string; toStage: string; 
    * (the digest is always 64 characters) before returning it.
    */
   const finalize = (base: Record<string, unknown>): HandoffPacket => {
-    let estimatedChars = 0;
-    let result: Record<string, unknown> = base;
-    for (let iteration = 0; iteration < 8; iteration += 1) {
-      const payload = { ...base, estimatedChars };
+    const canonicalPayload = (value: Record<string, unknown>): Record<string, unknown> => {
+      const parsed = HandoffPacketSchema.parse({ ...value, integrityHash: '0'.repeat(64) });
+      return Object.fromEntries(Object.entries(parsed).filter(([key]) => key !== 'integrityHash'));
+    };
+    let payload = canonicalPayload({ ...base, estimatedChars: 0 });
+    for (let iteration = 0; iteration < 16; iteration += 1) {
       const integrityHash = sha256Text(JSON.stringify(payload));
-      result = { ...payload, integrityHash };
+      const result = HandoffPacketSchema.parse({ ...payload, integrityHash });
       const nextEstimated = JSON.stringify(result).length;
-      if (nextEstimated === estimatedChars) return HandoffPacketSchema.parse(result);
-      estimatedChars = nextEstimated;
+      if (nextEstimated === payload.estimatedChars) return result;
+      payload = canonicalPayload({ ...payload, estimatedChars: nextEstimated });
     }
-    const payload = { ...base, estimatedChars };
-    return HandoffPacketSchema.parse({ ...payload, integrityHash: sha256Text(JSON.stringify(payload)) });
+    const integrityHash = sha256Text(JSON.stringify(payload));
+    return HandoffPacketSchema.parse({ ...payload, integrityHash });
   };
   const make = () => {
-    const selectedArtifacts = input.artifacts.slice(0, artifactLimit);
+    const selectedArtifacts = artifacts.slice(0, artifactLimit);
     const artifactPaths = selectedArtifacts.map((artifact) => artifact.path);
     const artifactHashes = Object.fromEntries(selectedArtifacts.map((artifact) => [artifact.path, sha256Text(artifact.content)]));
-    const omittedContext = ['raw transcript', ...input.artifacts.slice(artifactLimit, artifactLimit + omittedLimit).map((artifact) => artifact.path)].slice(0, Math.max(1, omittedLimit + 1));
-    const raw = { schemaVersion: 1 as const, fromStage: input.fromStage, toStage: input.toStage, summary, artifactPaths, artifactHashes, changedFiles: input.changedFiles.slice(0, changedLimit), commandsRun: input.commandsRun.slice(0, commandLimit), omittedContext, estimatedChars: 0, estimatedTokens: Math.max(1, Math.ceil(summary.length / 4)), tokenBudget: Math.max(1, Math.ceil(maxChars / 4)), truncationStrategy: 'priority-preserving' as const, summaryHash: sha256Text(summary), ...(input.contextPacketHash ? { contextPacketHash: input.contextPacketHash } : {}) };
+    const omittedContext = ['raw transcript', ...artifacts.slice(artifactLimit, artifactLimit + omittedLimit).map((artifact) => artifact.path)].slice(0, Math.max(1, omittedLimit + 1));
+    const raw = { schemaVersion: 1 as const, fromStage, toStage, summary, artifactPaths, artifactHashes, changedFiles: changedFiles.slice(0, changedLimit), commandsRun: commandsRun.slice(0, commandLimit), omittedContext, estimatedChars: 0, estimatedTokens: Math.max(1, Math.ceil(summary.length / 4)), tokenBudget: Math.max(1, Math.ceil(maxChars / 4)), truncationStrategy: 'priority-preserving' as const, summaryHash: sha256Text(summary), ...(input.contextPacketHash ? { contextPacketHash: input.contextPacketHash } : {}) };
     return finalize(raw);
   };
   let candidate = make();
   for (let iteration = 0; iteration < 48 && JSON.stringify(candidate).length > maxChars; iteration += 1) {
-    if (summary.length > 32) summary = summary.slice(0, Math.max(32, Math.floor(summary.length * 0.65)));
+    if (summary.length > 32) summary = summary.slice(0, Math.max(32, Math.floor(summary.length * 0.65))).trim() || 'handoff';
     else if (artifactLimit > 1) artifactLimit = Math.max(1, Math.floor(artifactLimit / 2));
     else if (changedLimit > 1) changedLimit = Math.max(1, Math.floor(changedLimit / 2));
     else if (commandLimit > 1) commandLimit = Math.max(1, Math.floor(commandLimit / 2));
@@ -174,18 +183,19 @@ export function buildHandoffPacket(input: { fromStage: string; toStage: string; 
   // order until the declared bound is true.
   const compact = () => {
     const firstHash = candidate.artifactPaths[0] && candidate.artifactHashes?.[candidate.artifactPaths[0]];
+    const compactSummary = candidate.summary.slice(0, 32).trim() || 'handoff';
     const minimalBase = {
       schemaVersion: 1 as const,
       fromStage: candidate.fromStage,
       toStage: candidate.toStage,
-      summary: candidate.summary.slice(0, 32) || 'handoff',
+      summary: compactSummary,
       artifactPaths: candidate.artifactPaths.slice(0, 1),
       ...(firstHash ? { artifactHashes: { [candidate.artifactPaths[0]!]: firstHash } } : {}),
       changedFiles: [],
       commandsRun: [],
       omittedContext: ['raw transcript'],
       estimatedChars: 0,
-      estimatedTokens: 0,
+      estimatedTokens: Math.max(1, Math.ceil(compactSummary.length / 4)),
       tokenBudget: 1,
       truncationStrategy: 'metadata-only' as const,
       summaryHash: undefined,
@@ -201,7 +211,8 @@ export function buildHandoffPacket(input: { fromStage: string; toStage: string; 
     const base = { ...candidate } as Record<string, unknown>;
     delete base.integrityHash;
     delete base.estimatedChars;
-    candidate = finalize({ ...base, summary: candidate.summary.slice(0, -1) });
+    const nextSummary = candidate.summary.slice(0, -1).trim() || 'handoff';
+    candidate = finalize({ ...base, summary: nextSummary, summaryHash: candidate.summaryHash ? sha256Text(nextSummary) : undefined, estimatedTokens: Math.max(1, Math.ceil(nextSummary.length / 4)) });
   }
   return HandoffPacketSchema.parse(candidate);
 }

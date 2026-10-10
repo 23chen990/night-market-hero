@@ -3,6 +3,28 @@ import { defaultFactoryEvalCases, mergeFactoryEvalCases, parseFactoryEvalCasesFi
 import { RequestRouter } from '../../src/core/request-router.js';
 
 describe('factory eval suite', () => {
+  it('checks entry lanes while declaring that game quality is unassessed', () => {
+    const router = new RequestRouter();
+    const report = runFactoryEvalSuite([{
+      schemaVersion: 1, caseId: 'original-front-door', input: '做一个新小游戏',
+      expectedProfile: 'STRATEGIC_SYSTEM', acceptableProfiles: ['STRATEGIC_SYSTEM'],
+      expectedEntryLane: 'ORIGINAL_PROTOTYPE', dataset: 'golden',
+      requiredStages: ['WAITING_FOR_PROTOTYPE_APPROVAL'], forbiddenOutcomes: ['REFERENCE_MECHANIC_LOCK'],
+    }], (input) => router.route(input), { modelSignature: 'test', promptSignature: 'test' });
+    expect(report).toMatchObject({ passed: true, evaluationScope: 'CONTROL_PLANE', productQuality: 'NOT_ASSESSED' });
+    expect(report.cases[0]?.observedEntryLane).toBe('ORIGINAL_PROTOTYPE');
+  });
+  it('fails when an otherwise matching request enters the wrong lane', () => {
+    const router = new RequestRouter();
+    const report = runFactoryEvalSuite([{
+      schemaVersion: 1, caseId: 'wrong-entry-lane', input: '做一个新小游戏',
+      expectedProfile: 'STRATEGIC_SYSTEM', acceptableProfiles: ['STRATEGIC_SYSTEM'],
+      expectedEntryLane: 'REFERENCE_ADAPTATION', dataset: 'golden',
+      requiredStages: ['WAITING_FOR_PROTOTYPE_APPROVAL'], forbiddenOutcomes: [],
+    }], (input) => router.route(input), { modelSignature: 'test', promptSignature: 'test' });
+    expect(report.passed).toBe(false);
+    expect(report.cases[0]?.failures).toEqual(['entry-lane:ORIGINAL_PROTOTYPE']);
+  });
   it('parses a versioned corpus and rejects duplicate or mismatched cases', () => {
     const corpus = parseFactoryEvalCasesFile({
       schemaVersion: 1,

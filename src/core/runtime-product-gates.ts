@@ -1,9 +1,11 @@
 import { lstat, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
+import { exists } from './files.js';
 import { NaturalFlowEvidenceSchema } from '../schemas/natural-flow.js';
 
 const Text = z.string().trim().min(1);
+const Sha256 = z.string().regex(/^[a-f0-9]{64}$/u, 'expected a SHA-256 hex digest');
 const RuntimeFile = Text.refine((value) => !path.isAbsolute(value) && !path.win32.isAbsolute(value) && !value.split('/').some((part) => part === '..') && !/^(?:[a-z]+:)?\/\//iu.test(value), 'runtime wiring paths must be relative and local');
 
 function asRecord(value: unknown): Record<string, unknown> | undefined {
@@ -40,6 +42,9 @@ const RuntimeProductGateBaseSchema = z.object({
     evidence: z.array(Text).min(1),
   }).strict(),
   browserEvidence: z.array(Text).min(1),
+  /** Optional on legacy/diagnostic reports; newly derived identity comes only
+   * from the bound NaturalFlowEvidence trace. */
+  buildHash: Sha256.optional(),
   passed: z.boolean(),
 }).strict();
 
@@ -139,6 +144,7 @@ export function deriveRuntimeProductGate(input: {
   naturalFlow: unknown;
   runtimeWiredFiles: string[];
   browserEvidence: string[];
+  currentBuildHash?: string;
   entrypoint?: string;
   defaultMode?: string;
   legacyBehavior?: RuntimeProductGate['legacyBehavior'];
@@ -159,11 +165,18 @@ export function deriveRuntimeProductGate(input: {
   const blockers: string[] = [];
   if (!parsed.success) blockers.push('natural-flow-schema-invalid');
   if (natural && !natural.startedFromReset) blockers.push('natural-reset-missing');
+  if (natural && !natural.passed) blockers.push('natural-flow-failed');
+  if (natural && natural.blockers.length > 0) blockers.push('natural-flow-blocked');
   if (changed.length === 0) blockers.push('natural-state-transition-missing');
   if (!hasTerminal) blockers.push('natural-terminal-missing');
   if (!natural?.replayObserved) blockers.push('natural-replay-missing');
   if ((natural?.forbiddenOperations.length ?? 0) > 0) blockers.push('natural-state-forcing-operation');
   if (input.browserEvidence.length === 0) blockers.push('browser-evidence-missing');
+  if (input.currentBuildHash !== undefined) {
+    if (!Sha256.safeParse(input.currentBuildHash).success) blockers.push('current-build-hash-invalid');
+    if (!natural?.buildHash) blockers.push('natural-build-hash-missing');
+    else if (natural.buildHash !== input.currentBuildHash) blockers.push('natural-build-hash-mismatch');
+  }
   const terminal = hasTerminal ? [natural!.completion === 'settlement' ? 'settlement' : 'terminal'] : [];
   return RuntimeProductGateSchema.parse({
     schemaVersion: 1,
@@ -176,6 +189,97 @@ export function deriveRuntimeProductGate(input: {
     runtimeWiredFiles: input.runtimeWiredFiles,
     legacyBehavior: input.legacyBehavior ?? { status: 'COMPATIBILITY_ONLY', evidence: ['legacy compatibility is not the default route'] },
     browserEvidence: input.browserEvidence,
+    ...(natural?.buildHash ? { buildHash: natural.buildHash } : {}),
     passed: parsed.success && blockers.length === 0,
   });
+}
+
+/** Relative files the factory probes when a QA provider does not name a wiring set. */
+export const RUNTIME_WIRED_CANDIDATES = [
+  'workspace/game/index.html',
+  'workspace/game/src/main.ts',
+  'workspace/game/src/game.ts',
+  'workspace/game/src/simulation.ts',
+  'workspace/game/assets/resources/scenes/Main.scene',
+] as const;
+
+const PLACEHOLDER_WIRED_FILE = 'runtime-product-gates.json:provider-evidence-missing';
+const PLACEHOLDER_BROWSER_EVIDENCE = 'runtime-product-journey:missing';
+
+/** Fail-closed placeholder written when the QA provider emitted no usable journey. */
+export function failClosedRuntimeProductPlaceholder(reason = 'QA provider must replace this placeholder'): RuntimeProductGate {
+  return RuntimeProductGateSchema.parse({
+    schemaVersion: 1,
+    entrypoint: 'unknown',
+    defaultMode: 'unknown',
+    journey: ['reset', 'primary input', 'observe result', 'retry or finish'],
+    coreLoop: [],
+    terminal: [],
+    replay: [],
+    runtimeWiredFiles: [PLACEHOLDER_WIRED_FILE],
+    legacyBehavior: { status: 'STILL_DEFAULT_PATH', evidence: [reason] },
+    browserEvidence: [PLACEHOLDER_BROWSER_EVIDENCE],
+    passed: false,
+  });
+}
+
+export function isRuntimeProductPlaceholder(gate: RuntimeProductGate): boolean {
+  return gate.runtimeWiredFiles.includes(PLACEHOLDER_WIRED_FILE) || gate.browserEvidence.includes(PLACEHOLDER_BROWSER_EVIDENCE);
+}
+
+export async function discoverRuntimeWiredFiles(runRoot: string): Promise<string[]> {
+  const found: string[] = [];
+  for (const relative of RUNTIME_WIRED_CANDIDATES) {
+    if (await exists(path.join(runRoot, relative))) found.push(relative);
+  }
+  return found;
+}
+
+function sameRuntimeWiringSet(left: string[], right: string[]): boolean {
+  const normalizedLeft = [...new Set(left)].sort();
+  const normalizedRight = [...new Set(right)].sort();
+  return normalizedLeft.length > 0
+    && normalizedLeft.length === normalizedRight.length
+    && normalizedLeft.every((file, index) => file === normalizedRight[index]);
+}
+
+/**
+ * Resolve the current runtime report without allowing an old passed report to
+ * rescue new or unbound evidence. Failed reports remain useful diagnostics;
+ * only a build/hash/wiring-bound passed report may be preserved.
+ */
+export function resolveRuntimeProductGate(input: {
+  existing?: RuntimeProductGate;
+  naturalFlow?: unknown;
+  runtimeWiredFiles: string[];
+  browserEvidence: string[];
+  currentBuildHash?: string;
+  entrypoint?: string;
+  defaultMode?: string;
+}): RuntimeProductGate {
+  if (input.naturalFlow !== undefined) {
+    try {
+      return deriveRuntimeProductGate({
+        naturalFlow: input.naturalFlow,
+        runtimeWiredFiles: input.runtimeWiredFiles,
+        browserEvidence: input.browserEvidence,
+        currentBuildHash: input.currentBuildHash,
+        entrypoint: input.entrypoint ?? input.runtimeWiredFiles.find((file) => file.endsWith('index.html')) ?? input.runtimeWiredFiles[0],
+        defaultMode: input.defaultMode,
+      });
+    } catch {
+      // New evidence owns this evaluation attempt. If it cannot be parsed or
+      // lacks required evidence, fail closed instead of rescuing an old pass.
+      return failClosedRuntimeProductPlaceholder('new natural-flow evidence could not be evaluated');
+    }
+  }
+  const existing = input.existing;
+  if (existing?.passed === true) {
+    const hashMatches = input.currentBuildHash !== undefined
+      && Sha256.safeParse(input.currentBuildHash).success
+      && existing.buildHash === input.currentBuildHash;
+    if (hashMatches && sameRuntimeWiringSet(input.runtimeWiredFiles, existing.runtimeWiredFiles)) return existing;
+    return failClosedRuntimeProductPlaceholder('existing passed runtime evidence is unbound or stale');
+  }
+  return existing ?? failClosedRuntimeProductPlaceholder();
 }

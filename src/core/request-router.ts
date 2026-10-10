@@ -4,26 +4,15 @@ import {
   ReviewEscalationSchema,
   type OptionalReviewStage,
   type RequestRoute,
+  type RequestEntryLane,
   type RequestRouterInput,
   type RequestType,
   type ReviewEscalation,
   type StageName,
   type ExperienceProfileSelection,
 } from '../schemas/index.js';
-
-const NEW_GAME_STAGES: StageName[] = [
-  'REFERENCE_MECHANIC_LOCK',
-  'WAITING_FOR_REFERENCE_APPROVAL',
-  'OPEN_SOURCE_RESEARCH',
-  'IAA_REVIEW',
-  'ART_DIRECTIONS',
-  'WAITING_FOR_ART_APPROVAL',
-  'STYLE_LOCK',
-  'ASSETS',
-  'FULL_BUILD',
-  'QA',
-  'RELEASE',
-];
+import { decideFeedbackRepairRoute } from './feedback-routing.js';
+import { buildPipelinePlan } from './pipeline-plan.js';
 
 const REVISION_STAGES: Record<Exclude<RequestType, 'NEW_GAME'>, StageName[]> = {
   GAMEPLAY_REVISION: ['FULL_BUILD', 'QA'],
@@ -50,8 +39,26 @@ const SOCIAL_PATTERN = /(?:社交|情感互动|关系经营|聊天|dating|social
 const EXPLORATION_PATTERN = /(?:探索|地图|开放区域|探险|探索发现|exploration|discovery|traversal)/iu;
 const PUZZLE_PATTERN = /(?:解谜|谜题|规则发现|推箱|消除|拼图|puzzle|sokoban|match-3)/iu;
 const ACTION_FEEL_PATTERN = /(?:动作|手感|物理|碰撞|切割|射击|跳跃|移动|反弹|打击|action|feel|physics|collision)/iu;
+const SEMANTIC_AUDIT_PATTERN = /(?:孤立交互对象|可触碰|可绕行|用于恢复|decorative|gameplay collider|交互对象.*视觉|视觉.*危险物|对象级自然复测|QA顶层)/iu;
+const INSTRUCTION_REFERENCE_AUDIT_PATTERN = /(?:竞品说明写着|instruction-shaped-reference)/iu;
 const UNSUPPORTED_PRODUCT_PATTERN = /(?:实时(?:多人|pvp)|多人联机|real[- ]?time multiplayer|开放世界|open[- ]?world|ugc|用户生成|复杂交易|交易市场|真实支付|real[- ]?money|大型s*3d|massives*3d)/iu;
 const HYBRID_REVIEW_PATTERN = /(?:3d|角色表演|大量演出|长线经济|账号体系|后端|lives*service|社交|social)/iu;
+const EXPERIENCE_FAILURE_PATTERN = /(?:截图|不合理|没被抓|成功了|失败压力|掉落|碰撞|关卡设计|看不懂|不在.*内|反思|背后.*问题|修正|纠正|改正)/iu;
+const CROSS_MODULE_FEEDBACK_PATTERN = /(?:多个|三|两|跨模块|系统|体验).*(?:问题|不合理|修正|修复|改|调整)|(?:问题|不合理|修正|修复|改|调整).*(?:多个|三|两|跨模块|系统|体验)/iu;
+const NEW_GAME_PATTERN = /(?:新游戏|新建|创建|从零|做一个|make a new|create|new game)/iu;
+/** Reference language must be explicit. A generic new-game request is not a
+ * reference request merely because the factory happens to support one. */
+const EXPLICIT_REFERENCE_PATTERN = /(?:参考|竞品|同类|复刻|还原|仿制|借鉴|copy|inspired\s+by|similar\s+to|reference\s+game)/iu;
+
+export function isNewGameRequest(request: string): boolean {
+  return NEW_GAME_PATTERN.test(request);
+}
+
+/** CLI helper for deciding whether an omitted run id is intentional. Explicit
+ * reference language is also a new-game entry when no run is bound. */
+export function isUnboundNewGameRequest(request: string): boolean {
+  return classify(request, undefined) === 'NEW_GAME';
+}
 
 function classifySupport(request: string): 'SUPPORTED' | 'HYBRID_REVIEW_REQUIRED' | 'NEW_LINE_REQUIRED' | 'UNSUPPORTED' {
   if (UNSUPPORTED_PRODUCT_PATTERN.test(request)) return 'UNSUPPORTED';
@@ -74,10 +81,12 @@ function inferExperienceProfile(request: string): ExperienceProfileSelection {
     ? 'SOCIAL_EMOTION'
     : EXPLORATION_PATTERN.test(request)
       ? 'EXPLORATION_DISCOVERY'
-      : NARRATIVE_PATTERN.test(request)
+    : NARRATIVE_PATTERN.test(request)
     ? 'NARRATIVE_AGENCY'
-    : PUZZLE_PATTERN.test(request)
-      ? 'PUZZLE_CLARITY'
+      : PUZZLE_PATTERN.test(request)
+        ? 'PUZZLE_CLARITY'
+      : SEMANTIC_AUDIT_PATTERN.test(request)
+        ? 'ACTION_FEEL'
       : ACTION_FEEL_PATTERN.test(request)
         ? 'ACTION_FEEL'
         : 'STRATEGIC_SYSTEM';
@@ -93,7 +102,7 @@ function inferExperienceProfile(request: string): ExperienceProfileSelection {
 const REVIEW_ORDER: OptionalReviewStage[] = ['COMPETITOR_RESEARCH', 'PRODUCTION_COST_REVIEW', 'IAA_MONETIZATION_REVIEW'];
 const CLASSIFIERS: Array<[Exclude<RequestType, 'NEW_GAME'>, RegExp]> = [
   ['RELEASE', /(?:发布|发行|上线|提交商店|release|publish|ship\b)/iu],
-  ['BUG_FIX', /(?:修复|错误|故障|崩溃|闪退|卡死|bug|crash|broken|exception|error)/iu],
+  ['BUG_FIX', /(?:修复|修正|纠正|改正|错误|故障|崩溃|闪退|卡死|bug|crash|broken|exception|error)/iu],
   ['MONETIZATION_REVISION', /(?:变现|商业化|广告|激励视频|插屏|频控|内购|moneti[sz]ation|\biaa\b|\biap\b|rewarded|interstitial)/iu],
   ['VISUAL_REVISION', /(?:视觉|美术|画面|角色图|背景图|配色|图标|动效|重画|界面|\bui\b|visual|artwork|sprite|animation|palette)/iu],
   ['BALANCE_REVISION', /(?:平衡|数值|奖励|价格|掉率|概率|难度|经济|成长曲线|balance|reward|price|drop rate|difficulty|economy)/iu],
@@ -101,43 +110,83 @@ const CLASSIFIERS: Array<[Exclude<RequestType, 'NEW_GAME'>, RegExp]> = [
 ];
 
 function classify(request: string, targetRunId: string | undefined): RequestType {
-  if (/(?:新游戏|新建|创建|从零|做一个|make a new|create|new game)/iu.test(request)) return 'NEW_GAME';
+  if (isNewGameRequest(request)) return 'NEW_GAME';
   if (PRODUCTIZATION_PATTERN.test(request)) return 'PRODUCTIZATION_REVISION';
+  if (!targetRunId && EXPLICIT_REFERENCE_PATTERN.test(request) && !/(?:修复|修正|调整|修改|改进|优化|替换|发布|上线|\bfix\b|\badjust\b|\bupdate\b|\brelease\b|\bpublish\b)/iu.test(request)) return 'NEW_GAME';
   for (const [requestType, pattern] of CLASSIFIERS) if (pattern.test(request)) return requestType;
   return targetRunId ? 'GAMEPLAY_REVISION' : 'NEW_GAME';
 }
 
+function entryLaneFor(request: string, requestType: RequestType): RequestEntryLane {
+  if (requestType === 'NEW_GAME') return EXPLICIT_REFERENCE_PATTERN.test(request) ? 'REFERENCE_ADAPTATION' : 'ORIGINAL_PROTOTYPE';
+  if (requestType === 'PRODUCTIZATION_REVISION') return 'PRODUCTIZATION';
+  if (requestType === 'RELEASE') return 'RELEASE';
+  return 'REVISION';
+}
+
 export class RequestRouter {
+  constructor(private readonly planNewGame: typeof buildPipelinePlan = buildPipelinePlan) {}
+
   route(inputValue: RequestRouterInput): RequestRoute {
     const input = RequestRouterInputSchema.parse(inputValue);
     const requestType = classify(input.request, input.targetRunId);
+    const entryLane = entryLaneFor(input.request, requestType);
     const experienceProfile = inferExperienceProfile(input.request);
     const supportDecision = classifySupport(input.request);
+    const pipelinePlan = requestType === 'NEW_GAME' && supportDecision === 'SUPPORTED'
+      ? this.planNewGame({
+        designMode: entryLane === 'REFERENCE_ADAPTATION' ? 'reference_reskin' : 'prototype_tournament',
+        productionLine: 'pending-review',
+        primaryProfile: experienceProfile.primary,
+        ...(input.rigor ? { rigor: input.rigor } : {}),
+      })
+      : undefined;
     const requiresCoreActionPrototype = requestType === 'GAMEPLAY_REVISION' && CORE_ACTION_PATTERN.test(input.request);
+    const requiresSemanticExperienceGate = SEMANTIC_AUDIT_PATTERN.test(input.request) || INSTRUCTION_REFERENCE_AUDIT_PATTERN.test(input.request);
+    const formalFeedback = supportDecision === 'SUPPORTED' && requestType !== 'NEW_GAME' && !SEMANTIC_AUDIT_PATTERN.test(input.request) && !INSTRUCTION_REFERENCE_AUDIT_PATTERN.test(input.request) && (
+      requestType === 'BUG_FIX'
+      || EXPERIENCE_FAILURE_PATTERN.test(input.request)
+      || (Boolean(input.targetRunId) && CROSS_MODULE_FEEDBACK_PATTERN.test(input.request))
+    )
+      ? decideFeedbackRepairRoute({ requestType, issueCount: 2, affectedSystems: ['core-loop', 'collision', 'level-design'], rootCauseClear: false, validatedQaIssue: true })
+      : null;
+    const routedStages = formalFeedback?.stages ?? null;
     return RequestRouteSchema.parse({
       schemaVersion: 1,
       request: input.request,
       requestType,
+      entryLane,
+      ...(pipelinePlan ? { pipelinePlan } : {}),
       targetRunId: requestType === 'NEW_GAME' ? null : input.targetRunId ?? null,
-      stages: (supportDecision === 'UNSUPPORTED' || supportDecision === 'NEW_LINE_REQUIRED')
+      stages: supportDecision !== 'SUPPORTED'
         ? ['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW']
-        : requestType === 'NEW_GAME'
-        ? NEW_GAME_STAGES
+        : pipelinePlan
+          ? pipelinePlan.mandatoryStages
+          : routedStages ?? (requiresSemanticExperienceGate
+        ? [...PROFILE_STAGES.ACTION_FEEL, 'PERCEPTUAL_QA', 'FULL_BUILD', 'QA']
         : requestType === 'GAMEPLAY_REVISION' && DEEP_REFERENCE_PATTERN.test(input.request)
           ? ['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL', ...PROFILE_STAGES[experienceProfile.primary], 'CONTENT_EXPANSION', 'UI_SKELETON', 'FULL_BUILD', 'QA']
           : requiresCoreActionPrototype
             ? CORE_ACTION_PROTOTYPE_STAGES
+            : requiresSemanticExperienceGate
+              ? [...PROFILE_STAGES.ACTION_FEEL, 'PERCEPTUAL_QA', 'FULL_BUILD', 'QA']
             : requestType === 'PRODUCTIZATION_REVISION'
               ? [...PROFILE_STAGES[experienceProfile.primary], 'CONTENT_EXPANSION', 'UI_SKELETON', 'FULL_BUILD', 'QA']
-              : REVISION_STAGES[requestType],
-      fullGreenlight: requestType === 'NEW_GAME' && supportDecision === 'SUPPORTED',
+              : REVISION_STAGES[requestType as Exclude<RequestType, 'NEW_GAME'>]),
+      fullGreenlight: requestType === 'NEW_GAME' && entryLane === 'REFERENCE_ADAPTATION' && supportDecision === 'SUPPORTED',
       reviewEscalations: [],
       experienceProfile,
       supportDecision,
-      rationale: requestType === 'NEW_GAME'
+      repairRoute: formalFeedback?.route ?? 'direct-builder',
+      repairReasons: formalFeedback?.reasons ?? [],
+      rationale: formalFeedback
+        ? `Experience feedback is routed through ${formalFeedback.route}: ${formalFeedback.reasons.join(', ')}. Capture a triage record and reproduction matrix before implementation.`
+        : requestType === 'NEW_GAME'
         ? supportDecision === 'UNSUPPORTED'
           ? 'This request is unsupported/high-risk for the default light-game boundary (for example real-time multiplayer, open-world, UGC or complex 3D). Keep it blocked until a separately reviewed production line and additional human approvals exist.'
-          : 'A new game requires a human-designated reference mechanic lock. Agents may validate the lock but may not invent alternatives; expression remains original.'
+          : entryLane === 'REFERENCE_ADAPTATION'
+            ? 'An explicit reference request uses the replica-preview lane: bind verified reference behavior, obtain a human mechanic lock, build one candidate, and run core QA. Release, platform and monetization gates remain deferred until full-validation is explicitly requested.'
+            : 'A generic new-game request uses the original prototype lane: research the opportunity, generate and compare bounded ideas, build isolated prototypes, and wait for human selection before formal production.'
         : requiresCoreActionPrototype
           ? 'A core-action feel revision requires a prototype tournament and human gameplay approval before full production.'
         : requestType === 'PRODUCTIZATION_REVISION'

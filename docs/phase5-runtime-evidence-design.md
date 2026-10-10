@@ -1,6 +1,6 @@
 # Phase 5 · QA provider runtime 证据主路径
 
-状态：设计完成，实现排到非高峰时段（18:00 后优先 `deepseek-v4-pro`，大批量可 23:00 后 GLM 夜间立减）。  
+状态：已实现（2026-09-01）。`QAAgent` 从 naturalFlow + 探测到的 wired files 派生主证据；factory rescue 经 `resolveRuntimeProductGate` 统一决议，**不得改写** `passed:true`。  
 目标：让 `runtime-product` 门禁走 **QA 主证据路径**，rescue 仅作兜底，且不得放宽任何既有拒绝条件。
 
 ## 现状（已核实）

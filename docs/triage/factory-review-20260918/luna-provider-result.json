@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_provider_provenance",
+  "route": "shared-factory",
+  "routeReason": "The defect remained localized to BuilderAgent action-prototype capability gating, resume provenance, fallback labeling, and candidate-preservation helpers within the explicitly owned shared-factory paths.",
+  "status": "IMPLEMENTED",
+  "filesChanged": [
+    "src/agents/index.ts",
+    "tests/unit/action-prototype-builder.test.ts"
+  ],
+  "omittedContext": [
+    "整段会话",
+    "无关录屏和其他游戏素材",
+    "已有生成工作区的非相关源码"
+  ],
+  "tests": [
+    {
+      "command": "pnpm exec vitest run tests/unit/action-prototype-builder.test.ts --reporter=verbose",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "Three added final-review regression tests failed against the pre-fix implementation: missing provider capability still created fixtures, edited dist content was reused, and copied cross-run provenance was resumed."
+    },
+    {
+      "command": "pnpm exec vitest run tests/unit/action-prototype-builder.test.ts --reporter=verbose",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "Nine BuilderAgent action-prototype tests passed, including capability rejection, explicit mock labeling, provider failure propagation, output/treatment/provenance invalidation, complete dist hashing, cross-run identity binding, and archive preservation."
+    },
+    {
+      "command": "pnpm exec vitest run tests/unit/action-prototype-builder.test.ts tests/unit/action-prototype-fallback.test.ts tests/unit/action-mechanic-experiment-schemas.test.ts tests/unit/action-playwright-qa.test.ts --reporter=dot",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "All 23 related action-prototype builder, fallback, schema, and Playwright-QA unit tests passed."
+    },
+    {
+      "command": "pnpm exec eslint src/agents/index.ts tests/unit/action-prototype-builder.test.ts tests/unit/action-prototype-fallback.test.ts",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Owned implementation and action-prototype tests passed ESLint."
+    },
+    {
+      "command": "pnpm lint",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Repository ESLint passed after the final-review patch."
+    },
+    {
+      "command": "pnpm typecheck",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Repository TypeScript check passed after the final-review patch."
+    }
+  ],
+  "remainingGaps": [
+    "No real model provider was invoked, per task boundary; capacity/quota/timeout behavior is covered by deterministic provider doubles, while real-provider diagnostics remain dependent on the provider's own log writer.",
+    "The full-suite result from the previous implementation is preserved at docs/triage/factory-review-20260918/luna-provider-result-v1.json; the root agent will rerun the full suite after this final-review patch."
+  ]
+}

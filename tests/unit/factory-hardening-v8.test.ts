@@ -34,6 +34,8 @@ describe('factory hardening v8', () => {
     expect(unsupported.blockers).toContain('template-line-mismatch');
     const idle = evaluateProductionLineCapability({ line: 'idle-management', template: 'idle-shop-v1', runtime: 'web-lite' });
     expect(idle.passed).toBe(true);
+    const cut = evaluateProductionLineCapability({ line: 'cut-stack-dodge', template: 'cut-stack-dodge-v1', runtime: 'web-lite' });
+    expect(cut.passed).toBe(true);
   });
 
   it('keeps handoff integrity valid after compacting a tiny budget', () => {

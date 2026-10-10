@@ -10,6 +10,7 @@ export const ResearchSandboxManifestSchema = z.object({
   rootRelative: Text,
   allowedFiles: z.array(Text),
   inputHashes: z.record(Text, z.string().regex(/^[a-f0-9]{64}$/iu)),
+  mediaFiles: z.array(z.object({ path: Text, sha256: z.string().regex(/^[a-f0-9]{64}$/iu) }).strict()).default([]),
   createdAt: z.string().datetime(),
 }).strict();
 export type ResearchSandboxManifest = z.infer<typeof ResearchSandboxManifestSchema>;

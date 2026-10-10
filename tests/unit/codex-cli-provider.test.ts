@@ -16,6 +16,10 @@ function fakeSpawn(results: FakeResult[], calls: Array<{ command: string; args: 
     const call = { command, args: [...args], cwd: options.cwd, stdin: '', env: options.env }; calls.push(call);
     child.stdin.on('data', (chunk) => { call.stdin += String(chunk); });
     child.kill = () => { if (killed) killed.value = true; queueMicrotask(() => child.emit('close', null, 'SIGTERM')); return true; };
+    if (result.hang) queueMicrotask(() => {
+      if (result.stdout) child.stdout.write(result.stdout);
+      if (result.stderr) child.stderr.write(result.stderr);
+    });
     if (!result.hang) setTimeout(async () => {
       const outputIndex = args.indexOf('--output-last-message');
       if (outputIndex >= 0 && args[outputIndex + 1] && result.output !== undefined) await writeFile(args[outputIndex + 1]!, result.output);
@@ -85,6 +89,11 @@ describe('CodexCliProvider', () => {
     const provider = new CodexCliProvider({ model: 'default-model', spawn: fakeSpawn([{ stdout: '{"type":"thread.started","thread_id":"thread-model"}\n{"type":"turn.completed","usage":{}}\n', output: 'ok' }], calls), timeoutMs: 100 });
     await provider.execute({ label: 'UI_SKELETON', prompt: 'extract', cwd: root, sandbox: 'read-only', model: 'gpt-5.3-codex-spark', outputPath: path.join(root, 'out.txt'), logDir: path.join(root, 'logs') });
     expect(calls[0]?.args).toContain('gpt-5.3-codex-spark');
+  });
+
+  it('passes the routed reasoning effort as a strict Codex config override', () => {
+    const args = buildCodexExecArgs({ cwd: '/tmp/run', sandbox: 'read-only', outputPath: '/tmp/out.json', reasoning: 'high' });
+    expect(args).toContain('model_reasoning_effort="high"');
   });
 
   it('constructs safe read-only args with JSON, output schema and output file', async () => {
@@ -162,6 +171,37 @@ describe('CodexCliProvider', () => {
 
     await expect(provider.execute({ label: 'BLUEPRINT', prompt: 'minimal', cwd: root, sandbox: 'read-only', outputPath: path.join(root, 'out.json'), logDir: path.join(root, 'logs') })).rejects.toThrow(/timed out/i);
     expect(killed.value).toBe(true);
+    expect(await readFile(path.join(root, 'logs/BLUEPRINT.attempt-1.stderr.log'), 'utf8')).toMatch(/timed out/i);
+  });
+
+  it('preserves redacted partial output from a timed-out attempt when a retry succeeds', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-timeout-evidence-'));
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const secret = 'test-timeout-secret-123';
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([
+        { hang: true, stdout: `{"type":"thread.started","thread_id":"partial-thread"}\n{"type":"item.completed","item":{"type":"agent_message","text":"Authorization: Bearer ${secret}"}}\n`, stderr: `Authorization: Bearer ${secret}\n` },
+        { stdout: '{"type":"thread.started","thread_id":"retry-thread"}\n{"type":"turn.completed","usage":{}}\n', output: '{}' },
+      ], calls),
+      timeoutMs: 100,
+      maxRetries: 1,
+    });
+    const logDir = path.join(root, 'logs');
+    const result = await provider.execute({ label: 'BLUEPRINT', prompt: 'minimal', cwd: root, sandbox: 'read-only', outputPath: path.join(root, 'out.json'), logDir });
+    expect(result).toMatchObject({ attempts: 2, threadId: 'retry-thread', completed: true });
+    const stdout = await readFile(path.join(logDir, 'BLUEPRINT.attempt-1.stdout.jsonl'), 'utf8');
+    const stderr = await readFile(path.join(logDir, 'BLUEPRINT.attempt-1.stderr.log'), 'utf8');
+    const events = await readFile(path.join(logDir, 'BLUEPRINT.attempt-1.events.json'), 'utf8');
+    expect(stdout).toContain('partial-thread');
+    expect(stderr).toMatch(/timed out/i);
+    expect(`${stdout}${stderr}${events}`).not.toContain(secret);
+    expect(parseCodexJsonl(stdout).completed).toBe(false);
+  });
+
+  it('keeps a login-status timeout distinct from a logged-out account', async () => {
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({ spawn: fakeSpawn([{ hang: true }], calls), timeoutMs: 5, maxRetries: 0 });
+    await expect(provider.assertChatGptLogin()).rejects.toThrow(/not available/i);
   });
 
   it('allows a long-running Builder request to override the text-stage timeout', async () => {

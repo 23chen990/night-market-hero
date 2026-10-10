@@ -4,7 +4,8 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { buildHumanApprovalPlan, evaluateHumanApprovalRecords } from '../../src/core/human-approval.js';
 import type { HumanApprovalRecord } from '../../src/schemas/human-approval.js';
-import { buildProductionLinePlayPlan, evaluateProductionLinePlayEvidence } from '../../src/qa/production-line-qa.js';
+import { buildProductionLinePlayPlan, deriveProductionLinePlayEvidence, evaluateProductionLinePlayEvidence } from '../../src/qa/production-line-qa.js';
+import { evaluateNaturalFlow } from '../../src/core/qa-evidence.js';
 import { buildFactorySourceSignature, collectFactorySourceEntries, runFactoryEvalSuite, defaultFactoryEvalCases } from '../../src/core/factory-eval.js';
 import { buildPlatformPackageSet, markPlatformPackageReady, verifyPlatformPackageArtifact, verifyPlatformPackageSetArtifacts } from '../../src/core/platform-packaging.js';
 import { RequestRouter } from '../../src/core/request-router.js';
@@ -84,6 +85,32 @@ describe('factory hardening v9', () => {
       forbiddenOperations: [],
     });
     expect(valid.passed).toBe(true);
+  });
+
+  it('derives cut-line evidence only when natural input proves cut, drop, obstacle, failure, and retry', () => {
+    const plan = buildProductionLinePlayPlan('cut-stack-dodge');
+    const natural = evaluateNaturalFlow({
+      line: 'cut-stack-dodge',
+      startedFromReset: true,
+      actions: ['page.goto', 'pointer:tap', 'observe:cut', 'observe:drop', 'observe:obstacle', 'pointer:retry', 'pointer:finish'],
+      transitions: [
+        { name: 'cut', changed: true, evidence: 'cut target changed' },
+        { name: 'drop', changed: true, evidence: 'fragment fell' },
+        { name: 'obstacle-failure', changed: true, evidence: 'hazard caused failure' },
+        { name: 'retry', changed: true, evidence: 'retry returned to ready' },
+        { name: 'finish', changed: true, evidence: 'finish settled' },
+      ],
+      completion: 'terminal',
+      replayObserved: true,
+      forbiddenOperations: [],
+      screenshots: ['start.png', 'failure.png', 'finish.png'],
+    });
+    const evidence = deriveProductionLinePlayEvidence(plan, natural, hash);
+    expect(evidence.steps.every((step) => step.passed)).toBe(true);
+    expect(evaluateProductionLinePlayEvidence(plan, evidence, { expectedBuildHash: hash })).toMatchObject({ passed: true, blockers: [] });
+
+    const missingDrop = { ...natural, transitions: natural.transitions.filter((transition) => transition.name !== 'drop') };
+    expect(deriveProductionLinePlayEvidence(plan, missingDrop, hash).steps.some((step) => !step.passed)).toBe(true);
   });
 
   it('reads only allow-listed factory source files and changes the signature when one changes', async () => {

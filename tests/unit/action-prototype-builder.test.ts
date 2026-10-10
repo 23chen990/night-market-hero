@@ -1,10 +1,11 @@
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { RuntimeAdapter } from '../../src/adapters/runtime.js';
 import { BuilderAgent } from '../../src/agents/index.js';
 import { CodexAccountProvider, type CodexExecutor } from '../../src/providers/codex-account.js';
+import { MockCodexProvider } from '../../src/providers/mock.js';
 import type { CodexExecRequest, CodexExecResult } from '../../src/providers/codex-cli.js';
 import type { CodexProvider } from '../../src/providers/interfaces.js';
 import type { ActionMechanicExperimentSpec } from '../../src/schemas/action-mechanic-experiment.js';
@@ -50,7 +51,7 @@ function experimentSpec(): ActionMechanicExperimentSpec {
 }
 
 function actionContract(slot: 'A' | 'B' | 'C') {
-  return `<!doctype html><script>window.__ACTION_TEST__={"contractVersion":1,getManifest(){return {slot:'${slot}',fixedStepSeconds:1/60,courseFixtureHash:'${geometryHash}',anchorPolicy:'test'}},resetGame(){},getState(){},act(){},advanceTicks(){},loadScenario(){},getEvents(){return []}}</script>`;
+  return `<!doctype html><!-- input-response release-kinematics hook-selection event-gap retry-friction finish-crossing --><script>window.__ACTION_TEST__={"contractVersion":1,getManifest(){return {"slot":'${slot}',fixedStepSeconds:1/60,courseFixtureHash:'${geometryHash}',anchorPolicy:'test'}},resetGame(){},getState(){},act(){},advanceTicks(){},loadScenario(){},getEvents(){return []}}</script>`;
 }
 
 describe('BuilderAgent action prototypes', () => {
@@ -104,7 +105,7 @@ describe('BuilderAgent action prototypes', () => {
     }
   });
 
-  it('generates a self-contained v1 action contract when the provider has no action prototype capability', async () => {
+  it('rejects before creating a workspace when the provider has no action prototype capability', async () => {
     const runRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-fallback-run-'));
     const source = await mkdtemp(path.join(tmpdir(), 'action-builder-fallback-source-'));
     roots.push(runRoot, source);
@@ -114,15 +115,189 @@ describe('BuilderAgent action prototypes', () => {
       async fix() { throw new Error('not used'); },
     };
 
-    const result = await new BuilderAgent(provider, {} as RuntimeAdapter).buildActionPrototypes(runRoot, source, experimentSpec());
+    const spec = experimentSpec();
+    await expect(new BuilderAgent(provider, {} as RuntimeAdapter).buildActionPrototypes(runRoot, source, spec)).rejects.toThrow(/action prototype.*capability/i);
+    await expect(readFile(path.join(runRoot, spec.prototypes[0]!.workspace, 'dist/index.html'))).rejects.toMatchObject({ code: 'ENOENT' });
+  });
 
-    expect(result.report.prototypes).toHaveLength(3);
-    for (const prototype of result.report.prototypes) {
-      const html = await readFile(path.join(runRoot, prototype.entrypoint), 'utf8');
-      expect(html).toContain('window.__ACTION_TEST__');
-      expect(html).toMatch(/contractVersion\s*:\s*1/);
-      expect(html).not.toMatch(/<script\s+src=/);
-    }
+  it('propagates provider capacity failures without creating a fallback success', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-capacity-run-'));
+    const source = await mkdtemp(path.join(tmpdir(), 'action-builder-capacity-source-'));
+    roots.push(runRoot, source);
+    await writeFile(path.join(source, 'README.md'), 'source');
+    let calls = 0;
+    const provider: CodexProvider = {
+      async actionPrototype({ workspace }) {
+        calls += 1;
+        await writeFile(path.join(workspace, 'provider-failure.log'), 'capacity diagnostics');
+        throw new Error('provider at capacity; try again later');
+      },
+      async build() { throw new Error('not used'); },
+      async fix() { throw new Error('not used'); },
+    };
+
+    await expect(new BuilderAgent(provider, {} as RuntimeAdapter).buildActionPrototypes(runRoot, source, experimentSpec())).rejects.toThrow(/capacity/i);
+    expect(calls).toBe(1);
+    await expect(readFile(path.join(runRoot, experimentSpec().prototypes[0]!.workspace, 'dist/index.html'))).rejects.toMatchObject({ code: 'ENOENT' });
+    expect(await readFile(path.join(runRoot, experimentSpec().prototypes[0]!.workspace, 'provider-failure.log'), 'utf8')).toContain('capacity diagnostics');
+  });
+
+  it('does not let a mock fixture resume as real provider output', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-provenance-run-'));
+    const source = await mkdtemp(path.join(tmpdir(), 'action-builder-provenance-source-'));
+    roots.push(runRoot, source);
+    await writeFile(path.join(source, 'README.md'), 'source');
+    const spec = experimentSpec();
+    const mockProvider = new MockCodexProvider();
+    const first = await new BuilderAgent(mockProvider, {} as RuntimeAdapter).buildActionPrototypes(runRoot, source, spec);
+    expect(first.report.prototypes.every((prototype) => prototype.verification.includes('provider-mock-fixture'))).toBe(true);
+
+    let calls = 0;
+    const realProvider: CodexProvider = {
+      async actionPrototype({ workspace, variant }) {
+        calls += 1;
+        await mkdir(path.join(workspace, 'dist'), { recursive: true });
+        await writeFile(path.join(workspace, 'dist/index.html'), actionContract(variant.slot));
+        return { verificationMode: 'full', metrics: { provider: 'test', model: 'test', calls: 1 } };
+      },
+      async build() { throw new Error('not used'); },
+      async fix() { throw new Error('not used'); },
+    };
+
+    const second = await new BuilderAgent(realProvider, {} as RuntimeAdapter).buildActionPrototypes(runRoot, source, spec);
+    expect(calls).toBe(3);
+    expect(second.report.prototypes.every((prototype) => prototype.verification.includes('source:isolated-copy'))).toBe(true);
+    expect(second.report.prototypes.some((prototype) => prototype.verification.includes('resume:existing-output'))).toBe(false);
+    const provenance = JSON.parse(await readFile(path.join(runRoot, spec.prototypes[0]!.workspace, 'dist/action-prototype-provenance.json'), 'utf8')) as Record<string, unknown>;
+    expect(provenance).toMatchObject({ mode: 'provider', provider: 'test', slot: 'A', geometryFixtureHash: geometryHash, treatmentHash: treatmentHashes.A });
+  });
+
+  it('resumes a hash-bound provider output without a duplicate call', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-resume-run-'));
+    const source = await mkdtemp(path.join(tmpdir(), 'action-builder-resume-source-'));
+    roots.push(runRoot, source);
+    await writeFile(path.join(source, 'README.md'), 'source');
+    const calls: string[] = [];
+    const provider: CodexProvider = {
+      async actionPrototype({ workspace, variant }) {
+        calls.push(variant.slot);
+        await mkdir(path.join(workspace, 'dist'), { recursive: true });
+        await writeFile(path.join(workspace, 'dist/index.html'), actionContract(variant.slot));
+        await writeFile(path.join(workspace, 'dist/served.js'), 'asset-v1');
+        return { verificationMode: 'full', metrics: { provider: 'test', model: 'test', calls: 1 } };
+      },
+      async build() { throw new Error('not used'); },
+      async fix() { throw new Error('not used'); },
+    };
+    const builder = new BuilderAgent(provider, {} as RuntimeAdapter);
+    const first = await builder.buildActionPrototypes(runRoot, source, experimentSpec());
+    const firstHtml = await readFile(path.join(runRoot, first.report.prototypes[0]!.entrypoint), 'utf8');
+    const second = await builder.buildActionPrototypes(runRoot, source, experimentSpec());
+
+    expect(calls).toEqual(['A', 'B', 'C']);
+    expect(second.report.prototypes.every((prototype) => prototype.verification.includes('resume:existing-output'))).toBe(true);
+    expect(await readFile(path.join(runRoot, second.report.prototypes[0]!.entrypoint), 'utf8')).toBe(firstHtml);
+  });
+
+  it('archives stale output and user files when treatment changes', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-archive-run-'));
+    const source = await mkdtemp(path.join(tmpdir(), 'action-builder-archive-source-'));
+    roots.push(runRoot, source);
+    await writeFile(path.join(source, 'README.md'), 'source');
+    const calls: string[] = [];
+    const provider: CodexProvider = {
+      async actionPrototype({ workspace, variant }) {
+        calls.push(variant.slot);
+        await mkdir(path.join(workspace, 'dist'), { recursive: true });
+        await writeFile(path.join(workspace, 'dist/index.html'), actionContract(variant.slot));
+        return { verificationMode: 'full', metrics: { provider: 'test', model: 'test', calls: 1 } };
+      },
+      async build() { throw new Error('not used'); },
+      async fix() { throw new Error('not used'); },
+    };
+    const builder = new BuilderAgent(provider, {} as RuntimeAdapter);
+    const spec = experimentSpec();
+    await builder.buildActionPrototypes(runRoot, source, spec);
+    await writeFile(path.join(runRoot, spec.prototypes[0]!.workspace, 'user-sentinel.txt'), 'keep this file');
+    const changedSpec = {
+      ...spec,
+      prototypes: spec.prototypes.map((prototype) => prototype.slot === 'A' ? { ...prototype, treatmentHash: `sha256:${'d'.repeat(64)}` } : prototype),
+    };
+
+    await builder.buildActionPrototypes(runRoot, source, changedSpec);
+
+    expect(calls).toEqual(['A', 'B', 'C', 'A']);
+    const archiveEntries = await readdir(path.join(runRoot, 'history/factory-migrations'), { withFileTypes: true });
+    const actionArchive = archiveEntries.find((entry) => entry.name.startsWith('action-prototype-a-'));
+    expect(actionArchive).toBeDefined();
+    expect(await readFile(path.join(runRoot, 'history/factory-migrations', actionArchive!.name, 'files', spec.prototypes[0]!.workspace, 'user-sentinel.txt'), 'utf8')).toBe('keep this file');
+    expect(await readFile(path.join(runRoot, 'history/factory-migrations', actionArchive!.name, 'files', spec.prototypes[0]!.workspace, 'dist/index.html'), 'utf8')).toContain('__ACTION_TEST__');
+  });
+
+  it('rebuilds when output bytes or provenance binding changes', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-integrity-run-'));
+    const source = await mkdtemp(path.join(tmpdir(), 'action-builder-integrity-source-'));
+    roots.push(runRoot, source);
+    await writeFile(path.join(source, 'README.md'), 'source');
+    const calls: string[] = [];
+    const provider: CodexProvider = {
+      async actionPrototype({ workspace, variant }) {
+        calls.push(variant.slot);
+        await mkdir(path.join(workspace, 'dist'), { recursive: true });
+        await writeFile(path.join(workspace, 'dist/index.html'), actionContract(variant.slot));
+        return { verificationMode: 'full', metrics: { provider: 'test', model: 'test', calls: 1 } };
+      },
+      async build() { throw new Error('not used'); },
+      async fix() { throw new Error('not used'); },
+    };
+    const builder = new BuilderAgent(provider, {} as RuntimeAdapter);
+    const spec = experimentSpec();
+    await builder.buildActionPrototypes(runRoot, source, spec);
+    const indexPath = path.join(runRoot, spec.prototypes[0]!.workspace, 'dist/index.html');
+    const provenancePath = path.join(runRoot, spec.prototypes[0]!.workspace, 'dist/action-prototype-provenance.json');
+    const servedAssetPath = path.join(runRoot, spec.prototypes[0]!.workspace, 'dist/served.js');
+    await writeFile(servedAssetPath, 'asset-v2');
+    await builder.buildActionPrototypes(runRoot, source, spec);
+    await writeFile(indexPath, `${await readFile(indexPath, 'utf8')}<!-- changed output -->`);
+    await builder.buildActionPrototypes(runRoot, source, spec);
+    const provenance = JSON.parse(await readFile(provenancePath, 'utf8')) as Record<string, unknown>;
+    await writeFile(provenancePath, JSON.stringify({ ...provenance, provider: 'tampered-provider' }));
+    await builder.buildActionPrototypes(runRoot, source, spec);
+
+    expect(calls).toEqual(['A', 'B', 'C', 'A', 'A', 'A']);
+  });
+
+  it('does not resume a candidate copied from another run', async () => {
+    const source = await mkdtemp(path.join(tmpdir(), 'action-builder-cross-run-source-'));
+    const firstRunRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-cross-run-first-'));
+    const secondRunRoot = await mkdtemp(path.join(tmpdir(), 'action-builder-cross-run-second-'));
+    roots.push(source, firstRunRoot, secondRunRoot);
+    await writeFile(path.join(source, 'README.md'), 'source');
+    const calls: string[] = [];
+    const provider: CodexProvider = {
+      async actionPrototype({ workspace, variant }) {
+        calls.push(variant.slot);
+        await mkdir(path.join(workspace, 'dist'), { recursive: true });
+        await writeFile(path.join(workspace, 'dist/index.html'), actionContract(variant.slot));
+        await writeFile(path.join(workspace, 'dist/served.js'), `asset-${variant.slot}`);
+        return { verificationMode: 'full', metrics: { provider: 'test', model: 'test', calls: 1 } };
+      },
+      async build() { throw new Error('not used'); },
+      async fix() { throw new Error('not used'); },
+    };
+    const builder = new BuilderAgent(provider, {} as RuntimeAdapter);
+    const spec = experimentSpec();
+    await builder.buildActionPrototypes(firstRunRoot, source, spec);
+    await Promise.all(spec.prototypes.map(async (prototype) => {
+      const destination = path.join(secondRunRoot, prototype.workspace);
+      await mkdir(path.dirname(destination), { recursive: true });
+      await cp(path.join(firstRunRoot, prototype.workspace), destination, { recursive: true });
+    }));
+
+    const result = await builder.buildActionPrototypes(secondRunRoot, source, spec);
+
+    expect(calls).toEqual(['A', 'B', 'C', 'A', 'B', 'C']);
+    expect(result.report.prototypes.every((prototype) => prototype.verification.includes('source:isolated-copy'))).toBe(true);
   });
 });
 

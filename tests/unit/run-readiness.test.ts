@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { deriveRunReadiness } from '../../src/core/run-readiness.js';
 import { RunReadinessSchema } from '../../src/schemas/index.js';
 import { FileRunStore } from '../../src/core/run-store.js';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -11,8 +11,10 @@ describe('run readiness', () => {
     expect(deriveRunReadiness({ stage: 'BLUEPRINT', status: 'running' })).toBe('IN_PROGRESS');
     expect(deriveRunReadiness({ stage: 'WAITING_FOR_ART_APPROVAL', status: 'waiting' })).toBe('WAITING');
     expect(deriveRunReadiness({ stage: 'FULL_BUILD', status: 'running', stages: { FULL_BUILD: { status: 'completed' } } })).toBe('IMPLEMENTATION_READY');
-    expect(deriveRunReadiness({ stage: 'RELEASE_CANDIDATE', status: 'running', stages: { RELEASE_CANDIDATE: { status: 'completed' } } })).toBe('CANDIDATE_READY');
-    expect(deriveRunReadiness({ stage: 'COMPLETED', status: 'completed', readiness: 'RELEASE_READY' })).toBe('RELEASE_READY');
+    expect(deriveRunReadiness({ stage: 'RELEASE_CANDIDATE', status: 'running', stages: { RELEASE_CANDIDATE: { status: 'completed' } } })).toBe('WAITING');
+    expect(deriveRunReadiness({ stage: 'COMPLETED', status: 'completed', readiness: 'RELEASE_READY' })).toBe('WAITING');
+    expect(deriveRunReadiness({ stage: 'RELEASE_CANDIDATE', status: 'running', stages: { RELEASE_CANDIDATE: { status: 'completed' } } }, { candidatePassed: true })).toBe('CANDIDATE_READY');
+    expect(deriveRunReadiness({ stage: 'COMPLETED', status: 'completed', readiness: 'RELEASE_READY' }, { candidatePassed: true, releasePassed: true })).toBe('RELEASE_READY');
   });
 
   it('keeps terminal stop reasons explicit and schema-valid', () => {
@@ -37,6 +39,29 @@ describe('run readiness', () => {
       await store.save(state);
       expect((await store.load('r1')).readiness).toBe('IMPLEMENTATION_READY');
       expect(JSON.parse(await readFile(path.join(root, 'runs/r1/state.json'), 'utf8')).readiness).toBe('IMPLEMENTATION_READY');
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  it('lists only valid run states in updated order for operator selection', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'run-list-'));
+    try {
+      const store = new FileRunStore(root);
+      const seedFile = path.join(root, 'seed.yaml');
+      await writeFile(seedFile, 'title: Listed\ntheme: test\ntemplate: idle-shop-v1\n');
+      await store.create('older', seedFile, 'mock');
+      await store.create('newer', seedFile, 'mock');
+      const newer = await store.load('newer');
+      newer.status = 'waiting';
+      newer.stage = 'WAITING_FOR_ART_APPROVAL';
+      await store.save(newer);
+      await mkdir(path.join(store.runsRoot(), 'broken'), { recursive: true });
+      await writeFile(path.join(store.runsRoot(), 'broken', 'state.json'), '{broken');
+
+      const states = await store.listStates();
+      expect(states.map((state) => state.runId)).toEqual(['newer', 'older']);
+      expect(states[0]?.status).toBe('waiting');
     } finally {
       await rm(root, { recursive: true, force: true });
     }

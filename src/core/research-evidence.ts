@@ -1,5 +1,5 @@
 import { isIP } from 'node:net';
-import { CompetitorResearchEvidenceReportSchema, CompetitorResearchSchema, type CompetitorResearch } from '../schemas/index.js';
+import { CompetitorResearchEvidenceReportSchema, CompetitorResearchSchema, FailurePressureContractSchema, type CompetitorResearch } from '../schemas/index.js';
 import { sha256Text } from './files.js';
 
 const instructionPattern = /(?:ignore\s+(?:all\s+)?(?:previous|prior|above)\s+instructions?|system\s*prompt|developer\s+message|read\s+\/etc|rm\s+-rf|curl\s+|wget\s+|download\s+(?:the\s+)?secrets?|读取密钥|下载并执行|运行命令)/iu;
@@ -84,8 +84,10 @@ export function researchBlockersRequirePause(blockers: readonly string[]): boole
     || blocker === 'research:source-host-not-allowlisted'
     || blocker === 'research:duplicate-source-id'
     || blocker === 'research:source-hash-missing'
+    || blocker === 'research:failure-pressure-contract-missing'
     || blocker.startsWith('research:instruction-shaped')
     || blocker.startsWith('research:claim-source-')
+    || blocker.startsWith('research:failure-pressure-source-')
     || blocker.startsWith('research:claim-hash-count:'));
 }
 
@@ -117,6 +119,10 @@ export function evaluateCompetitorResearchEvidence(value: unknown, options: Comp
   const blockers: string[] = [];
   const minimumSources = Math.max(1, Math.trunc(options.minimumSources ?? 3));
   if (options.requireSources === true && research.sourceRecords.length < minimumSources) blockers.push('research:sources-missing');
+  if (options.requireSources === true) {
+    const pressure = FailurePressureContractSchema.safeParse(research.failurePressureContract);
+    if (!pressure.success) blockers.push('research:failure-pressure-contract-missing');
+  }
   if (new Set(research.sourceRecords.map((source) => source.sourceId)).size !== research.sourceRecords.length) blockers.push('research:duplicate-source-id');
   if (research.sourceRecords.some((source) => !safeLocator(source))) blockers.push('research:unsafe-source-locator');
   const allowedHosts = new Set((options.allowedHosts ?? []).map(normalizeAllowedHost).filter((host): host is string => Boolean(host)));
@@ -130,6 +136,11 @@ export function evaluateCompetitorResearchEvidence(value: unknown, options: Comp
   }
   if (options.requireSources === true && research.sourceRecords.some((source) => !source.contentHash)) blockers.push('research:source-hash-missing');
   const sourceIds = new Set(research.sourceRecords.map((source) => source.sourceId));
+  if (research.failurePressureContract) {
+    for (const evidence of research.failurePressureContract.evidence) {
+      if (evidence.sourceRefs.some((sourceId) => !sourceIds.has(sourceId))) blockers.push(`research:failure-pressure-source-unknown:${evidence.id}`);
+    }
+  }
   for (const claim of research.claims) {
     if (claim.status !== 'UNKNOWN' && claim.sourceRefs.length === 0) blockers.push(`research:claim-source-missing:${claim.id}`);
     if (claim.sourceRefs.some((sourceId) => !sourceIds.has(sourceId))) blockers.push(`research:claim-source-unknown:${claim.id}`);

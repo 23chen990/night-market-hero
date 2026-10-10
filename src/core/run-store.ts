@@ -1,10 +1,18 @@
-import { appendFile, copyFile, lstat, mkdir, readFile } from 'node:fs/promises';
+import { appendFile, copyFile, lstat, mkdir, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { parse } from 'yaml';
-import { exists, readJson, writeJsonAtomic } from './files.js';
+import { exists, readJson, sha256File, sha256Text, writeJsonAtomic } from './files.js';
 import { redactValue } from './redaction.js';
 import { RunStateSchema, SeedSchema, type RunState, type Seed, type StageName, type StageRecord } from '../schemas/index.js';
+import { GameRunIdentityManifestSchema, type GameRunIdentityManifest } from '../schemas/game-identity.js';
+import { buildGameRunIdentityManifest, GAME_RUN_IDENTITY_ARTIFACT, validateGameRunIdentityImmutability } from './game-identity.js';
 import { normalizeRunReadiness } from './run-readiness.js';
+import { readRuntimeCandidateEvidence } from './candidate-evidence.js';
+import { CompletionGateReportSchema } from './completion-gates.js';
+import { ReleaseCandidateSchema } from '../schemas/factory-operating.js';
+import { verifyFrozenCandidate } from './release.js';
+import { ReleaseLifecycleSchema } from '../schemas/release-lifecycle.js';
+import { promoteReleaseLifecycle } from './release-lifecycle.js';
 
 function assertSafeRunId(runId: string): void {
   if (typeof runId !== 'string' || runId.length === 0 || path.isAbsolute(runId) || path.win32.isAbsolute(runId) || runId === '.' || runId === '..' || runId.includes('/') || runId.includes('\\')) {
@@ -54,7 +62,30 @@ export class FileRunStore {
     for (const name of ['input', 'artifacts', 'art-review/previews', 'human', 'workspace/game', 'logs', 'logs/handoffs', 'screenshots', 'release-candidate']) await mkdir(path.join(root, name), { recursive: true });
     await copyFile(seedFile, path.join(root, 'input/seed.yaml'));
     const now = new Date().toISOString();
-    const state: RunState = { schemaVersion: 1, runId, runKind: 'game', stage: 'CREATED', status: 'pending', readiness: 'IN_PROGRESS', createdAt: now, updatedAt: now, fixAttempts: 0, prototypeBatch: 1, providerMode: mode, stages: {}, transitionHistory: [] };
+    // Keep FileRunStore.create backwards compatible for low-level callers that
+    // intentionally persist an incomplete legacy seed. Factory.newRun already
+    // performs full SeedSchema validation; the manifest only needs the stable
+    // identity fields available in the copied input.
+    const rawSeed = parse(await readFile(seedFile, 'utf8')) as { title?: unknown; template?: unknown; runtime?: unknown; identity?: { canonicalGameId?: unknown; aliases?: unknown; variantId?: unknown; variantOf?: unknown } };
+    const identitySeed = {
+      title: typeof rawSeed.title === 'string' && rawSeed.title.trim() ? rawSeed.title : `run-${runId}`,
+      template: typeof rawSeed.template === 'string' && rawSeed.template.trim() ? rawSeed.template : 'unknown-template',
+      // SeedSchema supplies web-lite as the runtime default; mirror that
+      // default here so low-level legacy callers get the same bound context.
+      runtime: typeof rawSeed.runtime === 'string' && rawSeed.runtime.trim() ? rawSeed.runtime : 'web-lite',
+    } as Pick<Seed, 'title' | 'template' | 'runtime'>;
+    const explicit = rawSeed.identity;
+    const manifest = await this.writeImmutableGameRunIdentity(runId, buildGameRunIdentityManifest({
+      runId,
+      seed: identitySeed,
+      seedSha256: await sha256File(seedFile),
+      createdAt: now,
+      ...(typeof explicit?.canonicalGameId === 'string' ? { canonicalGameId: explicit.canonicalGameId } : {}),
+      ...(Array.isArray(explicit?.aliases) && explicit.aliases.every((value): value is string => typeof value === 'string') ? { aliases: explicit.aliases } : {}),
+      ...(typeof explicit?.variantId === 'string' ? { variantId: explicit.variantId } : {}),
+      ...(typeof explicit?.variantOf === 'string' ? { variantOf: explicit.variantOf } : {}),
+    }));
+    const state: RunState = { schemaVersion: 1, runId, runKind: 'game', stage: 'CREATED', status: 'pending', readiness: 'IN_PROGRESS', createdAt: now, updatedAt: now, fixAttempts: 0, prototypeBatch: 1, providerMode: mode, canonicalGameId: manifest.canonicalGameId, ...(manifest.variantId ? { variantId: manifest.variantId } : {}), identityManifestHash: sha256Text(JSON.stringify(manifest)), stages: {}, transitionHistory: [] };
     await this.save(state); await this.log(runId, 'run.created', { seedFile }); return state;
   }
   async createActionExperiment(runId: string, specFile: string, mode: 'mock' | 'live-art' | 'codex-account') {
@@ -65,7 +96,35 @@ export class FileRunStore {
     const state: RunState = { schemaVersion: 1, runId, runKind: 'action-experiment', stage: 'CREATED', status: 'pending', readiness: 'IN_PROGRESS', createdAt: now, updatedAt: now, fixAttempts: 0, prototypeBatch: 1, providerMode: mode, stages: {}, transitionHistory: [] };
     await this.save(state); await this.log(runId, 'action-experiment.created', { specFile }); return state;
   }
-  async load(runId: string) { return RunStateSchema.parse(await readJson(path.join(this.runRoot(runId), 'state.json'))); }
+  private async normalizeReadiness(state: RunState) {
+    if (!['COMPLETED', 'RELEASE_CANDIDATE', 'RELEASE'].includes(state.stage)) return normalizeRunReadiness(state);
+    try {
+      const runtime = await readRuntimeCandidateEvidence(this.runRoot(state.runId));
+      const candidate = ReleaseCandidateSchema.parse(await this.readArtifact(state.runId, 'release-candidate.json'));
+      const completion = CompletionGateReportSchema.parse(await this.readArtifact(state.runId, 'completion-gates.json'));
+      if (!runtime.passed || !runtime.buildHash || !completion.candidateReady || completion.candidateHash !== candidate.coreHash) return normalizeRunReadiness(state);
+      await verifyFrozenCandidate(this.runRoot(state.runId), candidate, runtime.buildHash);
+      return normalizeRunReadiness(state, { candidatePassed: true, releasePassed: completion.releaseReady });
+    } catch { return normalizeRunReadiness(state); }
+  }
+  async load(runId: string) { return this.normalizeReadiness(RunStateSchema.parse(await readJson(path.join(this.runRoot(runId), 'state.json')))); }
+  /** Return parseable run states for operator selection. Broken or partially
+   * created directories are ignored so one interrupted run cannot hide every
+   * other resumable run from the CLI. */
+  async listStates(): Promise<RunState[]> {
+    let entries;
+    try { entries = await readdir(this.runsRoot(), { withFileTypes: true }); }
+    catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') return [];
+      throw error;
+    }
+    const states: RunState[] = [];
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      try { states.push(await this.load(entry.name)); } catch { /* retain a best-effort operator index */ }
+    }
+    return states.sort((left, right) => right.updatedAt.localeCompare(left.updatedAt) || right.runId.localeCompare(left.runId));
+  }
   async save(state: RunState) {
     const file = path.join(this.runRoot(state.runId), 'state.json');
     let previous: RunState | undefined;
@@ -77,7 +136,15 @@ export class FileRunStore {
     }
     state.transitionHistory = history;
     state.updatedAt = new Date().toISOString();
-    normalizeRunReadiness(state);
+    await this.normalizeReadiness(state);
+    // A saved terminal state must not retain an earlier positive lifecycle
+    // claim after the bound runtime evidence or frozen package has failed.
+    if (['COMPLETED', 'RELEASE_CANDIDATE', 'RELEASE'].includes(state.stage) && ['IMPLEMENTATION_READY', 'WAITING', 'FAILED'].includes(state.readiness)) {
+      const lifecycle = ReleaseLifecycleSchema.safeParse(await this.readArtifact(state.runId, 'release-lifecycle.json').catch(() => undefined));
+      if (lifecycle.success && ['CANDIDATE_READY', 'RELEASE_READY'].includes(lifecycle.data.status)) {
+        await this.writeArtifact(state.runId, 'release-lifecycle.json', promoteReleaseLifecycle(lifecycle.data, { gameId: lifecycle.data.gameId, releaseHash: lifecycle.data.releaseHash, from: lifecycle.data.status, to: 'PAUSED' }));
+      }
+    }
     const parsed = RunStateSchema.parse(state);
     await writeJsonAtomic(file, parsed);
   }
@@ -88,6 +155,18 @@ export class FileRunStore {
     const artifactsRoot = path.join(this.runRoot(runId), 'artifacts');
     await assertNoSymlinkInPath(artifactsRoot, file);
     await writeJsonAtomic(file, value);
+  }
+  async writeImmutableGameRunIdentity(runId: string, value: GameRunIdentityManifest): Promise<GameRunIdentityManifest> {
+    const manifest = GameRunIdentityManifestSchema.parse(value);
+    const file = this.artifact(runId, GAME_RUN_IDENTITY_ARTIFACT);
+    if (await exists(file)) {
+      const previous = GameRunIdentityManifestSchema.parse(await this.readArtifact(runId, GAME_RUN_IDENTITY_ARTIFACT));
+      const validation = validateGameRunIdentityImmutability(previous, manifest);
+      if (!validation.passed) throw new Error(`game/run identity manifest is immutable: ${validation.blockers.join(', ')}`);
+      return previous;
+    }
+    await this.writeArtifact(runId, GAME_RUN_IDENTITY_ARTIFACT, manifest);
+    return manifest;
   }
   async readArtifact(runId: string, name: string) {
     const file = this.artifact(runId, name);

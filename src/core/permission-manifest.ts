@@ -52,6 +52,8 @@ export function buildPermissionManifest(stageValue: StageName, options: Permissi
     ? ['input/', 'artifacts/', 'human/', 'workspace/game/', 'templates/', ...(stage === 'BUILD_ACTION_PROTOTYPES' ? ['runs/'] : [])]
     : policy.role === 'release'
       ? ['input/', 'artifacts/', 'human/', 'release-candidate/', 'workspace/game/dist/']
+      : policy.role === 'research'
+        ? ['input/', 'artifacts/', 'human/', 'reference-evidence/']
       // Research and all metadata/QA roles may inspect only run evidence and
       // approvals.  They never receive workspace source or arbitrary files.
       : ['input/', 'artifacts/', 'human/'];

@@ -1,4 +1,4 @@
-import type { ArtDirections, ArtPreviewManifest, AssetManifest, CompetitorResearch, GameBlueprint, GameplayRevisionLock, IaaMonetizationReview, InteractionContinuityContract, OpenSourceResearch, ProductionCostReview, QaReport, ReferenceMechanicSpec, RuntimeName, Seed, StyleLock } from '../schemas/index.js';
+import type { ArtDirections, ArtPreviewManifest, AssetManifest, CompetitorResearch, GameBlueprint, GameplayRevisionLock, IaaMonetizationReview, InteractionContinuityContract, OpenSourceResearch, ProductionCostReview, QaReport, ReferenceEvidencePack, ReferenceMechanicSpec, RuntimeName, Seed, StyleLock, ProductExperienceContract, PerceptualQaReport } from '../schemas/index.js';
 import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament, PrototypeBuildReport } from '../schemas/gameplay-experiment.js';
 import type { ActionMechanicExperimentSpec, ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
 import type { FormalPrototypeFollowupConstraints, OpenSourceResearchArtifact } from '../schemas/index.js';
@@ -12,6 +12,13 @@ export type AgentExecutionContext = {
   outputPath: string;
   logDir: string;
   inputPaths: string[];
+  /** Verified run-local image evidence copied byte-for-byte into an isolated
+   * research sandbox. The hash is checked again immediately before copying. */
+  mediaInputs?: Array<{ path: string; sha256: string }>;
+  /** Identity and contract inputs used by workspace writers at the hard boundary. */
+  targetGameId?: string;
+  targetWorkspaceRelative?: string;
+  requiredArtifacts?: string[];
   /** Stage/model metadata is recorded and enforced at the provider boundary. */
   stage?: string;
   model?: string;
@@ -22,6 +29,7 @@ export type AgentExecutionContext = {
   enforceBoundary?: boolean;
 };
 export interface AgentProvider {
+  analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   generateCompetitorResearch(seed: Seed, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   generateOpenSourceResearch(seed: Seed, gameplay: GameplayIdea | ReferenceMechanicSpec, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   generateIdeas(seed: Seed, research: CompetitorResearch, batch: number, context?: AgentExecutionContext): Promise<AgentProviderResult>;
@@ -62,4 +70,6 @@ export interface QAProvider {
   playtest(input: { runtime: RuntimeAdapter; workspace: string; runRoot: string }): Promise<unknown>;
   playtestTournament(input: { runtime: RuntimeAdapter; report: PrototypeBuildReport; runRoot: string }): Promise<unknown>;
   playtestActionMechanics(input: { runtime: RuntimeAdapter; spec: ActionMechanicExperimentSpec; report: ActionPrototypeBuildReport; runRoot: string }): Promise<unknown>;
+  /** Optional contract-driven perceptual pass; legacy providers may omit it. */
+  perceptualQa?(input: { runtime: RuntimeAdapter; workspace: string; runRoot: string; contract: ProductExperienceContract; buildHash: string }): Promise<PerceptualQaReport>;
 }

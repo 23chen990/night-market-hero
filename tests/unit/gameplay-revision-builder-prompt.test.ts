@@ -134,5 +134,15 @@ describe('Builder prompt for an approved gameplay revision', () => {
     expect(prompt).toMatch(/mechanics-only demo.*legacy style lock.*not final/i);
     expect(prompt).toMatch(/in-code placeholders/i);
     expect(prompt).toMatch(/clean flat vector/i);
+    expect(prompt).toMatch(/player-visible product evidence/i);
+    expect(prompt).toMatch(/natural trigger evidence/i);
+    expect(prompt).toMatch(/runtimeWired.*playerVisible.*naturalTriggerVerified/i);
+    expect(prompt).toMatch(/game-feel.*game-ui-ux/i);
+    expect(prompt).toMatch(/competitor.*core loop.*failure.*recovery/i);
+    expect(prompt).toMatch(/failure-pressure.*structure|pressure.*hazards.*timing.*resource loss/i);
+    expect(prompt).toMatch(/natural.*fall|gravity.*settle|physics.*readable/i);
+    expect(prompt).toMatch(/3D.*mesh.*collider.*penetration|continuous collision detection/i);
+    expect(prompt).toMatch(/object type.*lifecycle.*state branch.*renderer.*viewport/i);
+    expect(prompt).toMatch(/sibling branch.*not coverage/i);
   });
 });

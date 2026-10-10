@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_provider_provenance",
+  "role": "FactoryMaintainer",
+  "route": "shared-factory",
+  "repository": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "ownership": [
+    "src/agents/index.ts (only action prototype build, resume/fallback helpers)",
+    "tests/unit/action-prototype-fallback.test.ts",
+    "tests/unit/action-prototype-builder.test.ts (new if useful)"
+  ],
+  "triagePath": "docs/triage/factory-review-20260918/triage.json",
+  "reproductionMatrixPath": "docs/triage/factory-review-20260918/reproduction-matrix.json",
+  "findings": [
+    "BuilderAgent catches quota/capacity/timeout and writes actionPrototypeHtml as provider-transient-fallback. This HTML is a fixture-only state simulator with no drawing.",
+    "On resume generatedByFallback resets false and HTML string checks can accept old fallback as real output.",
+    "Rebuilding an invalid candidate recursively removes its workspace, including user changes and failure evidence."
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Preserve existing edits; do not revert other work. Only edit owned paths. Do not modify existing runs/*/workspace or call real model providers.",
+    "Use test-driven-development skill: write meaningful red regression tests first, then minimal patch and green.",
+    "A real actionPrototype provider capacity/quota/timeout failure must propagate and preserve diagnostics; do not replace it with a mock page. Explicit mock operation may retain a clearly labeled fixture artifact for engineering tests, never claim real provider authorship.",
+    "Prevent real-provider resume from accepting legacy/current fallback output. Bind resumable real output to successful provider provenance and actual output hash/slot/geometry/treatment as appropriate; do not rely only on string-presence markers.",
+    "Reuse archiveRunPaths before replacing invalid candidate directories, preserving user sentinel files and distinct failed attempt evidence. Ensure output paths remain inside exact run workspace.",
+    "Keep all other BuilderAgent paths unchanged. Use Zod-validated report only with FactoryRepairResultSchema from coordination-schema.ts and save outputPath.",
+    "Final review found a remaining silent fallback: !this.provider.actionPrototype still becomes mock, but real OpenAICodexProvider also lacks that method. Reject missing capability before modifying candidates. Only an explicit provider return with metrics.provider === mock may create a labeled fixture. Update the old absence-of-capability success test to reject and use an explicit mock provider for fixture tests.",
+    "Resume identity must also bind the exact run/workspace and all served dist files except the provenance sidecar. Current outputHash covers only index.html and allows stale JS/image assets or copying same-geometry provenance between runs. Extend the local provenance schema with workspace/run identity and a deterministic dist-content hash, fail closed for legacy records, and add focused tests for edited dist asset and copied cross-run provenance. Keep changes inside the existing ownership."
+  ],
+  "acceptanceChecks": [
+    "Thrown usage-limit/capacity/timeout remains thrown and no fallback success report is created.",
+    "Explicit mock fixture stays labeled mock; real provider cannot silently resume it.",
+    "Valid successful provider output resumes idempotently with unchanged hashes and no duplicate call.",
+    "Changed treatment/output/provenance does not reuse stale candidate.",
+    "Rebuild archives user files and old output without overwriting history.",
+    "Run red/green unit tests and typecheck; record commands and evidence gaps.",
+    "Missing actionPrototype capability fails before workspace creation; only an explicit mock provider emits a mock fixture.",
+    "A changed served JS/asset file or provenance copied from another run is not resumed."
+  ],
+  "omittedContext": [
+    "整段会话",
+    "无关录屏和其他游戏素材",
+    "已有生成工作区的非相关源码"
+  ],
+  "outputPath": "docs/triage/factory-review-20260918/luna-provider-result.json"
+}

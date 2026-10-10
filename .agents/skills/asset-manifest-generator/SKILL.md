@@ -17,7 +17,9 @@ reuse third-party artwork.
 
 ## Procedure
 
-1. Derive only assets the selected template consumes: customer, product, background, upgrade UI, and one promo image.
+1. Derive only the stable asset slots declared by the selected mother template or production line. Idle-management may
+   use customer, product, background, upgrade UI, and promo slots. Cut/stack/dodge uses blade, cuttable target,
+   support, hazard, finish, and background slots. Reject a manifest whose vocabulary belongs to another line.
 2. Build prompts from content plus Style Lock. Include originality and forbidden-item constraints.
    These are static source assets: do not create a pseudo-animation from independently generated in-between images.
    UI continuity is owned by Builder's validated `uiAnimationStandard`; a future motion-specific asset may contain

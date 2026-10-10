@@ -94,7 +94,8 @@ export const CostBudgetSchema = z.object({
   maxPaidTrafficCents: z.number().int().nonnegative(),
   maxAgentTokens: z.number().int().positive(),
   maxHumanMinutes: z.number().int().positive(),
-  maxFixAttempts: z.number().int().nonnegative().max(2),
+  /** Optional project-specific ceiling. Omission means FIX has no attempt-count ceiling. */
+  maxFixAttempts: z.number().int().nonnegative().optional(),
   paybackWindowDays: z.number().int().positive().max(365),
   /** Non-money ceilings keep an unattended run from burning time or assets. */
   maxWallClockMinutes: z.number().int().positive().optional(),
@@ -280,6 +281,19 @@ export const FailureReportSchema = z.object({
 }).strict();
 export type FailureReport = z.infer<typeof FailureReportSchema>;
 
+/** Durable control-plane evidence emitted when automatic FIX reaches its cap. */
+export const FixCapBlockerSchema = z.object({
+  schemaVersion: z.literal(1),
+  stage: z.literal('FIX'),
+  status: z.literal('BLOCKED'),
+  attempts: z.number().int().positive(),
+  maxAutomaticAttempts: z.number().int().positive(),
+  reason: Text,
+  nextAction: z.literal('human-review-required'),
+  message: Text,
+}).strict();
+export type FixCapBlocker = z.infer<typeof FixCapBlockerSchema>;
+
 export const ReleaseCandidateSchema = z.object({
   schemaVersion: z.literal(1),
   gameId: Text,
@@ -360,12 +374,16 @@ export const FactoryEvalBenchmarkSchema = z.object({
 }).strict();
 export type FactoryEvalBenchmark = z.infer<typeof FactoryEvalBenchmarkSchema>;
 
+/** NEW_GAME has distinct original and reference-bound entry lanes. */
+export const RequestEntryLaneSchema = z.enum(['ORIGINAL_PROTOTYPE', 'REFERENCE_ADAPTATION', 'PRODUCTIZATION', 'REVISION', 'RELEASE']);
+
 export const FactoryEvalCaseSchema = z.object({
   schemaVersion: z.literal(1),
   caseId: Text,
   input: Text,
   targetRunId: Text.optional(),
   expectedProfile: z.enum(['ACTION_FEEL', 'NARRATIVE_AGENCY', 'STRATEGIC_SYSTEM', 'PUZZLE_CLARITY', 'SOCIAL_EMOTION', 'EXPLORATION_DISCOVERY']),
+  expectedEntryLane: RequestEntryLaneSchema.optional(),
   /** Acceptable alternatives make ambiguity explicit instead of hiding it in a prompt. */
   acceptableProfiles: z.array(z.enum(['ACTION_FEEL', 'NARRATIVE_AGENCY', 'STRATEGIC_SYSTEM', 'PUZZLE_CLARITY', 'SOCIAL_EMOTION', 'EXPLORATION_DISCOVERY'])).default([]),
   /** Support is a separate boundary decision; a profile match must not greenlight an unsupported product. */
@@ -394,6 +412,8 @@ export type FactoryEvalCasesFile = z.infer<typeof FactoryEvalCasesFileSchema>;
 
 export const FactoryEvalReportSchema = z.object({
   schemaVersion: z.literal(1),
+  evaluationScope: z.literal('CONTROL_PLANE').default('CONTROL_PLANE'),
+  productQuality: z.literal('NOT_ASSESSED').default('NOT_ASSESSED'),
   suiteVersion: Text,
   modelSignature: Text,
   promptSignature: Text,
@@ -404,7 +424,7 @@ export const FactoryEvalReportSchema = z.object({
   /** Content hash of the feedback regression ledger, not just its ids. */
   feedbackRegressionSignature: Sha256.optional(),
   feedbackRegressionCoverage: z.object({ total: z.number().int().nonnegative(), executable: z.number().int().nonnegative(), executed: z.number().int().nonnegative() }).strict().optional(),
-  cases: z.array(z.object({ caseId: Text, dataset: FactoryEvalDatasetSchema.default('golden'), observedProfile: z.string().trim().min(1).optional(), observedSupportDecision: z.enum(['SUPPORTED', 'HYBRID_REVIEW_REQUIRED', 'NEW_LINE_REQUIRED', 'UNSUPPORTED']).optional(), inputHash: Sha256.optional(), passed: z.boolean(), failures: z.array(Text) }).strict()).min(1),
+  cases: z.array(z.object({ caseId: Text, dataset: FactoryEvalDatasetSchema.default('golden'), observedProfile: z.string().trim().min(1).optional(), observedEntryLane: RequestEntryLaneSchema.optional(), observedSupportDecision: z.enum(['SUPPORTED', 'HYBRID_REVIEW_REQUIRED', 'NEW_LINE_REQUIRED', 'UNSUPPORTED']).optional(), inputHash: Sha256.optional(), passed: z.boolean(), failures: z.array(Text) }).strict()).min(1),
   passed: z.boolean(),
   runAt: z.string().datetime(),
 }).strict();

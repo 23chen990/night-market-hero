@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_profile_evidence",
+  "route": "shared-factory",
+  "routeReason": "The defect crosses shared factory orchestration, profile evidence schemas, and the action-feel stage pause/resume contract, so it required the bounded shared-factory route with candidate-bound evidence verification delegated to the validated helper.",
+  "status": "IMPLEMENTED",
+  "filesChanged": [
+    "src/core/action-feel-stage.ts",
+    "src/schemas/profile-stage.ts",
+    "src/factory.ts",
+    "tests/unit/action-feel-stage.test.ts",
+    "tests/integration/action-feel-evidence.test.ts"
+  ],
+  "omittedContext": [
+    "整段会话",
+    "无关录屏和其他游戏素材",
+    "已有生成工作区的非相关源码"
+  ],
+  "tests": [
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts --reporter verbose",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "The new three-resume integration probe reproduced the empty natural-evidence diagnostic failure: ProfileStageEvidenceSchema rejected checks[1].evidence when the helper returned a blocked summary without evidence paths."
+    },
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts --reporter verbose",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "Repeated resume remains NATURAL_PLAY_QA waiting with attempts unchanged, candidate dist hashes unchanged, natural-play evidence unchanged, no art/build advance, and no FIX count reset."
+    },
+    {
+      "command": "pnpm typecheck",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "TypeScript completed successfully."
+    },
+    {
+      "command": "pnpm exec eslint src/core/action-feel-stage.ts src/schemas/profile-stage.ts src/factory.ts tests/unit/action-feel-stage.test.ts tests/integration/action-feel-evidence.test.ts",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "The first lint pass found one stale NaturalFlowEvidenceSchema import after replacing the raw validator with the shared helper."
+    },
+    {
+      "command": "pnpm exec eslint src/core/action-feel-stage.ts src/schemas/profile-stage.ts src/factory.ts tests/unit/action-feel-stage.test.ts tests/integration/action-feel-evidence.test.ts",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "Owned factory, profile, stage, and test files pass ESLint."
+    },
+    {
+      "command": "pnpm vitest run tests/unit/action-feel-stage.test.ts tests/unit/action-feel-evidence.test.ts tests/integration/action-feel-evidence.test.ts tests/unit/action-playwright-qa.test.ts tests/unit/action-prototype-fallback.test.ts tests/integration/action-experiment-orchestrator.test.ts --reporter verbose",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Six targeted test files passed, 19 tests total, including candidate-bound evidence helper coverage and action prototype orchestration regressions."
+    },
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts -t \"recovers a missing\" --reporter verbose",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "The follow-up recovery test stayed in FEEL_REPAIR after valid candidate-bound perceptual evidence arrived, and the stale-engineering refresh case advanced instead of invalidating the old approval."
+    },
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts -t \"recovers a missing\" --reporter verbose",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "The final acceptance assertions reproduced the missing engineeringReport path/hash binding before the schema and orchestration fix."
+    },
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts -t \"recovers a missing\" --reporter verbose",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "The binding now records the exact deterministic report SHA-256, captures candidate dist hashes before QA, rejects changed candidate/report bytes, restores the candidate before the stale natural-trace assertion, and reports the intended blockers."
+    },
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts --reporter verbose",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "All three integration cases pass: missing evidence remains idempotently waiting, valid evidence recovers through WAITING_FOR_ART_APPROVAL while preserving the prior failed review, and stale candidate engineering hashes invalidate the old approval."
+    },
+    {
+      "command": "pnpm typecheck",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Final TypeScript verification passed after adding the candidate engineering build-hash binding."
+    },
+    {
+      "command": "pnpm exec eslint src/core/action-feel-stage.ts src/schemas/profile-stage.ts src/factory.ts tests/unit/action-feel-stage.test.ts tests/integration/action-feel-evidence.test.ts",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Final owned-file ESLint verification passed."
+    },
+    {
+      "command": "pnpm vitest run tests/unit/action-feel-stage.test.ts tests/unit/action-feel-evidence.test.ts tests/integration/action-feel-evidence.test.ts tests/unit/action-playwright-qa.test.ts tests/unit/action-prototype-fallback.test.ts tests/integration/action-experiment-orchestrator.test.ts --reporter verbose",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Final targeted regression passed, 6 files and 21 tests, including FEEL_REPAIR recovery, threshold triage idempotence, and stale engineering build invalidation."
+    },
+    {
+      "command": "pnpm exec tsx -e \"import { readFileSync } from 'node:fs'; import { FactoryRepairTaskSchema, FactoryRepairResultSchema } from './docs/triage/factory-review-20260918/coordination-schema.ts'; const task=JSON.parse(readFileSync('docs/triage/factory-review-20260918/luna_profile_evidence.json','utf8')); const result=JSON.parse(readFileSync('docs/triage/factory-review-20260918/luna-profile-result.json','utf8')); FactoryRepairTaskSchema.parse(task); FactoryRepairResultSchema.parse(result);\"",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "The updated task and final result artifacts both pass their Zod schemas."
+    }
+  ],
+  "remainingGaps": [
+    "The integration test intentionally stops at the missing independent natural/perceptual evidence gate; a real candidate-bound natural flow, captures, and perceptual contract/report must still be supplied by the independent QA path before a production run can advance.",
+    "Unchanged threshold failures remain explicitly repair-required until a genuinely new evidence-backed repair hypothesis or changed candidate is supplied; this bounded patch does not create a production repair adapter.",
+    "The full repository verification suite remains the parent agent's final acceptance responsibility."
+  ]
+}

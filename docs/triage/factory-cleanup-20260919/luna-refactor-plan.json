@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna-factory-cleanup-refactor-plan-20260919",
+  "scope": {
+    "target": "shared-factory",
+    "files": [
+      "src/factory.ts",
+      "src/core/run-store.ts",
+      "src/core/pipeline-plan.ts",
+      "src/core/stage-contracts.ts",
+      "src/core/artifact-ledger.ts",
+      "src/core/schema-migrations.ts",
+      "src/core/reference-quality-audit.ts",
+      "src/schemas/index.ts",
+      "src/schemas/stage-contracts.ts",
+      "src/schemas/pipeline-plan.ts",
+      "src/schemas/schema-migrations.ts",
+      "tests/unit/run-store-security.test.ts",
+      "tests/unit/stage-contracts.test.ts",
+      "tests/unit/factory-control-plane-v4.test.ts",
+      "tests/integration/orchestrator.test.ts",
+      "tests/integration/cli.test.ts"
+    ]
+  },
+  "findings": [
+    "src/factory.ts is a 5,000-plus-line orchestration facade that also contains stage execution, failure routing, artifact emission, identity-derived naming, migration fallbacks and release checks. src/core/stage-contracts.ts is also large and contains many densely packed contract definitions. A whole-file rewrite would make it difficult to preserve the current gates and historical behavior.",
+    "RunStateSchema is schema version 1 and binds runId, stage, status, provider mode and stage records, but it has no required canonical game identity, seed hash, reference-source hash, pipeline-plan hash or workspace binding. SeedSchema has title/theme/template data, but title is still used as an identity source in gameIdFromTitle rather than being an immutable identity record.",
+    "The current plan validator checks stage names, category overlap, canonical order and release-critical membership. It does not bind a plan to a canonical game identity, seed digest, workspace or source contract digest. Missing plans remain resumable through an explicit legacy fallback in factory.ts and pipeline-plan.ts, which preserves old runs but permits an unbound run to continue until a later gate.",
+    "Stage contracts and the artifact ledger already provide useful ownership, verifier separation, output hashing and downstream invalidation. However, stage evidence is largely a free-form string array, and the FULL_BUILD path still derives evidence labels from hard-coded strings alongside result verification. This makes it possible for a ledger or state record to describe checks at a different strength from the execution report, especially in contract/mock paths.",
+    "schema-migrations.ts provides a generic one-step artifact migration helper, while FileRunStore.load parses RunStateSchema directly. There is no single versioned migration adapter for run state, seed identity and pipeline context together. Historical compatibility is therefore spread across legacy fallbacks, per-feature checks and reference-quality-audit rather than one explicit migration disposition.",
+    "The repository already has safe path handling in FileRunStore, append-only transition history, archiveRunPaths, artifact-ledger reconciliation, downstream invalidation and reference-quality-audit. These should be used as migration primitives. Historical runs should be classified and preserved; they should not be bulk-renamed or regenerated in place.",
+    "Existing tests cover path traversal, stage contracts, bounded schema migration, orchestration preservation and reference-quality audit, but there is no shared invariant test that proves one canonical identity remains bound across seed, plan, workspace, blueprint, build, QA and release artifacts, nor a matrix for canonical game, alias and intentionally distinct variant cases."
+  ],
+  "rootCauses": [
+    "Display title and derived title slug are carrying identity responsibility that should belong to an explicit immutable game identity record. Renaming or reusing a title can therefore create apparently separate games or let variants share a source seed without a declared relationship.",
+    "Run context is not a single immutable binding. Seed, plan, reference evidence, workspace and generated artifacts are validated separately, so a stale or mixed lineage can survive until a downstream check notices it.",
+    "Legacy support is implemented as permissive compatibility branches in the control flow instead of an explicit read-only, resumable or migration-required state. This makes old and new semantics coexist inside the same execution path.",
+    "The control plane has no typed execution receipt that connects a contract evidence item to the command or provider result, artifact hash and verifier. Free-form evidence labels and duplicated completion logic allow evidence drift.",
+    "Large orchestration files and inline contract tables concentrate unrelated change risk. The code has useful core primitives, but their ownership boundaries are not yet reflected in small adapters and characterization tests."
+  ],
+  "proposedChanges": [
+    {
+      "id": "P0-freeze-and-inventory",
+      "change": "Add a read-only factory inventory report for every run that records runId, seed hash, derived/current title, template, pipeline mode and plan hash when present, workspace path, artifact identity fields and status. Add characterization snapshots for current state transitions, stage-contract outcomes and completion evidence before refactoring. Do not alter historical runs.",
+      "ownerFiles": [
+        "src/core/reference-quality-audit.ts",
+        "src/core/run-store.ts",
+        "src/core/artifact-ledger.ts",
+        "tests/integration/cli.test.ts",
+        "tests/integration/orchestrator.test.ts"
+      ],
+      "risk": "Low implementation risk, but the inventory may expose many inconsistent historical records. Treat it as diagnostic output; never infer a canonical identity from a title alone."
+    },
+    {
+      "id": "P1-canonical-game-identity",
+      "change": "Introduce a versioned GameIdentity/RunIdentity artifact for new runs. It should contain an operator-chosen canonical game key, display title, explicit aliases, declared variant relation, seed SHA-256, production line/template, target workspace relative path, and source/reference manifest hashes. Persist it once at run creation and make later stages consume it instead of recomputing gameIdFromTitle. Keep legacy runs as UNBOUND until explicitly migrated.",
+      "ownerFiles": [
+        "src/schemas/game-identity.ts",
+        "src/schemas/index.ts",
+        "src/core/identity-binding.ts",
+        "src/core/run-store.ts",
+        "src/factory.ts",
+        "tests/unit/identity-binding.test.ts",
+        "tests/integration/orchestrator.test.ts"
+      ],
+      "risk": "Medium: requiring identity on new runs can reject callers that only provide a title. Use a new-run requirement with a deterministic operator prompt/CLI field, and a read-only legacy status for old runs rather than silently deriving or rewriting identity."
+    },
+    {
+      "id": "P2-immutable-run-context",
+      "change": "Add a RunContext artifact and validation at create, resume, FULL_BUILD, QA, FIX and RELEASE. Bind targetRunId, canonicalGameKey, seed hash, pipeline-plan hash, production-line/template, workspace relative path and verified source hashes. A mismatch must fail closed with a migration-required report before any generated workspace mutation.",
+      "ownerFiles": [
+        "src/schemas/run-context.ts",
+        "src/core/run-store.ts",
+        "src/core/pipeline-plan.ts",
+        "src/core/reference-level-binding.ts",
+        "src/factory.ts",
+        "tests/unit/run-store-security.test.ts",
+        "tests/unit/run-context.test.ts",
+        "tests/integration/stage-contract-enforcement.test.ts"
+      ],
+      "risk": "Medium to high for resume compatibility. Roll out validation first as an audit-only check for new artifacts, then enforce at build/release boundaries; preserve existing path-safety checks and never accept a mismatch by falling back to a title or nearby run."
+    },
+    {
+      "id": "P3-explicit-legacy-migration",
+      "change": "Unify legacy handling into a versioned migration disposition: CANONICAL, RESUMABLE_LEGACY, MIGRATION_REQUIRED, QUARANTINED or INVALID. Reuse reference-quality-audit and archiveRunPaths to create a new canonical run from verified seed/reference inputs, preserving the old run and hashes. Remove implicit legacy continuation only after the explicit disposition is persisted and tested.",
+      "ownerFiles": [
+        "src/core/schema-migrations.ts",
+        "src/core/run-preservation.ts",
+        "src/core/reference-quality-audit.ts",
+        "src/core/run-store.ts",
+        "src/cli/factory.ts",
+        "src/factory.ts",
+        "tests/unit/factory-control-plane-v4.test.ts",
+        "tests/unit/reference-quality-audit.test.ts",
+        "tests/integration/cli.test.ts"
+      ],
+      "risk": "High if implemented as in-place edits. Require immutable archive manifests, copy-on-write new run creation and hash checks; old runs remain readable and are never made to look canonical."
+    },
+    {
+      "id": "P4-typed-execution-evidence",
+      "change": "Add a typed execution/evidence receipt with stage, check id, passed result, command/provider, timestamps, artifact paths and hashes, verifier role and run-context hash. Make complete() derive state evidence only from receipts and the parsed build/QA report, while retaining a compatibility projection for old free-form evidence. Add a parity check that rejects a claim stronger than the executed report.",
+      "ownerFiles": [
+        "src/schemas/stage-evidence.ts",
+        "src/schemas/stage-contracts.ts",
+        "src/core/stage-contracts.ts",
+        "src/core/artifact-ledger.ts",
+        "src/factory.ts",
+        "tests/unit/stage-contracts.test.ts",
+        "tests/unit/artifact-ledger.test.ts",
+        "tests/integration/stage-contract-enforcement.test.ts"
+      ],
+      "risk": "Medium: stricter evidence can expose mock and historical claims that were previously tolerated. Preserve the old projection for reading, but make new completion claims fail closed and never weaken a required gate."
+    },
+    {
+      "id": "P5-split-orchestration-by-seam",
+      "change": "After P0-P4 are stable, extract one seam at a time from factory.ts: run lifecycle/resume, stage begin/complete/failure, identity/context binding, and release/acceptance orchestration. Keep factory.ts as a compatibility facade and move contract tables into readable modules only when characterization tests prove equivalent behavior. Do not delete or renumber stages in this phase.",
+      "ownerFiles": [
+        "src/factory.ts",
+        "src/core/run-lifecycle.ts",
+        "src/core/stage-execution.ts",
+        "src/core/identity-binding.ts",
+        "src/core/acceptance-handoff.ts",
+        "src/core/stage-contracts.ts",
+        "tests/integration/orchestrator.test.ts",
+        "tests/unit/stage-contracts.test.ts"
+      ],
+      "risk": "High: extraction can change ordering, retry counts or side effects without changing types. Each seam must preserve public CLI/API behavior, transition history, artifact paths, provider-call counts and gate outcomes before the next seam is extracted."
+    },
+    {
+      "id": "P6-identity-calibration-and-rollout",
+      "change": "Use one selected game as the calibration run after the shared invariants pass. Record one canonical identity, historical aliases and intentionally distinct variants; regenerate only from the canonical run context, then expand to other games after the identity and evidence matrix passes. Keep platform packaging and visual quality work out of this control-plane refactor.",
+      "ownerFiles": [
+        "src/core/reference-quality-audit.ts",
+        "src/cli/factory.ts",
+        "tests/integration/cli.test.ts",
+        "tests/integration/orchestrator.test.ts"
+      ],
+      "risk": "Medium: selecting the wrong canonical run would preserve the wrong expression. Require an explicit human identity decision and verified source provenance; an unresolved identity remains QUARANTINED and cannot be used for acceptance."
+    }
+  ],
+  "migrationSteps": [
+    "1. Freeze the current dirty-tree and test baseline in a reviewable snapshot; do not mix this refactor with generated-game repairs or image generation.",
+    "2. Run a read-only inventory over all historical runs and produce a conflict table keyed by seed hash, existing gameId/title, template, workspace and source/reference hashes. Mark unknowns instead of selecting a winner automatically.",
+    "3. Add identity and run-context schemas for new runs, persist them at creation, and add invariant tests. Existing runs receive only an audit classification, never an inferred identity rewrite.",
+    "4. Add boundary validation in audit mode, then enforce it at FULL_BUILD/QA/FIX/RELEASE. On mismatch, stop before workspace mutation and write a migration-required report.",
+    "5. Implement copy-on-write migration: verified seed/reference sources create a new canonical run; the old run is archived with a manifest and remains read-only. Do not merge artifacts from multiple runs into one workspace.",
+    "6. Convert stage evidence to typed receipts and compare receipts with build/QA reports and the artifact ledger. Keep a compatibility reader for legacy evidence until all new runs use receipts.",
+    "7. Extract factory orchestration seams one at a time behind the existing facade, running focused tests after each extraction. Preserve stage names, contract thresholds, retry policy, failure routing and artifact paths.",
+    "8. Calibrate the identity workflow on one game, explicitly approve canonical name/aliases/variants, and only then apply the same process to the rest of the factory. Defer stage deletion or broad pipeline simplification until a separate per-stage audit is complete."
+  ],
+  "acceptanceChecks": [
+    "New-run creation writes one schema-valid immutable identity/context record whose canonical game key is independent of display title; changing the title alone cannot create a second canonical game.",
+    "A resume or build with mismatched targetRunId, seed hash, plan hash, source hash, template or workspace fails closed before generated-workspace mutation and produces a migration-required artifact.",
+    "Alias, intentional variant and conflicting-identity fixtures are all distinguished by tests; an unreviewed variant cannot feed the canonical game's build, QA or release path.",
+    "Historical runs remain byte/hash stable except for explicitly documented audit or archive artifacts; migration produces a new run and an immutable archive manifest rather than rewriting the old run in place.",
+    "Stage contract pass/fail results, verifier separation, retry bounds, downstream invalidation and release-critical gates are unchanged by the refactor; characterization and regression tests cover these outcomes.",
+    "For new runs, state evidence is derived from typed execution receipts and parsed reports; a test or QA check is never claimed as passed when its command/provider result did not execute or its artifact hash does not match.",
+    "The factory facade keeps existing CLI/API behavior while each extracted seam has focused unit/integration coverage, and lint, typecheck and the full test suite pass.",
+    "One human-approved calibration game has exactly one canonical identity, explicit historical aliases, and quarantined unresolved variants before any regenerated candidate is accepted."
+  ],
+  "omittedContext": [
+    "No production code, generated-game workspace, historical run artifact or shared schema was modified by this audit.",
+    "No claim is made here about which existing game variant is the canonical product; that requires an explicit human identity decision and verified source evidence.",
+    "This plan does not delete stages, relax gates, merge runs, or rewrite the current factory into a new architecture in one operation.",
+    "Visual fidelity, image generation, gameplay repair, platform packaging and release acceptance are outside this shared-control-plane refactor plan.",
+    "The plan does not treat a passing factory evaluation or unit test suite as proof that a generated game is player-acceptable."
+  ]
+}

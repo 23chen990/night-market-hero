@@ -4,19 +4,26 @@ import { SpatialShopSpecSchema } from './spatial-shop.js';
 import { GameplayRevisionReferenceSchema } from './gameplay-revision.js';
 import { ExperienceProfileSelectionSchema } from './experience-profile.js';
 import { PlayerAcceptanceGateSchema } from './acceptance-artifacts.js';
-import { QaEvidenceSchema } from './factory-operating.js';
+import { QaEvidenceSchema, RequestEntryLaneSchema } from './factory-operating.js';
 import { NaturalFlowEvidenceSchema } from './natural-flow.js';
 import { StageNameSchema } from './stage-name.js';
 import type { StageName } from './stage-name.js';
 import { InteractionContinuityReportSchema } from './interaction-continuity.js';
+import { FailurePressureContractSchema } from './failure-pressure-contract.js';
+import { GameSeedIdentitySchema } from './game-identity.js';
+import { PipelinePlanSchema, PipelineRigorSchema } from './pipeline-plan.js';
 
 export { StageNameSchema } from './stage-name.js';
 export type { StageName } from './stage-name.js';
 
 export { HumanReferenceDecisionSchema, ReferenceMechanicSpecSchema } from './reference-mechanic.js';
 export type { HumanReferenceDecision, ReferenceMechanicSpec } from './reference-mechanic.js';
+export { ReferenceFidelityContractSchema } from './reference-fidelity.js';
+export type { ReferenceFidelityContract } from './reference-fidelity.js';
 export { ReferenceCoreGameplayResearchSchema } from './reference-core-gameplay-research.js';
 export type { ReferenceCoreGameplayResearch } from './reference-core-gameplay-research.js';
+export { FailurePressureContractSchema, FailurePressureEvidenceSchema, FailurePressureRuleSchema } from './failure-pressure-contract.js';
+export type { FailurePressureContract, FailurePressureEvidence, FailurePressureRule } from './failure-pressure-contract.js';
 export { GameplayRevisionLockSchema, GameplayRevisionReferenceSchema } from './gameplay-revision.js';
 export type { GameplayRevisionLock, GameplayRevisionReference } from './gameplay-revision.js';
 export { SpatialShopSpecSchema, SpatialShopStationSchema } from './spatial-shop.js';
@@ -60,6 +67,7 @@ export { AcceptanceManifestSchema, ActionRealizabilitySchema, PlaytestTraceSchem
 export type { AcceptanceManifest, ActionRealizability, PlaytestTrace, ProfileReviewReport, PlayerAcceptanceGate } from './acceptance-artifacts.js';
 export * from './factory-operating.js';
 export * from './stage-contracts.js';
+export * from './product-experience.js';
 export * from './operating-profile.js';
 export * from './feedback.js';
 export * from './pipeline-plan.js';
@@ -69,6 +77,10 @@ export * from './launch-operations.js';
 export * from './platform-spine.js';
 export * from './art-quality.js';
 export * from './reference-evidence.js';
+export * from './game-identity.js';
+export * from './reference-quality-audit.js';
+export * from './experience-complaint.js';
+export * from './evidence-provenance.js';
 export * from './model-policy.js';
 export * from './artifact-ledger.js';
 export * from './human-approval.js';
@@ -80,8 +92,12 @@ export * from './differentiation.js';
 export * from './evidence-claims.js';
 export * from './unknowns.js';
 export * from './production-line.js';
+export * from './production-line-resolution.js';
+export * from './profile-stage.js';
 export * from './platform-package.js';
 export * from './presentation-evidence.js';
+export { PreviewPresentationDisclosureSchema } from '../core/preview-presentation-disclosure.js';
+export type { PreviewPresentationDisclosure } from '../core/preview-presentation-disclosure.js';
 export * from './supply-chain.js';
 export { DependencyAllowlistEntrySchema, DependencyPolicySchema } from './dependency-policy.js';
 export type { DependencyAllowlistEntry, DependencyPolicy as DependencyAllowlistPolicy } from './dependency-policy.js';
@@ -142,14 +158,21 @@ export type RunReadiness = z.infer<typeof RunReadinessSchema>;
 
 export const RequestTypeSchema = z.enum(['NEW_GAME', 'GAMEPLAY_REVISION', 'PRODUCTIZATION_REVISION', 'VISUAL_REVISION', 'BALANCE_REVISION', 'BUG_FIX', 'MONETIZATION_REVISION', 'RELEASE']);
 export type RequestType = z.infer<typeof RequestTypeSchema>;
+/** The user-facing entry lane is separate from the low-level request type.
+ * NEW_GAME can mean original ideation or an explicitly reference-bound
+ * adaptation; existing-run requests use the remaining operational lanes. */
+export { RequestEntryLaneSchema } from './factory-operating.js';
+export type RequestEntryLane = z.infer<typeof RequestEntryLaneSchema>;
 export const OptionalReviewStageSchema = z.enum(['COMPETITOR_RESEARCH', 'PRODUCTION_COST_REVIEW', 'IAA_MONETIZATION_REVIEW']);
 export type OptionalReviewStage = z.infer<typeof OptionalReviewStageSchema>;
 export const ReviewAgentNameSchema = z.enum(['CompetitorResearchAgent', 'ProductionCostReviewerAgent', 'IaaMonetizationReviewerAgent']);
 export type ReviewAgentName = z.infer<typeof ReviewAgentNameSchema>;
-export const RequestRouterInputSchema = z.object({ request: z.string().trim().min(1), targetRunId: z.string().trim().min(1).optional() });
+export const RequestRouterInputSchema = z.object({ request: z.string().trim().min(1), targetRunId: z.string().trim().min(1).optional(), rigor: PipelineRigorSchema.optional() });
 export type RequestRouterInput = z.infer<typeof RequestRouterInputSchema>;
 export const RouteSupportDecisionSchema = z.enum(['SUPPORTED', 'HYBRID_REVIEW_REQUIRED', 'NEW_LINE_REQUIRED', 'UNSUPPORTED']);
 export type RouteSupportDecision = z.infer<typeof RouteSupportDecisionSchema>;
+export const FeedbackRepairRouteSchema = z.enum(['direct-builder', 'formal-fixer']);
+export type FeedbackRepairRoute = z.infer<typeof FeedbackRepairRouteSchema>;
 
 const REVIEW_AGENT_BY_STAGE = {
   COMPETITOR_RESEARCH: 'CompetitorResearchAgent',
@@ -169,39 +192,76 @@ export const ReviewEscalationSchema = z.object({
 });
 export type ReviewEscalation = z.infer<typeof ReviewEscalationSchema>;
 
-const NEW_GAME_REVIEW_PATH: StageName[] = ['REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL'];
+const NEW_GAME_REVIEW_PATH: StageName[] = ['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL'];
 const NEW_GAME_FORBIDDEN_IDEATION_STAGES = new Set<StageName>(['COMPETITOR_RESEARCH', 'IDEA_GENERATION', 'LOW_COST_FILTER', 'PROTOTYPE_SELECTION', 'BUILD_3_PROTOTYPES', 'PLAYTEST_TOURNAMENT', 'WINNER_SELECTION', 'WAITING_FOR_PROTOTYPE_APPROVAL']);
-export const RequestRouteSchema = z.object({
+const ORIGINAL_PROTOTYPE_PREFIX: StageName[] = ['COMPETITOR_RESEARCH', 'IDEA_GENERATION', 'LOW_COST_FILTER', 'PROTOTYPE_SELECTION'];
+export const RequestRouteSchema = z.preprocess((raw) => {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return raw;
+  const value = raw as Record<string, unknown>;
+  if (value.entryLane !== undefined) return value;
+  const entryLane = value.requestType === 'NEW_GAME'
+    ? Array.isArray(value.stages) && value.stages.includes('IDEA_GENERATION') ? 'ORIGINAL_PROTOTYPE' : 'REFERENCE_ADAPTATION'
+    : value.requestType === 'PRODUCTIZATION_REVISION' ? 'PRODUCTIZATION' : value.requestType === 'RELEASE' ? 'RELEASE' : 'REVISION';
+  return { ...value, entryLane };
+}, z.object({
   schemaVersion: z.literal(1),
   request: z.string().trim().min(1),
   requestType: RequestTypeSchema,
+  entryLane: RequestEntryLaneSchema,
   targetRunId: z.string().trim().min(1).nullable(),
   stages: z.array(StageNameSchema).min(1),
   fullGreenlight: z.boolean(),
   reviewEscalations: z.array(ReviewEscalationSchema),
+  /** New-game stage truth comes from this same plan used when a run is created. */
+  pipelinePlan: PipelinePlanSchema.optional(),
   experienceProfile: ExperienceProfileSelectionSchema.default({ schemaVersion: 1, primary: 'STRATEGIC_SYSTEM', secondary: null, lockedBy: 'agent', rationale: 'Legacy route default.' }),
   /** Explicitly prevents complex products from silently entering a light-game line. */
   supportDecision: RouteSupportDecisionSchema.default('SUPPORTED'),
+  /** Machine-readable ownership route; existing-game defects cannot silently downgrade. */
+  repairRoute: FeedbackRepairRouteSchema.default('direct-builder'),
+  repairReasons: z.array(z.string().trim().min(1)).default([]),
   rationale: z.string().trim().min(1),
-}).superRefine((value, context) => {
+})).superRefine((value, context) => {
+  const expectedLane = value.requestType === 'NEW_GAME' ? null : value.requestType === 'PRODUCTIZATION_REVISION' ? 'PRODUCTIZATION' : value.requestType === 'RELEASE' ? 'RELEASE' : 'REVISION';
+  if (expectedLane && value.entryLane !== expectedLane) context.addIssue({ code: 'custom', path: ['entryLane'], message: 'entryLane must match requestType' });
   if (value.requestType === 'NEW_GAME') {
+    if (!['ORIGINAL_PROTOTYPE', 'REFERENCE_ADAPTATION'].includes(value.entryLane)) context.addIssue({ code: 'custom', path: ['entryLane'], message: 'NEW_GAME requires an original or reference entry lane' });
     if (value.targetRunId !== null) context.addIssue({ code: 'custom', path: ['targetRunId'], message: 'NEW_GAME must not target an existing run' });
+    if (value.pipelinePlan) {
+      const designMode = value.entryLane === 'ORIGINAL_PROTOTYPE' ? 'prototype_tournament' : 'reference_reskin';
+      if (value.pipelinePlan.designMode !== designMode) context.addIssue({ code: 'custom', path: ['pipelinePlan'], message: 'pipeline design mode must match the entry lane' });
+      if (JSON.stringify(value.pipelinePlan.mandatoryStages) !== JSON.stringify(value.stages)) context.addIssue({ code: 'custom', path: ['stages'], message: 'route stages must match the pipeline plan' });
+    }
     if (value.supportDecision !== 'SUPPORTED') {
       if (value.fullGreenlight) context.addIssue({ code: 'custom', path: ['fullGreenlight'], message: 'unsupported or new-line requests cannot be greenlit' });
       if (JSON.stringify(value.stages) !== JSON.stringify(['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW'])) context.addIssue({ code: 'custom', path: ['stages'], message: 'unsupported new games must stop at business and production-line review' });
       return;
     }
-    if (!value.fullGreenlight || NEW_GAME_REVIEW_PATH.some((stage, index) => value.stages[index] !== stage)) {
-      context.addIssue({ code: 'custom', path: ['stages'], message: 'NEW_GAME requires a human-locked designated-reference path' });
+    if (value.entryLane === 'ORIGINAL_PROTOTYPE') {
+      if (value.fullGreenlight) context.addIssue({ code: 'custom', path: ['fullGreenlight'], message: 'ORIGINAL_PROTOTYPE requires prototype and human approval before greenlight' });
+      const designStages = value.stages.filter((stage) => !['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW', 'FACTORY_EVAL'].includes(stage));
+      if (ORIGINAL_PROTOTYPE_PREFIX.some((stage, index) => designStages[index] !== stage) || !value.stages.includes('WAITING_FOR_PROTOTYPE_APPROVAL')) {
+        context.addIssue({ code: 'custom', path: ['stages'], message: 'ORIGINAL_PROTOTYPE requires the explicit idea and prototype selection path' });
+      }
+      if (NEW_GAME_REVIEW_PATH.some((stage) => value.stages.includes(stage))) context.addIssue({ code: 'custom', path: ['stages'], message: 'ORIGINAL_PROTOTYPE cannot silently require a reference lock' });
+      return;
+    }
+    const designStages = value.stages.filter((stage) => !['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW', 'FACTORY_EVAL'].includes(stage));
+    if (!value.fullGreenlight || NEW_GAME_REVIEW_PATH.some((stage, index) => designStages[index] !== stage)) {
+      context.addIssue({ code: 'custom', path: ['stages'], message: 'REFERENCE_ADAPTATION requires a human-locked designated-reference path' });
     }
     if (value.stages.some((stage) => NEW_GAME_FORBIDDEN_IDEATION_STAGES.has(stage))) {
-      context.addIssue({ code: 'custom', path: ['stages'], message: 'NEW_GAME reference mode forbids agent ideation and prototype tournament stages' });
+      context.addIssue({ code: 'custom', path: ['stages'], message: 'REFERENCE_ADAPTATION forbids agent ideation and prototype tournament stages' });
     }
     return;
   }
   if (!value.targetRunId) context.addIssue({ code: 'custom', path: ['targetRunId'], message: 'targetRunId is required for an existing-game request' });
+  if (value.supportDecision !== 'SUPPORTED' && JSON.stringify(value.stages) !== JSON.stringify(['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW'])) context.addIssue({ code: 'custom', path: ['stages'], message: 'unsupported existing games must stop at business and production-line review' });
   if (value.fullGreenlight) context.addIssue({ code: 'custom', path: ['fullGreenlight'], message: 'Existing-game requests must not default to full greenlight' });
   if (value.stages.includes('GREENLIGHT_GATE')) context.addIssue({ code: 'custom', path: ['stages'], message: 'Existing-game routes must not include GREENLIGHT_GATE by default' });
+  if (value.repairRoute === 'formal-fixer' && JSON.stringify(value.stages.slice(0, 3)) !== JSON.stringify(['QA', 'FIX', 'QA'])) {
+    context.addIssue({ code: 'custom', path: ['stages'], message: 'formal-fixer routes must begin with QA → FIX → QA' });
+  }
   const authorizedReviews = new Set(value.reviewEscalations.map((decision) => decision.review));
   for (const review of OptionalReviewStageSchema.options) {
     if (value.stages.includes(review) && !authorizedReviews.has(review)) context.addIssue({ code: 'custom', path: ['stages'], message: `${review} requires a corresponding agent escalation` });
@@ -254,7 +314,7 @@ export const DesignModeSchema = z.enum(['reference_reskin', 'prototype_tournamen
 export type DesignMode = z.infer<typeof DesignModeSchema>;
 export const RuntimeNameSchema = z.enum(['web-lite', 'cocos-3d']);
 export type RuntimeName = z.infer<typeof RuntimeNameSchema>;
-export const TemplateNameSchema = z.enum(['idle-shop-v1', 'spatial-shop-v1', 'spatial-shop-3d-v1']);
+export const TemplateNameSchema = z.enum(['idle-shop-v1', 'spatial-shop-v1', 'spatial-shop-3d-v1', 'cut-stack-dodge-v1']);
 export type TemplateName = z.infer<typeof TemplateNameSchema>;
 
 const SPATIAL_SHOP_TEMPLATES = new Set<TemplateName>(['spatial-shop-v1', 'spatial-shop-3d-v1']);
@@ -262,21 +322,30 @@ const TEMPLATE_RUNTIME: Record<TemplateName, RuntimeName> = {
   'idle-shop-v1': 'web-lite',
   'spatial-shop-v1': 'web-lite',
   'spatial-shop-3d-v1': 'cocos-3d',
+  'cut-stack-dodge-v1': 'web-lite',
 };
 
-export const SeedSchema = z.object({
+export const SeedSchema = z.preprocess((raw) => {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return raw;
+  const value = raw as Record<string, unknown>;
+  return value.designMode === undefined
+    ? { ...value, designMode: value.referenceMechanics !== undefined ? 'reference_reskin' : 'prototype_tournament' }
+    : value;
+}, z.object({
   title: z.string().min(1),
   theme: z.string().min(1),
+  /** Optional only for legacy fixtures; new runs should declare identity. */
+  identity: GameSeedIdentitySchema.optional(),
   runtime: RuntimeNameSchema.default('web-lite'),
   template: TemplateNameSchema,
-  designMode: DesignModeSchema.default('reference_reskin'),
+  designMode: DesignModeSchema,
   referenceMechanics: ReferenceMechanicSpecSchema.optional(),
   spatialShop: SpatialShopSpecSchema.optional(),
   targetPlatforms: AllTargetMiniGamePlatformsSchema.default(() => [...TARGET_MINIGAME_PLATFORMS]),
   status: z.literal('DESIGN_REJECTED').optional(),
   purpose: z.literal('regression_fixture').optional(),
   preferences: z.record(z.string(), z.unknown()).default({}),
-}).superRefine((value, context) => {
+})).superRefine((value, context) => {
   if ((value.status === 'DESIGN_REJECTED') !== (value.purpose === 'regression_fixture')) context.addIssue({ code: 'custom', message: 'DESIGN_REJECTED and regression_fixture must be declared together' });
   if (value.designMode === 'reference_reskin' && !value.referenceMechanics) context.addIssue({ code: 'custom', path: ['referenceMechanics'], message: 'referenceMechanics is required because agents do not invent games in reference_reskin mode' });
   if (value.designMode === 'prototype_tournament' && value.referenceMechanics) context.addIssue({ code: 'custom', path: ['referenceMechanics'], message: 'referenceMechanics may only be used in reference_reskin mode' });
@@ -329,6 +398,8 @@ export const CompetitorResearchSchema = z.object({
     evidence: z.array(z.string().trim().min(1)),
     createdAt: z.string().datetime(),
   }).strict()).default([]),
+  /** Optional for legacy reports; required by current research prompts for new runs. */
+  failurePressureContract: z.lazy(() => FailurePressureContractSchema).optional(),
 });
 export type CompetitorResearch = z.infer<typeof CompetitorResearchSchema>;
 
@@ -432,7 +503,7 @@ export const GreenlightDecisionSchema = z.object({
 export type GreenlightDecision = z.infer<typeof GreenlightDecisionSchema>;
 
 export const GameBlueprintSchema = z.object({
-  schemaVersion: z.literal(1), gameId: z.string(), title: z.string(), theme: z.string(), runtime: RuntimeNameSchema, template: TemplateNameSchema,
+  schemaVersion: z.literal(1), gameId: z.string(), canonicalGameId: z.string().trim().min(1).optional(), variantId: z.string().trim().min(1).optional(), identityManifestHash: z.string().regex(/^[a-f0-9]{64}$/iu).optional(), title: z.string(), theme: z.string(), runtime: RuntimeNameSchema, template: TemplateNameSchema,
   designMode: DesignModeSchema.default('prototype_tournament'), referenceMechanics: ReferenceMechanicSpecSchema.optional(),
   gameplayRevision: GameplayRevisionReferenceSchema.optional(),
   spatialShop: SpatialShopSpecSchema.optional(),
@@ -489,8 +560,29 @@ export type ReleaseManifest = z.infer<typeof ReleaseManifestSchema>;
 const TokenUsageSchema = z.object({ inputTokens: z.number().int().nonnegative(), outputTokens: z.number().int().nonnegative(), totalTokens: z.number().int().nonnegative() });
 export const StageRecordSchema = z.object({ stage: StageNameSchema, status: ExecutionStatusSchema, startedAt: z.string().nullable(), finishedAt: z.string().nullable(), attempts: z.number().int().nonnegative(), inputArtifacts: z.array(z.string()), outputArtifacts: z.array(z.string()), errors: z.array(z.string()), evidence: z.array(z.string()), failureReason: z.string().optional(), providerCalls: z.object({ agent: z.number().int().nonnegative(), image: z.number().int().nonnegative() }).default({ agent: 0, image: 0 }), tokenUsage: TokenUsageSchema.default({ inputTokens: 0, outputTokens: 0, totalTokens: 0 }) });
 export type StageRecord = z.infer<typeof StageRecordSchema>;
-export const RunStateSchema = z.object({ schemaVersion: z.literal(1), runId: z.string(), runKind: z.enum(['game', 'action-experiment']).default('game'), stage: StageNameSchema, status: ExecutionStatusSchema, readiness: RunReadinessSchema.default('IN_PROGRESS'), createdAt: z.string(), updatedAt: z.string(), fixAttempts: z.number().int().nonnegative(), prototypeBatch: z.number().int().min(1).max(2).default(1), providerMode: z.enum(['mock', 'live-art', 'codex-account']), codexThreadId: z.string().optional(), failureReason: z.string().optional(), stages: z.record(z.string(), StageRecordSchema), transitionHistory: z.array(z.object({ from: StageNameSchema, to: StageNameSchema, reason: z.string().trim().min(1), at: z.string().datetime(), runId: z.string().trim().min(1).optional() }).strict()).default([]) });
+export const RunStateSchema = z.object({ schemaVersion: z.literal(1), runId: z.string(), runKind: z.enum(['game', 'action-experiment']).default('game'), stage: StageNameSchema, status: ExecutionStatusSchema, readiness: RunReadinessSchema.default('IN_PROGRESS'), createdAt: z.string(), updatedAt: z.string(), fixAttempts: z.number().int().nonnegative(), prototypeBatch: z.number().int().min(1).max(2).default(1), providerMode: z.enum(['mock', 'live-art', 'codex-account']), codexThreadId: z.string().optional(), failureReason: z.string().optional(), canonicalGameId: z.string().trim().min(1).optional(), variantId: z.string().trim().min(1).optional(), identityManifestHash: z.string().regex(/^[a-f0-9]{64}$/iu).optional(), stages: z.record(z.string(), StageRecordSchema), transitionHistory: z.array(z.object({ from: StageNameSchema, to: StageNameSchema, reason: z.string().trim().min(1), at: z.string().datetime(), runId: z.string().trim().min(1).optional() }).strict()).default([]) });
 export type RunState = z.infer<typeof RunStateSchema>;
+/** Small, operator-facing projection used by `factory runs` and operating
+ * status. It deliberately omits provider calls, tokens and artifact payloads
+ * so a run list stays safe and actionable. */
+export const OperatorRunSummarySchema = z.object({
+  schemaVersion: z.literal(1),
+  runId: z.string().trim().min(1),
+  runKind: z.enum(['game', 'action-experiment']),
+  status: ExecutionStatusSchema,
+  readiness: RunReadinessSchema,
+  stage: StageNameSchema,
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  canonicalGameId: z.string().trim().min(1).optional(),
+  variantId: z.string().trim().min(1).optional(),
+  nextAction: z.string().trim().min(1),
+  waitReason: z.string().trim().min(1).nullable(),
+  nextCommand: z.string().trim().min(1),
+  reviewArtifacts: z.array(z.string().trim().min(1)).default([]),
+  decisionCommandTemplate: z.string().trim().min(1).nullable().default(null),
+}).strict();
+export type OperatorRunSummary = z.infer<typeof OperatorRunSummarySchema>;
 
 export * from './open-source-research.js';
 export * from './formal-prototype-constraints.js';
@@ -498,3 +590,8 @@ export * from './ui-animation-standard.js';
 export * from './hybrid-3d-assets.js';
 export * from './generated-alpha-validation.js';
 export * from './research-sandbox.js';
+export * from './reference-recording.js';
+export * from './reference-level-runtime.js';
+export * from './reference-resolution.js';
+export * from './cost-budget-authorization.js';
+export * from './game-identity.js';

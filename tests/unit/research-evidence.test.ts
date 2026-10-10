@@ -32,6 +32,13 @@ describe('competitor research evidence boundary', () => {
         { sourceId: 's3', kind: 'url', locator: 'https://reference.example/c', title: 'C listing', retrievedAt: new Date().toISOString(), contentHash: 'c'.repeat(64) },
       ],
       claims: [{ id: 'claim-1', statement: 'Observed loop', status: 'OBSERVED', sourceRefs: ['s1'], sourceHashes: ['a'.repeat(64)], confidence: 1, evidence: ['s1'], createdAt: new Date().toISOString() }],
+      failurePressureContract: {
+        schemaVersion: 1,
+        purpose: 'Compare pressure patterns without copying expression.',
+        evidence: [{ id: 'e1', competitor: 'A', sourceRefs: ['s1'], observed: ['A uses a short repeatable pressure loop.'], inferred: [], applicability: 'adapt', applicabilityRationale: 'The pacing pattern fits the target but expression must remain original.', rejectExpression: ['names', 'art direction', 'tuning values'], confidence: 'high' }],
+        rules: [{ id: 'r1', pressureType: 'timing', trigger: 'A timing window closes.', playerSignal: 'A visible countdown or state change.', escalation: 'Windows become shorter after success.', failureOutcome: 'The attempt ends and can be retried.', attribution: 'The player can link failure to a late action.', recovery: 'Retry starts quickly.', sourceEvidenceRefs: ['e1'], implementationImplications: ['Show an early warning and a readable recovery affordance.'] }],
+        noCopyBoundary: ['Do not copy names, assets, UI, content, or tuning values.'],
+      },
     }, { requireSources: true });
     expect(checked.passed).toBe(true);
   });

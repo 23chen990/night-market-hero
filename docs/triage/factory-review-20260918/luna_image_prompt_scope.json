@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_image_prompt_scope",
+  "role": "FactoryMaintainer",
+  "route": "shared-factory",
+  "repository": "/Users/kker/Documents/ChatGPT/妖怪夜市",
+  "ownership": [
+    "src/providers/codex-imagegen.ts",
+    "src/core/asset-definitions.ts",
+    "tests/unit/codex-imagegen-provider.test.ts",
+    "tests/unit/asset-definitions.test.ts (new if useful)"
+  ],
+  "triagePath": "docs/triage/factory-review-20260918/triage.json",
+  "reproductionMatrixPath": "docs/triage/factory-review-20260918/reproduction-matrix.json",
+  "findings": [
+    "assetTask injects bright pastel side-on low-poly 3D into every reference_reskin, ignoring each game style lock. It bans dark palettes even if locked.",
+    "previewTask forces stall/shop composition across all games. cutStackAssets embeds 符刃 and 雾夜 trial ground specific to this example game."
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Preserve existing edits and do not revert others. Modify only your owned shared factory files; never modify runs/*/workspace.",
+    "Use test-driven-development skill; write behavioral red tests against generated task text, then minimal changes.",
+    "Derive prompts from the current game blueprint and locked style data, without hardcoded reference aesthetic or example-game theme. Preserve original expression and generic line-specific roles. Do not remove legitimate user-approved styles from the style lock.",
+    "Art direction previews should describe the actual direction content without assuming a shop/stall. Keep preview intent clearly distinct from runtime assets.",
+    "For transparent asset roles, prompts must explicitly require genuine alpha-capable PNG/WebP, not a checkerboard preview. Keep background roles appropriate. Existing downstream quality verification should be reused, not bypassed.",
+    "Do not invoke image generation; verify task artifacts generated into temporary test directories.",
+    "Return only a FactoryRepairResultSchema-validated JSON at outputPath with red/green tests and remaining gaps.",
+    "Final review follow-up within the same ownership: assetTask currently omits locked characterStyle/environmentStyle/uiStyle and styleLock.kept. Include the applicable locked visual fields so summary/palette alone cannot lose camera or material instructions. Cut-stack role purposes should not force side-on when a locked direction specifies perspective; use the locked viewpoint instead, and do not prescribe first-level-only finish content. Add behavioral tests using distinct camera/character/environment/UI and kept fields.",
+    "Since this bridge currently accepts and names only .png outputs, request genuinely transparent PNG, not an unsupported WebP alternative. Keep alpha and checkerboard requirements. Preserve the initial RED/GREEN evidence in the final result, rerun owned tests; typecheck can be pending on the other agent until root integration."
+  ],
+  "acceptanceChecks": [
+    "Two different reference-reskin games with distinct locked styles produce task text respecting each; unrelated pastel/dark bans and example title cannot leak.",
+    "Cut-stack generic asset vocabulary remains unchanged by id; its purpose descriptions do not prescribe 符刃夜行 setting.",
+    "Non-shop preview directions do not receive forced stalls.",
+    "Transparent roles explicitly demand meaningful alpha; background is not incorrectly forced transparent.",
+    "Existing provider tests, new regression tests and typecheck pass."
+  ],
+  "omittedContext": [
+    "整段会话",
+    "参考媒体及用户文件",
+    "无关生成游戏源码"
+  ],
+  "outputPath": "docs/triage/factory-review-20260918/luna-image-result.json"
+}

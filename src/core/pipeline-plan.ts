@@ -1,4 +1,4 @@
-import { PipelineModeSchema, PipelinePlanSchema, type PipelineMode, type PipelinePlan } from '../schemas/pipeline-plan.js';
+import { PipelineModeSchema, PipelinePlanSchema, PipelineRigorSchema, type PipelineMode, type PipelinePlan, type PipelineRigor } from '../schemas/pipeline-plan.js';
 import { StageNameSchema, type StageName } from '../schemas/index.js';
 
 export { PipelinePlanSchema, PipelineModeSchema } from '../schemas/pipeline-plan.js';
@@ -87,11 +87,62 @@ const FAST_SKIPPED = [
   'BUILD_3_PROTOTYPES', 'PLAYTEST_TOURNAMENT', 'WINNER_SELECTION',
 ];
 
+/** The preview lane proves only the reference-driven core loop. Everything
+ * below is still available to an explicit release/full-validation run, but it
+ * cannot quietly become part of the preview's success claim. */
+const REPLICA_PREVIEW_DEFERRED = [
+  'BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW', 'FACTORY_EVAL', 'PRODUCTION_COST_REVIEW', 'OPEN_SOURCE_RESEARCH',
+  'IAA_MONETIZATION_REVIEW', 'IAA_REVIEW', 'GREENLIGHT_GATE', 'EXPERIENCE_CONTRACT', 'EXPERIENCE_HYPOTHESIS',
+  'CONTENT_EXPANSION', 'UI_SKELETON', 'ART_DIRECTIONS', 'WAITING_FOR_ART_APPROVAL', 'STYLE_LOCK',
+  'ASSETS', 'WAITING_FOR_CODEX_IMAGEGEN', 'PRESENTATION_QA', 'SUPPLY_CHAIN_QA', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'PERCEPTUAL_QA', 'VISUAL_EVIDENCE_QA',
+  'CONTENT_VARIATION_QA', 'QUALITY_BASELINE_QA', 'ORIGINALITY_REVIEW', 'CERTIFICATION', 'COST_GATE',
+  'PLATFORM_ADAPTER_QA', 'TARGET_PLATFORM_QA', 'RELEASE_CANDIDATE', 'BLIND_PLAYTEST_QA',
+  'ACCEPTANCE_REVIEW', 'RELEASE', 'LIVE_MONITORING', 'LIVE_VERIFIED', 'LAUNCH_METRICS',
+];
+
+export const REPLICA_PREVIEW_GUIDES = [
+  { stage: 'REFERENCE_DEEP_RESEARCH', purpose: 'Bind the reference to verified, run-scoped behavior evidence and reconstruct any verified gameplay recording.', inputs: ['input/seed.yaml', 'reference-evidence/incoming/'], outputs: ['artifacts/reference-evidence-pack.json', 'artifacts/reference-failure-pressure-contract.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-frame-manifest.json (when recording)', 'artifacts/reference-level-reconstruction.json (when recording)', 'artifacts/reference-level-implementation-contract.json (when recording)'], evidence: ['verified source hash', 'observation/inference/unknown separation', 'source-bound failure pressure with signal, escalation, attribution and recovery', 'recording frame/timeline/semantic-level contract when recording'] },
+  { stage: 'REFERENCE_MECHANIC_LOCK', purpose: 'Freeze the generic mechanic relationships and the originality boundary.', inputs: ['input/seed.yaml', 'artifacts/reference-evidence-pack.json'], outputs: ['artifacts/reference-mechanic-spec.json'], evidence: ['human mechanic lock', 'maximum core-mechanic fidelity', 'expression isolation'] },
+  { stage: 'WAITING_FOR_REFERENCE_APPROVAL', purpose: 'Ask the owner to approve the exact mechanic lock before implementation.', inputs: ['artifacts/reference-mechanic-spec.json'], outputs: ['human/reference-decision.yaml'], evidence: ['explicit APPROVE or REJECT'] },
+  { stage: 'BLUEPRINT', purpose: 'Translate the locked reference behavior into an implementation blueprint without inventing a new game.', inputs: ['artifacts/reference-mechanic-spec.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-failure-pressure-contract.json', 'artifacts/open-source-research.json'], outputs: ['artifacts/game-blueprint.json'], evidence: ['blueprint schema', 'mechanic and failure-pressure traceability', 'open-source research persisted before blueprint', 'original expression fields'] },
+  { stage: 'PRODUCT_EXPERIENCE_CONTRACT', purpose: 'Translate every reference behavior and recording-level semantic check into exact object/state/phone-viewport Builder and QA cases.', inputs: ['artifacts/reference-fidelity-contract.json', 'artifacts/reference-level-implementation-contract.json (when recording)', 'artifacts/experience-contract.json'], outputs: ['artifacts/product-experience-contract.json'], evidence: ['reference check IDs', 'recording semantic object/action/relation IDs', 'exact branch matrix', 'mobile viewports', 'negative assertions'] },
+  { stage: 'CORE_SPEC_FROZEN', purpose: 'Freeze the preview acceptance dimensions before Builder work.', inputs: ['artifacts/game-blueprint.json', 'artifacts/reference-fidelity-contract.json'], outputs: ['artifacts/core-spec-lock.json'], evidence: ['core-loop order', 'input/state transitions', 'failure/recovery', 'feedback timing bands'] },
+  { stage: 'FULL_BUILD', purpose: 'Build one playable reference-driven candidate in this run workspace and implement the complete semantic recording contract when one exists.', inputs: ['artifacts/game-blueprint.json', 'artifacts/core-spec-lock.json', 'artifacts/reference-level-implementation-contract.json (when recording)', 'artifacts/reference-level-runtime-data.json (when recording)'], outputs: ['artifacts/reference-level-runtime-data.json (when recording)', 'artifacts/build-report.json', 'workspace/game/dist/'], evidence: ['tests', 'typecheck', 'web build', 'runtime entrypoint', 'recording checkpoint/object/placement/relation/action/camera/terminal/replay wiring'] },
+  { stage: 'QA', purpose: 'Run deterministic and natural-input checks against the locked core loop, then independently compare a recording-driven candidate trace with the reconstruction contract.', inputs: ['artifacts/build-report.json', 'artifacts/core-spec-lock.json', 'artifacts/reference-level-reconstruction.json (when recording)', 'artifacts/reference-level-implementation-contract.json (when recording)', 'artifacts/reference-level-runtime-data.json (when recording)'], outputs: ['artifacts/qa-report.json', 'artifacts/runtime-product-gates.json', 'artifacts/reference-level-runtime-trace.json (when recording)', 'artifacts/reference-level-comparison-gate.json (when recording)'], evidence: ['core loop trace', 'failure/recovery trace', 'player-visible feedback', 'replay path', 'recording checkpoint/object/placement/relation/action/camera/terminal/replay comparison', 'bounded formal FIX retry on comparison failure'] },
+  { stage: 'WAITING_FOR_HUMAN_PLAYTEST', purpose: 'Pause on the hash-bound core demo until the owner confirms the reference behavior and basic feel are worth expanding.', inputs: ['artifacts/build-report.json', 'artifacts/reference-fidelity-gate.json'], outputs: ['human/playtest-acceptance.json'], evidence: ['CORE_DEMO natural play', 'candidate build hash', 'explicit approve or reject'] },
+  { stage: 'COMPLETED', purpose: 'Mark a preview candidate complete while clearly keeping release gates deferred.', inputs: ['artifacts/qa-report.json'], outputs: ['state.json'], evidence: ['preview QA passed', 'release deferred marker'] },
+];
+
+/** Entry stages shared by the request router and the frozen reference preview
+ * plan. Keeping this projection beside the actual plan prevents the front door
+ * from promising a shorter or different preview than the run will execute. */
+export const REPLICA_PREVIEW_STAGES: StageName[] = REPLICA_PREVIEW_GUIDES.map((guide) => StageNameSchema.parse(guide.stage));
+
+const ORIGINAL_PROTOTYPE_ENTRY_STAGES: StageName[] = [
+  'COMPETITOR_RESEARCH',
+  'IDEA_GENERATION',
+  'LOW_COST_FILTER',
+  'PROTOTYPE_SELECTION',
+  'BUILD_3_PROTOTYPES',
+  'PLAYTEST_TOURNAMENT',
+  'WINNER_SELECTION',
+  'WAITING_FOR_PROTOTYPE_APPROVAL',
+];
+
+export function pipelineModeForRigor(rigorValue: PipelineRigor, designMode: 'reference_reskin' | 'prototype_tournament'): PipelineMode {
+  const rigor = PipelineRigorSchema.parse(rigorValue);
+  if (rigor === 'full') return 'full-validation';
+  if (rigor === 'standard') return 'fast-reskin';
+  if (designMode !== 'reference_reskin') throw new Error('minimal currently requires reference_reskin; original prototypes use standard or full');
+  return 'replica-preview';
+}
+
 // These are the minimum evidence-producing stages for any release lane.  The
 // five completion gates are deliberately explicit so a plan cannot describe a
 // successful build while omitting normal-flow, visual, variation or human
 // evidence.
 const RELEASE_CRITICAL = ['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW', 'FACTORY_EVAL', 'OPEN_SOURCE_RESEARCH', 'FULL_BUILD', 'QA', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA', 'QUALITY_BASELINE_QA', 'ORIGINALITY_REVIEW', 'CERTIFICATION', 'COST_GATE', 'PLATFORM_ADAPTER_QA', 'TARGET_PLATFORM_QA', 'RELEASE_CANDIDATE', 'WAITING_FOR_HUMAN_PLAYTEST', 'RELEASE'];
+RELEASE_CRITICAL.splice(RELEASE_CRITICAL.indexOf('VISUAL_EVIDENCE_QA'), 0, 'PRODUCT_EXPERIENCE_CONTRACT', 'PERCEPTUAL_QA');
 
 /** Branch-independent order used for plan validation (the enum declaration is
  * intentionally grouped by feature and is not a workflow ordering). */
@@ -105,14 +156,14 @@ export const CANONICAL_STAGE_ORDER: StageName[] = [
   'WAITING_FOR_ACTION_APPROVAL', 'ACTION_EXPERIMENT_APPROVED', 'ACTION_EXPERIMENT_REFACTOR',
   'ACTION_EXPERIMENT_KILLED', 'OPEN_SOURCE_RESEARCH', 'PRODUCTION_COST_REVIEW',
   'IAA_MONETIZATION_REVIEW', 'IAA_REVIEW', 'GREENLIGHT_GATE', 'NOT_GREENLIT', 'BLUEPRINT',
-  'EXPERIENCE_CONTRACT', 'EXPERIENCE_HYPOTHESIS', 'GRAYBOX_CORE', 'CORE_SPEC_FROZEN',
+  'EXPERIENCE_CONTRACT', 'PRODUCT_EXPERIENCE_CONTRACT', 'EXPERIENCE_HYPOTHESIS', 'GRAYBOX_CORE', 'CORE_SPEC_FROZEN',
   'FEEL_PROTOTYPE', 'NATURAL_PLAY_QA', 'EXPERIENCE_REVIEW', 'FEEL_REPAIR',
   'NARRATIVE_CONTRACT', 'STORY_VERTICAL_SLICE', 'CHOICE_CONSEQUENCE_QA', 'NARRATIVE_REVIEW',
   'REPLAY_VALUE_QA', 'SYSTEMS_CONTRACT', 'SYSTEMS_PROTOTYPE', 'STRATEGY_QA', 'PROGRESSION_REVIEW',
   'PUZZLE_CONTRACT', 'PUZZLE_PROTOTYPE', 'PUZZLE_FAIRNESS_QA', 'PUZZLE_REVIEW',
   'CONTENT_EXPANSION', 'UI_SKELETON', 'ART_DIRECTIONS', 'WAITING_FOR_CODEX_IMAGEGEN',
   'WAITING_FOR_ART_APPROVAL', 'STYLE_LOCK', 'ASSETS', 'POLISH_VERTICAL_SLICE', 'FULL_BUILD',
-  'BUILD', 'QA', 'FIX', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'VISUAL_EVIDENCE_QA',
+  'BUILD', 'QA', 'FIX', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'PERCEPTUAL_QA', 'VISUAL_EVIDENCE_QA',
   'CONTENT_VARIATION_QA', 'QUALITY_BASELINE_QA', 'PRESENTATION_QA', 'SUPPLY_CHAIN_QA',
   'ORIGINALITY_REVIEW', 'CERTIFICATION', 'COST_GATE', 'PLATFORM_ADAPTER_QA', 'TARGET_PLATFORM_QA',
   'RELEASE_CANDIDATE', 'BLIND_PLAYTEST_QA', 'WAITING_FOR_HUMAN_PLAYTEST',
@@ -120,8 +171,32 @@ export const CANONICAL_STAGE_ORDER: StageName[] = [
   'RELEASE', 'LIVE_MONITORING', 'LIVE_VERIFIED', 'LAUNCH_METRICS', 'ABANDONED', 'COMPLETED', 'FAILED',
 ];
 
-export function buildPipelinePlan(input: { mode?: PipelineMode; designMode: 'reference_reskin' | 'prototype_tournament'; productionLine: string; primaryProfile?: string; presentationQualityRequired?: boolean; supplyChainRequired?: boolean; blindPlaytestRequired?: boolean }): PipelinePlan {
-  const mode = PipelineModeSchema.parse(input.mode ?? 'fast-reskin');
+export function buildPipelinePlan(input: { mode?: PipelineMode; rigor?: PipelineRigor; designMode: 'reference_reskin' | 'prototype_tournament'; productionLine: string; primaryProfile?: string; presentationQualityRequired?: boolean; supplyChainRequired?: boolean; blindPlaytestRequired?: boolean }): PipelinePlan {
+  const rigorMode = input.rigor ? pipelineModeForRigor(input.rigor, input.designMode) : undefined;
+  if (input.mode && rigorMode && input.mode !== rigorMode) throw new Error('rigor conflicts with the requested pipeline mode');
+  const requestedMode = input.mode ?? rigorMode ?? (input.designMode === 'reference_reskin' ? 'replica-preview' : 'fast-reskin');
+  const mode = PipelineModeSchema.parse(requestedMode);
+  const rigor = mode === 'replica-preview' ? 'minimal' : mode === 'fast-reskin' ? 'standard' : 'full';
+  if (mode === 'replica-preview' && input.designMode !== 'reference_reskin') throw new Error('replica-preview requires reference_reskin design mode');
+  if (mode === 'replica-preview') {
+    const mandatoryStages = REPLICA_PREVIEW_STAGES;
+    const releaseCriticalStages = mandatoryStages.filter((stage) => stage !== 'COMPLETED');
+    return PipelinePlanSchema.parse({
+      schemaVersion: 1,
+      mode,
+      rigor,
+      designMode: input.designMode,
+      productionLine: input.productionLine,
+      mandatoryStages,
+      skippedStages: [...FAST_SKIPPED],
+      optionalStages: ['FIX'],
+      deferredStages: REPLICA_PREVIEW_DEFERRED,
+      stageGuides: REPLICA_PREVIEW_GUIDES,
+      humanApprovalSessions: ['GO_NO_GO', 'CORE_DEMO', 'FINAL_RELEASE'],
+      releaseCriticalStages,
+      rationale: 'Use the compact reference-preview lane to verify the reference behavior and one playable candidate. Business, open-source, platform, originality, human-release and packaging gates remain explicit deferred work for full-validation.',
+    });
+  }
   const profileStages = PROFILE_STAGES[input.primaryProfile ?? ''] ?? [];
   // The fast lane relies on the validated mother-template contract; specialist
   // profile stages are still recorded as optional evidence and can be promoted
@@ -137,11 +212,11 @@ export function buildPipelinePlan(input: { mode?: PipelineMode; designMode: 'ref
     // `prototype_tournament` is an explicit legacy/experimental entry point.
     // It still executes its bounded tournament in the fast lane, so the plan
     // must describe those stages instead of claiming they were skipped.
-    ...(input.designMode === 'prototype_tournament' ? ['COMPETITOR_RESEARCH', 'IDEA_GENERATION', 'LOW_COST_FILTER', 'PROTOTYPE_SELECTION', 'BUILD_3_PROTOTYPES', 'PLAYTEST_TOURNAMENT', 'WINNER_SELECTION', 'WAITING_FOR_PROTOTYPE_APPROVAL'] : []),
+    ...(input.designMode === 'prototype_tournament' ? ORIGINAL_PROTOTYPE_ENTRY_STAGES : []),
     'OPEN_SOURCE_RESEARCH',
-    'IAA_REVIEW', 'BLUEPRINT', 'EXPERIENCE_CONTRACT', 'EXPERIENCE_HYPOTHESIS', 'CORE_SPEC_FROZEN', ...profileMandatory,
+    'IAA_REVIEW', 'BLUEPRINT', 'EXPERIENCE_CONTRACT', 'PRODUCT_EXPERIENCE_CONTRACT', 'EXPERIENCE_HYPOTHESIS', 'CORE_SPEC_FROZEN', ...profileMandatory,
     'CONTENT_EXPANSION', 'UI_SKELETON', 'ART_DIRECTIONS', 'WAITING_FOR_ART_APPROVAL', 'STYLE_LOCK', 'ASSETS',
-    'FULL_BUILD', 'QA', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA', 'QUALITY_BASELINE_QA',
+    'FULL_BUILD', 'QA', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'PERCEPTUAL_QA', 'VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA', 'QUALITY_BASELINE_QA',
     ...(input.presentationQualityRequired ? ['PRESENTATION_QA'] : []),
     ...(input.supplyChainRequired ? ['SUPPLY_CHAIN_QA'] : []),
     'ORIGINALITY_REVIEW', 'CERTIFICATION', 'COST_GATE', 'PLATFORM_ADAPTER_QA', 'TARGET_PLATFORM_QA', 'RELEASE_CANDIDATE',
@@ -158,11 +233,14 @@ export function buildPipelinePlan(input: { mode?: PipelineMode; designMode: 'ref
   return PipelinePlanSchema.parse({
     schemaVersion: 1,
     mode,
+    rigor,
     designMode: input.designMode,
     productionLine: input.productionLine,
     mandatoryStages,
     skippedStages,
     optionalStages: [...new Set([...profileOptional, ...optionalGovernance])].filter((stage) => !mandatoryStages.includes(stage)),
+    deferredStages: [],
+    stageGuides: [],
     humanApprovalSessions: ['GO_NO_GO', 'CORE_DEMO', 'FINAL_RELEASE'],
     releaseCriticalStages: [...new Set([
       ...RELEASE_CRITICAL,
@@ -189,7 +267,11 @@ export function validatePipelinePlan(value: unknown): PipelinePlan {
   validateNames(plan.mandatoryStages, 'mandatoryStages');
   validateNames(plan.skippedStages, 'skippedStages');
   validateNames(plan.optionalStages, 'optionalStages');
+  validateNames(plan.deferredStages, 'deferredStages');
   validateNames(plan.releaseCriticalStages, 'releaseCriticalStages');
+  for (const guide of plan.stageGuides) {
+    if (!StageNameSchema.safeParse(guide.stage).success) throw new Error(`stageGuides contains unknown stage ${guide.stage}`);
+  }
   if (plan.mandatoryStages.length === 0) throw new Error('pipeline plan must have mandatory stages');
   const order = new Map(CANONICAL_STAGE_ORDER.map((stage, index) => [stage, index]));
   const canonicalMandatory = plan.mandatoryStages.map((stage) => StageNameSchema.parse(stage));
@@ -199,11 +281,12 @@ export function validatePipelinePlan(value: unknown): PipelinePlan {
   return plan;
 }
 
-export function isStagePlanned(planValue: PipelinePlan, stageValue: StageName): 'mandatory' | 'optional' | 'skipped' | 'unlisted' {
+export function isStagePlanned(planValue: PipelinePlan, stageValue: StageName): 'mandatory' | 'optional' | 'skipped' | 'deferred' | 'unlisted' {
   const plan = PipelinePlanSchema.parse(planValue); const stage = StageNameSchema.parse(stageValue);
   if (plan.mandatoryStages.includes(stage)) return 'mandatory';
   if (plan.optionalStages.includes(stage)) return 'optional';
   if (plan.skippedStages.includes(stage)) return 'skipped';
+  if (plan.deferredStages.includes(stage)) return 'deferred';
   return 'unlisted';
 }
 
@@ -214,8 +297,10 @@ export function isStageMandatory(planValue: PipelinePlan, stage: string): boolea
 
 export type StageExecutionPolicy = {
   allowed: boolean;
-  classification: 'mandatory' | 'optional' | 'skipped' | 'unlisted' | 'legacy';
+  classification: 'mandatory' | 'optional' | 'skipped' | 'deferred' | 'unlisted' | 'legacy';
 };
+
+const FAILURE_ROUTE_STAGES = new Set<StageName>(['FEEL_REPAIR', 'FIX']);
 
 /**
  * Decide whether a stage may execute under the frozen plan.  A stage that is
@@ -227,6 +312,13 @@ export function stageExecutionPolicy(planValue: PipelinePlan | undefined, stageV
   const stage = StageNameSchema.parse(stageValue);
   if (!planValue) return options.legacyPlan ? { allowed: true, classification: 'legacy' } : { allowed: false, classification: 'unlisted' };
   const classification = isStagePlanned(planValue, stage);
+  // Repair stages are failure routes from planned stages. They are intentionally
+  // not part of the initial happy-path mandatory list, but a frozen plan must
+  // still allow the recorded repair loop to execute without silently widening
+  // the product pipeline.
+  if (classification === 'unlisted' && FAILURE_ROUTE_STAGES.has(stage)) {
+    return { allowed: true, classification: 'optional' };
+  }
   return { allowed: classification === 'mandatory' || classification === 'optional', classification };
 }
 

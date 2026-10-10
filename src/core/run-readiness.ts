@@ -16,7 +16,7 @@ export type RunReadinessInput = {
  * the release stage); active/waiting transitions otherwise reset it so stale
  * approvals cannot make a resumed run look shippable.
  */
-export function deriveRunReadiness(input: RunReadinessInput): RunReadiness {
+export function deriveRunReadiness(input: RunReadinessInput, evidence: { candidatePassed?: boolean; releasePassed?: boolean } = {}): RunReadiness {
   const parsedCurrent = input.readiness ? RunReadinessSchema.safeParse(input.readiness) : undefined;
   const current = parsedCurrent?.success ? parsedCurrent.data : undefined;
 
@@ -35,21 +35,23 @@ export function deriveRunReadiness(input: RunReadinessInput): RunReadiness {
   const stageRecord = input.stages?.[input.stage];
   const stageCompleted = stageRecord?.status === 'completed';
   if (input.stage === 'FULL_BUILD' && stageCompleted) return 'IMPLEMENTATION_READY';
-  if (input.stage === 'RELEASE_CANDIDATE' && stageCompleted) return 'CANDIDATE_READY';
+  const productReadiness = evidence.candidatePassed
+    ? evidence.releasePassed && current === 'RELEASE_READY' ? 'RELEASE_READY' : 'CANDIDATE_READY'
+    : input.stages?.FULL_BUILD?.status === 'completed' ? 'IMPLEMENTATION_READY' : 'WAITING';
+  if (input.stage === 'RELEASE_CANDIDATE' && stageCompleted) return productReadiness;
 
   if (input.stage === 'RELEASE' && stageCompleted) {
-    return current === 'RELEASE_READY' ? 'RELEASE_READY' : 'CANDIDATE_READY';
+    return productReadiness;
   }
   if (input.stage === 'COMPLETED') {
-    if (current === 'RELEASE_READY' || current === 'CANDIDATE_READY') return current;
-    return 'CANDIDATE_READY';
+    return productReadiness;
   }
   if (input.status === 'waiting') return 'WAITING';
   return 'IN_PROGRESS';
 }
 
 /** Mutate a run-state-like object immediately before persistence. */
-export function normalizeRunReadiness<T extends RunReadinessInput>(state: T): T {
-  state.readiness = deriveRunReadiness(state);
+export function normalizeRunReadiness<T extends RunReadinessInput>(state: T, evidence: { candidatePassed?: boolean; releasePassed?: boolean } = {}): T {
+  state.readiness = deriveRunReadiness(state, evidence);
   return state;
 }

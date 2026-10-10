@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -90,5 +90,81 @@ describe('QAAgent evidence normalization', () => {
       expect(report.interactionContinuity?.passed).toBe(false);
       expect(JSON.parse(await readFile(path.join(runRoot, 'artifacts/interaction-continuity-report.json'), 'utf8')).passed).toBe(false);
     } finally { await rm(runRoot, { recursive: true, force: true }); }
+  });
+
+  it('writes a fail-closed runtime-product placeholder when the provider emits no natural flow', async () => {
+    const runRoot = await mkdtemp(path.join(os.tmpdir(), 'factory-qa-agent-placeholder-'));
+    await mkdir(path.join(runRoot, 'artifacts'), { recursive: true });
+    const provider: QAProvider = {
+      playtest: async () => ({
+        schemaVersion: 1,
+        passed: true,
+        checks: [{ name: 'stub-contract', passed: true, evidence: 'stub' }],
+        issues: [],
+        screenshots: [],
+        consoleLog: 'logs/console.log',
+        testedAt: new Date(0).toISOString(),
+      }),
+      playtestTournament: async () => ({}),
+      playtestActionMechanics: async () => ({}),
+    };
+    try {
+      await new QAAgent(provider, {} as RuntimeAdapter).run(path.join(runRoot, 'workspace', 'game'), runRoot, true);
+      const gate = JSON.parse(await readFile(path.join(runRoot, 'artifacts/runtime-product-gates.json'), 'utf8')) as { passed: boolean; runtimeWiredFiles: string[]; browserEvidence: string[] };
+      expect(gate.passed).toBe(false);
+      expect(gate.runtimeWiredFiles).toContain('runtime-product-gates.json:provider-evidence-missing');
+      expect(gate.browserEvidence).toContain('runtime-product-journey:missing');
+    } finally {
+      await rm(runRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('derives the runtime-product gate from a complete natural journey instead of the missing placeholder', async () => {
+    const runRoot = await mkdtemp(path.join(os.tmpdir(), 'factory-qa-agent-primary-'));
+    await mkdir(path.join(runRoot, 'artifacts'), { recursive: true });
+    await mkdir(path.join(runRoot, 'workspace', 'game'), { recursive: true });
+    await writeFile(path.join(runRoot, 'workspace', 'game', 'index.html'), '<!doctype html><title>game</title>');
+    const provider: QAProvider = {
+      playtest: async () => ({
+        schemaVersion: 1,
+        passed: true,
+        checks: [{ name: 'natural-flow-complete', passed: true, evidence: 'natural' }],
+        issues: [],
+        screenshots: ['screenshots/natural.png'],
+        consoleLog: 'logs/console.log',
+        testedAt: new Date(0).toISOString(),
+        naturalFlow: {
+          schemaVersion: 1,
+          startedFromReset: true,
+          actions: ['page.goto', 'page.click', 'page.reload', 'page.click'],
+          transitions: [
+            { name: 'produce', changed: true, evidence: 'inventory counter incremented' },
+            { name: 'settle', changed: true, evidence: 'settlement modal observed' },
+          ],
+          completion: 'settlement',
+          replayObserved: true,
+          forbiddenOperations: [],
+          screenshots: ['screenshots/natural.png'],
+          passed: true,
+          blockers: [],
+          runner: 'trusted-qa-runner',
+          observedAt: new Date(0).toISOString(),
+        },
+      }),
+      playtestTournament: async () => ({}),
+      playtestActionMechanics: async () => ({}),
+    };
+    try {
+      await new QAAgent(provider, {} as RuntimeAdapter).run(path.join(runRoot, 'workspace', 'game'), runRoot, true);
+      const gate = JSON.parse(await readFile(path.join(runRoot, 'artifacts/runtime-product-gates.json'), 'utf8')) as { passed: boolean; runtimeWiredFiles: string[]; browserEvidence: string[]; terminal: string[]; replay: string[] };
+      expect(gate.passed).toBe(true);
+      expect(gate.runtimeWiredFiles).not.toContain('runtime-product-gates.json:provider-evidence-missing');
+      expect(gate.runtimeWiredFiles).toContain('workspace/game/index.html');
+      expect(gate.browserEvidence).not.toContain('runtime-product-journey:missing');
+      expect(gate.terminal).toContain('settlement');
+      expect(gate.replay).toContain('replay');
+    } finally {
+      await rm(runRoot, { recursive: true, force: true });
+    }
   });
 });

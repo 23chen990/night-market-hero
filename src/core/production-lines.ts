@@ -90,11 +90,11 @@ const contracts: Record<ProductionLine, ProductionLineContract> = {
   'cut-stack-dodge': {
     line: 'cut-stack-dodge',
     primaryProfile: 'ACTION_FEEL',
-    interactionKernel: ['swipe or drag cut', 'contact segmentation', 'settled-body physics'],
-    contentTopology: ['stack recipe', 'cuttable targets', 'obstacle beat'],
-    progressionShell: ['tool reach upgrade', 'material variants', 'risk-reward order'],
+    interactionKernel: ['tap-flip or swipe/drag cut', 'sharp-edge contact segmentation', 'fixed-step settled-body physics'],
+    contentTopology: ['authored course recipe', 'cuttable targets and supports', 'hazard and finish beats'],
+    progressionShell: ['course sequence', 'material variants', 'risk-reward order'],
     status: 'stable',
-    representativeFlow: ['reset', 'perform three varied cuts', 'observe natural object drop', 'avoid one obstacle', 'fail once and retry'],
+    representativeFlow: ['reset', 'perform three varied cuts or flip contacts', 'observe natural object drop', 'encounter one obstacle', 'fail once and retry to settlement'],
     acceptanceDimensions: ['cut timing', 'drop trajectory', 'impact feedback', 'rhythm', 'retry friction'],
     requiredEvidence: ['natural input trace', 'before/after cut frames', 'drop and failure frames'],
   },
@@ -165,6 +165,18 @@ export function lockProductionLine(line: ProductionLine): LockedProductionLineCo
   return ProductionLineContractSchema.parse({ schemaVersion: 1, ...contract, lockedAt: new Date().toISOString() });
 }
 
+const templateLines: Readonly<Record<string, ProductionLine>> = {
+  'cut-stack-dodge-v1': 'cut-stack-dodge',
+  'idle-shop-v1': 'idle-management',
+  'spatial-shop-v1': 'idle-management',
+  'spatial-shop-3d-v1': 'idle-management',
+};
+
+/** An explicitly selected mother template is authoritative production-line evidence. */
+export function productionLineForTemplate(template: string): ProductionLine | undefined {
+  return templateLines[template];
+}
+
 export function inferProductionLine(profile: Pick<ExperienceProfileSelection, 'primary' | 'secondary'>): ProductionLine {
   if (profile.primary === 'NARRATIVE_AGENCY') return 'choice-life';
   if (profile.primary === 'PUZZLE_CLARITY') return 'rule-puzzle';
@@ -195,7 +207,7 @@ export function inferProductionLineDecisionFromText(value: string): ProductionLi
   const exploration = /(?:探索|开放区域|探险|探索发现|exploration|discovery|traversal)/iu.test(text);
   const puzzle = /(?:解谜|谜题|规则发现|推箱|消除|拼图|puzzle|sokoban|match-3)/iu.test(text);
   const narrative = /(?:剧情|叙事|故事|人物|角色关系|选择后果|结局|章节|narrative|story|dialogue)/iu.test(text);
-  const action = /(?:动作|手感|物理|碰撞|切割|射击|跳跃|移动|反弹|打击|action|feel|physics|collision)/iu.test(text);
+  const action = /(?:动作|手感|物理|碰撞|切割|切开|堆叠|躲避|跑酷|射击|跳跃|移动|反弹|打击|action|feel|physics|collision|cut|slice|stack|dodge|runner)/iu.test(text);
   if (unsupported) { signals.push('unsupported-product-shape'); return ProductionLineDecisionSchema.parse({ schemaVersion: 1, supportDecision: 'UNSUPPORTED', profile: social ? 'SOCIAL_EMOTION' : exploration ? 'EXPLORATION_DISCOVERY' : 'STRATEGIC_SYSTEM', line: null, detectedSignals: signals, reason: 'The request exceeds the default light-game production boundary.' }); }
   if (social) { signals.push('social-emotion'); return ProductionLineDecisionSchema.parse({ schemaVersion: 1, supportDecision: 'NEW_LINE_REQUIRED', profile: 'SOCIAL_EMOTION', line: null, detectedSignals: signals, reason: 'Social and relationship products need a separate moderation, privacy and relationship-state line.' }); }
   if (exploration) { signals.push('exploration-discovery'); return ProductionLineDecisionSchema.parse({ schemaVersion: 1, supportDecision: 'NEW_LINE_REQUIRED', profile: 'EXPLORATION_DISCOVERY', line: null, detectedSignals: signals, reason: 'Exploration products need a traversal and content-streaming line.' }); }

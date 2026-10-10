@@ -34,7 +34,7 @@ export const FACTORY_CONSTITUTION: FactoryConstitution = FactoryConstitutionSche
   'STATE_TRANSITION_AUDIT',
   'SIDE_EFFECT_JOURNAL',
   ],
-  maxAutomaticRepairAttempts: 2,
+  maxAutomaticRepairAttempts: 5,
   frozenAfterStage: 'CORE_SPEC_FROZEN',
   generatedAt: new Date(0).toISOString(),
 });
@@ -153,7 +153,7 @@ export function evaluateFactoryConstitution(input: GateInput): ConstitutionEvalu
   if (input.requireStageContracts) {
     const audits = Array.isArray(input.stageContracts) ? input.stageContracts : [];
     const byStage = new Map(audits.filter((item) => item && typeof item.stage === 'string').map((item) => [item.stage, item]));
-    const requiredStages = input.requiredStageContracts?.length ? input.requiredStageContracts : ['QA', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA', 'RELEASE_CANDIDATE', 'RELEASE'];
+    const requiredStages = input.requiredStageContracts?.length ? input.requiredStageContracts : ['QA', 'FINAL_PROFILE_QA', 'NORMAL_FLOW_QA', 'PERCEPTUAL_QA', 'VISUAL_EVIDENCE_QA', 'CONTENT_VARIATION_QA', 'RELEASE_CANDIDATE', 'RELEASE'];
     if (requiredStages.some((stage) => byStage.get(stage)?.passed !== true)) blockers.push('stage-contracts');
     const protectedOwners = new Set(['ResearchAgent', 'ProducerAgent', 'BuilderAgent', 'FixerAgent', 'QAAgent', 'ReleaseAgent', 'HumanReviewer']);
     const verifierIdentityMissing = requiredStages.some((stage) => {

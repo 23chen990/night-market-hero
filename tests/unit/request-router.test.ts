@@ -1,10 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { createFactory } from '../../src/factory.js';
+import { buildPipelinePlan } from '../../src/core/pipeline-plan.js';
 import { RequestRouteSchema } from '../../src/schemas/index.js';
 
+it('rejects persisted unsupported existing-game routes that try to build', () => {
+  const route = createFactory({ mode: 'mock', qaMode: 'stub' }).routeRequest({ request: '修复实时多人联机崩溃', targetRunId: 'existing' });
+  expect(() => RequestRouteSchema.parse({ ...route, stages: ['FULL_BUILD', 'QA'] })).toThrow(/review/u);
+});
+
 type RoutableFactory = ReturnType<typeof createFactory> & {
-  routeRequest(input: { request: string; targetRunId?: string }): {
+  routeRequest(input: { request: string; targetRunId?: string; rigor?: 'minimal' | 'standard' | 'full' }): {
     requestType: string;
+    entryLane: string;
     targetRunId: string | null;
     stages: string[];
     fullGreenlight: boolean;
@@ -21,6 +28,18 @@ function router() {
 }
 
 describe('RequestRouter', () => {
+  it('routes orphan-interactive-object audits through profile and perceptual gates', () => {
+    const route = router().routeRequest({ request: '检查一个关卡：每个危险、目标、平台、奖励、触发器、敌人或资源节点都必须可触碰、可绕行或用于恢复；孤立交互对象必须阻断构建', targetRunId: 'eval-existing' });
+    expect(route.experienceProfile.primary).toBe('ACTION_FEEL');
+    expect(route.stages).toEqual(expect.arrayContaining(['EXPERIENCE_CONTRACT', 'FEEL_PROTOTYPE', 'PERCEPTUAL_QA']));
+  });
+
+  it('routes decorative collider consistency audits through build and perceptual gates', () => {
+    const route = router().routeRequest({ request: '如果交互对象被标记为 decorative，就必须没有 gameplay collider，且视觉不能伪装成会导致失败的危险物', targetRunId: 'eval-existing' });
+    expect(route.experienceProfile.primary).toBe('ACTION_FEEL');
+    expect(route.stages).toEqual(expect.arrayContaining(['EXPERIENCE_CONTRACT', 'FEEL_PROTOTYPE', 'PERCEPTUAL_QA']));
+  });
+
   it.each([
     ['请创建一个新的妖怪夜市经营游戏', undefined, 'NEW_GAME'],
     ['调整已有游戏的顾客连击玩法', 'run-1', 'GAMEPLAY_REVISION'],
@@ -54,23 +73,84 @@ describe('RequestRouter', () => {
     });
 
     expect(route.requestType).toBe('NEW_GAME');
+    expect(route.entryLane).toBe('REFERENCE_ADAPTATION');
     expect(route.targetRunId).toBeNull();
   });
 
-  it('routes a new game through the designated-reference mechanic lock before IAA or art', () => {
+  it('routes a generic new game through the original prototype lane', () => {
     const route = router().routeRequest({ request: '做一个新的夜市经营小游戏' });
 
-    expect(route).toMatchObject({ requestType: 'NEW_GAME', targetRunId: null, fullGreenlight: true, reviewEscalations: [] });
-    expect(route.stages.slice(0, 2)).toEqual(['REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL']);
-    expect(route.stages).not.toEqual(expect.arrayContaining(['COMPETITOR_RESEARCH', 'IDEA_GENERATION', 'BUILD_3_PROTOTYPES', 'PLAYTEST_TOURNAMENT']));
-    expect(route.stages.indexOf('IAA_REVIEW')).toBeGreaterThan(route.stages.indexOf('WAITING_FOR_REFERENCE_APPROVAL'));
+    expect(route).toMatchObject({ requestType: 'NEW_GAME', entryLane: 'ORIGINAL_PROTOTYPE', targetRunId: null, fullGreenlight: false, reviewEscalations: [] });
+    const plan = buildPipelinePlan({ designMode: 'prototype_tournament', productionLine: 'idle-management', primaryProfile: route.experienceProfile.primary });
+    expect(route.pipelinePlan).toMatchObject({ mode: 'fast-reskin', designMode: 'prototype_tournament', rigor: 'standard' });
+    expect(route.stages).toEqual(plan.mandatoryStages);
+    expect(route.stages).toEqual(expect.arrayContaining(['BUILD_3_PROTOTYPES', 'PLAYTEST_TOURNAMENT', 'WINNER_SELECTION', 'WAITING_FOR_PROTOTYPE_APPROVAL']));
+    expect(route.stages).not.toEqual(expect.arrayContaining(['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL']));
+  });
+
+  it('routes an explicit reference request through the reference adaptation lane', () => {
+    const route = router().routeRequest({ request: '参考一款同类游戏的核心循环，但做原创题材和表达' });
+
+    expect(route).toMatchObject({ requestType: 'NEW_GAME', entryLane: 'REFERENCE_ADAPTATION', targetRunId: null, fullGreenlight: true });
+    expect(route.stages).toEqual(buildPipelinePlan({ designMode: 'reference_reskin', productionLine: 'idle-management' }).mandatoryStages);
+    expect(route.stages.slice(0, 3)).toEqual(['REFERENCE_DEEP_RESEARCH', 'REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL']);
+    expect(route.stages).not.toEqual(expect.arrayContaining(['IDEA_GENERATION', 'BUILD_3_PROTOTYPES', 'PLAYTEST_TOURNAMENT']));
+  });
+
+  it('keeps an unbound reference revision in the existing-game category', () => {
+    expect(() => router().routeRequest({ request: '修复参考游戏的追兵碰撞' })).toThrow(/targetRunId/i);
+  });
+
+  it('requires line review for a hybrid new-game request before any build', () => {
+    const route = router().routeRequest({ request: '做一个有大量演出的 3D 小游戏' });
+    expect(route.supportDecision).toBe('HYBRID_REVIEW_REQUIRED');
+    expect(route.fullGreenlight).toBe(false);
+    expect(route.stages).toEqual(['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW']);
+  });
+
+  it('keeps an unsupported repair at the line review boundary', () => {
+    const route = router().routeRequest({ request: '修复实时多人联机的崩溃', targetRunId: 'run-1' });
+    expect(route.stages).toEqual(['BUSINESS_PREFLIGHT', 'PRODUCTION_LINE_REVIEW']);
+    expect(route.repairRoute).toBe('direct-builder');
+    expect(route.repairReasons).toEqual([]);
+    expect(route.rationale).toMatch(/unsupported|boundary/i);
+  });
+
+  it('uses the factory operating profile when planning a new reference run', () => {
+    const factory = createFactory({ mode: 'mock', qaMode: 'stub', operatingProfile: { pipelineMode: 'full-validation' } });
+    const route = factory.routeRequest({ request: '做一个参考同类核心循环的游戏' });
+    expect(route.pipelinePlan?.mode).toBe('full-validation');
+  });
+
+  it('selects an explicit full rigor from the same pipeline planner', () => {
+    const route = router().routeRequest({ request: '做一个参考同类核心循环的游戏', rigor: 'full' });
+    const plan = buildPipelinePlan({ mode: 'full-validation', designMode: 'reference_reskin', productionLine: 'idle-management', primaryProfile: route.experienceProfile.primary });
+    expect(route.pipelinePlan).toMatchObject({ mode: 'full-validation', rigor: 'full' });
+    expect(route.stages).toEqual(plan.mandatoryStages);
+  });
+
+  it('lets explicit rigor override the configured mode in the route', () => {
+    const factory = createFactory({ mode: 'mock', qaMode: 'stub', operatingProfile: { pipelineMode: 'full-validation' } });
+    const route = factory.routeRequest({ request: '做一个参考同类核心循环的游戏', rigor: 'minimal' });
+    expect(route.pipelinePlan).toMatchObject({ mode: 'replica-preview', rigor: 'minimal' });
+  });
+
+  it('includes the configured governance gates in the new-game route', () => {
+    const factory = createFactory({ mode: 'mock', qaMode: 'stub', operatingProfile: {
+      pipelineMode: 'full-validation', presentationQualityRequired: true, supplyChainRequired: true, blindPlaytestRequired: true,
+    } });
+    const route = factory.routeRequest({ request: '做一个原创小店游戏' });
+    expect(route.stages).toEqual(buildPipelinePlan({
+      mode: 'full-validation', designMode: 'prototype_tournament', productionLine: 'pending-review',
+      primaryProfile: route.experienceProfile.primary, presentationQualityRequired: true, supplyChainRequired: true, blindPlaytestRequired: true,
+    }).mandatoryStages);
   });
 
   it.each([
     ['GAMEPLAY_REVISION', '修改核心玩法', ['FULL_BUILD', 'QA']],
     ['VISUAL_REVISION', '替换角色美术和 UI', ['ART_DIRECTIONS', 'WAITING_FOR_ART_APPROVAL', 'STYLE_LOCK', 'ASSETS', 'FULL_BUILD', 'QA']],
     ['BALANCE_REVISION', '调整金币数值平衡', ['FULL_BUILD', 'QA']],
-    ['BUG_FIX', '修复闪退 bug', ['FIX', 'QA']],
+    ['BUG_FIX', '修复闪退 bug', ['QA', 'FIX', 'QA']],
     ['MONETIZATION_REVISION', '调整广告频控', ['FULL_BUILD', 'QA']],
     ['RELEASE', '发布版本', ['RELEASE']],
   ])('uses the shortest default path for %s', (expectedType, request, expectedStages) => {
@@ -129,6 +209,7 @@ describe('RequestRouter', () => {
       schemaVersion: 1,
       request: '参考指定游戏做原创换皮',
       requestType: 'NEW_GAME',
+      entryLane: 'REFERENCE_ADAPTATION',
       targetRunId: null,
       stages: ['REFERENCE_MECHANIC_LOCK', 'WAITING_FOR_REFERENCE_APPROVAL', 'IDEA_GENERATION', 'OPEN_SOURCE_RESEARCH'],
       fullGreenlight: true,

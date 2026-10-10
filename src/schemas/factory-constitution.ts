@@ -31,7 +31,7 @@ export const FactoryConstitutionSchema = z.object({
   version: Text,
   requiredCompletionGates: z.array(z.enum(['core', 'normalFlow', 'visualEvidence', 'levelDifference', 'humanPlaytest'])).length(5),
   rules: z.array(ConstitutionRuleIdSchema).min(1),
-  maxAutomaticRepairAttempts: z.number().int().nonnegative().max(2),
+  maxAutomaticRepairAttempts: z.number().int().nonnegative().max(5),
   frozenAfterStage: z.literal('CORE_SPEC_FROZEN'),
   generatedAt: z.string().datetime(),
 }).strict().superRefine((value, context) => {

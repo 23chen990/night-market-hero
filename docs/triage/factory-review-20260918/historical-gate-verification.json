@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "kind": "historical-false-approval-regression",
+  "targetRunId": "20260918050528-974ee21f",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260918050528-974ee21f/workspace/feel-prototype-a",
+  "historicalDecision": "APPROVED",
+  "currentDecision": "FEEL_REPAIR_REQUIRED",
+  "naturalPassed": false,
+  "perceptualPassed": false,
+  "blankCapturesRejected": true,
+  "originalWorkspaceHtmlUnchanged": true,
+  "gameAcceptance": "BLOCKED",
+  "blockers": [
+    "natural:build-hash-mismatch",
+    "natural:terminal-or-settlement-missing",
+    "natural:replay-missing",
+    "natural:canvas-has-no-rendered-pixels",
+    "natural:natural-motion-not-observed",
+    "natural:terminal-and-replay-not-reachable",
+    "natural:visual-evidence-gate",
+    "perceptual:contract-missing",
+    "perceptual:report-missing"
+  ],
+  "screenshots": [
+    {
+      "path": "artifacts/factory-review-20260918/natural-start.png",
+      "sha256": "2148007a582c1ddd67f12a014431c84eb17ea8c5c5f5682dfc8f3244e33b2a0e"
+    },
+    {
+      "path": "artifacts/factory-review-20260918/natural-after-input.png",
+      "sha256": "2148007a582c1ddd67f12a014431c84eb17ea8c5c5f5682dfc8f3244e33b2a0e"
+    }
+  ],
+  "checkedAt": "2026-09-18T09:48:04.809Z"
+}

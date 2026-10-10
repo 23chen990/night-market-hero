@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_profile_evidence",
+  "route": "shared-factory",
+  "routeReason": "The defect crosses shared factory orchestration, profile evidence schemas, and the action-feel stage pause/resume contract, so it required the bounded shared-factory route with candidate-bound evidence verification delegated to the validated helper.",
+  "status": "IMPLEMENTED",
+  "filesChanged": [
+    "src/core/action-feel-stage.ts",
+    "src/schemas/profile-stage.ts",
+    "src/factory.ts",
+    "tests/unit/action-feel-stage.test.ts",
+    "tests/integration/action-feel-evidence.test.ts"
+  ],
+  "omittedContext": [
+    "整段会话",
+    "无关录屏和其他游戏素材",
+    "已有生成工作区的非相关源码"
+  ],
+  "tests": [
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts --reporter verbose",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "The new three-resume integration probe reproduced the empty natural-evidence diagnostic failure: ProfileStageEvidenceSchema rejected checks[1].evidence when the helper returned a blocked summary without evidence paths."
+    },
+    {
+      "command": "pnpm vitest run tests/integration/action-feel-evidence.test.ts --reporter verbose",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "Repeated resume remains NATURAL_PLAY_QA waiting with attempts unchanged, candidate dist hashes unchanged, natural-play evidence unchanged, no art/build advance, and no FIX count reset."
+    },
+    {
+      "command": "pnpm typecheck",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "TypeScript completed successfully."
+    },
+    {
+      "command": "pnpm exec eslint src/core/action-feel-stage.ts src/schemas/profile-stage.ts src/factory.ts tests/unit/action-feel-stage.test.ts tests/integration/action-feel-evidence.test.ts",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "The first lint pass found one stale NaturalFlowEvidenceSchema import after replacing the raw validator with the shared helper."
+    },
+    {
+      "command": "pnpm exec eslint src/core/action-feel-stage.ts src/schemas/profile-stage.ts src/factory.ts tests/unit/action-feel-stage.test.ts tests/integration/action-feel-evidence.test.ts",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "Owned factory, profile, stage, and test files pass ESLint."
+    },
+    {
+      "command": "pnpm vitest run tests/unit/action-feel-stage.test.ts tests/unit/action-feel-evidence.test.ts tests/integration/action-feel-evidence.test.ts tests/unit/action-playwright-qa.test.ts tests/unit/action-prototype-fallback.test.ts tests/integration/action-experiment-orchestrator.test.ts --reporter verbose",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Six targeted test files passed, 19 tests total, including candidate-bound evidence helper coverage and action prototype orchestration regressions."
+    }
+  ],
+  "remainingGaps": [
+    "The integration test intentionally stops at the missing independent natural/perceptual evidence gate; a real candidate-bound natural flow, captures, and perceptual contract/report must still be supplied by the independent QA path before a production run can advance.",
+    "The full repository verification suite remains the parent agent's final acceptance responsibility."
+  ]
+}

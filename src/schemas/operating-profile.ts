@@ -11,8 +11,8 @@ const PlatformCapacitySchema = z.object({
 
 export const FactoryOperatingProfileSchema = z.object({
   schemaVersion: z.literal(1),
-  /** Fast-reskin is the economical default; release-critical gates remain mandatory. */
-  pipelineMode: z.enum(['fast-reskin', 'full-validation']).default('fast-reskin'),
+  /** Reference games default to the compact preview lane; release work stays explicit. */
+  pipelineMode: z.enum(['replica-preview', 'fast-reskin', 'full-validation']).default('replica-preview'),
   entity: z.enum(['personal', 'sole_proprietor', 'company', 'publisher']),
   monetization: z.literal('IAA'),
   appDistribution: z.literal(false),

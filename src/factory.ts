@@ -1,41 +1,51 @@
-import { appendFile, lstat, mkdir, readFile, realpath, readdir, rm, writeFile } from 'node:fs/promises';
+import { appendFile, copyFile, lstat, mkdir, readFile, realpath, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parse, stringify } from 'yaml';
-import { ArtDirectorAgent, AssetProducerAgent, BuilderAgent, CompetitorResearchAgent, FixerAgent, GreenlightAgent, IaaMonetizationReviewerAgent, OpenSourceResearchAgent, ProducerAgent, ProductionCostReviewerAgent, QAAgent, ReleaseAgent, StyleLockAgent } from './agents/index.js';
+import { ArtDirectorAgent, AssetProducerAgent, BuilderAgent, CompetitorResearchAgent, FixerAgent, GreenlightAgent, IaaMonetizationReviewerAgent, OpenSourceResearchAgent, ProducerAgent, ProductionCostReviewerAgent, QAAgent, ReferenceResearchAgent, ReleaseAgent, StyleLockAgent } from './agents/index.js';
+import { compileAgentContext } from './agents/context-compiler.js';
 import { createArtReview } from './core/art-review.js';
 import { exists, listFiles, sha256File, sha256Text, writeJsonAtomic } from './core/files.js';
 import { redactText, redactValue } from './core/redaction.js';
+import { capturePrototypeApprovalEvidence, verifyPrototypeApprovalEvidence } from './core/prototype-approval-evidence.js';
 import { RequestRouter } from './core/request-router.js';
 import { FeedbackLessonsLoop } from './core/feedback-lessons.js';
 import { FileRunStore } from './core/run-store.js';
-import { MAX_FIX_ATTEMPTS } from './core/state-machine.js';
-import { buildContextPacket, buildHandoffPacket } from './core/context-budget.js';
+import { buildHandoffPacket } from './core/context-budget.js';
 import { classifyModelFailure, executionPolicyForAttempt, executionPolicyForStage, modelPolicySignature } from './core/model-policy.js';
 import { sanitizeUntrustedText } from './core/security-boundary.js';
 import { assertExecutionContext, assertSafeContextInputPath } from './core/execution-boundary.js';
-import { inferProductionLineDecisionFromText, inferProductionLineFromText, lockProductionLine, ProductionLineContractSchema } from './core/production-lines.js';
+import { getProductionLineContract, inferProductionLineDecisionFromText, lockProductionLine, ProductionLineContractSchema } from './core/production-lines.js';
+import { assertProductionLineResolutionMatches, resolveProductionLine } from './core/production-line-resolution.js';
+import { assetDefinitionIds } from './core/asset-definitions.js';
+import { archiveRunPaths } from './core/run-preservation.js';
 import { mergeOperatingProfile } from './core/operating-profile.js';
 import { buildBusinessPreflightTemplate, evaluateOperatingGates } from './core/operating-gates.js';
 import { buildPlatformReleaseMatrix, evaluateCostGate, evaluatePlatformQa, evaluatePlatformReleaseMatrix, makeFailureReport, makeGrowthExperiment, decideGrowthExperiment } from './core/factory-operating.js';
 import { buildFeedbackRegressionSignature, collectFactorySourceEntries, defaultFactoryEvalCases, FACTORY_EVAL_SOURCE_PATHS, FACTORY_EVAL_SUITE_VERSION, buildFactorySourceSignature, feedbackRegressionEvalCases, mergeFactoryEvalCases, parseFactoryEvalCasesFile, runFactoryEvalSuite } from './core/factory-eval.js';
 import { assertStagePlannedOrLegacy, buildPipelinePlan, CANONICAL_STAGE_ORDER, missingMandatoryProfileStages, missingRequiredGovernanceStages, requiredStageContractsForPlan } from './core/pipeline-plan.js';
-import { validatePipelinePlan } from './core/pipeline-plan.js';
+import { pipelineModeForRigor, validatePipelinePlan } from './core/pipeline-plan.js';
+import type { PipelineRigor } from './schemas/pipeline-plan.js';
 import { buildOriginalityTemplate, evaluateOriginality } from './core/originality.js';
 import { evaluateQualityBaseline, QUALITY_BASELINE_CHECKS } from './core/quality-baseline.js';
 import { buildCertificationChecklist, evaluateCertificationChecklist, decideLaunchDisposition, evaluateAbandonment } from './core/launch-operations.js';
 import { buildPlatformSpineContract, evaluatePlatformSpine } from './core/platform-spine.js';
 import { auditAssetFiles, evaluateArtQualityGate } from './core/art-quality.js';
-import { buildReferenceEvidencePack, evaluateReferenceEvidence, referenceBlockersRequirePause } from './core/reference-evidence.js';
-import { snapshotModelPolicy, buildModelRouteDecision } from './core/model-policy-artifact.js';
+import { AssetProductionGateSchema, AssetVisualFitReviewSchema, evaluateAssetProductionReadiness } from './core/asset-production-gate.js';
+import { buildPreviewPresentationDisclosure } from './core/preview-presentation-disclosure.js';
+import { applyReferenceBehaviorAnalysis, buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis, referenceBlockersRequirePause, verifyReferenceFidelityReview } from './core/reference-evidence.js';
+import { enforceCodeAnalysisBasis, enforceRecordingAnalysisAuthority } from './core/reference-analysis-authority.js';
+import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema } from './schemas/reference-fidelity.js';
+import { BuildReportSchema, ProductionLineResolutionSchema } from './schemas/index.js';
+import { snapshotModelPolicy, buildModelRouteDecision, evaluateModelPolicySnapshot } from './core/model-policy-artifact.js';
 import { assertPermissionOperation, buildPermissionManifestBundle, evaluatePermissionManifest, evaluatePermissionManifestBundle } from './core/permission-manifest.js';
 import { buildRandomnessPolicy } from './core/randomness-policy.js';
-import { createArtifactLedger, recordArtifact, evaluateArtifactLedger, invalidateArtifacts, reconcileArtifactLedger } from './core/artifact-ledger.js';
+import { createArtifactLedger, recordStageEmission, evaluateArtifactLedger, invalidateArtifacts, reconcileArtifactLedger } from './core/artifact-ledger.js';
 import { buildArtifactMetadata } from './core/artifact-metadata.js';
 import { buildHumanApprovalLedger, buildHumanApprovalPlan, buildScheduledApprovalRecord, evaluateHumanApprovalLedgerArtifact, evaluateHumanApprovalRecords } from './core/human-approval.js';
 import { promoteReleaseLifecycle, promoteReleaseLifecycleThrough } from './core/release-lifecycle.js';
 import { buildIaaContract, evaluateIaaContract } from './core/iaa-contract.js';
 import { buildDifferentiationContract, evaluateDifferentiationContract } from './core/differentiation.js';
-import { getStageContract, evaluateStageContract, evaluateStageSideEffects, contractPathMatches, validateStageModelTier, evaluateStageContractRegistry } from './core/stage-contracts.js';
+import { getStageContract, evaluateStageContract, evaluateStageSideEffects, contractPathMatches, validateStageModelTier, evaluateStageContractRegistry, stageAttemptAllowed } from './core/stage-contracts.js';
 import { buildCompletionGateReport } from './qa/experience-gates.js';
 import { bindReleaseCandidateAcceptance, packageReleaseCandidate, verifyFrozenCandidate } from './core/release.js';
 import { bindNaturalFlowEvidence, bindQaEvidence } from './core/qa-evidence.js';
@@ -50,45 +60,74 @@ import { evaluateBlindPlaytest } from './core/blind-playtest.js';
 import { buildExperienceHypothesis, freezeCoreSpec } from './core/experience-hypothesis.js';
 import { buildControlStageAudit } from './core/control-stage-audit.js';
 import { evaluateTransitionHistory } from './core/state-machine.js';
+import { buildAcceptanceHandoff } from './core/acceptance-handoff.js';
+import { auditReferenceQuality } from './core/reference-quality-audit.js';
+import { captureReferenceUrl, discardReferenceCapture, promoteReferenceCapture, sendReferenceCaptureSessionCommand, startReferenceCaptureSession } from './core/reference-web-capture.js';
+import { captureReferenceCode, discardReferenceCode, promoteReferenceCode, recordReferenceCodeAnalysis, referenceCodeResearchInput } from './core/reference-code.js';
+import { extractReferenceRecordingFrames, selectReferenceResearchMedia, type ReferenceFrameExtractor } from './core/reference-recording.js';
+import { isReferenceWebCapturePath, type ReferenceCaptureAction, type ReferenceCaptureClip, type ReferenceCaptureStepRequest } from './schemas/reference-web-capture.js';
+import { deriveReferenceLevelImplementationContract, verifyReferenceLevelImplementationContract, verifyReferenceLevelReconstruction, verifyReferenceLevelRuntimeTrace } from './core/reference-level.js';
+import { compileReferenceLevelRuntimeData, verifyReferenceLevelRuntimeData } from './core/reference-level-runtime.js';
+import { readReferenceLevelRuntimeData, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from './core/reference-level-binding.js';
 import { buildContentExpansionPlan, buildUiSkeleton } from './core/experience-production.js';
 import { buildBusinessStrategy } from './core/business-strategy.js';
 import { buildLiveVerification, evaluateLiveVerification } from './core/live-verification.js';
 import { buildProfileQaReport, canonicalProfileDimension, profileDimensionForEvidence, profileForBlueprint } from './core/profile-qa.js';
-import { buildProductionLinePlayPlan, evaluateProductionLinePlayEvidence } from './qa/production-line-qa.js';
+import { buildProductionLinePlayPlan, deriveProductionLinePlayEvidence, evaluateProductionLinePlayEvidence } from './qa/production-line-qa.js';
 import { buildPlatformPolicyEvaluation, buildPlatformPolicyTemplate, platformPolicyHash } from './core/platform-policy.js';
 import { ProductionLinePlayEvidenceSchema, ProductionLinePlayEvaluationSchema } from './schemas/production-line-qa.js';
 import { buildVariationCoverageObservation, buildVariationCoveragePlan, evaluateVariationCoverage } from './core/variation-coverage.js';
 import { accountPortfolioHash, buildAccountCapacityPlan, canonicalAccountPortfolio, deriveActiveCountsFromPortfolio, evaluateAccountCapacity, evaluateAccountCapacityPortfolioBinding } from './core/account-capacity.js';
-import { costRateCardFromEnv, deriveCostUsage, evaluateCostPreflight, projectStageUsage, reserveForStage } from './core/cost-accounting.js';
+import { costRateCardFromEnv, deriveCostUsage, evaluateCostPreflight, projectStageUsage, reserveForStage, stageReserveOverrideFromEnv } from './core/cost-accounting.js';
 import { routeFailureClassFromMessage, routeFailureToEarliestStage } from './core/failure-routing.js';
 import { buildProfileExperienceBundle, evaluateProfileExperienceBundle } from './core/profile-contract.js';
+import { buildProductExperienceContract } from './core/product-experience.js';
+import { verifyPerceptualQaReview } from './core/product-experience-qa.js';
 import { evaluateProductionLineCapability } from './core/production-line-capability.js';
 import { FACTORY_CONSTITUTION, evaluateFactoryConstitution } from './core/factory-constitution.js';
 import { buildQualityGateMatrix, profileQaSignal } from './core/quality-gates.js';
 import { evaluateCompetitorResearchEvidence, researchBlockersRequirePause } from './core/research-evidence.js';
 import { buildNaturalInputPolicy, evaluateNaturalFlowAgainstPolicy } from './core/natural-input-policy.js';
 import { getDownstreamArtifactPaths, getDownstreamStages } from './core/downstream-stages.js';
-import { RuntimeProductGateSchema, deriveRuntimeProductGate, verifyRuntimeWiredFiles } from './core/runtime-product-gates.js';
+import { RuntimeProductGateSchema, discoverRuntimeWiredFiles, resolveRuntimeProductGate, verifyRuntimeWiredFiles } from './core/runtime-product-gates.js';
+import { prepareExplicitStageRetry, resetDeterministicQaAttemptWindow, waitingAttemptCount } from './core/stage-retry.js';
+import { resolveCodeOnlyReferenceResearch, resolveReferenceResearchForImplementation } from './core/reference-resolution.js';
+import { canRevalidateDeterministicArtifact, evaluateReferenceResearchRecovery, isSanitizedJsonPrefix } from './core/reference-research-recovery.js';
+import { ReferenceObjectReviewSchema } from './schemas/reference-object-review.js';
+import { measureRunExecutionTime } from './core/run-execution-time.js';
+import { buildOperatorRunSummary } from './core/operator-status.js';
+import { readRuntimeCandidateEvidence } from './core/candidate-evidence.js';
+import { CompletionGateReportSchema } from './core/completion-gates.js';
+import { evaluateCostBudgetAuthorization, resolveActiveAuthorizedCostBudget, resolveAuthorizedCostBudget } from './core/cost-budget-authorization.js';
+import { ActiveCostBudgetAuthorizationSchema } from './schemas/cost-budget-authorization.js';
 import { CoreSpecLockSchema, ExperienceHypothesisSchema } from './schemas/experience-hypothesis.js';
 import { InteractionContinuityContractSchema } from './schemas/interaction-continuity.js';
-import { AccountCapacityPlanSchema, BlindPlaytestSchema, ContentExpansionPlanSchema, DependencyPolicySchema, PlatformPackageSetSchema, PortfolioGateEvaluationSchema, PortfolioStrategySchema, PresentationQualityReportSchema, ProductionLineDecisionSchema, ProfileExperienceBundleSchema, SideEffectCommandSchema, SideEffectJournalSchema, SupplyChainManifestSchema, UiSkeletonSchema, UnknownRegisterSchema, StageNameSchema, PlatformPolicySnapshotSchema } from './schemas/index.js';
+import { AccountCapacityPlanSchema, BlindPlaytestSchema, ContentExpansionPlanSchema, DependencyPolicySchema, EvidenceProvenanceManifestSchema, PlatformPackageSetSchema, PortfolioGateEvaluationSchema, PortfolioStrategySchema, PresentationQualityReportSchema, ProductionLineDecisionSchema, ProfileExperienceBundleSchema, ReferenceFrameManifestSchema, ReferenceLevelComparisonGateSchema, ReferenceLevelImplementationContractSchema, ReferenceLevelReconstructionSchema, ReferenceLevelRuntimeTraceSchema, SideEffectCommandSchema, SideEffectJournalSchema, SupplyChainManifestSchema, UiSkeletonSchema, UnknownRegisterSchema, StageNameSchema, PlatformPolicySnapshotSchema, type ReferenceFrameManifest } from './schemas/index.js';
 import { MockAgentProvider, MockCodexProvider, MockImageProvider } from './providers/mock.js';
 import type { AgentProvider, AgentCallMetrics, CodexProvider, ImageProvider } from './providers/interfaces.js';
 import { OpenAIAgentProvider, OpenAIImageProvider, ProviderOutputError } from './providers/real.js';
 import { CodexAccountProvider, type CodexExecutor } from './providers/codex-account.js';
 import { CodexCliProvider, parseCodexJsonl } from './providers/codex-cli.js';
 import { CodexImagegenPendingError, CodexImagegenProvider } from './providers/codex-imagegen.js';
-import { LocalRuntimeProvider, MockQAProvider, PlaywrightQAProvider } from './providers/runtime-qa.js';
-import { AccountPortfolioSchema, ArtApprovalSchema, ArtDirectionsSchema, ArtPreviewManifestSchema, AssetManifestSchema, BusinessPreflightSchema, CompetitorResearchSchema, ContentVariationReportSchema, CostAdjustmentEntrySchema, CostAdjustmentLedgerSchema, CostBudgetSchema, CostRateCardSchema, FormalPrototypeBuildReportSchema, FormalPrototypeFollowupConstraintsSchema, GameBlueprintSchema, GameplayRevisionLockSchema, HumanPlaytestAcceptanceSchema, HumanReferenceDecisionSchema, IaaContractSchema, OpenSourceResearchArtifactSchema, OpenSourceResearchSchema, PlatformQaSubmissionSchema, PlatformReleaseMatrixSchema, QaReportSchema, ReferenceMechanicSpecSchema, ReleaseCandidateSchema, StateTransitionRecordSchema, StateTransitionReportSchema, StyleLockSchema, QualityBaselineReportSchema, OriginalityDeclarationSchema, CertificationChecklistSchema, LaunchMetricSnapshotSchema, PlatformSpineContractSchema, PermissionManifestBundleSchema, PermissionManifestSchema, ReleaseLifecycleSchema, ReleaseLifecycleStatusSchema, ExperienceReviewReportSchema, type CompetitorResearch, type GameBlueprint, type GameplayRevisionLock, type ReferenceMechanicSpec, type RunState, type StageName, type StageRecord } from './schemas/index.js';
+import { buildPerceptualQaReport, LocalRuntimeProvider, MockQAProvider, PlaywrightQAProvider } from './providers/runtime-qa.js';
+import { AccountPortfolioSchema, ArtApprovalSchema, ArtDirectionsSchema, ArtPreviewManifestSchema, AssetManifestSchema, BusinessPreflightSchema, CompetitorResearchSchema, ContentVariationReportSchema, CostAdjustmentEntrySchema, CostAdjustmentLedgerSchema, CostBudgetSchema, CostRateCardSchema, FactoryOperatingProfileSchema, FormalPrototypeBuildReportSchema, FormalPrototypeFollowupConstraintsSchema, GameBlueprintSchema, GameplayRevisionLockSchema, HumanPlaytestAcceptanceSchema, HumanReferenceDecisionSchema, IaaContractSchema, IaaMonetizationReviewSchema, OpenSourceResearchArtifactSchema, OpenSourceResearchSchema, PlatformQaSubmissionSchema, PlatformReleaseMatrixSchema, QaReportSchema, ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema, ReferenceMechanicSpecSchema, ReleaseCandidateSchema, StateTransitionRecordSchema, StateTransitionReportSchema, StyleLockSchema, QualityBaselineReportSchema, OriginalityDeclarationSchema, CertificationChecklistSchema, LaunchMetricSnapshotSchema, PlatformSpineContractSchema, PermissionManifestBundleSchema, PermissionManifestSchema, ReleaseLifecycleSchema, ReleaseLifecycleStatusSchema, ExperienceReviewReportSchema, StageContractSchema, type CompetitorResearch, type GameBlueprint, type GameplayRevisionLock, type ReferenceMechanicSpec, type RunState, type Seed, type StageName, type StageRecord } from './schemas/index.js';
 import type { FactoryOperatingProfile } from './schemas/operating-profile.js';
 import { StructuredFeedbackSchema } from './schemas/feedback.js';
 import { HumanApprovalLedgerSchema, HumanApprovalRecordSchema } from './schemas/human-approval.js';
-import { ActionMechanicExperimentBundleSchema, ActionMechanicExperimentSpecSchema, ActionPlaytestReportSchema, ActionPrototypeBuildReportSchema, HumanActionMechanicDecisionSchema } from './schemas/action-mechanic-experiment.js';
+import { ActionMechanicExperimentBundleSchema, ActionMechanicExperimentSpecSchema, ActionPlaytestReportSchema, ActionPrototypeBuildReportSchema, HumanActionMechanicDecisionSchema, type ActionMechanicExperimentSpec, type ActionPrototypeBuildReport } from './schemas/action-mechanic-experiment.js';
 import { HumanPrototypeDecisionSchema, IdeaGenerationSchema, LowCostFilterSchema, PlaytestTournamentSchema, PrototypeBuildReportSchema, PrototypeHumanReviewSchema, PrototypeSelectionSchema, WinnerSelectionSchema, type GameplayIdea } from './schemas/gameplay-experiment.js';
+import { ProductExperienceContractSchema } from './schemas/product-experience.js';
+import { ActionFeelEngineeringBuildBindingSchema, type ProfileIndependentEvidence } from './schemas/profile-stage.js';
+import type { ExperienceReviewReport } from './schemas/experience-contract.js';
+import { hashActionFeelCandidateBuild, verifyActionFeelPlayerEvidence, type ActionFeelCandidateIdentity } from './core/action-feel-evidence.js';
+import { mergeReferenceLevelQaReport, runReferenceLevelQa, type ReferenceLevelQaRunner } from './qa/reference-level-qa.js';
+import { buildActionFeelExperienceReview, buildActionFeelRepairTriage, buildActionFeelStageSpec, buildProfileStageEvidence, isActionFeelProfileStageSupported } from './core/action-feel-stage.js';
+import { GAME_RUN_IDENTITY_ARTIFACT, canonicalGameIdFromTitle, validateGameRunIdentityBinding } from './core/game-identity.js';
+import { GameRunIdentityManifestSchema } from './schemas/game-identity.js';
 
 export type FactoryMode = 'mock' | 'live-art' | 'codex-account';
 export type FactoryValidationMode = 'fast' | 'production';
-export type FactoryOptions = { root?: string; repositoryRoot?: string; mode?: FactoryMode; qaMode?: 'stub' | 'playwright'; validationMode?: FactoryValidationMode; enforcePlayerAcceptance?: boolean; enforceOperatingGates?: boolean; enforceStageContracts?: boolean; enforceExplicitStageContracts?: boolean; operatingProfile?: Partial<FactoryOperatingProfile>; agentProvider?: AgentProvider; previewImageProvider?: ImageProvider; assetImageProvider?: ImageProvider; codexProvider?: CodexProvider; codexExecutor?: CodexExecutor };
+export type FactoryOptions = { root?: string; repositoryRoot?: string; mode?: FactoryMode; qaMode?: 'stub' | 'playwright'; validationMode?: FactoryValidationMode; enforcePlayerAcceptance?: boolean; enforceOperatingGates?: boolean; enforceStageContracts?: boolean; enforceExplicitStageContracts?: boolean; operatingProfile?: Partial<FactoryOperatingProfile>; agentProvider?: AgentProvider; previewImageProvider?: ImageProvider; assetImageProvider?: ImageProvider; codexProvider?: CodexProvider; codexExecutor?: CodexExecutor; referenceFrameExtractor?: ReferenceFrameExtractor; referenceFrameFps?: number; referenceLevelQaRunner?: ReferenceLevelQaRunner; allowSyntheticReferenceAnalysisForTests?: boolean };
 
 // Provider usage is a rolling audit summary, not an immutable stage output.
 // Keep it out of drift-triggered rewinds while retaining the file for cost and
@@ -97,7 +136,7 @@ export type FactoryOptions = { root?: string; repositoryRoot?: string; mode?: Fa
 // useful audit outputs, but their contents change as a run is promoted,
 // resumed, or measured after launch.  Treating them as immutable build inputs
 // would create false drift and reopen an otherwise completed run.
-const VOLATILE_LEDGER_ARTIFACTS = ['artifacts/provider-usage.json', 'artifacts/release-lifecycle.json', 'artifacts/side-effect-evaluation.json'] as const;
+const VOLATILE_LEDGER_ARTIFACTS = ['artifacts/provider-usage.json', 'artifacts/release-lifecycle.json', 'artifacts/side-effect-evaluation.json', 'artifacts/profile-repair-triage.json'] as const;
 
 /** Internal control-flow signal: a cost guard has already persisted a safe
  * terminal/waiting state, so the public run/resume API should return that state
@@ -173,14 +212,22 @@ export function createFactory(options: FactoryOptions = {}) {
   const enforceOperatingGates = options.enforceOperatingGates ?? (process.env.FACTORY_ENFORCE_OPERATING_GATES !== undefined ? process.env.FACTORY_ENFORCE_OPERATING_GATES === '1' : validationMode === 'production');
   const enforceStageContracts = options.enforceStageContracts ?? (process.env.FACTORY_ENFORCE_STAGE_CONTRACTS !== undefined ? process.env.FACTORY_ENFORCE_STAGE_CONTRACTS === '1' : validationMode === 'production');
   const enforceExplicitStageContracts = options.enforceExplicitStageContracts ?? (process.env.FACTORY_ENFORCE_EXPLICIT_STAGE_CONTRACTS !== undefined ? process.env.FACTORY_ENFORCE_EXPLICIT_STAGE_CONTRACTS === '1' : validationMode === 'production');
-  const operatingProfile = mergeOperatingProfile(options.operatingProfile ?? {});
+  const allowSyntheticReferenceAnalysisForTests = options.allowSyntheticReferenceAnalysisForTests === true;
+  const configuredPipelineMode = process.env.FACTORY_PIPELINE_MODE;
+  if (configuredPipelineMode !== undefined && !['replica-preview', 'fast-reskin', 'full-validation'].includes(configuredPipelineMode)) {
+    throw new Error(`Unsupported FACTORY_PIPELINE_MODE: ${configuredPipelineMode}`);
+  }
+  const operatingProfile = mergeOperatingProfile({
+    ...(configuredPipelineMode ? { pipelineMode: configuredPipelineMode as FactoryOperatingProfile['pipelineMode'] } : {}),
+    ...(options.operatingProfile ?? {}),
+  });
   const store = new FileRunStore(root);
   // Set only while a run is executing; begin() uses this frozen plan to stop
   // accidental legacy side paths. A missing plan is tolerated for old runs,
   // but is recorded as an explicit legacy fallback.
   let activePipelinePlan: ReturnType<typeof validatePipelinePlan> | undefined;
   let activePlanIsLegacy = false;
-  const requestRouter = new RequestRouter();
+  const requestRouter = new RequestRouter(planNewGame);
   const feedbackLessons = new FeedbackLessonsLoop(root, store, requestRouter);
   const codexExecutor = mode === 'codex-account' ? options.codexExecutor ?? new CodexCliProvider() : undefined;
   const codexAccount = codexExecutor ? new CodexAccountProvider(codexExecutor) : undefined;
@@ -196,7 +243,8 @@ export function createFactory(options: FactoryOptions = {}) {
   let runtime = webRuntime;
   let selectedRuntimeName: 'web-lite' | 'cocos-3d' = 'web-lite';
   const qaProvider = qaMode === 'playwright' ? new PlaywrightQAProvider() : new MockQAProvider();
-  const competitorResearchAgent = new CompetitorResearchAgent(agents); const openSourceResearchAgent = new OpenSourceResearchAgent(agents); const productionCostReviewerAgent = new ProductionCostReviewerAgent(agents); const iaaMonetizationReviewerAgent = new IaaMonetizationReviewerAgent(agents); const greenlightAgent = new GreenlightAgent(agents); const producerAgent = new ProducerAgent(agents); const artDirectorAgent = new ArtDirectorAgent(agents); const styleLockAgent = new StyleLockAgent(agents); const assetProducerAgent = new AssetProducerAgent(assetImages); let builderAgent = new BuilderAgent(codex, runtime); let qaAgent = new QAAgent(qaProvider, runtime); let fixerAgent = new FixerAgent(codex, runtime); const releaseAgent = new ReleaseAgent();
+  const referenceLevelQaRunner = options.referenceLevelQaRunner ?? runReferenceLevelQa;
+  const referenceResearchAgent = new ReferenceResearchAgent(agents); const competitorResearchAgent = new CompetitorResearchAgent(agents); const openSourceResearchAgent = new OpenSourceResearchAgent(agents); const productionCostReviewerAgent = new ProductionCostReviewerAgent(agents); const iaaMonetizationReviewerAgent = new IaaMonetizationReviewerAgent(agents); const greenlightAgent = new GreenlightAgent(agents); const producerAgent = new ProducerAgent(agents); const artDirectorAgent = new ArtDirectorAgent(agents); const styleLockAgent = new StyleLockAgent(agents); const assetProducerAgent = new AssetProducerAgent(assetImages); let builderAgent = new BuilderAgent(codex, runtime); let qaAgent = new QAAgent(qaProvider, runtime); let fixerAgent = new FixerAgent(codex, runtime); const releaseAgent = new ReleaseAgent();
 
   /** Select the runtime declared by the seed before touching a generated game. */
   function selectRuntime(name: 'web-lite' | 'cocos-3d') {
@@ -209,7 +257,7 @@ export function createFactory(options: FactoryOptions = {}) {
   }
 
   /** Build a bounded, sanitized handoff packet. Providers must never receive a raw transcript. */
-  async function contextFor(stage: StageName, runRoot: string, outputPath: string, inputPaths: string[], summary: string) {
+  async function contextFor(stage: StageName, runRoot: string, outputPath: string, inputPaths: string[], summary: string, boundary?: { targetGameId?: string; targetWorkspaceRelative?: string; requiredArtifacts?: string[]; requiredContextPaths?: string[]; mediaInputs?: Array<{ path: string; sha256: string }> }) {
     // `begin()` persists the incremented attempt before a provider is called.
     // Read that small state record here so retries use the same model route that
     // is written to the audit artifact. We intentionally pass only the failure
@@ -261,6 +309,7 @@ export function createFactory(options: FactoryOptions = {}) {
       throw new Error(`permission manifest identity mismatch for ${stage}`);
     }
     for (const inputPath of safeInputPaths) assertPermissionOperation(checkedManifest, { kind: 'read', path: inputPath });
+    for (const media of boundary?.mediaInputs ?? []) assertPermissionOperation(checkedManifest, { kind: 'read', path: assertSafeContextInputPath(media.path) });
     const repositorySharedPath = (inputPath: string) => /^(?:src|templates|\.agents|examples)\//u.test(inputPath) || /^(?:package\.json|pnpm-lock\.yaml|tsconfig\.json|vitest\.config\.[cm]?[jt]s|eslint\.config\.[cm]?[jt]s|\.env\.example)$/u.test(inputPath);
     const inputs = await Promise.all(safeInputPaths.map(async (inputPath) => {
       // Run-local artifacts always win.  Repository fallback is restricted to
@@ -278,7 +327,12 @@ export function createFactory(options: FactoryOptions = {}) {
       return { path: inputPath, content: `[artifact pointer only: ${inputPath}]`, priority: 'required' as const };
     }));
     const sanitizedSummary = sanitizeUntrustedText(summary, 2_000);
-    const contextPacket = buildContextPacket({ stage, summary: sanitizedSummary, inputs, maxChars: policy.handoffMaxChars });
+    const requiredContextPaths = new Set([
+      ...inputs.filter((item) => item.path.includes('qa-report') || item.path.includes('blueprint') || item.path.includes('style-lock')).map((item) => item.path),
+      ...(boundary?.requiredContextPaths ?? []),
+    ]);
+    const compiledContext = compileAgentContext({ stage, summary: sanitizedSummary, inputs, requiredPaths: inputs.filter((item) => requiredContextPaths.has(item.path)).map((item) => item.path), includeOptionalPaths: inputs.filter((item) => !requiredContextPaths.has(item.path)).map((item) => item.path), maxChars: policy.handoffMaxChars });
+    const contextPacket = compiledContext.packet;
     // Persist the exact bounded handoff before invoking the provider. This is
     // the durable bridge between stages: it contains hashes and pointers, not
     // raw transcripts, and is uniquely addressable by stage attempt so a retry
@@ -296,7 +350,7 @@ export function createFactory(options: FactoryOptions = {}) {
     const handoffRelative = `logs/handoffs/${stage}.attempt-${attempt}.json`;
     await writeJsonAtomic(path.join(runRoot, handoffRelative), handoff);
     await store.log(path.basename(runRoot), 'context.handoff.persisted', { stage, attempt, path: handoffRelative, estimatedChars: handoff.estimatedChars, estimatedTokens: handoff.estimatedTokens });
-    return assertExecutionContext({ runRoot, outputPath, logDir: path.join(runRoot, 'logs/codex'), inputPaths: safeInputPaths, stage, model: policy.model, reasoning: policy.reasoning, sandbox: policy.sandbox, contextPacket, enforceBoundary: true });
+    return assertExecutionContext({ runRoot, outputPath, logDir: path.join(runRoot, 'logs/codex'), inputPaths: safeInputPaths, stage, model: policy.model, reasoning: policy.reasoning, sandbox: policy.sandbox, contextPacket, enforceBoundary: true, ...boundary });
   }
 
   async function setWaiting(state: RunState, stage: StageName, inputArtifacts: string[], outputArtifacts: string[], evidence: string[]) {
@@ -304,7 +358,7 @@ export function createFactory(options: FactoryOptions = {}) {
     const previous = state.stages[stage];
     state.stage = stage;
     state.status = 'waiting';
-    state.stages[stage] = { stage, status: 'waiting', startedAt: previous?.startedAt ?? now, finishedAt: null, attempts: previous?.attempts ?? 1, inputArtifacts, outputArtifacts, errors: previous?.errors ?? [], evidence, providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
+    state.stages[stage] = { stage, status: 'waiting', startedAt: previous?.startedAt ?? now, finishedAt: null, attempts: waitingAttemptCount(previous), inputArtifacts, outputArtifacts, errors: previous?.errors ?? [], evidence, providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
     // Every pause is an auditable, incomplete stage transition.  Persisting
     // this here covers provider failures and human gates that do not have a
     // bespoke call site; explicit callers may subsequently enrich the same
@@ -319,6 +373,585 @@ export function createFactory(options: FactoryOptions = {}) {
     const files = await listFiles(directory);
     const entries = await Promise.all(files.map(async (file) => `${file}:${await sha256File(path.join(directory, file))}`));
     return sha256Text(entries.join('\n'));
+  }
+
+  function referenceBehaviorAnalysisNeeded(pack: ReturnType<typeof ReferenceEvidencePackSchema.parse>) {
+    const dimensions = new Set(pack.behaviorChecks.map((check) => check.dimension));
+    return pack.failurePressureContract === null
+      || pack.behaviorChecks.length === 0
+      || new Set(pack.behaviorChecks.map((check) => check.id)).size !== pack.behaviorChecks.length
+      || REFERENCE_BEHAVIOR_DIMENSIONS.some((dimension) => !dimensions.has(dimension))
+      || pack.behaviorChecks.some((check) => check.sourceRefs.some((ref) => !pack.sourceFiles.some((source) => source.path === ref.path && source.sha256 === ref.sha256)));
+  }
+
+  async function referenceCaptureTarget(runId: string) {
+    const runRoot = store.runRoot(runId);
+    if (!await exists(runRoot)) throw new Error(`Run ${runId} does not exist`);
+    const provenanceFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = await exists(provenanceFile) ? EvidenceProvenanceManifestSchema.parse(JSON.parse(await readFile(provenanceFile, 'utf8'))) : undefined;
+    return { runRoot, targetGame: provenance?.targetGame ?? await expectedGameId(runId), workspace: provenance?.workspace ?? path.join(runRoot, 'workspace', 'game') };
+  }
+
+  async function ensureReferenceFrameManifest(runId: string, targetGame: string, workspace: string) {
+    const runRoot = store.runRoot(runId);
+    const provenanceFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    if (!await exists(provenanceFile)) return undefined;
+    const provenance = EvidenceProvenanceManifestSchema.parse(JSON.parse(await readFile(provenanceFile, 'utf8')));
+    const recordings = provenance.entries.filter((entry) => entry.usableAsEvidence && entry.purpose === 'gameplay-reference' && typeof entry.storedPath === 'string' && (/\.(?:mp4|mov)$/iu.test(entry.storedPath) || isReferenceWebCapturePath(entry.storedPath)));
+    if (recordings.length === 0) return undefined;
+    const result = await extractReferenceRecordingFrames({
+      runRoot,
+      targetRunId: runId,
+      expected: { targetGame, workspace },
+      evidenceId: recordings.length === 1 ? recordings[0]!.id : undefined,
+      useExistingSelection: true,
+      fps: options.referenceFrameFps ?? Number(process.env.FACTORY_REFERENCE_FRAME_FPS ?? 8),
+      ...(options.referenceFrameExtractor ? { extractor: options.referenceFrameExtractor } : {}),
+    });
+    return result.manifest;
+  }
+
+  async function referenceCodeInput(runId: string) {
+    const runRoot = store.runRoot(runId);
+    return referenceCodeResearchInput({ runRoot, targetRunId: runId, targetGame: await expectedGameId(runId), workspace: path.join(runRoot, 'workspace/game') });
+  }
+
+  function blockedLevelReconstruction(frameManifest: ReferenceFrameManifest, frameManifestSha256: string, blocker: string) {
+    return ReferenceLevelReconstructionSchema.parse({
+      schemaVersion: 1,
+      artifactType: 'reference-level-reconstruction',
+      targetRunId: frameManifest.targetRunId,
+      targetGame: frameManifest.targetGame,
+      workspace: frameManifest.workspace,
+      source: {
+        frameManifestPath: 'artifacts/reference-frame-manifest.json',
+        frameManifestSha256,
+        recordingSha256: frameManifest.source.sha256,
+        viewport: { width: frameManifest.source.width, height: frameManifest.source.height },
+      },
+      checkpoints: [],
+      spatialRelations: [],
+      interactionSequence: [],
+      cameraSequence: [],
+      terminal: null,
+      replay: null,
+      observations: [],
+      inferences: [],
+      unknowns: [blocker],
+      status: 'BLOCKED',
+      blockers: [blocker],
+      analyzedAt: new Date().toISOString(),
+    });
+  }
+
+  async function referenceLevelArtifactsCurrent(runRoot: string, frameManifest: ReferenceFrameManifest) {
+    const frameManifestFile = path.join(runRoot, 'artifacts/reference-frame-manifest.json');
+    const reconstructionFile = path.join(runRoot, 'artifacts/reference-level-reconstruction.json');
+    const contractFile = path.join(runRoot, 'artifacts/reference-level-implementation-contract.json');
+    if (!await exists(reconstructionFile) || !await exists(contractFile)) return false;
+    try {
+      const [reconstructionValue, contractValue, frameManifestSha256] = await Promise.all([
+        readFile(reconstructionFile, 'utf8').then(JSON.parse),
+        readFile(contractFile, 'utf8').then(JSON.parse),
+        sha256File(frameManifestFile),
+      ]);
+      const verified = verifyReferenceLevelReconstruction(reconstructionValue, frameManifest, { frameManifestSha256 });
+      const contract = ReferenceLevelImplementationContractSchema.parse(contractValue);
+      const reconstructionSha256 = await sha256File(reconstructionFile);
+      const contractVerified = verifyReferenceLevelImplementationContract(
+        reconstructionValue,
+        contract,
+        { path: 'artifacts/reference-level-reconstruction.json', sha256: reconstructionSha256 },
+      );
+      return verified.passed && contractVerified.passed && contract.status === 'READY' && contract.sourceReconstruction.sha256 === reconstructionSha256;
+    } catch { return false; }
+  }
+
+  async function verifyRunBoundEvidence(runRoot: string, evidence: { path: string; sha256: string }) {
+    try {
+      const root = path.resolve(runRoot);
+      const file = path.resolve(root, evidence.path);
+      if (!isStrictChildPath(root, file)) return false;
+      const fileStat = await lstat(file);
+      if (!fileStat.isFile() || fileStat.isSymbolicLink()) return false;
+      const [realRoot, realFile] = await Promise.all([realpath(root), realpath(file)]);
+      if (!isStrictChildPath(realRoot, realFile)) return false;
+      return await sha256File(realFile) === evidence.sha256;
+    } catch { return false; }
+  }
+
+  async function correctProductionLineArtifacts(state: RunState, previous: ReturnType<typeof ProductionLineContractSchema.parse>, resolution: ReturnType<typeof ProductionLineResolutionSchema.parse>) {
+    if (!resolution.line) throw new Error('Cannot migrate to an unresolved production line');
+    const runId = state.runId;
+    const archive = await archiveRunPaths(store.runRoot(runId), [
+      'artifacts/production-line-contract.json', 'artifacts/production-line-contract.superseded.json',
+      'artifacts/profile-experience-bundle.json', 'artifacts/experience-contract.json',
+      'artifacts/profile-experience-contract.json', 'artifacts/natural-play-plan.json',
+      'artifacts/experience-hypothesis.json', 'artifacts/core-spec-lock.json',
+    ], 'production-line-correction');
+    const previousCore = state.stages.CORE_SPEC_FROZEN ? structuredClone(state.stages.CORE_SPEC_FROZEN) : undefined;
+    await store.log(runId, 'production-line.correction-preserved', { archive: archive?.manifestPath, previousCore });
+    await store.writeArtifact(runId, 'production-line-contract.superseded.json', previous);
+    await store.writeArtifact(runId, 'production-line-contract.json', lockProductionLine(resolution.line));
+    invalidateDownstream(state, 'EXPERIENCE_CONTRACT');
+    // This deterministic lock now has different source inputs. Its completed
+    // revision is retained above; failed repairs and model-stage budgets keep
+    // their existing counts, including the run-wide five-attempt FIX cap.
+    const archivedCore = archive?.entries.some((entry) => entry.sourcePath === 'artifacts/core-spec-lock.json' && entry.kind === 'file');
+    if (archivedCore && previousCore?.providerCalls.agent === 0 && previousCore.providerCalls.image === 0 && state.stages.CORE_SPEC_FROZEN) state.stages.CORE_SPEC_FROZEN.attempts = 0;
+    await store.log(runId, 'production-line.corrected-from-resolution', { from: previous.line, to: resolution.line, template: resolution.template, resolutionHash: resolution.resolutionHash, archive: archive?.manifestPath });
+  }
+
+  /** Compile once before Builder work. Existing or completed-run data is never
+   * silently replaced: a stale binding requires an explicit migration. */
+  async function ensureReferenceLevelRuntimeInputs(state: RunState, targetGame: string) {
+    const runId = state.runId;
+    const runRoot = store.runRoot(runId);
+    const contractName = 'reference-level-implementation-contract.json';
+    const dataName = 'reference-level-runtime-data.json';
+    const present = await Promise.all([contractName, dataName, 'reference-frame-manifest.json'].map((name) => store.hasArtifact(runId, name)));
+    if (!present.some(Boolean)) return [];
+    const contract = await store.readArtifact(runId, contractName);
+    const resolution = await store.readArtifact(runId, 'production-line-resolution.json');
+    const expected = { targetRunId: runId, targetGame, workspace: path.join(runRoot, 'workspace/game') };
+    const data = compileReferenceLevelRuntimeData(contract, resolution, expected);
+    if (present[1]) {
+      const verified = verifyReferenceLevelRuntimeData(await store.readArtifact(runId, dataName), contract, resolution, expected);
+      if (!verified.passed) throw new Error(`reference-level runtime data requires migration: ${verified.blockers.join(', ')}`);
+    } else {
+      if (await store.hasArtifact(runId, 'build-report.json')) throw new Error('reference-level runtime data missing after build; explicit migration required');
+      await store.writeArtifact(runId, dataName, data);
+      await store.log(runId, 'reference-level.runtime-data-compiled', { path: `artifacts/${dataName}`, runtimeDataHash: data.runtimeDataHash, contractHash: data.sourceContract.sha256, resolutionHash: data.production.resolutionHash });
+    }
+    return [`artifacts/${contractName}`, `artifacts/${dataName}`];
+  }
+
+  async function verifyPersistedReferenceLevelQa(runId: string, contract: ReturnType<typeof ReferenceLevelImplementationContractSchema.parse>, buildHash: string) {
+    const runRoot = store.runRoot(runId);
+    try {
+      const runtimeData = await readReferenceLevelRuntimeData(runRoot, contract.workspace);
+      if (!runtimeData) return false;
+      await verifyReferenceLevelRuntimeDataFile(contract.workspace, runtimeData);
+      await verifyReferenceLevelLayoutFile(contract.workspace, runtimeData);
+      const trace = ReferenceLevelRuntimeTraceSchema.parse(await store.readArtifact(runId, 'reference-level-runtime-trace.json'));
+      const gate = await verifyReferenceLevelRuntimeTrace(contract, trace, { runtimeData, verifyEvidenceFile: (evidence) => verifyRunBoundEvidence(runRoot, evidence) });
+      await store.writeArtifact(runId, 'reference-level-comparison-gate.json', gate);
+      return gate.passed && gate.buildHash === buildHash;
+    } catch { return false; }
+  }
+
+  async function executeReferenceLevelQa(runId: string, workspace: string, buildHash: string) {
+    const runRoot = store.runRoot(runId);
+    const contract = ReferenceLevelImplementationContractSchema.parse(await store.readArtifact(runId, 'reference-level-implementation-contract.json'));
+    const runtimeData = await readReferenceLevelRuntimeData(runRoot, workspace);
+    if (!runtimeData) throw new Error('reference-level runtime data is required for QA');
+    await verifyReferenceLevelRuntimeDataFile(workspace, runtimeData);
+    await verifyReferenceLevelLayoutFile(workspace, runtimeData);
+    const viewport = operatingProfile.deviceBaselines[1] ?? operatingProfile.deviceBaselines[0]!;
+    const result = await referenceLevelQaRunner({ runtime, workspace, runRoot, contract, runtimeData, buildHash, viewport });
+    const trace = ReferenceLevelRuntimeTraceSchema.parse(result.trace);
+    const reported = ReferenceLevelComparisonGateSchema.parse(result.gate);
+    const verified = await verifyReferenceLevelRuntimeTrace(contract, trace, { runtimeData, verifyEvidenceFile: (evidence) => verifyRunBoundEvidence(runRoot, evidence) });
+    const identityBlockers = [
+      ...(reported.targetRunId !== verified.targetRunId ? ['reference-level:reported-gate-run-mismatch'] : []),
+      ...(reported.targetGame !== verified.targetGame ? ['reference-level:reported-gate-game-mismatch'] : []),
+      ...(reported.contractHash !== verified.contractHash ? ['reference-level:reported-gate-contract-mismatch'] : []),
+      ...(reported.buildHash !== verified.buildHash ? ['reference-level:reported-gate-build-mismatch'] : []),
+      ...(trace.buildHash !== buildHash ? ['reference-level:qa-build-mismatch'] : []),
+    ];
+    const blockers = [...new Set([...verified.blockers, ...reported.blockers, ...identityBlockers])];
+    const gate = ReferenceLevelComparisonGateSchema.parse({ ...verified, passed: reported.passed && blockers.length === 0, blockers, checkedAt: new Date().toISOString() });
+    await store.writeArtifact(runId, 'reference-level-runtime-trace.json', trace);
+    await store.writeArtifact(runId, 'reference-level-comparison-gate.json', gate);
+    return { trace, gate };
+  }
+
+  async function referenceResearchInputPaths(runId: string, reference: ReferenceMechanicSpec) {
+    const runRoot = store.runRoot(runId);
+    const inputs = new Set(['input/seed.yaml', 'artifacts/reference-evidence-pack.json', ...reference.source.researchFiles]);
+    const manifestRelative = 'reference-evidence/manifest.json';
+    const manifestFile = path.join(runRoot, manifestRelative);
+    if (await exists(manifestFile)) {
+      inputs.add(manifestRelative);
+      try {
+        const manifest = JSON.parse(await readFile(manifestFile, 'utf8')) as { entries?: Array<{ usableAsEvidence?: unknown; analysisTextPath?: unknown; purpose?: unknown }> };
+        for (const entry of manifest.entries ?? []) {
+          if (entry.usableAsEvidence === true && (entry.purpose === 'gameplay-reference' || entry.purpose === 'design-document') && typeof entry.analysisTextPath === 'string') inputs.add(entry.analysisTextPath);
+        }
+      } catch { /* the evidence-pack provenance gate reports malformed manifests */ }
+    }
+    return [...inputs];
+  }
+
+  type ActionFeelCandidate = ActionFeelCandidateIdentity;
+  const actionFeelCandidate = (runRoot: string, prototype: { slot: 'A' | 'B' | 'C'; workspace: string; geometryFixtureHash?: string; treatmentHash?: string }, targetGame: string, targetRunId: string, experimentId: string, expected?: { slot: 'A' | 'B' | 'C'; workspace: string; geometryFixtureHash: string; treatmentHash: string }): ActionFeelCandidate | undefined => {
+    const expectedRelative = `workspace/feel-prototype-${prototype.slot.toLowerCase()}`;
+    if (prototype.workspace !== expectedRelative || (expected && (prototype.slot !== expected.slot || prototype.workspace !== expected.workspace || prototype.geometryFixtureHash !== expected.geometryFixtureHash || prototype.treatmentHash !== expected.treatmentHash))) return undefined;
+    return { slot: prototype.slot, workspace: path.resolve(runRoot, expectedRelative), targetRunId, targetGame, experimentId };
+  };
+
+  async function readActionFeelEvidence(runRoot: string, names: string[]): Promise<unknown | undefined> {
+    for (const name of names) {
+      if (!await exists(path.join(runRoot, name))) continue;
+      try { return JSON.parse(await readFile(path.join(runRoot, name), 'utf8')) as unknown; }
+      catch { return undefined; }
+    }
+    return undefined;
+  }
+
+  async function actionFeelPlayerEvidence(runId: string, candidate: ActionFeelCandidate) {
+    const runRoot = store.runRoot(runId);
+    const naturalReport = await readActionFeelEvidence(runRoot, ['artifacts/action-feel-natural-flow.json', 'artifacts/action-feel-natural-play.json']);
+    const perceptualEnvelope = await readActionFeelEvidence(runRoot, ['artifacts/action-feel-perceptual-qa.json']);
+    const perceptualRecord = perceptualEnvelope && typeof perceptualEnvelope === 'object' && !Array.isArray(perceptualEnvelope) ? perceptualEnvelope as Record<string, unknown> : undefined;
+    const perceptualReport = perceptualRecord?.report ?? perceptualEnvelope;
+    const contract = perceptualRecord?.contract ?? await readActionFeelEvidence(runRoot, ['artifacts/action-feel-product-experience-contract.json']);
+    const verified = await verifyActionFeelPlayerEvidence({
+      runRoot,
+      candidate,
+      ...(naturalReport === undefined ? {} : { naturalReport }),
+      ...(perceptualReport === undefined ? {} : { perceptualReport }),
+      ...(contract === undefined ? {} : { contract }),
+    });
+    const visualEvidence: ProfileIndependentEvidence = {
+      ...verified.naturalPlay,
+      passed: verified.naturalPlay.passed,
+      playerVisible: verified.naturalPlay.passed,
+      evidence: [...verified.naturalPlay.evidence, 'visual:runVisualEvidenceGate'],
+    };
+    return { naturalPlayEvidence: verified.naturalPlay, visualEvidence, perceptualEvidence: verified.perceptual };
+  }
+
+  async function preserveFailedActionFeelReview(runId: string, review: ExperienceReviewReport) {
+    const priorPath = path.join(store.runRoot(runId), 'artifacts/experience-review.prior-failed.json');
+    if (!await exists(priorPath)) await store.writeArtifact(runId, 'experience-review.prior-failed.json', review);
+  }
+
+  type ActionFeelEngineeringCandidateBuild = { slot: 'A' | 'B' | 'C'; workspace: string; buildHash: string };
+
+  async function captureActionFeelEngineeringCandidateBuilds(runRoot: string, runId: string, targetGame: string, spec: ActionMechanicExperimentSpec, buildReport: ActionPrototypeBuildReport): Promise<ActionFeelEngineeringCandidateBuild[]> {
+    return Promise.all(buildReport.prototypes.map(async (prototype) => {
+      const expected = spec.prototypes.find((item) => item.slot === prototype.slot);
+      const candidate = expected ? actionFeelCandidate(runRoot, prototype, targetGame, runId, spec.experimentId, expected) : undefined;
+      if (!candidate) throw new Error(`action-feel engineering candidate ${prototype.slot} is not bound to the locked spec`);
+      return { slot: prototype.slot, workspace: prototype.workspace, buildHash: await hashActionFeelCandidateBuild(candidate.workspace) };
+    }));
+  }
+
+  async function buildActionFeelEngineeringBuildBinding(runRoot: string, runId: string, targetGame: string, spec: ActionMechanicExperimentSpec, buildReport: ActionPrototypeBuildReport, measuredBuilds: readonly ActionFeelEngineeringCandidateBuild[]) {
+    const candidates = await Promise.all(buildReport.prototypes.map(async (prototype) => {
+      const expected = spec.prototypes.find((item) => item.slot === prototype.slot);
+      const candidate = expected ? actionFeelCandidate(runRoot, prototype, targetGame, runId, spec.experimentId, expected) : undefined;
+      const measured = measuredBuilds.find((item) => item.slot === prototype.slot);
+      if (!candidate || !measured || measured.workspace !== prototype.workspace) throw new Error(`action-feel engineering candidate ${prototype.slot} is not bound to the measured build`);
+      return measured;
+    }));
+    const engineeringReportPath = path.join(runRoot, 'artifacts/action-feel-natural-play-qa.json');
+    return ActionFeelEngineeringBuildBindingSchema.parse({
+      schemaVersion: 1,
+      targetRunId: runId,
+      targetGame,
+      experimentId: spec.experimentId,
+      engineeringReport: { path: 'artifacts/action-feel-natural-play-qa.json', sha256: await sha256File(engineeringReportPath) },
+      candidates,
+    });
+  }
+
+  async function verifyActionFeelEngineeringBuildBinding(runRoot: string, runId: string, targetGame: string, spec: ActionMechanicExperimentSpec, buildReport: ActionPrototypeBuildReport) {
+    const raw = await readActionFeelEvidence(runRoot, ['artifacts/action-feel-engineering-build-hashes.json']);
+    const parsed = ActionFeelEngineeringBuildBindingSchema.safeParse(raw);
+    if (!parsed.success || parsed.data.targetRunId !== runId || parsed.data.targetGame !== targetGame || parsed.data.experimentId !== spec.experimentId || buildReport.experimentId !== spec.experimentId) return false;
+    try {
+      const engineeringReportPath = path.join(runRoot, parsed.data.engineeringReport.path);
+      if (parsed.data.engineeringReport.path !== 'artifacts/action-feel-natural-play-qa.json' || !await exists(engineeringReportPath) || parsed.data.engineeringReport.sha256 !== await sha256File(engineeringReportPath)) return false;
+      for (const prototype of buildReport.prototypes) {
+        const expected = spec.prototypes.find((item) => item.slot === prototype.slot);
+        const candidate = expected ? actionFeelCandidate(runRoot, prototype, targetGame, runId, spec.experimentId, expected) : undefined;
+        const bound = parsed.data.candidates.find((item) => item.slot === prototype.slot);
+        if (!candidate || !bound || bound.workspace !== prototype.workspace || bound.buildHash !== await hashActionFeelCandidateBuild(candidate.workspace)) return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async function revalidateActionFeelProfileEvidence(state: RunState, blueprint: GameBlueprint, lineContract: { line: string; template?: string; primaryProfile: string }) {
+    if (lineContract.primaryProfile !== 'ACTION_FEEL') return { passed: true as const };
+    if (!isActionFeelProfileStageSupported({ productionLine: lineContract.line, template: lineContract.template, profile: lineContract.primaryProfile })) {
+      return { passed: false as const, stage: 'FEEL_PROTOTYPE' as const, blockers: ['blocked:action-feel-adapter-unsupported'] };
+    }
+    const runId = state.runId;
+    const runRoot = store.runRoot(runId);
+    try {
+      const spec = ActionMechanicExperimentSpecSchema.parse(await store.readArtifact(runId, 'action-feel-stage-spec.json'));
+      const buildReport = ActionPrototypeBuildReportSchema.parse(await store.readArtifact(runId, 'action-feel-build-report.json'));
+      if (!await verifyActionFeelEngineeringBuildBinding(runRoot, runId, blueprint.title, spec, buildReport)) {
+        return { passed: false as const, stage: 'NATURAL_PLAY_QA' as const, blockers: ['blocked:action-feel-engineering-build-hash-mismatch'] };
+      }
+      const playtest = ActionPlaytestReportSchema.parse(await store.readArtifact(runId, 'action-feel-natural-play-qa.json'));
+      const selectedPrototype = playtest.recommendation === 'NONE' ? undefined : buildReport.prototypes.find((prototype) => prototype.slot === playtest.recommendation);
+      const selectedSpecPrototype = selectedPrototype ? spec.prototypes.find((prototype) => prototype.slot === selectedPrototype.slot) : undefined;
+      const selectedCandidate = selectedPrototype && buildReport.experimentId === spec.experimentId && playtest.experimentId === spec.experimentId
+        ? actionFeelCandidate(runRoot, selectedPrototype, blueprint.title, runId, spec.experimentId, selectedSpecPrototype)
+        : undefined;
+      const playerEvidence = selectedCandidate ? await actionFeelPlayerEvidence(runId, selectedCandidate) : undefined;
+      const naturalPlayEvidence = playerEvidence?.naturalPlayEvidence;
+      const visualEvidence: ProfileIndependentEvidence = playerEvidence?.visualEvidence ?? { passed: false, evidence: ['candidate:selected-missing'], blockers: ['candidate:selected-missing'] };
+      const perceptualEvidence = playerEvidence?.perceptualEvidence;
+      const review = buildActionFeelExperienceReview({ contractId: `experience-${blueprint.gameId}-action-feel`, playtest, naturalPlayEvidence, visualEvidence, perceptualEvidence, selectedCandidate });
+      if (review.decision === 'APPROVED') return { passed: true as const, review };
+      const blockers = review.issues.map((issue) => `blocked:${issue.id}`);
+      const stage: StageName = review.issues.some((issue) => issue.id === 'action-feel-natural-evidence') ? 'NATURAL_PLAY_QA' : 'FEEL_REPAIR';
+      return { passed: false as const, stage, blockers: blockers.length > 0 ? blockers : ['blocked:action-feel-profile-revalidation'], review };
+    } catch {
+      return { passed: false as const, stage: 'FEEL_REPAIR' as const, blockers: ['blocked:action-feel-profile-evidence-invalid'] };
+    }
+  }
+
+  async function executeActionFeelProfileStage(state: RunState, blueprint: GameBlueprint, lineContract: ReturnType<typeof getProductionLineContract>) {
+    const runId = state.runId;
+    const runRoot = store.runRoot(runId);
+    const sourceWorkspace = lineContract.template === 'cut-stack-dodge-v1' ? 'templates/web-lite/cut-stack-dodge-v1' : `templates/web-lite/${lineContract.template ?? 'unknown'}`;
+    if (!isActionFeelProfileStageSupported({ productionLine: lineContract.line, template: lineContract.template, profile: lineContract.primaryProfile })) {
+      return setWaiting(state, 'FEEL_PROTOTYPE', ['artifacts/production-line-contract.json', 'artifacts/game-blueprint.json'], ['artifacts/action-feel-stage-spec.json'], ['blocked:action-feel-adapter-unsupported', `line:${lineContract.line}`, `template:${lineContract.template ?? 'missing'}`, `profile:${lineContract.primaryProfile}`]);
+    }
+    const specFile = path.join(runRoot, 'artifacts/action-feel-stage-spec.json');
+    const representativeFlow = lineContract.representativeFlow;
+    const spec = await exists(specFile)
+      ? ActionMechanicExperimentSpecSchema.parse(await store.readArtifact(runId, 'action-feel-stage-spec.json'))
+      : buildActionFeelStageSpec({ runId, sourceWorkspace, representativeFlow, targetGame: blueprint.title, productionLine: lineContract.line, template: lineContract.template, profile: lineContract.primaryProfile });
+    if (spec.experimentId !== `feel-${runId}` || spec.sourceWorkspace !== sourceWorkspace || spec.prototypes.some((prototype) => !prototype.name.startsWith(`${blueprint.title}·`))) {
+      return setWaiting(state, 'FEEL_PROTOTYPE', ['artifacts/action-feel-stage-spec.json', 'artifacts/game-blueprint.json', 'artifacts/production-line-contract.json'], ['artifacts/action-feel-stage-spec.json'], ['blocked:action-feel-stage-spec-identity-mismatch']);
+    }
+    if (!await exists(specFile)) await store.writeArtifact(runId, 'action-feel-stage-spec.json', spec);
+
+    if (!done(state, 'FEEL_PROTOTYPE')) {
+      const record = await begin(state, 'FEEL_PROTOTYPE', ['artifacts/core-spec-lock.json', 'artifacts/experience-contract.json']);
+      try {
+        const context = await contextFor(
+          'FEEL_PROTOTYPE',
+          runRoot,
+          store.artifact(runId, 'action-feel-build-report.json'),
+          ['artifacts/core-spec-lock.json', 'artifacts/experience-contract.json', 'artifacts/action-feel-stage-spec.json'],
+          'Build three isolated action-feel greybox candidates for the locked cut-stack-dodge line. Keep the geometry identical and vary only feedback treatment.',
+          { targetGameId: blueprint.gameId, requiredArtifacts: ['artifacts/core-spec-lock.json', 'artifacts/experience-contract.json', 'artifacts/action-feel-stage-spec.json'] },
+        );
+        const result = await builderAgent.buildActionPrototypes(runRoot, path.resolve(repositoryRoot, sourceWorkspace), spec, context);
+        addAgentMetrics(record, result.metrics);
+        await store.writeArtifact(runId, 'action-feel-build-report.json', result.report);
+        const sourceArtifacts = [{ path: 'artifacts/action-feel-build-report.json', sha256: await sha256File(path.join(runRoot, 'artifacts/action-feel-build-report.json')) }];
+        const evidence = buildProfileStageEvidence({
+          stage: 'FEEL_PROTOTYPE',
+          targetRunId: runId,
+          targetGame: blueprint.title,
+          targetWorkspace: path.join(runRoot, 'workspace/game'),
+          sourceArtifacts,
+          checks: [
+            { id: 'feel:prototype-playable', passed: result.report.prototypes.length === 3, evidence: 'BuilderAgent emitted three isolated greybox candidates with action-test contracts.' },
+            { id: 'feel:geometry-locked', passed: new Set(result.report.prototypes.map((item) => item.geometryFixtureHash)).size === 1, evidence: 'All candidates share one geometry fixture hash.' },
+          ],
+        });
+        await store.writeArtifact(runId, 'feel-prototype-report.json', evidence);
+        await saveUsage(state);
+        await complete(state, record, ['artifacts/action-feel-stage-spec.json', 'artifacts/action-feel-build-report.json', 'artifacts/feel-prototype-report.json', 'workspace/feel-prototype-a/dist/', 'workspace/feel-prototype-b/dist/', 'workspace/feel-prototype-c/dist/'], ['feel:prototype-playable', 'feel:geometry-locked', 'builder:BuilderAgent', 'isolated:3', `model:${result.metrics.model}`]);
+      } catch (error) { return fail(state, record, error); }
+      return executePipeline(runId);
+    }
+
+    if (!done(state, 'NATURAL_PLAY_QA')) {
+      // A missing player-evidence pause is an idempotent observation wait. Do
+      // not start a new engineering attempt (or rerun the tournament) while
+      // the same candidate build and reports are unchanged. Recheck the
+      // incoming natural/visual files first; a newly supplied, valid gate may
+      // then advance through the normal stage attempt below.
+      if (state.stages.NATURAL_PLAY_QA?.status === 'waiting') {
+        try {
+          const waitingBuildReport = ActionPrototypeBuildReportSchema.parse(await store.readArtifact(runId, 'action-feel-build-report.json'));
+          const waitingPlaytest = ActionPlaytestReportSchema.parse(await store.readArtifact(runId, 'action-feel-natural-play-qa.json'));
+          if (!await verifyActionFeelEngineeringBuildBinding(runRoot, runId, blueprint.title, spec, waitingBuildReport)) {
+            return setWaiting(state, 'NATURAL_PLAY_QA', ['artifacts/feel-prototype-report.json', 'artifacts/action-feel-build-report.json', 'artifacts/action-feel-natural-play-qa.json', 'artifacts/action-feel-engineering-build-hashes.json'], ['artifacts/natural-play-qa.json', 'artifacts/action-feel-engineering-build-hashes.json'], ['blocked:action-feel-engineering-build-hash-mismatch']);
+          }
+          const waitingPrototype = waitingPlaytest.recommendation === 'NONE' ? undefined : waitingBuildReport.prototypes.find((prototype) => prototype.slot === waitingPlaytest.recommendation);
+          const waitingSpecPrototype = waitingPrototype ? spec.prototypes.find((prototype) => prototype.slot === waitingPrototype.slot) : undefined;
+          const waitingCandidate = waitingPrototype && waitingBuildReport.experimentId === spec.experimentId && waitingPlaytest.experimentId === spec.experimentId
+            ? actionFeelCandidate(runRoot, waitingPrototype, blueprint.title, runId, spec.experimentId, waitingSpecPrototype)
+            : undefined;
+          const waitingPlayerEvidence = waitingCandidate ? await actionFeelPlayerEvidence(runId, waitingCandidate) : undefined;
+          const waitingNatural = waitingPlayerEvidence?.naturalPlayEvidence;
+          const waitingVisual: ProfileIndependentEvidence = waitingPlayerEvidence?.visualEvidence
+            ?? { passed: false, evidence: ['candidate:selected-missing'], blockers: ['candidate:selected-missing'] };
+          if (waitingNatural?.passed !== true || waitingVisual.passed !== true) {
+            return setWaiting(
+              state,
+              'NATURAL_PLAY_QA',
+              ['artifacts/feel-prototype-report.json', 'artifacts/action-feel-natural-play-qa.json', 'artifacts/natural-play-qa.json'],
+              ['artifacts/natural-play-qa.json', 'artifacts/action-feel-natural-flow.json', 'screenshots/'],
+              [
+                ...(waitingNatural?.blockers ?? ['natural:evidence-missing']),
+                ...waitingVisual.blockers,
+              ].map((item) => `blocked:${item}`),
+            );
+          }
+        } catch {
+          return setWaiting(state, 'NATURAL_PLAY_QA', ['artifacts/feel-prototype-report.json', 'artifacts/action-feel-natural-play-qa.json'], ['artifacts/natural-play-qa.json', 'artifacts/action-feel-natural-flow.json', 'screenshots/'], ['blocked:natural-evidence-recheck-invalid']);
+        }
+      }
+      const record = await begin(state, 'NATURAL_PLAY_QA', ['artifacts/feel-prototype-report.json', 'artifacts/action-feel-build-report.json'], { reuseWaitingAttempt: true });
+      try {
+        const buildReport = ActionPrototypeBuildReportSchema.parse(await store.readArtifact(runId, 'action-feel-build-report.json'));
+        const playtestFile = path.join(runRoot, 'artifacts/action-feel-natural-play-qa.json');
+        const playtestAlreadyExists = await exists(playtestFile);
+        let measuredBuilds: ActionFeelEngineeringCandidateBuild[] | undefined;
+        if (!playtestAlreadyExists) {
+          // Freeze the candidate bytes before the tournament. A post-QA hash
+          // would let changed dist files be retroactively bound to old metrics.
+          try { measuredBuilds = await captureActionFeelEngineeringCandidateBuilds(runRoot, runId, blueprint.title, spec, buildReport); }
+          catch { /* missing or invalid candidate bytes keep the engineering binding fail-closed */ }
+        }
+        const playtest = playtestAlreadyExists
+          ? ActionPlaytestReportSchema.parse(await store.readArtifact(runId, 'action-feel-natural-play-qa.json'))
+          : await qaAgent.actionTournament(spec, buildReport, runRoot);
+        if (!playtestAlreadyExists) {
+          await store.writeArtifact(runId, 'action-feel-natural-play-qa.json', playtest);
+          try {
+            if (!measuredBuilds) throw new Error('action-feel engineering candidate hashes were not captured before QA');
+            await store.writeArtifact(runId, 'action-feel-engineering-build-hashes.json', await buildActionFeelEngineeringBuildBinding(runRoot, runId, blueprint.title, spec, buildReport, measuredBuilds));
+          } catch { /* the profile evidence remains blocked below */ }
+        }
+        const selectedPrototype = playtest.recommendation === 'NONE' ? undefined : buildReport.prototypes.find((prototype) => prototype.slot === playtest.recommendation);
+        const selectedSpecPrototype = selectedPrototype ? spec.prototypes.find((prototype) => prototype.slot === selectedPrototype.slot) : undefined;
+        const selectedCandidate = selectedPrototype && buildReport.experimentId === spec.experimentId && playtest.experimentId === spec.experimentId
+          ? actionFeelCandidate(runRoot, selectedPrototype, blueprint.title, runId, spec.experimentId, selectedSpecPrototype)
+          : undefined;
+        const playerEvidence = selectedCandidate ? await actionFeelPlayerEvidence(runId, selectedCandidate) : undefined;
+        const naturalPlayEvidence = playerEvidence?.naturalPlayEvidence;
+        const visualEvidence: ProfileIndependentEvidence = playerEvidence?.visualEvidence
+          ?? { passed: false, evidence: ['candidate:selected-missing'], blockers: ['candidate:selected-missing'] };
+        const engineeringBindingPassed = await verifyActionFeelEngineeringBuildBinding(runRoot, runId, blueprint.title, spec, buildReport);
+        const engineeringPassed = engineeringBindingPassed && playtest.recommendation !== 'NONE'
+          && playtest.results.every((result) => Object.values(result).every((value) => typeof value === 'object' && value !== null && 'passed' in value ? (value as { passed: boolean }).passed : true));
+        const engineeringBindingFile = path.join(runRoot, 'artifacts/action-feel-engineering-build-hashes.json');
+        const sourceArtifacts = [
+          { path: 'artifacts/action-feel-natural-play-qa.json', sha256: await sha256File(path.join(runRoot, 'artifacts/action-feel-natural-play-qa.json')) },
+          ...(await exists(engineeringBindingFile) ? [{ path: 'artifacts/action-feel-engineering-build-hashes.json', sha256: await sha256File(engineeringBindingFile) }] : []),
+        ];
+        const evidence = buildProfileStageEvidence({
+          stage: 'NATURAL_PLAY_QA',
+          targetRunId: runId,
+          targetGame: blueprint.title,
+          targetWorkspace: path.join(runRoot, 'workspace/game'),
+          sourceArtifacts,
+          checks: [
+            { id: 'feel:engineering-thresholds', passed: engineeringPassed, evidence: `Deterministic engineering QA recommendation: ${playtest.recommendation}; candidate build binding: ${engineeringBindingPassed}. This report is not natural-play approval.` },
+            { id: 'feel:natural-input', passed: naturalPlayEvidence?.passed === true, evidence: naturalPlayEvidence ? (naturalPlayEvidence.evidence.join(', ') || naturalPlayEvidence.blockers.join(', ') || 'Independent fresh-context natural-flow evidence is blocked.') : 'Independent fresh-context natural-flow evidence is missing.' },
+            { id: 'feel:visual-evidence', passed: visualEvidence.passed, evidence: visualEvidence.evidence.join(', ') },
+          ],
+          independentEvidence: { naturalPlay: naturalPlayEvidence, visual: visualEvidence },
+        });
+        await store.writeArtifact(runId, 'natural-play-qa.json', evidence);
+        await saveUsage(state);
+        if (evidence.status !== 'READY') return setWaiting(state, 'NATURAL_PLAY_QA', ['artifacts/feel-prototype-report.json', 'artifacts/action-feel-natural-play-qa.json', 'artifacts/action-feel-engineering-build-hashes.json', 'artifacts/natural-play-qa.json'], ['artifacts/natural-play-qa.json', 'artifacts/action-feel-natural-flow.json', 'artifacts/action-feel-engineering-build-hashes.json', 'screenshots/'], evidence.checks.filter((check) => !check.passed).map((check) => `blocked:${check.id}`));
+        await complete(state, record, ['artifacts/action-feel-natural-play-qa.json', 'artifacts/action-feel-engineering-build-hashes.json', 'artifacts/natural-play-qa.json', 'screenshots/', 'logs/'], ['feel:natural-input', 'feel:thresholds', 'reviewer:QAAgent', 'author-independent:true']);
+      } catch (error) { return fail(state, record, error); }
+      return executePipeline(runId);
+    }
+
+    if (!done(state, 'EXPERIENCE_REVIEW')) {
+      const record = await begin(state, 'EXPERIENCE_REVIEW', ['artifacts/natural-play-qa.json', 'artifacts/action-feel-natural-play-qa.json'], { reuseWaitingAttempt: true });
+      try {
+        const playtest = ActionPlaytestReportSchema.parse(await store.readArtifact(runId, 'action-feel-natural-play-qa.json'));
+        const buildReport = ActionPrototypeBuildReportSchema.parse(await store.readArtifact(runId, 'action-feel-build-report.json'));
+        const selectedPrototype = playtest.recommendation === 'NONE' ? undefined : buildReport.prototypes.find((prototype) => prototype.slot === playtest.recommendation);
+        const selectedSpecPrototype = selectedPrototype ? spec.prototypes.find((prototype) => prototype.slot === selectedPrototype.slot) : undefined;
+        const selectedCandidate = selectedPrototype && buildReport.experimentId === spec.experimentId && playtest.experimentId === spec.experimentId
+          ? actionFeelCandidate(runRoot, selectedPrototype, blueprint.title, runId, spec.experimentId, selectedSpecPrototype)
+          : undefined;
+        const playerEvidence = selectedCandidate ? await actionFeelPlayerEvidence(runId, selectedCandidate) : undefined;
+        const naturalPlayEvidence = playerEvidence?.naturalPlayEvidence;
+        const visualEvidence: ProfileIndependentEvidence = playerEvidence?.visualEvidence
+          ?? { passed: false, evidence: ['candidate:selected-missing'], blockers: ['candidate:selected-missing'] };
+        const perceptualEvidence = playerEvidence?.perceptualEvidence;
+        const review = buildActionFeelExperienceReview({ contractId: `experience-${blueprint.gameId}-action-feel`, playtest, naturalPlayEvidence, visualEvidence, perceptualEvidence, selectedCandidate });
+        await store.writeArtifact(runId, 'experience-review.json', review);
+        const sourceArtifacts = [{ path: 'artifacts/experience-review.json', sha256: await sha256File(path.join(runRoot, 'artifacts/experience-review.json')) }];
+        const evidence = buildProfileStageEvidence({
+          stage: 'EXPERIENCE_REVIEW',
+          targetRunId: runId,
+          targetGame: blueprint.title,
+          targetWorkspace: path.join(runRoot, 'workspace/game'),
+          sourceArtifacts,
+          checks: [
+            { id: 'experience:profile-review', passed: review.decision === 'APPROVED', evidence: `Experience review decision: ${review.decision}.` },
+            { id: 'experience:oracle-free', passed: !review.oracleDetected, evidence: 'No state-forcing oracle was reported by the independent review.' },
+          ],
+          independentEvidence: { naturalPlay: naturalPlayEvidence, visual: visualEvidence, perceptual: perceptualEvidence },
+        });
+        await store.writeArtifact(runId, 'experience-review-evidence.json', evidence);
+        await saveUsage(state);
+        await complete(state, record, ['artifacts/experience-review.json', 'artifacts/experience-review-evidence.json'], ['experience:profile-review', 'experience:oracle-free']);
+        if (review.decision !== 'APPROVED') return setWaiting(state, 'FEEL_REPAIR', ['artifacts/experience-review.json'], ['artifacts/experience-review-evidence.json'], review.issues.map((issue) => `blocked:${issue.id}`));
+      } catch (error) { return fail(state, record, error); }
+      return executePipeline(runId);
+    }
+    return undefined;
+  }
+
+  async function analyzeReferenceBehavior(state: RunState, reference: ReferenceMechanicSpec, packValue: unknown, record: StageRecord, frameManifest?: ReferenceFrameManifest, codeAnalysisPath?: string) {
+    const runId = state.runId;
+    const pack = ReferenceEvidencePackSchema.parse(packValue);
+    const runRoot = store.runRoot(runId);
+    const levelCurrent = frameManifest ? await referenceLevelArtifactsCurrent(runRoot, frameManifest) : true;
+    if (!referenceBehaviorAnalysisNeeded(pack) && levelCurrent) return pack;
+    const codeInputs = codeAnalysisPath ? [codeAnalysisPath] : [];
+    const inputs = [...await referenceResearchInputPaths(runId, reference), ...(frameManifest ? ['artifacts/reference-frame-manifest.json'] : []), ...codeInputs];
+    const codeInstruction = codeAnalysisPath
+      ? ` A verified reference code analysis (${codeAnalysisPath}) is the authoritative mechanic evidence: base rules, state transitions and failure/recovery on its OBSERVED claims, cite the verified code package from the evidence pack with the claim id as locator, use recording frames only for layout, pacing and feel, and record any conflict between code and recording as an unknown.`
+      : '';
+    // Persist the exact base pack before compiling context so source paths and
+    // hashes seen by the ResearchAgent match the artifact merged below.
+    await store.writeArtifact(runId, 'reference-evidence-pack.json', pack);
+    const researchMedia = frameManifest
+      ? selectReferenceResearchMedia(frameManifest, Number(process.env.FACTORY_REFERENCE_RESEARCH_DETAIL_FRAMES ?? 64))
+      : undefined;
+    const context = await contextFor(
+      'REFERENCE_DEEP_RESEARCH',
+      runRoot,
+      store.artifact(runId, 'reference-behavior-analysis.json'),
+      inputs,
+      `Convert the run-bound reference evidence into exact QA cases for input/state, spatial relation, failure/recovery, feedback sequence and terminal/replay. When a verified frame manifest is present, inspect the copied contact sheets and frames and produce the recording-level reconstruction. Cite only source paths and hashes already bound in the evidence pack; preserve unknowns and do not copy expression.${codeInstruction}`,
+      {
+        requiredContextPaths: ['artifacts/reference-evidence-pack.json', ...(inputs.includes('reference-evidence/manifest.json') ? ['reference-evidence/manifest.json'] : []), ...(frameManifest ? ['artifacts/reference-frame-manifest.json'] : []), ...codeInputs],
+        ...(researchMedia ? { mediaInputs: researchMedia.media.map((item) => ({ path: item.path, sha256: item.sha256 })) } : {}),
+      },
+    );
+    const result = await referenceResearchAgent.run(pack, context);
+    addAgentMetrics(record, result.metrics);
+    let analysis = enforceRecordingAnalysisAuthority({
+      analysis: ReferenceBehaviorAnalysisSchema.parse(normalizeReferenceBehaviorAnalysis(result.value, pack)),
+      provider: result.metrics.provider,
+      recordingDeclared: frameManifest !== undefined,
+      allowSyntheticForTests: allowSyntheticReferenceAnalysisForTests,
+    });
+    if (codeAnalysisPath && !frameManifest) analysis = enforceCodeAnalysisBasis(analysis);
+    if (frameManifest) {
+      const frameManifestFile = path.join(runRoot, 'artifacts/reference-frame-manifest.json');
+      const frameManifestSha256 = await sha256File(frameManifestFile);
+      const reconstruction = analysis.levelReconstruction ?? blockedLevelReconstruction(frameManifest, frameManifestSha256, 'recording-level-reconstruction-missing');
+      const verified = verifyReferenceLevelReconstruction(reconstruction, frameManifest, { frameManifestSha256 });
+      await store.writeArtifact(runId, 'reference-level-reconstruction.json', reconstruction);
+      const reconstructionFile = path.join(runRoot, 'artifacts/reference-level-reconstruction.json');
+      const implementationContract = deriveReferenceLevelImplementationContract(reconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: await sha256File(reconstructionFile) });
+      await store.writeArtifact(runId, 'reference-level-implementation-contract.json', implementationContract);
+      if (!verified.passed || implementationContract.status !== 'READY') {
+        const levelUnknowns = [...verified.blockers, ...implementationContract.blockers].map((blocker) => `recording-level:${blocker}`);
+        analysis = ReferenceBehaviorAnalysisSchema.parse({ ...analysis, unknowns: [...new Set([...analysis.unknowns, ...levelUnknowns])], levelReconstruction: reconstruction, status: 'BLOCKED' });
+      }
+    }
+    await store.writeArtifact(runId, 'reference-behavior-analysis.json', analysis);
+    if (analysis.failurePressureContract) await store.writeArtifact(runId, 'reference-failure-pressure-contract.json', analysis.failurePressureContract);
+    await saveUsage(state);
+    return applyReferenceBehaviorAnalysis(pack, analysis);
   }
 
   /** Capability checks include a timestamp for human audit, but their stable
@@ -348,39 +981,12 @@ export function createFactory(options: FactoryOptions = {}) {
    * gives the idle mother template a real, hash-bound representative journey. */
   async function persistNaturalLineEvidence(runId: string, report: ReturnType<typeof QaReportSchema.parse>, buildHash: string) {
     const lineValue = await store.readArtifact(runId, 'production-line-contract.json').catch(() => undefined) as { line?: unknown } | undefined;
-    if (lineValue?.line !== 'idle-management' || !report.naturalFlow) return undefined;
-    const plan = buildProductionLinePlayPlan('idle-management');
-    const transitionPassed = (name: string) => report.naturalFlow!.transitions.some((transition) => transition.name === name && transition.changed);
-    const evidenceFor = (stepIndex: number, detail: string) => [
-      ...plan.requiredEvidence,
-      `natural-flow:${detail}`,
-      `step:${plan.steps[stepIndex]?.id ?? stepIndex + 1}`,
-    ];
-    const steps = plan.steps.map((step, index) => {
-      const passed = index === 0
-        ? report.naturalFlow!.startedFromReset
-        : index === 1
-          ? transitionPassed('produce') || transitionPassed('automatic-progress')
-          : index === 2
-            ? report.naturalFlow!.completion === 'settlement'
-            : index === 3
-              ? transitionPassed('upgrade')
-              : report.naturalFlow!.replayObserved;
-      const detail = index === 0 ? 'reset'
-        : index === 1 ? 'produce'
-          : index === 2 ? 'deliver-settlement'
-            : index === 3 ? 'upgrade-trade-off'
-              : 'refresh-recovery';
-      return { id: step.id, passed, evidence: evidenceFor(index, detail) };
-    });
-    const evidence = ProductionLinePlayEvidenceSchema.parse({
-      schemaVersion: 1,
-      line: 'idle-management',
-      buildHash,
-      naturalInput: report.naturalFlow.forbiddenOperations.length === 0,
-      steps,
-      forbiddenOperations: report.naturalFlow.forbiddenOperations,
-    });
+    const line = typeof lineValue?.line === 'string' && ['idle-management', 'cut-stack-dodge'].includes(lineValue.line)
+      ? lineValue.line as 'idle-management' | 'cut-stack-dodge'
+      : undefined;
+    if (!line || !report.naturalFlow) return undefined;
+    const plan = buildProductionLinePlayPlan(line);
+    const evidence = deriveProductionLinePlayEvidence(plan, report.naturalFlow, buildHash);
     await store.writeArtifact(runId, 'production-line-play-evidence.json', evidence);
     return evidence;
   }
@@ -467,12 +1073,17 @@ export function createFactory(options: FactoryOptions = {}) {
   /** Freeze the exact build that QA observed. A later release must reuse it. */
   async function ensureReleaseCandidate(state: RunState, blueprint: GameBlueprint, options: { operating: boolean; buildPath: string }) {
     const runId = state.runId;
+    const bindCompletion = async (coreHash: string) => {
+      const qa = QaReportSchema.parse(await store.readArtifact(runId, 'qa-report.json'));
+      return refreshAcceptanceArtifacts(store.runRoot(runId), await readBuildSuccess(store.runRoot(runId)), qa.passed, qa.screenshots, coreHash);
+    };
     if (done(state, 'RELEASE_CANDIDATE')) {
       try {
         const existing = ReleaseCandidateSchema.parse(await store.readArtifact(runId, 'release-candidate.json'));
         const buildDirectory = path.resolve(store.runRoot(runId), options.buildPath);
         const currentBuildHash = await hashBuildDirectory(buildDirectory);
         await verifyFrozenCandidate(store.runRoot(runId), existing, currentBuildHash);
+        await bindCompletion(existing.coreHash);
         return existing;
       } catch (error) {
         // A completed state is not proof that the package is still intact. A
@@ -485,16 +1096,19 @@ export function createFactory(options: FactoryOptions = {}) {
     const inputs = ['artifacts/build-report.json', 'artifacts/quality-gate-matrix.json', options.buildPath, 'workspace/game/dist/'];
     const record = await begin(state, 'RELEASE_CANDIDATE', inputs);
     try {
-      const frozen = await packageReleaseCandidate(store.runRoot(runId), blueprint, { enforceOperatingGates: options.operating });
+      const testedBuildHash = state.stages.QA?.evidence.find((item) => /^qa:build-hash:[a-f0-9]{64}$/u.test(item))?.slice('qa:build-hash:'.length);
+      if (!testedBuildHash) throw new Error('QA build hash is required before freezing a candidate');
+      const frozen = await packageReleaseCandidate(store.runRoot(runId), blueprint, { enforceOperatingGates: options.operating, expectedBuildHash: testedBuildHash });
       await store.writeArtifact(runId, 'release-candidate.json', frozen.candidate);
+      await bindCompletion(frozen.candidate.coreHash);
       const lifecycleValue = await store.readArtifact(runId, 'release-lifecycle.json').catch(() => undefined);
       if (lifecycleValue) {
         const lifecycle = ReleaseLifecycleSchema.parse(lifecycleValue);
-        if (lifecycle.status === 'IMPLEMENTATION_READY' || lifecycle.status === 'PAUSED') {
+        if ((lifecycle.status === 'IMPLEMENTATION_READY' || lifecycle.status === 'PAUSED') && CompletionGateReportSchema.parse(await store.readArtifact(runId, 'completion-gates.json')).candidateReady && (await readRuntimeCandidateEvidence(store.runRoot(runId))).passed) {
           await store.writeArtifact(runId, 'release-lifecycle.json', promoteReleaseLifecycle(lifecycle, { gameId: blueprint.gameId, releaseHash: frozen.candidate.coreHash, from: lifecycle.status, to: 'CANDIDATE_READY' }));
         }
       }
-      await complete(state, record, ['artifacts/release-candidate.json', 'artifacts/quality-gate-matrix.json', 'release-candidate/'], ['candidate:hash-frozen', 'candidate:quality-matrix-bound', `candidate:core-hash:${frozen.candidate.coreHash}`, 'candidate:human-playtest-version', 'release:no-rebuild-after-freeze']);
+      await complete(state, record, ['artifacts/release-candidate.json', 'artifacts/completion-gates.json', 'artifacts/quality-gate-matrix.json', 'release-candidate/'], ['candidate:hash-frozen', 'candidate:quality-matrix-bound', `candidate:core-hash:${frozen.candidate.coreHash}`, 'candidate:human-playtest-version', 'release:no-rebuild-after-freeze']);
       return frozen.candidate;
     } catch (error) { return fail(state, record, error); }
   }
@@ -656,6 +1270,23 @@ export function createFactory(options: FactoryOptions = {}) {
       portfolioGateRequired: portfolioGateRequired(),
       platformPolicyRequired: platformPolicyRequired(),
     };
+  }
+
+  /** Routing and run creation share the effective stage policy. Explicit rigor
+   * selects the mode before a new run writes any artifacts. */
+  function planNewGame(input: Parameters<typeof buildPipelinePlan>[0]) {
+    const mode = input.rigor
+      ? pipelineModeForRigor(input.rigor, input.designMode)
+      : input.designMode === 'prototype_tournament' && operatingProfile.pipelineMode === 'replica-preview'
+        ? 'fast-reskin'
+        : operatingProfile.pipelineMode;
+    return buildPipelinePlan({
+      ...input,
+      mode,
+      presentationQualityRequired: presentationQualityRequired(),
+      supplyChainRequired: supplyChainRequired(),
+      blindPlaytestRequired: blindPlaytestRequired(),
+    });
   }
 
   async function ensurePortfolioStrategyArtifact(runId: string) {
@@ -1139,10 +1770,11 @@ export function createFactory(options: FactoryOptions = {}) {
     if (!ledgerResult.passed) return setWaiting(state, 'FULL_BUILD', ['artifacts/artifact-ledger.json'], ['artifacts/artifact-ledger.json'], ledgerResult.blockers.map((item) => `blocked:${item}`));
 
     const usage = await usageForState(state);
-    const cost = evaluateCostGate(CostBudgetSchema.parse(operatingProfile.budget), usage);
+    const runBudget = await costBudgetForRun(runId);
+    const cost = evaluateCostGate(runBudget, usage);
     await store.writeArtifact(runId, 'cost-gate.json', cost);
     if (!cost.passed) {
-      const abandonment = evaluateAbandonment({ runId, stage: state.stage, budget: operatingProfile.budget, usage, reason: 'cost-cap' });
+      const abandonment = evaluateAbandonment({ runId, stage: state.stage, budget: runBudget, usage, reason: 'cost-cap' });
       await store.writeArtifact(runId, 'abandonment-decision.json', abandonment);
       if (operatingProfile.autoAbandonOnCostCap) {
         state.stage = 'ABANDONED'; state.status = 'completed';
@@ -1379,12 +2011,42 @@ export function createFactory(options: FactoryOptions = {}) {
     };
   }
 
+  /** Resolve a narrowly scoped, hash-bound human token-cap extension. Other
+   * ceilings remain exactly as recorded by the abandonment decision. */
+  async function costBudgetForRun(runId: string) {
+    const authorizationFile = path.join(store.runRoot(runId), 'artifacts/cost-budget-authorization.json');
+    if (!await exists(authorizationFile)) return CostBudgetSchema.parse(operatingProfile.budget);
+    const authorization = await store.readArtifact(runId, 'cost-budget-authorization.json');
+    const active = ActiveCostBudgetAuthorizationSchema.safeParse(authorization);
+    if (active.success) {
+      const relativeBasis = active.data.costGate.path.replace(/^artifacts\//u, '');
+      const basisFile = path.join(store.runRoot(runId), active.data.costGate.path);
+      if (!await exists(basisFile)) throw new Error('active cost budget authorization has no cost-gate basis to bind');
+      const result = resolveActiveAuthorizedCostBudget({
+        runId,
+        costGate: await store.readArtifact(runId, relativeBasis),
+        authorization: active.data,
+        actualCostGateSha256: await sha256File(basisFile),
+      });
+      return CostBudgetSchema.parse(result.budget);
+    }
+    const abandonmentFile = path.join(store.runRoot(runId), 'artifacts/abandonment-decision.json');
+    if (!await exists(abandonmentFile)) throw new Error('cost budget authorization has no abandonment decision to bind');
+    const result = resolveAuthorizedCostBudget({
+      runId,
+      abandonment: await store.readArtifact(runId, 'abandonment-decision.json'),
+      authorization,
+      actualAbandonmentSha256: await sha256File(abandonmentFile),
+    });
+    return CostBudgetSchema.parse(result.budget);
+  }
+
   async function preflightCostBeforeStage(state: RunState, stage: StageName) {
     const { rateCard } = await ensureCostArtifacts(state.runId);
     const current = await usageForState(state);
-    const reserve = reserveForStage(stage);
+    const reserve = reserveForStage(stage, stageReserveOverrideFromEnv(stage));
     const projected = projectStageUsage(current, stage, reserve, rateCard);
-    const report = evaluateCostPreflight({ budget: operatingProfile.budget, current, projected, stage, reserve });
+    const report = evaluateCostPreflight({ budget: await costBudgetForRun(state.runId), current, projected, stage, reserve });
     await store.writeArtifact(state.runId, 'cost-preflight.json', report);
     if (report.passed) return report;
     const reason = report.currentBlockers.length > 0 ? 'current ceiling already exceeded' : 'next stage reserve would exceed a configured ceiling';
@@ -1421,7 +2083,23 @@ export function createFactory(options: FactoryOptions = {}) {
     return PermissionManifestBundleSchema.parse(raw);
   }
 
-  async function ensureOperatingArtifacts(runId: string, seed: { title: string; theme: string; designMode: 'reference_reskin' | 'prototype_tournament'; runtime?: 'web-lite' | 'cocos-3d'; referenceMechanics?: ReferenceMechanicSpec; targetPlatforms?: string[] }) {
+  async function readBoundRunIdentity(runId: string, seed: Seed): Promise<ReturnType<typeof GameRunIdentityManifestSchema.parse> | undefined> {
+    const file = path.join(store.runRoot(runId), 'artifacts', GAME_RUN_IDENTITY_ARTIFACT);
+    if (!await exists(file)) return undefined;
+    const manifest = GameRunIdentityManifestSchema.parse(await store.readArtifact(runId, GAME_RUN_IDENTITY_ARTIFACT));
+    const seedSha256 = await sha256File(path.join(store.runRoot(runId), 'input/seed.yaml'));
+    const validation = validateGameRunIdentityBinding(manifest, {
+      runId,
+      seedSha256,
+      workspaceRelative: 'workspace/game',
+      template: seed.template,
+      runtime: seed.runtime,
+    });
+    if (!validation.passed) throw new Error(`game/run identity binding failed: ${validation.blockers.join(', ')}`);
+    return manifest;
+  }
+
+  async function ensureOperatingArtifacts(runId: string, seed: { title: string; theme: string; template: string; designMode: 'reference_reskin' | 'prototype_tournament'; runtime?: 'web-lite' | 'cocos-3d'; referenceMechanics?: ReferenceMechanicSpec; targetPlatforms?: string[] }, options: { rigor?: PipelineRigor } = {}) {
     await ensureConstitutionArtifact(runId);
     await ensureCostArtifacts(runId);
     await ensureSideEffectJournalArtifact(runId);
@@ -1493,24 +2171,49 @@ export function createFactory(options: FactoryOptions = {}) {
       capacityChanged = true;
     }
     const planFile = path.join(store.runRoot(runId), 'artifacts/pipeline-plan.json');
-    const lineText = `${seed.title}\n${seed.theme}`;
+    const lineText = [
+      seed.title,
+      seed.theme,
+      seed.template,
+      ...(seed.referenceMechanics ? [
+        ...seed.referenceMechanics.coreLoop,
+        ...seed.referenceMechanics.playerActions,
+        ...seed.referenceMechanics.progressionSystems,
+        ...seed.referenceMechanics.mustPreserveMechanics,
+      ] : []),
+    ].join('\n');
     const lineDecisionFile = path.join(store.runRoot(runId), 'artifacts/production-line-decision.json');
     if (!await exists(lineDecisionFile)) {
       await store.writeArtifact(runId, 'production-line-decision.json', inferProductionLineDecisionFromText(lineText));
     } else ProductionLineDecisionSchema.parse(await store.readArtifact(runId, 'production-line-decision.json'));
+    const lineDecision = ProductionLineDecisionSchema.parse(await store.readArtifact(runId, 'production-line-decision.json'));
+    const lineResolutionFile = path.join(store.runRoot(runId), 'artifacts/production-line-resolution.json');
+    let lineResolution: ReturnType<typeof resolveProductionLine>;
+    if (!await exists(lineResolutionFile)) {
+      lineResolution = resolveProductionLine({ title: seed.title, theme: seed.theme, template: seed.template, runtime: seed.runtime ?? 'web-lite', decision: lineDecision });
+      await store.writeArtifact(runId, 'production-line-resolution.json', lineResolution);
+    } else {
+      const existingResolution = ProductionLineResolutionSchema.parse(await store.readArtifact(runId, 'production-line-resolution.json'));
+      if (JSON.stringify(existingResolution.decision) !== JSON.stringify(lineDecision)) throw new Error('production-line-resolution decision does not match production-line-decision.json');
+      lineResolution = assertProductionLineResolutionMatches({ title: seed.title, theme: seed.theme, template: seed.template, runtime: seed.runtime ?? 'web-lite', decision: lineDecision }, existingResolution);
+    }
     if (!await exists(planFile)) {
-      const decision = ProductionLineDecisionSchema.parse(await store.readArtifact(runId, 'production-line-decision.json'));
-      const line = decision.line ? lockProductionLine(decision.line) : null;
+      const line = lineResolution.line ? lockProductionLine(lineResolution.line) : null;
       // Never turn an unsupported/new-line request into the idle template as a
       // convenience. A pending marker keeps the plan truthful until a human
       // explicitly approves and supplies a production line.
-      await store.writeArtifact(runId, 'pipeline-plan.json', buildPipelinePlan({ mode: operatingProfile.pipelineMode, designMode: seed.designMode, productionLine: line?.line ?? 'pending-review', primaryProfile: line?.primaryProfile ?? decision.profile, presentationQualityRequired: presentationQualityRequired(), supplyChainRequired: supplyChainRequired(), blindPlaytestRequired: blindPlaytestRequired() }));
+      const state = await store.load(runId);
+      if (state.stage !== 'CREATED' || Object.values(state.stages).some((record) => (record?.attempts ?? 0) > 0)) throw new Error('pipeline plan missing for a started run; restore the frozen artifact before resuming');
+      const savedProfile = FactoryOperatingProfileSchema.parse(await store.readArtifact(runId, 'factory-profile.json'));
+      await store.writeArtifact(runId, 'pipeline-plan.json', buildPipelinePlan({ designMode: seed.designMode, productionLine: line?.line ?? 'pending-review', primaryProfile: line?.primaryProfile ?? lineResolution.profile, mode: savedProfile.pipelineMode, presentationQualityRequired: savedProfile.presentationQualityRequired, supplyChainRequired: savedProfile.supplyChainRequired, blindPlaytestRequired: savedProfile.blindPlaytestRequired, ...(options.rigor ? { rigor: options.rigor } : {}) }));
     }
-    const lineDecision = ProductionLineDecisionSchema.parse(await store.readArtifact(runId, 'production-line-decision.json'));
-    if (lineDecision.line && !await exists(path.join(store.runRoot(runId), 'artifacts/natural-input-policy.json'))) {
-      await store.writeArtifact(runId, 'natural-input-policy.json', buildNaturalInputPolicy(lineDecision.line));
+    const pipeline = validatePipelinePlan(await store.readArtifact(runId, 'pipeline-plan.json'));
+    const expectedPlanLine = lineResolution.line ?? 'pending-review';
+    if (pipeline.productionLine !== expectedPlanLine) throw new Error(`pipeline plan production line ${pipeline.productionLine} does not match locked resolution ${expectedPlanLine}`);
+    if (lineResolution.line && !await exists(path.join(store.runRoot(runId), 'artifacts/natural-input-policy.json'))) {
+      await store.writeArtifact(runId, 'natural-input-policy.json', buildNaturalInputPolicy(lineResolution.line));
     }
-    const pipelinePlan = validatePipelinePlan(await store.readArtifact(runId, 'pipeline-plan.json'));
+    const pipelinePlan = pipeline;
     const contractRegistry = evaluateStageContractRegistry(pipelinePlan.mandatoryStages);
     await store.writeArtifact(runId, 'stage-contract-registry.json', contractRegistry);
     if (enforceExplicitStageContracts && !contractRegistry.passed) throw new Error(`pipeline contains stages without explicit contracts: ${contractRegistry.fallbackStages.join(', ')}`);
@@ -1518,11 +2221,18 @@ export function createFactory(options: FactoryOptions = {}) {
     if (!await exists(baselineFile)) await store.writeArtifact(runId, 'quality-baseline.json', evaluateQualityBaseline({}));
     const originalityFile = path.join(store.runRoot(runId), 'artifacts/originality-declaration.json');
     if (!await exists(originalityFile)) await store.writeArtifact(runId, 'originality-declaration.json', buildOriginalityTemplate());
-    if (!await exists(path.join(store.runRoot(runId), 'artifacts/model-policy.json'))) await store.writeArtifact(runId, 'model-policy.json', snapshotModelPolicy());
+    const modelPolicyFile = path.join(store.runRoot(runId), 'artifacts/model-policy.json');
+    if (!await exists(modelPolicyFile)) {
+      await store.writeArtifact(runId, 'model-policy.json', snapshotModelPolicy());
+    } else {
+      const modelPolicyCheck = evaluateModelPolicySnapshot(await store.readArtifact(runId, 'model-policy.json'));
+      if (!modelPolicyCheck.passed) throw new Error(`model policy snapshot drifted from the active factory route: ${modelPolicyCheck.blockers.join(', ')}`);
+    }
     await ensurePermissionManifestBundle(runId);
     if (!await exists(path.join(store.runRoot(runId), 'artifacts/human-approval-plan.json'))) await store.writeArtifact(runId, 'human-approval-plan.json', buildHumanApprovalPlan(seed.designMode));
     if (!await exists(path.join(store.runRoot(runId), 'artifacts/human-approval-ledger.json'))) await store.writeArtifact(runId, 'human-approval-ledger.json', buildHumanApprovalLedger(runId));
-    const gameId = seed.title.trim().toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/giu, '-').replace(/^-|-$/gu, '') || 'game';
+    const boundIdentity = await readBoundRunIdentity(runId, seed as Seed);
+    const gameId = boundIdentity?.variantId ?? boundIdentity?.canonicalGameId ?? canonicalGameIdFromTitle(seed.title);
     if (!await exists(path.join(store.runRoot(runId), 'artifacts/randomness-policy.json'))) await store.writeArtifact(runId, 'randomness-policy.json', buildRandomnessPolicy(gameId));
     if (!await exists(path.join(store.runRoot(runId), 'artifacts/artifact-ledger.json'))) await store.writeArtifact(runId, 'artifact-ledger.json', createArtifactLedger());
     await ensureUnknownRegister(runId);
@@ -1532,21 +2242,57 @@ export function createFactory(options: FactoryOptions = {}) {
     if (!await exists(path.join(store.runRoot(runId), 'artifacts/certification-checklist.json'))) {
       await store.writeArtifact(runId, 'certification-checklist.json', buildCertificationChecklist({ gameId, title: seed.title, entity: operatingProfile.entity, requiredTargets: operatingProfile.requiredTargets, optionalTargets: operatingProfile.optionalTargets }));
     }
-    if (seed.designMode === 'reference_reskin' && seed.referenceMechanics && !await exists(path.join(store.runRoot(runId), 'artifacts/reference-evidence-pack.json'))) {
-      const pack = await buildReferenceEvidencePack({
-        targetRunId: runId,
-        reference: ReferenceMechanicSpecSchema.parse(seed.referenceMechanics),
-        runRoot: store.runRoot(runId),
-        requireSupplemental: enforceOperatingGates,
-        requireHostAllowlist: validationMode === 'production' || process.env.FACTORY_REQUIRE_RESEARCH_ALLOWLIST === '1',
-        allowedHosts: (process.env.FACTORY_RESEARCH_ALLOWED_HOSTS ?? '').split(/[\s,]+/u).filter(Boolean),
-      });
-      await store.writeArtifact(runId, 'reference-evidence-pack.json', pack);
+    if (seed.designMode === 'reference_reskin' && seed.referenceMechanics) {
+      const reference = ReferenceMechanicSpecSchema.parse(seed.referenceMechanics);
+      const packFile = path.join(store.runRoot(runId), 'artifacts/reference-evidence-pack.json');
+      let rebuildPack = !await exists(packFile);
+      const provenanceFile = path.join(store.runRoot(runId), 'reference-evidence/manifest.json');
+      let provenanceManifest: unknown;
+      if (await exists(provenanceFile)) {
+        try { provenanceManifest = JSON.parse(await readFile(provenanceFile, 'utf8')) as unknown; }
+        catch { provenanceManifest = { schemaVersion: 0, invalid: true }; }
+      }
+      // Evidence ingestion can happen after run creation.  If the bootstrap
+      // recorded a blocked, human-lock-only pack and a newly ingested source
+      // is now present, rebuild exactly once so resume can enter the preview
+      // lane without asking the operator to edit generated artifacts.
+      if (!rebuildPack) {
+        const existing = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
+        if (existing.evidenceQuality !== 'supplemented') {
+          const runRoot = store.runRoot(runId);
+          const available = await Promise.all(reference.source.researchFiles.map(async (relative) => {
+            const resolved = path.resolve(runRoot, relative);
+            const rel = path.relative(runRoot, resolved);
+            if (!rel || rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) return false;
+            return exists(resolved);
+          }));
+          rebuildPack = available.some(Boolean);
+          if (!rebuildPack && provenanceManifest !== undefined) rebuildPack = true;
+        }
+      }
+      if (rebuildPack) {
+        const pack = await buildReferenceEvidencePack({
+          targetRunId: runId,
+          reference,
+          runRoot: store.runRoot(runId),
+          requireSupplemental: enforceOperatingGates || operatingProfile.pipelineMode === 'replica-preview',
+          requireHostAllowlist: validationMode === 'production' || process.env.FACTORY_REQUIRE_RESEARCH_ALLOWLIST === '1',
+          allowedHosts: (process.env.FACTORY_RESEARCH_ALLOWED_HOSTS ?? '').split(/[\s,]+/u).filter(Boolean),
+          ...(provenanceManifest === undefined ? {} : { provenanceManifest, provenanceExpected: { targetGame: gameId, workspace: path.join(store.runRoot(runId), 'workspace/game') } }),
+        });
+        await store.writeArtifact(runId, 'reference-evidence-pack.json', pack);
+        const fidelity = evaluateReplicaPreviewEvidence(pack).fidelity;
+        await store.writeArtifact(runId, 'reference-fidelity-contract.json', fidelity);
+      }
+    }
+    if (seed.designMode === 'reference_reskin' && await exists(path.join(store.runRoot(runId), 'artifacts/reference-evidence-pack.json')) && !await exists(path.join(store.runRoot(runId), 'artifacts/reference-fidelity-contract.json'))) {
+      const pack = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
+      await store.writeArtifact(runId, 'reference-fidelity-contract.json', evaluateReplicaPreviewEvidence(pack).fidelity);
     }
     return { capacityChanged, portfolioSnapshotHash: portfolio ? accountPortfolioHash(portfolio) : undefined };
   }
 
-  async function begin(state: RunState, stage: StageName, inputArtifacts: string[]): Promise<StageRecord> {
+  async function begin(state: RunState, stage: StageName, inputArtifacts: string[], options: { reuseWaitingAttempt?: boolean } = {}): Promise<StageRecord> {
     const planPolicy = assertStagePlannedOrLegacy(activePipelinePlan, stage, { legacyPlan: activePlanIsLegacy });
     try {
       await store.writeArtifact(state.runId, `stage-plan-policy/${stage}.json`, {
@@ -1558,12 +2304,16 @@ export function createFactory(options: FactoryOptions = {}) {
     } catch { /* policy evidence must not mask stage execution */ }
     const contract = getStageContract(stage);
     await preflightCostBeforeStage(state, stage);
-    const record = store.record(stage, state.stages[stage]);
-    if (record.attempts > contract.maxAttempts || record.attempts > contract.retryPolicy.maxAttempts) throw new Error(`Stage ${stage} exceeded its bounded retry policy`);
+    const previous = state.stages[stage];
+    const reuseWaitingAttempt = options.reuseWaitingAttempt === true && previous?.status === 'waiting';
+    const record = reuseWaitingAttempt
+      ? { ...previous, status: 'running' as const, finishedAt: null, inputArtifacts, outputArtifacts: [], evidence: previous.evidence }
+      : store.record(stage, previous);
+    if (!stageAttemptAllowed(contract, record.attempts)) throw new Error(`Stage ${stage} exceeded its bounded retry policy`);
     record.inputArtifacts = inputArtifacts; state.stage = stage; state.status = 'running'; state.stages[stage] = record;
     await store.save(state);
     await store.log(state.runId, 'stage.contract', { stage, contract: getStageContract(stage) });
-    await store.log(state.runId, 'stage.started', { stage, attempt: record.attempts });
+    await store.log(state.runId, 'stage.started', { stage, attempt: record.attempts, resumedWaitingAttempt: reuseWaitingAttempt });
     const previousError = record.errors.at(-1);
     const failureKind = previousError ? classifyModelFailure(previousError) : 'CAPABILITY_ERROR';
     try { await store.writeArtifact(state.runId, `model-routing/${stage}.attempt-${record.attempts}.json`, buildModelRouteDecision(stage, record.attempts - 1, failureKind, contract.allowedModelTiers)); } catch { /* routing evidence must not mask the stage itself */ }
@@ -1578,17 +2328,19 @@ export function createFactory(options: FactoryOptions = {}) {
       const file = path.join(runRoot, input.replace(/^artifacts\//u, 'artifacts/'));
       try { const stat = await lstat(file); if (stat.isFile() && !stat.isSymbolicLink()) inputHashes[input] = await sha256File(file); } catch { /* pointer-only input */ }
     }
+    const emissions: Array<{ path: string; sha256: string; inputHashes: Record<string, string> }> = [];
     for (const output of outputs) {
       if (output.endsWith('/')) continue;
       if (VOLATILE_LEDGER_ARTIFACTS.includes(output as (typeof VOLATILE_LEDGER_ARTIFACTS)[number])) continue;
       const file = path.join(runRoot, output);
-      try { const stat = await lstat(file); if (!stat.isFile() || stat.isSymbolicLink()) continue; ledger = recordArtifact(ledger, { path: output, sha256: await sha256File(file), producerStage: record.stage, inputHashes }); } catch { /* directory or optional output */ }
+      try { const stat = await lstat(file); if (!stat.isFile() || stat.isSymbolicLink()) continue; emissions.push({ path: output, sha256: await sha256File(file), inputHashes }); } catch { /* directory or optional output */ }
     }
+    if (emissions.length > 0) ledger = recordStageEmission(ledger, { producerStage: record.stage, outputs: emissions });
     await store.writeArtifact(state.runId, 'artifact-ledger.json', ledger);
     return evaluateArtifactLedger(ledger);
   }
-  async function complete(state: RunState, record: StageRecord, outputs: string[], evidence: string[]) {
-    const contract = getStageContract(record.stage);
+  async function complete(state: RunState, record: StageRecord, outputs: string[], evidence: string[], options: { contract?: ReturnType<typeof getStageContract> } = {}) {
+    const contract = options.contract ?? getStageContract(record.stage);
     const genericContract = contract.idempotencyKey.startsWith('run:{runId}:stage:');
     // Legacy stages without a bespoke contract still have a real deterministic
     // output: the persisted state record itself. Include it explicitly in the
@@ -1620,7 +2372,7 @@ export function createFactory(options: FactoryOptions = {}) {
     record.status = 'completed'; record.finishedAt = new Date().toISOString(); record.outputArtifacts = outputs; record.evidence = [...new Set([...evidence, ...modelEvidence])]; state.status = 'running'; await store.save(state); await store.log(state.runId, 'stage.completed', { stage: record.stage, outputs, evidence: record.evidence, contractPassed: audit.passed });
   }
   function addAgentMetrics(record: StageRecord, metrics: AgentCallMetrics) { record.providerCalls.agent += metrics.calls; const model = metrics.model.trim(); if (model && !record.evidence.includes(`model:${model}`)) record.evidence.push(`model:${model}`); if (metrics.usage) { record.tokenUsage.inputTokens += metrics.usage.inputTokens; record.tokenUsage.outputTokens += metrics.usage.outputTokens; record.tokenUsage.totalTokens += metrics.usage.totalTokens; } }
-  async function routedModelForAttempt(state: RunState, stage: 'FULL_BUILD' | 'FIX', attempt: number): Promise<string> {
+  async function routedModelForAttempt(state: RunState, stage: StageName, attempt: number): Promise<string> {
     const routeFile = path.join(store.runRoot(state.runId), `artifacts/model-routing/${stage}.attempt-${Math.max(1, Math.trunc(attempt))}.json`);
     try {
       const route = JSON.parse(await readFile(routeFile, 'utf8')) as { selected?: { model?: unknown }; base?: { model?: unknown } };
@@ -1648,7 +2400,7 @@ export function createFactory(options: FactoryOptions = {}) {
     await store.writeArtifact(state.runId, 'provider-usage.json', { schemaVersion: 1, stages });
     const usage = await usageForState(state);
     await store.writeArtifact(state.runId, 'cost-usage.json', usage);
-    await store.writeArtifact(state.runId, 'cost-gate.json', evaluateCostGate(CostBudgetSchema.parse(operatingProfile.budget), usage));
+    await store.writeArtifact(state.runId, 'cost-gate.json', evaluateCostGate(await costBudgetForRun(state.runId), usage));
     return usage;
   }
   async function waitForCodexImagegen(state: RunState, record: StageRecord, error: CodexImagegenPendingError) {
@@ -1706,7 +2458,7 @@ export function createFactory(options: FactoryOptions = {}) {
   }
 
   async function markAutoAbandoned(state: RunState, reason: 'cost-cap' | 'fix-cap' | 'platform-blocked' | 'unknown') {
-    const decision = evaluateAbandonment({ runId: state.runId, stage: state.stage, budget: operatingProfile.budget, usage: await usageForState(state), reason });
+    const decision = evaluateAbandonment({ runId: state.runId, stage: state.stage, budget: await costBudgetForRun(state.runId), usage: await usageForState(state), reason });
     await store.writeArtifact(state.runId, 'abandonment-decision.json', decision);
     await recordControlStage(state, 'ABANDONED', 'completed', [`stage:${state.stage}`, 'state.json'], ['artifacts/abandonment-decision.json'], ['abandonment:decision', ...decision.evidence]);
     state.stage = 'ABANDONED'; state.status = 'completed';
@@ -1777,24 +2529,16 @@ export function createFactory(options: FactoryOptions = {}) {
     return { state, driftedStages, reconciliation };
   }
 
-  /** Remove only explicitly allow-listed, disposable evidence for a retry. */
+  /** Retire only allow-listed outputs, preserving every prior generation. */
   async function clearRetryArtifacts(runId: string, stage: StageName) {
     const runRoot = store.runRoot(runId);
     const allowed = /^(?:artifacts|human|release-candidate|screenshots|logs|art-review|workspace\/generated-assets)(?:\/|$)/u;
-    for (const relative of getDownstreamArtifactPaths(stage)) {
+    const paths = getDownstreamArtifactPaths(stage);
+    for (const relative of paths) {
       if (!allowed.test(relative) || relative.includes('..')) throw new Error(`unsafe retry cleanup path: ${relative}`);
-      const target = path.join(runRoot, relative);
-      // Never follow a symlink while cleaning retry evidence. A malicious or
-      // stale artifact can therefore only be unlinked, never recursively
-      // removed outside this run.
-      try {
-        const stat = await lstat(target);
-        if (stat.isSymbolicLink() || stat.isFile()) await rm(target, { force: true });
-        else if (stat.isDirectory()) await rm(target, { recursive: true, force: true });
-      } catch (error) {
-        if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
-      }
     }
+    const archive = await archiveRunPaths(runRoot, paths, 'stage-retry');
+    await store.log(runId, 'stage.retry-evidence-preserved', { stage, archive: archive?.manifestPath });
   }
 
   async function executeActionExperiment(state: RunState): Promise<RunState> {
@@ -1855,10 +2599,407 @@ export function createFactory(options: FactoryOptions = {}) {
     await store.save(state); await store.log(runId, 'action-experiment.completed', { decision: decision.decision, selectedSlot: decision.selectedSlot }); return state;
   }
 
+  /** Execute only the reference-driven candidate path. Release, platform,
+   * monetization and packaging checks remain deferred in the frozen plan and
+   * are available through an explicit full-validation run. */
+  async function executeReplicaPreview(state: RunState, seed: Seed): Promise<RunState> {
+    const runId = state.runId;
+    const runRoot = store.runRoot(runId);
+    const reference = ReferenceMechanicSpecSchema.parse(seed.referenceMechanics);
+    let evidencePack = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
+    if (!done(state, 'REFERENCE_DEEP_RESEARCH')) {
+      const inputs = await referenceResearchInputPaths(runId, reference);
+      // Waiting for research input is not a failed execution attempt. Rechecking
+      // an incomplete pack must not consume the stage's bounded retry budget.
+      const preflight = evaluateReplicaPreviewEvidence(evidencePack);
+      const inputBlockers = preflight.blockers.filter((item) => !item.startsWith('preview:behavior-') && item !== 'preview:failure-pressure-contract-missing');
+      if (inputBlockers.length > 0) {
+        await store.writeArtifact(runId, 'reference-fidelity-contract.json', preflight.fidelity);
+        return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json'], inputBlockers.map((item) => `blocked:${item}`));
+      }
+      const record = await begin(state, 'REFERENCE_DEEP_RESEARCH', inputs);
+      try {
+        const frameManifest = await ensureReferenceFrameManifest(runId, await expectedGameId(runId), path.join(runRoot, 'workspace/game'));
+        if (frameManifest?.status === 'BLOCKED') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-frame-manifest.json'], frameManifest.blockers.map((item) => `blocked:reference-frame:${item}`));
+        const codeInput = await referenceCodeInput(runId);
+        if (codeInput.status === 'blocked') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, [], codeInput.blockers.map((item) => `blocked:${item}`));
+        evidencePack = await analyzeReferenceBehavior(state, reference, evidencePack, record, frameManifest, codeInput.status === 'verified' ? codeInput.path : undefined);
+        const evaluation = evaluateReplicaPreviewEvidence(evidencePack);
+        await store.writeArtifact(runId, 'reference-fidelity-contract.json', evaluation.fidelity);
+        await store.writeArtifact(runId, 'reference-evidence-pack.json', evaluation.pack);
+        const outputs = ['artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json', ...(await store.hasArtifact(runId, 'reference-behavior-analysis.json') ? ['artifacts/reference-behavior-analysis.json'] : []), ...(await store.hasArtifact(runId, 'reference-failure-pressure-contract.json') ? ['artifacts/reference-failure-pressure-contract.json'] : []), ...(frameManifest ? ['artifacts/reference-frame-manifest.json', 'artifacts/reference-level-reconstruction.json', 'artifacts/reference-level-implementation-contract.json'] : [])];
+        const evidence = ['reference:evidence-pack', 'reference:five-dimension-behavior-contract', 'reference:failure-pressure-contract', 'zod:ReferenceEvidencePackSchema', 'zod:ReferenceFidelityContractSchema', ...(frameManifest ? ['reference:frame-manifest', 'reference:recording-level-contract', 'zod:ReferenceFrameManifestSchema', 'zod:ReferenceLevelImplementationContractSchema'] : []), 'preview:fidelity-gate', `preview:${evaluation.passed ? 'ready' : 'blocked'}`];
+        if (!evaluation.passed) return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, outputs, [...evidence, ...evaluation.blockers.map((item) => `blocked:${item}`)]);
+        await complete(state, record, outputs, evidence);
+      } catch (error) { return fail(state, record, error); }
+    }
+    if (!done(state, 'REFERENCE_MECHANIC_LOCK')) {
+      const record = await begin(state, 'REFERENCE_MECHANIC_LOCK', ['input/seed.yaml', 'artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json']);
+      try {
+        await store.writeArtifact(runId, 'reference-mechanic-spec.json', reference);
+        await complete(state, record, ['artifacts/reference-mechanic-spec.json'], ['zod:ReferenceMechanicSpecSchema', 'locked-by:human', 'agent-ideation:false', 'mechanic-fidelity:maximum-core-mechanics', 'expression-isolation:true']);
+      } catch (error) { return fail(state, record, error); }
+    }
+    const lockedReference = ReferenceMechanicSpecSchema.parse(await store.readArtifact(runId, 'reference-mechanic-spec.json'));
+    const referenceApprovalFile = path.join(runRoot, 'human/reference-decision.yaml');
+    if (!await exists(referenceApprovalFile)) {
+      if (!await exists(path.join(runRoot, 'human/reference-decision.example.yaml'))) await writeFile(path.join(runRoot, 'human/reference-decision.example.yaml'), 'decision: APPROVE\nnotes: []\n');
+      await writeFile(path.join(runRoot, 'human/reference-mechanic-review.json'), `${JSON.stringify({ schemaVersion: 1, title: seed.title, theme: seed.theme, mechanicLock: lockedReference, fidelity: await store.readArtifact(runId, 'reference-fidelity-contract.json'), notice: 'Only generic mechanic relationships are approved. Code, assets, names, text, UI layout, audio, and tuning values remain original.' }, null, 2)}\n`);
+      const now = new Date().toISOString(); const previous = state.stages.WAITING_FOR_REFERENCE_APPROVAL;
+      state.stage = 'WAITING_FOR_REFERENCE_APPROVAL'; state.status = 'waiting';
+      state.stages.WAITING_FOR_REFERENCE_APPROVAL = { stage: 'WAITING_FOR_REFERENCE_APPROVAL', status: 'waiting', startedAt: previous?.startedAt ?? now, finishedAt: null, attempts: previous?.attempts ?? 1, inputArtifacts: ['artifacts/reference-mechanic-spec.json', 'artifacts/reference-fidelity-contract.json'], outputArtifacts: ['human/reference-mechanic-review.json'], errors: previous?.errors ?? [], evidence: ['human/reference-decision.example.yaml', 'agent-ideation:false', 'prototype-tournament:false', 'preview:fidelity-locked'], providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } };
+      await persistControlStageAudit(state, 'WAITING_FOR_REFERENCE_APPROVAL', 'waiting', ['artifacts/reference-mechanic-spec.json', 'artifacts/reference-fidelity-contract.json'], ['human/reference-mechanic-review.json'], ['human/reference-decision.example.yaml', 'agent-ideation:false', 'prototype-tournament:false', 'preview:fidelity-locked']);
+      await store.save(state); await store.log(runId, 'run.waiting', { gate: 'reference-mechanic-approval', lane: 'replica-preview' }); return state;
+    }
+    const humanDecision = HumanReferenceDecisionSchema.parse(parse(await readFile(referenceApprovalFile, 'utf8')));
+    if (state.stages.WAITING_FOR_REFERENCE_APPROVAL) await recordControlStage(state, 'WAITING_FOR_REFERENCE_APPROVAL', 'completed', ['artifacts/reference-mechanic-spec.json', 'artifacts/reference-fidelity-contract.json'], ['human/reference-mechanic-review.json', 'human/reference-decision.yaml'], ['human/reference-decision.example.yaml', `decision:${humanDecision.decision}`]);
+    if (humanDecision.decision === 'REJECT') {
+      state.stage = 'DESIGN_REJECTED'; state.status = 'completed';
+      await recordControlStage(state, 'DESIGN_REJECTED', 'completed', ['human/reference-decision.yaml'], ['state.json'], ['design:rejected', 'decision:REJECT']);
+      await store.save(state); return state;
+    }
+    const previewOpenSource = OpenSourceResearchSchema.parse({
+      schemaVersion: 1,
+      observations: ['The preview is built from the factory-owned mother template and does not select external gameplay code, assets, adapters, UI, content, or tuning.'],
+      inferences: ['No external reusable candidate is needed for the bounded browser core-slice decision.'],
+      unknowns: [],
+      targetPlatforms: seed.targetPlatforms,
+      queries: ['inspect the selected factory mother template and its pinned development manifest for externally selected gameplay infrastructure'],
+      candidates: [], outcome: 'NO_SUITABLE_CANDIDATE', selectedCandidateIds: [],
+      rationale: 'The scoped preview research found no external infrastructure candidate to select. Release-grade platform adapter and package research remains a separate full-validation obligation.',
+      researchedAt: new Date().toISOString(),
+    });
+    let recordingLevelInputs: string[];
+    try { recordingLevelInputs = await ensureReferenceLevelRuntimeInputs(state, await expectedGameId(runId)); }
+    catch (error) {
+      return setWaiting(state, 'FULL_BUILD', ['artifacts/reference-level-implementation-contract.json', 'artifacts/production-line-resolution.json'], ['artifacts/reference-level-runtime-data.json'], [`blocked:${error instanceof Error ? error.message : String(error)}`]);
+    }
+    const pressureInputs = await exists(path.join(runRoot, 'artifacts/reference-failure-pressure-contract.json')) ? ['artifacts/reference-failure-pressure-contract.json'] : [];
+    const resolutionInputs = await exists(path.join(runRoot, 'artifacts/reference-research-resolution.json')) ? ['artifacts/reference-research-resolution.json'] : [];
+    const productionLineFile = path.join(runRoot, 'artifacts/production-line-contract.json');
+    const lineResolution = ProductionLineResolutionSchema.parse(await store.readArtifact(runId, 'production-line-resolution.json'));
+    if (lineResolution.status !== 'RESOLVED' || !lineResolution.line) {
+      return setWaiting(state, 'PRODUCTION_LINE_REVIEW', ['artifacts/production-line-decision.json', 'artifacts/production-line-resolution.json'], ['artifacts/production-line-resolution.json'], lineResolution.blockers.map((item) => `blocked:${item}`));
+    }
+    const expectedPreviewLine = lineResolution.line;
+    if (!await exists(productionLineFile)) {
+      await store.writeArtifact(runId, 'production-line-contract.json', lockProductionLine(expectedPreviewLine));
+    } else {
+      const existingLine = ProductionLineContractSchema.parse(await store.readArtifact(runId, 'production-line-contract.json'));
+      if (existingLine.line !== expectedPreviewLine) {
+        await correctProductionLineArtifacts(state, existingLine, lineResolution);
+      }
+    }
+    const lineContract = ProductionLineContractSchema.parse(await store.readArtifact(runId, 'production-line-contract.json'));
+    if (!await exists(path.join(runRoot, 'artifacts/open-source-research.json'))) await store.writeArtifact(runId, 'open-source-research.json', previewOpenSource);
+    if (!await exists(path.join(runRoot, 'artifacts/iaa-contract.json'))) {
+      const deferredIaaReview = IaaMonetizationReviewSchema.parse({ schemaVersion: 1, audienceFit: 'deferred until full-validation', sessionFit: 'medium', placements: [], retentionRisk: 'low', revenuePotential: 'low', complianceRisks: ['IAA review deferred in preview'], recommendation: 'not_viable', rationale: 'The preview lane does not design or ship monetization.' });
+      await store.writeArtifact(runId, 'iaa-contract.json', buildIaaContract({ gameId: await expectedGameId(runId), review: deferredIaaReview, sourceReview: 'replica-preview:deferred' }));
+    }
+    if (!done(state, 'BLUEPRINT')) {
+      const inputs = ['input/seed.yaml', 'artifacts/production-line-resolution.json', 'artifacts/reference-mechanic-spec.json', 'artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs, 'artifacts/open-source-research.json', 'artifacts/iaa-contract.json'];
+      const record = await begin(state, 'BLUEPRINT', inputs);
+      try {
+        const context = await contextFor('BLUEPRINT', runRoot, store.artifact(runId, 'game-blueprint.json'), inputs, 'Build a compact preview blueprint from the verified reference fidelity, production-line resolution, research-resolution, failure-pressure, and recording-level semantic contracts when present. Preserve which requirements were observed and which came from the human lock. Do not invent another game, and keep every expression field original.', { targetGameId: await expectedGameId(runId), requiredContextPaths: ['artifacts/production-line-resolution.json', 'artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-mechanic-spec.json', 'artifacts/open-source-research.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs] });
+        const result = await producerAgent.run(seed, lockedReference, previewOpenSource, context);
+        addAgentMetrics(record, result.metrics); await store.writeArtifact(runId, 'game-blueprint.json', result.value);
+        const parsedBlueprint = GameBlueprintSchema.parse(result.value);
+        const expectedBlueprintGameId = await expectedGameId(runId);
+        if (parsedBlueprint.gameId !== expectedBlueprintGameId) throw new Error(`blueprint identity mismatch: ${parsedBlueprint.gameId} !== ${expectedBlueprintGameId}`);
+        await saveUsage(state);
+        await complete(state, record, ['artifacts/game-blueprint.json'], ['zod:GameBlueprintSchema', 'reference-fidelity:consumed', 'reference-failure-pressure:consumed', 'open-source:scoped-no-candidate', 'open-source-research-before-blueprint:true', 'preview:original-expression']);
+      } catch (error) { return fail(state, record, error); }
+    }
+    const blueprint = GameBlueprintSchema.parse(await store.readArtifact(runId, 'game-blueprint.json'));
+    // The preview creates only the contracts needed to judge one core slice.
+    // Content expansion and UI breadth stay out of the Builder handoff until
+    // the hash-bound slice passes independent QA and human play.
+    const blueprintHash = await sha256File(path.join(runRoot, 'artifacts/game-blueprint.json'));
+    const experienceBundleFile = path.join(runRoot, 'artifacts/profile-experience-bundle.json');
+    if (!await exists(experienceBundleFile)) {
+      const bundle = buildProfileExperienceBundle({ gameId: blueprint.gameId, title: blueprint.title, theme: blueprint.theme, line: lineContract.line, profile: lineContract.primaryProfile, blueprintHash, representativeFlow: lineContract.representativeFlow });
+      const evaluation = evaluateProfileExperienceBundle(bundle, { line: lineContract.line, profile: lineContract.primaryProfile, blueprintHash });
+      if (!evaluation.passed) throw new Error(`preview experience contract failed: ${evaluation.blockers.join(', ')}`);
+      await store.writeArtifact(runId, 'profile-experience-bundle.json', bundle);
+      await store.writeArtifact(runId, 'experience-contract.json', bundle.experienceContract);
+      await store.writeArtifact(runId, 'profile-experience-contract.json', bundle.profileContract);
+      await store.writeArtifact(runId, 'natural-play-plan.json', bundle.naturalPlayPlan);
+    }
+    ProfileExperienceBundleSchema.parse(await store.readArtifact(runId, 'profile-experience-bundle.json'));
+    if (!await exists(path.join(runRoot, 'artifacts/iaa-contract.json'))) {
+      const deferredIaaReview = IaaMonetizationReviewSchema.parse({ schemaVersion: 1, audienceFit: 'deferred until full-validation', sessionFit: 'medium', placements: [], retentionRisk: 'low', revenuePotential: 'low', complianceRisks: ['IAA review deferred in preview'], recommendation: 'not_viable', rationale: 'The preview lane does not design or ship monetization.' });
+      await store.writeArtifact(runId, 'iaa-contract.json', buildIaaContract({ gameId: blueprint.gameId, review: deferredIaaReview, sourceReview: 'replica-preview:deferred' }));
+    }
+    if (!done(state, 'PRODUCT_EXPERIENCE_CONTRACT')) {
+      const inputs = ['artifacts/experience-contract.json', 'artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs];
+      const record = await begin(state, 'PRODUCT_EXPERIENCE_CONTRACT', inputs);
+      try {
+        const referenceContract = ReferenceFidelityContractSchema.parse(await store.readArtifact(runId, 'reference-fidelity-contract.json'));
+        const contract = buildProductExperienceContract({
+          targetGame: blueprint.gameId,
+          targetRunId: runId,
+          targetWorkspace: path.join(runRoot, 'workspace/game'),
+          runtime: blueprint.runtime,
+          sourceArtifact: { kind: 'reference-fidelity', path: 'artifacts/reference-fidelity-contract.json', sha256: await sha256File(path.join(runRoot, 'artifacts/reference-fidelity-contract.json')) },
+          referenceBehaviorChecks: referenceContract.behaviorChecks,
+          deviceBaselines: operatingProfile.deviceBaselines,
+        });
+        await store.writeArtifact(runId, 'product-experience-contract.json', contract);
+        await complete(state, record, ['artifacts/product-experience-contract.json'], ['product:signals-explicit', 'product:state-only-blocked', 'product:exact-branch-viewport-matrix']);
+      } catch (error) { return fail(state, record, error); }
+    }
+    if (!done(state, 'CORE_SPEC_FROZEN')) {
+      const inputs = ['artifacts/game-blueprint.json', 'artifacts/production-line-resolution.json', 'artifacts/experience-hypothesis.json', 'artifacts/production-line-contract.json', 'artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...recordingLevelInputs];
+      const record = await begin(state, 'CORE_SPEC_FROZEN', inputs);
+      try {
+        const hypothesis = buildExperienceHypothesis({ gameId: blueprint.gameId, profile: lineContract.primaryProfile, question: 'Can a first-time player observe the locked reference loop, failure pressure and recovery within one short preview session?', hypotheses: [{ id: 'reference-loop', statement: 'The locked input/state transitions produce a visible consequence and a reason to retry.', metric: 'reference fidelity dimensions observed in natural QA', target: 'pass in preview QA', failureCondition: 'the core loop or recovery rule is not visible to a fresh player' }], sourceBlueprint: blueprint });
+        await store.writeArtifact(runId, 'experience-hypothesis.json', hypothesis);
+        const referenceContract = ReferenceFidelityContractSchema.parse(await store.readArtifact(runId, 'reference-fidelity-contract.json'));
+        const levelContract = recordingLevelInputs.length > 0 ? ReferenceLevelImplementationContractSchema.parse(await store.readArtifact(runId, 'reference-level-implementation-contract.json')) : undefined;
+        const lock = freezeCoreSpec({ gameId: blueprint.gameId, profile: hypothesis.profile, hypothesis, acceptanceDimensions: [...new Set([...lineContract.acceptanceDimensions, ...referenceContract.behaviorChecks.map((check) => `reference:${check.id}`), ...(levelContract ? [...levelContract.requiredObjects.map((item) => `reference-object:${item.semanticId}`), ...levelContract.spatialRelations.map((item) => `reference-relation:${item.id}`), ...levelContract.interactionSequence.map((item) => `reference-action:${item.actionId}`), 'reference-level:terminal-replay'] : [])])] });
+        await store.writeArtifact(runId, 'core-spec-lock.json', lock);
+        await complete(state, record, ['artifacts/core-spec-lock.json'], ['zod:CoreSpecLockSchema', 'spec:frozen', 'reference-fidelity:four-dimensions']);
+      } catch (error) { return fail(state, record, error); }
+    }
+    const direction = { id: 'direction_a' as const, name: 'Preview Original Direction', summary: 'A restrained original direction reserved for the preview candidate.', visualKeywords: ['original', 'compact', 'readable'], palette: ['#18212B', '#F2C572', '#6CB6A8'], characterStyle: 'simple original silhouette', environmentStyle: 'layered original scene', uiStyle: 'clear original panels', iconConcept: 'abstract progress mark', forbiddenElements: ['third-party logos', 'known characters'], productionComplexity: 'low' as const, previewPrompt: `Original visual direction for ${blueprint.theme}; no known characters or logos` };
+    const styleLockFile = path.join(runRoot, 'artifacts/style-lock.json');
+    const styleLock = await exists(styleLockFile)
+      ? StyleLockSchema.parse(await store.readArtifact(runId, 'style-lock.json'))
+      : StyleLockSchema.parse({ schemaVersion: 1, directionId: direction.id, direction, kept: ['original silhouette', 'readable progress mark'], changes: [], notes: ['preview-only automatic direction; choose a human style lock in full-validation'], lockedAt: new Date().toISOString() });
+    if (!await exists(styleLockFile)) await store.writeArtifact(runId, 'style-lock.json', styleLock);
+    const assetManifestFile = path.join(runRoot, 'artifacts/asset-manifest.json');
+    if (await exists(assetManifestFile)) {
+      const existingAssets = AssetManifestSchema.parse(await store.readArtifact(runId, 'asset-manifest.json'));
+      const expectedIds = assetDefinitionIds(blueprint);
+      const actualIds = existingAssets.assets.map((asset) => asset.id);
+      const previewOnlyAssets = styleLock.notes.some((note) => /preview-only automatic direction/iu.test(note))
+        && existingAssets.assets.some((asset) => asset.generationMethod !== 'procedural-placeholder');
+      if (JSON.stringify(actualIds) !== JSON.stringify(expectedIds) || previewOnlyAssets) {
+        const archive = await archiveRunPaths(runRoot, ['artifacts/asset-manifest.json', 'artifacts/asset-manifest.superseded.json', 'workspace/generated-assets'], 'asset-vocabulary-correction');
+        await store.writeArtifact(runId, 'asset-manifest.superseded.json', existingAssets);
+        invalidateDownstream(state, 'FULL_BUILD');
+        await store.log(runId, previewOnlyAssets ? 'assets.preview-formal-assets-archived' : 'assets.vocabulary-corrected', { template: blueprint.template, from: actualIds, to: expectedIds, archive: archive?.manifestPath, reason: previewOnlyAssets ? 'preview-only-style-lock-cannot feed formal image assets' : undefined });
+      }
+    }
+    let buildBlueprint = blueprint;
+    if (!await exists(assetManifestFile)) {
+      try {
+        const visualFitReviewFile = path.join(runRoot, 'artifacts/asset-visual-fit-review.json');
+        const visualFitReview = await exists(visualFitReviewFile)
+          ? AssetVisualFitReviewSchema.safeParse(await store.readArtifact(runId, 'asset-visual-fit-review.json')).data
+          : undefined;
+        const referenceEvidenceReady = await Promise.all([
+          'reference-fidelity-contract.json',
+          'reference-frame-manifest.json',
+          'reference-object-review.json',
+          'reference-level-implementation-contract.json',
+        ].map(async (file) => exists(path.join(runRoot, 'artifacts', file)))).then((values) => values.every(Boolean));
+        const readiness = evaluateAssetProductionReadiness({
+          blueprint,
+          styleLock,
+          humanApprovalPresent: await exists(path.join(runRoot, 'human/art-approval.yaml')),
+          referenceEvidenceReady,
+          visualFitReview,
+          allowMechanicsPreview: true,
+        });
+        if (!readiness.passed) {
+          await store.writeArtifact(runId, 'asset-production-gate.json', AssetProductionGateSchema.parse({ schemaVersion: 1, mode: readiness.mode, passed: false, blockers: readiness.blockers, evidence: readiness.evidence, checkedAt: new Date().toISOString() }));
+          return setWaiting(state, 'ASSETS', ['artifacts/style-lock.json', 'artifacts/asset-visual-fit-review.json'], ['artifacts/asset-production-gate.json'], readiness.blockers.map((item) => `blocked:${item}`));
+        }
+        // The preview lane is mechanics-only. Its procedural SVGs are kept in
+        // the run workspace and are never accepted as formal art evidence.
+        const previewBlueprint = readiness.mode === 'mechanics-preview'
+          ? GameBlueprintSchema.parse({ ...blueprint, preferences: { ...blueprint.preferences, visual_delivery: { status: 'mechanics_demo_placeholder', current_demo: 'mechanics_demo_placeholder_only', selected_direction: styleLock.directionId, approved_formal_direction: styleLock.directionId } } })
+          : blueprint;
+        buildBlueprint = previewBlueprint;
+        const producer = readiness.mode === 'mechanics-preview' ? new AssetProducerAgent(new MockImageProvider()) : assetProducerAgent;
+        const assets = await producer.run(path.join(runRoot, 'workspace/generated-assets'), previewBlueprint, styleLock);
+        await store.writeArtifact(runId, 'asset-manifest.json', assets);
+        await store.writeArtifact(runId, 'asset-production-gate.json', AssetProductionGateSchema.parse({ schemaVersion: 1, mode: readiness.mode, passed: true, blockers: [], evidence: readiness.evidence, checkedAt: new Date().toISOString() }));
+        completeImagegenWait(state, ['workspace/generated-assets/']);
+      } catch (error) {
+        if (error instanceof CodexImagegenPendingError) {
+          const pendingRecord = state.stages.FULL_BUILD ?? store.record('FULL_BUILD', state.stages.FULL_BUILD);
+          return waitForCodexImagegen(state, pendingRecord, error);
+        }
+        throw error;
+      }
+    }
+    if (buildBlueprint === blueprint && await exists(path.join(runRoot, 'artifacts/asset-production-gate.json'))) {
+      const gate = await store.readArtifact(runId, 'asset-production-gate.json') as { mode?: unknown };
+      if (gate.mode === 'mechanics-preview') buildBlueprint = GameBlueprintSchema.parse({ ...blueprint, preferences: { ...blueprint.preferences, visual_delivery: { status: 'mechanics_demo_placeholder', current_demo: 'mechanics_demo_placeholder_only', selected_direction: styleLock.directionId, approved_formal_direction: styleLock.directionId } } });
+    }
+    const assetManifest = AssetManifestSchema.parse(await store.readArtifact(runId, 'asset-manifest.json'));
+    const workspace = path.join(runRoot, 'workspace/game');
+    if (!done(state, 'FULL_BUILD')) {
+      const inputs = ['artifacts/game-blueprint.json', 'artifacts/production-line-resolution.json', 'artifacts/production-line-contract.json', 'artifacts/experience-hypothesis.json', 'artifacts/core-spec-lock.json', 'artifacts/experience-contract.json', 'artifacts/product-experience-contract.json', 'artifacts/profile-experience-contract.json', 'artifacts/natural-play-plan.json', 'artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs, 'artifacts/style-lock.json', 'artifacts/asset-manifest.json', `templates/web-lite/${blueprint.template}`];
+      const previewInputPaths = new Set(inputs.filter((item) => item.startsWith('artifacts/')));
+      const previewBuildContract = StageContractSchema.parse({
+        ...getStageContract('FULL_BUILD'),
+        purpose: 'Build one bounded reference core slice before content and UI expansion.',
+        inputs: getStageContract('FULL_BUILD').inputs
+          .filter((item) => previewInputPaths.has(item.path))
+          .map((item) => item.path === 'artifacts/reference-fidelity-contract.json' || recordingLevelInputs.includes(item.path) ? { ...item, required: true } : item),
+        passCriteria: ['only the current run workspace is mutated', 'one core slice uses the exact product/reference contracts', 'tests, typecheck and build pass', 'content expansion is absent from the Builder handoff'],
+      });
+      const record = await begin(state, 'FULL_BUILD', inputs);
+      try {
+        const context = await contextFor('FULL_BUILD', runRoot, path.join(runRoot, 'logs/codex/BUILD.last-message.txt'), inputs, 'Build exactly one playable core slice from the product, reference fidelity, research-resolution, failure-pressure, and recording-level semantic contracts. Keep observed recording behavior distinct from human-locked failure/replay requirements. Do not expand levels, progression breadth or nonessential HUD before this slice passes independent QA and human play. Keep the workspace scoped to this run and preserve original expression.', { targetGameId: blueprint.gameId, targetWorkspaceRelative: 'workspace/game', requiredArtifacts: inputs.filter((item) => item.startsWith('artifacts/')), requiredContextPaths: ['artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...pressureInputs, ...recordingLevelInputs, 'artifacts/product-experience-contract.json', 'artifacts/core-spec-lock.json', 'artifacts/production-line-contract.json', 'artifacts/experience-contract.json', 'artifacts/profile-experience-contract.json', 'artifacts/natural-play-plan.json'] });
+        const result = await builderAgent.run(workspace, buildBlueprint, styleLock, assetManifest, buildBlueprint.template, path.join(runRoot, 'workspace/generated-assets'), undefined, undefined, context);
+        addAgentMetrics(record, result.metrics); state.codexThreadId = result.threadId; await store.writeArtifact(runId, 'build-report.json', result.report);
+        const buildHash = await hashBuildDirectory(path.resolve(runRoot, result.report.webBuild));
+        await store.writeArtifact(runId, 'release-lifecycle.json', promoteReleaseLifecycle(undefined, { gameId: blueprint.gameId, releaseHash: buildHash, from: null, to: 'IMPLEMENTATION_READY' }));
+        await ensureSupplyChainArtifact(runId, blueprint, buildHash);
+        await saveUsage(state);
+        const buildOutput = result.report.webBuild.endsWith('/') ? result.report.webBuild : `${result.report.webBuild}/`;
+        await complete(state, record, ['artifacts/build-report.json', 'artifacts/release-lifecycle.json', 'artifacts/supply-chain.json', 'artifacts/dependency-manifest.json', 'artifacts/sbom.json', 'artifacts/build-provenance.json', buildOutput, 'workspace/game/dist/'], ['build:preview-candidate', 'build:dist', 'reference-fidelity:builder-input', 'product-experience:builder-input', 'preview:single-core-slice', 'vite:build-success', `build-hash:${buildHash}`, 'supply-chain:provenance-recorded', 'supply-chain:dependency-manifest', 'supply-chain:sbom', 'supply-chain:build-provenance', ...(result.report.verification.includes('test:passed') ? ['build:tests'] : ['build:tests:contract']), ...(result.report.verification.includes('typecheck:passed') ? ['build:typecheck'] : ['build:typecheck:contract'])], { contract: previewBuildContract });
+      } catch (error) { return fail(state, record, error); }
+    }
+    const fidelityContract = ReferenceFidelityContractSchema.parse(await store.readArtifact(runId, 'reference-fidelity-contract.json'));
+    const previewBuild = BuildReportSchema.parse(await store.readArtifact(runId, 'build-report.json'));
+    const previewBuildPath = path.resolve(runRoot, previewBuild.webBuild);
+    const buildRelative = path.relative(workspace, previewBuildPath);
+    if (!buildRelative || buildRelative === '..' || buildRelative.startsWith(`..${path.sep}`) || path.isAbsolute(buildRelative)) throw new Error('preview build must be inside the target workspace');
+    const previewBuildHash = await hashBuildDirectory(previewBuildPath);
+    const levelContract = recordingLevelInputs.length > 0
+      ? ReferenceLevelImplementationContractSchema.parse(await store.readArtifact(runId, 'reference-level-implementation-contract.json'))
+      : undefined;
+    const previousFidelityGate = ReferenceFidelityGateSchema.safeParse(await store.readArtifact(runId, 'reference-fidelity-gate.json').catch(() => undefined));
+    const savedQa = QaReportSchema.safeParse(await store.readArtifact(runId, 'qa-report.json').catch(() => undefined));
+    const savedRuntime = RuntimeProductGateSchema.safeParse(await store.readArtifact(runId, 'runtime-product-gates.json').catch(() => undefined));
+    const savedLevelQaPassed = levelContract ? await verifyPersistedReferenceLevelQa(runId, levelContract, previewBuildHash) : true;
+    // A pending independent comparison must not recapture and overwrite the
+    // evidence it is reviewing. Any build/contract change requires fresh QA.
+    const reusePreviewQa = previousFidelityGate.success
+      && previousFidelityGate.data.buildHash === previewBuildHash
+      && previousFidelityGate.data.contractHash === sha256Text(JSON.stringify(fidelityContract))
+      && savedQa.success && savedQa.data.passed && savedRuntime.success && savedRuntime.data.passed
+      && savedLevelQaPassed;
+    if (!reusePreviewQa) {
+      const qaInputs = ['artifacts/build-report.json', 'artifacts/production-line-resolution.json', 'artifacts/production-line-contract.json', 'artifacts/product-experience-contract.json', 'artifacts/core-spec-lock.json', 'artifacts/reference-fidelity-contract.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? ['artifacts/reference-level-reconstruction.json', ...recordingLevelInputs] : [])];
+      const record = await begin(state, 'QA', qaInputs);
+      try {
+        let report = await qaAgent.run(workspace, runRoot, true);
+        let referenceLevelEvidence: string[] = [];
+        if (levelContract) {
+          const levelResult = await executeReferenceLevelQa(runId, workspace, previewBuildHash);
+          report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
+          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'];
+          await refreshAcceptanceArtifacts(runRoot, true, report.passed, report.screenshots);
+        }
+        await store.writeArtifact(runId, 'qa-report.json', report);
+        await complete(state, record, ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...referenceLevelEvidence], ['qa:preview', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(levelContract ? ['qa:recording-level-comparison-when-declared'] : []), `passed:${report.passed}`]);
+        if (!report.passed) {
+          const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
+          const fixRecord = await begin(state, 'FIX', fixInputs);
+          try {
+            const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Repair only the explicit preview QA issues against the frozen reference and recording-level contracts. Keep the core contract unchanged and add focused regression coverage.');
+            const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
+            addAgentMetrics(fixRecord, fix.metrics);
+            state.codexThreadId = fix.threadId;
+            state.fixAttempts += 1;
+            await saveUsage(state);
+            await complete(state, fixRecord, [previewBuild.webBuild], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
+          } catch (error) { return fail(state, fixRecord, error); }
+          return executeReplicaPreview(state, seed);
+        }
+      } catch (error) { return fail(state, record, error); }
+    }
+    const fidelityReview = await store.readArtifact(runId, 'reference-fidelity-review.json').catch(() => undefined);
+    const fidelityResult = await verifyReferenceFidelityReview({ runRoot, targetRunId: runId, workspace, buildHash: previewBuildHash, contract: fidelityContract, review: fidelityReview });
+    const runtimeProduct = RuntimeProductGateSchema.safeParse(await store.readArtifact(runId, 'runtime-product-gates.json').catch(() => undefined));
+    const wiring = runtimeProduct.success ? await verifyRuntimeWiredFiles({ runRoot, files: runtimeProduct.data.runtimeWiredFiles }) : { passed: false };
+    const fidelityGate = ReferenceFidelityGateSchema.parse({ ...fidelityResult,
+      passed: fidelityResult.passed && runtimeProduct.success && runtimeProduct.data.passed && wiring.passed,
+      blockers: [...fidelityResult.blockers, ...(!runtimeProduct.success || !runtimeProduct.data.passed || !wiring.passed ? ['fidelity:runtime-product-blocked'] : [])],
+    });
+    await store.writeArtifact(runId, 'reference-fidelity-gate.json', fidelityGate);
+    if (!fidelityGate.passed) {
+      const reviewTask = [
+        '# 参照玩法对照验收', '',
+        `目标 run：${runId}`, `唯一工作区：${workspace}`, `当前构建 SHA-256：${previewBuildHash}`, `契约 SHA-256：${fidelityGate.contractHash}`, '',
+        '由独立 QAAgent 或 HumanReviewer 执行；Builder/Fixer 不得自签。读取 game-playtest 技能。此任务只读取游戏，写入本 run 的 QA 证据。',
+        `输入：${path.join(runRoot, 'artifacts/reference-fidelity-contract.json')}、qa-report.json、runtime-product-gates.json。`,
+        '逐一检查 behaviorChecks：在声明视口从初始状态正常操作，覆盖精确对象和状态分支；检查状态变化、空间关系、反馈绑定对象和事件先后顺序。',
+        '截图与自然输入 trace 都必须真实存在并记录 SHA-256。trace 使用 NaturalFlowEvidenceSchema，transitions.name 使用对应 checkId；记录当前 buildHash、视口、正常操作、结算和重玩。',
+        'ReferenceFidelityReviewSchema 定义在 src/schemas/reference-fidelity.ts。按该 schema 写入 artifacts/reference-fidelity-review.json；contractHash 是规范化 ReferenceFidelityContractSchema.parse 结果的 JSON SHA-256。',
+        '每项结果记录实际观察，不得复制预期结果充当观察。缺证据、未到达分支或感知未通过时保留阻塞。文件校验不能代替画面审查。',
+        '修复仍按原有 QA → Fixer → QA 流程处理，保留原线程与累计尝试次数。',
+        `完成后执行：pnpm factory resume ${runId}`, '',
+      ].join('\n');
+      await writeFile(path.join(runRoot, 'human/reference-fidelity-review-task.md'), reviewTask);
+      return setWaiting(state, 'QA', ['artifacts/qa-report.json', 'artifacts/reference-fidelity-contract.json', ...recordingLevelInputs], ['artifacts/reference-fidelity-gate.json', 'human/reference-fidelity-review-task.md'], fidelityGate.blockers.map((blocker) => `blocked:${blocker}`));
+    }
+    await recordControlStage(state, 'QA', 'completed',
+      ['artifacts/build-report.json', 'artifacts/production-line-contract.json', 'artifacts/product-experience-contract.json', 'artifacts/core-spec-lock.json', 'artifacts/reference-fidelity-contract.json', ...(levelContract ? ['artifacts/reference-level-reconstruction.json', ...recordingLevelInputs] : []), 'artifacts/reference-fidelity-review.json'],
+      ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...(levelContract ? ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : []), 'artifacts/reference-fidelity-gate.json'],
+      ['qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(levelContract ? ['qa:recording-level-comparison-when-declared'] : []), 'qa:reference-fidelity:verified', `build-hash:${previewBuildHash}`]);
+    const coreDemoAcceptancePath = path.join(runRoot, 'human/playtest-acceptance.json');
+    let coreDemoAcceptance: ReturnType<typeof HumanPlaytestAcceptanceSchema.parse> | undefined;
+    if (await exists(coreDemoAcceptancePath)) {
+      try { coreDemoAcceptance = HumanPlaytestAcceptanceSchema.parse(JSON.parse(await readFile(coreDemoAcceptancePath, 'utf8'))); }
+      catch { coreDemoAcceptance = undefined; }
+    }
+    const coreDemoPassed = coreDemoAcceptance?.passed === true
+      && coreDemoAcceptance.sessionId === 'CORE_DEMO'
+      && coreDemoAcceptance.buildHash === previewBuildHash;
+    if (!coreDemoPassed) {
+      const example = HumanPlaytestAcceptanceSchema.parse({
+        schemaVersion: 1,
+        passed: false,
+        sessionId: 'CORE_DEMO',
+        buildHash: previewBuildHash,
+        inputMode: 'touch',
+        notes: ['Play the reference-driven core demo from a clean reset. Confirm the core action, object placement logic, failure cause, settlement and replay before any content expansion.'],
+        evidence: ['attach a recording or screenshots from the exact build'],
+        approvedAt: new Date().toISOString(),
+      });
+      await writeFile(path.join(runRoot, 'human/playtest-acceptance.example.json'), `${JSON.stringify(example, null, 2)}\n`);
+      return setWaiting(state, 'WAITING_FOR_HUMAN_PLAYTEST', ['artifacts/build-report.json', 'artifacts/reference-fidelity-gate.json'], ['human/playtest-acceptance.json', 'human/playtest-acceptance.example.json'], [coreDemoAcceptance?.passed === false ? 'human:core-demo-rejected' : 'human:core-demo-playtest-required']);
+    }
+    await recordControlStage(state, 'WAITING_FOR_HUMAN_PLAYTEST', 'completed', ['artifacts/build-report.json', 'artifacts/reference-fidelity-gate.json'], ['human/playtest-acceptance.json'], ['human:core-demo-playtest-required', 'human:playtest-passed', `candidate:${previewBuildHash}`]);
+    state.stage = 'COMPLETED'; state.status = 'completed';
+    await recordControlStage(state, 'COMPLETED', 'completed', ['artifacts/qa-report.json'], ['artifacts/qa-report.json', 'state.json'], ['pipeline:replica-preview-complete', 'release:deferred', 'platform:deferred', 'monetization:deferred']);
+    await store.save(state); await store.log(runId, 'run.completed', { lane: 'replica-preview', releaseDeferred: true }); return state;
+  }
+
   async function executePipeline(runId: string): Promise<RunState> {
     let state = await store.load(runId); assertRunMode(state); if (state.runKind === 'action-experiment') { activePipelinePlan = undefined; activePlanIsLegacy = true; return executeActionExperiment(state); }
+    if (['COMPLETED', 'RELEASE_CANDIDATE', 'RELEASE'].includes(state.stage) && ['IMPLEMENTATION_READY', 'WAITING', 'FAILED'].includes(state.readiness)) {
+      const lifecycle = ReleaseLifecycleSchema.safeParse(await store.readArtifact(runId, 'release-lifecycle.json').catch(() => undefined));
+      if (lifecycle.success && ['CANDIDATE_READY', 'RELEASE_READY'].includes(lifecycle.data.status)) await store.save(state);
+    }
     if (mode === 'codex-account') await codexExecutor!.assertChatGptLogin();
     const runRoot = store.runRoot(runId); const seed = await store.readSeedFile(path.join(runRoot, 'input/seed.yaml'));
+    try {
+      const identity = await readBoundRunIdentity(runId, seed);
+      if (identity) {
+        await store.writeArtifact(runId, 'identity-binding-report.json', {
+          schemaVersion: 1,
+          runId,
+          passed: true,
+          status: 'BOUND',
+          canonicalGameId: identity.canonicalGameId,
+          variantId: identity.variantId ?? null,
+          displayTitle: identity.displayTitle,
+          seedSha256: identity.seedSha256,
+          workspaceRelative: identity.workspaceRelative,
+        });
+      } else {
+        await store.writeArtifact(runId, 'identity-binding-report.json', {
+          schemaVersion: 1,
+          runId,
+          passed: true,
+          status: 'LEGACY_UNBOUND',
+          blockers: ['legacy-run-without-run-identity-manifest'],
+          action: 'read-only compatibility; create a new run with explicit identity before regeneration',
+        });
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      await store.writeArtifact(runId, 'identity-binding-report.json', { schemaVersion: 1, runId, passed: false, status: 'MIGRATION_REQUIRED', blockers: [message] });
+      return setWaiting(state, 'BUSINESS_PREFLIGHT', ['input/seed.yaml', `artifacts/${GAME_RUN_IDENTITY_ARTIFACT}`], ['artifacts/identity-binding-report.json'], [`blocked:identity-binding:${message}`]);
+    }
     selectRuntime(seed.runtime);
     // Reconcile before bootstrap helpers can rewrite any derived artifacts;
     // otherwise a fresh timestamp could mask a real user edit. New runs have
@@ -1891,6 +3032,11 @@ export function createFactory(options: FactoryOptions = {}) {
     if (!effectivePlan) {
       await store.log(runId, 'pipeline-plan.legacy-fallback', { reason: 'pipeline-plan-missing-or-invalid' });
     }
+    // Reference runs use a compact, fidelity-first lane.  Keep this branch
+    // before the governance and production-line gates so deferred concerns
+    // cannot silently re-enter the preview journey.  The frozen plan records
+    // those concerns explicitly for a later full-validation run.
+    if (effectivePlan?.mode === 'replica-preview') return executeReplicaPreview(state, seed);
     const missingGovernance = effectivePlan ? missingRequiredGovernanceStages(effectivePlan, {
       certificationRequired: certificationRequired(),
       presentationQualityRequired: presentationQualityRequired(),
@@ -1939,7 +3085,7 @@ export function createFactory(options: FactoryOptions = {}) {
       if (!await exists(profileFile)) await store.writeArtifact(runId, 'factory-profile.json', effectiveOperatingProfile());
       const preflightFile = path.join(runRoot, 'artifacts/business-preflight.json');
       if (!await exists(preflightFile)) {
-        const template = buildBusinessPreflightTemplate({ targets: operatingProfile.requiredTargets, optionalTargets: operatingProfile.optionalTargets, budget: operatingProfile.budget, entity: operatingProfile.entity });
+        const template = buildBusinessPreflightTemplate({ targets: operatingProfile.requiredTargets, optionalTargets: operatingProfile.optionalTargets, budget: await costBudgetForRun(runId), entity: operatingProfile.entity });
         await store.writeArtifact(runId, 'business-preflight.json', template);
         if (!await exists(path.join(runRoot, 'human/business-preflight.example.json'))) await writeFile(path.join(runRoot, 'human/business-preflight.example.json'), `${JSON.stringify(template, null, 2)}\n`);
         return setWaiting(state, 'BUSINESS_PREFLIGHT', ['artifacts/factory-profile.json', 'artifacts/account-capacity.json', 'artifacts/account-capacity-evaluation.json', 'artifacts/platform-policy.json', 'artifacts/platform-policy-evaluation.json'], ['artifacts/business-preflight.json'], ['human:verify-accounts-rights-payout', 'decision:PAUSE']);
@@ -1984,17 +3130,39 @@ export function createFactory(options: FactoryOptions = {}) {
     if (seed.designMode === 'reference_reskin') {
       const referenceMechanics = ReferenceMechanicSpecSchema.parse(seed.referenceMechanics);
       if (!done(state, 'REFERENCE_DEEP_RESEARCH')) {
-        const inputs = ['input/seed.yaml', ...referenceMechanics.source.researchFiles];
+        const inputs = await referenceResearchInputPaths(runId, referenceMechanics);
+        let pack = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
+        const baseEvaluation = evaluateReferenceEvidence(pack, {
+          requireHostAllowlist: validationMode === 'production' || process.env.FACTORY_REQUIRE_RESEARCH_ALLOWLIST === '1',
+          allowedHosts: (process.env.FACTORY_RESEARCH_ALLOWED_HOSTS ?? '').split(/[\s,]+/u).filter(Boolean),
+        });
+        if (!baseEvaluation.passed) {
+          const blockedFidelity = evaluateReplicaPreviewEvidence(baseEvaluation.pack);
+          await store.writeArtifact(runId, 'reference-fidelity-contract.json', blockedFidelity.fidelity);
+          return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json'], blockedFidelity.blockers.map((item) => `blocked:${item}`));
+        }
         const record = await begin(state, 'REFERENCE_DEEP_RESEARCH', inputs);
         try {
-          const pack = await store.readArtifact(runId, 'reference-evidence-pack.json');
+          const frameManifest = await ensureReferenceFrameManifest(runId, await expectedGameId(runId), path.join(runRoot, 'workspace/game'));
+          if (frameManifest?.status === 'BLOCKED') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-frame-manifest.json'], frameManifest.blockers.map((item) => `blocked:reference-frame:${item}`));
+          const codeInput = await referenceCodeInput(runId);
+          if (codeInput.status === 'blocked') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, [], codeInput.blockers.map((item) => `blocked:${item}`));
+          pack = await analyzeReferenceBehavior(state, referenceMechanics, pack, record, frameManifest, codeInput.status === 'verified' ? codeInput.path : undefined);
           const evaluated = evaluateReferenceEvidence(pack, {
             requireHostAllowlist: validationMode === 'production' || process.env.FACTORY_REQUIRE_RESEARCH_ALLOWLIST === '1',
             allowedHosts: (process.env.FACTORY_RESEARCH_ALLOWED_HOSTS ?? '').split(/[\s,]+/u).filter(Boolean),
           });
           await store.writeArtifact(runId, 'reference-evidence-pack.json', evaluated.pack);
-          await complete(state, record, ['artifacts/reference-evidence-pack.json'], ['zod:ReferenceEvidencePackSchema', `evidence-quality:${evaluated.pack.evidenceQuality}`, `unknowns:${evaluated.pack.unknowns.length}`, `status:${evaluated.pack.status}`]);
-          if (!evaluated.passed && (enforceOperatingGates || referenceBlockersRequirePause(evaluated.blockers))) return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, ['artifacts/reference-evidence-pack.json'], evaluated.blockers.map((item) => `blocked:${item}`));
+          // Every reference-driven lane uses the same behavior-level evidence
+          // bar. Previously only replica-preview produced this contract, so a
+          // longer/full pipeline could drop the user's reference before build.
+          const fidelityEvaluation = evaluateReplicaPreviewEvidence(evaluated.pack);
+          await store.writeArtifact(runId, 'reference-fidelity-contract.json', fidelityEvaluation.fidelity);
+          const blockers = fidelityEvaluation.blockers;
+          const outputs = ['artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json', ...(await store.hasArtifact(runId, 'reference-behavior-analysis.json') ? ['artifacts/reference-behavior-analysis.json'] : []), ...(await store.hasArtifact(runId, 'reference-failure-pressure-contract.json') ? ['artifacts/reference-failure-pressure-contract.json'] : []), ...(frameManifest ? ['artifacts/reference-frame-manifest.json', 'artifacts/reference-level-reconstruction.json', 'artifacts/reference-level-implementation-contract.json'] : [])];
+          const evidence = ['reference:evidence-pack', 'reference:five-dimension-behavior-contract', 'reference:failure-pressure-contract', 'zod:ReferenceEvidencePackSchema', 'zod:ReferenceFidelityContractSchema', ...(frameManifest ? ['reference:frame-manifest', 'reference:recording-level-contract', 'zod:ReferenceFrameManifestSchema', 'zod:ReferenceLevelImplementationContractSchema'] : []), 'reference:behavior-fidelity-gate', `evidence-quality:${evaluated.pack.evidenceQuality}`, `unknowns:${evaluated.pack.unknowns.length}`, `status:${evaluated.pack.status}`];
+          if (!fidelityEvaluation.passed && (enforceOperatingGates || referenceBlockersRequirePause(blockers) || seed.designMode === 'reference_reskin')) return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', inputs, outputs, [...evidence, ...blockers.map((item) => `blocked:${item}`)]);
+          await complete(state, record, outputs, evidence);
         } catch (error) { return fail(state, record, error); }
       }
       if (!done(state, 'REFERENCE_MECHANIC_LOCK')) {
@@ -2054,7 +3222,7 @@ export function createFactory(options: FactoryOptions = {}) {
         }
         const sourceEvidence = researchEvidence.passed ? 'research:sources-verified' : 'research:sources-legacy';
         await saveUsage(state);
-        await complete(state, record, ['artifacts/competitor-research.json', 'artifacts/competitor-research-evidence.json'], ['zod:CompetitorResearchSchema', 'zod:CompetitorResearchEvidenceReportSchema', 'research:source-count', 'research:observation-inference-unknown', sourceEvidence, `model:${result.metrics.model}`]);
+        await complete(state, record, ['artifacts/competitor-research.json', 'artifacts/competitor-research-evidence.json'], ['zod:CompetitorResearchSchema', 'zod:CompetitorResearchEvidenceReportSchema', 'research:source-count', 'research:observation-inference-unknown', 'research:failure-pressure-contract', sourceEvidence, `model:${result.metrics.model}`]);
       } catch (error) { return fail(state, record, error); }
     }
     const research = CompetitorResearchSchema.parse(await store.readArtifact(runId, 'competitor-research.json'));
@@ -2069,7 +3237,19 @@ export function createFactory(options: FactoryOptions = {}) {
       const selection = PrototypeSelectionSchema.parse(await store.readArtifact(runId, selectionFile));
       if (!done(state, 'BUILD_3_PROTOTYPES')) { const record = await begin(state, 'BUILD_3_PROTOTYPES', [`artifacts/${ideaFile}`, `artifacts/${selectionFile}`]); try { const context = await contextFor('BUILD_3_PROTOTYPES', runRoot, store.artifact(runId, buildFile), [`artifacts/${ideaFile}`, `artifacts/${selectionFile}`], 'Build three disposable greybox prototypes from the validated selection; preserve isolated workspaces and prototype-only scope.'); const result = await builderAgent.buildPrototypes(runRoot, ideas, selection, context); addAgentMetrics(record, result.metrics); await store.writeArtifact(runId, buildFile, result.report); await saveUsage(state); await complete(state, record, [`artifacts/${buildFile}`, 'workspace/prototype-a/dist/', 'workspace/prototype-b/dist/', 'workspace/prototype-c/dist/'], ['zod:PrototypeBuildReportSchema', 'playable:3', 'placeholder-art:true', 'iaa:false']); } catch (error) { return fail(state, record, error); } }
       const buildReport = PrototypeBuildReportSchema.parse(await store.readArtifact(runId, buildFile));
-      if (!done(state, 'PLAYTEST_TOURNAMENT')) { const record = await begin(state, 'PLAYTEST_TOURNAMENT', [`artifacts/${buildFile}`]); try { const tournament = await qaAgent.tournament(buildReport, runRoot); await store.writeArtifact(runId, tournamentFile, tournament); await complete(state, record, [`artifacts/${tournamentFile}`, 'screenshots/', 'logs/'], ['zod:PlaytestTournamentSchema', 'reviewer:QAAgent', 'author-independent:true', 'prototypes-played:3']); } catch (error) { return fail(state, record, error); } }
+      if (!done(state, 'PLAYTEST_TOURNAMENT')) {
+        const record = await begin(state, 'PLAYTEST_TOURNAMENT', [`artifacts/${buildFile}`]);
+        try {
+          const tournament = await qaAgent.tournament(buildReport, runRoot);
+          await store.writeArtifact(runId, tournamentFile, tournament);
+          const evidenceFile = `prototype-approval-evidence.batch-${batch}.json`;
+          // Stub QA is an explicit test policy, regardless of model provider.
+          // Its captures never qualify as product-acceptance evidence.
+          const approvalEvidence = await capturePrototypeApprovalEvidence({ runRoot, batch, synthetic: qaMode === 'stub' });
+          await store.writeArtifact(runId, evidenceFile, approvalEvidence);
+          await complete(state, record, [`artifacts/${tournamentFile}`, `artifacts/${evidenceFile}`, 'screenshots/', 'logs/'], ['zod:PlaytestTournamentSchema', 'reviewer:QAAgent', 'author-independent:true', 'prototypes-played:3']);
+        } catch (error) { return fail(state, record, error); }
+      }
       const tournament = PlaytestTournamentSchema.parse(await store.readArtifact(runId, tournamentFile));
       if (!done(state, 'WINNER_SELECTION')) { const inputs = [`artifacts/${tournamentFile}`]; const record = await begin(state, 'WINNER_SELECTION', inputs); try { const context = await contextFor('WINNER_SELECTION', runRoot, store.artifact(runId, winnerFile), inputs, 'Select a winner only when independent playtest evidence supports it.'); const result = await greenlightAgent.selectWinner(tournament, context); addAgentMetrics(record, result.metrics); await store.writeArtifact(runId, winnerFile, result.value); await complete(state, record, [`artifacts/${winnerFile}`], ['zod:WinnerSelectionSchema', `decision:${result.value.decision}`, `model:${result.metrics.model}`]); } catch (error) { return fail(state, record, error); } }
       const winner = WinnerSelectionSchema.parse(await store.readArtifact(runId, winnerFile));
@@ -2083,6 +3263,11 @@ export function createFactory(options: FactoryOptions = {}) {
     const prototypeApprovalFile = path.join(runRoot, 'human/prototype-decision.yaml');
     if (!await exists(prototypeApprovalFile)) { const example = 'decision: APPROVE\nnotes: []\n'; if (!await exists(path.join(runRoot, 'human/prototype-decision.example.yaml'))) await writeFile(path.join(runRoot, 'human/prototype-decision.example.yaml'), example); const buildReport = PrototypeBuildReportSchema.parse(await store.readArtifact(runId, `prototype-build-report.batch-${batch}.json`)); const review = PrototypeHumanReviewSchema.parse({ schemaVersion: 1, batch, prototypes: buildReport.prototypes.map((prototype) => { const idea = ideas.ideas.find((item) => item.id === prototype.ideaId); if (!idea) throw new Error(`Prototype idea ${prototype.ideaId} is missing`); return { slot: prototype.slot, name: idea.name, coreAction: idea.coreAction, decision: idea.decision, entrypoint: prototype.entrypoint, launchCommand: prototype.launchCommand }; }), recommendation: winner.decision, rationale: winner.rationale }); await writeFile(path.join(runRoot, 'human/prototype-review.json'), `${JSON.stringify(review, null, 2)}\n`); const now = new Date().toISOString(); state.stage = 'WAITING_FOR_PROTOTYPE_APPROVAL'; state.status = 'waiting'; state.stages.WAITING_FOR_PROTOTYPE_APPROVAL = state.stages.WAITING_FOR_PROTOTYPE_APPROVAL ?? { stage: 'WAITING_FOR_PROTOTYPE_APPROVAL', status: 'waiting', startedAt: now, finishedAt: null, attempts: 1, inputArtifacts: [`artifacts/winner-selection.batch-${batch}.json`], outputArtifacts: ['human/prototype-review.json'], errors: [], evidence: ['human/prototype-decision.example.yaml', 'human/prototype-review.json', 'prototype-a', 'prototype-b', 'prototype-c'], providerCalls: { agent: 0, image: 0 }, tokenUsage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 } }; await persistControlStageAudit(state, 'WAITING_FOR_PROTOTYPE_APPROVAL', 'waiting', [`artifacts/winner-selection.batch-${batch}.json`], ['human/prototype-review.json'], ['human/prototype-decision.example.yaml', 'human/prototype-review.json', 'prototype-a', 'prototype-b', 'prototype-c']); await store.save(state); return state; }
     const humanDecision = HumanPrototypeDecisionSchema.parse(parse(await readFile(prototypeApprovalFile, 'utf8')));
+    if (!['REJECT', 'REVISE'].includes(humanDecision.decision)) {
+      const approvalEvidence = await verifyPrototypeApprovalEvidence({ runRoot, batch, synthetic: qaMode === 'stub' });
+      await store.writeArtifact(runId, `prototype-approval-verification.batch-${batch}.json`, approvalEvidence);
+      if (!approvalEvidence.passed) return setWaiting(state, 'WAITING_FOR_PROTOTYPE_APPROVAL', [`artifacts/prototype-approval-evidence.batch-${batch}.json`], [`artifacts/prototype-approval-verification.batch-${batch}.json`], approvalEvidence.blockers.map(item => `blocked:prototype-evidence:${item}`));
+    }
     if (state.stages.WAITING_FOR_PROTOTYPE_APPROVAL) {
       await recordControlStage(state, 'WAITING_FOR_PROTOTYPE_APPROVAL', 'completed', [`artifacts/winner-selection.batch-${batch}.json`], ['human/prototype-review.json', 'human/prototype-decision.yaml'], ['human/prototype-decision.example.yaml', `decision:${humanDecision.decision}`]);
     }
@@ -2128,7 +3313,7 @@ export function createFactory(options: FactoryOptions = {}) {
         const iaa = await iaaMonetizationReviewerAgent.run(seed, monetizationContext, iaaContext);
         addAgentMetrics(record, iaa.metrics);
         await store.writeArtifact(runId, 'iaa-monetization-review.json', iaa.value);
-        const iaaContract = buildIaaContract({ gameId: gameIdFromTitle(seed.title), review: iaa.value });
+      const iaaContract = buildIaaContract({ gameId: await expectedGameId(runId), review: iaa.value });
         await store.writeArtifact(runId, 'iaa-contract.json', iaaContract);
         await saveUsage(state);
         await complete(state, record, ['artifacts/iaa-monetization-review.json', 'artifacts/iaa-contract.json'], ['zod:IaaMonetizationReviewSchema', 'zod:IaaContractSchema', 'iaa:bounded-contract', `human-${seed.designMode === 'reference_reskin' ? 'reference' : 'prototype'}-approved:true`]);
@@ -2136,13 +3321,22 @@ export function createFactory(options: FactoryOptions = {}) {
     }
     if (!done(state, 'BLUEPRINT')) {
       const designerLesson = await feedbackLessons.snapshot(runId, 'GameDesignerAgent');
-      const blueprintInputs = ['input/seed.yaml', gameplayArtifact, humanApprovalArtifact, 'artifacts/open-source-research.json', 'artifacts/iaa-monetization-review.json', 'artifacts/iaa-contract.json', designerLesson];
+      const blueprintReferenceInputs = seed.designMode === 'reference_reskin'
+        ? [
+          ...(await exists(path.join(runRoot, 'artifacts/reference-research-resolution.json')) ? ['artifacts/reference-research-resolution.json'] : []),
+          ...(await exists(path.join(runRoot, 'artifacts/reference-failure-pressure-contract.json')) ? ['artifacts/reference-failure-pressure-contract.json'] : []),
+        ]
+        : [];
+      const blueprintInputs = ['input/seed.yaml', gameplayArtifact, humanApprovalArtifact, 'artifacts/open-source-research.json', 'artifacts/iaa-monetization-review.json', 'artifacts/iaa-contract.json', ...blueprintReferenceInputs, designerLesson];
       const record = await begin(state, 'BLUEPRINT', blueprintInputs);
       try {
-        const blueprintContext = await contextFor('BLUEPRINT', runRoot, store.artifact(runId, 'game-blueprint.json'), blueprintInputs, 'Translate the human-locked mechanics into an implementation blueprint without changing the experience target.');
+        const blueprintContext = await contextFor('BLUEPRINT', runRoot, store.artifact(runId, 'game-blueprint.json'), blueprintInputs, 'Translate the human-locked mechanics into an implementation blueprint without changing the experience target.', { targetGameId: await expectedGameId(runId) });
         const blueprintResult = await producerAgent.run(seed, approvedGameplay, openSourceResearch, blueprintContext);
         addAgentMetrics(record, blueprintResult.metrics);
         await store.writeArtifact(runId, 'game-blueprint.json', blueprintResult.value);
+        const parsedBlueprint = GameBlueprintSchema.parse(blueprintResult.value);
+        const expectedBlueprintGameId = await expectedGameId(runId);
+        if (parsedBlueprint.gameId !== expectedBlueprintGameId) throw new Error(`blueprint identity mismatch: ${parsedBlueprint.gameId} !== ${expectedBlueprintGameId}`);
         await saveUsage(state);
         await complete(state, record, ['artifacts/game-blueprint.json'], ['zod:GameBlueprintSchema', 'open-source-research-before-blueprint:true']);
       } catch (error) { return fail(state, record, error); }
@@ -2184,14 +3378,17 @@ export function createFactory(options: FactoryOptions = {}) {
     const differentiationGate = evaluateDifferentiationContract(differentiation as never);
     if (process.env.FACTORY_ENFORCE_DIFFERENTIATION === '1' && !differentiationGate.passed) return setWaiting(state, 'BUSINESS_PREFLIGHT', ['artifacts/differentiation-contract.json'], ['artifacts/differentiation-contract.json'], ['human:GO_NO_GO:differentiation-review', ...differentiationGate.blockers.map((item) => `blocked:${item}`)]);
     const productionLineFile = path.join(runRoot, 'artifacts/production-line-contract.json');
+    const lineResolution = ProductionLineResolutionSchema.parse(await store.readArtifact(runId, 'production-line-resolution.json'));
+    if (lineResolution.status !== 'RESOLVED' || !lineResolution.line) {
+      return setWaiting(state, 'PRODUCTION_LINE_REVIEW', ['artifacts/production-line-decision.json', 'artifacts/production-line-resolution.json'], ['artifacts/production-line-resolution.json'], lineResolution.blockers.map((item) => `blocked:${item}`));
+    }
     if (!await exists(productionLineFile)) {
-      // Template is a stronger prior than generic words such as “choice” in a
-      // legacy loop description. Explicit narrative/puzzle/action language in
-      // the title/theme/concept can still route the game to its specialist line.
-      const lineText = `${blueprint.title}\n${blueprint.theme}\n${blueprint.concept}`;
-      await store.writeArtifact(runId, 'production-line-contract.json', lockProductionLine(inferProductionLineFromText(lineText)));
+      await store.writeArtifact(runId, 'production-line-contract.json', lockProductionLine(lineResolution.line));
     } else {
-      ProductionLineContractSchema.parse(await store.readArtifact(runId, 'production-line-contract.json'));
+      const existingLine = ProductionLineContractSchema.parse(await store.readArtifact(runId, 'production-line-contract.json'));
+      if (existingLine.line !== lineResolution.line) {
+        await correctProductionLineArtifacts(state, existingLine, lineResolution);
+      }
     }
     const lineContract = ProductionLineContractSchema.parse(await store.readArtifact(runId, 'production-line-contract.json'));
     const hypothesisFile = path.join(runRoot, 'artifacts/experience-hypothesis.json');
@@ -2208,7 +3405,7 @@ export function createFactory(options: FactoryOptions = {}) {
     const experienceBundleFile = path.join(runRoot, 'artifacts/profile-experience-bundle.json');
     let experienceBundle: ReturnType<typeof ProfileExperienceBundleSchema.parse>;
     if (!done(state, 'EXPERIENCE_CONTRACT') || !await exists(experienceBundleFile)) {
-      const experienceInputs = ['artifacts/game-blueprint.json', 'artifacts/production-line-contract.json'];
+      const experienceInputs = ['artifacts/game-blueprint.json', 'artifacts/production-line-resolution.json', 'artifacts/production-line-contract.json'];
       const record = await begin(state, 'EXPERIENCE_CONTRACT', experienceInputs);
       try {
         const blueprintHash = await sha256File(path.join(runRoot, 'artifacts/game-blueprint.json'));
@@ -2230,6 +3427,72 @@ export function createFactory(options: FactoryOptions = {}) {
       const evaluation = evaluateProfileExperienceBundle(experienceBundle, { line: lineContract.line, profile: lineContract.primaryProfile, blueprintHash });
       if (!evaluation.passed && (enforceOperatingGates || enforceStageContracts)) return setWaiting(state, 'EXPERIENCE_CONTRACT', ['artifacts/profile-experience-bundle.json'], ['artifacts/profile-experience-bundle.json'], evaluation.blockers.map((item) => `blocked:${item}`));
     }
+    // Product experience is a separate contract from implementation state.
+    // Freeze exact object/state/viewport cases before art so a feature cannot
+    // be declared complete from a state field, unrelated click or screenshot.
+    let referenceLevelInputs: string[];
+    try { referenceLevelInputs = await ensureReferenceLevelRuntimeInputs(state, await expectedGameId(runId)); }
+    catch (error) {
+      return setWaiting(state, 'FULL_BUILD', ['artifacts/reference-level-implementation-contract.json', 'artifacts/production-line-resolution.json'], ['artifacts/reference-level-runtime-data.json'], [`blocked:${error instanceof Error ? error.message : String(error)}`]);
+    }
+    const referenceFailurePressureInputs = seed.designMode === 'reference_reskin' && await exists(path.join(runRoot, 'artifacts/reference-failure-pressure-contract.json')) ? ['artifacts/reference-failure-pressure-contract.json'] : [];
+    const referenceResolutionInputs = seed.designMode === 'reference_reskin' && await exists(path.join(runRoot, 'artifacts/reference-research-resolution.json')) ? ['artifacts/reference-research-resolution.json'] : [];
+    const productExperienceFile = path.join(runRoot, 'artifacts/product-experience-contract.json');
+    const productWorkspace = path.join(runRoot, 'workspace/game');
+    const existingProductExperience = await exists(productExperienceFile)
+      ? ProductExperienceContractSchema.safeParse(await store.readArtifact(runId, 'product-experience-contract.json'))
+      : undefined;
+    const productExperienceCurrent = existingProductExperience?.success === true
+      && existingProductExperience.data.targetGame === blueprint.gameId
+      && existingProductExperience.data.targetRunId === runId
+      && path.resolve(existingProductExperience.data.targetWorkspace) === path.resolve(productWorkspace)
+      && existingProductExperience.data.runtime === blueprint.runtime
+      && existingProductExperience.data.sourceArtifact.kind === (seed.designMode === 'reference_reskin' ? 'reference-fidelity' : 'experience-contract');
+    if (!productExperienceCurrent) {
+      const referenceContractFile = path.join(runRoot, 'artifacts/reference-fidelity-contract.json');
+      let contract: ReturnType<typeof buildProductExperienceContract>;
+      if (seed.designMode === 'reference_reskin') {
+        if (!await exists(referenceContractFile)) {
+          return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', ['artifacts/reference-evidence-pack.json'], ['artifacts/reference-fidelity-contract.json'], ['blocked:reference-fidelity-contract-missing']);
+        }
+        const referenceContract = ReferenceFidelityContractSchema.parse(await store.readArtifact(runId, 'reference-fidelity-contract.json'));
+        if (referenceContract.status !== 'READY' || referenceContract.behaviorChecks.length === 0) {
+          return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', ['artifacts/reference-evidence-pack.json'], ['artifacts/reference-fidelity-contract.json'], ['blocked:reference-fidelity-contract-not-ready']);
+        }
+        if (await exists(path.join(runRoot, 'artifacts/reference-frame-manifest.json')) && referenceLevelInputs.length === 0) {
+          return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', ['artifacts/reference-frame-manifest.json'], ['artifacts/reference-level-implementation-contract.json'], ['blocked:reference-level-implementation-contract-missing']);
+        }
+        if (referenceLevelInputs.length > 0) {
+          const levelContract = ReferenceLevelImplementationContractSchema.parse(await store.readArtifact(runId, 'reference-level-implementation-contract.json'));
+          if (levelContract.status !== 'READY') return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', referenceLevelInputs, referenceLevelInputs, levelContract.blockers.map((item) => `blocked:reference-level:${item}`));
+        }
+        contract = buildProductExperienceContract({
+          targetGame: blueprint.gameId,
+          targetRunId: runId,
+          targetWorkspace: productWorkspace,
+          runtime: blueprint.runtime,
+          sourceArtifact: { kind: 'reference-fidelity', path: 'artifacts/reference-fidelity-contract.json', sha256: await sha256File(referenceContractFile) },
+          referenceBehaviorChecks: referenceContract.behaviorChecks,
+          deviceBaselines: operatingProfile.deviceBaselines,
+        });
+      } else {
+        const experienceContractFile = path.join(runRoot, 'artifacts/experience-contract.json');
+        contract = buildProductExperienceContract({
+          targetGame: blueprint.gameId,
+          targetRunId: runId,
+          targetWorkspace: productWorkspace,
+          runtime: blueprint.runtime,
+          sourceArtifact: { kind: 'experience-contract', path: 'artifacts/experience-contract.json', sha256: await sha256File(experienceContractFile) },
+          experiencePillars: experienceBundle.experienceContract.pillars,
+          deviceBaselines: operatingProfile.deviceBaselines,
+        });
+      }
+      await store.writeArtifact(runId, 'product-experience-contract.json', contract);
+      const productInputs = ['artifacts/production-line-resolution.json', 'artifacts/experience-contract.json', ...(seed.designMode === 'reference_reskin' ? ['artifacts/reference-fidelity-contract.json'] : []), ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...referenceLevelInputs];
+      markControlStage(state, 'PRODUCT_EXPERIENCE_CONTRACT', 'completed', productInputs, ['artifacts/product-experience-contract.json'], ['product:signals-explicit', 'product:state-only-blocked', 'product:exact-branch-viewport-matrix']);
+      await persistControlStageAudit(state, 'PRODUCT_EXPERIENCE_CONTRACT', 'completed', productInputs, ['artifacts/product-experience-contract.json'], ['product:signals-explicit', 'product:state-only-blocked', 'product:exact-branch-viewport-matrix']);
+    }
+    const productExperience = ProductExperienceContractSchema.parse(await store.readArtifact(runId, 'product-experience-contract.json'));
     if (!done(state, 'EXPERIENCE_HYPOTHESIS')) {
       const lineContract = ProductionLineContractSchema.parse(await store.readArtifact(runId, 'production-line-contract.json'));
       const profile = lineContract.primaryProfile;
@@ -2265,7 +3528,7 @@ export function createFactory(options: FactoryOptions = {}) {
         state.status = 'pending';
         await store.save(state);
       }
-      const record = await begin(state, 'CORE_SPEC_FROZEN', ['artifacts/experience-hypothesis.json', 'artifacts/production-line-contract.json']);
+      const record = await begin(state, 'CORE_SPEC_FROZEN', ['artifacts/production-line-resolution.json', 'artifacts/experience-hypothesis.json', 'artifacts/production-line-contract.json']);
       try {
         const lock = await exists(coreSpecFile)
           ? validateCoreSpecLock(await store.readArtifact(runId, 'core-spec-lock.json'))
@@ -2275,7 +3538,7 @@ export function createFactory(options: FactoryOptions = {}) {
       } catch (error) { return fail(state, record, error); }
     } else {
       try { validateCoreSpecLock(await store.readArtifact(runId, 'core-spec-lock.json')); }
-      catch (error) { return fail(state, state.stages.CORE_SPEC_FROZEN ?? await begin(state, 'CORE_SPEC_FROZEN', ['artifacts/experience-hypothesis.json', 'artifacts/production-line-contract.json']), error); }
+      catch (error) { return fail(state, state.stages.CORE_SPEC_FROZEN ?? await begin(state, 'CORE_SPEC_FROZEN', ['artifacts/production-line-resolution.json', 'artifacts/experience-hypothesis.json', 'artifacts/production-line-contract.json']), error); }
     }
     validateCoreSpecLock(await store.readArtifact(runId, 'core-spec-lock.json'));
     // Full validation promises profile-specific evidence.  The current
@@ -2285,14 +3548,77 @@ export function createFactory(options: FactoryOptions = {}) {
     // oracle.  Fast-reskin intentionally keeps the profile chain optional.
     const pipelinePlan = validatePipelinePlan(await store.readArtifact(runId, 'pipeline-plan.json'));
     if (pipelinePlan.mode === 'full-validation') {
+      if (state.stage === 'FEEL_REPAIR' && (!done(state, 'FEEL_REPAIR') || state.status === 'pending')) {
+        const review = ExperienceReviewReportSchema.parse(await store.readArtifact(runId, 'experience-review.json'));
+        ActionPlaytestReportSchema.parse(await store.readArtifact(runId, 'action-feel-natural-play-qa.json'));
+        const profileRevalidation = await revalidateActionFeelProfileEvidence(state, blueprint, lineContract);
+        const currentReview = profileRevalidation.review;
+        if (currentReview && JSON.stringify(currentReview) !== JSON.stringify(review)) {
+          await preserveFailedActionFeelReview(runId, review);
+          await store.writeArtifact(runId, 'experience-review.json', currentReview);
+        }
+        if (profileRevalidation.passed) {
+          await preserveFailedActionFeelReview(runId, review);
+          const reviewStage = state.stages.EXPERIENCE_REVIEW;
+          if (!reviewStage) return setWaiting(state, 'FEEL_REPAIR', ['artifacts/experience-review.json', 'artifacts/action-feel-natural-play-qa.json'], ['artifacts/experience-review.prior-failed.json'], ['blocked:action-feel-review-stage-missing']);
+          reviewStage.status = 'waiting';
+          reviewStage.finishedAt = null;
+          state.stage = 'EXPERIENCE_REVIEW';
+          state.status = 'pending';
+          delete state.failureReason;
+          await store.save(state);
+          return executePipeline(runId);
+        } else {
+          const issues = currentReview?.issues ?? review.issues;
+          const evidenceBlocked = issues.some((issue) => issue.id === 'action-feel-natural-evidence' || issue.id === 'action-feel-visual-evidence' || issue.id === 'action-feel-perceptual-evidence');
+          if (evidenceBlocked || !currentReview) {
+            return setWaiting(state, 'FEEL_REPAIR', ['artifacts/experience-review.json', 'artifacts/action-feel-natural-play-qa.json'], ['artifacts/action-feel-natural-flow.json', 'artifacts/action-feel-product-experience-contract.json', 'artifacts/action-feel-perceptual-qa.json', 'screenshots/', 'artifacts/experience-review.prior-failed.json'], (profileRevalidation.blockers.length > 0 ? profileRevalidation.blockers : issues.filter((issue) => issue.id.startsWith('action-feel-')).map((issue) => `blocked:${issue.id}`)));
+          }
+          const thresholdOnly = issues.length > 0 && issues.every((issue) => issue.id === 'action-feel-thresholds');
+          if (thresholdOnly) {
+            const triagePath = path.join(runRoot, 'artifacts/profile-repair-triage.json');
+            if (!await exists(triagePath)) {
+              const sourceArtifacts = [
+                { path: 'artifacts/experience-review.json', sha256: await sha256File(path.join(runRoot, 'artifacts/experience-review.json')) },
+                { path: 'artifacts/action-feel-natural-play-qa.json', sha256: await sha256File(path.join(runRoot, 'artifacts/action-feel-natural-play-qa.json')) },
+              ];
+              const triage = buildActionFeelRepairTriage({
+                targetRunId: runId,
+                targetGame: blueprint.gameId,
+                targetWorkspace: path.join(runRoot, 'workspace/game'),
+                sourceArtifacts,
+                repairHypothesis: 'Deterministic threshold evidence remains below the locked target. Preserve the current candidate until a new evidence-backed repair hypothesis or changed candidate build is supplied; these fixture measurements do not prove natural-input play.',
+              });
+              await store.writeArtifact(runId, 'profile-repair-triage.json', triage);
+            }
+            return setWaiting(state, 'FEEL_REPAIR', ['artifacts/experience-review.json', 'artifacts/action-feel-natural-play-qa.json'], ['artifacts/profile-repair-triage.json', 'artifacts/experience-review.prior-failed.json'], ['blocked:action-feel-thresholds', 'blocked:feel-repair:changed-candidate-required']);
+          }
+        }
+        return setWaiting(state, 'FEEL_REPAIR', ['artifacts/experience-review.json', 'artifacts/action-feel-natural-play-qa.json'], ['artifacts/experience-review.prior-failed.json'], ['blocked:action-feel-repair-unclassified']);
+      }
       const completedStages = Object.values(state.stages).filter((record) => record.status === 'completed').map((record) => record.stage);
       const missingProfileStages = missingMandatoryProfileStages(pipelinePlan, completedStages);
       if (missingProfileStages.length > 0) {
         const missingStage = missingProfileStages[0]!;
+        if (['FEEL_PROTOTYPE', 'NATURAL_PLAY_QA', 'EXPERIENCE_REVIEW'].includes(missingStage)) {
+          const profileLine = getProductionLineContract(lineContract.line);
+          const profileStageResult = await executeActionFeelProfileStage(state, blueprint, profileLine);
+          if (profileStageResult) return profileStageResult;
+        }
         const contract = getStageContract(missingStage);
         const contractInputs = contract.inputs.map((input) => input.path);
         const auditEvidence = [`profile-stage-required:${missingStage}`, 'profile-stage-adapter-missing', 'full-validation-not-silently-skipped'];
         return setWaiting(state, missingStage, contractInputs, [`artifacts/stage-contracts/${missingStage}.json`], auditEvidence);
+      }
+      const profileRevalidation = await revalidateActionFeelProfileEvidence(state, blueprint, lineContract);
+      if (!profileRevalidation.passed) {
+        return setWaiting(
+          state,
+          profileRevalidation.stage,
+          ['artifacts/action-feel-stage-spec.json', 'artifacts/action-feel-build-report.json', 'artifacts/action-feel-natural-play-qa.json'],
+          ['artifacts/natural-play-qa.json', 'artifacts/experience-review.json', 'artifacts/action-feel-natural-flow.json', 'artifacts/action-feel-perceptual-qa.json', 'screenshots/'],
+          profileRevalidation.blockers,
+        );
       }
     }
     if (!done(state, 'ART_DIRECTIONS')) { const record = await begin(state, 'ART_DIRECTIONS', ['artifacts/game-blueprint.json']); try {
@@ -2338,60 +3664,59 @@ export function createFactory(options: FactoryOptions = {}) {
         await complete(state, record, ['artifacts/ui-skeleton.json'], ['ui:first-viewport', `ui:screens:${ui.screens.length}`, 'ui:ad-does-not-block-core']);
       } catch (error) { return fail(state, record, error); }
     }
-    if (!done(state, 'ASSETS')) { const record = await begin(state, 'ASSETS', ['artifacts/game-blueprint.json', 'artifacts/style-lock.json', 'artifacts/content-expansion.json', 'artifacts/ui-skeleton.json']); try { const value = await assetProducerAgent.run(path.join(runRoot, 'workspace/generated-assets'), blueprint, styleLock); await store.writeArtifact(runId, 'asset-manifest.json', value); const artAudit = await auditAssetFiles({ runRoot, targetGame: blueprint.gameId, assetRoot: 'workspace/generated-assets', assets: value.assets, strict: artQualityRequired() }); await store.writeArtifact(runId, 'art-quality.json', artAudit); if (artQualityRequired() && !artAudit.passed) throw new Error(`art quality gate failed: ${artAudit.blockers.join(', ')}`); completeImagegenWait(state, ['workspace/generated-assets/']); await complete(state, record, ['artifacts/asset-manifest.json', 'artifacts/art-quality.json', 'workspace/generated-assets/'], ['zod:AssetManifestSchema', 'zod:ArtQualitySchema', 'assets:provenance', 'assets:alpha', `assets:${value.assets.length}`, `provider:${value.provider}`, `art-quality:${artAudit.passed}`]); } catch (error) { if (error instanceof CodexImagegenPendingError) return waitForCodexImagegen(state, record, error); return fail(state, record, error); } }
+    if (!done(state, 'ASSETS')) {
+      const assetInputs = ['artifacts/game-blueprint.json', 'artifacts/style-lock.json', 'artifacts/content-expansion.json', 'artifacts/ui-skeleton.json', ...(blueprint.designMode === 'reference_reskin' ? ['artifacts/asset-visual-fit-review.json'] : [])];
+      const readinessReview = await exists(path.join(runRoot, 'artifacts/asset-visual-fit-review.json'))
+        ? AssetVisualFitReviewSchema.safeParse(await store.readArtifact(runId, 'asset-visual-fit-review.json')).data
+        : undefined;
+      const referenceEvidenceReady = blueprint.designMode !== 'reference_reskin' || (await Promise.all([
+        'reference-fidelity-contract.json',
+        'reference-frame-manifest.json',
+        'reference-object-review.json',
+        'reference-level-implementation-contract.json',
+      ].map(async (file) => exists(path.join(runRoot, 'artifacts', file))))).every(Boolean);
+      const readiness = evaluateAssetProductionReadiness({
+        blueprint,
+        styleLock,
+        humanApprovalPresent: await exists(approvalFile),
+        referenceEvidenceReady,
+        visualFitReview: readinessReview,
+      });
+      if (!readiness.passed) {
+        await store.writeArtifact(runId, 'asset-production-gate.json', AssetProductionGateSchema.parse({ schemaVersion: 1, mode: readiness.mode, passed: false, blockers: readiness.blockers, evidence: readiness.evidence, checkedAt: new Date().toISOString() }));
+        return setWaiting(state, 'ASSETS', assetInputs, ['artifacts/asset-production-gate.json'], readiness.blockers.map((item) => `blocked:${item}`));
+      }
+      const record = await begin(state, 'ASSETS', assetInputs);
+      try {
+        const value = await assetProducerAgent.run(path.join(runRoot, 'workspace/generated-assets'), blueprint, styleLock);
+        await store.writeArtifact(runId, 'asset-manifest.json', value);
+        const artAudit = await auditAssetFiles({ runRoot, targetGame: blueprint.gameId, assetRoot: 'workspace/generated-assets', assets: value.assets, strict: artQualityRequired() });
+        await store.writeArtifact(runId, 'art-quality.json', artAudit);
+        if (artQualityRequired() && !artAudit.passed) throw new Error(`art quality gate failed: ${artAudit.blockers.join(', ')}`);
+        await store.writeArtifact(runId, 'asset-production-gate.json', AssetProductionGateSchema.parse({ schemaVersion: 1, mode: readiness.mode, passed: true, blockers: [], evidence: readiness.evidence, checkedAt: new Date().toISOString() }));
+        completeImagegenWait(state, ['workspace/generated-assets/']);
+        await complete(state, record, ['artifacts/asset-manifest.json', 'artifacts/art-quality.json', 'artifacts/asset-production-gate.json', 'workspace/generated-assets/'], ['zod:AssetManifestSchema', 'zod:ArtQualitySchema', 'assets:provenance', 'assets:alpha', 'assets:visual-fit', `assets:${value.assets.length}`, `provider:${value.provider}`, `art-quality:${artAudit.passed}`]);
+      } catch (error) { if (error instanceof CodexImagegenPendingError) return waitForCodexImagegen(state, record, error); return fail(state, record, error); }
+    }
     const assetManifest = AssetManifestSchema.parse(await store.readArtifact(runId, 'asset-manifest.json')); const workspace = path.join(runRoot, 'workspace/game');
-    if (!done(state, 'FULL_BUILD')) { const buildInputs = ['artifacts/game-blueprint.json', 'artifacts/production-line-contract.json', 'artifacts/experience-hypothesis.json', 'artifacts/core-spec-lock.json', 'artifacts/experience-contract.json', 'artifacts/profile-experience-contract.json', 'artifacts/natural-play-plan.json', 'artifacts/content-expansion.json', 'artifacts/ui-skeleton.json', 'artifacts/iaa-contract.json', 'artifacts/differentiation-contract.json', 'artifacts/style-lock.json', 'artifacts/asset-manifest.json', `templates/web-lite/${blueprint.template}`, ...(blueprint.gameplayRevision ? [blueprint.gameplayRevision.artifactPath] : [])]; const record = await begin(state, 'FULL_BUILD', buildInputs); try { const gameplayRevision = await loadGameplayRevisionForBuild(runRoot, blueprint); const continuityRaw = await store.readArtifact(runId, 'interaction-continuity-contract.json').catch(() => undefined); const continuityContract = continuityRaw === undefined ? undefined : InteractionContinuityContractSchema.parse(continuityRaw); const context = await contextFor('FULL_BUILD', runRoot, path.join(runRoot, 'logs/codex/BUILD.last-message.txt'), [...buildInputs, ...(continuityContract ? ['artifacts/interaction-continuity-contract.json'] : [])], 'Integrate only the frozen blueprint, core spec lock, profile experience contract, natural-play plan, experience hypothesis, content expansion plan, UI skeleton, production-line contract, IAA contract, differentiation contract, style lock, assets and revision into this run workspace. If an interaction continuity contract is present, implement its semantic nodes and emit derived candidate/successor/recovery facts for QA.'); const result = await builderAgent.run(workspace, blueprint, styleLock, assetManifest, blueprint.template, path.join(runRoot, 'workspace/generated-assets'), undefined, gameplayRevision, context, continuityContract); addAgentMetrics(record, result.metrics); state.codexThreadId = result.threadId; await store.writeArtifact(runId, 'build-report.json', result.report); const buildOutput = result.report.webBuild; const buildHash = await hashBuildDirectory(path.resolve(runRoot, buildOutput)); await store.writeArtifact(runId, 'release-lifecycle.json', promoteReleaseLifecycle(undefined, { gameId: blueprint.gameId, releaseHash: buildHash, from: null, to: 'IMPLEMENTATION_READY' })); await ensureSupplyChainArtifact(runId, blueprint, buildHash); if (presentationQualityRequired()) { const profile = blueprint.preferences.experienceProfile && typeof blueprint.preferences.experienceProfile === 'object' && 'primary' in blueprint.preferences.experienceProfile ? String((blueprint.preferences.experienceProfile as { primary?: unknown }).primary) : 'STRATEGIC_SYSTEM'; const parsedProfile = ['ACTION_FEEL', 'NARRATIVE_AGENCY', 'STRATEGIC_SYSTEM', 'PUZZLE_CLARITY', 'SOCIAL_EMOTION', 'EXPLORATION_DISCOVERY'].includes(profile) ? profile as 'ACTION_FEEL' | 'NARRATIVE_AGENCY' | 'STRATEGIC_SYSTEM' | 'PUZZLE_CLARITY' | 'SOCIAL_EMOTION' | 'EXPLORATION_DISCOVERY' : 'STRATEGIC_SYSTEM'; await store.writeArtifact(runId, 'presentation-quality.json', buildPresentationQualityTemplate({ gameId: blueprint.gameId, buildHash, profile: parsedProfile })); } await saveUsage(state); await complete(state, record, ['artifacts/build-report.json', 'artifacts/release-lifecycle.json', 'artifacts/supply-chain.json', 'artifacts/dependency-manifest.json', 'artifacts/sbom.json', 'artifacts/build-provenance.json', buildOutput.endsWith('/') ? buildOutput : `${buildOutput}/`, 'workspace/game/dist/'], [...(result.report.verification.includes('test:passed') ? ['build:tests'] : ['build:tests:contract']), ...(result.report.verification.includes('typecheck:passed') ? ['build:typecheck'] : ['build:typecheck:contract']), 'build:dist', 'vite:build-success', `build-hash:${buildHash}`, 'supply-chain:provenance-recorded', 'supply-chain:dependency-manifest', 'supply-chain:sbom', 'supply-chain:build-provenance', ...(gameplayRevision ? ['zod:GameplayRevisionLockSchema', `gameplay-revision:${gameplayRevision.revisionId}`] : []), ...(continuityContract ? ['interaction-continuity:builder-contract-bound'] : []), `files:${result.report.files.length}`, `model:${result.metrics.model}`]); } catch (error) { return fail(state, record, error); } }
+    if (!done(state, 'FULL_BUILD')) { const buildInputs = ['artifacts/game-blueprint.json', 'artifacts/production-line-resolution.json', 'artifacts/production-line-contract.json', 'artifacts/experience-hypothesis.json', 'artifacts/core-spec-lock.json', 'artifacts/experience-contract.json', 'artifacts/profile-experience-contract.json', 'artifacts/natural-play-plan.json', 'artifacts/product-experience-contract.json', 'artifacts/content-expansion.json', 'artifacts/ui-skeleton.json', 'artifacts/iaa-contract.json', 'artifacts/differentiation-contract.json', ...(seed.designMode === 'reference_reskin' ? ['artifacts/reference-fidelity-contract.json'] : []), ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...referenceLevelInputs, 'artifacts/style-lock.json', 'artifacts/asset-manifest.json', `templates/web-lite/${blueprint.template}`, ...(blueprint.gameplayRevision ? [blueprint.gameplayRevision.artifactPath] : [])]; const record = await begin(state, 'FULL_BUILD', buildInputs); try { const gameplayRevision = await loadGameplayRevisionForBuild(runRoot, blueprint); const continuityRaw = await store.readArtifact(runId, 'interaction-continuity-contract.json').catch(() => undefined); const continuityContract = continuityRaw === undefined ? undefined : InteractionContinuityContractSchema.parse(continuityRaw); const contextInputs = [...buildInputs, ...(continuityContract ? ['artifacts/interaction-continuity-contract.json'] : [])]; const context = await contextFor('FULL_BUILD', runRoot, path.join(runRoot, 'logs/codex/BUILD.last-message.txt'), contextInputs, 'Integrate only the frozen blueprint, production-line resolution, core spec lock, profile experience contract, exact product experience contract, natural-play plan, experience hypothesis, content expansion plan, UI skeleton, production-line contract, IAA contract, differentiation contract, conditional reference fidelity, research-resolution, failure-pressure, and recording-level semantic contracts, style lock, assets and revision into this run workspace. If an interaction continuity contract is present, implement its semantic nodes and emit derived candidate/successor/recovery facts for QA.', { targetGameId: blueprint.gameId, targetWorkspaceRelative: 'workspace/game', requiredArtifacts: contextInputs.filter((item) => item.startsWith('artifacts/')), requiredContextPaths: ['artifacts/game-blueprint.json', 'artifacts/production-line-resolution.json', 'artifacts/product-experience-contract.json', 'artifacts/core-spec-lock.json', ...(seed.designMode === 'reference_reskin' ? ['artifacts/reference-fidelity-contract.json'] : []), ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...referenceLevelInputs] }); const result = await builderAgent.run(workspace, blueprint, styleLock, assetManifest, blueprint.template, path.join(runRoot, 'workspace/generated-assets'), undefined, gameplayRevision, context, continuityContract); addAgentMetrics(record, result.metrics); state.codexThreadId = result.threadId; await store.writeArtifact(runId, 'build-report.json', result.report); const buildOutput = result.report.webBuild; const buildHash = await hashBuildDirectory(path.resolve(runRoot, buildOutput)); await store.writeArtifact(runId, 'release-lifecycle.json', promoteReleaseLifecycle(undefined, { gameId: blueprint.gameId, releaseHash: buildHash, from: null, to: 'IMPLEMENTATION_READY' })); await ensureSupplyChainArtifact(runId, blueprint, buildHash); const assetGate = AssetProductionGateSchema.safeParse(await store.readArtifact(runId, 'asset-production-gate.json').catch(() => undefined)).data; if (assetGate) await store.writeArtifact(runId, 'preview-presentation-disclosure.json', buildPreviewPresentationDisclosure({ targetRunId: runId, targetGame: blueprint.gameId, targetWorkspace: workspace, buildHash, mode: assetGate.mode })); if (presentationQualityRequired()) { const profile = blueprint.preferences.experienceProfile && typeof blueprint.preferences.experienceProfile === 'object' && 'primary' in blueprint.preferences.experienceProfile ? String((blueprint.preferences.experienceProfile as { primary?: unknown }).primary) : 'STRATEGIC_SYSTEM'; const parsedProfile = ['ACTION_FEEL', 'NARRATIVE_AGENCY', 'STRATEGIC_SYSTEM', 'PUZZLE_CLARITY', 'SOCIAL_EMOTION', 'EXPLORATION_DISCOVERY'].includes(profile) ? profile as 'ACTION_FEEL' | 'NARRATIVE_AGENCY' | 'STRATEGIC_SYSTEM' | 'PUZZLE_CLARITY' | 'SOCIAL_EMOTION' | 'EXPLORATION_DISCOVERY' : 'STRATEGIC_SYSTEM'; await store.writeArtifact(runId, 'presentation-quality.json', buildPresentationQualityTemplate({ gameId: blueprint.gameId, buildHash, profile: parsedProfile })); } await saveUsage(state); await complete(state, record, ['artifacts/build-report.json', 'artifacts/release-lifecycle.json', 'artifacts/supply-chain.json', 'artifacts/dependency-manifest.json', 'artifacts/sbom.json', 'artifacts/build-provenance.json', ...(assetGate ? ['artifacts/preview-presentation-disclosure.json'] : []), buildOutput.endsWith('/') ? buildOutput : `${buildOutput}/`, 'workspace/game/dist/'], [...(result.report.verification.includes('test:passed') ? ['build:tests'] : ['build:tests:contract']), ...(result.report.verification.includes('typecheck:passed') ? ['build:typecheck'] : ['build:typecheck:contract']), 'build:dist', 'vite:build-success', `build-hash:${buildHash}`, 'supply-chain:provenance-recorded', 'supply-chain:dependency-manifest', 'supply-chain:sbom', 'supply-chain:build-provenance', ...(assetGate ? [`presentation-disclosure:${assetGate.mode}`] : []), ...(gameplayRevision ? ['zod:GameplayRevisionLockSchema', `gameplay-revision:${gameplayRevision.revisionId}`] : []), ...(referenceResolutionInputs.length > 0 ? ['reference:research-resolution-builder-contract-bound'] : []), ...(referenceFailurePressureInputs.length > 0 ? ['reference:failure-pressure-builder-contract-bound'] : []), ...(referenceLevelInputs.length > 0 ? ['reference-level:builder-contract-bound'] : []), ...(continuityContract ? ['interaction-continuity:builder-contract-bound'] : []), `files:${result.report.files.length}`, `model:${result.metrics.model}`]); } catch (error) { return fail(state, record, error); } }
     let qaPassed = false;
     if (done(state, 'QA') && await exists(path.join(runRoot, 'artifacts/qa-report.json'))) {
       try { qaPassed = QaReportSchema.parse(await store.readArtifact(runId, 'qa-report.json')).passed; } catch { qaPassed = false; }
+      if (qaPassed && referenceLevelInputs.length > 0) {
+        const build = BuildReportSchema.parse(await store.readArtifact(runId, 'build-report.json'));
+        const contract = ReferenceLevelImplementationContractSchema.parse(await store.readArtifact(runId, 'reference-level-implementation-contract.json'));
+        qaPassed = await verifyPersistedReferenceLevelQa(runId, contract, await hashBuildDirectory(path.resolve(runRoot, build.webBuild)));
+      }
     }
     while (!qaPassed) {
       const buildReportForQa = await store.readArtifact(runId, 'build-report.json').catch(() => undefined) as { webBuild?: unknown; runtime?: unknown } | undefined;
       const qaBuildPath = typeof buildReportForQa?.webBuild === 'string' ? buildReportForQa.webBuild : 'workspace/game/dist/';
-      const record = await begin(state, 'QA', ['artifacts/build-report.json', 'artifacts/production-line-contract.json', qaBuildPath]);
+      const record = await begin(state, 'QA', ['artifacts/build-report.json', 'artifacts/production-line-resolution.json', 'artifacts/production-line-contract.json', 'artifacts/product-experience-contract.json', ...(seed.designMode === 'reference_reskin' ? ['artifacts/reference-fidelity-contract.json'] : []), ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...(referenceLevelInputs.length > 0 ? ['artifacts/reference-level-reconstruction.json'] : []), ...referenceLevelInputs, qaBuildPath]);
       try {
-        const rawReport = await qaAgent.run(workspace, runRoot, await readBuildSuccess(runRoot));
         const buildHash = await hashBuildDirectory(path.resolve(runRoot, qaBuildPath));
-        const runtimeProductFile = path.join(runRoot, 'artifacts/runtime-product-gates.json');
-        if (!await exists(runtimeProductFile)) {
-          await writeJsonAtomic(runtimeProductFile, RuntimeProductGateSchema.parse({ schemaVersion: 1, entrypoint: 'unknown', defaultMode: 'unknown', journey: ['启动', '主要操作', '观察结果', '死亡', '结算', '重试'], coreLoop: [], terminal: [], replay: [], runtimeWiredFiles: ['runtime-product-gates.json:provider-evidence-missing'], legacyBehavior: { status: 'STILL_DEFAULT_PATH', evidence: ['runtime QA provider did not emit a product journey'] }, browserEvidence: ['runtime-product-journey:missing'], passed: false }));
-        }
-        // A browser QA provider may not know the factory's product-gate
-        // schema. When it has emitted a complete natural trace, derive the
-        // runtime journey deterministically from that trace and the actual
-        // generated entrypoint. This prevents a valid idle/choice product
-        // from falling into an endless generic Fixer loop while keeping the
-        // strict gate fail-closed for incomplete or forged evidence.
-        try {
-          const existingRuntime = RuntimeProductGateSchema.parse(JSON.parse(await readFile(runtimeProductFile, 'utf8')));
-          const natural = rawReport.naturalFlow;
-          if (!existingRuntime.passed && natural?.passed === true) {
-            const candidateFiles = ['workspace/game/index.html', 'workspace/game/src/main.ts', 'workspace/game/src/game.ts', 'workspace/game/src/simulation.ts', 'workspace/game/assets/resources/scenes/Main.scene'];
-            const runtimeWiredFiles: string[] = [];
-            for (const relative of candidateFiles) if (await exists(path.join(runRoot, relative))) runtimeWiredFiles.push(relative);
-            if (runtimeWiredFiles.length > 0) {
-              const browserEvidence = natural.screenshots.length > 0 ? natural.screenshots : rawReport.screenshots;
-              const derived = deriveRuntimeProductGate({
-                naturalFlow: natural,
-                runtimeWiredFiles,
-                browserEvidence,
-                entrypoint: runtimeWiredFiles.find((file) => file.endsWith('index.html')) ?? runtimeWiredFiles[0],
-                defaultMode: typeof seed.runtime === 'string' ? seed.runtime : undefined,
-              });
-              await writeJsonAtomic(runtimeProductFile, derived);
-            }
-          }
-        } catch {
-          // The original provider report remains the source of truth; a
-          // failed projection is recorded by the normal runtime-product gate
-          // below and cannot turn a run into a pass.
-        }
-        const runtimeProduct = RuntimeProductGateSchema.parse(JSON.parse(await readFile(runtimeProductFile, 'utf8')));
-        const runtimeWiring = await verifyRuntimeWiredFiles({ runRoot, files: runtimeProduct.runtimeWiredFiles });
-        await store.writeArtifact(runId, 'runtime-product-wiring-evaluation.json', runtimeWiring);
-        if (enforceOperatingGates && !runtimeWiring.passed) {
-          return setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/runtime-product-gates.json'], ['artifacts/runtime-product-wiring-evaluation.json'], runtimeWiring.blockers.map((item) => `runtime-wiring:${item}`));
-        }
+        const rawReport = await qaAgent.run(workspace, runRoot, await readBuildSuccess(runRoot));
+        if (await hashBuildDirectory(path.resolve(runRoot, qaBuildPath)) !== buildHash) throw new Error('build changed during QA; current bytes require a new QA attempt');
         let provenanceSeed: number | string = 42;
         try {
           const policy = await store.readArtifact(runId, 'randomness-policy.json') as { modes?: Array<{ name?: string; seeds?: number[] }> };
@@ -2418,11 +3743,46 @@ export function createFactory(options: FactoryOptions = {}) {
           const policyIssues = policyResult.passed ? [] : [{ id: 'natural-input-policy', severity: 'error' as const, message: `natural-input-policy failed: ${policyResult.blockers.join(', ')}`, evidence: 'artifacts/natural-input-policy.json' }];
           report = QaReportSchema.parse({ ...report, checks: [...report.checks, policyCheck], issues: [...report.issues, ...policyIssues], passed: report.passed && policyResult.passed });
         }
+        let referenceLevelEvidence: string[] = [];
+        if (referenceLevelInputs.length > 0) {
+          const levelResult = await executeReferenceLevelQa(runId, workspace, buildHash);
+          report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
+          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'];
+          await refreshAcceptanceArtifacts(runRoot, await readBuildSuccess(runRoot), report.passed, report.screenshots);
+        }
+        const runtimeProductFile = path.join(runRoot, 'artifacts/runtime-product-gates.json');
+        // Runtime evidence is bound to the exact build and current natural trace.
+        const existingRuntime = await exists(runtimeProductFile)
+          ? RuntimeProductGateSchema.safeParse(JSON.parse(await readFile(runtimeProductFile, 'utf8')))
+          : undefined;
+        const runtimeWiredFiles = await discoverRuntimeWiredFiles(runRoot);
+        const natural = naturalFlow;
+        const browserEvidence = [
+          ...(natural?.screenshots ?? []),
+          ...rawReport.screenshots,
+          ...(await exists(path.join(runRoot, 'artifacts/runtime-product-journey.json')) ? ['artifacts/runtime-product-journey.json'] : []),
+        ];
+        await writeJsonAtomic(runtimeProductFile, resolveRuntimeProductGate({
+          existing: existingRuntime?.success ? existingRuntime.data : undefined,
+          naturalFlow: natural,
+          currentBuildHash: buildHash,
+          runtimeWiredFiles,
+          browserEvidence,
+          entrypoint: runtimeWiredFiles.find((file) => file.endsWith('index.html')) ?? runtimeWiredFiles[0],
+          defaultMode: typeof seed.runtime === 'string' ? seed.runtime : undefined,
+        }));
+        const runtimeProduct = RuntimeProductGateSchema.parse(JSON.parse(await readFile(runtimeProductFile, 'utf8')));
+        const runtimeWiring = await verifyRuntimeWiredFiles({ runRoot, files: runtimeProduct.runtimeWiredFiles });
+        await store.writeArtifact(runId, 'runtime-product-wiring-evaluation.json', runtimeWiring);
+        if (enforceOperatingGates && !runtimeWiring.passed) {
+          return setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/runtime-product-gates.json'], ['artifacts/runtime-product-wiring-evaluation.json'], runtimeWiring.blockers.map((item) => `runtime-wiring:${item}`));
+        }
         const naturalLineEvidence = await persistNaturalLineEvidence(runId, report, buildHash);
         await writeFile(path.join(runRoot, 'logs/console.log'), qaMode === 'playwright' ? await readFile(path.join(runRoot, 'logs/console.log')) : 'stub QA\n');
         await store.writeArtifact(runId, 'qa-report.json', report);
         await store.writeArtifact(runId, 'qa-evidence.json', evidence);
-        await complete(state, record, ['artifacts/qa-report.json', 'artifacts/completion-gates.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', ...(naturalLineEvidence ? ['artifacts/production-line-play-evidence.json'] : []), 'logs/console.log', ...report.screenshots], [qaMode === 'playwright' ? 'playwright:completed' : 'qa:stub', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', `runtime-product:${runtimeProduct.passed}`, `qa:build-hash:${buildHash}`, `qa-build-path:${qaBuildPath}`, 'qa:provenance-bound', `passed:${report.passed}`]);
+        await refreshAcceptanceArtifacts(runRoot, await readBuildSuccess(runRoot), report.passed, report.screenshots);
+        await complete(state, record, ['artifacts/qa-report.json', 'artifacts/completion-gates.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', ...referenceLevelEvidence, ...(naturalLineEvidence ? ['artifacts/production-line-play-evidence.json'] : []), 'logs/console.log', ...report.screenshots], [qaMode === 'playwright' ? 'playwright:completed' : 'qa:stub', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(referenceLevelInputs.length > 0 ? ['qa:recording-level-comparison-when-declared'] : []), `runtime-product:${runtimeProduct.passed}`, `qa:build-hash:${buildHash}`, `qa-build-path:${qaBuildPath}`, 'qa:provenance-bound', `passed:${report.passed}`]);
         if (enforceOperatingGates && !runtimeProduct.passed) {
           return setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/qa-report.json', 'artifacts/runtime-product-gates.json'], ['artifacts/runtime-product-gates.json'], ['runtime-product:startup-core-loop-terminal-replay-required']);
         }
@@ -2431,11 +3791,7 @@ export function createFactory(options: FactoryOptions = {}) {
         }
         qaPassed = report.passed;
         if (!qaPassed) {
-          if (state.fixAttempts >= MAX_FIX_ATTEMPTS) {
-            if (operatingProfile.autoAbandonOnCostCap) return markAutoAbandoned(state, 'fix-cap');
-            throw new Error(`QA failed after maximum ${MAX_FIX_ATTEMPTS} automatic fixes`);
-          }
-          const fixInputs = ['artifacts/qa-report.json'];
+          const fixInputs = ['artifacts/qa-report.json', ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...(referenceLevelInputs.length > 0 ? [...referenceLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
           const fixRecord = await begin(state, 'FIX', fixInputs);
           const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Fix only explicit QA issues; preserve the frozen acceptance standard and add regression coverage.');
           const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
@@ -2516,6 +3872,73 @@ export function createFactory(options: FactoryOptions = {}) {
     }
 
     if (enforceOperatingGates) {
+      // Perceptual QA is intentionally independent of the Builder handoff.
+      // Automatic browser capture may collect evidence, but only an exact,
+      // hash-bound QA/Human review can pass this gate.
+      const perceptualFile = path.join(runRoot, 'artifacts/perceptual-qa-report.json');
+      const perceptualBuildReport = BuildReportSchema.parse(await store.readArtifact(runId, 'build-report.json'));
+      const perceptualBuildHash = await hashBuildDirectory(path.resolve(runRoot, perceptualBuildReport.webBuild));
+      let perceptualReport: unknown = await exists(perceptualFile) ? await store.readArtifact(runId, 'perceptual-qa-report.json') : undefined;
+      let perceptualGate = await verifyPerceptualQaReview({ runRoot, workspace, contract: productExperience, buildHash: perceptualBuildHash, report: perceptualReport });
+      if (!perceptualGate.passed) {
+        const captured = qaProvider.perceptualQa
+          ? await qaProvider.perceptualQa({ runtime: webRuntime, workspace, runRoot, contract: productExperience, buildHash: perceptualBuildHash })
+          : buildPerceptualQaReport(productExperience, [], { buildHash: perceptualBuildHash, runtime: productExperience.runtime, reviewer: 'DeterministicCapture', authorIndependent: false });
+        perceptualReport = captured;
+        await store.writeArtifact(runId, 'perceptual-qa-report.json', captured);
+        perceptualGate = await verifyPerceptualQaReview({ runRoot, workspace, contract: productExperience, buildHash: perceptualBuildHash, report: captured });
+      }
+      await store.writeArtifact(runId, 'perceptual-qa-gate.json', perceptualGate);
+      if (seed.designMode === 'reference_reskin') {
+        const referenceContract = ReferenceFidelityContractSchema.parse(await store.readArtifact(runId, 'reference-fidelity-contract.json'));
+        const expectedIds = referenceContract.behaviorChecks.map((check) => check.id);
+        const productIds = productExperience.features.flatMap((feature) => feature.sourceCheckIds);
+        const checkedIds = expectedIds.filter((id) => {
+          const feature = productExperience.features.find((candidate) => candidate.sourceCheckIds.includes(id));
+          return feature !== undefined && feature.requiredViewports.every((viewport) => perceptualGate.checkedCaseIds.includes(`${feature.id}@${viewport.width}x${viewport.height}:${viewport.label}`));
+        });
+        const fidelityBlockers = [
+          ...perceptualGate.blockers.map((item) => `fidelity:${item}`),
+          ...(productExperience.sourceArtifact.kind === 'reference-fidelity' ? [] : ['fidelity:product-contract-not-reference-derived']),
+          ...(new Set(productIds).size === expectedIds.length && expectedIds.every((id) => productIds.includes(id)) ? [] : ['fidelity:behavior-check-coverage-mismatch']),
+        ];
+        await store.writeArtifact(runId, 'reference-fidelity-gate.json', ReferenceFidelityGateSchema.parse({
+          schemaVersion: 1,
+          targetRunId: runId,
+          contractHash: sha256Text(JSON.stringify(referenceContract)),
+          buildHash: perceptualBuildHash,
+          passed: fidelityBlockers.length === 0,
+          blockers: [...new Set(fidelityBlockers)],
+          requiredCheckIds: expectedIds,
+          checkedIds,
+        }));
+      }
+      if (!perceptualGate.passed) {
+        const reviewTask = [
+          '# 产品体验逐格验收', '',
+          `目标 run：${runId}`,
+          `唯一工作区：${workspace}`,
+          `当前构建 SHA-256：${perceptualBuildHash}`,
+          `产品体验契约 SHA-256：${perceptualGate.contractHash}`, '',
+          '由独立 QAAgent 或 HumanReviewer 执行；自动截图器、Builder 和 Fixer 不得自签。',
+          '按 product-experience-contract.json 的每个 feature × requiredViewport 建立一条 case。必须从 fresh reset 使用正常输入到达精确 objectType/stateBranch。',
+          '记录实际事件顺序、负向断言、像素可读性、哈希截图和 NaturalFlowEvidenceSchema trace；unrelated text change、sibling branch、debug/state injection 均不计。',
+          '按 PerceptualQaReportSchema v2 写回 artifacts/perceptual-qa-report.json，然后 resume。',
+          `完成后执行：pnpm factory resume ${runId}`, '',
+        ].join('\n');
+        await writeFile(path.join(runRoot, 'human/perceptual-qa-review-task.md'), reviewTask);
+        const perceptualInputs = ['artifacts/product-experience-contract.json', 'artifacts/build-report.json', 'artifacts/qa-report.json'];
+        const perceptualOutputs = ['artifacts/perceptual-qa-report.json', 'artifacts/perceptual-qa-gate.json', 'screenshots/product-experience/', 'logs/product-experience/', 'human/perceptual-qa-review-task.md'];
+        const perceptualEvidence = ['perceptual:player-visible', 'perceptual:natural-trigger', 'perceptual:exact-matrix', ...perceptualGate.blockers.map((item) => `blocked:${item}`)];
+        markControlStage(state, 'PERCEPTUAL_QA', 'waiting', perceptualInputs, perceptualOutputs, perceptualEvidence);
+        await persistControlStageAudit(state, 'PERCEPTUAL_QA', 'waiting', perceptualInputs, perceptualOutputs, perceptualEvidence);
+        return setWaiting(state, 'PERCEPTUAL_QA', perceptualInputs, perceptualOutputs, perceptualGate.blockers.map((item) => `blocked:${item}`));
+      }
+      const perceptualInputs = ['artifacts/product-experience-contract.json', 'artifacts/build-report.json', 'artifacts/qa-report.json'];
+      const perceptualOutputs = ['artifacts/perceptual-qa-report.json', 'artifacts/perceptual-qa-gate.json', 'screenshots/product-experience/', 'logs/product-experience/'];
+      const perceptualEvidence = ['perceptual:player-visible', 'perceptual:natural-trigger', 'perceptual:exact-matrix'];
+      markControlStage(state, 'PERCEPTUAL_QA', 'completed', perceptualInputs, perceptualOutputs, perceptualEvidence);
+      await persistControlStageAudit(state, 'PERCEPTUAL_QA', 'completed', perceptualInputs, perceptualOutputs, perceptualEvidence);
       const automaticStop = await runAutomaticReleaseGates(state, blueprint, completion, workspace);
       if (automaticStop) return automaticStop;
       automaticReleaseGatesCompleted = true;
@@ -2527,6 +3950,8 @@ export function createFactory(options: FactoryOptions = {}) {
     const candidateBuildReport = await store.readArtifact(runId, 'build-report.json') as { webBuild?: unknown };
     const candidateBuildPath = typeof candidateBuildReport.webBuild === 'string' ? candidateBuildReport.webBuild : 'workspace/game/dist/';
     const candidate = await ensureReleaseCandidate(state, blueprint, { operating: enforceOperatingGates, buildPath: candidateBuildPath }) as { coreHash: string };
+    if (state.status === 'failed') return state;
+    completion = CompletionGateReportSchema.parse(await store.readArtifact(runId, 'completion-gates.json'));
 
     if (strictHuman) {
       if (blindPlaytestRequired()) {
@@ -2720,10 +4145,11 @@ export function createFactory(options: FactoryOptions = {}) {
       const ledgerResult = evaluateArtifactLedger(reconciledLedger.ledger);
       if (!ledgerResult.passed) return setWaiting(state, 'FULL_BUILD', ['artifacts/artifact-ledger.json'], ['artifacts/artifact-ledger.json'], ledgerResult.blockers.map((item) => `blocked:${item}`));
       const usage = await usageForState(state);
-      const cost = evaluateCostGate(CostBudgetSchema.parse(operatingProfile.budget), usage);
+      const runBudget = await costBudgetForRun(runId);
+      const cost = evaluateCostGate(runBudget, usage);
       await store.writeArtifact(runId, 'cost-gate.json', cost);
       if (!cost.passed) {
-        const abandonment = evaluateAbandonment({ runId, stage: state.stage, budget: operatingProfile.budget, usage, reason: 'cost-cap' });
+        const abandonment = evaluateAbandonment({ runId, stage: state.stage, budget: runBudget, usage, reason: 'cost-cap' });
         await store.writeArtifact(runId, 'abandonment-decision.json', abandonment);
         if (operatingProfile.autoAbandonOnCostCap) {
           state.stage = 'ABANDONED'; state.status = 'completed';
@@ -2778,7 +4204,7 @@ export function createFactory(options: FactoryOptions = {}) {
     if (enforceOperatingGates && !constitutionBeforeRelease.passed) {
       return setWaiting(state, 'ACCEPTANCE_REVIEW', ['artifacts/completion-gates.json', 'artifacts/quality-gate-matrix.json', 'artifacts/constitution-evaluation.json'], ['artifacts/constitution-evaluation.json'], constitutionBeforeRelease.blockers.map((item) => `blocked:${item}`));
     }
-    if (!done(state, 'RELEASE')) { const buildOutputForRelease = (await store.readArtifact(runId, 'build-report.json').catch(() => undefined) as { webBuild?: unknown } | undefined)?.webBuild; const releaseBuildPath = typeof buildOutputForRelease === 'string' ? buildOutputForRelease : 'workspace/game/dist/'; const releaseInputs = ['artifacts/game-blueprint.json', 'artifacts/build-report.json', 'artifacts/qa-report.json', 'artifacts/completion-gates.json', 'artifacts/quality-gate-matrix.json', 'artifacts/release-candidate.json', 'artifacts/side-effect-journal.json', releaseBuildPath]; if (enforceOperatingGates) releaseInputs.push('artifacts/business-preflight.json', 'artifacts/platform-release-matrix.json', 'artifacts/quality-baseline.json', 'artifacts/originality-declaration.json', 'artifacts/platform-policy.json', 'artifacts/platform-policy-evaluation.json'); if (dependencyAllowlistRequired()) releaseInputs.push('artifacts/dependency-policy.json', 'artifacts/dependency-policy-evaluation.json'); const record = await begin(state, 'RELEASE', releaseInputs); try { const manifest = await releaseAgent.run(runRoot, blueprint, { enforceAcceptance: enforcePlayerAcceptance || enforceOperatingGates, enforceOperatingGates, certificationRequired: certificationRequired(), artQualityRequired: artQualityRequired(), requirePresentation: presentationQualityRequired(), requirePlatformSpine: enforceOperatingGates, requirePlatformPackages: enforceOperatingGates && platformQaRequired(), requireDependencyAllowlist: dependencyAllowlistRequired(), requireSideEffectJournal: enforceOperatingGates, requirePortfolioGate: portfolioGateRequired(), requirePlatformPolicy: platformPolicyRequired(), reuseCandidate: true }); await store.writeArtifact(runId, 'release-manifest.json', manifest); const lifecycle = await store.readArtifact(runId, 'release-lifecycle.json').catch(() => undefined); if (lifecycle) { const parsedLifecycle = ReleaseLifecycleSchema.parse(lifecycle); const releaseHash = manifest.coreHash ?? parsedLifecycle.releaseHash; const target = enforceOperatingGates || enforcePlayerAcceptance ? 'RELEASE_READY' : 'CANDIDATE_READY'; state.readiness = target; if (parsedLifecycle.status !== target) await store.writeArtifact(runId, 'release-lifecycle.json', promoteReleaseLifecycle(parsedLifecycle, { gameId: blueprint.gameId, releaseHash, from: parsedLifecycle.status, to: target })); } await complete(state, record, ['artifacts/release-manifest.json', 'artifacts/release-candidate.json', 'artifacts/side-effect-journal.json', 'release-candidate/release-manifest.json', 'release-candidate/'], ['release:five-gates', 'release:platform-children', 'release:hashes', 'release:side-effects-journal', 'release:platform-policy', 'release:immutable-candidate-reused', `release-files:${manifest.files.length}`, 'sha256:recorded', `player-acceptance-enforced:${enforcePlayerAcceptance || enforceOperatingGates}`, `operating-gates-enforced:${enforceOperatingGates}`]); } catch (error) { return fail(state, record, error); } }
+    if (!done(state, 'RELEASE')) { const buildOutputForRelease = (await store.readArtifact(runId, 'build-report.json').catch(() => undefined) as { webBuild?: unknown } | undefined)?.webBuild; const releaseBuildPath = typeof buildOutputForRelease === 'string' ? buildOutputForRelease : 'workspace/game/dist/'; const releaseInputs = ['artifacts/game-blueprint.json', 'artifacts/build-report.json', 'artifacts/qa-report.json', 'artifacts/completion-gates.json', 'artifacts/quality-gate-matrix.json', 'artifacts/release-candidate.json', 'artifacts/side-effect-journal.json', releaseBuildPath]; if (enforceOperatingGates) releaseInputs.push('artifacts/business-preflight.json', 'artifacts/platform-release-matrix.json', 'artifacts/quality-baseline.json', 'artifacts/originality-declaration.json', 'artifacts/platform-policy.json', 'artifacts/platform-policy-evaluation.json'); if (dependencyAllowlistRequired()) releaseInputs.push('artifacts/dependency-policy.json', 'artifacts/dependency-policy-evaluation.json'); const record = await begin(state, 'RELEASE', releaseInputs); try { const manifest = await releaseAgent.run(runRoot, blueprint, { enforceAcceptance: enforcePlayerAcceptance || enforceOperatingGates, enforceOperatingGates, certificationRequired: certificationRequired(), artQualityRequired: artQualityRequired(), requirePresentation: presentationQualityRequired(), requirePlatformSpine: enforceOperatingGates, requirePlatformPackages: enforceOperatingGates && platformQaRequired(), requireDependencyAllowlist: dependencyAllowlistRequired(), requireSideEffectJournal: enforceOperatingGates, requirePortfolioGate: portfolioGateRequired(), requirePlatformPolicy: platformPolicyRequired(), reuseCandidate: true }); await store.writeArtifact(runId, 'release-manifest.json', manifest); const lifecycle = await store.readArtifact(runId, 'release-lifecycle.json').catch(() => undefined); if (lifecycle) { const parsedLifecycle = ReleaseLifecycleSchema.parse(lifecycle); const releaseHash = manifest.coreHash ?? parsedLifecycle.releaseHash; const target = completion.candidateReady && (await readRuntimeCandidateEvidence(runRoot)).passed ? (enforceOperatingGates || enforcePlayerAcceptance ? 'RELEASE_READY' : 'CANDIDATE_READY') : 'IMPLEMENTATION_READY'; state.readiness = target; if (target !== 'IMPLEMENTATION_READY' && parsedLifecycle.status !== target) await store.writeArtifact(runId, 'release-lifecycle.json', promoteReleaseLifecycle(parsedLifecycle, { gameId: blueprint.gameId, releaseHash, from: parsedLifecycle.status, to: target })); } await complete(state, record, ['artifacts/release-manifest.json', 'artifacts/release-candidate.json', 'artifacts/side-effect-journal.json', 'release-candidate/release-manifest.json', 'release-candidate/'], ['release:five-gates', 'release:platform-children', 'release:hashes', 'release:side-effects-journal', 'release:platform-policy', 'release:immutable-candidate-reused', `release-files:${manifest.files.length}`, 'sha256:recorded', `player-acceptance-enforced:${enforcePlayerAcceptance || enforceOperatingGates}`, `operating-gates-enforced:${enforceOperatingGates}`]); } catch (error) { return fail(state, record, error); } }
     const constitutionAfterRelease = await persistConstitutionEvaluation(state, completion, { strict: enforceOperatingGates, includeRelease: true });
     if (enforceOperatingGates && !constitutionAfterRelease.passed) {
       return setWaiting(state, 'ACCEPTANCE_REVIEW', ['artifacts/quality-gate-matrix.json', 'artifacts/constitution-evaluation.json'], ['artifacts/constitution-evaluation.json'], constitutionAfterRelease.blockers.map((item) => `blocked:${item}`));
@@ -2798,10 +4224,14 @@ export function createFactory(options: FactoryOptions = {}) {
   }
 
   function gameIdFromTitle(title: string): string {
-    return title.trim().toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/giu, '-').replace(/^-|-$/gu, '') || 'game';
+    return canonicalGameIdFromTitle(title);
   }
 
   async function expectedGameId(runId: string): Promise<string> {
+    try {
+      const identity = GameRunIdentityManifestSchema.parse(await store.readArtifact(runId, GAME_RUN_IDENTITY_ARTIFACT));
+      return identity.variantId ?? identity.canonicalGameId;
+    } catch { /* old runs have no bound identity; retain read-only compatibility */ }
     try {
       const blueprint = GameBlueprintSchema.parse(await store.readArtifact(runId, 'game-blueprint.json'));
       return blueprint.gameId;
@@ -2815,7 +4245,9 @@ export function createFactory(options: FactoryOptions = {}) {
     const stages = Object.values(state.stages);
     const started = [state.createdAt, ...stages.map((stage) => stage.startedAt).filter((value): value is string => Boolean(value))]
       .map((value) => Date.parse(value)).filter((value) => Number.isFinite(value));
-    const wallClockMinutes = started.length > 0 ? Math.max(0, Math.ceil((Date.now() - Math.min(...started)) / 60_000)) : 0;
+    const journal = await readFile(path.join(store.runRoot(state.runId), 'logs/factory.jsonl'), 'utf8').catch(() => '');
+    const measured = measureRunExecutionTime(journal, state, Date.now());
+    const wallClockMinutes = measured?.wallClockMinutes ?? (started.length > 0 ? Math.max(0, Math.ceil((Date.now() - Math.min(...started)) / 60_000)) : 0);
     const accounting = await ensureCostArtifacts(state.runId);
     return deriveCostUsage(stages, { rateCard: accounting.rateCard, adjustments: accounting.adjustments, wallClockMinutes });
   }
@@ -2827,7 +4259,14 @@ export function createFactory(options: FactoryOptions = {}) {
   }
 
   async function persistControlStageAudit(state: RunState, stage: StageName, status: 'completed' | 'waiting', inputs: string[], outputs: string[], evidence: string[], options: { minimumArtifacts?: Record<string, number> } = {}) {
-    const audit = buildControlStageAudit(stage, { inputs, artifacts: outputs, evidence }, { ...options, strictVersions: enforceStageContracts });
+    const previewCompletion = stage === 'COMPLETED' && evidence.includes('pipeline:replica-preview-complete');
+    const previewContract = previewCompletion ? StageContractSchema.parse({
+      ...getStageContract('COMPLETED'),
+      inputs: [{ path: 'artifacts/qa-report.json', schema: 'QaReportSchema', required: true, trust: 'generated' as const }],
+      outputs: [{ path: 'artifacts/qa-report.json', schema: 'QaReportSchema', required: true, trust: 'generated' as const }],
+      evidenceRequired: [{ id: 'pipeline:replica-preview-complete', description: 'The preview candidate passed its bounded QA lane while release gates remain deferred.', verifier: 'deterministic' as const, required: true }],
+    }) : undefined;
+    const audit = buildControlStageAudit(stage, { inputs, artifacts: outputs, evidence }, { ...options, strictVersions: enforceStageContracts, ...(previewContract ? { contract: previewContract } : {}) });
     await store.writeArtifact(state.runId, `stage-contracts/${stage}.json`, audit);
     if (status === 'completed' && enforceStageContracts && !audit.passed) throw new Error(`Stage ${stage} contract failed: ${audit.missing.join(', ')}`);
     return audit;
@@ -3064,7 +4503,7 @@ export function createFactory(options: FactoryOptions = {}) {
       }
     }
     if (decision.decision === 'KILL') {
-      const abandonment = evaluateAbandonment({ runId, stage: 'LAUNCH_METRICS', budget: operatingProfile.budget, usage: await usageForState(state), reason: decision.blockers.some((item) => item.startsWith('market-') || item === 'd1-retention' || item === 'organic-share') ? 'market-kill' : 'platform-blocked' });
+      const abandonment = evaluateAbandonment({ runId, stage: 'LAUNCH_METRICS', budget: await costBudgetForRun(runId), usage: await usageForState(state), reason: decision.blockers.some((item) => item.startsWith('market-') || item === 'd1-retention' || item === 'organic-share') ? 'market-kill' : 'platform-blocked' });
       await store.writeArtifact(runId, 'abandonment-decision.json', abandonment);
       const abandonmentEvidence = ['abandonment:decision', 'launch:KILL'];
       await recordControlStage(state, 'ABANDONED', 'completed', [`artifacts/launch-decision-${snapshot.platform}.json`], ['artifacts/abandonment-decision.json'], abandonmentEvidence);
@@ -3130,11 +4569,80 @@ export function createFactory(options: FactoryOptions = {}) {
 
   async function abandon(runId: string, reason: 'manual' | 'cost-cap' | 'fix-cap' | 'platform-blocked' | 'market-kill' | 'unknown' = 'manual') {
     const state = await store.load(runId);
-    const decision = evaluateAbandonment({ runId, stage: state.stage, budget: operatingProfile.budget, usage: await usageForState(state), manual: reason === 'manual', reason });
+    const decision = evaluateAbandonment({ runId, stage: state.stage, budget: await costBudgetForRun(runId), usage: await usageForState(state), manual: reason === 'manual', reason });
     await store.writeArtifact(runId, 'abandonment-decision.json', decision);
     await recordControlStage(state, 'ABANDONED', 'completed', [`stage:${state.stage}`, 'state.json'], ['artifacts/abandonment-decision.json'], ['abandonment:decision', ...decision.evidence]);
     state.stage = 'ABANDONED'; state.status = 'completed'; await store.save(state); await store.log(runId, 'run.abandoned', { reason, manual: reason === 'manual' });
     return { decision, nextCommand: 'run is terminal; create a new run to continue' };
+  }
+
+  async function authorizeCostContinuation(runId: string, value: unknown) {
+    const state = await store.load(runId);
+    assertRunMode(state);
+    const active = ActiveCostBudgetAuthorizationSchema.safeParse(value);
+    let evaluated: ReturnType<typeof evaluateCostBudgetAuthorization>;
+    if (active.success) {
+      const costGateFile = path.join(store.runRoot(runId), 'artifacts/cost-gate.json');
+      if (!await exists(costGateFile)) throw new Error(`Run ${runId} has no cost gate`);
+      evaluated = evaluateCostBudgetAuthorization({
+        state,
+        costGate: await store.readArtifact(runId, 'cost-gate.json'),
+        authorization: active.data,
+        actualCostGateSha256: await sha256File(costGateFile),
+      });
+    } else {
+      const abandonmentFile = path.join(store.runRoot(runId), 'artifacts/abandonment-decision.json');
+      if (!await exists(abandonmentFile)) throw new Error(`Run ${runId} has no abandonment decision`);
+      evaluated = evaluateCostBudgetAuthorization({
+        state,
+        abandonment: await store.readArtifact(runId, 'abandonment-decision.json'),
+        authorization: value,
+        actualAbandonmentSha256: await sha256File(abandonmentFile),
+      });
+    }
+    const usage = await usageForState(state);
+    const cost = evaluateCostGate(evaluated.budget, usage);
+    if (!cost.passed) throw new Error(`authorized token ceiling leaves other cost blockers unresolved: ${cost.blockers.join(', ')}`);
+
+    let storedAuthorization = evaluated.authorization;
+    if (evaluated.authorizationKind === 'active') {
+      const costGateFile = path.join(store.runRoot(runId), 'artifacts/cost-gate.json');
+      const basisFile = path.join(store.runRoot(runId), 'artifacts/cost-budget-authorization-basis.json');
+      await copyFile(costGateFile, basisFile);
+      storedAuthorization = {
+        ...evaluated.authorization,
+        costGate: { ...evaluated.authorization.costGate, path: 'artifacts/cost-budget-authorization-basis.json' },
+      };
+    }
+    await store.writeArtifact(runId, 'cost-budget-authorization.json', storedAuthorization);
+    const profileFile = path.join(store.runRoot(runId), 'artifacts/factory-profile.json');
+    if (await exists(profileFile)) {
+      const profile = FactoryOperatingProfileSchema.parse(await store.readArtifact(runId, 'factory-profile.json'));
+      await store.writeArtifact(runId, 'factory-profile.json', { ...profile, budget: evaluated.budget });
+    }
+    await store.writeArtifact(runId, 'cost-gate.json', cost);
+    const authorizationHash = await sha256File(path.join(store.runRoot(runId), 'artifacts/cost-budget-authorization.json'));
+    if (evaluated.authorizationKind === 'abandonment') {
+      state.transitionHistory.push({
+        from: 'ABANDONED',
+        to: evaluated.resumeStage,
+        reason: `cost-cap-authorized:${authorizationHash}`,
+        at: new Date().toISOString(),
+        runId,
+      });
+      state.stage = evaluated.resumeStage;
+      state.status = 'pending';
+      delete state.failureReason;
+      await store.save(state);
+    }
+    await store.log(runId, 'cost.continuation-authorized', {
+      authorizationKind: evaluated.authorizationKind,
+      authorizationHash,
+      previousMaxAgentTokens: evaluated.authorization.previousMaxAgentTokens,
+      maxAgentTokens: evaluated.authorization.maxAgentTokens,
+      resumeStage: evaluated.resumeStage,
+    });
+    return { authorization: storedAuthorization, budget: evaluated.budget, cost, state, nextCommand: `pnpm factory resume ${runId}` };
   }
 
   async function recordCostAdjustment(runId: string, value: unknown) {
@@ -3148,7 +4656,7 @@ export function createFactory(options: FactoryOptions = {}) {
     const ledger = CostAdjustmentLedgerSchema.parse({ schemaVersion: 1, entries, updatedAt: new Date().toISOString() });
     await store.writeArtifact(runId, 'cost-adjustments.json', ledger);
     const usage = await usageForState(state);
-    const cost = evaluateCostGate(CostBudgetSchema.parse(operatingProfile.budget), usage);
+    const cost = evaluateCostGate(await costBudgetForRun(runId), usage);
     await store.writeArtifact(runId, 'cost-usage.json', usage);
     await store.writeArtifact(runId, 'cost-gate.json', cost);
     await store.log(runId, 'cost.adjustment.recorded', { id: entry.id, kind: entry.kind, cents: entry.cents, minutes: entry.minutes ?? 0, gatePassed: cost.passed });
@@ -3178,6 +4686,9 @@ export function createFactory(options: FactoryOptions = {}) {
   return {
     routeRequest: requestRouter.route.bind(requestRouter),
     escalateRequestRoute: requestRouter.escalate.bind(requestRouter),
+    /** Player-facing completion handoff: callers should present this before
+     * implementation details so the owner can immediately verify the result. */
+    buildAcceptanceHandoff,
     async runFactoryEval() { return buildFactoryEvalReport(); },
     async persistFactoryEval() {
       const report = await buildFactoryEvalReport();
@@ -3196,6 +4707,7 @@ export function createFactory(options: FactoryOptions = {}) {
     recordLaunchMetrics,
     recordLiveVerification,
     recordCostAdjustment,
+    authorizeCostContinuation,
     abandon,
     recordReleaseStatus,
     recordFeedback: feedbackLessons.record.bind(feedbackLessons),
@@ -3272,30 +4784,39 @@ export function createFactory(options: FactoryOptions = {}) {
     async approveHumanPlaytest(runId: string, value: unknown, options: { force?: boolean } = {}) {
       const state = await store.load(runId);
       const parsedAcceptance = HumanPlaytestAcceptanceSchema.parse(value);
-      // Bind an API-submitted approval to the frozen candidate when one is
-      // available. Manual files are still checked strictly during resume.
+      // Bind an API-submitted approval to the frozen release candidate, or to
+      // the hash-bound core demo when a replica preview has not been packaged.
       const candidate = await store.readArtifact(runId, 'release-candidate.json').catch(() => undefined) as { coreHash?: unknown } | undefined;
-      const acceptance = HumanPlaytestAcceptanceSchema.parse({ ...parsedAcceptance, ...(parsedAcceptance.buildHash ? {} : typeof candidate?.coreHash === 'string' ? { buildHash: candidate.coreHash } : {}) });
+      const fidelityGate = await store.readArtifact(runId, 'reference-fidelity-gate.json').catch(() => undefined) as { buildHash?: unknown; passed?: unknown } | undefined;
+      const releaseCandidateHash = typeof candidate?.coreHash === 'string' ? candidate.coreHash : undefined;
+      const coreDemoHash = !releaseCandidateHash && fidelityGate?.passed === true && typeof fidelityGate.buildHash === 'string' ? fidelityGate.buildHash : undefined;
+      const expectedHash = releaseCandidateHash ?? coreDemoHash;
+      const acceptance = HumanPlaytestAcceptanceSchema.parse({ ...parsedAcceptance, ...(parsedAcceptance.buildHash || !expectedHash ? {} : { buildHash: expectedHash }) });
       await writeJsonAtomic(path.join(store.runRoot(runId), 'human/playtest-acceptance.json'), acceptance);
-      const candidateBound = typeof candidate?.coreHash === 'string' && acceptance.buildHash === candidate.coreHash;
-      const acceptancePassed = acceptance.passed && candidateBound;
+      const candidateBound = expectedHash !== undefined && acceptance.buildHash === expectedHash;
+      const previewSessionMatches = coreDemoHash === undefined || acceptance.sessionId === 'CORE_DEMO';
+      const acceptancePassed = acceptance.passed && candidateBound && previewSessionMatches;
+      const evidencePrefix = coreDemoHash ? 'human:core-demo-playtest-required' : 'human:final-playtest-required';
       const acceptanceEvidence = acceptancePassed
-        ? ['human:final-playtest-required', 'human:playtest-passed', `candidate:${acceptance.buildHash}`]
-        : [acceptance.passed ? 'human:acceptance-build-hash-mismatch' : 'human:playtest-rejected'];
+        ? [evidencePrefix, 'human:playtest-passed', `candidate:${acceptance.buildHash}`]
+        : [acceptance.passed && !previewSessionMatches ? 'human:core-demo-session-mismatch' : acceptance.passed ? 'human:acceptance-build-hash-mismatch' : 'human:playtest-rejected'];
       // Only a candidate-bound passing playtest is an approval. Failed or
       // stale submissions stay visible in the playtest artifact and leave the
       // scheduled session open for a corrected submission.
       const scheduledProjection = acceptancePassed
         ? await appendScheduledHumanApproval(runId, {
-          sessionId: 'FINAL_RELEASE',
+          sessionId: coreDemoHash ? 'CORE_DEMO' : 'FINAL_RELEASE',
           decision: 'APPROVE',
-          artifactRefs: ['artifacts/release-candidate.json', 'artifacts/completion-gates.json', 'artifacts/platform-release-matrix.json', 'human/playtest-acceptance.json'],
+          artifactRefs: coreDemoHash
+            ? ['artifacts/build-report.json', 'artifacts/reference-fidelity-gate.json', 'human/playtest-acceptance.json']
+            : ['artifacts/release-candidate.json', 'artifacts/completion-gates.json', 'artifacts/platform-release-matrix.json', 'human/playtest-acceptance.json'],
           candidateHash: acceptance.buildHash,
           notes: acceptance.notes,
           force: options.force,
         })
         : undefined;
-      await recordControlStage(state, 'WAITING_FOR_HUMAN_PLAYTEST', acceptancePassed ? 'completed' : 'waiting', ['artifacts/release-candidate.json', 'artifacts/completion-gates.json'], ['human/playtest-acceptance.json'], acceptanceEvidence);
+      const playtestInputs = coreDemoHash ? ['artifacts/build-report.json', 'artifacts/reference-fidelity-gate.json'] : ['artifacts/release-candidate.json', 'artifacts/completion-gates.json'];
+      await recordControlStage(state, 'WAITING_FOR_HUMAN_PLAYTEST', acceptancePassed ? 'completed' : 'waiting', playtestInputs, ['human/playtest-acceptance.json'], acceptanceEvidence);
       state.stage = acceptancePassed ? 'QA' : 'WAITING_FOR_HUMAN_PLAYTEST'; state.status = acceptancePassed ? 'pending' : 'waiting';
       await store.save(state); await store.log(runId, 'human-playtest.recorded', { passed: acceptance.passed, sessionId: acceptance.sessionId });
       return { acceptance, ...(scheduledProjection ? { approval: scheduledProjection } : {}), nextCommand: `pnpm factory resume ${runId}` };
@@ -3367,8 +4888,14 @@ export function createFactory(options: FactoryOptions = {}) {
       return { declaration, nextCommand: `pnpm factory resume ${runId}` };
     },
     async pipelinePlan(runId: string) { return store.readArtifact(runId, 'pipeline-plan.json'); },
+    async listRunSummaries(options: { active?: boolean } = {}) {
+      const states = await store.listStates();
+      const summaries = states.map((state) => buildOperatorRunSummary(state));
+      return options.active === true ? summaries.filter((summary) => summary.status !== 'completed') : summaries;
+    },
     async operatingStatus(runId: string) {
       const state = await store.load(runId);
+      const operator = buildOperatorRunSummary(state);
       const runRoot = store.runRoot(runId);
       // `FileRunStore.readArtifact` resolves names below `<run>/artifacts`.
       // Keep the existence probe in that same namespace; probing the run root
@@ -3391,6 +4918,7 @@ export function createFactory(options: FactoryOptions = {}) {
       };
       return {
         state,
+        operator,
         effectivePolicy: {
           validationMode,
           enforcePlayerAcceptance,
@@ -3434,14 +4962,15 @@ export function createFactory(options: FactoryOptions = {}) {
       };
     },
     validate: (seedFile: string) => store.readSeedFile(seedFile),
-    async newRun(seedFile: string) {
+    async newRun(seedFile: string, options: { rigor?: PipelineRigor } = {}) {
       const seed = await store.readSeedFile(seedFile);
+      const entryPlan = planNewGame({ designMode: seed.designMode, productionLine: 'pending-review', ...(options.rigor ? { rigor: options.rigor } : {}) });
       const runId = `${new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)}-${sha256Text(stringify(seed)).slice(0, 8)}`;
       let candidate = runId; let suffix = 1;
       while (await exists(store.runRoot(candidate))) candidate = `${runId}-${suffix++}`;
       await store.create(candidate, seedFile, mode);
-      await store.writeArtifact(candidate, 'factory-profile.json', effectiveOperatingProfile());
-      await ensureOperatingArtifacts(candidate, seed);
+      await store.writeArtifact(candidate, 'factory-profile.json', { ...effectiveOperatingProfile(), pipelineMode: entryPlan.mode });
+      await ensureOperatingArtifacts(candidate, seed, options);
       return candidate;
     },
     async newActionExperiment(specFile: string) {
@@ -3480,6 +5009,11 @@ export function createFactory(options: FactoryOptions = {}) {
       const state = await store.load(runId);
       if (state.stage !== 'WAITING_FOR_PROTOTYPE_APPROVAL' || state.status !== 'waiting') throw new Error(`Run ${runId} is not waiting for prototype approval`);
       const decision = HumanPrototypeDecisionSchema.parse({ decision: input.decision.toUpperCase(), notes: input.notes.trim() ? [input.notes.trim()] : [] });
+      if (!['REJECT', 'REVISE'].includes(decision.decision)) {
+        const approvalEvidence = await verifyPrototypeApprovalEvidence({ runRoot: store.runRoot(runId), batch: state.prototypeBatch, synthetic: qaMode === 'stub' });
+        await store.writeArtifact(runId, `prototype-approval-verification.batch-${state.prototypeBatch}.json`, approvalEvidence);
+        if (!approvalEvidence.passed) throw new Error(`Prototype approval evidence is blocked: ${approvalEvidence.blockers.join(', ')}`);
+      }
       const file = path.join(store.runRoot(runId), 'human/prototype-decision.yaml');
       try { await writeFile(file, stringify(decision), { flag: input.force ? 'w' : 'wx' }); } catch (error) { if ((error as NodeJS.ErrnoException).code === 'EEXIST') throw new Error(`Prototype decision already exists for run ${runId}; pass --force to overwrite`); throw error; }
       await store.log(runId, 'prototype-decision.created', { decision: decision.decision, forced: input.force === true });
@@ -3551,7 +5085,355 @@ export function createFactory(options: FactoryOptions = {}) {
       return { approval, file, scheduledProjection, nextCommand: `pnpm factory resume ${runId}` };
     },
     status: (runId: string) => store.load(runId),
-    async inspect(runId: string) { const state = await store.load(runId); const artifacts = await listFiles(path.join(store.runRoot(runId), 'artifacts')); return { state, artifacts }; },
+    async auditReference(runId: string, auditOptions: { targetGame?: string; targetWorkspace?: string } = {}) {
+      const runRoot = store.runRoot(runId);
+      if (!await exists(runRoot)) throw new Error(`Run ${runId} does not exist`);
+      const report = await auditReferenceQuality({ runRoot, targetRunId: runId, ...auditOptions });
+      await store.writeArtifact(runId, 'reference-quality-audit.json', report);
+      return report;
+    },
+    async extractReferenceFrames(runId: string, extractionOptions: { evidenceId?: string; fps?: number; maxFrames?: number } = {}) {
+      const runRoot = store.runRoot(runId);
+      if (!await exists(runRoot)) throw new Error(`Run ${runId} does not exist`);
+      const provenanceFile = path.join(runRoot, 'reference-evidence/manifest.json');
+      const provenance = EvidenceProvenanceManifestSchema.parse(JSON.parse(await readFile(provenanceFile, 'utf8')));
+      return extractReferenceRecordingFrames({
+        runRoot,
+        targetRunId: runId,
+        expected: { targetGame: provenance.targetGame, workspace: provenance.workspace },
+        ...(extractionOptions.evidenceId ? { evidenceId: extractionOptions.evidenceId } : {}),
+        fps: extractionOptions.fps ?? options.referenceFrameFps ?? Number(process.env.FACTORY_REFERENCE_FRAME_FPS ?? 8),
+        ...(extractionOptions.maxFrames ? { maxFrames: extractionOptions.maxFrames } : {}),
+        ...(options.referenceFrameExtractor ? { extractor: options.referenceFrameExtractor } : {}),
+      });
+    },
+    async captureReferenceUrl(runId: string, captureOptions: { url: string; captureId: string; durationSeconds?: number; fps?: number; viewport?: { width: number; height: number }; clip?: ReferenceCaptureClip; actions?: ReferenceCaptureAction[] }) {
+      return captureReferenceUrl({ ...await referenceCaptureTarget(runId), ...captureOptions });
+    },
+    async promoteReferenceCapture(runId: string, captureId: string) {
+      return promoteReferenceCapture({ ...await referenceCaptureTarget(runId), captureId });
+    },
+    async discardReferenceCapture(runId: string, captureId: string) {
+      const { runRoot } = await referenceCaptureTarget(runId);
+      return discardReferenceCapture({ runRoot, captureId });
+    },
+    async captureReferenceCode(runId: string, codeOptions: { url: string; packageId: string; waitSeconds?: number }) {
+      return captureReferenceCode({ ...await referenceCaptureTarget(runId), ...codeOptions });
+    },
+    async promoteReferenceCode(runId: string, packageId: string) {
+      return promoteReferenceCode({ ...await referenceCaptureTarget(runId), packageId });
+    },
+    async discardReferenceCode(runId: string, packageId: string) {
+      const { runRoot } = await referenceCaptureTarget(runId);
+      return discardReferenceCode({ runRoot, packageId });
+    },
+    async recordReferenceCodeAnalysis(runId: string, analysisFile: string) {
+      const runRoot = store.runRoot(runId);
+      if (!await exists(runRoot)) throw new Error(`Run ${runId} does not exist`);
+      const value = JSON.parse(await readFile(path.resolve(analysisFile), 'utf8')) as unknown;
+      return recordReferenceCodeAnalysis({ runRoot, targetRunId: runId, targetGame: await expectedGameId(runId), workspace: path.join(runRoot, 'workspace/game'), value });
+    },
+    async startReferenceCaptureSession(runId: string, sessionOptions: { url: string; captureId: string; fps?: number; viewport?: { width: number; height: number }; clip?: ReferenceCaptureClip; idleTimeoutMs?: number }) {
+      return startReferenceCaptureSession({ ...await referenceCaptureTarget(runId), ...sessionOptions });
+    },
+    async referenceCaptureSessionStep(runId: string, captureId: string, body: ReferenceCaptureStepRequest) {
+      return sendReferenceCaptureSessionCommand({ runRoot: store.runRoot(runId), captureId, command: 'step', body });
+    },
+    async referenceCaptureSessionStatus(runId: string, captureId: string) {
+      return sendReferenceCaptureSessionCommand({ runRoot: store.runRoot(runId), captureId, command: 'status' });
+    },
+    async finishReferenceCaptureSession(runId: string, captureId: string) {
+      return sendReferenceCaptureSessionCommand({ runRoot: store.runRoot(runId), captureId, command: 'finish' });
+    },
+    async recoverReferenceResearch(runId: string, recoveryOptions: { reprojectCompleted?: boolean } = {}) {
+      const state = await store.load(runId);
+      assertRunMode(state);
+      if (mode !== 'codex-account') throw new Error('reference research recovery is only available in FACTORY_MODE=codex-account');
+      const record = state.stages.REFERENCE_DEEP_RESEARCH;
+      if (!record) throw new Error(`Run ${runId} has no REFERENCE_DEEP_RESEARCH stage record`);
+      const reprojectCompleted = recoveryOptions.reprojectCompleted === true;
+      if (reprojectCompleted && (state.fixAttempts > 0 || (state.stages.FULL_BUILD?.providerCalls.agent ?? 0) > 0 || await store.hasArtifact(runId, 'build-report.json'))) {
+        throw new Error('Reference reprojection requires a pre-build run; an existing implementation must retain its formal QA and repair history');
+      }
+      const runRoot = store.runRoot(runId);
+      const rawOutputFile = path.join(runRoot, 'artifacts/reference-behavior-analysis.json');
+      const rawOutputStat = await lstat(rawOutputFile).catch(() => undefined);
+      if (!rawOutputStat?.isFile() || rawOutputStat.isSymbolicLink()) throw new Error(`Run ${runId} has no regular reference research output to recover`);
+
+      const codexLogDir = path.join(runRoot, 'logs/codex');
+      const logNames = (await readdir(codexLogDir).catch(() => []))
+        .filter((name) => /^REFERENCE_DEEP_RESEARCH\.attempt-\d+\.stdout\.jsonl$/u.test(name))
+        .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
+      const routedModel = await routedModelForAttempt(state, 'REFERENCE_DEEP_RESEARCH', record.attempts);
+      let recovered: ReturnType<typeof evaluateReferenceResearchRecovery> | undefined;
+      let recoveredLog: string | undefined;
+      for (const name of [...logNames].reverse()) {
+        const candidate = evaluateReferenceResearchRecovery({ stage: record, stdout: await readFile(path.join(codexLogDir, name), 'utf8'), model: routedModel, allowCompletedReprojection: reprojectCompleted });
+        if (candidate.passed) { recovered = candidate; recoveredLog = `logs/codex/${name}`; break; }
+      }
+      if (!recovered?.passed || !recoveredLog) throw new Error(`Run ${runId} has no completed Codex reference-research turn eligible for recovery`);
+
+      const seed = await store.readSeedFile(path.join(runRoot, 'input/seed.yaml'));
+      if (seed.designMode !== 'reference_reskin' || !seed.referenceMechanics) throw new Error(`Run ${runId} is not a reference-reskin run`);
+      const reference = ReferenceMechanicSpecSchema.parse(seed.referenceMechanics);
+      const frameManifestFile = path.join(runRoot, 'artifacts/reference-frame-manifest.json');
+      const hasFrameManifest = await exists(frameManifestFile);
+      const originalPack = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
+      const preservedModelOutputFile = path.join(runRoot, 'artifacts/reference-behavior-analysis.model-output.raw.json');
+      const preservedModelOutputStat = await lstat(preservedModelOutputFile).catch(() => undefined);
+      const modelOutputSource = preservedModelOutputStat?.isFile() && !preservedModelOutputStat.isSymbolicLink() ? preservedModelOutputFile : rawOutputFile;
+      const rawOutputText = await readFile(modelOutputSource, 'utf8');
+      const modelOutput = JSON.parse(rawOutputText) as unknown;
+      // Preserve exact model bytes before canonical output replaces the
+      // provider destination. The schema-valid raw artifact below changes only
+      // provenance representation, never research meaning or BLOCKED status.
+      if (modelOutputSource === rawOutputFile) await writeFile(preservedModelOutputFile, rawOutputText);
+      const rawAnalysis = ReferenceBehaviorAnalysisSchema.parse(normalizeReferenceBehaviorAnalysis(modelOutput, originalPack));
+      await store.writeArtifact(runId, 'reference-behavior-analysis.raw.json', rawAnalysis);
+      if (rawAnalysis.levelReconstruction) await store.writeArtifact(runId, 'reference-level-reconstruction.raw.json', rawAnalysis.levelReconstruction);
+      const sourceAnalysis = { path: 'artifacts/reference-behavior-analysis.raw.json', sha256: await sha256File(path.join(runRoot, 'artifacts/reference-behavior-analysis.raw.json')) };
+      const humanLock = { path: 'input/seed.yaml', sha256: await sha256File(path.join(runRoot, 'input/seed.yaml')) };
+      if (!hasFrameManifest) {
+        const resolved = resolveCodeOnlyReferenceResearch({
+          analysis: rawAnalysis,
+          reference,
+          targetGame: await expectedGameId(runId),
+          workspace: path.join(runRoot, 'workspace/game'),
+          sourceAnalysis,
+          humanLock,
+        });
+        if (reprojectCompleted) {
+          const projectionPaths = [
+            'artifacts/reference-research-resolution.json', 'artifacts/reference-behavior-analysis.json',
+            'artifacts/reference-failure-pressure-contract.json', 'artifacts/reference-evidence-pack.json',
+            'artifacts/reference-fidelity-contract.json', 'artifacts/stage-contracts/REFERENCE_DEEP_RESEARCH.json',
+          ];
+          const archive = await archiveRunPaths(runRoot, projectionPaths, 'reference-reprojection');
+          await store.log(runId, 'reference-research.reprojection-preserved', { archive: archive?.manifestPath, previousStage: record, fixAttempts: state.fixAttempts });
+          invalidateDownstream(state, 'FULL_BUILD');
+          await store.save(state);
+        }
+        await store.writeArtifact(runId, 'reference-research-resolution.json', resolved.resolution);
+        await store.writeArtifact(runId, 'reference-behavior-analysis.json', resolved.analysis);
+        if (resolved.analysis.failurePressureContract) await store.writeArtifact(runId, 'reference-failure-pressure-contract.json', resolved.analysis.failurePressureContract);
+        const humanLockSource = { ...humanLock, observations: ['human-lock:referenceMechanics resolves target-original code-only adaptations without claiming source observation'] };
+        const packWithHumanLock = ReferenceEvidencePackSchema.parse({
+          ...originalPack,
+          sourceFiles: [...originalPack.sourceFiles.filter((source) => source.path !== humanLock.path), humanLockSource],
+        });
+        const mergedPack = applyReferenceBehaviorAnalysis(packWithHumanLock, resolved.analysis, {
+          retiredUnknowns: resolved.resolution.entries.filter((entry) => entry.disposition !== 'BLOCKING').map((entry) => entry.gap),
+        });
+        const evaluatedPack = evaluateReferenceEvidence(mergedPack, {
+          requireHostAllowlist: validationMode === 'production' || process.env.FACTORY_REQUIRE_RESEARCH_ALLOWLIST === '1',
+          allowedHosts: (process.env.FACTORY_RESEARCH_ALLOWED_HOSTS ?? '').split(/[\s,]+/u).filter(Boolean),
+        });
+        const fidelity = evaluateReplicaPreviewEvidence(evaluatedPack.pack);
+        await store.writeArtifact(runId, 'reference-evidence-pack.json', fidelity.pack);
+        await store.writeArtifact(runId, 'reference-fidelity-contract.json', fidelity.fidelity);
+
+        record.status = 'running';
+        record.finishedAt = null;
+        delete record.failureReason;
+        state.stage = 'REFERENCE_DEEP_RESEARCH';
+        state.status = 'running';
+        delete state.failureReason;
+        record.providerCalls.agent = Math.max(record.providerCalls.agent, recovered.metrics.calls);
+        if (recovered.metrics.usage) {
+          record.tokenUsage.inputTokens = Math.max(record.tokenUsage.inputTokens, recovered.metrics.usage.inputTokens);
+          record.tokenUsage.outputTokens = Math.max(record.tokenUsage.outputTokens, recovered.metrics.usage.outputTokens);
+          record.tokenUsage.totalTokens = Math.max(record.tokenUsage.totalTokens, recovered.metrics.usage.totalTokens);
+        }
+        if (!record.evidence.includes(`model:${recovered.metrics.model}`)) record.evidence.push(`model:${recovered.metrics.model}`);
+        await saveUsage(state);
+        const outputs = [
+          'artifacts/reference-evidence-pack.json',
+          'artifacts/reference-fidelity-contract.json',
+          'artifacts/reference-behavior-analysis.model-output.raw.json',
+          'artifacts/reference-behavior-analysis.raw.json',
+          'artifacts/reference-research-resolution.json',
+          'artifacts/reference-behavior-analysis.json',
+          ...(resolved.analysis.failurePressureContract ? ['artifacts/reference-failure-pressure-contract.json'] : []),
+        ];
+        const recoveryEvidence = [
+          'research:recovered-existing-output',
+          ...(reprojectCompleted ? ['research:explicit-prebuild-reprojection'] : []),
+          `research:completed-log:${recoveredLog}`,
+          'research:raw-truth-preserved',
+          'research:code-only-resolution',
+          'reference:resolution-provenance',
+          'reference:evidence-pack',
+          'reference:five-dimension-behavior-contract',
+          'reference:failure-pressure-contract',
+          'zod:ReferenceEvidencePackSchema',
+          'zod:ReferenceFidelityContractSchema',
+          `model:${recovered.metrics.model}`,
+          'usage:successful-output-log-only',
+        ];
+        const blockers = [...resolved.resolution.blockers, ...fidelity.blockers];
+        if (blockers.length > 0) return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', record.inputArtifacts, outputs, [...recoveryEvidence, ...[...new Set(blockers)].map((blocker) => `blocked:${blocker}`)]);
+        await complete(state, record, outputs, recoveryEvidence);
+        await store.log(runId, 'reference-research.recovered', { sourceLog: recoveredLog, model: recovered.metrics.model, attemptsPreserved: record.attempts, rawStatus: rawAnalysis.status, resolutionStatus: resolved.resolution.status, reprojectCompleted, codeOnly: true });
+        return state;
+      }
+      const frameManifest = ReferenceFrameManifestSchema.parse(await store.readArtifact(runId, 'reference-frame-manifest.json'));
+      const frameManifestSource = { path: 'artifacts/reference-frame-manifest.json', sha256: await sha256File(frameManifestFile) };
+      const sandboxManifestPath = path.join(runRoot, 'research-sandbox/reference_deep_research/artifacts/reference-frame-manifest.json');
+      const sandboxManifestStat = await lstat(sandboxManifestPath).catch(() => undefined);
+      const researchFrameManifest = sandboxManifestStat?.isFile() && !sandboxManifestStat.isSymbolicLink()
+        ? {
+          path: 'research-sandbox/reference_deep_research/artifacts/reference-frame-manifest.json',
+          sha256: await sha256File(sandboxManifestPath),
+          verifiedPrefixOfFull: isSanitizedJsonPrefix(await readFile(path.join(runRoot, frameManifestSource.path), 'utf8'), await readFile(sandboxManifestPath, 'utf8')),
+        }
+        : undefined;
+      let objectReview: { review: ReturnType<typeof ReferenceObjectReviewSchema.parse>; source: { path: string; sha256: string } } | undefined;
+      if (await store.hasArtifact(runId, 'reference-object-review.json')) {
+        const review = ReferenceObjectReviewSchema.parse(await store.readArtifact(runId, 'reference-object-review.json'));
+        for (const row of review.rows) for (const frame of row.sourceFrames) {
+          if (!await verifyRunBoundEvidence(runRoot, frame)) throw new Error(`Reference object review frame bytes are unavailable or changed: ${frame.path}`);
+        }
+        objectReview = { review, source: { path: 'artifacts/reference-object-review.json', sha256: await sha256File(path.join(runRoot, 'artifacts/reference-object-review.json')) } };
+      }
+      const resolved = resolveReferenceResearchForImplementation({
+        analysis: rawAnalysis,
+        reference,
+        frameManifest,
+        frameManifestSource,
+        ...(researchFrameManifest ? { researchFrameManifest } : {}),
+        sourceAnalysis,
+        humanLock,
+        ...(reprojectCompleted ? { allowIdentityRebind: true } : {}),
+        ...(objectReview ? { objectReview } : {}),
+      });
+      if (reprojectCompleted) {
+        const projectionPaths = [
+          'artifacts/reference-research-resolution.json', 'artifacts/reference-behavior-analysis.json',
+          'artifacts/reference-level-reconstruction.json', 'artifacts/reference-level-implementation-contract.json',
+          'artifacts/reference-level-runtime-data.json', 'artifacts/reference-failure-pressure-contract.json',
+          'artifacts/reference-evidence-pack.json', 'artifacts/reference-fidelity-contract.json',
+          'artifacts/stage-contracts/REFERENCE_DEEP_RESEARCH.json',
+        ];
+        const archive = await archiveRunPaths(runRoot, projectionPaths, 'reference-reprojection');
+        await store.log(runId, 'reference-research.reprojection-preserved', { archive: archive?.manifestPath, previousStage: record, fixAttempts: state.fixAttempts });
+        // No provider is started and no attempt budget is reset. The original
+        // model output and recording manifest remain immutable inputs.
+        invalidateDownstream(state, 'FULL_BUILD');
+        await store.save(state);
+      }
+      await store.writeArtifact(runId, 'reference-research-resolution.json', resolved.resolution);
+      await store.writeArtifact(runId, 'reference-behavior-analysis.json', resolved.analysis);
+
+      const canonicalLevel = resolved.analysis.levelReconstruction;
+      if (!canonicalLevel) throw new Error('Recovered reference analysis has no recording-level reconstruction');
+      await store.writeArtifact(runId, 'reference-level-reconstruction.json', canonicalLevel);
+      const levelVerification = verifyReferenceLevelReconstruction(canonicalLevel, frameManifest, { frameManifestSha256: frameManifestSource.sha256 });
+      const reconstructionSource = { path: 'artifacts/reference-level-reconstruction.json', sha256: await sha256File(path.join(runRoot, 'artifacts/reference-level-reconstruction.json')) };
+      const implementationContract = deriveReferenceLevelImplementationContract(canonicalLevel, reconstructionSource);
+      await store.writeArtifact(runId, 'reference-level-implementation-contract.json', implementationContract);
+      if (resolved.analysis.failurePressureContract) await store.writeArtifact(runId, 'reference-failure-pressure-contract.json', resolved.analysis.failurePressureContract);
+
+      const humanLockSource = { ...humanLock, observations: ['human-lock:referenceMechanics is the trusted source for recording-unobserved failure and replay requirements'] };
+      const packWithHumanLock = ReferenceEvidencePackSchema.parse({
+        ...originalPack,
+        sourceFiles: [...originalPack.sourceFiles.filter((source) => source.path !== humanLock.path), humanLockSource],
+      });
+      const mergedPack = applyReferenceBehaviorAnalysis(packWithHumanLock, resolved.analysis, {
+        retiredUnknowns: resolved.resolution.entries
+          .filter((entry) => entry.disposition !== 'BLOCKING')
+          .map((entry) => entry.gap),
+      });
+      const evaluatedPack = evaluateReferenceEvidence(mergedPack, {
+        requireHostAllowlist: validationMode === 'production' || process.env.FACTORY_REQUIRE_RESEARCH_ALLOWLIST === '1',
+        allowedHosts: (process.env.FACTORY_RESEARCH_ALLOWED_HOSTS ?? '').split(/[\s,]+/u).filter(Boolean),
+      });
+      const fidelity = evaluateReplicaPreviewEvidence(evaluatedPack.pack);
+      await store.writeArtifact(runId, 'reference-evidence-pack.json', fidelity.pack);
+      await store.writeArtifact(runId, 'reference-fidelity-contract.json', fidelity.fidelity);
+
+      record.status = 'running';
+      record.finishedAt = null;
+      delete record.failureReason;
+      state.stage = 'REFERENCE_DEEP_RESEARCH';
+      state.status = 'running';
+      delete state.failureReason;
+      record.providerCalls.agent = Math.max(record.providerCalls.agent, recovered.metrics.calls);
+      if (recovered.metrics.usage) {
+        record.tokenUsage.inputTokens = Math.max(record.tokenUsage.inputTokens, recovered.metrics.usage.inputTokens);
+        record.tokenUsage.outputTokens = Math.max(record.tokenUsage.outputTokens, recovered.metrics.usage.outputTokens);
+        record.tokenUsage.totalTokens = Math.max(record.tokenUsage.totalTokens, recovered.metrics.usage.totalTokens);
+      }
+      if (!record.evidence.includes(`model:${recovered.metrics.model}`)) record.evidence.push(`model:${recovered.metrics.model}`);
+      await saveUsage(state);
+
+      const outputs = [
+        'artifacts/reference-evidence-pack.json',
+        'artifacts/reference-fidelity-contract.json',
+        'artifacts/reference-behavior-analysis.model-output.raw.json',
+        'artifacts/reference-behavior-analysis.raw.json',
+        ...(rawAnalysis.levelReconstruction ? ['artifacts/reference-level-reconstruction.raw.json'] : []),
+        'artifacts/reference-research-resolution.json',
+        'artifacts/reference-behavior-analysis.json',
+        'artifacts/reference-failure-pressure-contract.json',
+        'artifacts/reference-frame-manifest.json',
+        'artifacts/reference-level-reconstruction.json',
+        'artifacts/reference-level-implementation-contract.json',
+        ...(objectReview ? ['artifacts/reference-object-review.json'] : []),
+      ];
+      const recoveryEvidence = [
+        'research:recovered-existing-output',
+        ...(reprojectCompleted ? ['research:explicit-prebuild-reprojection'] : []),
+        `research:completed-log:${recoveredLog}`,
+        'research:raw-truth-preserved',
+        'reference:resolution-provenance',
+        'reference:evidence-pack',
+        'reference:five-dimension-behavior-contract',
+        'reference:failure-pressure-contract',
+        'reference:frame-manifest',
+        'reference:recording-level-contract',
+        'zod:ReferenceEvidencePackSchema',
+        'zod:ReferenceFidelityContractSchema',
+        'zod:ReferenceFrameManifestSchema',
+        'zod:ReferenceLevelImplementationContractSchema',
+        `model:${recovered.metrics.model}`,
+        'usage:successful-output-log-only',
+        ...(record.attempts > 1 ? ['usage:prior-timeout-unavailable'] : []),
+      ];
+      const blockers = [
+        ...resolved.resolution.blockers,
+        ...levelVerification.blockers,
+        ...implementationContract.blockers,
+        ...fidelity.blockers,
+      ];
+      if (blockers.length > 0) return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', record.inputArtifacts, outputs, [...recoveryEvidence, ...[...new Set(blockers)].map((blocker) => `blocked:${blocker}`)]);
+      await complete(state, record, outputs, recoveryEvidence);
+      if (reprojectCompleted && await store.hasArtifact(runId, 'reference-mechanic-spec.json')) {
+        const lockRecord = state.stages.REFERENCE_MECHANIC_LOCK;
+        const existingLock = ReferenceMechanicSpecSchema.parse(await store.readArtifact(runId, 'reference-mechanic-spec.json'));
+        if (canRevalidateDeterministicArtifact(lockRecord, sha256Text(JSON.stringify(existingLock)), sha256Text(JSON.stringify(reference)))) {
+          await complete(state, lockRecord!, ['artifacts/reference-mechanic-spec.json'], ['zod:ReferenceMechanicSpecSchema', 'locked-by:human', 'agent-ideation:false', 'mechanic-fidelity:maximum-core-mechanics', 'expression-isolation:true', 'research:unchanged-human-lock-revalidated']);
+          await store.log(runId, 'reference-mechanic-lock.revalidated', { attemptsPreserved: lockRecord!.attempts, unchanged: true, providerCalls: lockRecord!.providerCalls });
+        }
+      }
+      await store.log(runId, 'reference-research.recovered', { sourceLog: recoveredLog, model: recovered.metrics.model, attemptsPreserved: record.attempts, rawStatus: rawAnalysis.status, resolutionStatus: resolved.resolution.status, reprojectCompleted });
+      return state;
+    },
+    async inspect(runId: string) {
+      const state = await store.load(runId);
+      const runRoot = store.runRoot(runId);
+      const artifacts = await listFiles(path.join(runRoot, 'artifacts'));
+      const operator = buildOperatorRunSummary(state);
+      const reviewMaterials = await Promise.all(operator.reviewArtifacts.map(async (relative) => {
+        const file = path.join(runRoot, relative);
+        if (!await exists(file)) return { path: file, available: false };
+        return {
+          path: file,
+          available: true,
+          ...(file.endsWith('.json') ? { content: redactValue(JSON.parse(await readFile(file, 'utf8'))) } : {}),
+        };
+      }));
+      return { state, artifacts, operator, reviewMaterials };
+    },
     async verifyBuild(runId: string) {
       const state = await store.load(runId); assertRunMode(state);
       if (mode !== 'codex-account') throw new Error('verify-build is only available in FACTORY_MODE=codex-account');
@@ -3591,8 +5473,13 @@ export function createFactory(options: FactoryOptions = {}) {
       const state = await store.load(runId);
       assertRunMode(state);
       const cleanupPaths = getDownstreamArtifactPaths(stage);
+      const preProviderBudgetRestored = prepareExplicitStageRetry(state.stages[stage]);
+      const qaAttemptWindowReset = (stage === 'QA' || getDownstreamStages(stage).includes('QA'))
+        && state.stages.QA?.status !== 'completed'
+        ? resetDeterministicQaAttemptWindow(state.stages.QA)
+        : false;
       invalidateDownstream(state, stage);
-      // Mark old evidence stale before deleting files. This prevents a resume
+      // Mark old evidence stale before archiving files. This prevents a resume
       // racing with cleanup (or a missing output) from treating prior hashes
       // as release-valid.
       let ledger = createArtifactLedger();
@@ -3601,9 +5488,11 @@ export function createFactory(options: FactoryOptions = {}) {
       await clearRetryArtifacts(runId, stage);
       state.stage = stage;
       state.status = 'pending';
-      if (stage === 'FULL_BUILD' || stage === 'BUILD') state.fixAttempts = 0;
+      delete state.failureReason;
+      // A build retry is not a new human-authorized repair campaign. Retain
+      // the run-wide automatic FIX count across every stage restart.
       await store.save(state);
-      await store.log(runId, 'run.retry', { stage, cleared: cleanupPaths, ledgerInvalidated: true });
+      await store.log(runId, 'run.retry', { stage, cleared: cleanupPaths, ledgerInvalidated: true, preProviderBudgetRestored, qaAttemptWindowReset });
       return execute(runId);
     },
     async previewPrototype(runId: string, prototype: string) { if (!/^prototype-[abc]$/.test(prototype)) throw new Error('Prototype must be prototype-a, prototype-b or prototype-c'); return webRuntime.startPreview(path.join(store.runRoot(runId), 'workspace', prototype)); },

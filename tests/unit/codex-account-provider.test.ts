@@ -50,6 +50,7 @@ describe('CodexAccountProvider', () => {
     expect(result.value).toEqual(blueprint);
     expect(client.requests[0]).toMatchObject({ label: 'BLUEPRINT', cwd: root, sandbox: 'read-only', outputPath: path.join(root, 'artifacts/game-blueprint.json') });
     expect(client.requests[0]?.prompt).toContain('input/seed.yaml');
+    expect(client.requests[0]?.prompt).toContain('ProducerAgent package');
     expect(client.requests[0]?.prompt).toMatch(/reference_reskin.*maximum(?:-| )fidelity core-mechanic reproduction/i);
     expect(client.requests[0]?.prompt).toMatch(/input-to-state transitions.*core-loop order.*progression topology.*unlock dependencies.*failure and recovery rules.*feedback timing bands/i);
     expect(client.requests[0]?.outputSchema).toMatchObject({ type: 'object', properties: { schemaVersion: expect.anything() } });
@@ -70,8 +71,33 @@ describe('CodexAccountProvider', () => {
       contextPacket: { schemaVersion: 1, stage: 'COMPETITOR_RESEARCH', summary: 'safe', inputs: [{ path: 'input/seed.yaml', excerpt: 'title: Test', priority: 'required' }], omitted: [], totalChars: 11 },
     });
     expect(client.requests[0]?.cwd).toContain(path.join(root, 'research-sandbox', 'competitor_research'));
+    expect(client.requests[0]?.runRoot).toBe(root);
     expect(client.requests[0]?.researchIsolation).toMatchObject({ mode: 'sanitized-read-only' });
     expect(client.requests[0]?.cwd).not.toBe(root);
+  });
+
+  it('requires recording-backed reference research to inspect verified frames and emit a level reconstruction', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-account-reference-frames-'));
+    const client = new FakeExecutor([{}]);
+    const provider = new CodexAccountProvider(client);
+    await provider.analyzeReferenceEvidence({} as never, {
+      runRoot: root,
+      outputPath: path.join(root, 'artifacts/reference-behavior-analysis.json'),
+      logDir: path.join(root, 'logs/codex'),
+      inputPaths: ['artifacts/reference-evidence-pack.json', 'artifacts/reference-frame-manifest.json'],
+      stage: 'REFERENCE_DEEP_RESEARCH',
+      sandbox: 'read-only',
+      contextPacket: { schemaVersion: 1, stage: 'REFERENCE_DEEP_RESEARCH', summary: 'inspect frames', inputs: [], omitted: [], totalChars: 0 },
+    });
+    expect(client.requests[0]?.prompt).toMatch(/every copied contact sheet.*deterministic start\/middle\/end detail sample/i);
+    expect(client.requests[0]?.prompt).toMatch(/non-null levelReconstruction/i);
+    expect(client.requests[0]?.prompt).toMatch(/normalized object bounds/i);
+    expect(client.requests[0]?.prompt).toMatch(/replay action.*replay checkpoint.*ready.*interactionSequence/i);
+    expect(JSON.stringify(client.requests[0]?.outputSchema)).toContain('levelReconstruction');
+    const outputSchema = JSON.stringify(client.requests[0]?.outputSchema);
+    expect(outputSchema).toContain('"evidenceLimitations"');
+    expect(outputSchema).toContain('"const":"observed-runtime"');
+    expect(outputSchema).toContain('"const":"observed"');
   });
 
   it('honors the routed model in structured calls but never grants write access', async () => {
@@ -79,7 +105,35 @@ describe('CodexAccountProvider', () => {
     const client = new FakeExecutor([blueprint]);
     const provider = new CodexAccountProvider(client);
     await provider.generateBlueprint({ title: 'Test', theme: 'spirits', runtime: 'web-lite', template: 'idle-shop-v1', designMode: 'prototype_tournament', targetPlatforms: blueprint.targetPlatforms, preferences: {} }, { runRoot: root, outputPath: path.join(root, 'artifacts/game-blueprint.json'), logDir: path.join(root, 'logs/codex'), inputPaths: ['input/seed.yaml'], stage: 'BLUEPRINT', model: 'gpt-5.6-sol', reasoning: 'max', sandbox: 'workspace-write' });
-    expect(client.requests[0]).toMatchObject({ model: 'gpt-5.6-sol', sandbox: 'read-only' });
+    expect(client.requests[0]).toMatchObject({ model: 'gpt-5.6-sol', reasoning: 'max', sandbox: 'read-only' });
+  });
+
+  it('uses code-backed QA targets without requesting recording evidence when only verified code is supplied', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-account-reference-code-'));
+    const client = new FakeExecutor([{}]);
+    const provider = new CodexAccountProvider(client);
+    await provider.analyzeReferenceEvidence({} as never, {
+      runRoot: root, outputPath: path.join(root, 'artifacts/reference-behavior-analysis.json'), logDir: path.join(root, 'logs/codex'),
+      inputPaths: ['artifacts/reference-evidence-pack.json', 'artifacts/reference-code-analysis.json'], stage: 'REFERENCE_DEEP_RESEARCH', sandbox: 'read-only',
+      contextPacket: { schemaVersion: 1, stage: 'REFERENCE_DEEP_RESEARCH', summary: 'verified code mechanics', inputs: [], omitted: [], totalChars: 0 },
+    });
+    const request = client.requests[0]!;
+    expect(request.prompt).toContain('code-analysis');
+    expect(request.prompt).toContain('qa-target');
+    expect(request.prompt).toContain('evidenceLimitations');
+    expect(request.prompt).toMatch(/exact schema keys.*stateBranch.*playerInput.*spatialRelationship.*visibleFeedback.*viewport.*sourceRefs/is);
+    expect(request.prompt).toMatch(/exact failure-pressure schema keys.*pressureType.*playerSignal.*failureOutcome.*attribution.*recovery.*implementationImplications.*noCopyBoundary/is);
+    expect(request.prompt).not.toContain('ordered visible events and observed mobile viewport');
+    expect(request.prompt).not.toContain('pair it with the verified recording path');
+    expect(request.prompt).toMatch(/natural.*perceptual QA/i);
+    // The strict transport drops optional Zod fields. A prompt alone cannot
+    // ask the model to return metadata forbidden by its actual output schema.
+    const schema = request.outputSchema as { properties: Record<string, unknown>; required: string[] };
+    expect(schema.required).toContain('evidenceLimitations');
+    const checks = schema.properties.behaviorChecks as { items: { properties: Record<string, unknown>; required: string[] } };
+    expect(checks.items.required).toEqual(expect.arrayContaining(['evidenceBasis', 'viewportBasis']));
+    expect(checks.items.properties.evidenceBasis).toMatchObject({ const: 'code-analysis' });
+    expect(checks.items.properties.viewportBasis).toMatchObject({ const: 'qa-target' });
   });
 
   it('does not forward instruction-shaped text from a context packet to the mutating boundary', async () => {
@@ -117,6 +171,7 @@ describe('CodexAccountProvider', () => {
     expect(client.requests[0]?.prompt).toContain('resetGame');
     expect(client.requests[0]?.prompt).toContain('setRandomSeed');
     expect(client.requests[0]?.prompt).toMatch(/package scripts.*test.*typecheck/i);
+    expect(client.requests[0]?.prompt).toMatch(/Before writing, declare a minimal plan/);
     expect(client.requests[0]?.prompt).toMatch(/versioned local save/i);
     expect(client.requests[0]?.prompt).toMatch(/production.*refresh/i);
     expect(client.requests[0]?.prompt).toMatch(/customer.*waiting.*countdown.*refresh/i);
@@ -172,6 +227,10 @@ describe('CodexAccountProvider', () => {
       styleLock,
       assets: { schemaVersion: 1, provider: 'test', assets: ['customer', 'product', 'background', 'upgrade'].map((id, index) => ({ id, kind: (['character', 'product', 'background', 'ui'] as const)[index]!, path: `assets/${id}.png`, prompt: id, status: 'generated' as const, sha256: 'hash' })) },
       template: 'idle-shop-v1',
+      context: {
+        runRoot: path.resolve(workspace, '../..'), outputPath: path.resolve(workspace, '../../logs/codex/BUILD.last-message.txt'), logDir: path.resolve(workspace, '../../logs/codex'),
+        inputPaths: ['artifacts/reference-level-implementation-contract.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FULL_BUILD', sandbox: 'workspace-write',
+      },
     });
 
     expect(client.requests[0]?.prompt).toMatch(/replace.*default customer-order gameplay/i);
@@ -181,6 +240,51 @@ describe('CodexAccountProvider', () => {
     expect(client.requests[0]?.prompt).toMatch(/input-to-state transitions.*core-loop order.*progression topology.*unlock dependencies.*failure and recovery rules.*feedback timing bands/i);
     expect(client.requests[0]?.prompt).toMatch(/mechanic fidelity traceability matrix/i);
     expect(client.requests[0]?.prompt).toMatch(/regression test.*every locked mechanic/i);
+    expect(client.requests[0]?.prompt).toMatch(/recording-derived semantic level contract/i);
+    expect(client.requests[0]?.prompt).toContain('window.__REFERENCE_LEVEL_TEST__');
+    expect(client.requests[0]?.prompt).toMatch(/getNaturalInputTarget.*must never mutate state/i);
+  });
+
+  it('uses the cut mother-template contract without injecting idle-shop controls', async () => {
+    const workspace = await mkdtemp(path.join(tmpdir(), 'codex-cut-builder-'));
+    const client = new FakeExecutor(['implemented and tested']);
+    const provider = new CodexAccountProvider(client);
+    const cutBlueprint: GameBlueprint = {
+      ...blueprint,
+      gameId: 'cut-reference',
+      template: 'cut-stack-dodge-v1',
+      designMode: 'reference_reskin',
+      referenceMechanics: {
+        schemaVersion: 1,
+        lockedBy: 'human',
+        source: { name: 'recording', url: 'https://example.com/reference', researchFiles: [] },
+        coreLoop: ['tap', 'flip', 'cut', 'settle'],
+        playerActions: ['tap to flip'],
+        progressionSystems: ['authored course'],
+        unlockRules: ['finish exposes replay'],
+        feedbackCadence: { immediateSeconds: 1, microGoalMinSeconds: 1, microGoalMaxSeconds: 30 },
+        mustPreserveMechanics: ['tap changes trajectory'],
+        adaptableMechanics: ['original expression'],
+        fidelityPolicy: { level: 'maximum_core_mechanics', preserveInputStateTransitions: true, preserveCoreLoopOrder: true, preserveProgressionTopology: true, preserveUnlockDependencies: true, preserveFailureAndRecoveryRules: true, preserveFeedbackTimingBands: true },
+        expressionIsolation: { originalCode: true, originalAssets: true, originalNamesAndText: true, originalUiLayout: true, originalAudio: true, originalTuningValues: true },
+      },
+    };
+
+    await provider.build({
+      workspace,
+      blueprint: cutBlueprint,
+      styleLock,
+      assets: { schemaVersion: 1, provider: 'test', assets: ['blade', 'target', 'background', 'replay'].map((id, index) => ({ id, kind: (['character', 'product', 'background', 'ui'] as const)[index]!, path: `assets/${id}.png`, prompt: id, status: 'generated' as const, sha256: 'hash' })) },
+      template: 'cut-stack-dodge-v1',
+      context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.resolve(workspace, '../../logs/codex/BUILD.last-message.txt'), logDir: path.resolve(workspace, '../../logs/codex'), inputPaths: ['artifacts/reference-level-implementation-contract.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FULL_BUILD', sandbox: 'workspace-write' },
+    });
+
+    const prompt = client.requests[0]?.prompt ?? '';
+    expect(prompt).toMatch(/cut-stack-dodge-v1.*mother template/i);
+    expect(prompt).toMatch(/resetGame.*getState.*setRandomSeed.*advanceTicks.*tap.*replay.*getEvents/i);
+    expect(prompt).not.toContain('spawnCustomer');
+    expect(prompt).not.toContain('completeOrder');
+    expect(prompt).not.toContain('upgradeStation');
   });
 
   it('gives the Cocos Builder the locked hybrid-3D and carry-sway contract', async () => {
@@ -286,10 +390,17 @@ describe('CodexAccountProvider', () => {
     const client = new FakeExecutor(['fixed explicit issue']);
     const provider = new CodexAccountProvider(client, { fixTimeoutMs: 600_000 });
 
-    const result = await provider.fix({ workspace, threadId: 'builder-thread-99', qaReport: { schemaVersion: 1, passed: false, checks: [], issues: [{ id: 'qa-1', severity: 'error', message: 'button broken', evidence: 'screenshot' }], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date().toISOString() } });
+    const result = await provider.fix({
+      workspace,
+      threadId: 'builder-thread-99',
+      qaReport: { schemaVersion: 1, passed: false, checks: [], issues: [{ id: 'recording-level-comparison', severity: 'error', message: 'placement mismatch at checkpoint cut-1', evidence: 'artifacts/reference-level-comparison-gate.json' }], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date().toISOString() },
+      context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.join(workspace, 'fix.log'), logDir: path.join(workspace, 'logs'), inputPaths: ['artifacts/qa-report.json', 'artifacts/reference-level-implementation-contract.json', 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FIX', sandbox: 'workspace-write' },
+    });
 
     expect(client.requests[0]).toMatchObject({ label: 'FIX', sandbox: 'workspace-write', resumeThreadId: 'builder-thread-99', timeoutMs: 600_000, maxRetries: 0 });
     expect(result.threadId).toBe('builder-thread-99');
     expect(result.verificationMode).toBe('full');
+    expect(client.requests[0]?.prompt).toMatch(/named checkpoint, object, placement, relation, action, camera, terminal, or replay blocker/i);
+    expect(client.requests[0]?.prompt).toMatch(/must not weaken.*recording-level contract/i);
   });
 });

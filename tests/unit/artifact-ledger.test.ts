@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createArtifactLedger, recordArtifact, evaluateArtifactLedger, invalidateArtifacts } from '../../src/core/artifact-ledger.js';
+import { createArtifactLedger, recordArtifact, recordStageEmission, evaluateArtifactLedger, invalidateArtifacts } from '../../src/core/artifact-ledger.js';
 
 const hash = (letter: string) => letter.repeat(64);
 
@@ -43,5 +43,61 @@ describe('artifact dependency ledger', () => {
     const rebuiltSpec = recordArtifact(ledger, { path: 'artifacts/spec.json', sha256: hash('c'), producerStage: 'EXPERIENCE_CONTRACT', inputHashes: {} });
     expect(rebuiltSpec.entries.find((entry) => entry.path === 'artifacts/build.json')?.status).toBe('INVALIDATED');
     expect(evaluateArtifactLedger(rebuiltSpec).passed).toBe(false);
+  });
+
+  it('keeps an unchanged standalone re-record invalidated', () => {
+    let ledger = createArtifactLedger();
+    ledger = recordArtifact(ledger, { path: 'artifacts/spec.json', sha256: hash('a'), producerStage: 'REFERENCE_DEEP_RESEARCH', inputHashes: {} });
+    ledger = invalidateArtifacts(ledger, ['artifacts/spec.json'], 'drift:spec');
+
+    const rerecorded = recordArtifact(ledger, { path: 'artifacts/spec.json', sha256: hash('a'), producerStage: 'REFERENCE_DEEP_RESEARCH', inputHashes: {} });
+    expect(rerecorded.entries.find((entry) => entry.path === 'artifacts/spec.json')).toMatchObject({ status: 'INVALIDATED', invalidatedBy: ['drift:spec'] });
+  });
+
+  it('clears only unchanged outputs proven by a stage emission and refreshes their input hashes', () => {
+    let ledger = createArtifactLedger();
+    ledger = recordArtifact(ledger, { path: 'artifacts/source.json', sha256: hash('a'), producerStage: 'INPUT', inputHashes: {} });
+    ledger = recordArtifact(ledger, { path: 'artifacts/pack.json', sha256: hash('c'), producerStage: 'REFERENCE_DEEP_RESEARCH', inputHashes: { 'artifacts/source.json': hash('a') } });
+    ledger = recordArtifact(ledger, { path: 'artifacts/fidelity.json', sha256: hash('f'), producerStage: 'REFERENCE_DEEP_RESEARCH', inputHashes: { 'artifacts/source.json': hash('a') } });
+    ledger = recordArtifact(ledger, { path: 'artifacts/old-output.json', sha256: hash('e'), producerStage: 'REFERENCE_DEEP_RESEARCH', inputHashes: { 'artifacts/source.json': hash('a') } });
+    ledger = recordArtifact(ledger, { path: 'artifacts/blueprint.json', sha256: hash('b'), producerStage: 'BLUEPRINT', inputHashes: { 'artifacts/pack.json': hash('c') } });
+    ledger = recordArtifact(ledger, { path: 'artifacts/source.json', sha256: hash('b'), producerStage: 'INPUT', inputHashes: {} });
+
+    const emitted = recordStageEmission(ledger, {
+      producerStage: 'REFERENCE_DEEP_RESEARCH',
+      outputs: [
+        { path: 'artifacts/fidelity.json', sha256: hash('f'), inputHashes: { 'artifacts/source.json': hash('b') } },
+        { path: 'artifacts/pack.json', sha256: hash('c'), inputHashes: { 'artifacts/source.json': hash('b') } },
+      ],
+    });
+
+    expect(emitted.entries.find((entry) => entry.path === 'artifacts/pack.json')).toMatchObject({ status: 'VALID', inputHashes: { 'artifacts/source.json': hash('b') }, invalidatedBy: [] });
+    expect(emitted.entries.find((entry) => entry.path === 'artifacts/fidelity.json')).toMatchObject({ status: 'VALID', inputHashes: { 'artifacts/source.json': hash('b') }, invalidatedBy: [] });
+    expect(emitted.entries.find((entry) => entry.path === 'artifacts/old-output.json')?.status).toBe('INVALIDATED');
+    expect(emitted.entries.find((entry) => entry.path === 'artifacts/blueprint.json')?.status).toBe('INVALIDATED');
+  });
+
+  it('is independent of sibling output order when one emitted output changes', () => {
+    const initialLedger = () => {
+      let ledger = createArtifactLedger();
+      ledger = recordArtifact(ledger, { path: 'artifacts/source.json', sha256: hash('a'), producerStage: 'INPUT', inputHashes: {} });
+      ledger = recordArtifact(ledger, { path: 'artifacts/pack.json', sha256: hash('c'), producerStage: 'REFERENCE_DEEP_RESEARCH', inputHashes: { 'artifacts/source.json': hash('a') } });
+      ledger = recordArtifact(ledger, { path: 'artifacts/fidelity.json', sha256: hash('f'), producerStage: 'REFERENCE_DEEP_RESEARCH', inputHashes: { 'artifacts/source.json': hash('a'), 'artifacts/pack.json': hash('c') } });
+      ledger = recordArtifact(ledger, { path: 'artifacts/blueprint.json', sha256: hash('b'), producerStage: 'BLUEPRINT', inputHashes: { 'artifacts/fidelity.json': hash('f') } });
+      return recordArtifact(ledger, { path: 'artifacts/source.json', sha256: hash('b'), producerStage: 'INPUT', inputHashes: {} });
+    };
+    const outputs: Array<{ path: string; sha256: string; inputHashes: Record<string, string> }> = [
+      { path: 'artifacts/pack.json', sha256: hash('d'), inputHashes: { 'artifacts/source.json': hash('b') } },
+      { path: 'artifacts/fidelity.json', sha256: hash('f'), inputHashes: { 'artifacts/source.json': hash('b'), 'artifacts/pack.json': hash('d') } },
+    ];
+
+    const forward = recordStageEmission(initialLedger(), { producerStage: 'REFERENCE_DEEP_RESEARCH', outputs });
+    const reverse = recordStageEmission(initialLedger(), { producerStage: 'REFERENCE_DEEP_RESEARCH', outputs: [...outputs].reverse() });
+    const comparable = (value: typeof forward) => value.entries.map(({ path, sha256, producerStage, inputHashes, status, invalidatedBy }) => ({ path, sha256, producerStage, inputHashes, status, invalidatedBy }));
+
+    expect(comparable(forward)).toEqual(comparable(reverse));
+    expect(forward.entries.find((entry) => entry.path === 'artifacts/pack.json')?.status).toBe('VALID');
+    expect(forward.entries.find((entry) => entry.path === 'artifacts/fidelity.json')?.status).toBe('VALID');
+    expect(forward.entries.find((entry) => entry.path === 'artifacts/blueprint.json')?.status).toBe('INVALIDATED');
   });
 });

@@ -1,8 +1,42 @@
 import { describe, expect, it } from 'vitest';
 import { StageContractSchema } from '../../src/schemas/stage-contracts.js';
-import { getStageContract, evaluateStageEvidence, evaluateStageContract, evaluateStageContractRegistry, evaluateVerifierSeparation, isStageContractExplicit } from '../../src/core/stage-contracts.js';
+import { getStageContract, evaluateStageEvidence, evaluateStageContract, evaluateStageContractRegistry, evaluateVerifierSeparation, isStageContractExplicit, stageAttemptAllowed } from '../../src/core/stage-contracts.js';
 
 describe('stage contracts', () => {
+  it('requires reference research to emit a source-bound five-dimension behavior contract', () => {
+    const contract = getStageContract('REFERENCE_DEEP_RESEARCH');
+    expect(contract.outputs).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'artifacts/reference-evidence-pack.json', required: true }),
+      expect.objectContaining({ path: 'artifacts/reference-fidelity-contract.json', required: true }),
+      expect.objectContaining({ path: 'artifacts/reference-behavior-analysis.raw.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-level-reconstruction.raw.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-research-resolution.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-behavior-analysis.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-failure-pressure-contract.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-frame-manifest.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-level-reconstruction.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-level-implementation-contract.json', required: false }),
+    ]));
+    expect(contract.evidenceRequired.map((item) => item.id)).toContain('reference:five-dimension-behavior-contract');
+    expect(contract.evidenceRequired.map((item) => item.id)).toContain('reference:recording-level-contract-when-recording');
+    for (const stage of ['BLUEPRINT', 'PRODUCT_EXPERIENCE_CONTRACT', 'FULL_BUILD', 'QA', 'FIX'] as const) {
+      expect(getStageContract(stage).inputs).toEqual(expect.arrayContaining([
+        expect.objectContaining({ path: 'artifacts/reference-research-resolution.json', required: false }),
+        expect.objectContaining({ path: 'artifacts/reference-failure-pressure-contract.json', required: false }),
+      ]));
+    }
+    for (const stage of ['FULL_BUILD', 'QA'] as const) {
+      expect(getStageContract(stage).inputs).toEqual(expect.arrayContaining([
+        expect.objectContaining({ path: 'artifacts/reference-level-implementation-contract.json', required: false }),
+      ]));
+    }
+    expect(getStageContract('FIX').inputs).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'artifacts/reference-level-implementation-contract.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-level-runtime-trace.json', required: false }),
+      expect.objectContaining({ path: 'artifacts/reference-level-comparison-gate.json', required: false }),
+    ]));
+  });
+
   it('records an independent verifier and rejects protected self-acceptance', () => {
     const build = getStageContract('FULL_BUILD');
     expect(evaluateVerifierSeparation(build)).toMatchObject({ passed: true, verifierRole: 'QAAgent' });
@@ -85,16 +119,21 @@ describe('stage contracts', () => {
     const release = getStageContract('RELEASE');
     expect(release.approvalRequired).toBe(true);
     expect(release.outputs.map((item) => item.path)).toEqual(expect.arrayContaining(['artifacts/release-candidate.json']));
-    expect(release.maxAttempts).toBeLessThanOrEqual(build.maxAttempts);
+    expect(release.maxAttempts ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(build.maxAttempts ?? Number.POSITIVE_INFINITY);
   });
 
-  it('gives bounded fixer retries an explicit workspace contract', () => {
+  it('allows evidence-backed formal fixer retries without a fixed attempt ceiling', () => {
     const fixer = getStageContract('FIX');
     expect(isStageContractExplicit('FIX')).toBe(true);
     expect(fixer.ownerRole).toBe('FixerAgent');
     expect(fixer.verifierRole).toBe('QAAgent');
-    expect(fixer.maxAttempts).toBe(2);
-    expect(fixer.retryPolicy.maxAttempts).toBe(2);
+    expect(fixer.maxAttempts).toBeNull();
+    expect(fixer.retryPolicy.maxAttempts).toBeNull();
+    expect(fixer.retryPolicy.unboundedUntilPass).toBe(true);
+    expect(fixer.passCriteria).toEqual(expect.arrayContaining(['formal QA → FIX → QA has no fixed repair-attempt ceiling']));
+    expect(stageAttemptAllowed(fixer, 6)).toBe(true);
+    expect(stageAttemptAllowed(fixer, 1_000)).toBe(true);
+    expect(stageAttemptAllowed(getStageContract('QA'), 3)).toBe(false);
     expect(fixer.mutationScope).toBe('game-workspace');
   });
 

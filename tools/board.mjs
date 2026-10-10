@@ -1,10 +1,11 @@
 #!/usr/bin/env node
-// 妖怪夜市 · 工厂看板（v2）按"游戏颗粒度"重组：自动判类型、同款折叠、真名优先。
+/* global process, URL, console */
+// 小游戏工厂 · 工厂看板（v2）按"游戏颗粒度"重组：自动判类型、同款折叠、真名优先。
 // 用法：node tools/board.mjs   或   pnpm board
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-import { exec } from 'node:child_process';
+import { exec, execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = process.env.FACTORY_ROOT ? path.resolve(process.env.FACTORY_ROOT) : process.cwd();
@@ -14,22 +15,6 @@ const HTML_PATH = fileURLToPath(new URL('./board.html', import.meta.url));
 
 // 通用模板名（package.json 里出现这些说明只是占位，不是真游戏名）
 const GENERIC_PKG = new Set(['generated-idle-shop', 'generated-spatial-shop', 'idle-shop-v1', 'spatial-shop-v1', 'spatial-shop-3d-v1']);
-
-// 阶段 -> 负责 agent
-const STAGE_AGENT = {
-  CREATED: 'RequestRouter', ROUTE: 'RequestRouter',
-  BLUEPRINT: 'ProducerAgent',
-  COMPETITOR: 'ResearchAgent', REFERENCE: 'ResearchAgent', RESEARCH: 'ResearchAgent',
-  OPEN_SOURCE: 'OpenSourceResearchAgent',
-  ART_DIRECTIONS: 'ArtDirectorAgent', WAITING_FOR_ART: '你（人工）', STYLE_LOCK: 'StyleLockAgent',
-  ASSETS: 'AssetProducerAgent',
-  BUILD: 'BuilderAgent',
-  QA: 'QAAgent',
-  FIX: 'FixerAgent',
-  RELEASE: 'ReleaseAgent',
-  ACTION_EXPERIMENT: 'ActionLab', PROTOTYPE: 'PrototypeBuilder',
-  NARRATIVE: 'NarrativeDesigner', REPLAY: 'ReplayDesigner', CHAPTER: 'ChapterBuilder',
-};
 
 // ---------- 解析一个 run 的元元（含类型与真名）----------
 function detectType(dir, state) {
@@ -101,9 +86,9 @@ const STAGE_PM = {
 };
 function stagePm(name) { for (const k in STAGE_PM) if (name.indexOf(k) >= 0) return STAGE_PM[k]; return [name, '—', '—']; }
 
-// PM 视角状态
-const PM_LABELS = { playable: '✅ 可试玩验收', waiting_pm: '⏳ 等你拍板', building: '🔧 制作中', failed: '⛔ 卡住了', research: '📋 研究中', draft: '📝 还没开始' };
-const PM_ORDER = ['playable', 'waiting_pm', 'failed', 'building', 'research', 'draft'];
+// PM 视角状态（wait_accept = 能玩但你还没写过判断；reviewed = 你看过了）
+const PM_LABELS = { wait_accept: '🆕 等你验收', reviewed: '👀 你看过了', playable: '✅ 可试玩', waiting_pm: '⏳ 等你拍板', building: '🔧 制作中', failed: '⛔ 卡住了', research: '📋 研究中', draft: '📝 还没开始' };
+const PM_ORDER = ['wait_accept', 'reviewed', 'playable', 'waiting_pm', 'failed', 'building', 'research', 'draft'];
 function pmStatusOf(o) {
   if (o.playable) return 'playable';
   if (o.status === 'waiting' || (o.stage && o.stage.indexOf('WAITING') === 0)) return 'waiting_pm';
@@ -145,7 +130,7 @@ function findPlayable(dir) {
     }
     const ws = path.join(dir, 'workspace');
     if (fs.existsSync(ws)) { const r = walk(ws); if (r) return r; }
-  } catch {}
+  } catch { /* workspace may be absent while a run is being created */ }
   return '';
 }
 function bestPlayUrl(runs) {
@@ -159,14 +144,14 @@ function bestPlayUrl(runs) {
 
 function parseMeta(dir, fallbackId) {
   let bp = null, seedTxt = null, pkgName = '', expId = '', expQuestion = '';
-  try { bp = JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'game-blueprint.json'), 'utf8')); } catch {}
-  try { seedTxt = fs.readFileSync(path.join(dir, 'input', 'seed.yaml'), 'utf8'); } catch {}
-  try { pkgName = JSON.parse(fs.readFileSync(path.join(dir, 'workspace', 'game', 'package.json'), 'utf8')).name || ''; } catch {}
+  try { bp = JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'game-blueprint.json'), 'utf8')); } catch { /* optional artifact */ }
+  try { seedTxt = fs.readFileSync(path.join(dir, 'input', 'seed.yaml'), 'utf8'); } catch { /* optional seed */ }
+  try { pkgName = JSON.parse(fs.readFileSync(path.join(dir, 'workspace', 'game', 'package.json'), 'utf8')).name || ''; } catch { /* optional workspace */ }
   try {
     const ae = JSON.parse(fs.readFileSync(path.join(dir, 'input', 'action-experiment.json'), 'utf8'));
     expId = ae.experimentId || '';
     expQuestion = ae.question || '';
-  } catch {}
+  } catch { /* action experiments have a different input shape */ }
   const seedField = (k) => {
     if (!seedTxt) return '';
     const m = seedTxt.match(new RegExp(`^${k}\\s*:\\s*(.+)$`, 'm'));
@@ -212,13 +197,15 @@ function gateInfo(run) {
 function buildGroup(name, type, runs, description = '') {
   const statusCounts = { done: 0, failed: 0, running: 0, waiting: 0, draft: 0 };
   let latestUpdatedAt = null, needsAttention = false;
-  // PM 状态取"最可操作"的那个（playable 优先）
+  // PM 状态取"最可操作"的那个（playable 优先）；已废弃的 run 不参与状态选举
   let pmStatus = 'draft';
   for (const r of runs) {
     statusCounts[r.tier] = (statusCounts[r.tier] || 0) + 1;
-    if (r.tier === 'waiting' || r.tier === 'failed') needsAttention = true;
+    if (!r.abandoned) {
+      if (r.tier === 'waiting' || r.tier === 'failed') needsAttention = true;
+      if (PM_ORDER.indexOf(r.pmStatus) < PM_ORDER.indexOf(pmStatus)) pmStatus = r.pmStatus;
+    }
     if (!latestUpdatedAt || (r.updatedAt && r.updatedAt > latestUpdatedAt)) latestUpdatedAt = r.updatedAt;
-    if (PM_ORDER.indexOf(r.pmStatus) < PM_ORDER.indexOf(pmStatus)) pmStatus = r.pmStatus;
   }
   runs.sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
   const active = runs.filter((r) => !r.abandoned);
@@ -231,7 +218,13 @@ function buildGroup(name, type, runs, description = '') {
   const thumbRun = active.find((r) => r.thumbUrl && r.meta.type !== 'action-experiment') || active.find((r) => r.thumbUrl) || abandoned.find((r) => r.thumbUrl);
   // 试玩链接只从「活跃」run 中选
   const playMeta = bestPlayUrl(active);
-  const lat = runs[0];
+  const lat = (active.length ? active : runs)[0];
+  // 能玩之后，用"你有没有写过判断"区分：等你验收 / 你看过了
+  let finalPm = pmStatus;
+  if (pmStatus === 'playable') {
+    const seen = active.some((r) => readFeedback(r.runId));
+    finalPm = seen ? 'reviewed' : 'wait_accept';
+  }
   return {
     key: type + '::' + name, type, typeLabel: TYPE_LABEL[type] || type, name,
     subtitle: description || themeText,
@@ -240,7 +233,7 @@ function buildGroup(name, type, runs, description = '') {
     latestRunId: lat ? lat.runId : '', latestStatus: lat ? lat.status : '', latestStage: lat ? lat.stage : '',
     latestTier: lat ? lat.tier : 'draft', latestProgress: lat ? lat.progress : 0, latestUpdatedAt,
     runIds: runs.map((r) => r.runId), activeRunIds: active.map((r) => r.runId), abandonedRunIds: abandoned.map((r) => r.runId),
-    pmStatus, pmStatusLabel: PM_LABELS[pmStatus],
+    pmStatus: finalPm, pmStatusLabel: PM_LABELS[finalPm],
     playUrl: playMeta.url, playableRunId: playMeta.runId,
     thumbUrl: thumbRun ? thumbRun.thumbUrl : (lat ? lat.thumbUrl : ''),
   };
@@ -264,10 +257,9 @@ async function listGroups() {
       const done = stages.filter((x) => x.status === 'completed').length;
       progress = stageCount ? Math.round((done / stageCount) * 100) : 0;
     }
-    const distExists = fs.existsSync(path.join(dir, 'workspace', 'game', 'dist', 'index.html'));
     let buildOk = false, qaOk = false;
-    try { buildOk = !!JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'build-report.json'), 'utf8')).success; } catch {}
-    try { qaOk = JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'qa-report.json'), 'utf8')).passed === true; } catch {}
+    try { buildOk = !!JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'build-report.json'), 'utf8')).success; } catch { /* report may not exist yet */ }
+    try { qaOk = JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'qa-report.json'), 'utf8')).passed === true; } catch { /* report may not exist yet */ }
     const shots = fs.existsSync(path.join(dir, 'screenshots')) ? fs.readdirSync(path.join(dir, 'screenshots')).filter((f) => /\.(png|jpe?g|webp)$/i.test(f)).sort() : [];
     const thumb = shots.includes('gameplay.png') ? 'screenshots/gameplay.png' : (shots[0] ? 'screenshots/' + shots[0] : '');
     const playPath = findPlayable(dir);
@@ -286,8 +278,15 @@ async function listGroups() {
   if (reg) {
     const groups = [];
     const used = new Set();
-    for (const g of reg) {
-      const gruns = g.runs.map((rid) => runs.find((r) => r.runId === rid)).filter(Boolean);
+    for (const g of reg.games) {
+      // registry 条目是 {id, abandoned}；匹配到真实 run 后打上废弃标记
+      const gruns = g.runs
+        .map((e) => {
+          const r = runs.find((x) => x.runId === e.id);
+          if (r) r.abandoned = e.abandoned;
+          return r;
+        })
+        .filter(Boolean);
       gruns.forEach((r) => used.add(r.runId));
       if (gruns.length) groups.push(buildGroup(g.name, 'game', gruns, g.description));
     }
@@ -309,24 +308,158 @@ async function listGroups() {
   return out;
 }
 
+// 研究型 run（无 state.json）→ 只列「留了什么证据」，不擅自判定完成度
+function researchFlow(dir, playPath) {
+  let arts = []; try { arts = fs.readdirSync(path.join(dir, 'artifacts')); } catch { /* optional evidence directory */ }
+  let shots = []; try { shots = fs.readdirSync(path.join(dir, 'screenshots')).filter((f) => /\.(png|jpe?g|webp)$/i.test(f)); } catch { /* optional screenshots directory */ }
+  const qaReports = arts.filter((f) => /qa-report|retest-report|qa\.json/i.test(f));
+  const fixRecs = arts.filter((f) => /fix|repair|remediation/i.test(f));
+  let qaRootDirs = []; try { qaRootDirs = fs.readdirSync(dir).filter((f) => /^qa/i.test(f) && fs.statSync(path.join(dir, f)).isDirectory()); } catch { /* optional QA directory */ }
+  const researchEvidence = arts.filter((f) => /research|plan|conversion|contract|level-expansion|director|strategy/i.test(f));
+  const protoEvidence = [];
+  if (playPath) protoEvidence.push(playPath);
+  const buildReports = arts.filter((f) => /build-report|prototype-build/i.test(f));
+  protoEvidence.push(...buildReports.slice(0, 2));
+  const qaEvidence = [...qaReports, ...fixRecs];
+  const shotsEvidence = shots.length ? [`screenshots/（${shots.length} 张）`] : [];
+  const steps = [];
+  steps.push({
+    label: '调研与方案设计', agent: 'ResearchAgent', model: 'Sol',
+    status: 'evidence',
+    evidence: researchEvidence,
+    plain: researchEvidence.length ? `agent 研究过玩法和方案，留下 ${researchEvidence.length} 份文档` : '没有研究文档',
+  });
+  steps.push({
+    label: '制作可玩原型', agent: 'PrototypeBuilder', model: 'Terra',
+    status: 'evidence',
+    evidence: protoEvidence,
+    plain: playPath ? '做出了能点开试玩的网页 demo（点上方 🎮 直接体验判断）' : (buildReports.length ? '做过原型构建，但没找到可打开的 demo' : '没有 demo'),
+  });
+  steps.push({
+    label: '自动质检与修复', agent: 'QAAgent + FixerAgent', model: 'Luna',
+    status: 'evidence',
+    evidence: qaEvidence.length ? [...qaReports, ...fixRecs] : qaRootDirs.map((d) => d + '/'),
+    plain: qaEvidence.length || qaRootDirs.length ? `agent 自己跑过 ${qaReports.length + fixRecs.length + qaRootDirs.length} 轮检查和修改记录（这是它自评的，值不值得信由你定）` : '没有自检记录',
+  });
+  steps.push({
+    label: '画面留档', agent: 'QAAgent', model: 'Luna',
+    status: 'evidence',
+    evidence: shotsEvidence,
+    plain: shots.length ? `留了 ${shots.length} 张画面截图（下方可直接看）` : '没有截图',
+  });
+  return steps;
+}
+
+// 多候选读一个布尔报告字段（兼容研究型 run 的各种报告文件名）
+function readBoolReport(dir, files, key) {
+  for (const f of files) {
+    try { const j = JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', f), 'utf8')); if (j && key in j) return !!j[key]; } catch { /* try the next compatible report */ }
+  }
+  return false;
+}
+
+// 研究原型升级为正式游戏还差的步骤（固定清单，PM 一眼看出差距）
+const FORMAL_MISSING = [
+  { label: '策划定正式玩法', agent: 'ProducerAgent', model: 'Sol' },
+  { label: '等你选美术方向', agent: '你（产品经理）', model: '—' },
+  { label: '出正式美术素材', agent: 'AssetProducerAgent', model: 'Spark+Luna' },
+  { label: '正式构建游戏包', agent: 'BuilderAgent', model: 'Terra' },
+  { label: '正式质检与修复', agent: 'QAAgent + FixerAgent', model: 'Luna' },
+  { label: '打包发布', agent: 'ReleaseAgent', model: 'Sol' },
+];
+
+// 看板内嵌反馈（仅供研究型 run 使用，工厂不直接读）
+const FB_DIR = path.join(ROOT, 'tools', 'feedbacks');
+try { fs.mkdirSync(FB_DIR, { recursive: true }); } catch { /* feedback is best effort */ }
+
+function readFeedback(id) {
+  // 优先读工厂的 artifacts/feedback/*.json（流水线 run 的反馈）
+  try {
+    const fbDir = path.join(RUNS_DIR, id, 'artifacts', 'feedback');
+    const files = fs.readdirSync(fbDir).filter((f) => f.endsWith('.json')).sort();
+    if (files.length) {
+      const latest = files[files.length - 1];
+      const j = JSON.parse(fs.readFileSync(path.join(fbDir, latest), 'utf8'));
+      return { at: j.recordedAt || '', tags: j.projectRoute?.tags || [], note: j.rawFeedback || '', source: 'factory', raw: j };
+    }
+  } catch { /* fall back to the board-local feedback file */ }
+  // 回退：读看板自己的 tools/feedbacks/<id>.md（研究型 run 用）
+  try {
+    const txt = fs.readFileSync(path.join(FB_DIR, id + '.md'), 'utf8').trim();
+    if (!txt) return null;
+    const m = txt.match(/^\[([^\]]+)\]\s*(.*?)\n\n([\s\S]*)$/);
+    if (!m) return { at: '', tags: [], note: txt, source: 'board', raw: txt };
+    return { at: m[1], tags: m[2].split(/\s+/).filter(Boolean), note: m[3].trim(), source: 'board', raw: txt };
+  } catch { return null; }
+}
+
+// 真实写入：流水线 run 用 pnpm factory feedback；研究型 run 用看板文件
+function writeFeedback(id, tags, note) {
+  const tagPrefix = tags.length ? tags.map((t) => '#' + t).join(' ') + '\n\n' : '';
+  const text = tagPrefix + (note || '').trim();
+  // 流水线 run（有 state.json）→ 走工厂命令（真正被 agent 读到）
+  const stateFile = path.join(RUNS_DIR, id, 'state.json');
+  if (fs.existsSync(stateFile)) {
+    try {
+      const stdout = execSync('pnpm factory feedback ' + id + ' ' + JSON.stringify(text), { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+      const s = stdout.indexOf('{'), e = stdout.lastIndexOf('}');
+      if (s >= 0 && e > s) {
+        const parsed = JSON.parse(stdout.slice(s, e + 1));
+        return { ok: true, source: 'factory', recordedAt: parsed.recordedAt, stages: parsed.projectRoute?.stages || [], note: parsed.rawFeedback };
+      }
+      return { ok: true, source: 'factory', recordedAt: new Date().toISOString(), note: text };
+    } catch (e) {
+      // 失败也写一份看板本地副本（PM 至少看得到）
+      const r = writeBoardFeedback(id, tags, note);
+      return { ok: false, source: 'board-fallback', error: String(e.stderr || e.message).slice(-200), ...r };
+    }
+  }
+  // 研究型 run → 写看板本地
+  const r = writeBoardFeedback(id, tags, note);
+  return { ok: true, source: 'board', ...r };
+}
+
+function writeBoardFeedback(id, tags, note) {
+  const at = new Date().toISOString().replace('T', ' ').slice(0, 16);
+  const safe = [...note].filter((char) => {
+    const code = char.codePointAt(0) ?? 0;
+    return !(code <= 0x08 || (code >= 0x0e && code <= 0x1f));
+  }).join('').trim();
+  const content = `[${at}] ${tags.join(' ')}\n\n${safe}\n`;
+  fs.writeFileSync(path.join(FB_DIR, id + '.md'), content);
+  return { at, tags, note: safe };
+}
+
 async function runDetail(id) {
   const dir = path.join(RUNS_DIR, id);
   const state = await readJson(path.join(dir, 'state.json'));
   const meta = parseMeta(dir, id);
-  const stages = state?.stages ? Object.entries(state.stages).map(([name, v]) => ({ name, ...v })) : [];
-  let buildOk = false, qaOk = false;
-  try { buildOk = !!JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'build-report.json'), 'utf8')).success; } catch {}
-  try { qaOk = JSON.parse(fs.readFileSync(path.join(dir, 'artifacts', 'qa-report.json'), 'utf8')).passed === true; } catch {}
+  const isResearch = !state;
+  let buildOk = readBoolReport(dir, ['build-report.json', 'builder-final-build-report.json', 'formal-prototype-build-report.json', 'formal-final-build-report.json'], 'success');
+  let qaOk = readBoolReport(dir, ['qa-report.json', 'builder-final-qa-report.json', 'formal-qa-report.json', 'formal-release-candidate-qa-report.json'], 'passed');
   const shots = fs.existsSync(path.join(dir, 'screenshots')) ? fs.readdirSync(path.join(dir, 'screenshots')).filter((f) => /\.(png|jpe?g|webp)$/i.test(f)).sort().map((f) => 'screenshots/' + f) : [];
   const playPath = findPlayable(dir);
   const playable = !!playPath;
   const enc = encodeURIComponent(id);
+  // 流程：正式产线读 state.stages；研究原型按产出合成
+  let flow;
+  if (state?.stages) {
+    flow = Object.entries(state.stages).map(([name, v]) => {
+      const sp = stagePm(name);
+      return { label: sp[0], agent: sp[1], model: sp[2], status: v.status, stageName: name, startedAt: v.startedAt, attempts: v.attempts };
+    });
+  } else {
+    flow = researchFlow(dir, playPath);
+  }
   return {
-    runId: id, meta, state, stages,
+    runId: id, meta, state, stages: flow, mode: isResearch ? 'research' : 'pipeline',
+    missing: isResearch ? FORMAL_MISSING : [],
     gate: state ? gateInfo({ stage: state.stage, status: state.status, runId: id }) : null,
     playable, playPath, playUrl: playable ? '/files/' + enc + '/' + playPath : '',
+    playMtime: playable ? (() => { try { return new Date(fs.statSync(path.join(dir, playPath)).mtime).toLocaleString('zh-CN', { hour12: false }); } catch { return ''; } })() : '',
     screenshots: shots.map((s) => ({ path: s, url: '/files/' + enc + '/' + s })),
     buildOk, qaOk,
+    feedback: readFeedback(id),
   };
 }
 
@@ -338,7 +471,10 @@ function serveFile(res, id, rel) {
   if (!target.startsWith(base)) { res.writeHead(403); res.end('forbidden'); return; }
   fs.readFile(target, (err, data) => {
     if (err) { res.writeHead(404); res.end('not found'); return; }
-    res.writeHead(200, { 'Content-Type': CT[path.extname(target).toLowerCase()] || 'application/octet-stream' });
+    const ext = path.extname(target).toLowerCase();
+    // HTML 总是重新校验；其他资源短缓存，方便你改完 dist/ 后 iframe 一刷新就是新版
+    const cache = ext === '.html' ? 'no-cache, must-revalidate' : 'public, max-age=60';
+    res.writeHead(200, { 'Content-Type': CT[ext] || 'application/octet-stream', 'Cache-Control': cache });
     res.end(data);
   });
 }
@@ -352,6 +488,21 @@ const server = http.createServer(async (req, res) => {
     if (p === '/api/runs') { res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); res.end(JSON.stringify(await listGroups())); return; }
     const m = p.match(/^\/api\/run\/(.+)$/);
     if (m) { const id = decodeURIComponent(m[1]); res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); res.end(JSON.stringify(await runDetail(id))); return; }
+    const fb = p.match(/^\/api\/feedback\/(.+)$/);
+    if (fb && req.method === 'POST') {
+      const id = decodeURIComponent(fb[1]);
+      let body = '';
+      req.on('data', (c) => body += c);
+      req.on('end', async () => {
+        try {
+          const { tags = [], note = '' } = JSON.parse(body || '{}');
+          const result = await writeFeedback(id, tags, note);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify(result));
+        } catch (e) { res.writeHead(400); res.end('bad json: ' + e.message); }
+      });
+      return;
+    }
     const f = p.match(/^\/files\/([^/]+)\/(.+)$/);
     if (f) { serveFile(res, decodeURIComponent(f[1]), decodeURIComponent(f[2])); return; }
     res.writeHead(404); res.end('not found');
@@ -360,6 +511,6 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   const url = `http://localhost:${PORT}`;
-  console.log(`\n  妖怪夜市 · 工厂看板 v2 已启动 → ${url}\n  Ctrl+C 关闭。\n`);
+  console.log(`\n  小游戏工厂 · 工厂看板 v2 已启动 → ${url}\n  Ctrl+C 关闭。\n`);
   if (process.platform === 'darwin') exec(`open ${url}`);
 });

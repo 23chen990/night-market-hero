@@ -59,10 +59,17 @@ describe('factory hardening contracts', () => {
     expect(() => assertPermissionOperation(manifest, { kind: 'command', command: 'curl https://example.com' })).toThrow();
   });
 
+  it('lets reference research read only the owning run evidence directory', () => {
+    const manifest = buildPermissionManifest('REFERENCE_DEEP_RESEARCH');
+    expect(manifest.readScope).toContain('reference-evidence/');
+    expect(assertPermissionOperation(manifest, { kind: 'read', path: 'reference-evidence/incoming/reference.docx.analysis.txt' })).toBe(true);
+    expect(() => assertPermissionOperation(manifest, { kind: 'read', path: '../other-run/reference.docx' })).toThrow();
+  });
+
   it('records verifier, retry and side-effect policy on every stage contract', () => {
     const contract = getStageContract('FULL_BUILD');
     expect(contract.verifierRole).toBe('QAAgent');
-    expect(contract.retryPolicy.maxAttempts).toBeLessThanOrEqual(contract.maxAttempts);
+    expect(contract.retryPolicy.maxAttempts ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(contract.maxAttempts ?? Number.POSITIVE_INFINITY);
     expect(contract.sideEffects).toEqual(expect.objectContaining({ workspaceWrite: true, externalNetwork: false }));
     const audit = evaluateStageContract(contract, {
       inputs: contract.inputs.filter((item) => item.required).map((item) => item.path),

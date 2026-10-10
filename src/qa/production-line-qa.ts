@@ -4,10 +4,12 @@ import {
   ProductionLinePlayEvaluationSchema,
   ProductionLinePlayPlanSchema,
   type ProductionLinePlayEvaluation,
+  type ProductionLinePlayEvidence,
   type ProductionLinePlayPlan,
 } from '../schemas/production-line-qa.js';
+import { NaturalFlowEvidenceSchema, type NaturalFlowEvidence } from '../schemas/natural-flow.js';
 
-export type ProductionLineQaMode = 'generic-idle' | 'line-specific-required';
+export type ProductionLineQaMode = 'generic-idle' | 'cut-stack-dodge' | 'line-specific-required';
 
 /**
  * The generic browser runner only knows the idle-shop verbs.  Returning an
@@ -15,7 +17,9 @@ export type ProductionLineQaMode = 'generic-idle' | 'line-specific-required';
  * evidence for action, narrative or puzzle products.
  */
 export function qaModeForProductionLine(lineValue: unknown): ProductionLineQaMode {
-  return lineValue === 'idle-management' ? 'generic-idle' : 'line-specific-required';
+  if (lineValue === 'idle-management') return 'generic-idle';
+  if (lineValue === 'cut-stack-dodge') return 'cut-stack-dodge';
+  return 'line-specific-required';
 }
 
 /** Build the smallest natural-play journey that is meaningful for a line. */
@@ -35,6 +39,66 @@ export function buildProductionLinePlayPlan(lineValue: ProductionLine): Producti
     requiredEvidence: contract.requiredEvidence,
     forbiddenOperations: ['loadScenario', 'setState', 'grantCurrency', 'teleport', 'direct-state-mutation'],
     generatedAt: new Date().toISOString(),
+  });
+}
+
+function naturalSignal(evidence: NaturalFlowEvidence, token: string): boolean {
+  const normalized = token.toLowerCase();
+  return evidence.transitions.some((transition) => transition.changed && `${transition.name} ${transition.evidence}`.toLowerCase().includes(normalized))
+    || evidence.actions.some((action) => action.toLowerCase().includes(normalized));
+}
+
+function naturalTransition(evidence: NaturalFlowEvidence, token: string): boolean {
+  const normalized = token.toLowerCase();
+  return evidence.transitions.some((transition) => transition.changed && `${transition.name} ${transition.evidence}`.toLowerCase().includes(normalized));
+}
+
+/** Convert a trusted natural browser journey into the line-specific evidence
+ * family used by FINAL_PROFILE_QA. This function never upgrades a missing
+ * transition: each representative step is tied to an observed line signal. */
+export function deriveProductionLinePlayEvidence(
+  planValue: ProductionLinePlayPlan,
+  naturalValue: NaturalFlowEvidence,
+  buildHash: string,
+): ProductionLinePlayEvidence {
+  const plan = ProductionLinePlayPlanSchema.parse(planValue);
+  const natural = NaturalFlowEvidenceSchema.parse(naturalValue);
+  const observed = (index: number): { passed: boolean; detail: string } => {
+    if (plan.line === 'idle-management') {
+      if (index === 0) return { passed: natural.startedFromReset, detail: 'reset' };
+      if (index === 1) return { passed: naturalSignal(natural, 'produce') || naturalSignal(natural, 'automatic-progress'), detail: 'produce' };
+      if (index === 2) return { passed: natural.completion === 'settlement' || naturalSignal(natural, 'deliver'), detail: 'deliver-settlement' };
+      if (index === 3) return { passed: naturalSignal(natural, 'upgrade'), detail: 'upgrade-trade-off' };
+      return { passed: natural.replayObserved && (naturalSignal(natural, 'refresh') || naturalSignal(natural, 'reload')), detail: 'refresh-recovery' };
+    }
+    if (plan.line === 'cut-stack-dodge') {
+      if (index === 0) return { passed: natural.startedFromReset, detail: 'reset' };
+      if (index === 1) return { passed: naturalTransition(natural, 'cut'), detail: 'natural-cut-contact' };
+      if (index === 2) return { passed: naturalTransition(natural, 'drop'), detail: 'drop-trajectory' };
+      if (index === 3) return { passed: naturalTransition(natural, 'obstacle') || naturalTransition(natural, 'hazard'), detail: 'obstacle-failure' };
+      return { passed: natural.completion === 'terminal' && natural.replayObserved && naturalTransition(natural, 'retry'), detail: 'failure-retry-settlement' };
+    }
+    return { passed: false, detail: 'dedicated-line-converter-required' };
+  };
+  return ProductionLinePlayEvidenceSchema.parse({
+    schemaVersion: 1,
+    line: plan.line,
+    buildHash,
+    naturalInput: natural.forbiddenOperations.length === 0,
+    steps: plan.steps.map((step, index) => {
+      const result = observed(index);
+      return {
+        id: step.id,
+        passed: result.passed,
+        evidence: [
+          ...step.requiredEvidence,
+          `natural-flow:${result.detail}`,
+          `step:${step.id}`,
+          ...natural.screenshots.slice(0, 3),
+        ],
+      };
+    }),
+    forbiddenOperations: natural.forbiddenOperations,
   });
 }
 

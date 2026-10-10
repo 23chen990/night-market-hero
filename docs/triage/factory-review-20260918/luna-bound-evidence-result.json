@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "taskId": "luna_profile_bound_files",
+  "route": "shared-factory",
+  "routeReason": "Implemented the independently owned candidate-bound action-feel evidence verifier and its test-first unit coverage; factory wiring remains owned by the parent agent.",
+  "status": "IMPLEMENTED",
+  "filesChanged": [
+    "src/core/action-feel-evidence.ts",
+    "tests/unit/action-feel-evidence.test.ts",
+    "docs/triage/factory-review-20260918/luna-bound-evidence-result.json"
+  ],
+  "omittedContext": [
+    "factory.ts wiring",
+    "profile-stage schema changes",
+    "generated game workspaces",
+    "provider invocation"
+  ],
+  "tests": [
+    {
+      "command": "pnpm exec vitest run tests/unit/action-feel-evidence.test.ts",
+      "phase": "RED",
+      "exitCode": 1,
+      "summary": "Red phase confirmed the new unit suite could not import the unimplemented verifier."
+    },
+    {
+      "command": "pnpm exec vitest run tests/unit/action-feel-evidence.test.ts",
+      "phase": "GREEN",
+      "exitCode": 0,
+      "summary": "Four tests passed, covering a bound positive fixture, missing/forged/stale evidence, fixture traces, path escapes, and stale bytes."
+    },
+    {
+      "command": "pnpm exec vitest run tests/unit/action-feel-evidence.test.ts tests/unit/product-experience-verification.test.ts tests/unit/experience-gates.test.ts",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Fifteen focused evidence and existing verifier/gate tests passed."
+    },
+    {
+      "command": "pnpm exec eslint src/core/action-feel-evidence.ts tests/unit/action-feel-evidence.test.ts",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Owned source and tests pass ESLint."
+    },
+    {
+      "command": "pnpm exec tsc --noEmit",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Repository typecheck passes after the parent factory wiring settled."
+    },
+    {
+      "command": "pnpm exec vitest run tests/unit/action-feel-evidence.test.ts tests/unit/action-feel-stage.test.ts tests/unit/action-prototype-builder.test.ts tests/unit/action-prototype-fallback.test.ts tests/integration/action-feel-evidence.test.ts",
+      "phase": "VERIFY",
+      "exitCode": 0,
+      "summary": "Owned and related action-feel unit and integration tests passed."
+    }
+  ],
+  "remainingGaps": []
+}

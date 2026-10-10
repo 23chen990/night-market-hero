@@ -41,7 +41,12 @@ describe('stage contract enforcement', () => {
     await factory.approve(runId, { direction: 'direction_a', notes: 'contract test' });
     const done = await factory.resume(runId);
     expect(done.stage).toBe('COMPLETED');
-    expect(done.readiness).toBe('CANDIDATE_READY');
+    expect(done.readiness).toBe('IMPLEMENTATION_READY');
+    const lifecycle = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/release-lifecycle.json'), 'utf8'));
+    expect(lifecycle.status).toBe('IMPLEMENTATION_READY');
+    const candidate = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/release-candidate.json'), 'utf8'));
+    const completion = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/completion-gates.json'), 'utf8'));
+    expect(completion.candidateHash).toBe(candidate.coreHash);
     expect(done.stages.FINAL_PROFILE_QA?.status).toBe('completed');
     expect(done.stages.RELEASE_CANDIDATE?.status).toBe('completed');
     await expect(readFile(path.join(root, 'runs', runId, 'artifacts/final-profile-qa.json'), 'utf8')).resolves.toContain('APPROVED');

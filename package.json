@@ -13,7 +13,10 @@
     "test": "vitest run",
     "test:e2e": "vitest run tests/e2e",
     "test:game": "playwright test",
-    "verify": "pnpm lint && pnpm typecheck && pnpm test"
+    "verify": "pnpm lint && pnpm typecheck && pnpm test",
+    "evidence:check": "tsx tools/verify-evidence-provenance.ts",
+    "evidence:ingest": "tsx tools/ingest-reference-media.ts",
+    "evidence:review": "tsx tools/review-reference-media.ts"
   },
   "dependencies": {
     "@openai/agents": "^0.17.0",

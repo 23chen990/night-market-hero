@@ -186,7 +186,7 @@ export function evaluateCostGate(budgetValue: CostBudget, usageValue: CostUsage)
   if (usage.paidTrafficCents > budget.maxPaidTrafficCents) blockers.push('paid-traffic');
   if (usage.agentTokens > budget.maxAgentTokens) blockers.push('agent-tokens');
   if (usage.humanMinutes > budget.maxHumanMinutes) blockers.push('human-time');
-  if (usage.fixAttempts > budget.maxFixAttempts) blockers.push('fix-attempts');
+  if (budget.maxFixAttempts !== undefined && usage.fixAttempts > budget.maxFixAttempts) blockers.push('fix-attempts');
   if ((usage.wallClockMinutes ?? 0) > (budget.maxWallClockMinutes ?? Number.POSITIVE_INFINITY)) blockers.push('wall-clock');
   if ((usage.assetBatches ?? 0) > (budget.maxAssetBatches ?? Number.POSITIVE_INFINITY)) blockers.push('asset-batches');
   if ((usage.buildAttempts ?? 0) > (budget.maxBuildAttempts ?? Number.POSITIVE_INFINITY)) blockers.push('build-attempts');

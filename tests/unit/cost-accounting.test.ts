@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deriveCostUsage, evaluateCostPreflight, projectStageUsage } from '../../src/core/cost-accounting.js';
+import { deriveCostUsage, evaluateCostPreflight, projectStageUsage, stageReserveOverrideFromEnv } from '../../src/core/cost-accounting.js';
 import { CostAdjustmentLedgerSchema, CostRateCardSchema, CostPreflightReportSchema } from '../../src/schemas/cost-accounting.js';
 import { CostBudgetSchema } from '../../src/schemas/factory-operating.js';
 
@@ -60,5 +60,10 @@ describe('cost accounting and preflight', () => {
     const projected = projectStageUsage(deriveCostUsage([], { rateCard }), 'BLUEPRINT', { agentTokens: 1_000, agentInputTokens: 800, agentOutputTokens: 200 }, rateCard);
     expect(projected.agentTokens).toBe(1_000);
     expect(projected.totalCents).toBe(3);
+  });
+
+  it('allows an explicit per-stage agent-token reserve for expensive Codex runs', () => {
+    expect(stageReserveOverrideFromEnv('FULL_BUILD', { FACTORY_FULL_BUILD_AGENT_TOKEN_RESERVE: '1250000' })).toEqual({ agentTokens: 1_250_000 });
+    expect(stageReserveOverrideFromEnv('FULL_BUILD', { FACTORY_FULL_BUILD_AGENT_TOKEN_RESERVE: 'invalid' })).toBeUndefined();
   });
 });
