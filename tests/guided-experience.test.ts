@@ -77,7 +77,7 @@ test('corrupt ride queues are rejected without rejecting old saves', () => {
   assert.equal(isValidRunState({ ...state, vehicleQueue: Array(5).fill(rideNames[0]) }), false);
 });
 test('zipline release really ejects upward and returns to ordinary grapple control', () => {
-  const game = patrol(); enter(game, 2); game.act('press'); game.advanceTicks(20); game.act('release');
+  const game = patrol(); enter(game, 2); game.act('press'); game.advanceTicks(80); game.act('release');
   const state = game.getState(); assert.equal(state.vehicleId, null); assert.ok(state.player.vy <= -300); assert.ok(state.player.vx >= 420);
   assert.ok(state.regrappleGraceUntilTick > state.tick);
 });
@@ -155,4 +155,22 @@ for (const seed of [1, 31, 99]) test(`default guided journey exposes all four ri
   }
   assert.equal(tutorial, true); assert.deepEqual([...seen], rideNames);
   assert.ok(game.getState().pickups > 0); assert.ok(game.getState().comboPeak >= 3);
+});
+
+test('a release already in flight at ride entry cannot immediately erase the zipline', () => {
+  const game = patrol(); enter(game, 2); game.act('press'); game.advanceTicks(12); game.act('release');
+  assert.equal(game.getState().vehicleId, rideNames[0]);
+  game.advanceTicks(70); game.act('press'); game.act('release');
+  assert.equal(game.getState().vehicleId, null);
+});
+test('late backward release remains recoverable without awarding a fake combo', () => {
+  const game = patrol(); game.act('press');
+  game.setPlayerForTest({ vx: -180, vy: 180 }); game.act('release');
+  const state = game.getState(); assert.ok(state.player.vx >= 300); assert.ok(state.player.vy <= -180);
+  assert.equal(state.combo, 0); assert.ok(state.regrappleGraceUntilTick > state.tick);
+});
+test('pausing a held lantern cancels the virtual rope without losing the mount', () => {
+  const game = patrol(); enter(game, 6); game.act('press'); assert.ok(game.getState().vehicleVirtualAnchor);
+  game.setPaused(true); const state = game.getState();
+  assert.equal(state.vehiclePhase, 'idle'); assert.equal(state.vehicleVirtualAnchor, null); assert.equal(state.vehicleId, rideNames[2]);
 });

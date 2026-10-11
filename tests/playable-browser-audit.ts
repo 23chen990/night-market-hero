@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict';
 import { chromium } from '@playwright/test';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
@@ -5,76 +6,177 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { GrappleState } from '../src/game-core.ts';
 
-// Only state READS are allowed here. Gameplay advances at browser frame time;
-// all actions use genuine pointer/keyboard input, never scenario/teleport APIs.
+// State-observing automated play, not blind human usability evidence.
+// No act/step/reset/teleport/scenario APIs. Time is real browser frame time.
+// Screenshots run alongside the driver, so encoding an image cannot hold an
+// input indefinitely and manufacture an otherwise nonexistent gameplay stall.
 const out = resolve('evidence/playable-audit');
 await mkdir(out, { recursive: true });
 const entry = resolve('dist/index.html');
 const sha256 = createHash('sha256').update(await readFile(entry)).digest('hex');
+const rides = ['\u8d27\u8fd0\u6ed1\u7d22', '\u7eb8\u9e22', '\u706f\u7b3c\u7fa4', '\u9752\u9e3e'];
 const browser = await chromium.launch({ headless: true });
 const reports: unknown[] = [];
+const failures: string[] = [];
 try {
   for (const viewport of [{ width: 844, height: 390 }, { width: 1280, height: 720 }]) {
-    const context = await browser.newContext({ viewport });
+    const touch = viewport.width < 900;
+    const context = await browser.newContext({ viewport, hasTouch: touch, deviceScaleFactor: 1 });
     const page = await context.newPage();
+    page.setDefaultTimeout(6000);
+    const cdp = touch ? await context.newCDPSession(page) : null;
     const errors: string[] = [];
     const input: unknown[] = [];
     const samples: unknown[] = [];
-    const seen = new Set<string>();
-    page.on('pageerror', error => errors.push(String(error)));
-    const label = `${viewport.width}x${viewport.height}`;
-    await page.goto(pathToFileURL(entry).href);
-    await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
-    const readState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState());
-    await page.screenshot({ path: `${out}/${label}-startup.png` });
+    const screenshots: unknown[] = [];
+    const lifecycle: Record<string, unknown> = {};
+    const seen = new Map<string, { firstTick: number; lastTick: number; elapsed: number }>();
+    const seams = new Set<number>();
+    let screenshotJob: Promise<unknown> | null = null;
     let held = false;
     let lastRelease = -999;
-    let lastShot = '';
-    let retry = 0;
+    let holdAt = -999;
+    let reviveCount = 0;
+    let tutorialCompleted = false;
+    const label = `${viewport.width}x${viewport.height}`;
     const started = Date.now();
-    for (let sample = 0; Date.now() - started < 45_000; sample++) {
-      const state = await readState();
-      if (sample % 6 === 0) samples.push({ ms: Date.now() - started, tick: state.tick, level: state.levelId,
-        player: state.player, segment: state.segmentIndex, status: state.status, coins: state.coins,
-        pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky });
-      const shot = `${state.levelId}-${state.segmentIndex}-${state.vehicleId ?? 'swing'}`;
-      if (shot !== lastShot && seen.size < 16) {
-        lastShot = shot;
-        if (!seen.has(shot)) {
-          seen.add(shot);
-          await page.screenshot({ path: `${out}/${label}-beat-${String(seen.size).padStart(2, '0')}.png` });
+    const readState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState());
+    const readMeta = (): Promise<Record<string, unknown>> => page.evaluate(() => (window as unknown as { __GAME_TEST__: { getMetaProgress(): Record<string, unknown> } }).__GAME_TEST__.getMetaProgress());
+    const edge = async (down: boolean, tick: number): Promise<void> => {
+      if (down === held) return;
+      if (cdp) await cdp.send('Input.dispatchTouchEvent', { type: down ? 'touchStart' : 'touchEnd', touchPoints: down ? [{ x: Math.round(viewport.width * .42), y: Math.round(viewport.height * .68), id: 1 }] : [] });
+      else if (down) await page.keyboard.down('Space'); else await page.keyboard.up('Space');
+      held = down;
+      if (down) holdAt = tick; else lastRelease = tick;
+      input.push({ tick, ms: Date.now() - started, edge: down ? 'press' : 'release', device: touch ? 'touch' : 'keyboard' });
+    };
+    const shot = (name: string, state: GrappleState): void => {
+      screenshots.push({ name, tick: state.tick, level: state.levelId, player: state.player, vehicle: state.vehicleId });
+      screenshotJob = page.screenshot({ path: `${out}/${label}-${name}.png` }).catch(error => errors.push(`screenshot: ${error}`));
+    };
+    try {
+      page.on('pageerror', error => errors.push(String(error)));
+      await page.goto(pathToFileURL(entry).href);
+      await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
+      await page.screenshot({ path: `${out}/${label}-startup.png` });
+      const beforeStart = await readState();
+      await page.waitForTimeout(300);
+      assert.equal((await readState()).tick, beforeStart.tick, 'start card must not spend the run');
+      await page.locator('[data-action="start-run"]').click();
+      // Focus the play surface without generating a synthetic gameplay action.
+      if (!touch) await page.locator('[data-action="grapple"]').focus();
+      for (let sample = 0; Date.now() - started < 115_000; sample++) {
+        const state = await readState();
+        if (sample % 5 === 0) samples.push({ ms: Date.now() - started, tick: state.tick, level: state.levelId,
+          player: state.player, segment: state.segmentIndex, status: state.status, coins: state.coins,
+          pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky });
+        if (state.status !== 'playing') {
+          await edge(false, state.tick);
+          await screenshotJob;
+          await page.screenshot({ path: `${out}/${label}-terminal-${reviveCount}.png` });
+          if (state.status === 'won' && state.levelId !== 'night-patrol') {
+            tutorialCompleted = true;
+            await page.locator('[data-action="continue"]').click();
+            lastRelease = -999; holdAt = -999;
+            if (!touch) await page.locator('[data-action="grapple"]').focus();
+            continue;
+          }
+          if (state.status === 'failed' && reviveCount === 0 && await page.locator('[data-action="revive"]').isVisible()) {
+            reviveCount++;
+            await page.locator('[data-action="revive"]').click();
+            lastRelease = -999;
+            if (!touch) await page.locator('[data-action="grapple"]').focus();
+            continue;
+          }
+          break;
         }
+        const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
+        const wantHold = state.vehicleId
+          ? state.vehicleId === rides[0] ? state.vehicleTicksRemaining > 100
+            : state.vehicleId === rides[2] ? state.vehiclePhase !== 'holding' ? state.tick - lastRelease > 26 : state.player.vy > 0 || state.player.vx < 240
+              : state.player.y > 390
+          : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
+            : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
+        await edge(wantHold, state.tick);
+        // Reset a physical hold that a collision legitimately cancelled.
+        if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
+        if (state.vehicleId) {
+          const visit = seen.get(state.vehicleId);
+          if (visit) visit.lastTick = state.tick;
+          else {
+            seen.set(state.vehicleId, { firstTick: state.tick, lastTick: state.tick, elapsed: state.elapsed });
+            await screenshotJob;
+            shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state);
+          }
+        }
+        if (state.levelId === 'night-patrol') {
+          const view = await page.locator('#app').evaluate(element => ({ left: Number((element as HTMLElement).dataset.cameraX), width: Number((element as HTMLElement).dataset.worldViewportWidth) }));
+          for (const seam of [8000, 9600, 11200, 12800]) {
+            if (!seams.has(seam) && seam > view.left + view.width * .2 && seam < view.left + view.width * .8) {
+              seams.add(seam); await screenshotJob; shot(`seam-${seam}`, state); break;
+            }
+          }
+        }
+        if (rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4) break;
+        await page.waitForTimeout(65);
       }
-      if (state.status !== 'playing') {
-        if (held) { await page.mouse.up(); held = false; }
-        const action = state.status === 'won' ? 'continue' : 'restart';
-        const button = page.locator(`[data-action="${action}"]`);
-        if (state.status === 'failed' && retry++ >= 1) break;
-        await button.click();
-        lastRelease = -999;
-        await page.waitForTimeout(80);
-        continue;
+      await edge(false, (await readState()).tick);
+      await screenshotJob;
+      lifecycle.journey = await readState();
+      assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
+      for (const ride of rides) {
+        assert.ok(seen.has(ride), `ordinary journey never reached ${ride}`);
+        assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120, `${ride} must remain observable for at least one simulated second`);
       }
-      const start = page.locator('[data-action="start-run"]');
-      if (await start.isVisible()) { await start.click(); lastRelease = -999; }
-      const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
-      const wantHold = state.vehicleId
-        ? state.vehicleId === '货运滑索' ? state.vehicleTicksRemaining > 100 : state.player.y > 380
-        : anchor ? !(state.player.x > anchor.x + 30 && state.player.vx > 0 && state.player.vy < 30)
-          : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
-      if (wantHold !== held) {
-        await page.mouse.move(viewport.width * 0.43, viewport.height * 0.72);
-        if (wantHold) await page.mouse.down(); else { await page.mouse.up(); lastRelease = state.tick; }
-        held = wantHold;
-        input.push({ tick: state.tick, edge: held ? 'press' : 'release', level: state.levelId });
+      assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
+      assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
+      await page.locator('.hub-settings').click();
+      const paused = await readState();
+      await page.waitForTimeout(350);
+      assert.equal((await readState()).tick, paused.tick, 'pause stops simulation');
+      assert.equal(paused.inputHeld, false, 'pause cancels held input');
+      lifecycle.pausedTick = paused.tick;
+      await page.screenshot({ path: `${out}/${label}-pause.png` });
+      // Reload the actual saved run through the browser, not through a test fixture.
+      await page.reload();
+      await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
+      const restored = await readState();
+      assert.equal(restored.tick, paused.tick, 'reload restores the exact paused checkpoint');
+      assert.equal(restored.distanceMeters, paused.distanceMeters);
+      lifecycle.restored = { tick: restored.tick, meters: restored.distanceMeters };
+      await page.locator('[data-action="start-run"]').click();
+      await page.locator('.hub-settings').click();
+      await page.locator('[data-action="finish-patrol"]').click();
+      await page.waitForTimeout(300);
+      assert.equal((await readState()).status, 'won');
+      lifecycle.cashout = await readMeta();
+      const claim = page.locator('[data-action="claim-ready-missions"]');
+      if (await claim.isVisible()) { await claim.click(); await page.waitForTimeout(100); }
+      lifecycle.claimed = await readMeta();
+      await page.screenshot({ path: `${out}/${label}-cashout.png` });
+      await page.reload();
+      await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
+      lifecycle.reloaded = await readMeta();
+      assert.deepEqual(lifecycle.reloaded, lifecycle.claimed, 'refresh must not duplicate settlement or claims');
+      if (touch) {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.waitForTimeout(100);
+        assert.equal(await page.locator('#app').getAttribute('data-orientation-blocked'), 'true');
+        await page.screenshot({ path: `${out}/${label}-portrait.png` });
+        await page.setViewportSize(viewport);
       }
-      await page.waitForTimeout(80);
+      assert.deepEqual(errors, []);
+    } catch (error) {
+      failures.push(`${label}: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+      await screenshotJob;
+      await page.screenshot({ path: `${out}/${label}-final.png` }).catch(() => undefined);
+      reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
+        seen: Object.fromEntries(seen), seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final: await readState().catch(() => null) });
+      await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; no state mutation APIs', failures, reports }, null, 2));
+      await context.close();
     }
-    if (held) await page.mouse.up();
-    await page.screenshot({ path: `${out}/${label}-final.png` });
-    reports.push({ viewport, sha256, errors, input, samples, seen: [...seen], final: await readState() });
-    await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'read-only state observation + actual pointer input; real browser time', reports }, null, 2));
-    await context.close();
   }
 } finally { await browser.close(); }
-console.log(JSON.stringify({ sha256, journeys: reports.length, evidence: out }));
+console.log(JSON.stringify({ sha256, journeys: reports.length, failures, evidence: out }));
+assert.deepEqual(failures, [], 'browser gameplay or lifecycle acceptance failed');

@@ -1349,6 +1349,10 @@ export class GrappleGame {
       this.state.inputHeld = false;
       this.state.attachedAnchorId = null;
       this.state.ropeLength = null;
+      if (this.options.guidedExperience && this.state.vehicleId) {
+        this.state.vehiclePhase = 'idle';
+        this.state.vehicleVirtualAnchor = null;
+      }
     }
   }
 
@@ -1428,12 +1432,16 @@ export class GrappleGame {
     const releasedAnchor = this.state.attachedAnchorId;
     const releasedRopeLength = this.state.ropeLength;
     const releaseSpeed = Math.hypot(this.state.player.vx, this.state.player.vy);
+    const releaseWasStylish = isStylishRelease(this.state.player);
     this.state.inputHeld = false;
     this.state.inputTransitions += 1;
     if (this.state.vehicleId) {
       this.state.vehiclePhase = 'released';
       this.state.vehicleVirtualAnchor = null;
-      if (this.options.guidedExperience && this.state.vehicleId === '货运滑索') {
+      const rideDuration = VEHICLES.find(item => item.id === this.state.vehicleId)!.durationSeconds / FIXED_STEP;
+      // A release already in flight when the ride appeared is not an intentional eject.
+      const entryGrace = this.options.guidedExperience && rideDuration - this.state.vehicleTicksRemaining < 66;
+      if (this.options.guidedExperience && this.state.vehicleId === '货运滑索' && !entryGrace) {
         this.state.player.vx = Math.max(420, this.state.player.vx + 140);
         this.state.player.vy = Math.min(-300, this.state.player.vy);
         this.expireVehicle();
@@ -1442,6 +1450,15 @@ export class GrappleGame {
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
     this.lastReleasedAnchorId = releasedAnchor;
+    // A late or backward release still moves the learner forward. Only an
+    // actual well-timed release earns a combo; assistance never invents one.
+    if (this.options.guidedExperience && releasedAnchor) {
+      if (!releaseWasStylish) {
+        this.state.player.vx = Math.max(this.state.player.vx, 300);
+        this.state.player.vy = Math.min(this.state.player.vy, -180);
+      }
+      this.state.regrappleGraceUntilTick = this.state.tick + 66;
+    }
     // A long first-run release can leave the player on the low counter
     // passage with almost no forward swing. Give that authored recovery lane a
     // small upward/forward launch after a few real input transitions so the
@@ -1469,7 +1486,7 @@ export class GrappleGame {
       );
     }
     if (releasedAnchor && releasedRopeLength !== null && releasedRopeLength <= 190) {
-      this.state.regrappleGraceUntilTick = this.state.tick + REGRAPPLE_GRACE_TICKS;
+      this.state.regrappleGraceUntilTick = Math.max(this.state.regrappleGraceUntilTick, this.state.tick + REGRAPPLE_GRACE_TICKS);
     }
     if (this.state.segment === 'gate-climax' && this.state.tick < this.gateCollisionRecoveryUntilTick) {
       // After a leaf hit, steer back toward the live opening instead of
@@ -1482,7 +1499,7 @@ export class GrappleGame {
       this.state.player.vx = Math.max(this.state.player.vx, 420);
       this.state.player.vy = verticalCorrection;
     }
-    if (releasedAnchor && releaseSpeed >= 360 && (!this.options.guidedExperience || isStylishRelease(this.state.player))) {
+    if (releasedAnchor && releaseSpeed >= 360 && (!this.options.guidedExperience || releaseWasStylish)) {
       const previousTier = this.state.comboTier;
       this.stylishFlights += 1;
       this.state.combo += 1;
@@ -2334,7 +2351,7 @@ export class GrappleGame {
       if (vehicle!.id === '纸鸢' && this.state.vehiclePhase === 'holding') {
         player.vy -= KITE_LIFT_ACCEL * dt;
         if (player.vy < KITE_MAX_LIFT_VY) player.vy = KITE_MAX_LIFT_VY;
-      } else if (vehicle!.id === '货运滑索' && (this.state.vehiclePhase === 'holding' || (this.options.guidedExperience && this.state.vehiclePhase === 'idle'))) {
+      } else if (vehicle!.id === '货运滑索' && (this.state.vehiclePhase === 'holding' || this.options.guidedExperience)) {
         player.y = this.state.vehicleLockY;
         player.vy = 0;
         player.vx += ZIPLINE_ACCEL * dt;
@@ -2415,8 +2432,9 @@ export class GrappleGame {
       player.vy -= nx * SWING_DRIVE * fx.swingDriveFactor * dt;
     }
 
-    if (this.options.guidedExperience && player.y < 125) {
-      player.y = 125;
+    const visibleCeiling = this.state.vehicleId === '纸鸢' ? 290 : this.state.vehicleId === '灯笼群' ? 320 : 125;
+    if (this.options.guidedExperience && player.y < visibleCeiling) {
+      player.y = visibleCeiling;
       player.vy = Math.max(0, player.vy);
       if (this.state.attachedAnchorId) { this.state.attachedAnchorId = null; this.state.ropeLength = null; }
     }
@@ -2488,11 +2506,10 @@ export class GrappleGame {
     // Falling still fails normally, and the endless patrol keeps its own
     // pressure rules; this only removes a timing-dependent early catch from
     // the first tutorial route.
-    const tutorialOpeningGrace = (!this.options.guidedExperience || this.state.elapsed < 25)
-      && !this.endlessMode
-      && this.state.levelIndex === 0
-      && this.state.inputTransitions >= 4
-      && player.x < this.state.routeGraph.rejoin.x;
+    const tutorialOpeningGrace = !this.endlessMode && this.state.levelIndex === 0
+      && (this.options.guidedExperience
+        ? this.state.inputTransitions > 0 && this.state.elapsed < 30
+        : this.state.inputTransitions >= 4 && player.x < this.state.routeGraph.rejoin.x);
     if (!gateShelter && !endlessOpeningGrace && !tutorialOpeningGrace
       && pursuerContact && !talismanProtected && !talismanGrace && !vehicleCatchImmune) {
       this.state.status = 'failed';

@@ -451,11 +451,11 @@ function renderItemAvailability(meta: MetaProgress): void {
   const talismanStatus = statusFor('talisman');
   const firecrackerStatus = statusFor('firecracker');
   if (talismanAvailability) {
-    talismanAvailability.textContent = talismanStatus;
+    talismanAvailability.textContent = `护身 · ${talismanStatus}`;
     talismanAvailability.dataset.availability = talismanStatus;
   }
   if (firecrackerAvailability) {
-    firecrackerAvailability.textContent = firecrackerStatus;
+    firecrackerAvailability.textContent = `爆竹 · ${firecrackerStatus}`;
     firecrackerAvailability.dataset.availability = firecrackerStatus;
   }
 }
@@ -521,7 +521,10 @@ async function useItem(item: 'talisman' | 'firecracker', button: HTMLButtonEleme
     const latest = core.getState();
     if (latest.status !== 'playing' || latest.paused || !itemReady(item, latest)) return;
     const used = item === 'talisman' ? core.useTalisman() : core.useFirecracker();
-    if (used) adNote.textContent = item === 'talisman' ? '护身符生效：暂时免疫危险。' : '鞭炮炸响：追兵暂时停滞。';
+    if (used) {
+      adNote.textContent = item === 'talisman' ? '护身符生效：3秒内免疫危险' : '爆竹炸响：追兵暂时停滞';
+      experience.announce(adNote.textContent);
+    }
   } finally {
     runtimeSession.endOperation(operation);
     if (runtimeSession.isCurrentRun(operation.runId)) {
@@ -991,6 +994,9 @@ class FlightScene extends Phaser.Scene {
     app.dataset.cityDistrict = cityStats.district ?? 'market';
     app.dataset.cityChunkCount = String(cityStats.chunkCount);
     app.dataset.cityRenderer = cityStats.renderer;
+    // Read-only visual QA telemetry; never drives world state.
+    app.dataset.cameraX = String(this.cameraScrollX);
+    app.dataset.worldViewportWidth = String(worldViewportWidth);
     app.dataset.sceneOwner = 'night-city-image-stream';
     app.dataset.sceneLayerCount = '1';
     app.dataset.sceneOverlay = 'none';
