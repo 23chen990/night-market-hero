@@ -121,14 +121,14 @@ try {
         // Keep controlling the flight while moving to pause. Releasing a bird
         // during its dive and waiting through CDP reads intentionally loses.
         if (complete && held && state.player.y < 550 && state.player.vy < -80) {
-          await page.locator('[data-action="pause"]').click();
+          await page.locator('.hub-settings').click();
           break;
         }
         await page.waitForTimeout(65);
       }
       lifecycle.journey = await readState();
       await edge(false, (await readState()).tick);
-      if ((await readState()).status === 'playing' && !(await readState()).paused) await page.locator('[data-action="pause"]').click();
+      if ((await readState()).status === 'playing' && !(await readState()).paused) await page.locator('.hub-settings').click();
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
       for (const ride of rides) {
@@ -160,7 +160,7 @@ try {
       lifecycle.claimed = await readMeta();
       await page.screenshot({ path: `${out}/${label}-cashout.png` });
       await page.reload();
-      await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
+      await page.waitForFunction(() => Boolean((window as unknown as { __GAME_TEST__?: unknown }).__GAME_TEST__));
       lifecycle.reloaded = await readMeta();
       assert.deepEqual(lifecycle.reloaded, lifecycle.claimed, 'refresh must not duplicate settlement or claims');
       if (touch) {
