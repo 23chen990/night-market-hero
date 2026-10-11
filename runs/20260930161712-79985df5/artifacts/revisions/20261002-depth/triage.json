@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "Continue enlarging the behavior model to deliver the requested spatial-shop operating depth; human said 继续吧 after the cause review.",
+  "classification": [
+    "core-experience",
+    "reference-fidelity",
+    "visual-hierarchy",
+    "failure-attribution",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Core state machines, economy, progression, saves and renderer all require changes; accepted attempt-3 QA remains blocked.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other runs and first-version source",
+      "unbound media",
+      "unrelated shared-factory changes",
+      "third-party source/expression and raw tuning"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Read exact attempt-3 source and hashed independent reports.",
+      "Verify no processor/employee/multi-item/world-switch/disruption branch on default runtime.",
+      "Keep natural/unobserved viewport cells blocked pending current retest."
+    ],
+    "observed": [
+      "Current two market buttons only persist an id; active shop world does not switch.",
+      "Current station type union has no processor/employee hire; customer has one product id.",
+      "Current independent natural trace covers only 540 portrait core/settlement; exact pressure and other viewports remain unobserved."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+        "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+        "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Natural expanded shopper visits two compatible shelves before queueing.",
+    "Unit tests cover quantity conservation, locked demand, partial order, basket value and queue gating.",
+    "Fresh natural input shows input-starved processor -> restock -> output -> deposit.",
+    "Unit tests prove input gating, atomic consumption, capacity stop/resume and no locked processor output.",
+    "Normal funded hire leads to visible worker action and inventory change.",
+    "Unit tests cover insufficient wallet, installment conservation, runner limits and cashier using queue/packing without double payment.",
+    "Fresh normal-input evidence observes disruption alert/loss -> player approach -> no further loss and replenish.",
+    "Fresh normal-input evidence observes shortage wait -> correct restock -> customer pickup/queue; unit tests cover loss cadence/grace and approved timeout origin.",
+    "Natural path proves expansion -> continue -> marker arrival/stop -> selection -> visibly different market -> core loop -> settlement/replay.",
+    "Unit tests cover stationary marker gating, invalid choices, world differences, preservation of upgrades/progress and replay.",
+    "Independent deterministic, natural and perceptual QA at 360x800,390x844,430x932,540x960,844x390.",
+    "Tests pass, typecheck passes, lint passes via an existing local ESLint config without adding dependencies, exactly one build per formal attempt, hashed runtime-product gate and save reload proof."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-02T15:33:27.261Z"
+}

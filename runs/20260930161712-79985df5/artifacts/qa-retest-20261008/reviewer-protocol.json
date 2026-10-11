@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "REVIEW_ONLY_NO_PRODUCT_VERDICT",
+  "sourceBindings": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/natural-attempt7.mjs",
+      "sha256": "a982674e52bc383c62df67937a2dbc212c00f975c29ca891859de6dc01d00ed9"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/product-experience-contract.json",
+      "sha256": "929a0ebb29898f739fcd1cf4082937409fd4665ba58c2e488f18963bc36ced7e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/failure-pressure-contract.json",
+      "sha256": "fe1e2589d16fea6bea3d2cd6b309ce4dbba33e953cb7f6c99e1d9b7a03bff81e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts",
+      "sha256": "9c290cadafa8fee4e6342ab233549b53be17dd692111286016e65fc712ecb094"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+      "sha256": "6d98f2f760cd4238bb847e4513b887c8edc88034eb50ef6ac6f3d8e3d742109d"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts",
+      "sha256": "1d13ebf01f52a216dce0b719d0cecffad88913035804a4772cadc5eadbda8e06"
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-PROTOCOL-RUNNER-DEADLINE",
+      "class": "false-block-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:122-130",
+        "workspace/game/src/simulation.ts:492-527",
+        "workspace/game/src/revision.ts:27-40"
+      ],
+      "correction": "Anchor the observation window after visible hire completion and wait for a full net-to-shelf delivery while the net has stock and shelf has capacity. The initial hire-to-net-to-shelf route is about 923 world units at 130 units/second (about 7.1 seconds before stock/capacity delays); the fixed 1.4-second hire wait plus 6-second observation does not establish this precondition. A short window missing deposit is inconclusive rather than proof of broken delivery."
+    },
+    {
+      "id": "QA-PROTOCOL-RUNNER-PIXELS",
+      "class": "false-pass-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:79-83",
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:125-130",
+        "workspace/game/src/main.ts:360-366",
+        "workspace/game/src/main.ts:514-532",
+        "workspace/game/src/main.ts:251-259"
+      ],
+      "correction": "Require identified runner body displacement along both route legs plus pickup/delivery and shelf change in pixels. blueBodies stores components but never asserts them, and employee station art uses the same 0x60a5fa. Separate static hire icons from the moving actor by location and tracking. The player-at-hire coordinate check does not prove the avatar remains visible through the label crossing; inspect the full body/label overlap frame."
+    },
+    {
+      "id": "QA-PROTOCOL-LAST-TOAST",
+      "class": "false-block-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:48",
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:129-140",
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:145-152",
+        "workspace/game/src/main.ts:478-502",
+        "workspace/game/src/main.ts:701-706",
+        "workspace/game/src/simulation.ts:1033-1039"
+      ],
+      "correction": "Scope DOM events to each completed-hire or pressure episode, and corroborate them with the canvas/video. HUD renders only feedback.at(-1), while multiple events may occur in a single tick and canvas renders all events for 850 ms. Missing runner/cashier/seagull toast alone cannot establish a product defect; earlier global events alone cannot prove the current branch either. Record unobserved evidence honestly without changing acceptance."
+    },
+    {
+      "id": "QA-PROTOCOL-CASHIER-CHAIN",
+      "class": "false-pass-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:131-140",
+        "workspace/game/src/simulation.ts:920-978",
+        "artifacts/revisions/20261002-depth/product-experience-contract.json#depth-employees",
+        "artifacts/revisions/20261002-depth/product-experience-contract.json#qa-feedback-checkout-cash"
+      ],
+      "correction": "Observe completed cashier hire, player outside checkout range, a specific queue head packing, delayed counter cash increase, unchanged wallet while away, then normal approach/collection. One cashier-service toast proves only service initiation. Ensure the away frame is inside the scoped cashier episode; the current global toast search plus a later screenshot cannot prove the same service chain."
+    },
+    {
+      "id": "QA-SOURCE-EMPLOYEE-PRESENTATION",
+      "class": "source-limitation",
+      "evidence": [
+        "workspace/game/src/main.ts:360-367",
+        "workspace/game/src/main.ts:575-576",
+        "workspace/game/src/simulation.ts:287-299",
+        "workspace/game/src/simulation.ts:492-527",
+        "workspace/game/src/simulation.ts:736-740",
+        "artifacts/revisions/20261002-depth/product-experience-contract.json#depth-employees"
+      ],
+      "correction": "Source snapshot draws a runner with an unconditional yellow parcel regardless of cargo and has no funded cashier actor rendering or relocation to checkout; cashier funding enables checkout service and hire-site text. Do not assume a second blue cashier body exists or report visible bounded cargo as established. The contract requires a visible worker/cashier active service indicator; determine fulfillment from exact normal-input checkout pixels, and preserve the cashier-position/cargo-visibility limitations for Fixer assessment. No perceptual verdict is inferred here."
+    },
+    {
+      "id": "QA-PROTOCOL-GULL-SAME-TARGET",
+      "class": "false-pass-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:141-152",
+        "workspace/game/src/simulation.ts:530-589",
+        "artifacts/revisions/20261002-depth/failure-pressure-contract.json#pressure-rule-disruption-visitor",
+        "artifacts/revisions/20261002-depth/product-experience-contract.json#depth-shelf-pressure"
+      ],
+      "correction": "Bind a single visible bird/halo episode to its actual target shelf. Record alert, approach, at least one attributable loss, player approach to that target, bird departure, no additional loss during a visible guarded interval, and replenishment of that same compatible shelf followed by customer pickup. Walking every shelf and always replenishing kelp can satisfy toast predicates while recovering a different shelf. The source may retarget immediately after scare; separate new episodes and do not require permanent bird absence after the player leaves."
+    },
+    {
+      "id": "QA-PROTOCOL-MARKET-COVERAGE",
+      "class": "false-pass-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:153-169",
+        "workspace/game/src/revision.ts:16-97",
+        "workspace/game/src/simulation.ts:932-946",
+        "workspace/game/src/simulation.ts:1090-1116",
+        "artifacts/revisions/20261002-depth/product-experience-contract.json#depth-progression-and-markets"
+      ],
+      "correction": "Title change is insufficient. Show the stationary marker action, two distinct route cards, then changed station topology/atmosphere, authored goal, normal purchases/packing, goal advancement and own settlement for coral-cove-market AND moon-tide-market. The script only selects coral. Coral requires two smoked orders; Moon Tide requires three dual-shelf orders. A coral pass cannot close Moon Tide. Check visible authored counters rather than generic goalProgress alone, which can reach its cap before the authored order condition."
+    },
+    {
+      "id": "QA-PROTOCOL-REPLAY-NEW-WORK",
+      "class": "false-pass-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:50-64",
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:170-194",
+        "workspace/game/src/simulation.ts:1075-1087",
+        "workspace/game/src/simulation.ts:1132-1136",
+        "artifacts/revisions/20261002-depth/product-experience-contract.json#depth-progression-and-markets"
+      ],
+      "correction": "After continue, track a newly arriving customer through new shopping, packing, newly created cash and collection; wallet increase may otherwise be old pending cash. Continue correctly retains settled progress and need not immediately trigger another settlement. Separately test restart from the visible menu: initial beach title/locks/hire state/economy return and a new normal core-loop transaction succeeds. Overlay dismissal alone does not prove restart/replay."
+    },
+    {
+      "id": "QA-PROTOCOL-PERSISTENCE-AND-VIEWPORTS",
+      "class": "false-pass-risk",
+      "evidence": [
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:8-10",
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:180-187",
+        "artifacts/qa-retest-20261008/natural-attempt7.mjs:202-206",
+        "artifacts/revisions/20261002-depth/product-experience-contract.json#depth-runtime-and-persistence"
+      ],
+      "correction": "Same title and nondecreasing wallet after reload do not establish restoration of market layout, funded roles, unlocked processor/shelves and progress. Capture those visible branches before/after reload and resume a role/market transaction. Aggregate separate fresh normal-input and perceptual results for all five required viewports; a single parameterized run or a populated screenshots list cannot close the viewport gate. Confirm actual canvas joystick/release/cancel/blur and reduced-motion critical cues in addition to directional touch-button holds where those contract branches are in scope."
+    }
+  ],
+  "requiredEvidence": [
+    {
+      "id": "EMPLOYEE-RUNNER",
+      "branch": "Funded runner: hire -> empty outbound -> net pickup -> loaded return -> matching shelf deposit; player crossing hire labels",
+      "visibleSequence": [
+        "Hire progress and wallet payment",
+        "Identifiable actor at separate points of both route legs",
+        "Stock pickup and matching fish-shelf delivery with causal inventory feedback",
+        "Exact avatar/label crossing remains legible"
+      ],
+      "viewports": [
+        "360x800",
+        "390x844",
+        "430x932",
+        "540x960",
+        "844x390"
+      ]
+    },
+    {
+      "id": "EMPLOYEE-CASHIER",
+      "branch": "Funded cashier with player away -> specific queue-head packing -> cash pile -> approach collection",
+      "visibleSequence": [
+        "Cashier active service signal at checkout",
+        "Customer packing and delayed visible counter cash",
+        "Wallet unchanged while player is away",
+        "Player collects new counter cash through normal approach"
+      ],
+      "viewports": [
+        "360x800",
+        "390x844",
+        "430x932",
+        "540x960",
+        "844x390"
+      ]
+    },
+    {
+      "id": "GULL-PRESSURE",
+      "branch": "One identified gull and same attacked stocked shelf: alert -> loss -> approach -> scare -> guarded no-loss -> refill/customer recovery",
+      "visibleSequence": [
+        "Bird silhouette and local halo identify target",
+        "Source shelf loses stock with bird-caused visible feedback",
+        "Normal player approach removes current bird and stops current losses",
+        "Same target receives compatible stock and customer pickup resumes"
+      ],
+      "viewports": [
+        "360x800",
+        "390x844",
+        "430x932",
+        "540x960",
+        "844x390"
+      ]
+    },
+    {
+      "id": "MARKET-CORAL",
+      "branch": "First expansion settlement -> continue -> stationary marker -> coral choice -> changed world -> two smoked orders -> own settlement -> continued new transaction",
+      "visibleSequence": [
+        "Continue and restart choices are clear and reachable",
+        "Marker and two choices are visible",
+        "Coral topology, goal and station positions differ",
+        "Authored smoked-order progress, settlement and a newly earned transaction after continue"
+      ],
+      "viewports": [
+        "360x800",
+        "390x844",
+        "430x932",
+        "540x960",
+        "844x390"
+      ]
+    },
+    {
+      "id": "MARKET-MOON",
+      "branch": "Marker -> Moon Tide choice -> changed world -> three dual-shelf orders -> own settlement -> continued new transaction",
+      "visibleSequence": [
+        "Moon Tide topology/atmosphere and goal differ",
+        "Same customers visibly visit both required shelves",
+        "Authored dual-shelf progress, own settlement and continued new transaction"
+      ],
+      "viewports": [
+        "360x800",
+        "390x844",
+        "430x932",
+        "540x960",
+        "844x390"
+      ]
+    },
+    {
+      "id": "RESTART-RELOAD",
+      "branch": "Visible restart and persistent reload are independently observed",
+      "visibleSequence": [
+        "Reload retains visible market, upgrades/unlocks, funded roles and progress and resumes action",
+        "Restart returns initial beach conditions and a new normal shopping/packing/cash transaction succeeds"
+      ],
+      "viewports": [
+        "360x800",
+        "390x844",
+        "430x932",
+        "540x960",
+        "844x390"
+      ]
+    },
+    {
+      "id": "EVIDENCE-INTEGRITY",
+      "branch": "Independent natural and perceptual QA bound to the exact built source snapshot",
+      "visibleSequence": [
+        "Fresh browser, normal keyboard/touch input only, no fixture/debug/state injection",
+        "Timestamped screenshots plus continuous video link exact branch before/during/after frames",
+        "Source/build/harness and media hashes, explicit viewport/orientation and perceptual result",
+        "Contract-required touch joystick release/cancel/blur and reduced-motion cues are verified separately from directional button holds"
+      ],
+      "viewports": [
+        "360x800",
+        "390x844",
+        "430x932",
+        "540x960",
+        "844x390"
+      ]
+    }
+  ]
+}

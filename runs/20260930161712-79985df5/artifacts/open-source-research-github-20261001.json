@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "observations": [
+    "Searched public GitHub repositories and inspected pinned commits, source files and direct LICENSE files.",
+    "Four useful mechanism-reference candidates were found; one archived project lacks a verified repository-level license.",
+    "The existing project already uses factory-owned spatial-shop-v1, Phaser, TypeScript and local QA tooling; no additional production dependency is needed for this research.",
+    "The same-stack shopkeepers-legacy LICENSE explicitly covers source code only, not its third-party art."
+  ],
+  "inferences": [
+    "Small queue/inventory examples are more suitable references for this preview than importing a complete Unity simulator.",
+    "Reference mechanisms should become original implementation constraints and independent acceptance checks, not copied gameplay code or assets."
+  ],
+  "unknowns": [
+    "No candidate was built or executed; source inspection does not demonstrate runtime correctness.",
+    "None of the candidates has been validated here for WeChat, Douyin or TapTap packaging.",
+    "Whole dependency trees, asset rights, security advisories and active maintenance quality were not audited."
+  ],
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame"
+  ],
+  "queries": [
+    "GitHub repositories: supermarket simulator",
+    "GitHub repositories: my mini mart",
+    "GitHub repositories: idle arcade game",
+    "GitHub repositories: shop simulator godot",
+    "GitHub repositories: shop management phaser",
+    "Local reusable infrastructure: factory spatial-shop-v1 and existing Phaser/TypeScript dependencies"
+  ],
+  "candidates": [
+    {
+      "id": "casual-farm",
+      "name": "CookieNoir/TA-Casual-Farm",
+      "repositoryUrl": "https://github.com/CookieNoir/TA-Casual-Farm",
+      "revision": "efb16644e1de39958ed7529ac32a64e598d0b60c",
+      "license": "MIT (source code; separate asset rights not approved)",
+      "licenseEvidenceUrl": "https://github.com/CookieNoir/TA-Casual-Farm/blob/efb16644e1de39958ed7529ac32a64e598d0b60c/LICENSE",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Unity/C# small logistics game. Read queue positioning, head-arrival service gating, typed/capacity/cooldown inventory transfer and visible item handoff. Not directly importable into Phaser; no WeChat/Douyin/TapTap package verified.",
+      "maintenanceRisk": "high",
+      "securityRisks": [
+        "Prototype last inspected commit is from 2023; tests/build and dependency vulnerabilities not audited.",
+        "README describes a clone exercise; names, presentation, models, audio and tuning are excluded regardless of root license."
+      ],
+      "attributionRequirements": [
+        "The inspected MIT file requires retention of its copyright and permission notice in copies or substantial portions.",
+        "No code reuse is approved here; any separately licensed assets or dependencies require independent review."
+      ],
+      "decision": "REFERENCE_ONLY"
+    },
+    {
+      "id": "rodser-mini-mart",
+      "name": "Rodser/MyMiniMart",
+      "repositoryUrl": "https://github.com/Rodser/MyMiniMart",
+      "revision": "3e8df096ee43942c81176ffb7b61f1f6e52a3dfe",
+      "license": "MIT (source code; separate asset rights not approved)",
+      "licenseEvidenceUrl": "https://github.com/Rodser/MyMiniMart/blob/3e8df096ee43942c81176ffb7b61f1f6e52a3dfe/LICENSE",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Unity/C# test project. Useful item-object transfer and separate unscanned/scanned checkout buffers. Not a portable Phaser module; all target mini-game compatibility remains unverified.",
+      "maintenanceRisk": "high",
+      "securityRisks": [
+        "Small 2023 test project; no runtime/build verification was performed.",
+        "Unity NavMesh, object hierarchy and asynchronous timing require an original engine-appropriate implementation; third-party asset/plugin licenses not comprehensively reviewed."
+      ],
+      "attributionRequirements": [
+        "The inspected MIT file requires retention of its copyright and permission notice in copies or substantial portions.",
+        "No code reuse is approved here; any separately licensed assets or dependencies require independent review."
+      ],
+      "decision": "REFERENCE_ONLY"
+    },
+    {
+      "id": "shopkeepers-legacy",
+      "name": "Jeffrey-Searcy/shopkeepers-legacy",
+      "repositoryUrl": "https://github.com/Jeffrey-Searcy/shopkeepers-legacy",
+      "revision": "99d6796a54867a790c73d46bbec3c06f7cc0046c",
+      "license": "MIT (source code; separate asset rights not approved)",
+      "licenseEvidenceUrl": "https://github.com/Jeffrey-Searcy/shopkeepers-legacy/blob/99d6796a54867a790c73d46bbec3c06f7cc0046c/LICENSE",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Phaser 3 + TypeScript + Vite, closest reviewed stack. Inventory count/slot invariants and planned transfer are relevant, not its farming/shop presentation. DOM/browser implementation is not proof of WeChat/Douyin/TapTap adapter readiness.",
+      "maintenanceRisk": "medium",
+      "securityRisks": [
+        "Young project/version 0.1.0; tests were read by inventory but not run; dependency vulnerabilities not audited.",
+        "LICENSE explicitly limits MIT coverage to source code; art uses third-party licenses and is not included in this research."
+      ],
+      "attributionRequirements": [
+        "The inspected MIT file requires retention of its copyright and permission notice in copies or substantial portions.",
+        "No code reuse is approved here; any separately licensed assets or dependencies require independent review."
+      ],
+      "decision": "REFERENCE_ONLY"
+    },
+    {
+      "id": "breineng-supermarket",
+      "name": "breineng/supermarket-simulator",
+      "repositoryUrl": "https://github.com/breineng/supermarket-simulator",
+      "revision": "ed710338cbff0cfd5166b0da7ffd0a8444bd98b2",
+      "license": "MIT (source code; separate asset rights not approved)",
+      "licenseEvidenceUrl": "https://github.com/breineng/supermarket-simulator/blob/ed710338cbff0cfd5166b0da7ffd0a8444bd98b2/LICENSE",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Unity/C# supermarket prototype with service-layer separation. Useful as a secondary reference for selecting an open checkout and generating multi-item shopping lists; not a drop-in web-lite or mini-game implementation.",
+      "maintenanceRisk": "high",
+      "securityRisks": [
+        "The inspected CustomerController is 1,939 lines and depends on engine/DI services; integration and maintenance burden is high.",
+        "README describes AI-generated provenance; correctness, dependency licensing/security and build quality remain unverified."
+      ],
+      "attributionRequirements": [
+        "The inspected MIT file requires retention of its copyright and permission notice in copies or substantial portions.",
+        "No code reuse is approved here; any separately licensed assets or dependencies require independent review."
+      ],
+      "decision": "REFERENCE_ONLY"
+    },
+    {
+      "id": "hieki-supermarket",
+      "name": "hieki-chan/Supermarket-Simulator-Prototype",
+      "repositoryUrl": "https://github.com/hieki-chan/Supermarket-Simulator-Prototype",
+      "revision": "3ab95156922a1a389d22cd48db105455f62f12d6",
+      "license": "UNKNOWN - no verified repository-level license",
+      "licenseEvidenceUrl": null,
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Archived Unity prototype. Repository-level license was not established; vendor plugin licenses are not licenses for the full game. Excluded from the recommended implementation references.",
+      "maintenanceRisk": "high",
+      "securityRisks": [
+        "Archived repository and no verified top-level game-code license.",
+        "Large repository includes Library/PackageCache and vendor code; no whole-repository permission or safety conclusion is justified."
+      ],
+      "attributionRequirements": [
+        "No permission to reuse is established; obtain a verified code license before considering reuse."
+      ],
+      "decision": "REJECT"
+    }
+  ],
+  "outcome": "NO_SUITABLE_CANDIDATE",
+  "selectedCandidateIds": [],
+  "rationale": "This outcome means no direct-code-reuse candidate is approved, NOT that no useful references were found. Four candidates are REFERENCE_ONLY. Repository policy prohibits importing third-party game code/expression; retain the current engine and approved assets. This is a supplemental research artifact and does not replace the original pre-blueprint gate or authorize a build.",
+  "researchedAt": "2026-09-30T18:37:47.643Z"
+}

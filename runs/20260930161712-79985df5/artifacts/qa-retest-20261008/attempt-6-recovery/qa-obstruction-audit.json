@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "old-qa-product-vs-harness-classification",
+      "passed": true,
+      "evidence": "Read-only QAAgent found keyboard trace overshoot, touch visible fish deposit followed by marker false-negative, and v4 screenshot timeout. These do not establish a current product failure. Attempt6 deterministic report remains implementation-only."
+    },
+    {
+      "name": "current-default-journey",
+      "passed": false,
+      "evidence": "BLOCKED: attempt6 old traces did not reach settlement, employees, gull or market/replay. Attempt5 build hash differs and cannot substitute."
+    }
+  ],
+  "issues": [
+    {
+      "id": "qa-recovery-required",
+      "severity": "error",
+      "message": "Natural QA must be recovered from visible pixels with bounded input and release before observation.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/depth-verification.json; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/depth-verification.json; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/v4-locator/natural-540x960.json"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/screenshots/depth/540x960/005-blocked.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/screenshots/depth/540x960/005-blocked.png"
+  ],
+  "consoleLog": "Accepted compact summary of independent read-only QAAgent response; no new runtime executed by that agent. Typographic paths in source response were normalized against actual files; inference is not player evidence.",
+  "testedAt": "2026-10-08T06:42:56.556Z"
+}

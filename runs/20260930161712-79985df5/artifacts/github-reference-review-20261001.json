@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "GitHubMechanicReferenceReview",
+  "targetRunId": "20260930161712-79985df5",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "gameSourceModified": false,
+  "providersInvoked": false,
+  "reuseApproved": false,
+  "reviewedSources": 26,
+  "recommendations": [
+    {
+      "repository": "CookieNoir/TA-Casual-Farm",
+      "revision": "efb16644e1de39958ed7529ac32a64e598d0b60c",
+      "commitDate": "2023-02-21T18:38:48Z",
+      "archived": false,
+      "decision": "REFERENCE_ONLY",
+      "mechanisms": [
+        "Customer queue positions are recalculated from a first position plus per-customer offset; service checks the queue head arrival.",
+        "Inventory transfers check accepted product, free slots and cooldown; slots hold item objects."
+      ],
+      "limits": [
+        "CashRegister pays directly into the player account, so it does not supply the separate cash-pile mechanic required by the Monkey Mart reference.",
+        "BuySpot uses mouse click and full-price payment, not stationary incremental construction; do not transplant its interaction rule."
+      ],
+      "relatedGapIds": [
+        "REF-SPATIAL-QUEUE",
+        "REF-OBJECT-FEEDBACK"
+      ],
+      "codeEvidence": [
+        {
+          "repo": "CookieNoir/TA-Casual-Farm",
+          "revision": "efb16644e1de39958ed7529ac32a64e598d0b60c",
+          "sourcePath": "Assets/Source/Entities/CashRegister.cs",
+          "url": "https://raw.githubusercontent.com/CookieNoir/TA-Casual-Farm/efb16644e1de39958ed7529ac32a64e598d0b60c/Assets/Source/Entities/CashRegister.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/CookieNoir__TA-Casual-Farm/Assets/Source/Entities/CashRegister.cs",
+          "sha256": "deaa675c7c187cb14a104db5695013d62cdb81064294d3800fbb5555676724b6",
+          "bytes": 2915,
+          "lines": 98,
+          "startLine": 24,
+          "endLine": 87
+        },
+        {
+          "repo": "CookieNoir/TA-Casual-Farm",
+          "revision": "efb16644e1de39958ed7529ac32a64e598d0b60c",
+          "sourcePath": "Assets/Source/Vegetables/VegetableInventory.cs",
+          "url": "https://raw.githubusercontent.com/CookieNoir/TA-Casual-Farm/efb16644e1de39958ed7529ac32a64e598d0b60c/Assets/Source/Vegetables/VegetableInventory.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/CookieNoir__TA-Casual-Farm/Assets/Source/Vegetables/VegetableInventory.cs",
+          "sha256": "03f738642cca8b399b9ce2d10886841cf197f960b2b8e51e30edba3168b876d9",
+          "bytes": 6628,
+          "lines": 239,
+          "startLine": 217,
+          "endLine": 239
+        },
+        {
+          "repo": "CookieNoir/TA-Casual-Farm",
+          "revision": "efb16644e1de39958ed7529ac32a64e598d0b60c",
+          "sourcePath": "Assets/Source/Money/BuySpot.cs",
+          "url": "https://raw.githubusercontent.com/CookieNoir/TA-Casual-Farm/efb16644e1de39958ed7529ac32a64e598d0b60c/Assets/Source/Money/BuySpot.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/CookieNoir__TA-Casual-Farm/Assets/Source/Money/BuySpot.cs",
+          "sha256": "38d1830c6626e0ec60549a800a40b97acf8f690499d9ffdb232b5f1cbd0a053b",
+          "bytes": 853,
+          "lines": 44,
+          "startLine": 23,
+          "endLine": 37
+        }
+      ],
+      "licenseEvidence": {
+        "repo": "CookieNoir/TA-Casual-Farm",
+        "revision": "efb16644e1de39958ed7529ac32a64e598d0b60c",
+        "sourcePath": "LICENSE",
+        "url": "https://raw.githubusercontent.com/CookieNoir/TA-Casual-Farm/efb16644e1de39958ed7529ac32a64e598d0b60c/LICENSE",
+        "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/CookieNoir__TA-Casual-Farm/LICENSE",
+        "sha256": "1e2dfa97cd7f3b286f4298af43039df1b58765d3670765c3355ac56bf4d7ef35",
+        "bytes": 1075,
+        "lines": 21
+      },
+      "targetPlatformVerdicts": {
+        "webLite": "REFERENCE_ONLY_DIFFERENT_ENGINE_NOT_TESTED",
+        "wechatMiniGame": "UNVERIFIED",
+        "douyinMiniGame": "UNVERIFIED",
+        "tapTapMiniGame": "UNVERIFIED"
+      }
+    },
+    {
+      "repository": "Rodser/MyMiniMart",
+      "revision": "3e8df096ee43942c81176ffb7b61f1f6e52a3dfe",
+      "commitDate": "2023-06-23T07:35:11Z",
+      "archived": false,
+      "decision": "REFERENCE_ONLY",
+      "mechanisms": [
+        "Buyer and Shelf move individual item objects into a carried pack with FlyTo feedback.",
+        "CashDesk transfers goods from an unscanned pack to a scanned pack, then signals the buyer to leave."
+      ],
+      "limits": [
+        "The declared cash pack is not used by the inspected CashDesk class; this is not evidence of a complete money-collection implementation.",
+        "Do not adopt its simplistic state/trigger handling without testing concurrent customers and shutdown/cancellation."
+      ],
+      "relatedGapIds": [
+        "REF-OBJECT-FEEDBACK",
+        "REF-CASH-FLOW"
+      ],
+      "codeEvidence": [
+        {
+          "repo": "Rodser/MyMiniMart",
+          "revision": "3e8df096ee43942c81176ffb7b61f1f6e52a3dfe",
+          "sourcePath": "Assets/Scripts/Buyer.cs",
+          "url": "https://raw.githubusercontent.com/Rodser/MyMiniMart/3e8df096ee43942c81176ffb7b61f1f6e52a3dfe/Assets/Scripts/Buyer.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Rodser__MyMiniMart/Assets/Scripts/Buyer.cs",
+          "sha256": "ec67442b6035b357d4fb81a5cfe6ed0d171ea2466e7065a43cdfcc16c60f7b3e",
+          "bytes": 2880,
+          "lines": 114,
+          "startLine": 73,
+          "endLine": 107
+        },
+        {
+          "repo": "Rodser/MyMiniMart",
+          "revision": "3e8df096ee43942c81176ffb7b61f1f6e52a3dfe",
+          "sourcePath": "Assets/Scripts/Subject/CashDesk.cs",
+          "url": "https://raw.githubusercontent.com/Rodser/MyMiniMart/3e8df096ee43942c81176ffb7b61f1f6e52a3dfe/Assets/Scripts/Subject/CashDesk.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Rodser__MyMiniMart/Assets/Scripts/Subject/CashDesk.cs",
+          "sha256": "28711641a45e82843039825ac2bde273344549b5ec0acf115af4c1709f5a635c",
+          "bytes": 1669,
+          "lines": 71,
+          "startLine": 19,
+          "endLine": 69
+        },
+        {
+          "repo": "Rodser/MyMiniMart",
+          "revision": "3e8df096ee43942c81176ffb7b61f1f6e52a3dfe",
+          "sourcePath": "Assets/Scripts/Subject/Shelf.cs",
+          "url": "https://raw.githubusercontent.com/Rodser/MyMiniMart/3e8df096ee43942c81176ffb7b61f1f6e52a3dfe/Assets/Scripts/Subject/Shelf.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Rodser__MyMiniMart/Assets/Scripts/Subject/Shelf.cs",
+          "sha256": "0b8c274048989e6d0b15fc016eeba283f571bdb71f49e96eecef29aaef0793f6",
+          "bytes": 1013,
+          "lines": 44,
+          "startLine": 23,
+          "endLine": 43
+        }
+      ],
+      "licenseEvidence": {
+        "repo": "Rodser/MyMiniMart",
+        "revision": "3e8df096ee43942c81176ffb7b61f1f6e52a3dfe",
+        "sourcePath": "LICENSE",
+        "url": "https://raw.githubusercontent.com/Rodser/MyMiniMart/3e8df096ee43942c81176ffb7b61f1f6e52a3dfe/LICENSE",
+        "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Rodser__MyMiniMart/LICENSE",
+        "sha256": "437f565dacea72871720bce59c526f03e5904f2cfb5e915953eaf47da4d5720f",
+        "bytes": 1072,
+        "lines": 21
+      },
+      "targetPlatformVerdicts": {
+        "webLite": "REFERENCE_ONLY_DIFFERENT_ENGINE_NOT_TESTED",
+        "wechatMiniGame": "UNVERIFIED",
+        "douyinMiniGame": "UNVERIFIED",
+        "tapTapMiniGame": "UNVERIFIED"
+      }
+    },
+    {
+      "repository": "Jeffrey-Searcy/shopkeepers-legacy",
+      "revision": "99d6796a54867a790c73d46bbec3c06f7cc0046c",
+      "commitDate": "2026-08-19T20:48:33Z",
+      "archived": false,
+      "decision": "REFERENCE_ONLY",
+      "mechanisms": [
+        "Inventory deltas build candidate count/slot copies and reject insufficient quantity or space before commit.",
+        "Withdrawal only decrements external stock after the player capacity check/commit succeeds, leaving source unchanged on failure."
+      ],
+      "limits": [
+        "Its inventory-slot rules and farming lifecycle differ from the current carried-unit logistics game; reference the invariant, not its balancing or storage semantics.",
+        "No queues, money piles or construction solution was established from the inspected files."
+      ],
+      "relatedGapIds": [
+        "REF-OBJECT-FEEDBACK"
+      ],
+      "codeEvidence": [
+        {
+          "repo": "Jeffrey-Searcy/shopkeepers-legacy",
+          "revision": "99d6796a54867a790c73d46bbec3c06f7cc0046c",
+          "sourcePath": "src/systems/InventoryLayoutSystem.ts",
+          "url": "https://raw.githubusercontent.com/Jeffrey-Searcy/shopkeepers-legacy/99d6796a54867a790c73d46bbec3c06f7cc0046c/src/systems/InventoryLayoutSystem.ts",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Jeffrey-Searcy__shopkeepers-legacy/src/systems/InventoryLayoutSystem.ts",
+          "sha256": "70f120e11709599dea4c8704c6531a387ebd452ac573a3ffa5fe36f2e06ecc4a",
+          "bytes": 12414,
+          "lines": 310,
+          "startLine": 185,
+          "endLine": 236
+        },
+        {
+          "repo": "Jeffrey-Searcy/shopkeepers-legacy",
+          "revision": "99d6796a54867a790c73d46bbec3c06f7cc0046c",
+          "sourcePath": "src/systems/InventoryLayoutSystem.ts",
+          "url": "https://raw.githubusercontent.com/Jeffrey-Searcy/shopkeepers-legacy/99d6796a54867a790c73d46bbec3c06f7cc0046c/src/systems/InventoryLayoutSystem.ts",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Jeffrey-Searcy__shopkeepers-legacy/src/systems/InventoryLayoutSystem.ts",
+          "sha256": "70f120e11709599dea4c8704c6531a387ebd452ac573a3ffa5fe36f2e06ecc4a",
+          "bytes": 12414,
+          "lines": 310,
+          "startLine": 260,
+          "endLine": 296
+        },
+        {
+          "repo": "Jeffrey-Searcy/shopkeepers-legacy",
+          "revision": "99d6796a54867a790c73d46bbec3c06f7cc0046c",
+          "sourcePath": "LICENSE",
+          "url": "https://raw.githubusercontent.com/Jeffrey-Searcy/shopkeepers-legacy/99d6796a54867a790c73d46bbec3c06f7cc0046c/LICENSE",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Jeffrey-Searcy__shopkeepers-legacy/LICENSE",
+          "sha256": "c3c2f0d8b01d45ad07009a5603f4cd0535e5d2c72f7e82e0cfe17e717841b546",
+          "bytes": 1535,
+          "lines": 32,
+          "startLine": 25,
+          "endLine": 32
+        }
+      ],
+      "licenseEvidence": {
+        "repo": "Jeffrey-Searcy/shopkeepers-legacy",
+        "revision": "99d6796a54867a790c73d46bbec3c06f7cc0046c",
+        "sourcePath": "LICENSE",
+        "url": "https://raw.githubusercontent.com/Jeffrey-Searcy/shopkeepers-legacy/99d6796a54867a790c73d46bbec3c06f7cc0046c/LICENSE",
+        "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/Jeffrey-Searcy__shopkeepers-legacy/LICENSE",
+        "sha256": "c3c2f0d8b01d45ad07009a5603f4cd0535e5d2c72f7e82e0cfe17e717841b546",
+        "bytes": 1535,
+        "lines": 32
+      },
+      "targetPlatformVerdicts": {
+        "webLite": "REFERENCE_ONLY_SAME_STACK_NOT_TESTED",
+        "wechatMiniGame": "UNVERIFIED",
+        "douyinMiniGame": "UNVERIFIED",
+        "tapTapMiniGame": "UNVERIFIED"
+      }
+    },
+    {
+      "repository": "breineng/supermarket-simulator",
+      "revision": "ed710338cbff0cfd5166b0da7ffd0a8444bd98b2",
+      "commitDate": "2025-07-12T23:44:13Z",
+      "archived": false,
+      "decision": "REFERENCE_ONLY",
+      "mechanisms": [
+        "CashDeskService chooses the shortest queue among open checkouts.",
+        "ShoppingListGeneratorService builds a multi-item list subject to customer budget."
+      ],
+      "limits": [
+        "The list generator reads all product configs; this is not evidence that it solves the target locked-product-demand bug.",
+        "Prefer the smaller queue example for this preview rather than importing this service graph."
+      ],
+      "relatedGapIds": [
+        "REF-SPATIAL-QUEUE",
+        "REF-SHOPPING-LIST"
+      ],
+      "codeEvidence": [
+        {
+          "repo": "breineng/supermarket-simulator",
+          "revision": "ed710338cbff0cfd5166b0da7ffd0a8444bd98b2",
+          "sourcePath": "Assets/Scripts/Services/Game/CashDeskService.cs",
+          "url": "https://raw.githubusercontent.com/breineng/supermarket-simulator/ed710338cbff0cfd5166b0da7ffd0a8444bd98b2/Assets/Scripts/Services/Game/CashDeskService.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/breineng__supermarket-simulator/Assets/Scripts/Services/Game/CashDeskService.cs",
+          "sha256": "090f30344e20ea7ac389af4868a2cedfad153c6b7cf36c1ab8c051cab9eaebe9",
+          "bytes": 9664,
+          "lines": 216,
+          "startLine": 55,
+          "endLine": 76
+        },
+        {
+          "repo": "breineng/supermarket-simulator",
+          "revision": "ed710338cbff0cfd5166b0da7ffd0a8444bd98b2",
+          "sourcePath": "Assets/Scripts/Services/Game/ShoppingListGeneratorService.cs",
+          "url": "https://raw.githubusercontent.com/breineng/supermarket-simulator/ed710338cbff0cfd5166b0da7ffd0a8444bd98b2/Assets/Scripts/Services/Game/ShoppingListGeneratorService.cs",
+          "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/breineng__supermarket-simulator/Assets/Scripts/Services/Game/ShoppingListGeneratorService.cs",
+          "sha256": "6066e40ae1af7ed9949fc42dc9144bb13ab1329847b76a0b0b683f61bb01002a",
+          "bytes": 4601,
+          "lines": 106,
+          "startLine": 31,
+          "endLine": 88
+        }
+      ],
+      "licenseEvidence": {
+        "repo": "breineng/supermarket-simulator",
+        "revision": "ed710338cbff0cfd5166b0da7ffd0a8444bd98b2",
+        "sourcePath": "LICENSE",
+        "url": "https://raw.githubusercontent.com/breineng/supermarket-simulator/ed710338cbff0cfd5166b0da7ffd0a8444bd98b2/LICENSE",
+        "localPath": "runs/20260930161712-79985df5/research/github-20261001/sources/breineng__supermarket-simulator/LICENSE",
+        "sha256": "a38fea80a3214079c680f06457e999617aa46968f21ca55bbcfd499d877b3527",
+        "bytes": 1065,
+        "lines": 21
+      },
+      "targetPlatformVerdicts": {
+        "webLite": "REFERENCE_ONLY_DIFFERENT_ENGINE_NOT_TESTED",
+        "wechatMiniGame": "UNVERIFIED",
+        "douyinMiniGame": "UNVERIFIED",
+        "tapTapMiniGame": "UNVERIFIED"
+      }
+    },
+    {
+      "repository": "hieki-chan/Supermarket-Simulator-Prototype",
+      "revision": "3ab95156922a1a389d22cd48db105455f62f12d6",
+      "commitDate": "2024-08-15T04:18:04Z",
+      "archived": true,
+      "decision": "REJECT",
+      "mechanisms": [],
+      "limits": [
+        "Do not reuse or import source/assets from this repository on the basis of public visibility or a plugin license."
+      ],
+      "relatedGapIds": [],
+      "codeEvidence": [],
+      "licenseEvidence": null,
+      "targetPlatformVerdicts": {
+        "webLite": "REFERENCE_ONLY_DIFFERENT_ENGINE_NOT_TESTED",
+        "wechatMiniGame": "UNVERIFIED",
+        "douyinMiniGame": "UNVERIFIED",
+        "tapTapMiniGame": "UNVERIFIED"
+      }
+    }
+  ],
+  "implementationPriority": [
+    "Preserve the already bound Monkey Mart code as the primary mechanism evidence.",
+    "For future authorized repair, use the compact farm queue example to specify unique positions, arrival gating and front advancement.",
+    "Use item-transfer examples to define typed capacity/cooldown invariants and source-to-destination feedback without adopting their content.",
+    "Keep the separate cash-pile and stationary incremental-payment requirements from the bound primary reference; secondary samples simplify these differently.",
+    "Do not introduce a new engine, service architecture or production dependency for this small slice."
+  ],
+  "evidenceManifest": "research/github-20261001/evidence-manifest.json",
+  "researchedAt": "2026-09-30T18:37:47.643Z"
+}

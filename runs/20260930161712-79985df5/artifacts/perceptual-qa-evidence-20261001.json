@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "source": "playwright-chromium-emulation",
+  "inputMode": "browser-touch-emulation",
+  "buildHash": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+  "agentNote": "原计划由感知子代理采 390x844 + 844x390 触摸流程、HUD遮挡、prefers-reduced-motion。子代理被沙箱回收，perceptual-mobile-20261001 目录未生成。本文件用现有截图与源码静态确认结果替代，触摸/减少动画分支为 NOT_OBSERVED。",
+  "viewports": [
+    {
+      "dimensions": "540x960",
+      "inputMode": "keyboard (touch NOT_OBSERVED)",
+      "naturalFlowCore": "OBSERVED via /tmp/natural-journey.mts 540 run",
+      "hudObstruction": "HUD #coins/#level/#status/#toast 与 canvas 缩放一致，未观察到遮挡；evidence: screenshots/natural-input-20261001/540x960/12-viewport-hud.png",
+      "settlementButtonReachable": "NOT_OBSERVED (settlement 未真实到达)",
+      "touchReleaseStops": "NOT_OBSERVED",
+      "consoleErrors": []
+    },
+    {
+      "dimensions": "390x844",
+      "inputMode": "keyboard surrogate (touch NOT_OBSERVED)",
+      "naturalFlowCore": "PARTIAL — screenshots in screenshots/natural-input-20261001/390x844/01..12",
+      "hudObstruction": "OBSERVED via screenshot 12-viewport-hud.png — HUD 可见",
+      "settlementButtonReachable": "NOT_OBSERVED",
+      "touchReleaseStops": "NOT_OBSERVED",
+      "consoleErrors": []
+    },
+    {
+      "dimensions": "844x390",
+      "inputMode": "keyboard surrogate (touch NOT_OBSERVED)",
+      "naturalFlowCore": "PARTIAL — screenshots in screenshots/natural-input-20261001/844x390/01..12",
+      "hudObstruction": "OBSERVED via screenshot 12-viewport-hud.png",
+      "settlementButtonReachable": "NOT_OBSERVED",
+      "touchReleaseStops": "NOT_OBSERVED",
+      " consoleErrors": []
+    }
+  ],
+  "localObjectFeedback": {
+    "harvest": "ONLY_GLOBAL_TOAST — feedbackEvent 'production-ready' 触发玩家缩放脉冲 + 共用 #toast，无产出点→玩家的局部飞物",
+    "deposit": "ONLY_GLOBAL_TOAST — 同脉冲+toast，无玩家→货架局部飞物",
+    "customer-pickup": "NOT_OBSERVED in DOM — 顾客无携货图形",
+    "checkout-pack": "ONLY_GLOBAL_TOAST — checkout-cash 仅货币变化，无柜台作业视觉",
+    "collect-cash": "NOT_APPLICABLE — 当前实现服务完成即到账，无现金堆收取步骤",
+    "invest": "ONLY_GLOBAL_TOAST — contributed 数值变化无局部进度条/飞物"
+  },
+  "reducedMotion": "NOT_OBSERVED (子代理未跑)",
+  "consoleErrors": [],
+  "blockers": [
+    "触摸输入分支完全 NOT_OBSERVED — 子代理失败/被沙箱回收",
+    "prefers-reduced-motion NOT_OBSERVED",
+    "结算按钮可达性 NOT_OBSERVED — 未真实到达结算"
+  ]
+}

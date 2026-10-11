@@ -1,0 +1,778 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "reference-code-package",
+  "packageId": "monkey-mart",
+  "targetGame": "continuation-v2",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "requestedUrl": "https://poki.com/zh/g/monkey-mart",
+  "finalUrl": "https://poki.com/zh/g/monkey-mart",
+  "pageTitle": "Monkey Mart - 免费在线玩! | Poki (宝玩)",
+  "engine": "defold",
+  "buildBaseUrl": "https://1183520a-1ec4-4f33-a7ce-7673c60f912c.gdn.poki.com/4dbc26ac-2bcf-4173-ae3d-7dc413d48a60/archive/",
+  "downloads": [
+    {
+      "name": "archive_files.json",
+      "urls": [
+        "https://1183520a-1ec4-4f33-a7ce-7673c60f912c.gdn.poki.com/4dbc26ac-2bcf-4173-ae3d-7dc413d48a60/archive/archive_files.json"
+      ],
+      "path": "reference-code/monkey-mart/raw/archive_files.json",
+      "sha256": "a022a4c23ac66231f42432a32e9cb62b568be8616f0f122bac27f4d31cd0f0df",
+      "bytes": 531
+    },
+    {
+      "name": "game.arci",
+      "urls": [
+        "https://1183520a-1ec4-4f33-a7ce-7673c60f912c.gdn.poki.com/4dbc26ac-2bcf-4173-ae3d-7dc413d48a60/archive/game0.arci"
+      ],
+      "path": "reference-code/monkey-mart/raw/game.arci",
+      "sha256": "24efa89cd57e789eea429850bed545dc9f5bc142130ce990fab195388539bf18",
+      "bytes": 49568
+    },
+    {
+      "name": "game.arcd",
+      "urls": [
+        "https://1183520a-1ec4-4f33-a7ce-7673c60f912c.gdn.poki.com/4dbc26ac-2bcf-4173-ae3d-7dc413d48a60/archive/game0.arcd",
+        "https://1183520a-1ec4-4f33-a7ce-7673c60f912c.gdn.poki.com/4dbc26ac-2bcf-4173-ae3d-7dc413d48a60/archive/game1.arcd",
+        "https://1183520a-1ec4-4f33-a7ce-7673c60f912c.gdn.poki.com/4dbc26ac-2bcf-4173-ae3d-7dc413d48a60/archive/game2.arcd"
+      ],
+      "path": "reference-code/monkey-mart/raw/game.arcd",
+      "sha256": "d6d75004c9f153ccbdd3e8f37cd56d1988bd950a1de56150579219d4c1c2edc3",
+      "bytes": 6188692
+    },
+    {
+      "name": "game.projectc",
+      "urls": [
+        "https://1183520a-1ec4-4f33-a7ce-7673c60f912c.gdn.poki.com/4dbc26ac-2bcf-4173-ae3d-7dc413d48a60/archive/game0.projectc"
+      ],
+      "path": "reference-code/monkey-mart/raw/game.projectc",
+      "sha256": "c604b667acf6571705ba4fe95fa5a4c14487ee5629929198e3c4b8ce7d076d74",
+      "bytes": 4937
+    }
+  ],
+  "archive": {
+    "entryCount": 619,
+    "compressedCount": 227,
+    "encryptedCount": 1,
+    "unsafeNameCount": 0,
+    "scriptCount": 102
+  },
+  "scripts": [
+    {
+      "path": "reference-code/monkey-mart/scripts/defsave/defsave.lua",
+      "originalName": "defsave/defsave.lua",
+      "sha256": "eb974883be17f6e3914b09ca0b4b69b831e6a2bf31ddb62de9934b2946d1853d",
+      "bytes": 7542,
+      "lineCount": 340
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/defsave/utf8.lua",
+      "originalName": "defsave/utf8.lua",
+      "sha256": "8f0424cfedeaced851bf071dc505d31132ce4142873ce75f15df6814d4d74cef",
+      "bytes": 20033,
+      "lineCount": 1045
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/back_handler.lua",
+      "originalName": "druid/base/back_handler.lua",
+      "sha256": "f2efe351d656299c166c229af0a65d83d8170d57913137182218d54a9a94a5f9",
+      "bytes": 547,
+      "lineCount": 42
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/blocker.lua",
+      "originalName": "druid/base/blocker.lua",
+      "sha256": "1facf1ddd578514ad5b87e3a7f6923b44343d6fa7113f7e20f0150eb27feb597",
+      "bytes": 801,
+      "lineCount": 71
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/button.lua",
+      "originalName": "druid/base/button.lua",
+      "sha256": "2e97dda50cf563ca7389d36ef875765c50a9751c54a50ab94e424cfc89e7d42f",
+      "bytes": 8316,
+      "lineCount": 433
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/drag.lua",
+      "originalName": "druid/base/drag.lua",
+      "sha256": "095b9d208a0b9c2e80da401f90d8c2fb007a43af162f3b920ff98296f9da9460",
+      "bytes": 6111,
+      "lineCount": 349
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/hover.lua",
+      "originalName": "druid/base/hover.lua",
+      "sha256": "46c9ccd98a97a29964697d1702a4c9348b20fe94948411cf7d15d33a997edd07",
+      "bytes": 3352,
+      "lineCount": 216
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/scroll.lua",
+      "originalName": "druid/base/scroll.lua",
+      "sha256": "ffe43ca56b06c8f8131ff6de56c409a567c7e34e4b65e3230043468564dcd88f",
+      "bytes": 16875,
+      "lineCount": 829
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/static_grid.lua",
+      "originalName": "druid/base/static_grid.lua",
+      "sha256": "0d2e6d979368a1b25f6fbee55aa49b95ca699286c275f4c0fd7fcbd1c6bc9950",
+      "bytes": 9877,
+      "lineCount": 526
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/base/text.lua",
+      "originalName": "druid/base/text.lua",
+      "sha256": "c56318a3274fca54add51edc200b05f4db8113a8da8929f8f4f46910f215b9f3",
+      "bytes": 9911,
+      "lineCount": 509
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/component.lua",
+      "originalName": "druid/component.lua",
+      "sha256": "c4c219ee832e2c9a003667f223d5af84eec372f1605998ad22abaa9d843b490a",
+      "bytes": 5808,
+      "lineCount": 442
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/const.lua",
+      "originalName": "druid/const.lua",
+      "sha256": "3c5ec53463f51af3a8b01ad575d7cb9ce92c96f4e468103a4360ff6572b14442",
+      "bytes": 3400,
+      "lineCount": 116
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/custom/rich_input/rich_input.lua",
+      "originalName": "druid/custom/rich_input/rich_input.lua",
+      "sha256": "05cef9812cebe32df776cd46fa0554578b6a896d49cdb0a656fe407413ab06ec",
+      "bytes": 7136,
+      "lineCount": 301
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/custom/rich_text/module/rt_color.lua",
+      "originalName": "druid/custom/rich_text/module/rt_color.lua",
+      "sha256": "497162cf85ae5a1af7db0b1981e87e1cb5f447a4946fd1003ef87775e5077513",
+      "bytes": 850,
+      "lineCount": 50
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/custom/rich_text/module/rt_parse.lua",
+      "originalName": "druid/custom/rich_text/module/rt_parse.lua",
+      "sha256": "265dd80c36758bc8563cb5f082e284cdf186c821d7970b0b2c74d21d1aa538c0",
+      "bytes": 3677,
+      "lineCount": 195
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/custom/rich_text/module/rt_tags.lua",
+      "originalName": "druid/custom/rich_text/module/rt_tags.lua",
+      "sha256": "c0fd7dc63e4e1cb331f73fb15bcebd0c9d78eba981bd84f6680fafef8b136da1",
+      "bytes": 1772,
+      "lineCount": 107
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/custom/rich_text/module/rt.lua",
+      "originalName": "druid/custom/rich_text/module/rt.lua",
+      "sha256": "43162c1cdf7cad3a344a0c63b3521051dbf2499107c54c931b09fea564ca1a87",
+      "bytes": 12898,
+      "lineCount": 554
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/custom/rich_text/rich_text.lua",
+      "originalName": "druid/custom/rich_text/rich_text.lua",
+      "sha256": "89df5708dfe728a554939b3836b72bcef70e2f2c128402aaf8fc80ff87d281f3",
+      "bytes": 2638,
+      "lineCount": 249
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/druid.lua",
+      "originalName": "druid/druid.lua",
+      "sha256": "616acce6a764b18d071d06164166eb609915d1889d86db8b785a48eb5af9e7ca",
+      "bytes": 3282,
+      "lineCount": 187
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/container.lua",
+      "originalName": "druid/extended/container.lua",
+      "sha256": "d0fa0a9086ee7c8cbf47b242a9bfa17cfbeffa56c942555bf5513dd85224f2ba",
+      "bytes": 13249,
+      "lineCount": 602
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/data_list.lua",
+      "originalName": "druid/extended/data_list.lua",
+      "sha256": "708cc643fe8af38b35305ef411b8387ee4460a56985487061193446a870a23d7",
+      "bytes": 4760,
+      "lineCount": 307
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/hotkey.lua",
+      "originalName": "druid/extended/hotkey.lua",
+      "sha256": "68e7db8b0abf19428118b6cdccfb8cb9b645846c000ac93faaeda3560eead637",
+      "bytes": 3958,
+      "lineCount": 210
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/input.lua",
+      "originalName": "druid/extended/input.lua",
+      "sha256": "089752570b918675876576375fb1d0bcab9c220921a8c9c7eba7441e85cea3f3",
+      "bytes": 10470,
+      "lineCount": 496
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/lang_text.lua",
+      "originalName": "druid/extended/lang_text.lua",
+      "sha256": "42739eb43f5ffc6e5cd23c22f48980ed395b3cd7ffb3e1e30f3eaf4425c4a3ef",
+      "bytes": 1293,
+      "lineCount": 94
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/layout.lua",
+      "originalName": "druid/extended/layout.lua",
+      "sha256": "de9cf4f46ab5758a97e43f93a39e8cfb784e9ec1feff3a5ac131339c521e2f02",
+      "bytes": 10041,
+      "lineCount": 510
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/progress.lua",
+      "originalName": "druid/extended/progress.lua",
+      "sha256": "bf1afe8f1311a136fb6f87b34abe5cff768c781b254bc1aa9bfb763ca7c9d387",
+      "bytes": 3870,
+      "lineCount": 248
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/slider.lua",
+      "originalName": "druid/extended/slider.lua",
+      "sha256": "b52e36592799cc54a60123612ba3173b97914f26f01f4a8deaa583d85640fe4b",
+      "bytes": 4306,
+      "lineCount": 239
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/swipe.lua",
+      "originalName": "druid/extended/swipe.lua",
+      "sha256": "1220bdadabd4131b72fe0f9c154af8dd991d892190a47a53b7eee9e3915315d4",
+      "bytes": 2755,
+      "lineCount": 162
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/extended/timer.lua",
+      "originalName": "druid/extended/timer.lua",
+      "sha256": "2a2a9a873c05d46f9545b7429325807916672cf3e3370ba49ed606794fe3cef9",
+      "bytes": 1920,
+      "lineCount": 131
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/helper.lua",
+      "originalName": "druid/helper.lua",
+      "sha256": "13213f185c0abc1f2be31873b3479226d590bf9e84c369e208f75bbe95349644",
+      "bytes": 10922,
+      "lineCount": 687
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/styles/default/style.lua",
+      "originalName": "druid/styles/default/style.lua",
+      "sha256": "111e41ec167025417cc4e8e9519b4e05ccba83838e9c76a235dce90af31f5fa3",
+      "bytes": 3712,
+      "lineCount": 159
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/system/druid_instance.lua",
+      "originalName": "druid/system/druid_instance.lua",
+      "sha256": "234d35e0b06df9d0ef12bc3d47d4c49b8c37ae87daa93776c9370390f5097e15",
+      "bytes": 13200,
+      "lineCount": 724
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/system/settings.lua",
+      "originalName": "druid/system/settings.lua",
+      "sha256": "efdbef55d53a16041a95a7905d82e0d432b70c318026e7e190384c4dfd508971",
+      "bytes": 168,
+      "lineCount": 17
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/druid/system/utf8.lua",
+      "originalName": "druid/system/utf8.lua",
+      "sha256": "1ecc6cc2463855439a6ad44ac0a41400b36690ab6e12cd82ae21a1dd177dca15",
+      "bytes": 20037,
+      "lineCount": 1046
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/event/event.lua",
+      "originalName": "event/event.lua",
+      "sha256": "acac32d00a380eef5ac5a1bd2b799aa4a2f4f7c2ef00837bf9d9e7e34f91e2cf",
+      "bytes": 5564,
+      "lineCount": 338
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/event/events.lua",
+      "originalName": "event/events.lua",
+      "sha256": "c85ad5677f73e89cd376d088f63cf283ae2025c24d38f8bb67d6376adf203312",
+      "bytes": 1128,
+      "lineCount": 108
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/liveupdate_reszip/reszip.lua",
+      "originalName": "liveupdate_reszip/reszip.lua",
+      "sha256": "e5087f0366c382f0c012a82f911a32a10b342c2e0dc1db93ac20e50fa3751a86",
+      "bytes": 4424,
+      "lineCount": 162
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/apimanager_web.lua",
+      "originalName": "main/apimanager_web.lua",
+      "sha256": "50bcca19ceb93efe9ec1ee750e96301fe9c2424c542cb67d75502933bebdaf1c",
+      "bytes": 9866,
+      "lineCount": 351
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/audio.script",
+      "originalName": "main/audio.script",
+      "sha256": "5186975e1679be6441028f9bb9502a37af1bc15ab1486dede301c865f8543a8d",
+      "bytes": 2417,
+      "lineCount": 76
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/coinmanager.lua",
+      "originalName": "main/coinmanager.lua",
+      "sha256": "dd356a62ea08584de87748eddd7561e2fb833d6ca10f937616d052a0783fd279",
+      "bytes": 3071,
+      "lineCount": 128
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/config.lua",
+      "originalName": "main/config.lua",
+      "sha256": "5f06585556c430452984eca6a5d1344d3f0c4ceaf14347b919435187c315d613",
+      "bytes": 212,
+      "lineCount": 9
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/datamanager.lua",
+      "originalName": "main/datamanager.lua",
+      "sha256": "271b70f0131b7138d9e3fa90338cfbf49ef81803f324adca79e9cd2015aebed8",
+      "bytes": 36761,
+      "lineCount": 1127
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/debug_manager.lua",
+      "originalName": "main/debug_manager.lua",
+      "sha256": "80531063c7d587f46711c1b1de9dbe6fe94c6e1aad30ed65a48d7f4b49a7f2bb",
+      "bytes": 2754,
+      "lineCount": 513
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/aimzone.script",
+      "originalName": "main/gamecore/aimzone.script",
+      "sha256": "e0d02b2b0cbe7cd85a22a79dc75369de7fca587d3fbbd9498e1d4bd5f7f1fb27",
+      "bytes": 1922,
+      "lineCount": 69
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/cloud.script",
+      "originalName": "main/gamecore/cloud.script",
+      "sha256": "006c80a76373d964165b8b8842c1c3552b662ecdb6118f490f6ff72c86cd5378",
+      "bytes": 1751,
+      "lineCount": 72
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/cloudFood.script",
+      "originalName": "main/gamecore/cloudFood.script",
+      "sha256": "1041d06eff2c5fd75c25516f561010284ef4756554b872bcc8757e5b2b13544b",
+      "bytes": 3378,
+      "lineCount": 115
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/Crab.lua",
+      "originalName": "main/gamecore/Crab.lua",
+      "sha256": "7f6a31fecd39870081d19227a6493d75cb6c0e6e309655cf25ef0e8ca8b418ab",
+      "bytes": 10374,
+      "lineCount": 390
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMart1.lua",
+      "originalName": "main/gamecore/DataMart1.lua",
+      "sha256": "86c8a4e6f69a419571f9216e6874bceecf52fa36bf283a936d99ccf9742f1d3a",
+      "bytes": 58781,
+      "lineCount": 1480
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMart2.lua",
+      "originalName": "main/gamecore/DataMart2.lua",
+      "sha256": "65f7e8be45a24e6588e6e8c33720a8f166913d95886f0e87317ccf507e5d5b13",
+      "bytes": 73591,
+      "lineCount": 2058
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMart3.lua",
+      "originalName": "main/gamecore/DataMart3.lua",
+      "sha256": "d92c6e30f9f4cf90cfe35ad34d836596fa72a8d4fedbf43e42981ba882ee2c63",
+      "bytes": 75101,
+      "lineCount": 2171
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMart4.lua",
+      "originalName": "main/gamecore/DataMart4.lua",
+      "sha256": "88e9401e5ad4e1bb5409c6fafaf3bba7f77a9a9600aed5f978c1c18699da4bbc",
+      "bytes": 70747,
+      "lineCount": 2141
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMart5.lua",
+      "originalName": "main/gamecore/DataMart5.lua",
+      "sha256": "56002bdba2d45ae0c2ee8a575895c28d64f1828793150c3c703b2a7e0bff161f",
+      "bytes": 61168,
+      "lineCount": 1859
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMart6.lua",
+      "originalName": "main/gamecore/DataMart6.lua",
+      "sha256": "3587c5df69bbf576fdc3b4d128a61394cdd3ed90d1a56bab556568424ad41b67",
+      "bytes": 57672,
+      "lineCount": 1759
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMartC.lua",
+      "originalName": "main/gamecore/DataMartC.lua",
+      "sha256": "c38331559ed3cca70c52023dd5a1722ecd256a16b04bb377b0d5c31c7eae4560",
+      "bytes": 39737,
+      "lineCount": 1249
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMartH.lua",
+      "originalName": "main/gamecore/DataMartH.lua",
+      "sha256": "13539e7519d5d1118fd4d875f57a134944d578bba9a934df6b2ccb403cc461f6",
+      "bytes": 31580,
+      "lineCount": 1040
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/DataSklad.lua",
+      "originalName": "main/gamecore/DataSklad.lua",
+      "sha256": "358eecfcdccbab30596fc3af9d35d0bf7bdc419a690602ce100aaaafe26818a5",
+      "bytes": 38574,
+      "lineCount": 1544
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/dodik.script",
+      "originalName": "main/gamecore/dodik.script",
+      "sha256": "58da13b09a62cc8cb565a5ee568101e3bd393c51d03a83ff65f02ca9ffc325ae",
+      "bytes": 13508,
+      "lineCount": 534
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/effect.script",
+      "originalName": "main/gamecore/effect.script",
+      "sha256": "b1502c184bf0b1a5d317ac9c5e5cbf22f1a7cbc7427f8a9d578aa8d837f1f955",
+      "bytes": 2064,
+      "lineCount": 85
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+      "originalName": "main/gamecore/GameState.lua",
+      "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+      "bytes": 248468,
+      "lineCount": 9350
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/graphic.script",
+      "originalName": "main/gamecore/graphic.script",
+      "sha256": "515418b7273ad18ba1a844973b70e71ed44aad6cb6dbb3a6c68fca9147f1251f",
+      "bytes": 6565,
+      "lineCount": 208
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/indicator_coins.script",
+      "originalName": "main/gamecore/indicator_coins.script",
+      "sha256": "85d98071f77bc4323cdf08fed290647cead07d99d084053c507617d754f31afb",
+      "bytes": 3056,
+      "lineCount": 126
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/indicator.script",
+      "originalName": "main/gamecore/indicator.script",
+      "sha256": "41e839102bfe0cc08c2c160293cbfa35ffb634898b6dbf55c42ebb5205247fc7",
+      "bytes": 1295,
+      "lineCount": 67
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/mart.script",
+      "originalName": "main/gamecore/mart.script",
+      "sha256": "b9588eb04ba48272409b453bb961f46deef5be3f744c7c2693af4b8a7e0ca962",
+      "bytes": 5425,
+      "lineCount": 159
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/panelZavod.script",
+      "originalName": "main/gamecore/panelZavod.script",
+      "sha256": "228d4007ef8c1dff5fe672c891654b56bc7021715a1f6149a5c47d12e631bc14",
+      "bytes": 2537,
+      "lineCount": 95
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/Parrot.lua",
+      "originalName": "main/gamecore/Parrot.lua",
+      "sha256": "4df7fdb9639321d19005d992ce172dff34d73f6b1a8c3ebe9d806dfb120d6b7a",
+      "bytes": 6335,
+      "lineCount": 216
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+      "originalName": "main/gamecore/Player.lua",
+      "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+      "bytes": 50497,
+      "lineCount": 1585
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/spine_object.script",
+      "originalName": "main/gamecore/spine_object.script",
+      "sha256": "b7cefb412ee7c8745ab649e7782be301d4e959f46d47f075a02c7b3a6c53611f",
+      "bytes": 10125,
+      "lineCount": 358
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gamecore/toy_punch.script",
+      "originalName": "main/gamecore/toy_punch.script",
+      "sha256": "fc8ad0608d03fecc0093a9cfd631336cb7ea14b09ec713c2da895bcfa607229b",
+      "bytes": 2819,
+      "lineCount": 116
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/global.lua",
+      "originalName": "main/global.lua",
+      "sha256": "30364a1041a32e51f091f333ee12a546227c328a76fc7cc4d6bec91ab5514ef5",
+      "bytes": 9014,
+      "lineCount": 310
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/button_component1.lua",
+      "originalName": "main/gui/button_component1.lua",
+      "sha256": "929d5b94eacc0b2d47edbf0c9f3bc67787d99db42bd712a2bd383a2acf5450ec",
+      "bytes": 5710,
+      "lineCount": 215
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/button_component2.lua",
+      "originalName": "main/gui/button_component2.lua",
+      "sha256": "0dddcdb01170e79ca54500b54afc505503b91dc0cc4c986548640969fc0eeb3d",
+      "bytes": 10846,
+      "lineCount": 393
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/button_component3.lua",
+      "originalName": "main/gui/button_component3.lua",
+      "sha256": "9139fa5626946956bb402224aecf46faddf960aa8473188f0d86185c5cf845ef",
+      "bytes": 4465,
+      "lineCount": 208
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/button_component4.lua",
+      "originalName": "main/gui/button_component4.lua",
+      "sha256": "1a56426892a6d2ec747700febaa34664d11e63e0dd62128f6c02cf838fe1ab26",
+      "bytes": 4887,
+      "lineCount": 185
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/button_component5.lua",
+      "originalName": "main/gui/button_component5.lua",
+      "sha256": "8bf0434c98c4e7e82e879cbd3eac70d1059cb7f2af30f3fcceb81b73c3f314c5",
+      "bytes": 7046,
+      "lineCount": 225
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/button_component6.lua",
+      "originalName": "main/gui/button_component6.lua",
+      "sha256": "370ffbe51d049ef5e6f44db37ac12d1b3d8394f4c540697d4e116be690a8faee",
+      "bytes": 8464,
+      "lineCount": 283
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/change_font.script",
+      "originalName": "main/gui/change_font.script",
+      "sha256": "2d767786be7a8d8845167f708b81c7a281c9c3e4df7af931a057302bdeba3a7b",
+      "bytes": 327,
+      "lineCount": 16
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/gamepad.gui_script",
+      "originalName": "main/gui/gamepad.gui_script",
+      "sha256": "3f5ec2a5f61f6db670137403e111458e824702087c1734b000ac75bcf3ed40dc",
+      "bytes": 7263,
+      "lineCount": 272
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_daily_bonus.gui_script",
+      "originalName": "main/gui/popup_daily_bonus.gui_script",
+      "sha256": "b70a0e0b2c0af05b1e7ae184119c949b48c2ccb356f64d14f5a15ad2d6f51fa6",
+      "bytes": 6938,
+      "lineCount": 271
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_daily_quest.gui_script",
+      "originalName": "main/gui/popup_daily_quest.gui_script",
+      "sha256": "1b37c94a249a3770b5841fd07fd81faf66c240b567f6a17fd17a2c0179651e88",
+      "bytes": 8045,
+      "lineCount": 302
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_delivery.gui_script",
+      "originalName": "main/gui/popup_delivery.gui_script",
+      "sha256": "1296a596fd0aede91d41f39b8413b817d7638a5623456dff4f684dd22d4f10c8",
+      "bytes": 7427,
+      "lineCount": 287
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_iap.gui_script",
+      "originalName": "main/gui/popup_iap.gui_script",
+      "sha256": "3fe9a0092b6b6ca6c9c94612eac9fde67615f51406fc974fb79c909fd23b204a",
+      "bytes": 22892,
+      "lineCount": 889
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_info.gui_script",
+      "originalName": "main/gui/popup_info.gui_script",
+      "sha256": "89a2a68ce723cd97816215743c8e3b4695feb8c81a33f92f0ff93264f0f47dec",
+      "bytes": 7931,
+      "lineCount": 283
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_language.gui_script",
+      "originalName": "main/gui/popup_language.gui_script",
+      "sha256": "a7611a94f7374ca278f9df22e01f0c4fa44b26caa06b55b800c9352df8a3a259",
+      "bytes": 3922,
+      "lineCount": 176
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_markets.gui_script",
+      "originalName": "main/gui/popup_markets.gui_script",
+      "sha256": "43c619bfd9ceb306ab556896c65e221ad0e36d6f4c1b1b9ed4ae5928291afa88",
+      "bytes": 8145,
+      "lineCount": 346
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_message.gui_script",
+      "originalName": "main/gui/popup_message.gui_script",
+      "sha256": "886463cc413abaab0604430128ae17014e6ae1a1d78ffa88ac694280975d1249",
+      "bytes": 6885,
+      "lineCount": 226
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_settings.gui_script",
+      "originalName": "main/gui/popup_settings.gui_script",
+      "sha256": "8822fe85fb125d83af22a3e3382fde8448e32c70573090d44383cec136058aef",
+      "bytes": 7697,
+      "lineCount": 316
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_shop.gui_script",
+      "originalName": "main/gui/popup_shop.gui_script",
+      "sha256": "d1bb6e8de03c464cf4c5fa6d8f7ec6c9b48b7920d339a1eceac2c8fc2fe2898d",
+      "bytes": 11616,
+      "lineCount": 501
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/gui/popup_upgrades.gui_script",
+      "originalName": "main/gui/popup_upgrades.gui_script",
+      "sha256": "1d85bb7a9ebcc34d489d7fdf1dc9590dfe2f8456dbf274265013f730d9b13d20",
+      "bytes": 27730,
+      "lineCount": 1121
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/quest_manager.lua",
+      "originalName": "main/quest_manager.lua",
+      "sha256": "ffb33a6adff0da43aa64318d8411180e3d395787b6797be4c25d0de398929570",
+      "bytes": 8255,
+      "lineCount": 353
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/screen_game/game.gui_script",
+      "originalName": "main/screen_game/game.gui_script",
+      "sha256": "1f2cb3f8508d85a79c5a8b9285794a88afda6d3b8018d86d868f7f95bf8c1a19",
+      "bytes": 36672,
+      "lineCount": 1260
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/screen_game/game.script",
+      "originalName": "main/screen_game/game.script",
+      "sha256": "22d0a71d1607dc833ec2097229d6b28c2496e15f3d23da99f10746aa79f0fc8a",
+      "bytes": 5020,
+      "lineCount": 230
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/styles/new_anims.lua",
+      "originalName": "main/styles/new_anims.lua",
+      "sha256": "56f9f5153137f3353032c3b33f58c492a3ea974f53dd5356920c0acbbb3ee026",
+      "bytes": 735,
+      "lineCount": 34
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/styles/new_style.lua",
+      "originalName": "main/styles/new_style.lua",
+      "sha256": "68cfce713f9b8ba9ed0ef26f85d40bfa2b527fed426744ae066d1b248e7339f9",
+      "bytes": 3459,
+      "lineCount": 148
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/translate.lua",
+      "originalName": "main/translate.lua",
+      "sha256": "5edede1bf159b0f4c29f52980ae2f6c20334b13206336f82851ec2dcb7e81dba",
+      "bytes": 943,
+      "lineCount": 57
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/translations.lua",
+      "originalName": "main/translations.lua",
+      "sha256": "bef8864441135650e5abe02599633982b5a213262c764b7cb6e7d6a9a031c72c",
+      "bytes": 39270,
+      "lineCount": 739
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/utils/device.lua",
+      "originalName": "main/utils/device.lua",
+      "sha256": "5ef21761639eda7df7cc7d5b27d773b2dcf3d14bf89bd571574b5250327bab8e",
+      "bytes": 4737,
+      "lineCount": 224
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/utils/lume.lua",
+      "originalName": "main/utils/lume.lua",
+      "sha256": "fddbb96c91a20199b81620bdec380f442c106689dba5581e5758c8871590d871",
+      "bytes": 14682,
+      "lineCount": 780
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/utils/trigonometry.lua",
+      "originalName": "main/utils/trigonometry.lua",
+      "sha256": "ca9d4dbaa200410a7d2758a2bb3ee982d6c45019f63bfb87335f9b26ebd1a23f",
+      "bytes": 3361,
+      "lineCount": 126
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/main/utils/utils.lua",
+      "originalName": "main/utils/utils.lua",
+      "sha256": "c14c9b92d80345998448c4ba8e2e107226dc28149f378bbeda7a00c3fd6956d4",
+      "bytes": 8754,
+      "lineCount": 365
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/orthographic/camera.lua",
+      "originalName": "orthographic/camera.lua",
+      "sha256": "0432ec381cd3177aaacde4b41979b8e444e79e4275fc96e32b2980c942697110",
+      "bytes": 23744,
+      "lineCount": 871
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/orthographic/camera.script",
+      "originalName": "orthographic/camera.script",
+      "sha256": "db827b3524502c9486a5ea2d0786224c152d11a9822601453d8525e8e2f19dfe",
+      "bytes": 3548,
+      "lineCount": 133
+    },
+    {
+      "path": "reference-code/monkey-mart/scripts/orthographic/render/orthographic.render_script",
+      "originalName": "orthographic/render/orthographic.render_script",
+      "sha256": "633844949a9c074e43e34260cd856d621b74f24af83a6bac50eea28350119b7e",
+      "bytes": 2609,
+      "lineCount": 79
+    }
+  ],
+  "status": "READY",
+  "blockers": [],
+  "capturedAt": "2026-09-30T16:18:29.000Z"
+}

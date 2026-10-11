@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "reports": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/natural.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-430x932-keyboard-portrait-metal/natural.json"
+  ],
+  "passed": false,
+  "blockers": [
+    "390touch:16 gameplay checks pass; unidentified resource404 keeps runtime-console-and-runner blocked.",
+    "390touch independent pixels: coral smoked-order settlement incorrectly says tide-pool expansion complete; see perceptual-settlement-finding.json.",
+    "430keyboard: stale canvas geometry during actual first settlement caused locator failure; see locator-transition-finding.json. Later branches remain unobserved.",
+    "430keyboard: one unidentified resource404."
+  ]
+}

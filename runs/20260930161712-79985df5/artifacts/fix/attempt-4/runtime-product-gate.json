@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "runtime-product-gate",
+  "route": "formal-fixer",
+  "attempt": 4,
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "server": "http://127.0.0.1:4174/",
+  "startup": {
+    "title": "海滩渔货铺 · 潮汐渔货铺",
+    "initialVersion": 2,
+    "initialMarketId": "beach-stall",
+    "mobileControls": { "count": 4, "minObservedWidth": 54, "minObservedHeight": 48 }
+  },
+  "naturalInputSmoke": { "keyboardArrowUpChangedPlayerPosition": true },
+  "fixtureSequence": {
+    "settlement": { "stage": "settlement", "kelpCompleted": true },
+    "continueLocally": { "stage": "operating", "markerEnabled": true },
+    "stationaryMarker": { "stage": "market-selection", "selectionOpen": true },
+    "validMarketSelection": { "stage": "operating", "marketId": "coral-cove-market", "selectedRoute": "coral-cove-market" }
+  },
+  "landscape": { "bodyClass": "is-landscape", "frameWidth": 370, "frameHeight": 240, "activeMarketTitle": "海滩渔货铺 · 珊瑚湾市场" },
+  "evidenceLimit": "Fixture API sequence is implementation evidence; independent natural and perceptual QA remains required."
+}

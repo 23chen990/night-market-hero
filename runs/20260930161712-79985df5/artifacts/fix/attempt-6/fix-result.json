@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "route": "formal-fixer",
+  "attempt": 6,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "Formal fixer attempt 6 addressed the validated settlement-to-continue-local market-marker overlap. The regression proves that completing the real expansion settlement from within the construction interaction range, continuing locally, and idling at that same origin remains operating; marker selection still requires stationary arrival. All authored beach, coral, and moon market-entry centers were moved beyond 2x the shared player interaction radius from kelp-build, runner-hire, and cashier-hire, preserving market selection, Coral/Moon expanded-loop conservation, save behavior, employees, processors, payment, and the attempt-5 replay guard.",
+  "contextIntentionallyOmitted": [
+    "Other games and shared factory history",
+    "Unbound media, unrelated screenshots, QA harnesses, and first-version source history",
+    "Independent QA runtime and perceptual verdicts, which remain with the parent QA agent"
+  ],
+  "filesChanged": [
+    "src/revision.ts",
+    "src/depth-systems.test.ts",
+    "dist/index.html",
+    "dist/assets/index-Bqe1BFo_.js"
+  ],
+  "tests": [
+    {
+      "name": "attempt-6 regression tests before topology fix",
+      "command": "pnpm test -- src/depth-systems.test.ts",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/red-tests.log"
+    },
+    {
+      "name": "attempt-6 focused regression tests after topology fix",
+      "command": "pnpm test -- src/depth-systems.test.ts",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/green-targeted-tests.log"
+    },
+    {
+      "name": "all unit tests after repair",
+      "command": "pnpm test",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/full-tests.log"
+    },
+    {
+      "name": "lint after repair",
+      "command": "pnpm lint",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/lint.log"
+    },
+    {
+      "name": "typecheck after repair",
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/typecheck.log"
+    },
+    {
+      "name": "attempt-6 single production build",
+      "command": "pnpm build",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/build.log"
+    }
+  ],
+  "buildCount": 1,
+  "evidencePaths": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/triage.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/reproduction-matrix.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/red-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/green-targeted-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/full-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/lint.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/typecheck.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/build.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/build-manifest.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/fix-result.json"
+  ],
+  "remainingEvidenceGaps": [
+    "Root QA must independently verify the hashed attempt-6 production build on the exact natural startup→harvest→stock→checkout→expansion→settlement→continue→workers→marker route at 360x800, 390x844, 430x932, 540x960, and 844x390.",
+    "Independent perceptual evidence must confirm that the continue-local overlay stays closed, worker funding and seagull recovery remain visibly reachable before deliberate market entry, and actual marker arrival opens selection.",
+    "The web-lite build is this attempt's runtime evidence; target mini-game platform package acceptance remains outside this repair artifact."
+  ]
+}

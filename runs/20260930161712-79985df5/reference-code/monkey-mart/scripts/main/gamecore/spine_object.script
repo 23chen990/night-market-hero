@@ -1,0 +1,358 @@
+local PATH_SPINE		= "spine#spinemodel"
+local PATH_VIEW			= "spine"
+
+local function callback(self, message_id, message, sender)
+	
+	if message_id == hash("spine_animation_done") then
+		if (self.typeBody == "crab") then
+			if message.animation_id == hash("hide_animal") then
+				self.animation = "idle2_animal"
+				spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+
+			elseif message.animation_id == hash("exit_animal") then
+				self.animation = "idle_animal"
+				spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+
+			end
+		else
+			if message.animation_id == hash("eat_animal") then
+				self.animation = "idle_animal"
+				spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+	
+			elseif message.animation_id == hash("sleep_cow2") or
+			message.animation_id == hash("sleep_chicken2") or
+			message.animation_id == hash("sleep_pig2") then
+				self.animation = "idle_animal"
+				spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+	
+			elseif message.animation_id == hash("factory") or message.animation_id == hash("tween") then
+				self.animation = "idle"
+				spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+	
+			elseif message.animation_id == hash("ask_to_eat_parrot") or message.animation_id == hash("idle_animal") then
+				self.animation = "idle_animal"
+				spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+			end
+
+		end
+	end
+end
+
+local function playAnim(self, vName, vIsLoop)
+	if self.animation == vName then
+		return
+	end
+
+	local loopPlay = go.PLAYBACK_LOOP_FORWARD
+	if not vIsLoop then
+		loopPlay = go.PLAYBACK_ONCE_FORWARD
+	end
+	spine.play_anim(PATH_SPINE, vName, loopPlay, {}, callback)
+
+	self.animation = vName
+end
+
+local function updateSpineSkin(self, vSelectedSkin)
+    if vSelectedSkin ~= '' then
+		spine.set_skin(PATH_SPINE, vSelectedSkin)
+    end
+
+end
+
+local function updatePropsView(self, vFrameName)
+	spine.set_attachment(PATH_SPINE, "props", vFrameName)
+
+end
+
+local function updateGoPosition(self)
+	
+	local posY = self.linkBody.pos.y
+	local posZ = DEEP_PLAYERS - posY / 10000
+
+	go.set_position(vmath.vector3(self.linkBody.pos.x, self.linkBody.pos.y, posZ))
+
+end
+
+local function updateVisible(vBool)
+	if vBool then
+		msg.post(PATH_VIEW, "enable")
+	else
+		msg.post(PATH_VIEW, "disable")
+	end
+
+end
+
+local function updateFlip(self, isFlip)
+	local rotation = isFlip and 180 or 0
+	go.set_rotation(vmath.quat_rotation_y(math.rad(rotation)), PATH_SPINE)
+
+	if(isFlip) then
+		self.flip = 1
+	else
+		self.flip = -1
+	end
+
+	self.lastFlip = self.flip
+
+end
+
+local function finishMoveXY(self)
+	msg.post(PATH_VIEW, "disable")
+
+end
+
+local function finishMoveFish(self)
+	local duration = 2.0
+	local finishPoint = gameState:getLinePoint(self.init_position, self.angle, self.lengthStep, self.maxStep)
+	local p = go.get_position()
+
+	updateFlip(self, finishPoint.x > p.x)
+
+	go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, finishPoint.x, go.EASING_LINEAR, duration, 0, finishMoveFish)
+	go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, finishPoint.y, go.EASING_LINEAR, duration)
+
+end
+
+function init(self)
+	self.init_position = go.get_position()
+
+	self.animation		= nil
+	self.flip			= 0
+	self.lastFlip		= 0
+	self.isCheckViewPos	= false
+
+end
+
+ 
+
+
+
+function update(self, dt)
+	if (self.linkBody) then
+		if (self.isCheckViewPos) and (self.linkBody.isActive) then
+			local p = go.get_position()
+			self.linkBody.x = p.x
+			self.linkBody.y = p.y
+		end
+
+		if (self.linkBody.isAlive) and (self.linkBody.isUpdateMovement) then
+			updateGoPosition(self)
+
+			
+			if self.linkBody.pos.x ~= self.linkBody.posLast.x then
+				local isFlip = self.linkBody.isFlip
+				if(isFlip) then
+					self.flip = 1
+				else
+					self.flip = -1
+				end
+
+				if(self.flip ~= self.lastFlip) then
+					local rotation = isFlip and 180 or 0
+					go.set_rotation(vmath.quat_rotation_y(math.rad(rotation)), PATH_VIEW)
+					self.lastFlip = self.flip
+				end
+
+			end
+
+			if (self.linkBody.pos.x ~= self.linkBody.posLast.x) or (self.linkBody.pos.y ~= self.linkBody.posLast.y)  then
+				if (self.typeBody == "crab") then
+					playAnim(self, "run_animal", true)
+				end
+			else
+				playAnim(self, "idle_animal", true)
+			end
+
+		end
+	end
+
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("updateView") then
+		if message.skin then
+        	updateSpineSkin(self, message.skin)
+		end
+
+	elseif message_id == hash("updatePropsView") then
+		updatePropsView(self, message.frameName)
+
+	elseif message_id == hash("setCaravan") then
+		spine.set_attachment("spine#spinemodel", "props", "car1_up")
+		spine.set_attachment("spine#spinemodel2", "props", "car1_down")
+		spine.set_attachment("spine#spinemodel3", "props", "car1_door")
+
+	elseif message_id == hash("updateCaravan") then
+		if message.state == 0 then
+			msg.post("spine#spinemodel3", "disable")
+		elseif message.state == 1 then
+			msg.post("spine#spinemodel3", "enable")
+		end
+
+	elseif message_id == hash("setPosition") then
+		local p = vmath.vector3()
+		p.x = message.x
+		p.y = message.y
+
+		if(message.z) then
+			p.z = message.z
+		end
+
+		go.set_position(p, go.get_id())
+		self.init_position = go.get_position()
+
+	elseif message_id == hash("setScale") then
+		local s = message.value
+		local scale = vmath.vector3(s,s,s)
+		go.set_scale(scale, PATH_VIEW)
+
+	elseif message_id == hash("playAnim") then
+        playAnim(self, message.name, message.loop)
+
+	elseif message_id == hash("randomCursor") then
+		go.set(PATH_SPINE, "cursor", message.value)
+
+    elseif message_id == hash("updateVisible") then
+		updateVisible(message.value)
+
+    elseif message_id == hash("show") or message_id == hash("enable") then
+		updateVisible(true)
+
+    elseif message_id == hash("hide") or message_id == hash("disable") then
+		updateVisible(false)
+
+    elseif message_id == hash("updateFlip") then
+		updateFlip(self, message.value)
+
+	elseif message_id == hash("setAngle") then
+		go.set_rotation(vmath.quat_rotation_z(math.rad(message.angle)))
+
+	elseif message_id == hash("remove") then
+		go.delete(true)
+
+	elseif message_id == hash("setAddEffect") then
+		go.cancel_animations(go.get_id())
+
+		go.set_position(self.init_position, go.get_id())
+		local p = go.get_position()
+		local offY = 30
+		p.y = p.y - offY
+		go.set_position(p, go.get_id())
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, p.y + offY, go.EASING_OUTBACK, message.time+0.1)
+
+		local scale = 0.5
+		go.set_scale(vmath.vector3(scale,scale,scale))
+		go.animate(go.get_id(), "scale.x", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTBACK, message.time)
+		go.animate(go.get_id(), "scale.y", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTBACK, message.time)
+
+	elseif message_id == hash("setTreeEffect") then
+		playAnim(self, 'factory', false)
+
+	elseif message_id == hash("setTweenEffect") then
+		playAnim(self, 'tween', false)
+
+	elseif message_id == hash("moveXY") then
+		msg.post(PATH_VIEW, "enable")
+		go.cancel_animations(go.get_id())
+
+		local p = vmath.vector3()
+		p.x = message.start.x
+		p.y = message.start.y
+		p.z = DEEP_FOOD_ANIM
+
+		go.set_position(p, go.get_id())
+
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.finish.x, go.EASING_LINEAR, message.time, 0, finishMoveXY)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.finish.y, go.EASING_LINEAR, message.time)
+
+	elseif message_id == hash("moveCar") then
+		msg.post(PATH_VIEW, "enable")
+		go.cancel_animations(go.get_id())
+
+		local p = go.get_position()
+		p.x = message.start.x
+		p.y = message.start.y
+		go.set_position(p, go.get_id())
+
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.finish.x, go.EASING_LINEAR, message.time)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.finish.y, go.EASING_LINEAR, message.time)
+
+	elseif message_id == hash("moveFish") then
+		msg.post(PATH_VIEW, "enable")
+		go.cancel_animations(go.get_id())
+
+		self.init_position.x = message.start.x
+		self.init_position.y = message.start.y
+
+		self.angle = message.angle
+		self.lengthStep = message.lengthStep
+		self.maxStep = message.maxStep
+		local startPoint = gameState:getLinePoint(self.init_position, self.angle, self.lengthStep, self.maxStep, message.value)
+
+		local p = go.get_position()
+		p.x = startPoint.x
+		p.y = startPoint.y
+		go.set_position(p, go.get_id())
+
+		local d = math.random(0,10)*0.1
+
+		timer.delay(d, false, function()
+			finishMoveFish(self)
+		end)
+
+	elseif message_id == hash("finishMoveFish") then
+		local startPoint = gameState:getLinePoint(self.init_position, self.angle, self.lengthStep, self.maxStep, message.value)
+
+		local p = go.get_position()
+		p.x = startPoint.x
+		p.y = startPoint.y
+		go.set_position(p, go.get_id())
+
+		finishMoveFish(self)
+
+	elseif message_id == hash("initBody") then
+		if message.typeBody then
+			self.typeBody = message.typeBody
+
+			if message.typeBody == "placeBox" then
+				self.isCheckViewPos = true
+				self.linkBody = gameState.listPlaceBoxes[message.num]
+
+			elseif message.typeBody == "crab" then
+				self.linkBody = gameState.listCrabs[message.num]
+				
+			end
+		end
+	
+	elseif message_id == hash("moveFlyXY") then
+		msg.post(PATH_VIEW, "enable")
+		go.cancel_animations(go.get_id())
+
+		local p = go.get_position()
+		p.x = message.start.x
+		p.y = message.start.y
+		p.z = message.start.z
+		go.set_position(p, go.get_id())
+
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.finish.x, go.EASING_LINEAR, message.time, 0, finishMoveXY)
+
+		local time1 = 0.1
+		local time2 = message.time - time1
+
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.start.y + 50, go.EASING_OUTSINE, time1)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.finish.y, go.EASING_INSINE, time2, time1)
+	
+	elseif message_id == hash("setSwimEffect") then
+		go.cancel_animations(go.get_id())
+
+		local time = message.time
+		local value = message.value
+		local pos = go.get_position()
+
+		if (value.y ~= 0) then
+			go.animate(go.get_id(), "position.y", go.PLAYBACK_LOOP_PINGPONG, pos.y + value.y, go.EASING_INOUTSINE, time)
+		end
+
+    end
+
+end

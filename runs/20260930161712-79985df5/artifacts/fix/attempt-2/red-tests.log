@@ -1,0 +1,20 @@
+Attempt 2 RED phase (tests authored before production implementation)
+Target: runs/20260930161712-79985df5/workspace/game
+Timestamp: 2026-10-01
+
+Planned regression tests added before implementation:
+- queue head blocks later queued customer while earlier ticket is still to-checkout
+- checkout service enters packing and delays cashPile until packing completes
+- restart creates a clean feedback/presentation state
+- responsive game frame fits all required portrait and landscape viewports
+
+Command:
+pnpm test -- --run src/simulation.test.ts src/responsive.test.ts
+
+Result:
+exit=1
+$ vitest run -- --run src/simulation.test.ts src/responsive.test.ts
+sh: vitest: command not found
+[ELIFECYCLE] Test failed. See above for more details.
+
+The package script is unavailable in the workspace because its local vitest binary is missing. The failure is preserved verbatim; the implementation phase will use the actually available pnpm dlx vitest command if network/package resolution permits.

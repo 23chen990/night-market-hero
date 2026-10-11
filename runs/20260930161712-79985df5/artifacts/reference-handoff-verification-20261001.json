@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ReferenceHandoffVerification",
+  "targetRunId": "20260930161712-79985df5",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "verificationScope": "STATIC_ARTIFACT_AND_HASH_ONLY",
+  "reports": [
+    {
+      "path": "artifacts/reference-code-gap-review-20261001.json",
+      "sha256": "a8fdf9351927eca03888dd8d0d799d84781c63c8f438e96a1ce37958ba602f7b",
+      "zodValid": true
+    },
+    {
+      "path": "artifacts/github-reference-review-20261001.json",
+      "sha256": "febd1d6daa1bd1ae8559c0195e1bd878eb8eb52f5da88abeee5600d12fc7562a",
+      "zodValid": true
+    }
+  ],
+  "verifiedEvidenceRanges": 44,
+  "verifiedGitHubSourceFiles": 26,
+  "identityBinding": {
+    "canonicalGameId": "海滩渔货铺",
+    "variantId": "continuation-v2",
+    "seedSha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+    "identityFileSha256": "898db62da30f947ba2b5950ecf604f176a3d8d38eafb30ac52e530bf8d246124",
+    "stateIdentityCompactJsonSha256": "84c0be2a1c4f5ec1a9f2b5640c8e4ca69e6aac4529cff6fb98ecea015087365c"
+  },
+  "snapshot": {
+    "stage": "FAILED",
+    "status": "failed",
+    "fullBuildStatus": "failed",
+    "fixAttempts": 0,
+    "builderThreadIdPresentInState": false,
+    "formalQaReportSchemaValid": false,
+    "formalQaMissingOrInvalidPaths": [
+      "passed",
+      "checks",
+      "issues",
+      "screenshots",
+      "consoleLog",
+      "testedAt",
+      "evidence.0",
+      "evidence.1"
+    ],
+    "naturalJourneyStatus": "BLOCKED",
+    "perceptualStatus": "BLOCKED"
+  },
+  "attachment": {
+    "id": "handoff-github-history-screenshot-20261001",
+    "sha256": "584461abbb627e915ea98ee42f02628b85359415ca16aa9fe5a465a72165f0c9",
+    "storedPath": "reference-evidence/incoming/codex-clipboard-44cfa8d6-142b-49b6-99e7-a52740110d30-584461abbb62.png",
+    "status": "PENDING",
+    "currentInstructionSource": false,
+    "usableAsGameplayOrPerceptualEvidence": false
+  },
+  "workspaceFiles": [
+    {
+      "path": "artifacts/implementation-handoff.json",
+      "sha256": "e1f31c18f729a688a1a40fd555a91c3084a55ccdc9ae5d09cdf19729710cd0fa"
+    },
+    {
+      "path": "artifacts/mechanic-fidelity-traceability.json",
+      "sha256": "798e86c7abc72ebb0f5b9c30477889a3ace59c33a739126fdc18e86686af37c5"
+    },
+    {
+      "path": "artifacts/perceptual-qa-report.json",
+      "sha256": "4489a5620039306264b6150ac4602a3e53c0fad03c35c86c2ae2b589d52d7922"
+    },
+    {
+      "path": "artifacts/qa-natural-journey-report.json",
+      "sha256": "b9294d9dfb5c0d93d6b29a65abfb8a148e8141b362011de9683afc56573c62d4"
+    },
+    {
+      "path": "artifacts/qa-report.json",
+      "sha256": "ca4a8fa1c8761eba269092af2ff6c3e820428a1bf3d487fa59caaaa2a4d9c397"
+    },
+    {
+      "path": "artifacts/runtime-evidence.json",
+      "sha256": "fa82fa3605e91ec54515fae72ac8514b2ef76a4edcd93e283662eac086fa2bdd"
+    },
+    {
+      "path": "index.html",
+      "sha256": "cb0edeac07079356928a3b68f102137d00403a2b347ed3b0ebf01569f584bd06"
+    },
+    {
+      "path": "logs/console.log",
+      "sha256": "2aae3c1502e3c8ea111afaba227f1a8a372dee8c0c5c0af15568b8b60192abbd"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9b73068528c0080c456ec611cb468b6030cdf0abb13f9900669ccb7352fe33d2"
+    },
+    {
+      "path": "public/assets/background.svg",
+      "sha256": "23b5bf091491b1fc279de3d00b048daee8d522dcfea117e2b70d841f7362c84e"
+    },
+    {
+      "path": "public/assets/customer.svg",
+      "sha256": "d079a1447227e95a094ace07151d2b5387da8550599a12f6a8355050f743d874"
+    },
+    {
+      "path": "public/assets/product.svg",
+      "sha256": "b705a8a7b6c89d42d5675a9f92c7ba4794e3853948358238a1f51e4b0d2cf22b"
+    },
+    {
+      "path": "public/assets/promo.svg",
+      "sha256": "90e03f729056ca022814c69086ed60d71cbda2c1715a7c13a01d7ef7d3c52488"
+    },
+    {
+      "path": "public/assets/upgrade.svg",
+      "sha256": "9b80c70495c3b97808b5e637a5ad131481c5c8b06cdd6985aedc0a0309c2404f"
+    },
+    {
+      "path": "src/generated/game-config.json",
+      "sha256": "f1f2669c3dfcf5297727d0ba4832fe0e9e77ab18809f0305c86c2f12a892700a"
+    },
+    {
+      "path": "src/input.ts",
+      "sha256": "cab9f5d6dd7133587f2d1332fda7c5311ccda40ca1ae9f570060e6c271604a47"
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "3f3df507c2feb172b8ea617ae0dd6a67d0718ff048eff7b9bd99cb281b5b44d1"
+    },
+    {
+      "path": "src/simulation.test.ts",
+      "sha256": "799613ccb22376d25b9ed732499c79cd2d223c5905b4074d2a640a845c0a60a8"
+    },
+    {
+      "path": "src/simulation.ts",
+      "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f"
+    },
+    {
+      "path": "src/style.css",
+      "sha256": "10e0d7f699480d5643ab1f038ec3f3101a69c396c8107cff9c769f55fd97d6ca"
+    },
+    {
+      "path": "src/uiMotion.ts",
+      "sha256": "c10de5788a92001ce8c66946c6cfb57c455ef72a59644d7ccee3797dfddb24c8"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "68bc07d28680436c48d43bfbc0e65496b6c9867f7d46e49eb0240d80e9a12676"
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "ab62155f398c51eab4e82c644ad2c943e15fe60e4ee983ecaa916f4567d93e9f"
+    }
+  ],
+  "factoryStateSha256": "205ecc20669db66a0fc3792c63fbeb505c98fe13bdb8201054d703f785ec38e3",
+  "gameWorkspaceModified": false,
+  "builderInvoked": false,
+  "fixerInvoked": false,
+  "browserInvoked": false,
+  "githubMutated": false,
+  "checkedAt": "2026-09-30T19:20:01.421Z"
+}

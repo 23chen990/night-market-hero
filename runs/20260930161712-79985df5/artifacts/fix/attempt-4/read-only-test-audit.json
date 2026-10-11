@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "shopping-list",
+      "passed": false,
+      "evidence": "src/depth-systems.test.ts:9-19; Add stock/collected conservation, locked producer+shelf exclusions, partial list cannot queue/pay, complete list basket value/ticket/packing/cash assertions."
+    },
+    {
+      "name": "processor",
+      "passed": false,
+      "evidence": "src/depth-systems.test.ts:22-28; Drive empty-input freeze, atomic input consumption, locked output zero, capacity stop, pickup->restock/resume and matching output deposit."
+    },
+    {
+      "name": "employees",
+      "passed": false,
+      "evidence": "src/depth-systems.test.ts:30-36; Drive insufficient-wallet/partial installment conservation, funded runner position changes before bounded delivery, cashier same queue-head packing with no second payment. Initial metadata alone cannot prove this."
+    },
+    {
+      "name": "pressure",
+      "passed": false,
+      "evidence": "src/depth-systems.test.ts:39-49; Assert grace, one-item cadence with source/target, player approach->scare->no further loss, replenishment -> customer pickup. Preserve exact 8s arrival origin and departure reason."
+    },
+    {
+      "name": "markets",
+      "passed": false,
+      "evidence": "src/depth-systems.test.ts:51-63; Moving through marker stays closed; valid/invalid/locked choice mutations; different actual positions/demand/objective; preserved upgrades/progress; each world core loop settlement/replay."
+    },
+    {
+      "name": "persistence",
+      "passed": false,
+      "evidence": "src/depth-systems.test.ts:65-73; Test v1->v2 wallet/unlocks/contribution/stale-reference migration and serialized v2 market/staff/order/pressure preservation. Wire loadState to migration."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-ATTEMPT4-TEST-COVERAGE-SHOPPING-LIST",
+      "severity": "error",
+      "message": "Add stock/collected conservation, locked producer+shelf exclusions, partial list cannot queue/pay, complete list basket value/ticket/packing/cash assertions.",
+      "evidence": "src/depth-systems.test.ts:9-19"
+    },
+    {
+      "id": "QA-ATTEMPT4-TEST-COVERAGE-PROCESSOR",
+      "severity": "error",
+      "message": "Drive empty-input freeze, atomic input consumption, locked output zero, capacity stop, pickup->restock/resume and matching output deposit.",
+      "evidence": "src/depth-systems.test.ts:22-28"
+    },
+    {
+      "id": "QA-ATTEMPT4-TEST-COVERAGE-EMPLOYEES",
+      "severity": "error",
+      "message": "Drive insufficient-wallet/partial installment conservation, funded runner position changes before bounded delivery, cashier same queue-head packing with no second payment. Initial metadata alone cannot prove this.",
+      "evidence": "src/depth-systems.test.ts:30-36"
+    },
+    {
+      "id": "QA-ATTEMPT4-TEST-COVERAGE-PRESSURE",
+      "severity": "error",
+      "message": "Assert grace, one-item cadence with source/target, player approach->scare->no further loss, replenishment -> customer pickup. Preserve exact 8s arrival origin and departure reason.",
+      "evidence": "src/depth-systems.test.ts:39-49"
+    },
+    {
+      "id": "QA-ATTEMPT4-TEST-COVERAGE-MARKETS",
+      "severity": "error",
+      "message": "Moving through marker stays closed; valid/invalid/locked choice mutations; different actual positions/demand/objective; preserved upgrades/progress; each world core loop settlement/replay.",
+      "evidence": "src/depth-systems.test.ts:51-63"
+    },
+    {
+      "id": "QA-ATTEMPT4-TEST-COVERAGE-PERSISTENCE",
+      "severity": "error",
+      "message": "Test v1->v2 wallet/unlocks/contribution/stale-reference migration and serialized v2 market/staff/order/pressure preservation. Wire loadState to migration.",
+      "evidence": "src/depth-systems.test.ts:65-73"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Read-only depth_tests_audit4 checked real red behavior failures for all six systems. This is early test-coverage feedback while Fixer implements, not a runtime/product failure judgment.",
+  "testedAt": "2026-10-02T15:53:05.387Z"
+}

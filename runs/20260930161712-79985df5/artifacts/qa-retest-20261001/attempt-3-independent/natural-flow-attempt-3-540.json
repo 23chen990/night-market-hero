@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "Fresh browser context at 540x960; localStorage cleared before startup.",
+    "Arrow-key movement from the beach start to the nearshore fishing net.",
+    "Arrow-key movement carrying fresh fish to the compatible fish ice tray.",
+    "Arrow-key movement to the checkout counter; the active order was completed by the normal player route.",
+    "Arrow-key movement away from the counter and back to collect the cash pile; repeated for a second order.",
+    "Normal movement through construction settlement, then click the visible next-market choice 珊瑚湾市场 to continue."
+  ],
+  "transitions": [
+    {
+      "name": "startup-to-harvest",
+      "changed": true,
+      "evidence": "Fresh 540x960 startup showed the beach shop and mission to collect from the nearshore net; cycle-02 reached the net and the mission changed to the fish ice tray."
+    },
+    {
+      "name": "harvest-to-shelf-deposit",
+      "changed": true,
+      "evidence": "Normal Arrow-key movement reached the fish ice tray; cycle-03 showed the active order card with 鲜鱼, 路线·鲜鱼冰盘, status 排队待结算, and shelf stock 1."
+    },
+    {
+      "name": "queue-to-packing",
+      "changed": true,
+      "evidence": "Cycle-04 showed the same active order card with status 打包中 and toast 打包中：正在封装货品. The raw watcher listed only the earlier queue event because its 7-second observation window ended before the transient packing event; the screenshot and phase summary show the player-visible branch."
+    },
+    {
+      "name": "packing-to-cash-pile",
+      "changed": true,
+      "evidence": "Cycle-04 showed 柜台现金 2/4 while packing completed, and cycle-05 showed the player away/back with cash collected and 贝壳币 8. The second cycle repeated this at cycles 07-09."
+    },
+    {
+      "name": "construction-to-settlement",
+      "changed": true,
+      "evidence": "Cycle-10 showed the natural settlement after construction completion, with the next-market panel and two visible original route choices 珊瑚湾市场 and 月潮码头."
+    },
+    {
+      "name": "settlement-to-next-market",
+      "changed": true,
+      "evidence": "Cycle-11 followed a normal click on 珊瑚湾市场 and returned to the operating HUD; the raw trace phase controls/continue records settlementHidden changing from false to true."
+    }
+  ],
+  "completion": "settlement",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-01-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-02-harvest-1.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-03-deposit-1.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-04-checkout-1.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-05-collect-1.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-07-deposit-2.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-08-checkout-2.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-09-collect-2.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-10-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-11-continue.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "independent-qa-runner",
+  "buildHash": "2bd4b7cff5d7614e7a01a742b71070b0062a70b28731d62975cf344c8e01a109",
+  "runtime": "web-lite",
+  "device": {
+    "width": 540,
+    "height": 960,
+    "label": "reference-540x960"
+  },
+  "seed": "fresh-browser-localStorage-clear",
+  "observedAt": "2026-10-01T15:44:42.760Z"
+}

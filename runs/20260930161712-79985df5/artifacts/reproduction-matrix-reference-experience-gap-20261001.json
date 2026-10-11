@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "runs/20260930161712-79985df5/workspace/game",
+  "inputPolicy": "code-only per user request; no browser execution and no state mutation",
+  "evidenceMode": "Static branch and renderer inspection only. All runtime and perceptual cells remain unobserved, regardless of code coverage.",
+  "viewports": [
+    {
+      "width": 540,
+      "height": 960,
+      "device": "contract-mobile-portrait"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "device": "small-mobile-portrait"
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "device": "small-mobile-landscape"
+    }
+  ],
+  "cells": [
+    {
+      "id": "startup",
+      "objectType": "player and initial stations",
+      "stateBranch": "fresh default journey before input",
+      "presentationPath": "Phaser canvas plus DOM HUD",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-input-production-gating",
+      "objectType": "producer and processor",
+      "stateBranch": "active production versus processor requiring inputs",
+      "presentationPath": "station stock and world indicators",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-spatial-harvest-and-deposit",
+      "objectType": "player cargo and compatible shelf",
+      "stateBranch": "pickup, full carry, deposit",
+      "presentationPath": "cargo visuals and station indicators",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-failure-customer-wait-recovery",
+      "objectType": "ordinary customer",
+      "stateBranch": "entry/basket/desired shelf/wait/pickup/checkout/exit and approved 8-second stockout departure",
+      "presentationPath": "customer path, patience and visible failure/recovery feedback",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-failure-disruption-branch",
+      "objectType": "disruption visitor",
+      "stateBranch": "stocked shelf disruption distinct from ordinary waiting",
+      "presentationPath": "world visitor, alerted shelf and stock removal",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-feedback-checkout-cash",
+      "objectType": "queue head, checkout and cash pile",
+      "stateBranch": "arrival, packing, cash creation, cash collection and departure",
+      "presentationPath": "checkout service, cash pile and wallet",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-input-build-payment",
+      "objectType": "construction point and player wallet",
+      "stateBranch": "moving versus stationary, partial payment and zero debt unlock",
+      "presentationPath": "world contribution meter and connected station activation",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-feedback-construction-sequence",
+      "objectType": "construction point and currency feedback",
+      "stateBranch": "wallet debit, contribution update and feedback ordering",
+      "presentationPath": "station-local feedback versus HUD-only signals",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    },
+    {
+      "id": "qa-terminal-stage-continuation",
+      "objectType": "first expansion and continuation/restart controls",
+      "stateBranch": "unlock, approved settlement, continue serving and fresh restart",
+      "presentationPath": "Phaser world plus DOM settlement overlay",
+      "status": "CODE_INSPECTED_RUNTIME_UNOBSERVED",
+      "runtimeVerified": false,
+      "perceptualVerified": false
+    }
+  ],
+  "reviewArtifact": "artifacts/reference-code-gap-review-20261001.json"
+}

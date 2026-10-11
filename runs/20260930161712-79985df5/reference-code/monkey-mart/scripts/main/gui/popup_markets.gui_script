@@ -1,0 +1,346 @@
+local H_POPUP = hash("popup")
+local H_DEACTIVATE = hash("deactivate")
+local H_BOUGHT_ITEM = hash("bought_item")
+local H_UNLOCK = hash("unlock_input")
+
+local ButtonComponent3 = require("main.gui.button_component3")
+
+local node_popup_body = nil
+local node_popup_fade = nil
+
+local owner_url = nil
+local is_lock_input = true
+
+local function show_popup()
+	is_lock_input = false
+	gui.set_enabled(node_popup_fade, true)
+	gui.set_enabled(node_popup_body, true)
+
+	local window_width, window_height = camera.get_window_size()
+	gui.set_size(node_popup_fade,vmath.vector3(window_width*2,window_height*2,0))
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0.5),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_position(node_popup_body, vmath.vector3(global.half_width,global.half_height,0))
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 0))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 1),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(0.8, 0.8, 0.8))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(1, 1, 1),
+	gui.EASING_OUTBACK,
+	0.25)
+
+	if gameState.isHintTime then
+		local pos = gui.get_screen_position(gui.get_node("body"))
+		pos.x = pos.x + 150
+		pos.y = pos.y + 25
+		msg.post(url_popup_message, "updateArm", {bool = true, pos = pos, pos2 = pos})
+	end
+
+end
+
+local function hide_popup()
+	is_lock_input = true
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0.5))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(0.6, 0.6, 0.6),
+	gui.EASING_INSINE,
+	0.25,
+	0,
+	function()
+		if (owner_url) then
+			msg.post(owner_url, "unlock_input")
+		end
+	end)
+
+end
+
+local function cancel_handler()
+	if gameState.isHintTime then
+		return
+	end
+
+	hide_popup()
+	gameState:closePopup()
+	global.isPopupOpened = false
+
+end
+
+local function on_close_button(self, params)
+	cancel_handler()
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function update_btns(self)
+	for _,component in pairs(self.list_btn) do
+		component:update_btn()
+	end
+
+end
+
+local function update_scroll(self)
+	
+	
+
+	if (global.numMarket == 1) then
+		self.scroll:scroll_to(vmath.vector3(0, 0, 0), true)
+	elseif (global.numMarket == 2) then
+		self.scroll:scroll_to(vmath.vector3(0, -100, 0), true)
+	elseif (global.numMarket == 3) then
+		self.scroll:scroll_to(vmath.vector3(0, -400, 0), true)
+	elseif (global.numMarket == 4) then
+		self.scroll:scroll_to(vmath.vector3(0, -545, 0), true)
+	elseif (global.numMarket == 5) then
+		self.scroll:scroll_to(vmath.vector3(0, -800, 0), true)
+	elseif (global.numMarket == 6) then
+		self.scroll:scroll_to(vmath.vector3(0, -800, 0), true)
+	end
+
+	if gameState.isHintTime then
+		self.scroll:set_vertical_scroll(false)
+		self.btn_close:set_enabled(false)
+	end
+
+end
+
+local function on_button_click1(self, button, button_data)
+	local num = button_data.value
+
+	
+
+	global.isPopupOpened = false
+
+	msg.post(url_controller, "change_mart", {numMarket = num})
+
+end
+
+local function create_element(self, data, pos)
+	local nodes = gui.clone_tree(self.prefab)
+	local button = self.druid:new(ButtonComponent3, "button_component", nodes)
+	gui.set_parent(button.root, gui.get_node("shop_content"))
+	gui.set_position(button.root, pos)
+	gui.set_enabled(button.root, true)
+	button:set_data(data)
+	
+
+	button.on_click1:subscribe(function()
+		on_button_click1(self, button, data)
+	end, self)
+
+	return button
+end
+
+local function updateLanguage(self)
+	gui.set_text(gui.get_node("text_title"), utf8.upper(translate("MARTS")))
+
+	utils.updateTextWidth(gui.get_node("text_title"), 140, 1.4)
+
+end
+
+local function on_scroll(self)
+	local scroll_percent = self.scroll:get_percent()
+	self.slider:set(1 - scroll_percent.y, true)
+	
+end
+
+local function on_slider(self, value)
+	self.scroll:scroll_to_percent(vmath.vector3(0, 1 - value, 0), true)
+	
+end
+
+local function initListButtons(self)
+	local countButtons = global.maxMarket + 1
+	countButtons = global.maxMarket	
+
+	local scroll = self.druid:new_scroll("shop_mask", "shop_content")
+    scroll:set_horizontal_scroll(false)
+
+	scroll.on_scroll:subscribe(on_scroll)
+
+	self.slider = self.druid:new_slider("slider_pin", vmath.vector3(-15, -484, 0), on_slider)
+	self.slider:set_input_node("slider_back")
+
+	self.scroll = scroll
+
+	local list_pos = {
+		vmath.vector3(-140, -95, 0),
+		vmath.vector3(160, -150, 0),
+		vmath.vector3(-94, -348, 0),
+		vmath.vector3(130, -465, 0),
+		vmath.vector3(-16, -717, 0),
+		vmath.vector3(156, -910, 0)
+	}
+
+	local list_offset = {
+		vmath.vector3(0, 3, 0),
+		vmath.vector3(0, 0, 0),
+		vmath.vector3(2, 0, 0),
+		vmath.vector3(0, 0, 0),
+		vmath.vector3(0, 0, 0),
+		vmath.vector3(0, 0, 0)
+	}
+
+	local list_icon = {
+		"sklad_banana1",
+		"sklad_chocolate1",
+		"sklad_muffin1",
+		"sklad_fish1",
+		"sklad_apple1",
+		"sklad_coconut_juice1"
+	}
+
+	local btn = nil
+
+	for i=1,countButtons do
+		btn = create_element(self, {
+			value		= i,
+			pos			= list_pos[i],
+			icon		= list_icon[i],
+			offset		= list_offset[i]
+		}, list_pos[i])
+
+		table.insert(self.list_btn, btn)
+
+		if (i == global.numMarket) then
+			local p = list_pos[i]
+			gui.set_position(self.mart_location, vmath.vector3(p.x - 30, p.y - 95, 0))
+		end
+
+	end
+
+	if (global.numMarket > 100) then
+		gui.set_position(self.mart_location, vmath.vector3(0, 2000, 0))
+	end
+
+end
+
+local function animate_target3(self)
+	gui.set_scale(self.mart_here, vmath.vector3(1.05, 0.95, 1))
+	gui.animate(self.mart_here, gui.PROP_SCALE, vmath.vector3(1, 1, 1), gui.EASING_LINEAR, 0.15, 0, animate_target1)
+
+end
+
+local function animate_target2(self)
+	gui.set_scale(self.mart_here, vmath.vector3(0.9, 1.05, 1))
+	gui.animate(self.mart_here, gui.PROP_SCALE, vmath.vector3(1.05, 0.95, 1), gui.EASING_LINEAR, 0.3, 0, animate_target3)
+
+end
+
+function animate_target1(self)
+	gui.set_scale(self.mart_here, vmath.vector3(1, 1, 1))
+	gui.animate(self.mart_here, gui.PROP_SCALE, vmath.vector3(0.9, 1.05, 1), gui.EASING_LINEAR, 0.15, 0, animate_target2)
+
+end
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    gui.set_render_order(4)
+
+    node_popup_body = gui.get_node("body")
+    node_popup_fade = gui.get_node("fade")
+
+    gui.set_enabled(node_popup_body, false)
+    gui.set_enabled(node_popup_fade, false)
+
+    self.druid = druid.new(self)
+
+    self.btn_close = self.druid:new_button("btn_close", on_close_button)
+
+	self.prefab = gui.get_node("button_component/root")
+	gui.set_enabled(self.prefab, false)
+
+	self.mart_location = gui.get_node("mart_location")
+	self.mart_here = gui.get_node("mart_here")
+
+    self.list_btn = {}
+
+	initListButtons(self)
+	animate_target1(self)
+
+	
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+
+    if (message_id == H_POPUP) then
+		owner_url = message.owner_url
+
+		updateLanguage(self)
+		update_btns(self)
+		update_scroll(self)
+		show_popup()
+
+	elseif (message_id == H_DEACTIVATE) then
+		gui.set_enabled(node_popup_body, false)
+		gui.set_enabled(node_popup_fade, false)
+
+    elseif (message_id == H_UNLOCK) then
+		is_lock_input = false
+
+	end
+
+end
+
+function on_input(self, action_id, action)
+    if (not is_lock_input) then
+
+		self.druid:on_input(action_id, action)
+
+		if (action_id == hash("touch")) then
+			if (action.pressed and (not gui.pick_node(node_popup_body, action.x, action.y))) then
+				cancel_handler()
+			end
+		end
+
+		return true
+
+	end
+
+end

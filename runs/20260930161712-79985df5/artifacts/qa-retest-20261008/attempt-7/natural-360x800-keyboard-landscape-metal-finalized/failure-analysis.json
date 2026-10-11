@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "classification": "QA_HARNESS_RACE",
+  "reproductionMatrix": [
+    {
+      "objectType": "player locator and expansion settlement",
+      "lifecycle": "operating movement into expansion point transitions to settlement during screenshot read",
+      "renderer": "portrait Canvas with responsive settlement layout under Chromium Metal",
+      "viewport": "360x800",
+      "input": "keyboard"
+    }
+  ],
+  "report": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/natural.json",
+  "observations": [
+    "Completed visible trading raised wallet to 16 before expansion.",
+    "Locator throws after returning from checkout and moving toward expansion.",
+    "locator-failure.png clip includes the shrunken game canvas and settlement panel; it is not a valid crop of the new canvas bounds.",
+    "011-blocked.png visibly shows expansion settlement with one continue-local and one restart button; teal avatar remains visible beside expansion point.",
+    "Source driver reads UI, reads geometry, then screenshots; no second settlement check exists if layout changes during those awaits."
+  ],
+  "hypothesis": "Settlement became visible after the move loop checked overlays but before player screenshot completed. The old canvas rectangle produced invalid world coordinates and continuity filtering then rejected the visibly present avatar. This is a harness race; branch is visually reached, but complete journey remains unobserved.",
+  "hypothesisConfirmed": true,
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/locator-failure.png",
+      "sha256": "2813dac9f7d1d1cf56fc6e4d872a597ad342fd1e87f00613f540bd21acf99125"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/011-blocked.png",
+      "sha256": "535ffa4d4a5ecceddd3c692d07bac33f46813281a579c958fed8cb69eb36a1d1"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/run.log",
+      "sha256": "8bac954e839469a9f0f64df6a5ba9e1da9d2eb4191c4e3ca6e4900456ff2e7d5"
+    }
+  ],
+  "nextAction": "Parent may repair the read-only harness to recognize normal overlay transition/re-read geometry. Preserve current failed report; no rerun performed by worker yet.",
+  "passed": false,
+  "blockers": [
+    "runtime-console-and-runner",
+    "unobserved:first-settlement",
+    "unobserved:settlement-choice-clarity",
+    "unobserved:continue-local-no-unintended-selection",
+    "unobserved:processor-natural-route",
+    "unobserved:avatar-at-employee-label-crossing",
+    "unobserved:runner-funded-action",
+    "unobserved:cashier-funded-action",
+    "unobserved:seagull-loss-recovery",
+    "unobserved:deliberate-market-selection",
+    "unobserved:real-market-change",
+    "unobserved:new-market-own-settlement",
+    "unobserved:operating-replay",
+    "unobserved:natural-save-reload",
+    "unobserved:restart-clears-overlays"
+  ]
+}

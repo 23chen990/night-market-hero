@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "pinned-immutable4-preview-binding",
+      "passed": true,
+      "evidence": "Read-only curl of http://127.0.0.1:4173/ resolved /assets/index-2z9jJvw9.js; all eight files in artifacts/qa-retest-20261002/attempt-4-independent/pinned-dist-hashes.json matched their SHA-256 values, including index JS 2e07d6ee4276ee159ca64ce868b27c2610b4a0a46009dcc434074adf89118d60. No pinned server or generated source was modified."
+    },
+    {
+      "name": "coral-checkout-reaches-own-settlement",
+      "passed": true,
+      "evidence": "Fixture-only trace post-settlement-trace.json selects coral-cove-market, then drives two queued smoked-fish orders through checkout-packing/checkout-pack. Order 1 ends operating with smokedOrders=1; order 2 ends settlement with goalProgress=2, settled=true, smokedOrders=2, cashPile=10. recordMarketGoal was not called; causal checkout path is artifacts/fix/attempt-5/before/src/simulation.ts:924-946."
+    },
+    {
+      "name": "coral-continue-local-replay",
+      "passed": false,
+      "evidence": "After coral settlement, continueRound returns operating while the goal remains settled=true at 2/2. A third queued smoked-fish order is packed through checkout (checkout-packing@2870, checkout-pack@3220, market-goal@3220), then stage returns settlement with smokedOrders=3 and cashPile=15. This is a deterministic post-settlement replay refreeze. Minimal causal locations: artifacts/fix/attempt-5/before/src/simulation.ts:1075-1087 leaves perMarketProgress settled; :937-946 reasserts settlement on every packed order."
+    },
+    {
+      "name": "moon-checkout-reaches-own-settlement",
+      "passed": true,
+      "evidence": "Fixture-only trace post-settlement-trace.json selects moon-tide-market, then drives three queued two-shelf orders (fish-shelf plus smoked-shelf) through checkout-packing/checkout-pack. The third order ends settlement with goalProgress=3, settled=true, smokedOrders=3, dualShelfOrders=3, cashPile=21. recordMarketGoal was not called; the checkout path is the same simulation.ts:924-946 branch."
+    },
+    {
+      "name": "moon-continue-local-replay",
+      "passed": false,
+      "evidence": "After moon settlement, continueRound returns operating while the goal remains settled=true at 3/3. A fourth queued two-shelf order is packed through checkout (checkout-packing@3940, checkout-pack@4290, market-goal@4290), then stage returns settlement with smokedOrders=4, dualShelfOrders=4 and cashPile=28. This is a deterministic post-settlement replay refreeze; causal locations are artifacts/fix/attempt-5/before/src/simulation.ts:1075-1087 and :937-946."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-ATTEMPT4-CORAL-POST-SETTLEMENT-REFREEZE",
+      "severity": "error",
+      "message": "Coral Bay's actual checkout replay re-enters settlement after continue local because the already-satisfied smoked-order counter remains authoredGoalMet.",
+      "evidence": "artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/post-settlement-trace.json; artifacts/fix/attempt-5/before/src/simulation.ts:937-946,1075-1087"
+    },
+    {
+      "id": "QA-ATTEMPT4-MOON-POST-SETTLEMENT-REFREEZE",
+      "severity": "error",
+      "message": "Moon-Tide's actual checkout replay re-enters settlement after continue local because the already-satisfied dual-shelf counter remains authoredGoalMet.",
+      "evidence": "artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/post-settlement-trace.json; artifacts/fix/attempt-5/before/src/simulation.ts:937-946,1075-1087"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Deterministic fixture output and state transitions are recorded in post-settlement-trace.json; pinned preview hash curl verification produced no mismatch.",
+  "testedAt": "2026-10-02T16:49:09.300Z",
+  "evidence": [
+    {
+      "schemaVersion": 1,
+      "mode": "STATE_COVERAGE",
+      "actions": [
+        "Validated TaskSchema from artifacts/revisions/20261002-depth/revision-schema.mjs.",
+        "Ran fixture engine from artifacts/fix/attempt-5/before/src/simulation.ts for coral and moon market selection, actual checkout packing, settlement, continue local and further checkout order.",
+        "Ran fixture seagull alert/loss/approach/refill cadence and bound the audit to the immutable preview hash manifest."
+      ],
+      "artifacts": [
+        "artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/post-settlement-trace.json",
+        "artifacts/qa-retest-20261002/attempt-4-independent/pinned-dist-hashes.json",
+        "artifacts/fix/attempt-5/before/src/simulation.ts",
+        "artifacts/fix/attempt-5/before/src/revision.ts"
+      ],
+      "forbiddenOperations": [
+        "No generated workspace or shared factory mutation.",
+        "No pinned preview stop/rebuild or source test mutation.",
+        "No browser natural/perceptual success claim.",
+        "recordMarketGoal was not used as settlement or replay proof."
+      ],
+      "buildHash": "2e07d6ee4276ee159ca64ce868b27c2610b4a0a46009dcc434074adf89118d60",
+      "runtime": "Phaser/Vite web-lite immutable preview at http://127.0.0.1:4173; state coverage executed against the supplied attempt-5/before fixture source.",
+      "runner": "tsx deterministic fixture engine"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "current-boot-field-and-player",
+      "passed": true,
+      "evidence": "Read-only QAAgent inspected actual pixels at 360x800,540x960,844x390 and judged field separation and base/player distinguishability acceptable. Scope is boot only."
+    },
+    {
+      "name": "expanded-branches-natural-pixels",
+      "passed": false,
+      "evidence": "BLOCKED: current build has no natural processor, employee, gull or settlement pixels. Prior attempt5 processor/worker/gull screenshots show a selection overlay; no cross-branch pass is allowed."
+    }
+  ],
+  "issues": [
+    {
+      "id": "expanded-branches-pixels-missing",
+      "severity": "error",
+      "message": "Current expanded branch visual evidence is missing.",
+      "evidence": "Attempt6 old natural traces failed before settlement; fresh QA recovery is required."
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/landing-input-v5/360x800-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/landing-input-v5/540x960-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/landing-input-v5/844x390-boot.png"
+  ],
+  "consoleLog": "Accepted compact summary of independent read-only QAAgent response; no new runtime executed by that agent. Typographic paths in source response were normalized against actual files; inference is not player evidence.",
+  "testedAt": "2026-10-08T06:42:56.552Z"
+}

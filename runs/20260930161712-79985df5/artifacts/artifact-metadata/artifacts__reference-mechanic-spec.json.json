@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260930161712-79985df5",
+  "path": "artifacts/reference-mechanic-spec.json",
+  "artifactId": "3b92d596ae1a5b3c3076097e016c5c6d631a97cc54abd8e6d98d343ae1fc6018",
+  "artifactType": "generic",
+  "producerStage": "REFERENCE_MECHANIC_LOCK",
+  "inputHashes": {
+    "input/seed.yaml": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+    "artifacts/reference-evidence-pack.json": "074a4391d4313fcfd5d4e58c63fe4b42d7bfabb7ee2c7425088043d65535d0ab",
+    "artifacts/reference-fidelity-contract.json": "b6565757d769df0d499c8392ba768253c22879c0544f195f6103a3df00d80473"
+  },
+  "inputArtifactHashes": {
+    "input/seed.yaml": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+    "artifacts/reference-evidence-pack.json": "074a4391d4313fcfd5d4e58c63fe4b42d7bfabb7ee2c7425088043d65535d0ab",
+    "artifacts/reference-fidelity-contract.json": "b6565757d769df0d499c8392ba768253c22879c0544f195f6103a3df00d80473"
+  },
+  "dependsOn": [
+    "input/seed.yaml",
+    "artifacts/reference-evidence-pack.json",
+    "artifacts/reference-fidelity-contract.json"
+  ],
+  "supersedes": [],
+  "outputHash": "c031b33b8dfed7db36ae0625370f5ae5b81c72555e38be7d809e0589544a5ef1",
+  "model": "gpt-5.6-luna",
+  "reasoning": "max",
+  "promptVersion": "unspecified",
+  "policyVersion": "unspecified",
+  "dataClassification": "internal",
+  "retentionPolicy": "run-lifetime",
+  "sourceRefs": [],
+  "status": "ACTIVE",
+  "invalidatedBy": [],
+  "approval": {
+    "status": "PENDING"
+  },
+  "createdAt": "2026-09-30T17:03:47.760Z",
+  "updatedAt": "2026-09-30T17:03:47.760Z"
+}

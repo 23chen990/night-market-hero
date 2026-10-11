@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "Coral and Moon actual checkout after own goal->settlement->continue re-enters settlement on the next packed order.",
+  "classification": [
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Default market state-machine/replay affects core journey. Preserve formal QA and exact natural/perceptual retest; add to current unbuilt attempt5.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Whole conversation",
+      "Third-party reference sources/content",
+      "Unrelated logs and first-version history"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Select actual coral world in fixture engineering trace; pack two smoked orders using real checkout path; continue then pack third.",
+      "Select actual moon world; pack three dual-shelf orders using real checkout path; continue then pack fourth."
+    ],
+    "observed": [
+      "Both reached authored goal/settlement normally through packing.",
+      "Continue stage operating preserves settled=true; subsequent checkout repeats authoredGoalMet and freezes again.",
+      "Engineering reproduction only; fresh natural and perceptual branch confirmation remains pending."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/qa-report.json",
+        "sha256": "43b7107495dd08a5359070750302ecde6180ffeedf92164920aa5f45e527c4d5",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/post-settlement-trace.json",
+        "sha256": "f94a3a86f254505c72dc437d6f8bb45bb1cda556bf2336b6d3b073c83275d3a3",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/before/src/simulation.ts",
+        "sha256": "a7a7f4cde51ab7599569af8a76345fe5e8c04c6a01f2191b08b9444bb4bb2af8",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Two actual worlds each reach one own settlement, continue and pack further normal eligible orders without repeated settlement/refreeze.",
+    "Preserve authored progress/completed goal, upgrades, inventory/payment conservation and market topology.",
+    "Test-first real checkout causal regression for both; independent deterministic+natural+pixel branch evidence before closure."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-02T16:53:29.809Z"
+}

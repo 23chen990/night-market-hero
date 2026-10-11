@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "Independent QAAgent, read-only generated workspace. Own only visual-review-attempt8-resume9.json and supporting bound review artifacts in qa-retest-20261008. You are not alone; preserve other edits.",
+  "inputs": [
+    "artifacts/qa-retest-20261008/visual-review-attempt8.json",
+    "artifacts/qa-retest-20261008/reviewer-protocol.json",
+    "artifacts/fix/attempt-8/build-manifest.json",
+    "artifacts/qa-retest-20261008/attempt-8/natural-540x960-keyboard-root-v8/screenshots"
+  ],
+  "acceptance": [
+    "Inspect actual saved current8 natural screenshots from interrupted540,390,844 runs: avatar labels, runner physically moving/carrying, cashier away service cue, active gull loss and same-target green-ring recovery. Verify screenshot/hash bindings where report exists; interrupted screenshot alone cannot close fullflow. Use view_image, optionally ffmpeg video frames. No browser or game source writes/build.",
+    "Produce strict Zod artifact for exact cases PASS/FAIL/BLOCKED, separate real perceptual defects from missing/truncated evidence. Do not accept static hire icon as worker. Use previously validated schema convention. Completed natural runs will arrive under attempt8 sessions resume9; update after parent artifact notification. Return path only."
+  ],
+  "output": "visual-review-attempt8-resume9.json"
+}

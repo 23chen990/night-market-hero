@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260930161712-79985df5",
+  "targetGame": "海滩渔货铺",
+  "workspace": "runs/20260930161712-79985df5/workspace/game",
+  "status": "PROPOSED",
+  "currentUsage": {
+    "agentTokens": 1607185
+  },
+  "proposedMaxAgentTokens": 3200000,
+  "remainingIfAuthorized": 1592815,
+  "executionBoundary": {
+    "stages": [
+      "deterministic preview contracts",
+      "FULL_BUILD",
+      "natural-input QA"
+    ],
+    "builderModel": "gpt-5.6-luna",
+    "builderReasoning": "high",
+    "fullBuildAgentTokenReserve": 1250000,
+    "maxBuilderAttempts": 1,
+    "automaticFix": false,
+    "artExpansion": false,
+    "platformPackaging": false,
+    "release": false
+  },
+  "stopConditions": [
+    "FULL_BUILD preflight cannot fit the 1,250,000-token reserve",
+    "Builder returns failure or times out",
+    "natural-input QA fails and would require FixerAgent",
+    "total agent token usage exceeds the authorized ceiling"
+  ],
+  "rationale": "BLUEPRINT completed but used 1,119,293 tokens because Codex agent turns repeatedly count the large system context. The factory now supports an explicit per-stage reserve and passes routed reasoning to Codex CLI. This proposal funds exactly one bounded Builder attempt and QA.",
+  "evidence": [
+    "artifacts/game-blueprint.json",
+    "artifacts/cost-usage.json",
+    "artifacts/abandonment-decision.json",
+    "artifacts/triage/blueprint-token-preflight-underrun-20260930.json",
+    "artifacts/reproduction-matrix-blueprint-token-preflight-underrun-20260930.json",
+    "test:189-files-1111-tests-passed"
+  ],
+  "proposedAt": "2026-09-30T17:52:56.699Z"
+}

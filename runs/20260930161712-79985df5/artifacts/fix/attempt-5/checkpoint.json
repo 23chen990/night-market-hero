@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "attempt5-task-and-supplement-validated",
+      "passed": true,
+      "evidence": "TaskSchema.parse succeeded for artifacts/fix/attempt-5/task.json and scope-supplement.json."
+    },
+    {
+      "name": "prechange-normal-runtime-red",
+      "passed": false,
+      "evidence": "artifacts/fix/attempt-5/red-runtime-before.log: old source failed portrait HUD/card/control bounds and landscape field/direction assertions on dev port 4174."
+    },
+    {
+      "name": "prechange-responsive-input-red",
+      "passed": false,
+      "evidence": "artifacts/fix/attempt-5/red-tests.log: 7 targeted responsive/input assertions failed before implementation."
+    },
+    {
+      "name": "prechange-post-settlement-red",
+      "passed": false,
+      "evidence": "artifacts/fix/attempt-5/red-post-settlement-tests.log: real checkout regression failed for coral and moon after continue."
+    },
+    {
+      "name": "prechange-lint-diagnostic",
+      "passed": false,
+      "evidence": "artifacts/fix/attempt-5/red-lint.log: enabled no-unused-vars rule caught unused SAVE_VERSION before its causal cleanup."
+    },
+    {
+      "name": "targeted-tests-after-fix",
+      "passed": true,
+      "evidence": "artifacts/fix/attempt-5/checkpoint-tests.log: 6 files and 39 tests passed, including responsive/input and both real-checkout replay regressions."
+    },
+    {
+      "name": "lint-and-typecheck-after-fix",
+      "passed": true,
+      "evidence": "artifacts/fix/attempt-5/checkpoint-lint.log and checkpoint-typecheck.log both exit 0."
+    },
+    {
+      "name": "normal-input-dev-layout-keyboard",
+      "passed": true,
+      "evidence": "artifacts/fix/attempt-5/dev-runtime-check.log: five declared viewports pass DOM bounds/no-overlap, 420px landscape field, four keyboard directions, and release stop."
+    },
+    {
+      "name": "normal-input-dev-landscape-touch",
+      "passed": true,
+      "evidence": "artifacts/fix/attempt-5/dev-touch-check.log: Chromium system touch four directions and release stop pass at 844x390."
+    },
+    {
+      "name": "settlement-layout-implementation-check",
+      "passed": true,
+      "evidence": "artifacts/fix/attempt-5/dev-settlement-check.log: fixture settlement layout keeps one continue-local choice, bounds controls, and prevents card/canvas overlap at five viewports."
+    }
+  ],
+  "issues": [
+    {
+      "id": "CHECKPOINT-INDEPENDENT-QA-PENDING",
+      "severity": "error",
+      "message": "Root QA must independently retest the repaired immutable build, including natural market route and post-settlement branches; this checkpoint does not claim acceptance.",
+      "evidence": "scope-supplement.json and task.json require independent QA after the single production build."
+    },
+    {
+      "id": "CHECKPOINT-BUILD-PENDING",
+      "severity": "warning",
+      "message": "The attempt5 production build is intentionally pending until the final prebuild checks and source review are complete.",
+      "evidence": "No production build has been run for attempt5 at this checkpoint."
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Prechange red artifacts and current dev/runtime/static checks are recorded under artifacts/fix/attempt-5/. No independent QA or production build claim is made.",
+  "testedAt": "2026-10-02T17:00:00.000Z"
+}

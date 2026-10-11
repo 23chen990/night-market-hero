@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "Own only artifacts/qa-retest-20261008/deterministic-attempt8.mjs and attempt-8/deterministic and summary. You are not alone; preserve all other edits. No generated source or build changes.",
+  "inputs": [
+    "artifacts/qa-retest-20261008/deterministic-attempt7-resume.mjs",
+    "artifacts/fix/attempt-8/build-manifest.json",
+    "artifacts/fix/attempt-8/fix-result.json"
+  ],
+  "acceptance": [
+    "Adapt prior44check deterministic browser suite to attempt8 current immutable manifest. Use full Chromium channel chromium, headless, --use-angle=metal --enable-gpu and background timer disabling as current natural runner. Preserve explicit remaining packing correction. All six viewports. Verify source/hash before/after and console URL/location, response errors. Browser URL4177.",
+    "Run directly node --import tsx; do not let pnpm install/purge dependencies. No rebuild. Fixture evidence only. Save QaReportSchema and strict Zod summary with media hashes. Close browsers."
+  ],
+  "output": "deterministic-attempt8-summary.json"
+}

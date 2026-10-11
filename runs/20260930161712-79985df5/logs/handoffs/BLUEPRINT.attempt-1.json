@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "fromStage": "WAITING_FOR_REFERENCE_APPROVAL",
+  "toStage": "BLUEPRINT",
+  "summary": "Build a compact preview blueprint from the verified reference fidelity, production-line resolution, research-resolution, failure-pressure, and recording-level semantic contracts when present. Preserve which requirements were observed and which came from the human lock. Do not invent another game, and keep every expression field original.",
+  "artifactPaths": [
+    "input/seed.yaml",
+    "artifacts/production-line-resolution.json",
+    "artifacts/reference-mechanic-spec.json",
+    "artifacts/reference-fidelity-contract.json",
+    "artifacts/reference-research-resolution.json",
+    "artifacts/reference-failure-pressure-contract.json",
+    "artifacts/open-source-research.json",
+    "artifacts/iaa-contract.json"
+  ],
+  "artifactHashes": {
+    "input/seed.yaml": "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c",
+    "artifacts/production-line-resolution.json": "65d58409a06b8bfa0272f9fac2127427786a694ee56873816e1e71a23df5cb0f",
+    "artifacts/reference-mechanic-spec.json": "0c984f2f7597375de4e2261eae1c391fe8b6f771299c1242c52e189ae1aaa230",
+    "artifacts/reference-fidelity-contract.json": "c0294e7037a79cc0d91bb34e0bdb35e5566cce6e982a03799416ec374e310ec3",
+    "artifacts/reference-research-resolution.json": "4e82f64c1aca9d1953c5b67d7b4f5bbd8cd0040b7f29386b16b80d16206cc2fe",
+    "artifacts/reference-failure-pressure-contract.json": "9aa40594da995c0991925de05ef271db339d8a84405c9495b9c5868ebeb45c0e",
+    "artifacts/open-source-research.json": "4a0065bb057987fd304d75596aac8052b61dca0c4a69d339cf11333fdca7ebad",
+    "artifacts/iaa-contract.json": "d78016acceb961746713309e58d574fb10eb8d8de7a41b355b85623c8363b7ef"
+  },
+  "changedFiles": [],
+  "commandsRun": [],
+  "omittedContext": [
+    "raw transcript"
+  ],
+  "estimatedChars": 2070,
+  "estimatedTokens": 85,
+  "tokenBudget": 6000,
+  "truncationStrategy": "priority-preserving",
+  "integrityHash": "93a75b1844326d9cdb2a1cfd507d27b7d805868c2a458881a111895ed43046cc",
+  "summaryHash": "4059e0593983ffe2079968993298b3ca7940fbfce1f332f4177ef39d8f1b7c92",
+  "contextPacketHash": "d9748829a413e283c235cfd66f3b6acf0f0e34fb040cb2a6315639a2445ce8d1"
+}

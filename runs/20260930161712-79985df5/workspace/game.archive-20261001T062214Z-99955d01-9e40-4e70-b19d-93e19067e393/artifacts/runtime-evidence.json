@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "continuation-v2",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "engineering": {
+    "tests": "npm test",
+    "typecheck": "npm run typecheck",
+    "build": "npm run build",
+    "result": "PASS"
+  },
+  "preview": {
+    "url": "http://127.0.0.1:5173/",
+    "result": "STARTED",
+    "evidencePath": "logs/console.log"
+  },
+  "browserSmoke": {
+    "result": "BLOCKED",
+    "reason": "Playwright Chromium exits before page launch because the managed macOS sandbox denies MachPort rendezvous bootstrap.",
+    "attemptCommand": "node /private/tmp/beach-playtest.mjs",
+    "requiredFollowUp": "Re-run game-playtest in a browser-capable QA environment to capture canvas, natural journey, screenshots, and console traces."
+  }
+}

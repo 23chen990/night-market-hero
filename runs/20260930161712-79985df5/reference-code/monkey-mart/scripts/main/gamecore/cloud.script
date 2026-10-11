@@ -1,0 +1,72 @@
+local PATH_CLOUD		= "cloud"
+local PATH_CLOUD1		= "cloud_back"
+local PATH_CLOUD2		= "cloud_icon"
+local PATH_CLOUD3		= "cloud_zzz"
+
+local PATH_CLOUD_ICON	= "cloud_icon#sprite"
+local PATH_CLOUD_BACK	= "cloud_back#sprite"
+local PATH_CLOUD_ZZZ	= "cloud_zzz#sprite"
+
+local function showCloud()
+	msg.post(PATH_CLOUD1, "enable")
+	msg.post(PATH_CLOUD2, "enable")
+	msg.post(PATH_CLOUD3, "enable")
+
+end
+
+local function hideCloud()
+	msg.post(PATH_CLOUD1, "disable")
+	msg.post(PATH_CLOUD2, "disable")
+	msg.post(PATH_CLOUD3, "disable")
+
+end
+
+local function updateCloud(self, vTypeCloud)
+    if vTypeCloud == 1 then
+		go.set_position(vmath.vector3(0,0,0.01), PATH_CLOUD1)
+		go.set_position(vmath.vector3(3,3,0.02), PATH_CLOUD2)
+		go.set_position(vmath.vector3(-120,-22,0.03), PATH_CLOUD3)
+
+		go.set_scale(vmath.vector3(2,2,2), PATH_CLOUD3)
+
+        sprite.play_flipbook(PATH_CLOUD_BACK, "cloud2")
+        sprite.play_flipbook(PATH_CLOUD_ICON, "smile_sleepy")
+        sprite.play_flipbook(PATH_CLOUD_ZZZ, "effect_sleep")
+
+    elseif vTypeCloud == 2 then
+		go.set_position(vmath.vector3(0,0,0.02), PATH_CLOUD1)
+		go.set_position(vmath.vector3(3,3,0.03), PATH_CLOUD2)
+		go.set_position(vmath.vector3(-95,-120,0.01), PATH_CLOUD3)
+
+		go.set_scale(vmath.vector3(1.25,1.25,1.25), PATH_CLOUD3)
+
+        sprite.play_flipbook(PATH_CLOUD_BACK, "cloud2")
+        sprite.play_flipbook(PATH_CLOUD_ICON, "smile_repair")
+		sprite.play_flipbook(PATH_CLOUD_ZZZ, "effect_broken")
+
+    end
+
+end
+
+ 
+
+
+
+
+ 
+
+
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("setType") then
+        updateCloud(self, message.type)
+
+    elseif message_id == hash("show") then
+        showCloud()
+
+    elseif message_id == hash("hide") then
+        hideCloud()
+
+    end
+
+end

@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "immutable-build-source-binding",
+      "passed": true,
+      "evidence": "[{\"path\":\"dist/assets/background.svg\",\"expected\":\"23b5bf091491b1fc279de3d00b048daee8d522dcfea117e2b70d841f7362c84e\",\"actual\":\"23b5bf091491b1fc279de3d00b048daee8d522dcfea117e2b70d841f7362c84e\"},{\"path\":\"dist/assets/customer.svg\",\"expected\":\"d079a1447227e95a094ace07151d2b5387da8550599a12f6a8355050f743d874\",\"actual\":\"d079a1447227e95a094ace07151d2b5387da8550599a12f6a8355050f743d874\"},{\"path\":\"dist/assets/index-BoR8MCvQ.css\",\"expected\":\"a3a5b84c7ae929506ef6a3ee3f5570f972319cf73813680103da451c02845cb0\",\"actual\":\"a3a5b84c7ae929506ef6a3ee3f5570f972319cf73813680103da451c02845cb0\"},{\"path\":\"dist/assets/index-CvtMFlBl.js\",\"expected\":\"62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e\",\"actual\":\"62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e\"},{\"path\":\"dist/assets/product.svg\",\"expected\":\"b705a8a7b6c89d42d5675a9f92c7ba4794e3853948358238a1f51e4b0d2cf22b\",\"actual\":\"b705a8a7b6c89d42d5675a9f92c7ba4794e3853948358238a1f51e4b0d2cf22b\"},{\"path\":\"dist/assets/promo.svg\",\"expected\":\"90e03f729056ca022814c69086ed60d71cbda2c1715a7c13a01d7ef7d3c52488\",\"actual\":\"90e03f729056ca022814c69086ed60d71cbda2c1715a7c13a01d7ef7d3c52488\"},{\"path\":\"dist/assets/upgrade.svg\",\"expected\":\"9b80c70495c3b97808b5e637a5ad131481c5c8b06cdd6985aedc0a0309c2404f\",\"actual\":\"9b80c70495c3b97808b5e637a5ad131481c5c8b06cdd6985aedc0a0309c2404f\"},{\"path\":\"dist/index.html\",\"expected\":\"864533df04523a5f4f50b7d8f68c3780627f01a989c6c11ce87a0280e01e2b18\",\"actual\":\"864533df04523a5f4f50b7d8f68c3780627f01a989c6c11ce87a0280e01e2b18\"},{\"path\":\"src/depth-systems.test.ts\",\"expected\":\"9405778c983abf0361e846e3c58a124062cdeacc5f89ee3c58b252910d571617\",\"actual\":\"9405778c983abf0361e846e3c58a124062cdeacc5f89ee3c58b252910d571617\"},{\"path\":\"src/generated/game-config.json\",\"expected\":\"a679ad1585eb4d3570cdbeb22d15651dc4dca0d3da79dc07587a9ff86c924dc8\",\"actual\":\"a679ad1585eb4d3570cdbeb22d15651dc4dca0d3da79dc07587a9ff86c924dc8\"},{\"path\":\"src/input.test.ts\",\"expected\":\"3e11846efb9d645c842bd7126cecdbbf921b06fcd2acf368b56b6a4f843b3d13\",\"actual\":\"3e11846efb9d645c842bd7126cecdbbf921b06fcd2acf368b56b6a4f843b3d13\"},{\"path\":\"src/input.ts\",\"expected\":\"442bc72007563d117d9bde01eacb96c5617f0c13cec70905bc2e0e78dcdb0d2e\",\"actual\":\"442bc72007563d117d9bde01eacb96c5617f0c13cec70905bc2e0e78dcdb0d2e\"},{\"path\":\"src/main.ts\",\"expected\":\"e0290af82676544f437aba836981cc42240db321b7abf0882160b7f83c93522c\",\"actual\":\"e0290af82676544f437aba836981cc42240db321b7abf0882160b7f83c93522c\"},{\"path\":\"src/order-presentation.test.ts\",\"expected\":\"2286c98166d6d6ef8b8e7fb9f7eae2c4fb06bd5f6b75f3fdd3b6e20b491aded1\",\"actual\":\"2286c98166d6d6ef8b8e7fb9f7eae2c4fb06bd5f6b75f3fdd3b6e20b491aded1\"},{\"path\":\"src/order-presentation.ts\",\"expected\":\"189dd737511dedf7f1f38e9457c62816da55e0ab558fbb655fad92a2a72d6663\",\"actual\":\"189dd737511dedf7f1f38e9457c62816da55e0ab558fbb655fad92a2a72d6663\"},{\"path\":\"src/presentation-runtime.test.ts\",\"expected\":\"252cf6d08f313f8015269d8e0d4548a47016c7fc7b98e030f6c53694003c289d\",\"actual\":\"252cf6d08f313f8015269d8e0d4548a47016c7fc7b98e030f6c53694003c289d\"},{\"path\":\"src/presentation.test.ts\",\"expected\":\"a563ad67dde614602f7969f3f3dfe69ee14448e2e9590ea2a1620976c4fcdd88\",\"actual\":\"a563ad67dde614602f7969f3f3dfe69ee14448e2e9590ea2a1620976c4fcdd88\"},{\"path\":\"src/presentation.ts\",\"expected\":\"0e1400b3e3b0d3b44ad13decdfd9457172b6425b025a6fe619f65489c2219a56\",\"actual\":\"0e1400b3e3b0d3b44ad13decdfd9457172b6425b025a6fe619f65489c2219a56\"},{\"path\":\"src/responsive.test.ts\",\"expected\":\"ea1724e82090e08c33aaa4d66b54d05f60194d806857785698cb44af62007cd8\",\"actual\":\"ea1724e82090e08c33aaa4d66b54d05f60194d806857785698cb44af62007cd8\"},{\"path\":\"src/responsive.ts\",\"expected\":\"a5fdf87e387e4a64d6fb86482ecb1eabb801f87537f206c8c76f111ddd8af6e0\",\"actual\":\"a5fdf87e387e4a64d6fb86482ecb1eabb801f87537f206c8c76f111ddd8af6e0\"},{\"path\":\"src/revision.ts\",\"expected\":\"1d13ebf01f52a216dce0b719d0cecffad88913035804a4772cadc5eadbda8e06\",\"actual\":\"1d13ebf01f52a216dce0b719d0cecffad88913035804a4772cadc5eadbda8e06\"},{\"path\":\"src/save.ts\",\"expected\":\"ae7f5c22b68ebe6fd4387966bd7d7e37ed61ad12286694598272ce35992f3232\",\"actual\":\"ae7f5c22b68ebe6fd4387966bd7d7e37ed61ad12286694598272ce35992f3232\"},{\"path\":\"src/simulation.test.ts\",\"expected\":\"6e916512f08259078d3953ecc324376ed0692712ddd7544e6fe038ddae888517\",\"actual\":\"6e916512f08259078d3953ecc324376ed0692712ddd7544e6fe038ddae888517\"},{\"path\":\"src/simulation.ts\",\"expected\":\"6d98f2f760cd4238bb847e4513b887c8edc88034eb50ef6ac6f3d8e3d742109d\",\"actual\":\"6d98f2f760cd4238bb847e4513b887c8edc88034eb50ef6ac6f3d8e3d742109d\"},{\"path\":\"src/style.css\",\"expected\":\"b0d9b05860726dcdf42116bb308184ff02c7b840d305e9da26cdc9c5549ad11b\",\"actual\":\"b0d9b05860726dcdf42116bb308184ff02c7b840d305e9da26cdc9c5549ad11b\"},{\"path\":\"index.html\",\"expected\":\"158048534cc186c5d2adfa79325897fedc5ca956a27f9c1987c58128d7a47519\",\"actual\":\"158048534cc186c5d2adfa79325897fedc5ca956a27f9c1987c58128d7a47519\"}]"
+    },
+    {
+      "name": "fixture-core-settlement-360x800",
+      "passed": false,
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "name": "fixture-settlement-controls-360x800",
+      "passed": true,
+      "evidence": "{\"ui\":{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"扩建结算\\n        潮池扩建完成。继续当地会保留已完成的解锁，再走到航标开启路线选择。\\n        \\n          继续当地保留解锁，前往下一市场航标\\n          继续当地保留解锁，前往下一市场航标\\n        \\n        \\n          重开本轮\",\"settlementVisible\":true,\"selectionVisible\":false,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"继续当地保留解锁，前往下一市场航标\",\"x\":22,\"y\":544.515625,\"width\":316,\"height\":52,\"right\":338,\"bottom\":596.515625,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":22,\"y\":604.515625,\"width\":316,\"height\":44,\"right\":338,\"bottom\":648.515625,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":60,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":114,\"bottom\":787.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":122,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":176,\"bottom\":787.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":184,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":238,\"bottom\":787.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":246,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":300,\"bottom\":787.390625,\"hidden\":false}],\"viewport\":{\"width\":360,\"height\":800},\"overflow\":{\"width\":360,\"height\":800}},\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-settlement.png\"}"
+    },
+    {
+      "name": "fixture-continue-topology-360x800",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"下一步：沿着航线走到下一市场航标并停下\",\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":60,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":114,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":122,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":176,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":184,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":238,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":246,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":300,\"bottom\":779.390625,\"hidden\":false}],\"viewport\":{\"width\":360,\"height\":800},\"overflow\":{\"width\":360,\"height\":800}}"
+    },
+    {
+      "name": "fixture-avatar-360x800-174-786",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":174,\"y\":786},\"teal\":[{\"n\":167,\"x\":81.47904191616766,\"y\":372.1077844311377,\"box\":[75,366,88,379]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-174-786.png\"}"
+    },
+    {
+      "name": "fixture-avatar-360x800-120-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":120,\"y\":820},\"teal\":[{\"n\":167,\"x\":56.461077844311376,\"y\":387.97005988023955,\"box\":[50,382,63,395]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-120-820.png\"}"
+    },
+    {
+      "name": "fixture-avatar-360x800-270-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":270,\"y\":820},\"teal\":[{\"n\":169,\"x\":125.9585798816568,\"y\":388.0177514792899,\"box\":[119,382,133,395]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-270-820.png\"}"
+    },
+    {
+      "name": "fixture-distinct-market-choices-360x800",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"投资：已投入 1\",\"#coins\":\"贝壳币 1\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"航标选市场\\n        停在航标内才会出现路线选择；两处市场拥有不同站位、气候与订单目标。\\n        \\n          珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\\n          月潮码头月光夜潮 · 补齐月潮双货架\\n        \\n        \\n          重开本轮\",\"settlementVisible\":false,\"selectionVisible\":true,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\",\"x\":22,\"y\":530.515625,\"width\":154,\"height\":66,\"right\":176,\"bottom\":596.515625,\"hidden\":false},{\"id\":\"moon-tide-market\",\"text\":\"月潮码头月光夜潮 · 补齐月潮双货架\",\"x\":184,\"y\":530.515625,\"width\":154,\"height\":66,\"right\":338,\"bottom\":596.515625,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":22,\"y\":604.515625,\"width\":316,\"height\":44,\"right\":338,\"bottom\":648.515625,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":60,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":114,\"bottom\":787.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":122,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":176,\"bottom\":787.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":184,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":238,\"bottom\":787.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":246,\"y\":739.390625,\"width\":54,\"height\":48,\"right\":300,\"bottom\":787.390625,\"hidden\":false}],\"viewport\":{\"width\":360,\"height\":800},\"overflow\":{\"width\":360,\"height\":800}}"
+    },
+    {
+      "name": "fixture-core-settlement-390x844",
+      "passed": false,
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "name": "fixture-settlement-controls-390x844",
+      "passed": true,
+      "evidence": "{\"ui\":{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"扩建结算\\n        潮池扩建完成。继续当地会保留已完成的解锁，再走到航标开启路线选择。\\n        \\n          继续当地保留解锁，前往下一市场航标\\n          继续当地保留解锁，前往下一市场航标\\n        \\n        \\n          重开本轮\",\"settlementVisible\":true,\"selectionVisible\":false,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"继续当地保留解锁，前往下一市场航标\",\"x\":27,\"y\":588.59375,\"width\":336,\"height\":52,\"right\":363,\"bottom\":640.59375,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":27,\"y\":648.59375,\"width\":336,\"height\":44,\"right\":363,\"bottom\":692.59375,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":75,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":129,\"bottom\":831.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":137,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":191,\"bottom\":831.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":199,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":253,\"bottom\":831.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":261,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":315,\"bottom\":831.46875,\"hidden\":false}],\"viewport\":{\"width\":390,\"height\":844},\"overflow\":{\"width\":390,\"height\":844}},\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-settlement.png\"}"
+    },
+    {
+      "name": "fixture-continue-topology-390x844",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"下一步：沿着航线走到下一市场航标并停下\",\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":75,\"y\":775.46875,\"width\":54,\"height\":48,\"right\":129,\"bottom\":823.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":137,\"y\":775.46875,\"width\":54,\"height\":48,\"right\":191,\"bottom\":823.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":199,\"y\":775.46875,\"width\":54,\"height\":48,\"right\":253,\"bottom\":823.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":261,\"y\":775.46875,\"width\":54,\"height\":48,\"right\":315,\"bottom\":823.46875,\"hidden\":false}],\"viewport\":{\"width\":390,\"height\":844},\"overflow\":{\"width\":390,\"height\":844}}"
+    },
+    {
+      "name": "fixture-avatar-390x844-174-786",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":174,\"y\":786},\"teal\":[{\"n\":200,\"x\":88.61,\"y\":406.305,\"box\":[81,400,96,414]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-174-786.png\"}"
+    },
+    {
+      "name": "fixture-avatar-390x844-120-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":120,\"y\":820},\"teal\":[{\"n\":202,\"x\":61.366336633663366,\"y\":423.5940594059406,\"box\":[54,417,69,431]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-120-820.png\"}"
+    },
+    {
+      "name": "fixture-avatar-390x844-270-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":270,\"y\":820},\"teal\":[{\"n\":197,\"x\":137.53807106598984,\"y\":423.492385786802,\"box\":[130,417,145,431]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-270-820.png\"}"
+    },
+    {
+      "name": "fixture-distinct-market-choices-390x844",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"投资：已投入 1\",\"#coins\":\"贝壳币 1\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"航标选市场\\n        停在航标内才会出现路线选择；两处市场拥有不同站位、气候与订单目标。\\n        \\n          珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\\n          月潮码头月光夜潮 · 补齐月潮双货架\\n        \\n        \\n          重开本轮\",\"settlementVisible\":false,\"selectionVisible\":true,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\",\"x\":27,\"y\":588.59375,\"width\":164,\"height\":52,\"right\":191,\"bottom\":640.59375,\"hidden\":false},{\"id\":\"moon-tide-market\",\"text\":\"月潮码头月光夜潮 · 补齐月潮双货架\",\"x\":199,\"y\":588.59375,\"width\":164,\"height\":52,\"right\":363,\"bottom\":640.59375,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":27,\"y\":648.59375,\"width\":336,\"height\":44,\"right\":363,\"bottom\":692.59375,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":75,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":129,\"bottom\":831.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":137,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":191,\"bottom\":831.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":199,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":253,\"bottom\":831.46875,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":261,\"y\":783.46875,\"width\":54,\"height\":48,\"right\":315,\"bottom\":831.46875,\"hidden\":false}],\"viewport\":{\"width\":390,\"height\":844},\"overflow\":{\"width\":390,\"height\":844}}"
+    },
+    {
+      "name": "fixture-core-settlement-430x932",
+      "passed": false,
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "name": "fixture-settlement-controls-430x932",
+      "passed": true,
+      "evidence": "{\"ui\":{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"扩建结算\\n        潮池扩建完成。继续当地会保留已完成的解锁，再走到航标开启路线选择。\\n        \\n          继续当地保留解锁，前往下一市场航标\\n          继续当地保留解锁，前往下一市场航标\\n        \\n        \\n          重开本轮\",\"settlementVisible\":true,\"selectionVisible\":false,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"继续当地保留解锁，前往下一市场航标\",\"x\":27,\"y\":675.21875,\"width\":376,\"height\":52,\"right\":403,\"bottom\":727.21875,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":27,\"y\":735.21875,\"width\":376,\"height\":44,\"right\":403,\"bottom\":779.21875,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":95,\"y\":870.09375,\"width\":54,\"height\":48,\"right\":149,\"bottom\":918.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":157,\"y\":870.09375,\"width\":54,\"height\":48,\"right\":211,\"bottom\":918.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":219,\"y\":870.09375,\"width\":54,\"height\":48,\"right\":273,\"bottom\":918.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":281,\"y\":870.09375,\"width\":54,\"height\":48,\"right\":335,\"bottom\":918.09375,\"hidden\":false}],\"viewport\":{\"width\":430,\"height\":932},\"overflow\":{\"width\":430,\"height\":932}},\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-settlement.png\"}"
+    },
+    {
+      "name": "fixture-continue-topology-430x932",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"下一步：沿着航线走到下一市场航标并停下\",\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":95,\"y\":864.09375,\"width\":54,\"height\":48,\"right\":149,\"bottom\":912.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":157,\"y\":864.09375,\"width\":54,\"height\":48,\"right\":211,\"bottom\":912.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":219,\"y\":864.09375,\"width\":54,\"height\":48,\"right\":273,\"bottom\":912.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":281,\"y\":864.09375,\"width\":54,\"height\":48,\"right\":335,\"bottom\":912.09375,\"hidden\":false}],\"viewport\":{\"width\":430,\"height\":932},\"overflow\":{\"width\":430,\"height\":932}}"
+    },
+    {
+      "name": "fixture-avatar-430x932-174-786",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":174,\"y\":786},\"teal\":[{\"n\":281,\"x\":104.50533807829181,\"y\":478.355871886121,\"box\":[96,470,113,488]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-174-786.png\"}"
+    },
+    {
+      "name": "fixture-avatar-430x932-120-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":120,\"y\":820},\"teal\":[{\"n\":280,\"x\":72.44642857142857,\"y\":498.87857142857143,\"box\":[64,491,81,508]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-120-820.png\"}"
+    },
+    {
+      "name": "fixture-avatar-430x932-270-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":270,\"y\":820},\"teal\":[{\"n\":286,\"x\":161.9825174825175,\"y\":498.88461538461536,\"box\":[153,491,171,508]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-270-820.png\"}"
+    },
+    {
+      "name": "fixture-distinct-market-choices-430x932",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"投资：已投入 1\",\"#coins\":\"贝壳币 1\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"航标选市场\\n        停在航标内才会出现路线选择；两处市场拥有不同站位、气候与订单目标。\\n        \\n          珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\\n          月潮码头月光夜潮 · 补齐月潮双货架\\n        \\n        \\n          重开本轮\",\"settlementVisible\":false,\"selectionVisible\":true,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\",\"x\":27,\"y\":677.21875,\"width\":184,\"height\":52,\"right\":211,\"bottom\":729.21875,\"hidden\":false},{\"id\":\"moon-tide-market\",\"text\":\"月潮码头月光夜潮 · 补齐月潮双货架\",\"x\":219,\"y\":677.21875,\"width\":184,\"height\":52,\"right\":403,\"bottom\":729.21875,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":27,\"y\":737.21875,\"width\":376,\"height\":44,\"right\":403,\"bottom\":781.21875,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":95,\"y\":872.09375,\"width\":54,\"height\":48,\"right\":149,\"bottom\":920.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":157,\"y\":872.09375,\"width\":54,\"height\":48,\"right\":211,\"bottom\":920.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":219,\"y\":872.09375,\"width\":54,\"height\":48,\"right\":273,\"bottom\":920.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":281,\"y\":872.09375,\"width\":54,\"height\":48,\"right\":335,\"bottom\":920.09375,\"hidden\":false}],\"viewport\":{\"width\":430,\"height\":932},\"overflow\":{\"width\":430,\"height\":932}}"
+    },
+    {
+      "name": "fixture-core-settlement-540x960",
+      "passed": false,
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "name": "fixture-settlement-controls-540x960",
+      "passed": true,
+      "evidence": "{\"ui\":{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"扩建结算\\n        潮池扩建完成。继续当地会保留已完成的解锁，再走到航标开启路线选择。\\n        \\n          继续当地保留解锁，前往下一市场航标\\n          继续当地保留解锁，前往下一市场航标\\n        \\n        \\n          重开本轮\",\"settlementVisible\":true,\"selectionVisible\":false,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"继续当地保留解锁，前往下一市场航标\",\"x\":27,\"y\":721.15625,\"width\":486,\"height\":52,\"right\":513,\"bottom\":773.15625,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":27,\"y\":781.15625,\"width\":486,\"height\":44,\"right\":513,\"bottom\":825.15625,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":150,\"y\":900.09375,\"width\":54,\"height\":48,\"right\":204,\"bottom\":948.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":212,\"y\":900.09375,\"width\":54,\"height\":48,\"right\":266,\"bottom\":948.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":274,\"y\":900.09375,\"width\":54,\"height\":48,\"right\":328,\"bottom\":948.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":336,\"y\":900.09375,\"width\":54,\"height\":48,\"right\":390,\"bottom\":948.09375,\"hidden\":false}],\"viewport\":{\"width\":540,\"height\":960},\"overflow\":{\"width\":540,\"height\":960}},\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-settlement.png\"}"
+    },
+    {
+      "name": "fixture-continue-topology-540x960",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"下一步：沿着航线走到下一市场航标并停下\",\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":150,\"y\":891.09375,\"width\":54,\"height\":48,\"right\":204,\"bottom\":939.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":212,\"y\":891.09375,\"width\":54,\"height\":48,\"right\":266,\"bottom\":939.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":274,\"y\":891.09375,\"width\":54,\"height\":48,\"right\":328,\"bottom\":939.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":336,\"y\":891.09375,\"width\":54,\"height\":48,\"right\":390,\"bottom\":939.09375,\"hidden\":false}],\"viewport\":{\"width\":540,\"height\":960},\"overflow\":{\"width\":540,\"height\":960}}"
+    },
+    {
+      "name": "fixture-avatar-540x960-174-786",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":174,\"y\":786},\"teal\":[{\"n\":315,\"x\":111.35873015873015,\"y\":509.16825396825396,\"box\":[102,501,121,519]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-174-786.png\"}"
+    },
+    {
+      "name": "fixture-avatar-540x960-120-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":120,\"y\":820},\"teal\":[{\"n\":316,\"x\":76.99050632911393,\"y\":530.7120253164557,\"box\":[68,522,86,541]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-120-820.png\"}"
+    },
+    {
+      "name": "fixture-avatar-540x960-270-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":270,\"y\":820},\"teal\":[{\"n\":323,\"x\":172.4860681114551,\"y\":530.7925696594427,\"box\":[163,522,182,541]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-270-820.png\"}"
+    },
+    {
+      "name": "fixture-distinct-market-choices-540x960",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"投资：已投入 1\",\"#coins\":\"贝壳币 1\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"航标选市场\\n        停在航标内才会出现路线选择；两处市场拥有不同站位、气候与订单目标。\\n        \\n          珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\\n          月潮码头月光夜潮 · 补齐月潮双货架\\n        \\n        \\n          重开本轮\",\"settlementVisible\":false,\"selectionVisible\":true,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\",\"x\":27,\"y\":719.15625,\"width\":239,\"height\":52,\"right\":266,\"bottom\":771.15625,\"hidden\":false},{\"id\":\"moon-tide-market\",\"text\":\"月潮码头月光夜潮 · 补齐月潮双货架\",\"x\":274,\"y\":719.15625,\"width\":239,\"height\":52,\"right\":513,\"bottom\":771.15625,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":27,\"y\":779.15625,\"width\":486,\"height\":44,\"right\":513,\"bottom\":823.15625,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":150,\"y\":898.09375,\"width\":54,\"height\":48,\"right\":204,\"bottom\":946.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":212,\"y\":898.09375,\"width\":54,\"height\":48,\"right\":266,\"bottom\":946.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":274,\"y\":898.09375,\"width\":54,\"height\":48,\"right\":328,\"bottom\":946.09375,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":336,\"y\":898.09375,\"width\":54,\"height\":48,\"right\":390,\"bottom\":946.09375,\"hidden\":false}],\"viewport\":{\"width\":540,\"height\":960},\"overflow\":{\"width\":540,\"height\":960}}"
+    },
+    {
+      "name": "fixture-core-settlement-844x390",
+      "passed": false,
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "name": "fixture-settlement-controls-844x390",
+      "passed": true,
+      "evidence": "{\"ui\":{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"扩建结算\\n        潮池扩建完成。继续当地会保留已完成的解锁，再走到航标开启路线选择。\\n        \\n          继续当地保留解锁，前往下一市场航标\\n          继续当地保留解锁，前往下一市场航标\\n        \\n        \\n          重开本轮\",\"settlementVisible\":true,\"selectionVisible\":false,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"继续当地保留解锁，前往下一市场航标\",\"x\":558.046875,\"y\":207,\"width\":264.953125,\"height\":38,\"right\":823,\"bottom\":245,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":558.046875,\"y\":249,\"width\":264.953125,\"height\":32,\"right\":823,\"bottom\":281,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":570.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":624.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":632.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":686.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":694.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":748.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":756.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":810.515625,\"bottom\":382,\"hidden\":false}],\"viewport\":{\"width\":844,\"height\":390},\"overflow\":{\"width\":844,\"height\":390}},\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-settlement.png\"}"
+    },
+    {
+      "name": "fixture-continue-topology-844x390",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"下一步：沿着航线走到下一市场航标并停下\",\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":570.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":624.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":632.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":686.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":694.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":748.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":756.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":810.515625,\"bottom\":382,\"hidden\":false}],\"viewport\":{\"width\":844,\"height\":390},\"overflow\":{\"width\":844,\"height\":390}}"
+    },
+    {
+      "name": "fixture-avatar-844x390-174-786",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":174,\"y\":786},\"teal\":[{\"n\":230,\"x\":90.09565217391304,\"y\":95.0695652173913,\"box\":[82,87,97,103]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-174-786.png\"}"
+    },
+    {
+      "name": "fixture-avatar-844x390-120-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":120,\"y\":820},\"teal\":[{\"n\":237,\"x\":71.44303797468355,\"y\":65.81012658227849,\"box\":[63,58,79,74]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-120-820.png\"}"
+    },
+    {
+      "name": "fixture-avatar-844x390-270-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":270,\"y\":820},\"teal\":[{\"n\":235,\"x\":71.50212765957447,\"y\":147.7531914893617,\"box\":[63,140,79,156]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-270-820.png\"}"
+    },
+    {
+      "name": "fixture-distinct-market-choices-844x390",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"投资：已投入 1\",\"#coins\":\"贝壳币 1\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"航标选市场\\n        停在航标内才会出现路线选择；两处市场拥有不同站位、气候与订单目标。\\n        \\n          珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\\n          月潮码头月光夜潮 · 补齐月潮双货架\\n        \\n        \\n          重开本轮\",\"settlementVisible\":false,\"selectionVisible\":true,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\",\"x\":558.046875,\"y\":207,\"width\":130.46875,\"height\":38,\"right\":688.515625,\"bottom\":245,\"hidden\":false},{\"id\":\"moon-tide-market\",\"text\":\"月潮码头月光夜潮 · 补齐月潮双货架\",\"x\":692.515625,\"y\":207,\"width\":130.484375,\"height\":38,\"right\":823,\"bottom\":245,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":558.046875,\"y\":249,\"width\":264.953125,\"height\":32,\"right\":823,\"bottom\":281,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":570.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":624.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":632.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":686.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":694.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":748.515625,\"bottom\":382,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":756.515625,\"y\":334,\"width\":54,\"height\":48,\"right\":810.515625,\"bottom\":382,\"hidden\":false}],\"viewport\":{\"width\":844,\"height\":390},\"overflow\":{\"width\":844,\"height\":390}}"
+    },
+    {
+      "name": "fixture-core-settlement-1440x900",
+      "passed": false,
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "name": "fixture-settlement-controls-1440x900",
+      "passed": true,
+      "evidence": "{\"ui\":{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"扩建结算\\n        潮池扩建完成。继续当地会保留已完成的解锁，再走到航标开启路线选择。\\n        \\n          继续当地保留解锁，前往下一市场航标\\n          继续当地保留解锁，前往下一市场航标\\n        \\n        \\n          重开本轮\",\"settlementVisible\":true,\"selectionVisible\":false,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"继续当地保留解锁，前往下一市场航标\",\"x\":951.40625,\"y\":209.234375,\"width\":467.59375,\"height\":38,\"right\":1419,\"bottom\":247.234375,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":951.40625,\"y\":251.234375,\"width\":467.59375,\"height\":32,\"right\":1419,\"bottom\":283.234375,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":1065.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1119.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":1127.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1181.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":1189.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1243.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":1251.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1305.203125,\"bottom\":548,\"hidden\":false}],\"viewport\":{\"width\":1440,\"height\":900},\"overflow\":{\"width\":1440,\"height\":900}},\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-settlement.png\"}"
+    },
+    {
+      "name": "fixture-continue-topology-1440x900",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"下一步：沿着航线走到下一市场航标并停下\",\"#toast\":\"\",\"#coins\":\"贝壳币 4\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":1065.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1119.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":1127.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1181.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":1189.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1243.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":1251.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1305.203125,\"bottom\":548,\"hidden\":false}],\"viewport\":{\"width\":1440,\"height\":900},\"overflow\":{\"width\":1440,\"height\":900}}"
+    },
+    {
+      "name": "fixture-avatar-1440x900-174-786",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":174,\"y\":786},\"teal\":[{\"n\":767,\"x\":127.57757496740548,\"y\":173.94263363754888,\"box\":[112,159,141,189]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-avatar-174-786.png\"}"
+    },
+    {
+      "name": "fixture-avatar-1440x900-120-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":120,\"y\":820},\"teal\":[{\"n\":770,\"x\":93.57142857142857,\"y\":119.99090909090908,\"box\":[78,105,107,135]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-avatar-120-820.png\"}"
+    },
+    {
+      "name": "fixture-avatar-1440x900-270-820",
+      "passed": true,
+      "evidence": "{\"point\":{\"x\":270,\"y\":820},\"teal\":[{\"n\":785,\"x\":93.44585987261146,\"y\":269.7273885350318,\"box\":[78,254,107,285]}],\"screenshot\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-avatar-270-820.png\"}"
+    },
+    {
+      "name": "fixture-distinct-market-choices-1440x900",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":null,\"#mission\":null,\"#toast\":\"投资：已投入 1\",\"#coins\":\"贝壳币 1\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 2\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":\"航标选市场\\n        停在航标内才会出现路线选择；两处市场拥有不同站位、气候与订单目标。\\n        \\n          珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\\n          月潮码头月光夜潮 · 补齐月潮双货架\\n        \\n        \\n          重开本轮\",\"settlementVisible\":false,\"selectionVisible\":true,\"buttons\":[{\"id\":\"continue-round\",\"text\":\"珊瑚湾市场珊瑚浅湾 · 交付两份烟熏鱼订单\",\"x\":951.40625,\"y\":209.234375,\"width\":231.796875,\"height\":38,\"right\":1183.203125,\"bottom\":247.234375,\"hidden\":false},{\"id\":\"moon-tide-market\",\"text\":\"月潮码头月光夜潮 · 补齐月潮双货架\",\"x\":1187.203125,\"y\":209.234375,\"width\":231.796875,\"height\":38,\"right\":1419,\"bottom\":247.234375,\"hidden\":false},{\"id\":\"restart-round\",\"text\":\"重开本轮\",\"x\":951.40625,\"y\":251.234375,\"width\":467.59375,\"height\":32,\"right\":1419,\"bottom\":283.234375,\"hidden\":false},{\"id\":\"\",\"text\":\"↑\",\"x\":1065.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1119.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":1127.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1181.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":1189.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1243.203125,\"bottom\":548,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":1251.203125,\"y\":500,\"width\":54,\"height\":48,\"right\":1305.203125,\"bottom\":548,\"hidden\":false}],\"viewport\":{\"width\":1440,\"height\":900},\"overflow\":{\"width\":1440,\"height\":900}}"
+    },
+    {
+      "name": "runtime-console",
+      "passed": true,
+      "evidence": "{\"consoleErrors\":[],\"pageErrors\":[]}"
+    }
+  ],
+  "issues": [
+    {
+      "id": "fixture-core-settlement-360x800",
+      "severity": "error",
+      "message": "fixture-core-settlement-360x800 failed",
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "id": "fixture-core-settlement-390x844",
+      "severity": "error",
+      "message": "fixture-core-settlement-390x844 failed",
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "id": "fixture-core-settlement-430x932",
+      "severity": "error",
+      "message": "fixture-core-settlement-430x932 failed",
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "id": "fixture-core-settlement-540x960",
+      "severity": "error",
+      "message": "fixture-core-settlement-540x960 failed",
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "id": "fixture-core-settlement-844x390",
+      "severity": "error",
+      "message": "fixture-core-settlement-844x390 failed",
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    },
+    {
+      "id": "fixture-core-settlement-1440x900",
+      "severity": "error",
+      "message": "fixture-core-settlement-1440x900 failed",
+      "evidence": "{\"saleCurrency\":0,\"saleCashPile\":0,\"settledStage\":\"settlement\",\"continuedStage\":\"operating\",\"unlocked\":[\"net\",\"fish-shelf\",\"checkout\",\"kelp-build\",\"capacity-upgrade\",\"kelp-pool\",\"kelp-shelf\",\"smokehouse\",\"smoked-shelf\",\"runner-hire\",\"cashier-hire\",\"market-entry\"]}"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-174-786.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-120-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-270-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-174-786.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-120-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-270-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-174-786.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-120-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-270-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-174-786.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-120-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-270-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-174-786.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-120-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-270-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-avatar-174-786.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-avatar-120-820.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/1440x900-avatar-270-820.png"
+  ],
+  "consoleLog": "{\"consoleErrors\":[],\"pageErrors\":[],\"track\":\"deterministic-fixture-implementation-evidence-only\"}",
+  "testedAt": "2026-10-08T09:31:04.320Z"
+}

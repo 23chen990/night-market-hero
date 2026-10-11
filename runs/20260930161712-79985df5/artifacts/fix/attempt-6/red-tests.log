@@ -1,0 +1,90 @@
+$ node ../../../../node_modules/vitest/vitest.mjs run -- src/depth-systems.test.ts
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/depth-systems.test.ts (16 tests | 2 failed) 91ms
+     × keeps every market marker outside the expansion and employee interaction ranges 3ms
+     × keeps the natural expansion continue origin operating until deliberate marker arrival 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > keeps every market marker outside the expansion and employee interaction ranges
+AssertionError: beach-stall:kelp-build: expected 100.4987562112089 to be greater than 128
+ ❯ src/depth-systems.test.ts:228:101
+    226|       for (const stationId of ['kelp-build', 'runner-hire', 'cashier-h…
+    227|         const station = market.stationPositions[stationId]!;
+    228|         expect(Math.hypot(marker.x - station.x, marker.y - station.y),…
+       |                                                                                                     ^
+    229|       }
+    230|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > keeps the natural expansion continue origin operating until deliberate marker arrival
+AssertionError: expected 'operating' to be 'settlement' // Object.is equality
+
+Expected: "settlement"
+Received: "operating"
+
+ ❯ src/depth-systems.test.ts:237:25
+    235|     let state = setPlayerPosition(createInitialState(shop), { x: build…
+    236|     state = advanceGame(shop, state, 1_000);
+    237|     expect(state.stage).toBe('settlement');
+       |                         ^
+    238|
+    239|     const continued = continueRound(state);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  2 failed | 39 passed (41)
+   Start at  02:20:23
+   Duration  699ms (transform 1.07s, setup 0ms, import 1.57s, tests 172ms, environment 0ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
+$ node ../../../../node_modules/vitest/vitest.mjs run -- src/depth-systems.test.ts
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/depth-systems.test.ts (16 tests | 2 failed) 75ms
+     × keeps every market marker outside the expansion and employee interaction ranges 4ms
+     × keeps the natural expansion continue origin operating until deliberate marker arrival 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > keeps every market marker outside the expansion and employee interaction ranges
+AssertionError: beach-stall:kelp-build: expected 100.4987562112089 to be greater than 128
+ ❯ src/depth-systems.test.ts:228:101
+    226|       for (const stationId of ['kelp-build', 'runner-hire', 'cashier-h…
+    227|         const station = market.stationPositions[stationId]!;
+    228|         expect(Math.hypot(marker.x - station.x, marker.y - station.y),…
+       |                                                                                                     ^
+    229|       }
+    230|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > keeps the natural expansion continue origin operating until deliberate marker arrival
+AssertionError: expected 'market-selection' to be 'operating' // Object.is equality
+
+Expected: "operating"
+Received: "market-selection"
+
+ ❯ src/depth-systems.test.ts:242:25
+    240|     expect(continued.stage).toBe('operating');
+    241|     state = advanceGame(shop, continued, 250);
+    242|     expect(state.stage).toBe('operating');
+       |                         ^
+    243|
+    244|     state = setPlayerPosition(state, state.marketMarker.position);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  2 failed | 39 passed (41)
+   Start at  02:20:50
+   Duration  387ms (transform 405ms, setup 0ms, import 572ms, tests 132ms, environment 0ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

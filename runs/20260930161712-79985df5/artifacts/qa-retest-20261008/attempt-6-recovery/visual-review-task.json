@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "route": "formal-fixer",
+  "attempt": 6,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only visual QA; no filesystem writes"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/perceptual-review.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/landing-input-v5.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/landing-input-v5",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/index.html"
+  ],
+  "instructions": [
+    "Inspect actual screenshot pixels with view_image at portrait and landscape and code for owning renderer branch. Identify still-current perceptual defects with exact source line and screenshot path. Prioritize objective violations of the approved shop-experience-revision; do not redesign the game or infer reference pixel appearance.",
+    "Return only a QaReportSchema-valid JSON object as your final response; do not write files. QaReportSchema is exported by src/schemas/index.ts. Checks must separate observed PASS from unobserved BLOCKED. Inspect at least 360x800,540x960,844x390 boot images."
+  ],
+  "acceptance": [
+    "Pixel-backed assessment of field prominence, station and actor distinguishability, critical feedback, and duplicate settlement choice labels.",
+    "No claim of employee/gull pass from boot or fixture evidence; unresolved branches remain BLOCKED."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/visual-review.json"
+}

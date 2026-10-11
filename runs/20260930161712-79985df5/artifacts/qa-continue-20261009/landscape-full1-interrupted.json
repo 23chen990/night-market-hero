@@ -1,0 +1,686 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-harness-interruption",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "attempt": 8,
+  "status": "BLOCKED_SUPERSEDED_HARNESS",
+  "acceptanceEvidence": false,
+  "reason": "Fixed route did not confirm cargo was unloaded; repeated full-bag collection attempts starved smoked deliveries. Superseded by adaptive normal-input cargo handling. No production mutation or rebuild.",
+  "preservedCheckpoint": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/progress.json",
+  "checkpointSha256": "b2b3ac1e2bae3572b518d5ff332ead749efe04f08a2b00d6e2aabcbd37d96ebd",
+  "lastPhase": "finalizing",
+  "checks": [
+    [
+      "served-build-hash",
+      true
+    ],
+    [
+      "startup-viewport",
+      true
+    ],
+    [
+      "base-normal-sales-funded",
+      true
+    ],
+    [
+      "first-settlement",
+      true
+    ],
+    [
+      "settlement-choice-clarity",
+      true
+    ],
+    [
+      "continue-local-no-unintended-selection",
+      true
+    ],
+    [
+      "processor-natural-route",
+      true
+    ],
+    [
+      "avatar-at-employee-label-crossing",
+      true
+    ],
+    [
+      "runner-funded-action",
+      true
+    ],
+    [
+      "cashier-funded-action",
+      true
+    ],
+    [
+      "seagull-readable-relief",
+      true
+    ],
+    [
+      "seagull-loss-recovery",
+      true
+    ],
+    [
+      "coral-deliberate-market-selection",
+      true
+    ],
+    [
+      "coral-real-market-change",
+      true
+    ],
+    [
+      "coral-own-settlement",
+      true
+    ],
+    [
+      "coral-new-transaction-replay",
+      false
+    ],
+    [
+      "moon-deliberate-market-selection",
+      true
+    ],
+    [
+      "moon-real-market-change",
+      true
+    ]
+  ],
+  "screenshots": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/001-startup.png",
+      "sha256": "27634312f26fbbd51391a24192885c35f55619a72fa36a7b87cd7ce619b690cc"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/002-empty-shelf-shortage.png",
+      "sha256": "b45964dc88f9927662cf36e494e6563c60bca51866be935353fe6954e44aadd3"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/003-base-first-cargo.png",
+      "sha256": "6dd363a6f670baa62295ee45499544bb194a457902babc2d6faf643e5e92655c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/004-base-first-stock.png",
+      "sha256": "d7ddcf22f6199d76dd6cbba970908f8402754e984448596df93e01edac3ef1d5"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/005-base-first-service.png",
+      "sha256": "e0543306c35e3fce81ca55a71e619e80815e839d4f118f75e2d4689f24af6483"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/006-base-first-cash.png",
+      "sha256": "23d462fb56e7c61a5ed68ae8c54490a47e57052701a1d2314439fe5f336b470e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/007-pre-expansion-0-fish-cargo.png",
+      "sha256": "e3164adfd608c4ce03c33f565c6ec71d11cda09c7644bf7bfa7fe879ce31d5b0"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/008-pre-expansion-0-fish-stock.png",
+      "sha256": "59dd96bc13bef7ab747c64c35a216c809ec5f13f72dc88a92620b35908945707"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/009-pre-expansion-0-service.png",
+      "sha256": "876b93f1bb7d003bd88ccd7d31a6aa2f149d56cc19fce6c1515f632d314cb017"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/010-pre-expansion-0-cash.png",
+      "sha256": "896d68d6074ca57f9fc076e1a4efc4ff6370f8c2b9cb8f664946a325233c0c2f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/011-first-settlement.png",
+      "sha256": "bfd7d95c9e7c1c438bb33186f5eda5174dba8a39e8498789e62d8f26f2c10ce8"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/012-continue-local.png",
+      "sha256": "33ded8ef1e7a8fd278d0a34c480f75d82968ea80d3ce0790566deeea577e46dc"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/013-processor-starved.png",
+      "sha256": "a1dfe069c4742464734db2ecd49269696e766ab911a25bb3166a639398a90b8e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/014-processor-input-cargo.png",
+      "sha256": "3c2e54b1313c3cbaae77de4c329cf63de2cfeff560a3def8f609bd83bc4ca8ce"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/015-processor-input-stock.png",
+      "sha256": "2c118e694d4441d01eb3964f471f5c8d755ebfd71f67f40983a05feab4aeea92"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/016-processor-making.png",
+      "sha256": "cc03d1b5a72b98284a64c4535abba11fba7b6a0f17f2f193fe5e3f3363897bb8"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/017-processor-output-cargo.png",
+      "sha256": "19af9035b0d1349a511ca4b11b62d27e05b3f73491d80582191a433115246b1a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/018-processor-output-stock.png",
+      "sha256": "294d5d79625929bbaa6d08d55deaabaa7afb4c5bdd6988d8774811ee54f2e32c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/019-runner-hired.png",
+      "sha256": "1917bcb992d874ec9aab6256bf07f27f91671b57933c6e64d729d460abd5b320"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/020-player-at-runner-hire.png",
+      "sha256": "86633c44df4ef0bc6b035025a62e7c35f9b2b7fbd1e974dd98010729c08fc7a4"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/021-runner-moving-a.png",
+      "sha256": "cfa28b2f78a262a0a0b7a1891693cecbc47908e8796106ec374046fd4979a6a4"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/022-runner-action.png",
+      "sha256": "6563e67b05096f512b550a1fc4f8613ec54cfff72d2ea198e7db24d25ca7c60a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/023-runner-moving-b.png",
+      "sha256": "420ab0443639b72255345f93aa6a6b48d0cda797d6223fa46a8a1ed97e8629f7"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/024-cashier-hired.png",
+      "sha256": "5e2e1dedab6954da6243862ddc76815f458dd2cc85f1460aa898ac9c98ee59b1"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/025-cashier-fish-cargo.png",
+      "sha256": "fa3e4e3506d89bd25948f76e58c9445e8e1e04e39d8eca6ebaa317d8553bc62f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/026-cashier-fish-stock.png",
+      "sha256": "5c162e80909845702b478a7af9c5a3cf06cee2446af4547d2dc85357b8662a66"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/027-cashier-kelp-cargo.png",
+      "sha256": "a9324414713bb5913243a1c7cea9330bcb5b80cc75d38178be8be25366cb58bc"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/028-cashier-kelp-stock.png",
+      "sha256": "33d9ad8992bd57951e6f52347ccc8bad918ab2356829b537b76ba6bf251118d8"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/029-cashier-smoked-cargo.png",
+      "sha256": "68aeb55ea71ab47880e3cfae5bb8fafae8856c2c6d9e2598a803e4d41a7a7f7c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/030-cashier-smoked-stock.png",
+      "sha256": "e0941bc8bb46a09d0b33b7480800c624308984659fa1ba41781978098bf6b171"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/031-cashier-action.png",
+      "sha256": "e60493fa922a132177ef1513471f6a5e6f2b36ea4a380b709fca8e43257cea1c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/032-cashier-service-away-from-player.png",
+      "sha256": "7f3be8a18057996b8139a4fb8f7feb528d0b5a06af30317b22bbb496221c4f3c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/033-cashier-manual-cash-service.png",
+      "sha256": "53fbe29283f11f219c96d07a4d04b03169fa927f762e72dcf76db90610f7e220"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/034-cashier-manual-cash-cash.png",
+      "sha256": "aebc60321e424ea4514d504613fe66cd08d5038e8d1fbf73becc0aeb7ee7d893"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/035-gull-stock-cargo.png",
+      "sha256": "43a9fcebbc85fdafb6ce8d415a0d5d709cdc68d451984cae7d8d288db7e1391d"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/036-gull-stock-stock.png",
+      "sha256": "8eb99feb229af4e561508222f051eab5d4bdb85b0d03ee8d92a20f5f5bc34991"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/037-gull-kelp-stock-cargo.png",
+      "sha256": "46c8aae8d15205491923c1adaec66f841a971c2e1232e0d12dc91f89a2637bd1"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/038-gull-kelp-stock-stock.png",
+      "sha256": "55b01b2aa33cd55b63516437541e84dc7f331e1ed4d02594b4ae16bd0898ebc9"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/039-gull-visible-loss.png",
+      "sha256": "797ed9760d0e3e1fe0816e1c1ca57c3de0952e8d359779b9c5a54f81a9ce55ea"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/040-gull-alert-loss.png",
+      "sha256": "2be23dc5f782b6a0860462b9da2d15136628e6285f52efe6253657a6a63c8942"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/041-gull-visible-target.png",
+      "sha256": "651cc0a9b34b60f12c7f086707cedc58e4f7bfda9359ad394b15feb579fe4db3"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/042-gull-recovery-immediate.png",
+      "sha256": "6bc84f4272b9a3bf4f97a3667f88127372ff41df8fb7d6bcc5455441efc7977b"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/043-gull-guarded-no-loss.png",
+      "sha256": "49782505db86d1ae74c347194b65ce4747b57361a4465a7b808e841fa2180997"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/044-gull-visible-target.png",
+      "sha256": "91e30efb6bf8cff8fb4b70b03e0b12f9c9d0f41492ace0fe1a1635e6ac0da1f8"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/045-gull-replenish-cargo.png",
+      "sha256": "ff765a5f4ca9c4e3e959ce4db8676887a2890c521b592ae70f1ad09e07cde05a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/046-gull-replenish-stock.png",
+      "sha256": "9c8e1f231374345dfd6276ee777d67ccf8955a9eed32bd3f6c6259b8fc3a6676"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/047-pre-market-deposited-kelp-shelf.png",
+      "sha256": "57d3af20f21d105df6e03bb25943e0af54581a270ca5598b72fd52d59bb20b90"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/048-pre-market-deposited-smoked-shelf.png",
+      "sha256": "8e74372118fc88fa11aa5a0b13e8809978de0457819ce14847c68dbc032425c8"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/049-pre-market-deposited-fish-shelf.png",
+      "sha256": "8f595bdefea51fc3cea51b0adb4ad9e60a4c72385ba43b8c5dc5f0aacf2be708"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/050-coral-market-selection.png",
+      "sha256": "ceb34cc03aa4cf4d2fa25ef768c23544383033a3e31e202231d863c6415830fc"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/051-coral-market.png",
+      "sha256": "eda4db19baba6fa0430219e64db9da899361cf080a22d23ecf5f6cd3a8f2ee8e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/052-coral-0-fish-cargo.png",
+      "sha256": "b5429455301f629ec213cfdd98b6f8077b37008c0509fa65ab5fc669def1f0fa"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/053-coral-0-fish-stock.png",
+      "sha256": "0fe41289b17801a30bd55dfaabac5b1f5d33a8d096827a0521b97b23c5fc3a33"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/054-coral-0-extra-fish-cargo.png",
+      "sha256": "b10f1e9b377e4239d57489aba46e1daccf124f96b0e330a53c0d6d1991eca7a3"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/055-coral-0-extra-fish-stock.png",
+      "sha256": "47f10ff0244fdfd730c625d11b95d872af64aceb9dee2addad3265477d3bf89a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/056-coral-0-processing-input.png",
+      "sha256": "51764bd9b9b94abf961b67a47133de568785c874fd040cdfbd79cbe4aa1c06cf"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/057-coral-0-smoked-cargo.png",
+      "sha256": "c7f372b15b406337c8cbde35dfb879b72ad94e01d08b6889e42bab1422e5d65e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/058-coral-0-smoked-stock.png",
+      "sha256": "1275de1381c96fcd8017e0d10cd9e82273d760b528bde772fd92f890ed8bc10e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/059-coral-0-service.png",
+      "sha256": "3d234468728012fa661f4c2f5ba06a9fc78d9a6bf9b424c2859aacd4adad2aea"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/060-coral-0-cash.png",
+      "sha256": "dab34ba04820d0d38e44319a4e710e3e5702faecab6fab5b8178cf36c7218fb8"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/061-coral-1-fish-cargo.png",
+      "sha256": "3bd2933a44e911a18f5b617ed328d2faff38a46064de9870ceccf9e928ddc67f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/062-coral-1-fish-stock.png",
+      "sha256": "383c22d01f08c7ef27916e7442bb9a52355d6d069ccb8a1e4a41a70f4c48a54f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/063-coral-1-extra-fish-cargo.png",
+      "sha256": "8bc61481b380936ffa8eb9e2cc9e848a4c213f9e9811ba6cb8672f7b0410fdc0"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/064-coral-1-extra-fish-stock.png",
+      "sha256": "dff9ff667493c14e9a1c40513584b1b008ddb4cd7fe97bb8356264f12d355c71"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/065-coral-1-processing-input.png",
+      "sha256": "87b1a01471114d952d827eafd108d60fac012ba5b7038219a8f03815df747c99"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/066-coral-1-smoked-cargo.png",
+      "sha256": "dcce1da62b462ee14c56caf301a375a5f807650524d8e3c961c4a313f3c7aa0d"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/067-coral-1-smoked-stock.png",
+      "sha256": "534a1c7e16b4942e63d5ba227d1a7f3b86d3b12b211fc9becd762216c6a15274"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/068-coral-1-service.png",
+      "sha256": "ce56a6252f40f11dbff2e0e701517bf338f29dabde57b7b803f8809dc73b3687"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/069-coral-1-cash.png",
+      "sha256": "49f7dee67f21f6486c2de5d1846ad5fd4249ffb3e7164d80158be74a3432fa5a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/070-coral-2-fish-cargo.png",
+      "sha256": "e0a2ee1a27bab1ae71443cdb1ca3e099c38637be2c0c438bb070b0a5b4ec6430"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/071-coral-2-fish-stock.png",
+      "sha256": "8f84285c7764a4abd408a3e204381f4fde6d0c3a5ea039c7cf23c806bf81917e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/072-coral-2-extra-fish-cargo.png",
+      "sha256": "d818a1b680d54271aaf37603303a522ab0ec177ae348b892769a2e3ff54e9eb2"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/073-coral-2-extra-fish-stock.png",
+      "sha256": "e6d09c3fa7e5476ac358b6c45dce9352263f071404147fedf90870615edef43f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/074-coral-2-processing-input.png",
+      "sha256": "c03df634502d0d44a38788cfc40f704ad73ed245768d9e49010f73c0bcafd9ae"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/075-coral-2-smoked-cargo.png",
+      "sha256": "9a2aa53c1b98d90a6fe97068814a314d1622df385830a8a33d1980e7f50ad72c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/076-coral-2-smoked-stock.png",
+      "sha256": "490f81aff411141ad0b7cb00cb3f96bdf727693ee94f1c6ebb528cc677ce56fd"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/077-coral-2-service.png",
+      "sha256": "4a523b6b8f9c9bf3533b7b4daeb716b4c76fba92d61394d4114e425818432ec5"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/078-coral-2-cash.png",
+      "sha256": "1abf9e38265704225ed3b2bf12c19a8132f66c189bfebc949a458f7cb6c21c1d"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/079-coral-3-fish-cargo.png",
+      "sha256": "04e79cf978e74ae45334d7abcda4c6954944d75f84511f2cf7d9261ede1c79f9"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/080-coral-3-fish-stock.png",
+      "sha256": "2f00b7a4fc9d7fb0461ddd80126285836e2ee375ab1f8b43644c126b1839df59"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/081-coral-3-extra-fish-cargo.png",
+      "sha256": "f44db024bb1ae60c0e8931b1e758c28f5e0de4fd858b3b40abc111d63b506fe8"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/082-coral-3-extra-fish-stock.png",
+      "sha256": "0eb068b654c1c49d765e97728f5a4a5b21ea9be1394f846785c689d1f8323475"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/083-coral-3-processing-input.png",
+      "sha256": "4127396e06f81d494baaec0e7a8e7390b3dfb305b42174d1ca400c81547c1e89"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/084-coral-3-smoked-cargo.png",
+      "sha256": "07b183fc831a016e9aa9d90a643e86998168b9474277e54239287c001e59d882"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/085-coral-3-smoked-stock.png",
+      "sha256": "68fbd8aa0286fa88fb10c48b75539f61b808b1984a998acc26122cd88361044f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/086-coral-3-service.png",
+      "sha256": "e4c2616cb30260070f656af6d3659203a64d8c0d5a1b103bdde1291c937cdd2e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/087-coral-3-cash.png",
+      "sha256": "05a4b22208e62ff3a6addd0e07a036c02101cb7c4e29d352861170dde31b5c1c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/088-coral-4-fish-cargo.png",
+      "sha256": "ba4550a11611b012a3aa5da7586a4d76aac3c71aaa5e49ba5469f02936361351"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/089-coral-4-fish-stock.png",
+      "sha256": "04d074472687b79e0b4821757e58ee75adc24669f8f79781ceaf38c02e8ec408"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/090-coral-4-extra-fish-cargo.png",
+      "sha256": "4910d79d43bdd5042e1134dccfef391ef4689ee0691f36835a1c281de9f16019"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/091-coral-4-extra-fish-stock.png",
+      "sha256": "1f203aca9a94e88c8e98ca5908be056c21f8940d81a4096254c0089968d21182"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/092-coral-4-processing-input.png",
+      "sha256": "730b2686ee326a7c194555b15d267e0257b4dc3df5b99793e308fd57eb941530"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/093-coral-4-smoked-cargo.png",
+      "sha256": "5d9af0ad2b503d39c962b77b9e0f0c2cc1fbfac6e48723f793bde990c645fd6e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/094-coral-4-smoked-stock.png",
+      "sha256": "94cfdb0332ba246894496918c131a3ce04150c1c96ec476f55eacbe751f5e2f7"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/095-coral-4-service.png",
+      "sha256": "e17a2ae020ac11149a79e93418c6fc32592b0d3d553e3f6c115e528625b4bc26"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/096-coral-settlement.png",
+      "sha256": "e17a2ae020ac11149a79e93418c6fc32592b0d3d553e3f6c115e528625b4bc26"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/097-coral-continue.png",
+      "sha256": "6f7b9c1f8e0fc1b456dd0463cc2d76c3d3797af48c06496e0fcfbdfe9f816606"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/098-coral-clear-earned-cash-service.png",
+      "sha256": "7c8e40629a3765105d4d407734cd7f92f339cee9f47a991755c24d3525c62f31"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/099-coral-clear-earned-cash-cash.png",
+      "sha256": "21263375e4562e0b20e277830d7f8f007d9337104c263161c9d453f5a74f46bc"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/100-coral-replay-fish-cargo.png",
+      "sha256": "fa62e68374ba363480d8c80ce71441a92a1fb4396312da3f8eb5715f0d0f0259"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/101-coral-replay-fish-stock.png",
+      "sha256": "fe0cbd4da01d76ce36d6345fb8ebbf40b2f3df248d408090fc5c373ee4f466d5"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/102-coral-replay-smoked-cargo.png",
+      "sha256": "9c8afae9226aaa934784d06d5cf12746f74b4b6ed9f3c7c9126c7e6ba0751f13"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/103-coral-replay-smoked-stock.png",
+      "sha256": "b95b21991dbda69a81469f1bed7347e0b4feda0eedcc4acbf6d9bf0c29be3ec5"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/104-coral-replay-service.png",
+      "sha256": "9bba9c404d40f5b36a25c1dac6da27263ef9b634561502cfd3df762c68465740"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/105-coral-replay-cash.png",
+      "sha256": "ec441dba481c5bf77d260893b9664e47b86fdb62bc06f975b1fa4d79fa0e0c3b"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/106-moon-market-selection.png",
+      "sha256": "da37ccd203314cf8e33b5d0176743077dfd49e6b466ba539e9c33b6813629425"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/107-moon-market.png",
+      "sha256": "8c5308b4cf1a2383c028d39e407dcac4ee8eada28236b07bb5d8a38f39ee9709"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/108-moon-0-fish-cargo.png",
+      "sha256": "7d0c0c229d628d3f9c224178a51302d9987acf03f4ab441654d2e95c948f347b"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/109-moon-0-fish-stock.png",
+      "sha256": "2f524b22969a169cc26731b3bdb979985a270c587d3e6bb302a316b2b1c34c67"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/110-moon-0-extra-fish-cargo.png",
+      "sha256": "e7a5b83cb9cd4ff85f57ac9d5c94b5976ec6937fb35b05df579f1183d0581bdf"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/111-moon-0-extra-fish-stock.png",
+      "sha256": "d13fd8c64a61c11ebb59beb8b33abc553a9f880373c60586b2a6522ae35f7c04"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/112-moon-0-processing-input.png",
+      "sha256": "9354d9821025120f4be59cc58e95fa58fce34da8b7473b3c70a3a9d87cfcacba"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/113-moon-0-smoked-cargo.png",
+      "sha256": "ed9416d084416d164f95407266022cdfafcf89f246ab774b605844d9daa6e70f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/114-moon-0-smoked-stock.png",
+      "sha256": "bbcaa72061f2476013f7ef51b0e957bd225136098e6411bd2557ebf37e47b770"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/115-moon-0-service.png",
+      "sha256": "2afde02579935cd139a5d65b69cb4708e5f8ef7b8921ea813cb298844519ad9c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/116-moon-0-cash.png",
+      "sha256": "15ba578415d7645e550601db88798510c4958cb4419416d436ea7d8689087c1f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/117-moon-1-fish-cargo.png",
+      "sha256": "f18a74feefda48aa6f893d6855ac09924f2b00ab29acd7c7e32a0c4a2b23557c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/118-moon-1-fish-stock.png",
+      "sha256": "eee54b5d9fe6240796d7a582600275671fe98b43c025f01626831d4ea81936ce"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/119-moon-1-extra-fish-cargo.png",
+      "sha256": "8d754afb6394d12559d9fd3f16aee371a76adf2b19ad3251e7f60fac5bd3dae6"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/120-moon-1-extra-fish-stock.png",
+      "sha256": "eeb5f85b8cf93af0fdb83b65c0cc80f233cfb56e6a231532672391c644f3fad9"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/121-moon-1-processing-input.png",
+      "sha256": "c3e145a4076d77e8515f3b95f34e8c7f66fa9e58c9237dd01c502148a33a66ba"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/122-moon-1-smoked-cargo.png",
+      "sha256": "6c865e75df3bf0c8e814beb336e5ad13ea7e3049ac9bd3831da6e59ccf91cfa9"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/123-moon-1-smoked-stock.png",
+      "sha256": "9b7a97755b34d01d941d4e4541bbbe5d3c348293fadce7e89a4eae97763b49bb"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/124-moon-1-service.png",
+      "sha256": "b46d0ac21643eb615153614f11148e16e4e5205b4f2f70b63f9de0873f24e272"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/125-moon-1-cash.png",
+      "sha256": "673a113acec2892a85b30b795ff49077301abce35aad9db864436bb08d13a786"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/126-moon-2-fish-cargo.png",
+      "sha256": "2f8d9bbeb47a4f8c23e2d52fa3e82a04814cae4378faca45842117cc42e15b62"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/127-moon-2-fish-stock.png",
+      "sha256": "7e0e575150fbec3697bfdc42a0c478e0e6c81f38a1774a8589587363979ac504"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/128-moon-2-extra-fish-cargo.png",
+      "sha256": "9fb32cbaeacc40af10215fbcc3f6c49e02647e158181448e01ea5346176cb3d4"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/129-moon-2-extra-fish-stock.png",
+      "sha256": "6f63fb0d06fecf9ace74d54dfef8574f368b601cfd6c3d0c7a011a3c5cf2f174"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/130-moon-2-processing-input.png",
+      "sha256": "5a902f773e475548789d9a55c9c01e07b4f9286d407327333e8fb9efc07db1a4"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/131-moon-2-smoked-cargo.png",
+      "sha256": "b9309e9f31d10a60c4e8850a582156f91a20de6a716b92017866851dfaa08db1"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/132-moon-2-smoked-stock.png",
+      "sha256": "5892a5a73b2bb9992cbf59c7e6a056923a7faf0b8fbb50c27c5ba3a93f6d40a4"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/133-moon-2-service.png",
+      "sha256": "6ad31650a68da332801263797e3fbda3e322a5bdbe34efae50e148b5efa97360"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/134-moon-2-cash.png",
+      "sha256": "5e8c532729fa3a30b91d0a91d9de48fde551d0f12445cee0c7ac8eb7ae274bb0"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/135-moon-3-fish-cargo.png",
+      "sha256": "64a458d9a9ca7f9425209a351087767e0b0080f33534639a2affe7fd263e7bed"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/136-moon-3-fish-stock.png",
+      "sha256": "8c52c3b7d1e4f42cbc59c693f034ba87bc6535e7b1782ff7d484d00ab21693e7"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/137-moon-3-extra-fish-cargo.png",
+      "sha256": "1d8d90189723779c8d23381afbfb6c9e289bb3da28a84f11d9d98246c253e6c4"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/138-moon-3-extra-fish-stock.png",
+      "sha256": "384c52c55030384fd608aad57d3d88b940762e7fb304fefa5ec994d7931f3c35"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/139-moon-3-processing-input.png",
+      "sha256": "f7fcb7c212cc971d1da9fee40fe8b339992bea737fe7aae0159cb947dabc54df"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/140-moon-3-smoked-cargo.png",
+      "sha256": "066c488cdbb60d9610ea6ef632d2286d4527c43df099f0f2d3c8633745f4a787"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/141-moon-3-smoked-stock.png",
+      "sha256": "4a15120efef45a806d498cc033f4e53a4feb9e837c7265aae6122ae788423ce2"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/142-moon-3-service.png",
+      "sha256": "3d1df93ecfeac38d5c37bdbc49cc34bc52d254d586d4030a5881a56c3154ed11"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/143-moon-3-cash.png",
+      "sha256": "a47fe1d01ebfd9c2e07b026a412e3230fcfe0e1b53789ad75ec64e76ef3c200a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/144-moon-4-fish-cargo.png",
+      "sha256": "3cea93a2754d1df523a8f4090b4981150199be2dddaeff960aa9fe48bc0a3290"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/145-moon-4-fish-stock.png",
+      "sha256": "665bb9920442e6bb6a3dbef770e37659d7f31e155f5bf39444a0145de53ba959"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/146-moon-4-extra-fish-cargo.png",
+      "sha256": "b122dfe26203bbb1eae0617c60a1b5bc79840d922bd91e48eac21f56dc0d1a2d"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/147-moon-4-extra-fish-stock.png",
+      "sha256": "d03ddf2ebf037fb789e258666e46d5f009ad2dd76453cafd8dea363885a2b715"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/148-moon-4-processing-input.png",
+      "sha256": "b13cd3c6238decee6a12cbbfb741a3714807a65380ade3d8f087ffe777a2ec5f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-844x390-touch-full1/screenshots/149-moon-4-smoked-cargo.png",
+      "sha256": "c6d69c369bd256f7a0f572a8b521da57a04613668369a415f1359fea10b6f3b0"
+    }
+  ],
+  "replacementScript": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-current8-adaptive.mjs"
+}

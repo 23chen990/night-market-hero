@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only audit; no file modifications, browser execution or build. You are not alone in this repository; preserve all other work."
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-540x960-keyboard-adaptive1/natural.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-540x960-keyboard-adaptive1/screenshots/052-gull-stock-deposited-stack.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/natural-current8-adaptive.mjs"
+  ],
+  "instructions": [
+    "Inspect only the final gull-stock-visible-deposit trace and causally relevant processing, shelf deposit and player capacity branches. Determine if all-fresh-goods-unload is valid acceptance when input shelf8/8 and processor output3/3. Recommend a precise ordinary-input productive route, keeping natural actual settlement and replay requirements. Do not load entire history or unrelated files.",
+    "Return JSON only following outputSchema, with exact source line and trace phase evidence. No free chat."
+  ],
+  "acceptance": [
+    "Separate observed shelf/output/cargo from inference; inspect actual screenshot if used.",
+    "No production changes; give one bounded next route and whether genuine product defect is established."
+  ],
+  "outputSchema": "{schemaVersion:1,role:\"QAAgent\",targetGame:\"海滩渔货铺\",workspace:string,classification:\"harness-route\"|\"product-defect\"|\"unresolved\",evidence:[{path:string,line:number|null,phase:string|null,finding:string}],hypothesis:string,nextRoute:string[],productDefectEstablished:boolean}"
+}

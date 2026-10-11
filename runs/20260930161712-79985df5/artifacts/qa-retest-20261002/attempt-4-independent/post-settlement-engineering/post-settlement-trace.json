@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "post-settlement-engineering-trace",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "fixtureOnly": true,
+  "engineSource": "artifacts/fix/attempt-5/before/src/simulation.ts",
+  "configSource": "artifacts/fix/attempt-5/before/src/generated/game-config.json",
+  "checkoutDurationMs": 1070,
+  "forbiddenOperations": [
+    "No generated workspace or pinned preview mutation",
+    "No browser natural/perceptual claim",
+    "recordMarketGoal was not called for either settlement or replay"
+  ],
+  "pinnedBundle": {
+    "url": "http://127.0.0.1:4173",
+    "hashManifest": "artifacts/qa-retest-20261002/attempt-4-independent/pinned-dist-hashes.json",
+    "indexScript": "/assets/index-2z9jJvw9.js",
+    "indexSha256": "2e07d6ee4276ee159ca64ce868b27c2610b4a0a46009dcc434074adf89118d60",
+    "hashesVerifiedAgainstPreview": true
+  },
+  "markets": {
+    "coral-cove-market": {
+      "selection": {
+        "before": { "marketId": "beach-stall", "stage": "market-selection", "marketSelectionOpen": true },
+        "after": { "marketId": "coral-cove-market", "stage": "operating", "goalProgress": 0, "settled": false }
+      },
+      "eligibleOrder": { "shoppingList": [{ "productId": "smoked-fish", "quantity": 1, "collected": 1, "shelfId": "smoked-shelf" }], "basketValue": 5 },
+      "checkoutOrders": [
+        { "order": 1, "after": { "stage": "operating", "goalProgress": 1, "smokedOrders": 1, "dualShelfOrders": 0, "cashPile": 5 }, "events": ["checkout-packing@750", "checkout-pack@1100", "market-goal@1100"] },
+        { "order": 2, "after": { "stage": "settlement", "goalProgress": 2, "settled": true, "smokedOrders": 2, "dualShelfOrders": 0, "cashPile": 10 }, "events": ["checkout-packing@1820", "checkout-pack@2170", "market-goal@2170"] }
+      ],
+      "continued": { "stage": "operating", "goalProgress": 2, "settled": true, "smokedOrders": 2 },
+      "replayOrderBefore": { "stage": "operating", "queue": 1, "queueTicket": 3, "goalProgress": 2, "settled": true },
+      "replayOrderAfter": { "stage": "settlement", "goalProgress": 2, "settled": true, "smokedOrders": 3, "cashPile": 15, "events": ["checkout-packing@2870", "checkout-pack@3220", "market-goal@3220"] },
+      "replayRefreeze": true
+    },
+    "moon-tide-market": {
+      "selection": {
+        "before": { "marketId": "beach-stall", "stage": "market-selection", "marketSelectionOpen": true },
+        "after": { "marketId": "moon-tide-market", "stage": "operating", "goalProgress": 0, "settled": false }
+      },
+      "eligibleOrder": { "shoppingList": [{ "productId": "fresh-fish", "quantity": 1, "collected": 1, "shelfId": "fish-shelf" }, { "productId": "smoked-fish", "quantity": 1, "collected": 1, "shelfId": "smoked-shelf" }], "distinctShelfCount": 2, "basketValue": 7 },
+      "checkoutOrders": [
+        { "order": 1, "after": { "stage": "operating", "goalProgress": 1, "smokedOrders": 1, "dualShelfOrders": 1, "cashPile": 7 }, "events": ["checkout-packing@750", "checkout-pack@1100", "market-goal@1100"] },
+        { "order": 2, "after": { "stage": "operating", "goalProgress": 2, "smokedOrders": 2, "dualShelfOrders": 2, "cashPile": 14 }, "events": ["checkout-packing@1820", "checkout-pack@2170", "market-goal@2170"] },
+        { "order": 3, "after": { "stage": "settlement", "goalProgress": 3, "settled": true, "smokedOrders": 3, "dualShelfOrders": 3, "cashPile": 21 }, "events": ["checkout-packing@2890", "checkout-pack@3240", "market-goal@3240"] }
+      ],
+      "continued": { "stage": "operating", "goalProgress": 3, "settled": true, "smokedOrders": 3, "dualShelfOrders": 3 },
+      "replayOrderBefore": { "stage": "operating", "queue": 1, "queueTicket": 4, "goalProgress": 3, "settled": true },
+      "replayOrderAfter": { "stage": "settlement", "goalProgress": 3, "settled": true, "smokedOrders": 4, "dualShelfOrders": 4, "cashPile": 28, "events": ["checkout-packing@3940", "checkout-pack@4290", "market-goal@4290"] },
+      "replayRefreeze": true
+    }
+  },
+  "seagull": {
+    "initial": { "elapsedMs": 0, "active": false, "stock": 3 },
+    "alert": { "elapsedMs": 2500, "active": true, "mode": "approaching", "targetShelfId": "fish-shelf", "stock": 3 },
+    "loss": { "elapsedMs": 7700, "active": true, "mode": "raiding", "stock": 2, "lastLossSource": "fish-shelf", "lastLossDestination": "seagull", "event": "seagull-loss@7100 amount=1" },
+    "approach": { "elapsedMs": 7750, "active": false, "mode": "scared", "stock": 2, "event": "seagull-scared@7750" },
+    "refill": { "elapsedMs": 12150, "stock": 3, "active": true, "mode": "approaching", "note": "Renewed attack after departure is observed; no cooldown requirement is asserted." }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "attempt": 2,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "issueIds": [
+    "REF-SPATIAL-QUEUE-HEAD",
+    "REF-CASH-PACKING-PHASE",
+    "RESTART-FEEDBACK-CLEAR",
+    "RESPONSIVE-LANDSCAPE",
+    "RESPONSIVE-540",
+    "REF-OBJECT-FEEDBACK-PARTIAL",
+    "VISUAL-EXPRESSION-REGRESSION",
+    "NATURAL-STARTUP-TIMING"
+  ],
+  "whyFormalFixer": "The validated attempt-2 issues cross simulation lifecycle, queue ordering, DOM presentation reset, responsive layout, renderer hierarchy, and startup input readiness; independent deterministic, natural, and perceptual retesting is required.",
+  "contextIntentionallyOmitted": [
+    "other runs and workspaces",
+    "unbound or unverified recordings and screenshots",
+    "third-party code, assets, names, UI, expression, and tuning values",
+    "multi-item shopping lists, processing/employee systems, and broader multi-stage progression",
+    "unrelated factory history and logs"
+  ],
+  "authorizedFiles": [
+    "src/simulation.ts",
+    "src/simulation.test.ts",
+    "src/main.ts",
+    "src/style.css",
+    "src/responsive.ts",
+    "src/responsive.test.ts",
+    "src/presentation.ts",
+    "src/presentation.test.ts",
+    "index.html",
+    "dist/"
+  ],
+  "acceptance": [
+    "A customer with an earlier queue ticket in to-checkout cannot be overtaken by a later queued customer; a regression test proves queue-head-only service.",
+    "Service transitions queued -> packing, delays cashPile until packing completes, then customer leaves; wallet remains separate and leave/re-enter collection remains visible and tested.",
+    "Restart clears the previous toast/presentation state immediately and simulation restart clears feedback; runtime wiring is testable.",
+    "The world keeps 540x960 coordinates while responsive sizing keeps HUD, game canvas, and settlement controls visible at 360x800, 390x844, 430x932, 540x960, and 844x390.",
+    "The fresh renderer uses original procedural beach layers, station/product/customer/player/route/icon hierarchy, and semantic local feedback for the named lifecycle actions.",
+    "Immediate keyboard input is captured before Phaser scene readiness and merged into the normal scene input path.",
+    "Run targeted tests, typecheck, one production build, and record missing lint script honestly; independent QA acceptance is not claimed."
+  ],
+  "outOfScope": [
+    "multi-item shopping lists",
+    "processing or employee systems",
+    "broader multi-stage progression beyond the existing construction/settlement branch",
+    "third-party expression or copied first-version source/assets"
+  ]
+}

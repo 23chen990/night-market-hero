@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "researchId": "beach-shop-depth-20261002",
+  "targetGame": "海滩渔货铺",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "researchedAt": "2026-10-02T15:29:53.080Z",
+  "candidates": [
+    {
+      "name": "Phaser",
+      "repositoryUrl": "https://github.com/phaserjs/phaser",
+      "immutableRevision": "v3.90.0",
+      "version": "3.90.0",
+      "directLicenseEvidence": "https://github.com/phaserjs/phaser/blob/v3.90.0/LICENSE.md",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "Installed phaser/package.json version 3.90.0 and previous target production build/current default canvas confirm existing web-lite integration."
+        },
+        "wechatMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Existing Phaser browser canvas requires a separately validated platform canvas/filesystem/input/lifecycle adapter. This revision does not claim a publishable platform package."
+        },
+        "douyinMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Existing Phaser browser canvas requires a separately validated platform canvas/filesystem/input/lifecycle adapter. This revision does not claim a publishable platform package."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Existing Phaser browser canvas requires a separately validated platform canvas/filesystem/input/lifecycle adapter. This revision does not claim a publishable platform package."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "Retain Phaser copyright and MIT permission notice in distributions.",
+        "Gameplay source, assets, names, UI, expression and balance remain original; Phaser license does not authorize copying a reference game."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Existing Phaser scene, Graphics renderer and input lifecycle within target run only"
+      ],
+      "rationale": "Continue the already installed engine and factory-owned code. No external shop-game source or assets are selected, no new production dependencies are necessary."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": [
+      "Phaser"
+    ],
+    "rejectedCandidateNames": [],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Extend target run simulation/config/presentation in place, reuse current local Phaser/Vite/TypeScript toolchain, and isolate new revision/config/tests/evidence inside target run. Existing factory schemas are too limited for the expanded model and remain unchanged."
+  }
+}

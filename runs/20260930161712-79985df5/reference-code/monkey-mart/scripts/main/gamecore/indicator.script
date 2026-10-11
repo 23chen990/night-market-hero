@@ -1,0 +1,67 @@
+local PATH_SPRITE   = "#sprite"
+
+local function updateSprite(self, vNum)
+    local frameName = ''
+
+    if vNum < 10 then
+        frameName = 'ads_bar000'..vNum
+    else
+        frameName = 'ads_bar00'..vNum
+    end
+
+    if vNum == 1 then
+        msg.post(PATH_SPRITE, "disable")
+    else
+        msg.post(PATH_SPRITE, "enable")
+    end
+
+    msg.post(PATH_SPRITE, "play_animation", {id = hash(frameName)})
+
+end
+
+local function show()
+    msg.post(PATH_SPRITE, "enable")
+
+end
+
+local function hide()
+    msg.post(PATH_SPRITE, "disable")
+
+end
+
+function init(self)
+    self.linkIndicator = nil
+    self.frameTick = global.timeIndicator / 32
+
+    hide()
+
+end
+
+ 
+
+
+
+function update(self, dt)
+    if self.linkIndicator and self.linkIndicator.isReady and (self.linkIndicator.tick > 0) then
+        local frameNum = math.ceil(self.linkIndicator.tick / self.frameTick)
+        updateSprite(self, frameNum)
+    end
+
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("setVisible") then
+        if message.value then
+            show()
+        else
+            hide()
+        end
+        
+    elseif message_id == hash("setIncicatorLink") then
+        if message.value then
+            self.linkIndicator = gameState.listIndicators[message.value]
+        end
+
+    end
+
+end

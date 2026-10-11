@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "branch-owners-and-source-geometry",
+      "passed": true,
+      "evidence": "Source audit identifies continuation in simulation.ts:1075, stationary marker input at :661, runner at :488, processor at :457, gull at :532 and cashier at :960. All are wired to default advanceGame/renderState. Inference only; marker separation >128 logical pixels at all three market topologies."
+    },
+    {
+      "name": "current-natural-branch-coverage",
+      "passed": false,
+      "evidence": "BLOCKED: exact natural source branches still require independent current build evidence at five declared viewports."
+    }
+  ],
+  "issues": [
+    {
+      "id": "production-ready-feedback-base-position",
+      "severity": "warning",
+      "message": "Inference: production-ready feedback still uses base station.position in non-home markets.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts:435-450; active market position helper at :393. Needs natural marker location check."
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Accepted compact summary of independent read-only QAAgent response; no new runtime executed by that agent. Typographic paths in source response were normalized against actual files; inference is not player evidence.",
+  "testedAt": "2026-10-08T06:42:56.555Z"
+}

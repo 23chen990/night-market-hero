@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260930161712-79985df5",
+  "scope": "agent-token-cap",
+  "previousMaxAgentTokens": 1000000,
+  "maxAgentTokens": 3200000,
+  "authorizedBy": "human",
+  "rationale": "用户明确批准将本次续跑总 agent-token 上限提高到 3,200,000；仅继续确定性预览合同、一次 FULL_BUILD Builder 构建和自然输入 QA，不扩做美术、不做平台打包、不发布、不自动运行 FixerAgent。",
+  "authorizedAt": "2026-09-30T17:56:49Z",
+  "abandonmentDecision": {
+    "path": "artifacts/abandonment-decision.json",
+    "sha256": "7fd39c1dde88273b413c677924cce15226ab6f5b100a47ed9c1e3a9271641110"
+  }
+}

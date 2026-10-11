@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "startup-and-viewport",
+      "passed": true,
+      "evidence": "{\"boot\":{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"首要动作：去近岸渔网采集鲜货\",\"#toast\":\"\",\"#coins\":\"贝壳币 0\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 1\",\"#market-name\":null,\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#processor-status\":null,\"#staff-status\":null,\"#pressure-status\":null,\"#settlement\":null,\"#market-selection\":null,\"#instructions\":\"拖动任意空白处移动；靠近站点会自动采集、补货、收银或投建。桌面端也可使用 WASD / 方向键。\",\"#mobile-controls\":\"↑\\n        ←\\n        ↓\\n        →\",\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":150,\"y\":891.09375,\"w\":54,\"h\":48,\"right\":204,\"bottom\":939.09375,\"disabled\":false},{\"id\":\"\",\"text\":\"←\",\"x\":212,\"y\":891.09375,\"w\":54,\"h\":48,\"right\":266,\"bottom\":939.09375,\"disabled\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":274,\"y\":891.09375,\"w\":54,\"h\":48,\"right\":328,\"bottom\":939.09375,\"disabled\":false},{\"id\":\"\",\"text\":\"→\",\"x\":336,\"y\":891.09375,\"w\":54,\"h\":48,\"right\":390,\"bottom\":939.09375,\"disabled\":false}],\"overflow\":{\"w\":540,\"h\":960},\"viewport\":{\"w\":540,\"h\":960}},\"geometry\":{\"rect\":{\"x\":97,\"y\":216.15625,\"width\":346,\"height\":615},\"matrix\":{\"a\":1,\"b\":0,\"c\":0,\"d\":1,\"e\":0,\"f\":0},\"transformOrigin\":{\"x\":173,\"y\":307.5},\"layout\":{\"width\":346,\"height\":615},\"intrinsic\":{\"width\":540,\"height\":960},\"deviceScaleFactor\":1},\"viewport\":{\"width\":540,\"height\":960}}"
+    },
+    {
+      "name": "immutable-build-and-source-binding",
+      "passed": true,
+      "evidence": "{\"url\":\"http://127.0.0.1:4175/?qa=natural-v5-6-depth-540x960\",\"distDir\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist\",\"hashManifest\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/build-manifest.json\",\"manifestSha256\":\"d099dc5f0608445de23b3d5cad6237bffe29b9367d8cb8c61e8ed458c309648a\",\"allPinnedHashesMatch\":true,\"sourceBindings\":[{\"path\":\"/tmp/shop-natural-v5-lib.mjs\",\"sha256\":\"ee0fd60b38a31c144ca602e1722cd5c13d80e31f81fb348dc210718881fc6fb5\"},{\"path\":\"/tmp/shop-natural-depth6.mjs\",\"sha256\":\"e37866b5a303bf652d55cc496ca6904fc505a19bc7aa87faee6aaab620f5262a\"}]}"
+    },
+    {
+      "name": "core-settlement-processor-feedback",
+      "passed": false,
+      "evidence": "{\"settlement\":{\"name\":\"first-settlement-and-replay-controls\",\"passed\":false,\"evidence\":\"{\\\"firstSettlement\\\":false,\\\"route\\\":\\\"normal input → investment → settlement → continue\\\"}\"}}"
+    },
+    {
+      "name": "funded-worker-actions",
+      "passed": false,
+      "evidence": "{\"runner\":false,\"cashier\":false,\"evidence\":[]}"
+    },
+    {
+      "name": "seagull-disruption-recovery",
+      "passed": false,
+      "evidence": "{\"disruptionGate\":false,\"transientEvents\":[]}"
+    },
+    {
+      "name": "new-market-settlement-and-replay",
+      "passed": false,
+      "evidence": "{\"marketSelection\":false,\"newMarketSettlement\":false,\"replay\":false,\"market\":\"beach-stall\"}"
+    }
+  ],
+  "issues": [
+    {
+      "id": "first-settlement-and-replay-controls",
+      "severity": "error",
+      "message": "first-settlement-and-replay-controls gate failed",
+      "evidence": "{\"firstSettlement\":false,\"route\":\"normal input → investment → settlement → continue\"}"
+    },
+    {
+      "id": "funded-worker-actions",
+      "severity": "error",
+      "message": "funded-worker-actions gate failed",
+      "evidence": "{\"runner\":false,\"cashier\":false,\"evidence\":[]}"
+    },
+    {
+      "id": "seagull-disruption-recovery",
+      "severity": "error",
+      "message": "seagull-disruption-recovery gate failed",
+      "evidence": "{\"disruptionGate\":false,\"transientEvents\":[]}"
+    },
+    {
+      "id": "new-market-settlement-and-replay",
+      "severity": "error",
+      "message": "new-market-settlement-and-replay gate failed",
+      "evidence": "{\"marketSelection\":false,\"newMarketSettlement\":false,\"replay\":false,\"market\":\"beach-stall\"}"
+    },
+    {
+      "id": "depth-run-errors-and-runtime-console",
+      "severity": "error",
+      "message": "depth-run-errors-and-runtime-console gate failed",
+      "evidence": "{\"phaseErrors\":[\"Error: movement did not reach fish-shelf\"],\"consoleErrors\":[],\"pageErrors\":[]}"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/screenshots/depth/540x960/001-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/screenshots/depth/540x960/002-fresh-start.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/screenshots/depth/540x960/003-empty-shelf-shortage.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/screenshots/depth/540x960/004-base-first-cargo.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/screenshots/depth/540x960/005-blocked.png"
+  ],
+  "consoleLog": "{\"consoleErrors\":[],\"pageErrors\":[],\"forbiddenOperations\":[],\"verificationPath\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/depth-verification.json\"}",
+  "testedAt": "2026-10-02T18:42:06.604Z"
+}

@@ -1,0 +1,21 @@
+01 BOOT {"x":270,"y":760,"inv":{"fresh-fish":0,"kelp":0},"currency":0,"stage":"operating","level":1,"elapsed":962,"queue":0,"customers":[],"shelf":{},"ready":6,"contributed":0,"completed":false,"unlocked":["net","fish-shelf","checkout","kelp-build","capacity-upgrade"],"settlementHidden":true,"cashPileKeys":[]}
+   viewport=390x844 | REF-CASH-FLOW state keys matching /cash|pile|wallet/: []
+02 HARVEST+DEPOSIT by keyboard: shelf={"fresh-fish":3} inv={"fresh-fish":0,"kelp":0} lastEvent=deposit pos=(217,380)
+04 REF-SPATIAL-QUEUE (live): queued=2 coords=[{"id":1,"x":253.22,"y":581},{"id":2,"x":252.26,"y":578.53}] identicalCoords=false checkout=(270,640)
+05 STOCKOUT/LEAVING (live): {"id":1,"p":"fresh-fish","ph":"leaving","tgt":"fish-shelf","pat":2592,"x":266.35,"y":577.86} lastEvent=checkout-cash
+06 CHECKOUT by keyboard: currency=4 queue=0 lastEvent=checkout-cash unlocked=["net","fish-shelf","checkout","kelp-build","capacity-upgrade"]
+   REF-CASH-FLOW: currency increases directly on checkout-cash event; no cash-pile submit step in state ([])
+03 BUG-LOCKED-DEMAND (live, extended watch): [{"id":7,"p":"kelp","ph":"to-shelf","tgt":"kelp-shelf","pat":7857,"x":56.94,"y":513.35}] unlocked=["net","fish-shelf","checkout","kelp-build","capacity-upgrade"]
+07 BUG-MOVING-PAYMENT (live): start currency=7 contributed=1 pos=(429,697)
+   held KeyA/KeyD/KeyW/KeyS bursts 6x170ms near build(410,720) -> currency=4 contributed=4 pos=(431,697) pathLen=75px paidWhileMoving=true completed=true stage=settlement
+08 SETTLEMENT: stage=settlement contributed=4 completed=true unlocked=["net","fish-shelf","checkout","kelp-build","capacity-upgrade","kelp-pool","kelp-shelf"] panelHidden=false currency=4
+08b SETTLEMENT BUTTONS: {"vw":390,"vh":844,"continue":{"sel":"#continue-round","present":true,"label":"继续经营","visible":true,"rect":{"x":51,"y":490,"w":139,"h":44},"inViewport":true,"hitTestSelf":true,"topElementAtCenter":"continue-round"},"restart":{"sel":"#restart-round","present":true,"label":"重开本轮","visible":true,"rect":{"x":200,"y":490,"w":139,"h":44},"inViewport":true,"hitTestSelf":true,"topElementAtCenter":"restart-round"}}
+09 CONTINUE via real #continue-round: clicked=true stage=operating currency=4 level=1 unlocked=["net","fish-shelf","checkout","kelp-build","capacity-upgrade","kelp-pool","kelp-shelf"] elapsed=27660
+10 POST-CONTINUE OPERATION: inv={"fresh-fish":1,"kelp":0} elapsed 27660 -> 31339 currency=4
+12 SECOND SETTLEMENT attempt: reached=false stage=operating currency=14 contributed=4 completed=true unlocked=["net","fish-shelf","checkout","kelp-build","capacity-upgrade","kelp-pool","kelp-shelf"]
+13 RESTART via real #restart-round: NOT_OBSERVED (settlement panel never reopened; kelp-build.completed=true persists after continue and it is the only construction station, so stage cannot return to settlement)
+14 VP-HUD: {"vw":390,"vh":844,"game":{"x":10,"y":110,"w":370,"h":658},"boxes":[{"sel":"#hud","text":"海滩渔货铺🌊 涨潮：近岸渔网加速\n        贝壳币 ","x":10,"y":29,"w":370,"h":81,"visible":true},{"sel":"#coins","text":"贝壳币 14","x":294,"y":46,"w":70,"h":22,"visible":true},{"sel":"#level","text":"经营等级 1","x":287,"y":72,"w":76,"h":22,"visible":true},{"sel":"#status","text":"🌊 涨潮：近岸渔网加速","x":27,"y":75,"w":244,"h":21,"visible":true},{"sel":"#toast","text":"","x":184,"y":121,"w":22,"h":26,"visible":true},{"sel":"#instructions","text":"拖动屏幕移动；靠近站点自动采集、补货、收银或投建。桌面端可使","x":10,"y":768,"w":370,"h":47,"visible":true}],"hudOverlapPctOfPlayArea":0.24,"docScroll":{"w":390,"h":844},"verticalOverflow":false}
+15 VP-KEY-RELEASE: movedDuringHold=72.4px driftAfterRelease=0.00px inputZeroed=true
+16 VP-TOUCH-RELEASE: tapDelta=0.0px driftAfterTap=0.00px inputZeroed=true
+17 FLAGS: kelpLocked=true spatialQueueStack=true leaving=true movingPayment=true secondSettlement=false
+18 CONSOLE ERRORS: []

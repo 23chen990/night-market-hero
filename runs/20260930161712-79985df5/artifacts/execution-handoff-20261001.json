@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ProposedGameExecutionHandoff",
+  "targetRunId": "20260930161712-79985df5",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "scope": "HANDOFF_ONLY",
+  "dispatched": false,
+  "routeForFutureRepair": "formal-fixer",
+  "verification": {
+    "path": "artifacts/reference-handoff-verification-20261001.json",
+    "sha256": "df1182990100b914b1106bb17cff2a0b8e17a83ad6f4c6e4f01f9b4a093da513"
+  },
+  "prompt": {
+    "path": "artifacts/agent-execution-prompt-20261001.txt",
+    "sha256": "4aced1dd438460f459f5c3ff4f0a0d620ec32c5f7440bcaaef5bad048fe58a28"
+  },
+  "inputs": [
+    {
+      "path": "artifacts/reference-code-gap-review-20261001.json",
+      "sha256": "a8fdf9351927eca03888dd8d0d799d84781c63c8f438e96a1ce37958ba602f7b"
+    },
+    {
+      "path": "artifacts/github-reference-review-20261001.json",
+      "sha256": "febd1d6daa1bd1ae8559c0195e1bd878eb8eb52f5da88abeee5600d12fc7562a"
+    }
+  ],
+  "implementationDefects": [
+    "BUG-LOCKED-DEMAND",
+    "BUG-PATIENCE-START",
+    "BUG-MOVING-PAYMENT"
+  ],
+  "mechanismGaps": [
+    "REF-SPATIAL-QUEUE",
+    "REF-CASH-FLOW",
+    "REF-OBJECT-FEEDBACK"
+  ],
+  "scopeGaps": [
+    "REF-SHOPPING-LIST",
+    "REF-PROGRESSION",
+    "REF-SYSTEM-DEPTH"
+  ],
+  "currentBlockers": [
+    "FULL_BUILD failed; recorded model 404 must be diagnosed",
+    "No codexThreadId in current state; inspect minimal Builder provenance before formal FIX",
+    "Existing compact qa-report.json fails shared QaReportSchema",
+    "Natural journey BLOCKED",
+    "Perceptual QA BLOCKED"
+  ],
+  "currentActions": {
+    "gameWorkspaceModified": false,
+    "factoryStateModified": false,
+    "builderInvoked": false,
+    "fixerInvoked": false,
+    "browserInvoked": false,
+    "githubMutated": false,
+    "subagentSpawned": false
+  },
+  "instructionOrigins": {
+    "currentText": "target game, workspace and saved reports",
+    "attachment": "historical conversation evidence; no current execution authorization",
+    "githubUpload": "not dispatched"
+  },
+  "createdAt": "2026-09-30T19:26:20.461Z"
+}

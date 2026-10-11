@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "扩建站与市场航标的交互范围",
+      "settlement/market-selection overlay",
+      "runner-hire/cashier-hire and seagull recovery branches"
+    ],
+    "lifecycleStateBranches": [
+      "settlement→continue-local→operating-before-deliberate-market-entry",
+      "operating→employee funding/action",
+      "operating→seagull alert→player recovery"
+    ],
+    "rendererPaths": [
+      "normal keyboard/pointer input + visible DOM + canvas PNG",
+      "simulation station geometry and stage transition"
+    ],
+    "viewports": [
+      {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "continue-marker-overlap@360x800",
+      "objectType": "扩建站→市场航标交互半径与结算覆盖层",
+      "lifecycleStateBranch": "settlement→continue-local→operating-before-deliberate-market-entry",
+      "rendererPath": "normal keyboard/pointer input + visible DOM + canvas PNG",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "继续当地后仍在经营态，玩家主动走到航标才显示市场选择；雇员与海鸥分支可达。",
+      "observed": "exact viewport normal-input branch 尚未独立观察；不能由 540x960 兄弟分支关闭。",
+      "evidence": []
+    },
+    {
+      "id": "continue-marker-overlap@390x844",
+      "objectType": "扩建站→市场航标交互半径与结算覆盖层",
+      "lifecycleStateBranch": "settlement→continue-local→operating-before-deliberate-market-entry",
+      "rendererPath": "normal keyboard/pointer input + visible DOM + canvas PNG",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "继续当地后仍在经营态，玩家主动走到航标才显示市场选择；雇员与海鸥分支可达。",
+      "observed": "exact viewport normal-input branch 尚未独立观察；不能由 540x960 兄弟分支关闭。",
+      "evidence": []
+    },
+    {
+      "id": "continue-marker-overlap@430x932",
+      "objectType": "扩建站→市场航标交互半径与结算覆盖层",
+      "lifecycleStateBranch": "settlement→continue-local→operating-before-deliberate-market-entry",
+      "rendererPath": "normal keyboard/pointer input + visible DOM + canvas PNG",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "继续当地后仍在经营态，玩家主动走到航标才显示市场选择；雇员与海鸥分支可达。",
+      "observed": "exact viewport normal-input branch 尚未独立观察；不能由 540x960 兄弟分支关闭。",
+      "evidence": []
+    },
+    {
+      "id": "continue-marker-overlap@540x960",
+      "objectType": "扩建站→市场航标交互半径与结算覆盖层",
+      "lifecycleStateBranch": "settlement→continue-local→operating-before-deliberate-market-entry",
+      "rendererPath": "normal keyboard/pointer input + visible DOM + canvas PNG",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "继续当地后仍在经营态，玩家主动走到航标才显示市场选择；雇员与海鸥分支可达。",
+      "observed": "自然 540x960 已观察到 continue-local 后立即出现航标选市场；其他尺寸尚未完成 exact normal-input 路线，不能由 540 证据外推。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/depth-verification.json",
+          "sha256": "4290acdaef607f3f789ca0c67b065139f16f63cb6c12ed8197059a0103a2372f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/qa-report.json",
+          "sha256": "6de77a729d54f81d5b81941b95fef144652b297451728d45b2354e3483353f73",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/017-first-settlement.png",
+          "sha256": "ca5f072700f9a07eb48fc0976eaf6cd5db36298003ebc6cce69016cae42bd42d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/021-continue-local.png",
+          "sha256": "1611fb8f4bad2407a5f4694372431c1cdcf3fa1e3e944363b58b3e39decd6b32",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "6d98f2f760cd4238bb847e4513b887c8edc88034eb50ef6ac6f3d8e3d742109d",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts",
+          "sha256": "a62b5af44c25af391d8be60054bce395382807c6fca6119d14cd4f35487efcd8",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "continue-marker-overlap@844x390",
+      "objectType": "扩建站→市场航标交互半径与结算覆盖层",
+      "lifecycleStateBranch": "settlement→continue-local→operating-before-deliberate-market-entry",
+      "rendererPath": "normal keyboard/pointer input + visible DOM + canvas PNG",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "继续当地后仍在经营态，玩家主动走到航标才显示市场选择；雇员与海鸥分支可达。",
+      "observed": "exact viewport normal-input branch 尚未独立观察；不能由 540x960 兄弟分支关闭。",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "540x960 自然输入中，扩建结算与继续后航标选择连续出现，雇员和海鸥路径被覆盖层挡住。",
+    "attempt5 其余基础生产、加工、首次/新市场结算与重开证据独立通过。",
+    "需要修正站位/交互范围或明确离开结算起点的门槛，并复测所有目标尺寸。"
+  ],
+  "remainingGaps": [
+    "四个非 540x960 尺寸的 exact natural route 尚未观察。",
+    "修复后的独立像素复核和自然玩家感知门尚未完成。"
+  ],
+  "createdAt": "2026-10-02T18:11:00.000Z"
+}

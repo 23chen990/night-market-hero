@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "route": "formal-fixer",
+  "attempt": 4,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only target workspace src/*test.ts and causal simulation/data modules as needed",
+    "Read-only attempt4 red-tests.log and revision sidecar"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/red-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json"
+  ],
+  "instructions": [
+    "Read-only audit; do not write any file or run a build/browser. FixerAgent is sole workspace writer and is actively implementing. You are not alone; do not revert edits.",
+    "Compare the new red-test assertions to six required revision systems. Confirm red failures are actual behavior assertions rather than missing exports/tooling alone; find gaps in conservation/locked demand, partial checkout, processor gating, staff movement/no double payment, seagull recovery, true market topology and v1 migration.",
+    "Provide specific missing acceptance coverage within declared contract, not unrelated design expansion. Current implementation may be incomplete; evaluate acceptance/test quality and avoid duplicate source exploration.",
+    "Return only QaReportSchema-validated JSON from src/schemas/index.ts, at most6checks. Set checks as test-coverage status, not runtime acceptance. Cite exact file and assertion/line. No free-chat and no natural/pixel success claim."
+  ],
+  "acceptance": [
+    "Concrete coverage gaps mapped to required behavior and causal test path",
+    "Real red assertion check documented",
+    "No source/evidence mutation or unrelated scope"
+  ],
+  "output": "RESPONSE_JSON_ONLY"
+}

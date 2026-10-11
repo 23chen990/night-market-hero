@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "route": "formal-fixer",
+  "attempt": 4,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only screenshots and landing-input report bound to attempt4 target build"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/landing-input.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/landing-input-bindings.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/layout-input-qa-report.json"
+  ],
+  "instructions": [
+    "Read-only independent perceptual review of these5 fresh normal-input captures. No file writing or browser/mutation. Use view_image to inspect actual pixels in all5 startup captures plus landscape afterArrowUp.",
+    "Check order HUD occlusion/controls clipping, font/icon hierarchy, small field and orientation, critical rules vs helper-only text. Do not accept geometric counters as pixel proof.",
+    "Return QaReportSchema-validated JSON <=6checks. Cite exact natural screenshot path per check. Output is independent pixel judgment only; it cannot approve unobserved processor/staff/gull/market branches. Preserve original procedural style; no unrelated redesign."
+  ],
+  "acceptance": [
+    "Actual pixels inspected on each target viewport",
+    "Independent confirmation or rejection of specific reported UI/input presentation failures",
+    "No write or third-party/other-run reading"
+  ],
+  "output": "RESPONSE_JSON_ONLY"
+}

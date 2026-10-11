@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "default core-loop path",
+      "customer demand and shelf wait",
+      "checkout queue and cash flow",
+      "construction and progression",
+      "local object feedback",
+      "first-version natural journey baseline"
+    ],
+    "lifecycleStateBranches": [
+      "fresh startup",
+      "producer ready -> player pickup -> shelf deposit",
+      "customer to-shelf -> waiting-shelf",
+      "waiting-shelf -> to-checkout -> queued",
+      "queued -> service -> cash collection",
+      "construction paying -> built -> continuation/restart",
+      "refresh/replay"
+    ],
+    "rendererPaths": [
+      "current Phaser SpatialShopScene Canvas",
+      "current DOM HUD and settlement controls",
+      "current simulation GameState",
+      "verified first-version Phaser/DOM market renderer",
+      "verified Monkey Mart code-mechanic reference"
+    ],
+    "viewports": [
+      { "label": "small-phone", "width": 360, "height": 800 },
+      { "label": "baseline-phone", "width": 390, "height": 844 },
+      { "label": "large-phone", "width": 430, "height": 932 },
+      { "label": "reference-540x960", "width": 540, "height": 960 },
+      { "label": "landscape-phone", "width": 844, "height": 390 }
+    ]
+  },
+  "cells": [
+    {
+      "id": "current-startup-540",
+      "objectType": "default core-loop path",
+      "lifecycleStateBranch": "fresh startup",
+      "rendererPath": "current Phaser SpatialShopScene Canvas",
+      "viewport": { "label": "reference-540x960", "width": 540, "height": 960 },
+      "status": "REPRODUCED",
+      "expected": "新局立即呈现可理解的海滩店铺、下一动作和可操作的首个经营循环。",
+      "observed": "只显示抽象圆形站点、文字站牌、圆形顾客和简化 HUD；默认路径没有首版的场景层级和明确下一动作。",
+      "evidence": [
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/natural-input-20261001/540x960/01-boot.png", "sha256": "24ef96133d141f5f6ab40ba487b60d798c04261f7a0c04ad8f56fb0aa9f35d3d", "kind": "runtime-capture", "provenance": "verified-run-artifact" },
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts", "sha256": "4bb8c4f8bacf326843baf313b98719c15c6445947a31ba652ecd3bb12cf1a351", "kind": "factory-source", "provenance": "repository-source" }
+      ]
+    },
+    {
+      "id": "current-queue-540",
+      "objectType": "checkout queue and cash flow",
+      "lifecycleStateBranch": "waiting-shelf -> to-checkout -> queued",
+      "rendererPath": "current simulation GameState",
+      "viewport": { "label": "reference-540x960", "width": 540, "height": 960 },
+      "status": "REPRODUCED",
+      "expected": "顾客按独立队列站位前移，队首服务；顾客取货、排队和收银压力可被空间读出。",
+      "observed": "QA 已复现旧版本所有顾客朝同一 checkout.position 聚集；当前 simulation 虽加入 queuePosition 字段，但无独立回归证据，main.ts 也没有呈现队列站位或携货状态。",
+      "evidence": [
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-report-formal-20261001.json", "sha256": "392a86b05be2242ca9dda0bd27d14519f45b369fb4f2bf322692ff050d0020aa", "kind": "qa-artifact", "provenance": "verified-run-artifact" },
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/natural-input-20261001/540x960/04-ref-spatial-queue.png", "sha256": "51cb235f0b1982af052b9544256e8cf8366de228a6a25d52e7ce982720cfba59", "kind": "runtime-capture", "provenance": "verified-run-artifact" },
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/reference-evidence/verified/reference-code-package-6255b13cbfcf.json", "sha256": "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1", "kind": "reference", "provenance": "verified-reference" }
+      ]
+    },
+    {
+      "id": "current-cash-540",
+      "objectType": "checkout queue and cash flow",
+      "lifecycleStateBranch": "queued -> service -> cash collection",
+      "rendererPath": "current simulation GameState",
+      "viewport": { "label": "reference-540x960", "width": 540, "height": 960 },
+      "status": "REPRODUCED",
+      "expected": "服务完成后货款先进入柜台现金堆，玩家再次靠近收取后钱包增加。",
+      "observed": "QA 复现服务完成直接 currency += basketValue；当前文件虽有 cashPile 字段和收取逻辑，但没有当前 runtime/visual 回归，main.ts 未绘制现金堆和收取反馈。",
+      "evidence": [
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/reference-code-gap-review-20261001.json", "sha256": "a8fdf9351927eca03888dd8d0d799d84781c63c8f438e96a1ce37958ba602f7b", "kind": "qa-artifact", "provenance": "verified-run-artifact" },
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/natural-input-20261001/540x960/06-checkout-cash.png", "sha256": "4906da7e7ecd223b54693cafe43915d0aca5e475ef5dcc49359595f32dd46291", "kind": "runtime-capture", "provenance": "verified-run-artifact" }
+      ]
+    },
+    {
+      "id": "current-settlement-540",
+      "objectType": "construction and progression",
+      "lifecycleStateBranch": "construction paying -> built -> continuation/restart",
+      "rendererPath": "current DOM HUD and settlement controls",
+      "viewport": { "label": "reference-540x960", "width": 540, "height": 960 },
+      "status": "BLOCKED",
+      "expected": "首次扩建后自然进入阶段转换，继续和重开都可由普通输入触发并有可见反馈。",
+      "observed": "自然旅程没有真实到达结算；当前 main.ts 没有 settlement DOM wiring，不能证明 continuation/restart。",
+      "evidence": [
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/natural-input-journey-540x960-20261001.json", "sha256": "867447c06e59e0c6dea988fdd926f53507328ef7688965ff6e998650f6531ffb", "kind": "runtime-capture", "provenance": "verified-run-artifact" },
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/lifecycle-boundary-evidence-20261001.json", "sha256": "b58df9923e3c37a1d934f01acd2b2ee31acb3de7aec110bbdce34d08e3e3c451", "kind": "qa-artifact", "provenance": "verified-run-artifact" }
+      ]
+    },
+    {
+      "id": "current-feedback-390",
+      "objectType": "local object feedback",
+      "lifecycleStateBranch": "producer ready -> player pickup -> shelf deposit",
+      "rendererPath": "current Phaser SpatialShopScene Canvas",
+      "viewport": { "label": "baseline-phone", "width": 390, "height": 844 },
+      "status": "BLOCKED",
+      "expected": "采集、补货、顾客取货、收银、收钱、投资分别有局部、可归因且不阻塞移动的反馈。",
+      "observed": "当前 perceptual artifact 只观察到全局 toast/玩家缩放，触摸和减少动画未观察；无法以 390x844 证实局部反馈。",
+      "evidence": [
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/perceptual-qa-evidence-20261001.json", "sha256": "05093674349e7309052ffc7cfb1db811ab204423dbe1249925b9e886c697ae0b", "kind": "qa-artifact", "provenance": "verified-run-artifact" }
+      ]
+    },
+    {
+      "id": "first-version-baseline-390",
+      "objectType": "first-version natural journey baseline",
+      "lifecycleStateBranch": "refresh/replay",
+      "rendererPath": "verified first-version Phaser/DOM market renderer",
+      "viewport": { "label": "baseline-phone", "width": 390, "height": 844 },
+      "status": "PASS",
+      "expected": "首版自然流程可完成启动、采集、补货、顾客到货架/收银、结算和重玩。",
+      "observed": "首版 QA 与感知报告均记录自然输入完成核心循环、结算和 replay，且无运行时错误。",
+      "evidence": [
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/artifacts/qa-report.json", "sha256": "e891902831f5b8c3cb436f41fc96bd09003a4071616ad4b5abf51d6162883926", "kind": "qa-artifact", "provenance": "verified-run-artifact" },
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/artifacts/perceptual-qa-report.json", "sha256": "3990d55adb98bd225aa6db7ccfa85f028fee96b7bb0299d3aad212a559ebc3dc", "kind": "qa-artifact", "provenance": "verified-run-artifact" }
+      ]
+    },
+    {
+      "id": "current-locked-demand-390",
+      "objectType": "customer demand and shelf wait",
+      "lifecycleStateBranch": "fresh startup",
+      "rendererPath": "current simulation GameState",
+      "viewport": { "label": "baseline-phone", "width": 390, "height": 844 },
+      "status": "REPRODUCED",
+      "expected": "锁定潮池/海带篮时，顾客需求只能从已解锁商品抽取。",
+      "observed": "QA 报告与自然截图复现锁定海带仍会生成需求，形成玩家无法服务的分支。",
+      "evidence": [
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-report-formal-20261001.json", "sha256": "392a86b05be2242ca9dda0bd27d14519f45b369fb4f2bf322692ff050d0020aa", "kind": "qa-artifact", "provenance": "verified-run-artifact" },
+        { "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/natural-input-20261001/390x844/03-bug-locked-demand.png", "sha256": "0d2082ba62d567bdeaa6f5f85338a02f64b685d208b854ecfde19da442992271", "kind": "runtime-capture", "provenance": "verified-run-artifact" }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "当前结果的主要问题是范围和架构分叉：当前 run 是最小空间商店实现，不是首版商店的连续改造，也未实现参考机制的完整可见链路。",
+    "已有 QA 错误会直接破坏玩家归因：锁定需求、提前消耗耐心和移动中扣款。",
+    "当前 simulation 的局部修补不能替代 main.ts 接线、自然输入、结算/重玩和感知回归。",
+    "首版有独立的自然流程和感知证据，当前 run 的默认旅程尚未达到该质量门槛。"
+  ],
+  "remainingGaps": [
+    "当前 workspace 与 QA artifact 的 source hashes 已发生变化，需重新生成基线并确认哪些局部修补属于用户保留改动。",
+    "Money Market/Monkey Mart 参考证据是机制级代码，不提供像素级表达、节奏和移动端可读性结论。",
+    "当前触摸、横屏、减少动画、阶段结算和 replay 仍缺自然输入/感知证据。",
+    "若要完整恢复首版多阶段深度，需由产品/蓝图明确新增内容范围，不能由 Fixer 无证据地扩张。"
+  ],
+  "createdAt": "2026-10-01T15:05:00.000Z"
+}

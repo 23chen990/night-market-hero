@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "settlement controls",
+      "player avatar"
+    ],
+    "lifecycleStateBranches": [
+      "first expansion settlement",
+      "operating after expansion; entering runner-hire from processor output"
+    ],
+    "rendererPaths": [
+      "DOM buttons styled by market-options",
+      "Phaser player graphics under station Text layers"
+    ],
+    "viewports": [
+      {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "settlement-360x800",
+      "objectType": "settlement controls",
+      "lifecycleStateBranch": "first expansion settlement",
+      "rendererPath": "DOM buttons styled by market-options",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Exactly one continue-local command remains visible.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    },
+    {
+      "id": "settlement-390x844",
+      "objectType": "settlement controls",
+      "lifecycleStateBranch": "first expansion settlement",
+      "rendererPath": "DOM buttons styled by market-options",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exactly one continue-local command remains visible.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    },
+    {
+      "id": "settlement-430x932",
+      "objectType": "settlement controls",
+      "lifecycleStateBranch": "first expansion settlement",
+      "rendererPath": "DOM buttons styled by market-options",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Exactly one continue-local command remains visible.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    },
+    {
+      "id": "settlement-540x960",
+      "objectType": "settlement controls",
+      "lifecycleStateBranch": "first expansion settlement",
+      "rendererPath": "DOM buttons styled by market-options",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Exactly one continue-local command remains visible.",
+      "observed": "Two identical continue-local buttons visible in natural first-settlement PNG.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/natural.json",
+          "sha256": "7ec2057a40b1dc1d9d3b817638b9308bbbf860caccf9ee13115c6c6ab8e279c0",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/011-first-settlement.png",
+          "sha256": "369cd9bdfa2076d428da1e3704215938ce7767ce8b60931e77416b9716438737",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/019-blocked.png",
+          "sha256": "59c4b0a467a934f0870bf401278adb279d53fbf801d0fd70f2e26153954017c4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "settlement-844x390",
+      "objectType": "settlement controls",
+      "lifecycleStateBranch": "first expansion settlement",
+      "rendererPath": "DOM buttons styled by market-options",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exactly one continue-local command remains visible.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    },
+    {
+      "id": "avatar-360x800",
+      "objectType": "player avatar",
+      "lifecycleStateBranch": "operating after expansion; entering runner-hire from processor output",
+      "rendererPath": "Phaser player graphics under station Text layers",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Player head/body remain visible at funding and label crossings.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    },
+    {
+      "id": "avatar-390x844",
+      "objectType": "player avatar",
+      "lifecycleStateBranch": "operating after expansion; entering runner-hire from processor output",
+      "rendererPath": "Phaser player graphics under station Text layers",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Player head/body remain visible at funding and label crossings.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    },
+    {
+      "id": "avatar-430x932",
+      "objectType": "player avatar",
+      "lifecycleStateBranch": "operating after expansion; entering runner-hire from processor output",
+      "rendererPath": "Phaser player graphics under station Text layers",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Player head/body remain visible at funding and label crossings.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    },
+    {
+      "id": "avatar-540x960",
+      "objectType": "player avatar",
+      "lifecycleStateBranch": "operating after expansion; entering runner-hire from processor output",
+      "rendererPath": "Phaser player graphics under station Text layers",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Player head/body remain visible at funding and label crossings.",
+      "observed": "Neither player body nor head observed at upgrade/employee label crossing; exact screenshot retained.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/natural.json",
+          "sha256": "7ec2057a40b1dc1d9d3b817638b9308bbbf860caccf9ee13115c6c6ab8e279c0",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/011-first-settlement.png",
+          "sha256": "369cd9bdfa2076d428da1e3704215938ce7767ce8b60931e77416b9716438737",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/019-blocked.png",
+          "sha256": "59c4b0a467a934f0870bf401278adb279d53fbf801d0fd70f2e26153954017c4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "avatar-844x390",
+      "objectType": "player avatar",
+      "lifecycleStateBranch": "operating after expansion; entering runner-hire from processor output",
+      "rendererPath": "Phaser player graphics under station Text layers",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Player head/body remain visible at funding and label crossings.",
+      "observed": "Natural exact-cell evidence pending.",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "First settlement and runner funding branches are on the default startup/core-loop route.",
+    "Attempt-6 continue-local topology passes at 540x960 and must not regress."
+  ],
+  "remainingGaps": [
+    "All exact-branch viewports require current natural/perceptual verification.",
+    "Employee actions, gull loss/recovery, next market settlement and replay need completed normal-input evidence."
+  ],
+  "createdAt": "2026-10-08T08:51:34.913Z"
+}

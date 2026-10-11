@@ -1,0 +1,477 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ReferenceCodeGapReview",
+  "targetRunId": "20260930161712-79985df5",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "scope": "CODE_ONLY",
+  "route": "formal-fixer",
+  "phase": "QA_DIAGNOSIS_ONLY",
+  "fixerInvoked": false,
+  "builderInvoked": false,
+  "gameWorkspaceModified": false,
+  "runtimeAndPerceptualStatus": "NOT_RUN_USER_SCOPE",
+  "referencePackage": {
+    "path": "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+    "sha256": "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+  },
+  "findings": [
+    {
+      "id": "REF-CASH-FLOW",
+      "priority": "P1",
+      "classification": "reference-mechanic-gap",
+      "title": "打包、现金堆和收钱被合并",
+      "referenceFact": "队首抵达后打包，货款延迟进入现金堆，玩家靠近另行收取；现金堆有独立数量和视图。",
+      "currentFact": "服务时间结束后直接增加钱包并令顾客离开；没有现金堆、打包阶段。",
+      "impactInference": "推断：卖出、入账、收钱和投资的反馈层次被压平。",
+      "acceptance": "分别证明打包、柜台存钱和玩家收钱，不以钱包增大代替整个链条。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 1525,
+          "endLine": 1583
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4091,
+          "endLine": 4154
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 26,
+          "endLine": 36
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 180,
+          "endLine": 185
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "REF-SPATIAL-QUEUE",
+      "priority": "P1",
+      "classification": "reference-mechanic-gap",
+      "title": "队列有计数但没有站位和前移",
+      "referenceFact": "队首路径完成后才服务；出队会重新分配剩余顾客站位并移动。",
+      "currentFact": "所有顾客朝同一 checkout.position 移动，进入半径就 queued；queued 不更新位置，仅维护计数。",
+      "impactInference": "推断：有序排队及吞吐瓶颈缺少空间表达，顾客可能聚在收银范围边缘。",
+      "acceptance": "每个顾客有独立站位，队首到位才能服务，出队后其他人依次前移。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4132,
+          "endLine": 4173
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 116,
+          "endLine": 136
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 180,
+          "endLine": 184
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "REF-OBJECT-FEEDBACK",
+      "priority": "P1",
+      "classification": "reference-mechanic-gap",
+      "title": "动作没有绑定各自的货物和货币反馈",
+      "referenceFact": "采集有站点到角色的物件动画；收钱和建设使用方向相反的货币动画端点。",
+      "currentFact": "库存即时改数；货架用进度条，背货用矩形堆；任意事件均触发同一玩家缩放和共用 toast，顾客没有携货图形。",
+      "impactInference": "推断：缺少货物从哪里来、钱花到哪里的局部因果反馈；不是只换素材就能补齐。",
+      "acceptance": "按采集、补货、顾客取货、打包、收钱、投资分别绑定来源、目的地和时刻，之后再做自然输入及感知验收。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3717,
+          "endLine": 3727
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4349,
+          "endLine": 4408
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3433,
+          "endLine": 3444
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/main.ts",
+          "sha256": "3f3df507c2feb172b8ea617ae0dd6a67d0718ff048eff7b9bd99cb281b5b44d1",
+          "startLine": 88,
+          "endLine": 97
+        },
+        {
+          "path": "workspace/game/src/main.ts",
+          "sha256": "3f3df507c2feb172b8ea617ae0dd6a67d0718ff048eff7b9bd99cb281b5b44d1",
+          "startLine": 109,
+          "endLine": 142
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 173,
+          "endLine": 188
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "REF-SHOPPING-LIST",
+      "priority": "P2",
+      "classification": "scope-gap",
+      "title": "购物被压缩为一个商品一件",
+      "referenceFact": "购物清单有多项、每项数量、已取数量；全部完成才付款；大购物量才触发取篮，并非所有顾客都取篮。",
+      "currentFact": "顾客仅有单个 productId，取一件即去收银，无购物清单、数量或条件取篮。",
+      "impactInference": "推断：顾客停留和补货需求较简单；这是最小预览与完整参考的范围差距。",
+      "acceptance": "如果扩大经营深度，先锁定购物项数、数量和条件取篮分支，不擅自扩展当前构建。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+          "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+          "startLine": 810,
+          "endLine": 875
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+          "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+          "startLine": 943,
+          "endLine": 983
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 26,
+          "endLine": 27
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 86,
+          "endLine": 113
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "REF-PROGRESSION",
+      "priority": "P1",
+      "classification": "scope-gap",
+      "title": "首次扩建后没有下一建设目标",
+      "referenceFact": "主线建设逐个开放，支线和存档恢复区别处理，后续开放下一店铺标记。",
+      "currentFact": "配置仅两商品、一个建设点、一个容量升级点；continueRound 只恢复 operating；速度和收银升级只有代码分支，没有配置入口。",
+      "impactInference": "推断：循环可重复不等于成长持续发生；上游蓝图已压缩内容，不能全部归因于 Builder 或美术。",
+      "acceptance": "保留批准的结算规则；若扩展范围，声明下一可到达目标及速度和收银升级入口。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3320,
+          "endLine": 3367
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 8561,
+          "endLine": 8581
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/generated/game-config.json",
+          "sha256": "f1f2669c3dfcf5297727d0ba4832fe0e9e77ab18809f0305c86c2f12a892700a",
+          "startLine": 44,
+          "endLine": 159
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 159,
+          "endLine": 163
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 186,
+          "endLine": 195
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 219,
+          "endLine": 220
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "REF-SYSTEM-DEPTH",
+      "priority": "P2",
+      "classification": "scope-gap",
+      "title": "没有加工依赖及雇员分工",
+      "referenceFact": "加工受一个或多个原料货架限制；收银员和搬运员有独立行为分支。",
+      "currentFact": "生产仅受解锁和容量约束，不消耗原料；状态中没有员工或自动服务分工。",
+      "impactInference": "推断：缺少后续自动化与瓶颈转移；这些超出当前首个最小切片，不作为本轮自动扩展项。",
+      "acceptance": "扩大范围前锁定最小加工依赖或雇员职责；仅参考机制，不移植原版代码。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 8345,
+          "endLine": 8373
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4132,
+          "endLine": 4141
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+          "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+          "startLine": 1037,
+          "endLine": 1085
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 7,
+          "endLine": 36
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 97,
+          "endLine": 105
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "BUG-LOCKED-DEMAND",
+      "priority": "P1",
+      "classification": "implementation-defect",
+      "title": "顾客可要求未解锁的海带",
+      "referenceFact": "已检查的原版首店只把 isActive 的商品加入购物候选；此结论限首店分支。",
+      "currentFact": "chooseDemand 使用所有权重，spawnCustomer 仅查货架存在、不查解锁；海带货架锁定但需求已配置。",
+      "impactInference": "推断：扩建前可能出现玩家无法满足的需求，随后被记为缺货离店。",
+      "acceptance": "新局锁定商品不进入需求，原子解锁后才能出现；真实开放货架缺货仍须保留。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/DataMart1.lua",
+          "sha256": "86c8a4e6f69a419571f9216e6874bceecf52fa36bf283a936d99ccf9742f1d3a",
+          "startLine": 1009,
+          "endLine": 1045
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 79,
+          "endLine": 94
+        },
+        {
+          "path": "workspace/game/src/generated/game-config.json",
+          "sha256": "f1f2669c3dfcf5297727d0ba4832fe0e9e77ab18809f0305c86c2f12a892700a",
+          "startLine": 100,
+          "endLine": 125
+        },
+        {
+          "path": "workspace/game/src/generated/game-config.json",
+          "sha256": "f1f2669c3dfcf5297727d0ba4832fe0e9e77ab18809f0305c86c2f12a892700a",
+          "startLine": 160,
+          "endLine": 182
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "BUG-PATIENCE-START",
+      "priority": "P2",
+      "classification": "implementation-defect",
+      "title": "八秒缺货耐心从入店开始扣",
+      "referenceFact": "普通顾客等待没有本项目八秒规则；该规则是用户批准的原创改编。",
+      "currentFact": "入店初始化计时，每帧所有非 left 顾客都扣减，进入 waiting-shelf 不重置；走向货架的时间消耗缺货耐心。",
+      "impactInference": "推断：在空货架前实际等待短于八秒，且随路程变化。",
+      "acceptance": "进入真实缺货等待再计时；走路不扣，时间边界正确，补货可以恢复。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+          "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+          "startLine": 943,
+          "endLine": 983
+        },
+        {
+          "path": "input/seed.yaml",
+          "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+          "startLine": 45,
+          "endLine": 49
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 86,
+          "endLine": 92
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 116,
+          "endLine": 132
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "BUG-MOVING-PAYMENT",
+      "priority": "P1",
+      "classification": "implementation-defect",
+      "title": "仍在移动也可建设扣款",
+      "referenceFact": "建设付款调用位于玩家速度为零的分支内。",
+      "currentFact": "移动后无条件 updateInteraction；付款候选只查距离和余额，移动时在范围内也累加付款进度。",
+      "impactInference": "推断：路过建设区可能意外花钱，削弱投资时机的控制。",
+      "acceptance": "移动穿过不扣钱；停步分次投资，离开中断，钱包和贡献守恒。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3820,
+          "endLine": 3835
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 144,
+          "endLine": 156
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 166,
+          "endLine": 172
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 186,
+          "endLine": 191
+        },
+        {
+          "path": "workspace/game/src/simulation.ts",
+          "sha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+          "startLine": 199,
+          "endLine": 207
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "id": "QA-TEST-COVERAGE",
+      "priority": "P2",
+      "classification": "verification-gap",
+      "title": "现有测试确认简化规则而非参考机制",
+      "referenceFact": "原版收银、空间队列和静止付款有各自条件。",
+      "currentFact": "测试注入库存、传送和加币，收银期望直接到账；耐心测试仅检查十二秒后离开；标题称保留继续经营的测试没有调用 continueRound。",
+      "impactInference": "推断：测试通过不能排除本次机制差距；没有据此否认此前测试运行。",
+      "acceptance": "按具体对象与状态分支增加断言；本次代码审查不替代未来自然输入和感知 QA。",
+      "referenceEvidence": [
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4091,
+          "endLine": 4154
+        },
+        {
+          "path": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3820,
+          "endLine": 3835
+        }
+      ],
+      "currentEvidence": [
+        {
+          "path": "workspace/game/src/simulation.test.ts",
+          "sha256": "799613ccb22376d25b9ed732499c79cd2d223c5905b4074d2a640a845c0a60a8",
+          "startLine": 19,
+          "endLine": 52
+        },
+        {
+          "path": "workspace/game/src/simulation.test.ts",
+          "sha256": "799613ccb22376d25b9ed732499c79cd2d223c5905b4074d2a640a845c0a60a8",
+          "startLine": 55,
+          "endLine": 84
+        }
+      ],
+      "runtimeVerified": false
+    }
+  ],
+  "approvedDeviations": [
+    {
+      "name": "直接经营开局，不复制原版启动建设资金",
+      "evidence": {
+        "path": "input/seed.yaml",
+        "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+        "startLine": 33,
+        "endLine": 36
+      }
+    },
+    {
+      "name": "缺货八秒离店是原创规则，不是原版事实",
+      "evidence": {
+        "path": "input/seed.yaml",
+        "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+        "startLine": 45,
+        "endLine": 49
+      }
+    },
+    {
+      "name": "首次扩建后结算并继续或重开是批准改编",
+      "evidence": {
+        "path": "input/seed.yaml",
+        "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+        "startLine": 30,
+        "endLine": 36
+      }
+    }
+  ],
+  "limitations": [
+    "用户要求仅参考源码；本次没有浏览器、截图和自然输入验证。",
+    "范围差距不自动等于最小预览实现 bug；扩大功能范围须另行锁定。",
+    "源码包含反馈调用不等于已经核验画面；不报告视觉相似度百分比。",
+    "原版条件取篮此前摘要有简化；本次以直接读取的 Player.initWishFood 为准。",
+    "不修改已有失败状态，不认定正式 FULL_BUILD、FIX 或 QA 通过。"
+  ],
+  "createdAt": "2026-09-30T18:28:57.375Z"
+}

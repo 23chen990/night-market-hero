@@ -1,0 +1,889 @@
+local H_INIT_LIST = hash("init_list")
+local H_UPDATE_GEMS = hash("update_offer_daily")
+local H_POPUP = hash("popup")
+local H_DEACTIVATE = hash("deactivate")
+local H_BOUGHT_ITEM = hash("bought_item")
+local H_UNLOCK = hash("unlock_input")
+
+local ButtonComponent4 = require("main.gui.button_component4")
+local ButtonComponent5 = require("main.gui.button_component5")
+local ButtonComponent6 = require("main.gui.button_component6")
+
+local node_popup_body = nil
+local node_popup_fade = nil
+
+local owner_url = nil
+local is_lock_input = true
+
+local function show_popup()
+	is_lock_input = false
+	gui.set_enabled(node_popup_fade, true)
+	gui.set_enabled(node_popup_body, true)
+
+	local window_width, window_height = camera.get_window_size()
+	gui.set_size(node_popup_fade,vmath.vector3(window_width*2,window_height*2,0))
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0.5),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_position(node_popup_body, vmath.vector3(global.half_width,global.half_height,0))
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 0))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 1),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(0.8, 0.8, 0.8))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(1, 1, 1),
+	gui.EASING_OUTBACK,
+	0.25)
+
+end
+
+local function hide_popup()
+	is_lock_input = true
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0.5))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(0.6, 0.6, 0.6),
+	gui.EASING_INSINE,
+	0.25,
+	0,
+	function()
+		if (owner_url) then
+			msg.post(owner_url, "unlock_input")
+		end
+	end)
+
+end
+
+local function cancel_handler()
+	hide_popup()
+	gameState:closePopup()
+	global.isPopupOpened = false
+	global.isPopupIapOpened = false
+
+end
+
+local function on_close_button(self, params)
+	cancel_handler()
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function update_btns(self)
+	for _,component in pairs(self.list_btn) do
+		component:update_btn()
+	end
+
+end
+
+local function on_button_click(self, button, button_data)
+	local value = button_data.value
+
+	if iap then
+		iap_manager.buy(value)
+	else
+		lume.trace('want to buy', value)
+
+		timer.delay(0.2, false, function()
+			apimanager.iap_purchased(value)
+		end)
+	end
+
+end
+
+local function on_button_click_gem(self, button, button_data)
+	local value = button_data.value
+	local price = button_data.price_string
+	local gems_value = coinmanager.get_balance('gems')
+
+	
+	
+	
+
+	if (gems_value >= price) then
+		coinmanager.minus_balance(price, 'gems')
+
+		gameState:addRewardedCoins(button_data.amount)
+
+		msg.post(url_screen_gui_game, "update_gems")
+
+		self.button_gem1:set_enabled(false)
+		self.button_gem2:set_enabled(false)
+		self.button_gem3:set_enabled(false)
+
+		is_lock_input = true
+
+		timer.delay(2.0, false, function()
+			update_btns(self)
+
+			is_lock_input = false
+		end)
+
+	else
+		msg.post(url_popup_message, "show_message", {text_id = "NO_GEMS"})
+	end
+
+end
+
+local function on_button_click2(self, button, button_data)
+	local value = button_data.value
+
+	if (not global.isMobileTrue) then
+		lume.trace('[ WARNING ] missing for not isMobileTrue')
+		return nil
+	end
+
+	msg.post(url_popup_details, "popup", {
+		owner_url = msg.url(),
+		value = value
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function on_button_combo_offer_click(self, button, button_data)
+	if (config.isMobileTrue) and (not global.isNetworkConnected) then
+		msg.post(url_popup_message, "show_message", {text_id = "NETWORK_DISCONNECTED"})
+		return
+	end
+
+	local value = button_data.value
+	local numMarket = global.numMarket
+
+	is_lock_input = true
+
+	if global.isMobileTrue then
+		global.typeOffer = 'free_gems'
+
+		msg.post(url_popup_watch, "popup", {
+			owner_url = msg.url()
+		})
+
+	else
+		msg.post(url_controller, "showAds", {
+			type = 'free_gems',
+			index = global.state_daily_gems,
+			category = 'direct-gems-unlock',
+			details = 'mart-'..numMarket,
+			placement = 'shop'
+		})
+	end
+
+	button:set_enabled(false)
+
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function create_element(self, data)
+	local nodes = nil
+	local button = nil
+
+	if (data.type == 'item') or (data.type == 'item_special') then
+		nodes = gui.clone_tree(self.prefab)
+		button = self.druid:new(ButtonComponent4, "button_component", nodes)
+
+		button.on_click:subscribe(function()
+			on_button_click(self, button, data)
+		end, self)
+
+	elseif data.type == 'item_gem' then
+		nodes = gui.clone_tree(self.prefab)
+		button = self.druid:new(ButtonComponent4, "button_component", nodes)
+
+		button.on_click:subscribe(function()
+			on_button_click_gem(self, button, data)
+		end, self)
+
+	elseif data.type == 'pack' then
+		nodes = gui.clone_tree(self.prefab2)
+		button = self.druid:new(ButtonComponent5, "button_component_pack", nodes)
+
+		button.on_click1:subscribe(function()
+			on_button_click(self, button, data)
+		end, self)
+
+		button.on_click2:subscribe(function()
+			on_button_click2(self, button, data)
+		end, self)
+
+	elseif data.type == 'combo_offer' then
+		nodes = gui.clone_tree(self.prefab3)
+		button = self.druid:new(ButtonComponent6, "button_component_combo_offer", nodes)
+
+		button.on_click:subscribe(function()
+			on_button_combo_offer_click(self, button, data)
+		end, self)
+
+	end
+
+	local parentNode = gui.get_node("items_set"..data.num_set)
+
+	if parentNode then
+		gui.set_parent(button.root, parentNode)
+	else
+		print("[ WARNING ] parentNode not found")
+	end
+
+	gui.set_position(button.root, data.pos)
+	gui.set_enabled(button.root, true)
+	button:set_data(data)
+	
+
+	return button
+end
+
+local function updateLanguage(self)
+	gui.set_text(gui.get_node("text_title"), utf8.upper(translate("SHOP")))
+
+	gui.set_text(gui.get_node("text_set1"), translate("SPECIAL_OFFER"))
+	gui.set_text(gui.get_node("text_set2"), translate("CASH"))
+	gui.set_text(gui.get_node("text_set3"), translate("GEMS"))
+	gui.set_text(gui.get_node("text_set4"), translate("SPECIAL"))
+	gui.set_text(gui.get_node("text_set5"), translate("DAILY_OFFER"))
+
+	utils.updateTextWidth(gui.get_node("text_title"), 140, 1.4)
+	utils.updateTextWidth(gui.get_node("text_set1"), 320, 1)
+	utils.updateTextWidth(gui.get_node("text_set2"), 320, 1)
+	utils.updateTextWidth(gui.get_node("text_set3"), 320, 1)
+	utils.updateTextWidth(gui.get_node("text_set4"), 320, 1)
+	utils.updateTextWidth(gui.get_node("text_set5"), 320, 1)
+
+end
+
+local function update_scroll(self)
+	local heightShop = 2040
+
+	if global.noads_iap then
+		heightShop = heightShop - 320
+	end
+
+	local isHideManager = datamanager.isHaveManager()
+
+	if (global.isBoughtManager or isHideManager) then
+		heightShop = heightShop - 220
+	end
+
+	if global.isBoughtFruit then
+		heightShop = heightShop - 220
+	end
+
+	if (global.isBoughtManager or isHideManager) and global.isBoughtFruit then
+		heightShop = 1200	
+	end
+
+	local heightScroll = 520
+
+	if global.isMobileTrue then
+		heightScroll = 580
+
+		if (config.platform == PLATFORM_IOS) then
+			heightScroll = 580
+			heightShop = 580 + 100
+			self.scroll:set_vertical_scroll(false)
+		end
+	else
+		
+		heightShop = 630
+	end
+
+	local sizeScroll = vmath.vector3(heightScroll, heightShop, 0)
+	self.scroll:set_size(sizeScroll)
+
+end
+
+local function update_data_value(self)
+	if iap then
+		local id = nil
+		local data = nil
+		local num = 0
+
+		local id_pack1 = apimanager.MANAGER_PACK_NOADS_ID
+		local id_pack2 = apimanager.FRUIT_PACK_NOADS_ID
+
+		if global.noads_iap then
+			id_pack1 = apimanager.MANAGER_PACK_ID
+			id_pack2 = apimanager.FRUIT_PACK_ID
+		end
+
+		local list = {
+			{id = id_pack1,	num = 1},
+			{id = id_pack2,	num = 2},
+			{id = apimanager.COINS1_ID,	num = 6},
+			{id = apimanager.COINS2_ID,	num = 7},
+			{id = apimanager.COINS3_ID,	num = 8},
+			{id = apimanager.COINS4_ID,	num = 9},
+			{id = apimanager.COINS5_ID,	num = 10},
+			{id = apimanager.COINS6_ID,	num = 11},
+			{id = apimanager.NOADS_ID,	num = 12},
+			{id = apimanager.NOADS_COINS_ID,	num = 13}
+		}
+
+		for k,v in pairs(list) do
+			id = v.id
+			num = v.num
+
+			if iap_manager.available_products[id] then
+				data = iap_manager.available_products[id]
+				self.list_iap[num].value = id
+				self.list_iap[num].price_string = data.price_string
+			end
+		end
+
+	else
+		if global.noads_iap then
+			self.list_iap[1].value = apimanager.MANAGER_PACK_ID
+			self.list_iap[1].price_string = "8,99  $"
+
+			self.list_iap[2].value = apimanager.FRUIT_PACK_ID
+			self.list_iap[2].price_string = "7,88  $"
+		end
+
+	end
+
+	
+	if global.noads_iap then
+		self.list_iap[1].description = translate("PACK_MANAGER")
+		self.list_iap[2].description = translate("PACK_FRUIT")
+	else
+		self.list_iap[1].description = translate("PACK_MANAGER_NOADS")
+		self.list_iap[2].description = translate("PACK_FRUIT_NOADS")
+	end
+
+	self.list_iap[12].description = translate("REMOVE_ADS")
+	self.list_iap[13].description = translate("IAP_NO_ADS_COINS")
+
+end
+
+local function updateButtonCombo(self)
+	
+
+	local data = datamanager:get_remaining_time()
+
+	local list_text = {translate("SHORT_HOURS"),translate("SHORT_MINUTES"),translate("SHORT_SECONDS")}
+	local str_time = utils.secToHMS(data.remaining_seconds, true, list_text)
+	local remaining_seconds_cd = global.cooldown_daily_gems - data.time_now
+
+	if (remaining_seconds_cd < 0) then
+		remaining_seconds_cd = 0
+	end
+
+	self.button_combo:update_state(global.state_daily_gems, remaining_seconds_cd)
+	self.button_combo:update_time(str_time)
+
+end
+
+local function updateListButtons(self, vIsMock)
+	if global.noads_iap then
+		if global.isGameGuiReady then
+            msg.post(url_screen_gui_game, "hide_noads")
+        end
+
+		gui.set_enabled(self.items_set4, false)
+	end
+
+	local isHavePack = false
+	local isHideManager = datamanager.isHaveManager()
+
+	self.list_btn[1]:set_visible(true)
+	gui.set_position(self.items_set1, vmath.vector3(0, -40, 0))
+	gui.set_position(self.items_set2, vmath.vector3(0, -560, 0))
+	gui.set_position(self.items_set3, vmath.vector3(0, -880, 0))
+	gui.set_position(self.items_set4, vmath.vector3(0, -1430, 0))
+	gui.set_position(self.items_set5, vmath.vector3(0, -1750, 0))
+
+	gui.set_position(self.list_btn[1].root, vmath.vector3(0, -140, 0))
+	gui.set_position(self.list_btn[2].root, vmath.vector3(0, -360, 0))
+
+	if global.isBoughtManager or isHideManager then
+		self.list_btn[1]:set_visible(false)
+
+		if (not global.isBoughtFruit) then
+			gui.set_position(self.list_btn[2].root, vmath.vector3(0, -140, 0))
+		end
+
+		isHavePack = true
+	end
+
+	if global.isBoughtFruit then
+		self.list_btn[2]:set_visible(false)
+
+		isHavePack = true
+	end
+
+	if global.noads_iap then
+		gui.set_position(self.items_set5, vmath.vector3(0, -1430, 0))
+	end
+
+	if isHavePack then
+		gui.set_position(self.items_set2, vmath.vector3(0, -560 + 220, 0))
+		gui.set_position(self.items_set3, vmath.vector3(0, -880 + 220, 0))
+		gui.set_position(self.items_set5, vmath.vector3(0, -1430 + 220, 0))
+	end
+
+	if (global.isBoughtManager or isHideManager) and global.isBoughtFruit then
+		gui.set_enabled(self.items_set1, false)
+		gui.set_enabled(self.items_set4, false)
+		gui.set_position(self.items_set2, vmath.vector3(0, -40, 0))
+		gui.set_position(self.items_set3, vmath.vector3(0, -360, 0))
+		gui.set_position(self.items_set5, vmath.vector3(0, -910, 0))
+	end
+
+	if isHideManager then
+		gui.set_position(self.items_set2, vmath.vector3(0, -560 + 220, 0))
+		gui.set_position(self.items_set3, vmath.vector3(0, -880 + 220, 0))
+		gui.set_position(self.items_set4, vmath.vector3(0, -1430 + 220, 0))
+		gui.set_position(self.items_set5, vmath.vector3(0, -1750 + 220, 0))
+	end
+
+	if (not config.isEnableIAP) then
+		gui.set_enabled(self.items_set1, false)
+		gui.set_enabled(self.items_set3, false)
+		gui.set_enabled(self.items_set4, false)
+		gui.set_position(self.items_set2, vmath.vector3(0, -40, 0))
+		gui.set_position(self.items_set5, vmath.vector3(0, -350, 0))
+	end
+
+	update_data_value(self)
+	update_btns(self)
+	update_scroll(self)
+
+	updateButtonCombo(self)
+
+end
+
+local function on_scroll(self)
+	local scroll_percent = self.scroll:get_percent()
+	self.slider:set(1 - scroll_percent.y, true)
+	
+end
+
+local function on_slider(self, value)
+	self.scroll:scroll_to_percent(vmath.vector3(0, 1 - value, 0), true)
+	
+end
+
+local function initListButtons(self)
+	self.list_btn = {}
+
+	self.shop_content = gui.get_node("shop_content")
+	self.items_set1 = gui.get_node("items_set1")
+	self.items_set2 = gui.get_node("items_set2")
+	self.items_set3 = gui.get_node("items_set3")
+	self.items_set4 = gui.get_node("items_set4")
+	self.items_set5 = gui.get_node("items_set5")
+	self.text_set1 = gui.get_node("text_set1")
+	self.text_set2 = gui.get_node("text_set2")
+	self.text_set3 = gui.get_node("text_set3")
+	self.text_set4 = gui.get_node("text_set4")
+	self.text_set5 = gui.get_node("text_set5")
+
+	local scroll = self.druid:new_scroll("shop_mask", "shop_content")
+	scroll:set_horizontal_scroll(false)
+
+	scroll.on_scroll:subscribe(on_scroll)
+
+	self.slider = self.druid:new_slider("slider_pin", vmath.vector3(-15, -484, 0), on_slider)
+	self.slider:set_input_node("slider_back")
+
+	self.scroll = scroll
+
+	local list_iap = {}
+
+	gui.set_position(self.items_set1, vmath.vector3(0, 0, 0))
+	gui.set_position(self.items_set2, vmath.vector3(0, 0, 0))
+	gui.set_position(self.items_set3, vmath.vector3(0, 0, 0))
+	gui.set_position(self.items_set4, vmath.vector3(0, 0, 0))
+	gui.set_position(self.items_set5, vmath.vector3(0, 0, 0))
+
+	
+	if global.noads_iap then
+		table.insert(list_iap, {
+			num_set			= 1,
+			type			= "pack",
+			value			= apimanager.MANAGER_PACK_ID,
+			description		= translate("PACK_MANAGER"),
+			price_string	= "8,99  $",
+			pos				= vmath.vector3(0, -140, 0),
+			icon			= "icon_manager_pack1"
+		})
+		table.insert(list_iap, {
+			num_set			= 1,
+			type			= "pack",
+			value			= apimanager.FRUIT_PACK_ID,
+			description		= translate("PACK_FRUIT"),
+			price_string	= "7,88  $",
+			pos				= vmath.vector3(0, -360, 0),
+			icon			= "icon_fruit_pack1"
+		})
+	else
+		table.insert(list_iap, {
+			num_set			= 1,
+			type			= "pack",
+			value			= apimanager.MANAGER_PACK_NOADS_ID,
+			description		= translate("PACK_MANAGER_NOADS"),
+			price_string	= "9,99  $",
+			pos				= vmath.vector3(0, -140, 0),
+			icon			= "icon_manager_pack1"
+		})
+		table.insert(list_iap, {
+			num_set			= 1,
+			type			= "pack",
+			value			= apimanager.FRUIT_PACK_NOADS_ID,
+			description		= translate("PACK_FRUIT_NOADS"),
+			price_string	= "8,88  $",
+			pos				= vmath.vector3(0, -360, 0),
+			icon			= "icon_fruit_pack1"
+		})
+	end
+
+	local frame_cash = coinmanager.get_icon_name()
+
+	
+	table.insert(list_iap, {
+		num_set			= 2,
+		type			= "item_gem",
+		value			= 1,
+		description		= "item_gem1",
+		price_string	= global.gems_by_coins[1],
+		icon_gem		= true,
+		pos				= vmath.vector3(-185, -130, 0),
+		offset			= vmath.vector3(0, -8, 0),
+		icon			= frame_cash.."_bundle1",
+		frame_body		= "window_in_app2",
+		amount			= 1
+	})
+	table.insert(list_iap, {
+		num_set			= 2,
+		type			= "item_gem",
+		value			= 2,
+		description		= "item_gem2",
+		price_string	= global.gems_by_coins[2],
+		icon_gem		= true,
+		pos				= vmath.vector3(0, -130, 0),
+		offset			= vmath.vector3(0, -10, 0),
+		icon			= frame_cash.."_bundle2",
+		icon_add2		= frame_cash.."_bundle2_up",
+		frame_body		= "window_in_app2",
+		amount			= 2
+	})
+	table.insert(list_iap, {
+		num_set			= 2,
+		type			= "item_gem",
+		value			= 3,
+		description		= "item_gem3",
+		price_string	= global.gems_by_coins[3],
+		icon_gem		= true,
+		pos				= vmath.vector3(185, -130, 0),
+		offset			= vmath.vector3(0, -13, 0),
+		icon			= frame_cash.."_bundle3",
+		frame_body		= "window_in_app2",
+		amount			= 3
+	})
+
+	
+	table.insert(list_iap, {
+		num_set			= 3,
+		type			= "item",
+		value			= apimanager.COINS1_ID,
+		description		= "COINS1_ID",
+		price_string	= "1,00 $",
+		pos				= vmath.vector3(-185, -130, 0),
+		offset			= vmath.vector3(0, -8, 0),
+		icon			= "gem1_bundle1",
+		frame_body		= "window_in_app3",
+		amount			= global.amount1_iap
+	})
+	table.insert(list_iap, {
+		num_set			= 3,
+		type			= "item",
+		value			= apimanager.COINS2_ID,
+		description		= "COINS2_ID",
+		price_string	= "2,00 $",
+		pos				= vmath.vector3(0, -130, 0),
+		offset			= vmath.vector3(0, -12, 0),
+		icon			= "gem1_bundle2",
+		frame_body		= "window_in_app3",
+		amount			= global.amount2_iap
+	})
+	table.insert(list_iap, {
+		num_set			= 3,
+		type			= "item",
+		value			= apimanager.COINS3_ID,
+		description		= "COINS3_ID",
+		price_string	= "5,00 $",
+		pos				= vmath.vector3(185, -130, 0),
+		offset			= vmath.vector3(0, -10, 0),
+		icon			= "gem1_bundle3",
+		frame_body		= "window_in_app3",
+		amount			= global.amount3_iap
+	})
+	table.insert(list_iap, {
+		num_set			= 3,
+		type			= "item",
+		value			= apimanager.COINS4_ID,
+		description		= "COINS4_ID",
+		price_string	= "10,00 $",
+		pos				= vmath.vector3(-185, -360, 0),
+		offset			= vmath.vector3(0, -12, 0),
+		icon			= "gem1_bundle4",
+		frame_body		= "window_in_app3",
+		amount			= global.amount4_iap
+	})
+	table.insert(list_iap, {
+		num_set			= 3,
+		type			= "item",
+		value			= apimanager.COINS5_ID,
+		description		= "COINS5_ID",
+		price_string	= "20,00 $",
+		pos				= vmath.vector3(0, -360, 0),
+		offset			= vmath.vector3(0, -13, 0),
+		icon			= "gem1_bundle5",
+		frame_body		= "window_in_app3",
+		amount			= global.amount5_iap
+	})
+	table.insert(list_iap, {
+		num_set			= 3,
+		type			= "item",
+		value			= apimanager.COINS6_ID,
+		description		= "COINS6_ID",
+		price_string	= "30,00 $",
+		pos				= vmath.vector3(185, -360, 0),
+		offset			= vmath.vector3(0, -20, 0),
+		icon			= "gem1_bundle6",
+		frame_body		= "window_in_app3",
+		amount			= global.amount6_iap
+	})
+
+	
+	table.insert(list_iap, {
+		num_set			= 4,
+		type			= "item_special",
+		value			= apimanager.NOADS_ID,
+		description		= translate("REMOVE_ADS"),
+		price_string	= "2,22 $",
+		pos				= vmath.vector3(-100, -130, 0),
+		icon			= "icon_offer_ads",
+		frame_body		= "window_in_app4"
+	})
+	table.insert(list_iap, {
+		num_set			= 4,
+		type			= "item_special",
+		value			= apimanager.NOADS_COINS_ID,
+		description		= translate("IAP_NO_ADS_COINS"),
+		price_string	= "2,22 $",
+		pos				= vmath.vector3(100, -130, 0),
+		icon			= "icon_noadscoins",
+		additional		= global.amount2_iap,
+		frame_body		= "window_in_app4"
+	})
+
+	
+	table.insert(list_iap, {
+		num_set			= 5,
+		type			= "combo_offer",
+		pos				= vmath.vector3(0, -140, 0),
+	})
+
+	local btn = nil
+
+	for i=1,#list_iap do
+		btn = create_element(self, list_iap[i])
+		table.insert(self.list_btn, btn)
+	end
+
+	self.list_iap = list_iap
+
+	self.button_gem1 = self.list_btn[3]
+	self.button_gem2 = self.list_btn[4]
+	self.button_gem3 = self.list_btn[5]
+
+	self.button_special1 = self.list_btn[12]
+	self.button_special2 = self.list_btn[13]
+
+	self.button_combo = self.list_btn[14]
+
+	self.button_combo:update_text_gems(global.gems_by_ads)
+
+	update_scroll(self)
+
+end
+
+local function do_scroll(self, value_scroll)
+	local scroll_cash = -770
+	local scroll_gems = -1800
+
+	if global.isMobileTrue then
+		scroll_cash = -840
+		scroll_gems = -1160
+
+		local isHideManager = datamanager.isHaveManager()
+
+		if (global.isBoughtManager or isHideManager) or (global.isBoughtFruit) then
+			scroll_cash = -840 + 210
+			scroll_gems = -1050 + 100
+		end
+
+		if (global.isBoughtManager or isHideManager) and global.isBoughtFruit then
+			scroll_cash = 0
+			scroll_gems = -1050 + 400
+		end
+	else
+		scroll_cash = 0
+		scroll_gems = -400
+	end
+
+	if value_scroll == 'cash' then
+		self.scroll:scroll_to(vmath.vector3(0, scroll_cash, 0), true)
+	elseif value_scroll == 'gems' then
+		self.scroll:scroll_to(vmath.vector3(0, scroll_gems, 0), true)
+	end
+
+end
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    gui.set_render_order(4)
+
+    node_popup_body = gui.get_node("body")
+    node_popup_fade = gui.get_node("fade")
+
+    gui.set_enabled(node_popup_body, false)
+    gui.set_enabled(node_popup_fade, false)
+
+    self.druid = druid.new(self)
+
+    self.druid:new_button("btn_close", on_close_button)
+
+	self.prefab = gui.get_node("button_component/root")
+	gui.set_enabled(self.prefab, false)
+
+	self.prefab2 = gui.get_node("button_component_pack/root")
+	gui.set_enabled(self.prefab2, false)
+
+	self.prefab3 = gui.get_node("button_component_combo_offer/root")
+	gui.set_enabled(self.prefab3, false)
+
+	initListButtons(self)
+	updateListButtons(self)
+
+	global.isIapGuiReady = true
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+
+    if (message_id == H_POPUP) then
+		owner_url = message.owner_url
+
+		if (config.isMobileTrue) and (not global.isDebug) then
+			apimanager.check_network()
+		end
+
+		updateLanguage(self)
+		show_popup()
+
+		global.isPopupIapOpened = true
+
+		if message.scroll_to then
+			do_scroll(self, message.scroll_to)
+		end
+
+		if config.isEnableIAP then
+			if iap then
+				if iap_manager.iap_added then
+					updateListButtons(self)
+				else
+					
+					apimanager.sendAnalytics('ERROR:IAP_NOT_ADDED', 1)
+					iap_manager.force_set_list()
+
+				end
+			else
+				
+				updateListButtons(self)
+			end
+
+		else
+			updateListButtons(self)
+
+		end
+
+	elseif (message_id == H_INIT_LIST) then
+		updateListButtons(self)
+
+	elseif (message_id == H_UPDATE_GEMS) then
+		updateButtonCombo(self)
+		update_btns(self)
+
+	elseif (message_id == H_DEACTIVATE) then
+		gui.set_enabled(node_popup_body, false)
+		gui.set_enabled(node_popup_fade, false)
+
+    elseif (message_id == H_UNLOCK) then
+		is_lock_input = false
+
+	end
+
+end
+
+function on_input(self, action_id, action)
+    if (not is_lock_input) then
+
+		self.druid:on_input(action_id, action)
+
+		if (action_id == hash("touch")) then
+			if (action.pressed and (not gui.pick_node(node_popup_body, action.x, action.y))) then
+				cancel_handler()
+			end
+		end
+
+		return true
+
+	end
+
+end

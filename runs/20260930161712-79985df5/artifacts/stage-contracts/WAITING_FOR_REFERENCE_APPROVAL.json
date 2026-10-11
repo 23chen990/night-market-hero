@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "stage": "WAITING_FOR_REFERENCE_APPROVAL",
+  "passed": true,
+  "ownerRole": "HumanReviewer",
+  "verifierRole": "FactoryControlPlane",
+  "verifiedByRole": "FactoryControlPlane",
+  "independent": true,
+  "checkedAt": "2026-10-01T06:22:14.787Z",
+  "missing": [],
+  "observedInputs": [
+    "artifacts/reference-mechanic-spec.json",
+    "artifacts/reference-fidelity-contract.json"
+  ],
+  "observedArtifacts": [
+    "human/reference-mechanic-review.json",
+    "human/reference-decision.yaml"
+  ],
+  "observedEvidence": [
+    "human/reference-decision.example.yaml",
+    "decision:APPROVE"
+  ],
+  "artifactVersions": {
+    "human/reference-mechanic-review.json": 1,
+    "human/reference-decision.yaml": 1,
+    "artifacts/reference-mechanic-spec.json": 1
+  },
+  "failureRoute": {
+    "stage": "REFERENCE_MECHANIC_LOCK",
+    "classes": [
+      "core_experience",
+      "rights"
+    ],
+    "rationale": "Human reference approval is the owner gate."
+  }
+}

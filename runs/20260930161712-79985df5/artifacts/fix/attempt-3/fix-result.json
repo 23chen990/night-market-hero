@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "route": "formal-fixer",
+  "attempt": 3,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "Independent attempt-2 deterministic and natural tracks passed, while the perceptual track retained evidence-backed product-shape gaps: the HUD lacked a readable active order/product hierarchy, the beach-shop presentation needed richer original procedural hierarchy, and the settlement branch needed an explicit next-market selection. These changes cross simulation progression, DOM presentation, and renderer paths, so formal-fixer routing remains required.",
+  "contextIntentionallyOmitted": [
+    "other runs and workspaces",
+    "unbound or unverified media and unrelated QA captures",
+    "third-party or first-version source, assets, names, UI, expression, and tuning values",
+    "multi-item shopping lists, processing or employee systems, disruption visitors, and broader multi-stage progression",
+    "unrelated factory history, logs, and platform packaging work"
+  ],
+  "changes": [
+    {
+      "issueIds": [
+        "QA-ORDER-PRODUCT-HIERARCHY"
+      ],
+      "result": "Added a focused active-order presentation adapter and HUD order card. It exposes one customer product identity, original product color mark, shelf route, lifecycle status, and shelf-stock context; the empty state remains explicit. Added adapter tests for active and empty order branches."
+    },
+    {
+      "issueIds": [
+        "QA-BEACH-SHOP-VISUAL-RICHNESS"
+      ],
+      "result": "Extended the existing procedural Phaser beach renderer with layered water/wave and shoreline cues, shells and decorative marks, market awnings, and clearer local merchandising/station hierarchy. Existing spatial coordinates and core harvest/deposit/packing/cash mechanics remain in use; no external or first-version expression was copied."
+    },
+    {
+      "issueIds": [
+        "QA-NEXT-MARKET-CONTINUATION"
+      ],
+      "result": "Added nullable nextMarketId to simulation state and an explicit settlement next-market branch with two original local market choices. Normal selection records the chosen market and returns to operating; restart creates a fresh state and clears the choice. The existing continue-round control remains a valid normal-input path."
+    }
+  ],
+  "filesChanged": [
+    {
+      "path": "index.html"
+    },
+    {
+      "path": "src/main.ts"
+    },
+    {
+      "path": "src/order-presentation.ts"
+    },
+    {
+      "path": "src/order-presentation.test.ts"
+    },
+    {
+      "path": "src/simulation.ts"
+    },
+    {
+      "path": "src/simulation.test.ts"
+    },
+    {
+      "path": "src/style.css"
+    },
+    {
+      "path": "dist/index.html"
+    },
+    {
+      "path": "dist/assets/index-C3a6uKA1.js"
+    },
+    {
+      "path": "dist/assets/index-XRHTxfrd.css"
+    }
+  ],
+  "verification": {
+    "redTests": {
+      "command": "pnpm test -- --run src/simulation.test.ts src/order-presentation.test.ts",
+      "exitCode": 1,
+      "result": "The package script could not find a local vitest binary; the real failure is preserved in artifacts/fix/attempt-3/red-tests.log."
+    },
+    "greenTests": {
+      "command": "pnpm dlx --yes vitest@4.1.11 run",
+      "exitCode": 0,
+      "result": "4 test files passed and 18 tests passed; see green-tests.log and tests.log."
+    },
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "result": "tsc --noEmit passed; see typecheck.log."
+    },
+    "lint": {
+      "command": "pnpm lint",
+      "exitCode": 1,
+      "result": "The package has no lint script; the actual pnpm error is preserved in lint.log."
+    },
+    "build": {
+      "command": "pnpm build",
+      "exitCode": 0,
+      "count": 1,
+      "result": "Vite production build completed exactly once; the existing chunk-size warning was emitted and recorded in build.log."
+    },
+    "runtimeImplementationEvidence": {
+      "result": "Fixture-only runtime-smoke.json covers the new order-card empty state and next-market selection branch. Fixture-only viewport-smoke.json passed bounds, settlement controls, and no-overflow checks at 360x800, 390x844, 430x932, 540x960, and 844x390. These artifacts are implementation evidence, not independent QA acceptance."
+    }
+  },
+  "remainingNaturalEvidenceGaps": [
+    "Independent QA must rerun a fresh-browser natural journey with normal keyboard/touch input and capture an active customer order so the new product/route/status/stock card is verified on the exact customer lifecycle branches.",
+    "Independent perceptual QA must verify the richer procedural beach hierarchy, player/customer/product/route/icon HUD readability, local feedback, and visual quality without fixture injection.",
+    "Independent natural QA must verify the new next-market selection, restart clearing, and replay branch end to end after construction/settlement.",
+    "The fixture viewport evidence does not close the required natural captures at the five target viewports or the landscape settlement perceptual gate.",
+    "Existing attempt-2 natural/deterministic evidence does not itself validate the attempt-3 presentation/progression changes; no QA acceptance is claimed here."
+  ],
+  "outOfScope": [
+    "multi-item shopping lists",
+    "processing or employee systems",
+    "disruption visitor branch",
+    "broader multi-stage progression or world-state simulation",
+    "third-party or first-version code, assets, names, expression, UI, or tuning"
+  ],
+  "evidencePaths": [
+    "artifacts/fix/attempt-3/task.json",
+    "artifacts/fix/attempt-3/red-tests.log",
+    "artifacts/fix/attempt-3/green-tests.log",
+    "artifacts/fix/attempt-3/tests.log",
+    "artifacts/fix/attempt-3/typecheck.log",
+    "artifacts/fix/attempt-3/lint.log",
+    "artifacts/fix/attempt-3/build.log",
+    "artifacts/fix/attempt-3/source-hashes.json",
+    "artifacts/fix/attempt-3/runtime-smoke.json",
+    "artifacts/fix/attempt-3/viewport-smoke.json",
+    "artifacts/fix/attempt-3/startup-540.png",
+    "artifacts/fix/attempt-3/order-540.png",
+    "artifacts/fix/attempt-3/next-market-540.png"
+  ]
+}

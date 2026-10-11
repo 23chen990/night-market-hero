@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Source-bound failure-pressure analysis for Monkey Mart 通用空间服务机制.",
+  "evidence": [
+    {
+      "id": "pressure-evidence-buyer-wait",
+      "competitor": "Monkey Mart 通用空间服务机制",
+      "sourceRefs": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "observed": [
+        "The ordinary customer branch creates pressure by moving to the desired product shelf, entering a wait state when the product is unavailable, then advancing after product acquisition; the reviewed branch has no timeout-departure path."
+      ],
+      "inferred": [],
+      "applicability": "adapt",
+      "applicabilityRationale": "The completed research output links this evidence to pressure-rule-shelf-wait with applicability adapt.",
+      "rejectExpression": [],
+      "confidence": "medium"
+    },
+    {
+      "id": "pressure-evidence-throughput-inference",
+      "competitor": "Monkey Mart 通用空间服务机制",
+      "sourceRefs": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "observed": [
+        "The completed research output labels pressure-evidence-throughput-inference as inferred, not as an observed source rule."
+      ],
+      "inferred": [
+        "Shelf waiting and checkout queue occupancy can form a throughput bottleneck, and replenishment or restoring checkout service can allow the loop to continue. This inference is limited to the reviewed ordinary-customer branch and does not establish a universal failure state."
+      ],
+      "applicability": "adapt",
+      "applicabilityRationale": "The completed research output links this evidence to pressure-rule-shelf-wait with applicability adapt.",
+      "rejectExpression": [],
+      "confidence": "low"
+    },
+    {
+      "id": "pressure-evidence-disruption",
+      "competitor": "Monkey Mart 通用空间服务机制",
+      "sourceRefs": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "observed": [
+        "A separate disruption visitor branch reaches a usable shelf, emits a shelf-localized alert, and periodically throws goods out while the shelf contains stock."
+      ],
+      "inferred": [],
+      "applicability": "reject",
+      "applicabilityRationale": "The completed research output links this evidence to pressure-rule-disruption-visitor with applicability reject.",
+      "rejectExpression": [
+        "Use only source-bound causal pressure relationships and state transitions. Do not copy third-party code, assets, names, text, UI layout, audio, visual expression or raw tuning values."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "pressure-evidence-capital-gate",
+      "competitor": "Monkey Mart 通用空间服务机制",
+      "sourceRefs": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "observed": [
+        "Construction payment is constrained by available wallet balance, reduces the remaining construction debt, and keeps the successor locked until the payment is complete."
+      ],
+      "inferred": [],
+      "applicability": "reject",
+      "applicabilityRationale": "The completed research output links this evidence to pressure-rule-capital-gate with applicability reject.",
+      "rejectExpression": [
+        "Use only source-bound causal pressure relationships and state transitions. Do not copy third-party code, assets, names, text, UI layout, audio, visual expression or raw tuning values."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "pressure-evidence-stockout-timeout-unknown",
+      "competitor": "Monkey Mart 通用空间服务机制",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "observed": [
+        "The completed research output labels pressure-evidence-stockout-timeout-unknown as unknown, not as an observed source rule."
+      ],
+      "inferred": [
+        "The reference evidence does not establish the seed-proposed stockout patience timer, timeout departure, failure reason or recovery branch."
+      ],
+      "applicability": "reject",
+      "applicabilityRationale": "The completed research output links this evidence to pressure-rule-stockout-timeout with applicability blocked.",
+      "rejectExpression": [
+        "Use only source-bound causal pressure relationships and state transitions. Do not copy third-party code, assets, names, text, UI layout, audio, visual expression or raw tuning values."
+      ],
+      "confidence": "low"
+    }
+  ],
+  "rules": [
+    {
+      "id": "pressure-rule-shelf-wait",
+      "pressureType": "other",
+      "trigger": "An ordinary customer reaches the desired product shelf while the desired product is unavailable.",
+      "playerSignal": "Code-established signal anchor: customer remains in the desired-shelf wait branch; exact appearance, readability and audio are unverified.",
+      "escalation": "Additional waiting customers and checkout queue occupancy may accumulate as inferred throughput pressure only.",
+      "failureOutcome": "No timeout departure or ordinary-customer failure outcome is evidenced in the reviewed branch.",
+      "attribution": "The completed research output attributes this rule to source evidence pressure-evidence-buyer-wait, pressure-evidence-throughput-inference.",
+      "recovery": "Replenish the compatible shelf, allow the customer to acquire the desired product, then allow the customer to proceed to checkout.",
+      "sourceEvidenceRefs": [
+        "pressure-evidence-buyer-wait",
+        "pressure-evidence-throughput-inference"
+      ],
+      "implementationImplications": [
+        "Preserve the causal relation between shelf availability, customer waiting and later checkout, but author original names, signals, layout, audio and tuning."
+      ]
+    },
+    {
+      "id": "pressure-rule-disruption-visitor",
+      "pressureType": "other",
+      "trigger": "A disruption visitor reaches a usable shelf that contains stock.",
+      "playerSignal": "Code-established shelf-localized alert followed by periodic goods-throw events; exact visual or audio treatment is unverified.",
+      "escalation": "Goods continue to be thrown periodically while shelf stock remains.",
+      "failureOutcome": "Shelf goods are removed or displaced by the disruption branch; a terminal player failure outcome is not evidenced.",
+      "attribution": "The completed research output attributes this rule to source evidence pressure-evidence-disruption.",
+      "recovery": "Player recovery behavior is not established by the cited claim and must remain unknown.",
+      "sourceEvidenceRefs": [
+        "pressure-evidence-disruption"
+      ],
+      "implementationImplications": [
+        "Do not port this branch into the target game without explicit human approval; do not copy its expression, assets, names or tuning."
+      ]
+    },
+    {
+      "id": "pressure-rule-capital-gate",
+      "pressureType": "other",
+      "trigger": "Player is stationary inside an on-sale construction point while attempting payment.",
+      "playerSignal": "Wallet, paid contribution, remaining construction debt and player-to-construction-point currency animation are the code-established anchors.",
+      "escalation": "Available wallet balance limits the current payment, and the successor remains locked until the debt is fully paid.",
+      "failureOutcome": "Construction remains incomplete when funds are insufficient; no broader game-over outcome is evidenced.",
+      "attribution": "The completed research output attributes this rule to source evidence pressure-evidence-capital-gate.",
+      "recovery": "Return to the construction point after the wallet has increased; the exact source of additional funds is outside the cited branch.",
+      "sourceEvidenceRefs": [
+        "pressure-evidence-capital-gate"
+      ],
+      "implementationImplications": [
+        "The seed explicitly rejects the reference startup-capital rule, so only a separately approved original economy may be used."
+      ]
+    },
+    {
+      "id": "pressure-rule-stockout-timeout",
+      "pressureType": "other",
+      "trigger": "Seed-only proposal that a customer waits for a bounded period after stockout.",
+      "playerSignal": "Unknown from the reference evidence.",
+      "escalation": "Unknown from the reference evidence.",
+      "failureOutcome": "Timeout departure and displayed stockout reason are not evidenced by the reference code analysis.",
+      "attribution": "The completed research output attributes this rule to source evidence pressure-evidence-stockout-timeout-unknown.",
+      "recovery": "Unknown from the reference evidence; requires an approved target-game rule and natural-input QA.",
+      "sourceEvidenceRefs": [
+        "pressure-evidence-stockout-timeout-unknown"
+      ],
+      "implementationImplications": [
+        "Keep this as an original target-game proposal, not as a reference fact. Human approval and runtime validation are required."
+      ]
+    }
+  ],
+  "noCopyBoundary": [
+    "Use only source-bound causal pressure relationships and state transitions. Do not copy third-party code, assets, names, text, UI layout, audio, visual expression or raw tuning values."
+  ]
+}

@@ -1,0 +1,29 @@
+Attempt 2 test evidence
+
+RED package-script probe (before implementation):
+Command: pnpm test -- --run src/simulation.test.ts src/responsive.test.ts
+Exit: 1
+$ vitest run -- --run src/simulation.test.ts src/responsive.test.ts
+sh: vitest: command not found
+[ELIFECYCLE] Test failed. See above for more details.
+
+GREEN available-vitest probe (after implementation):
+Command: pnpm dlx --yes vitest@4.1.11 run
+Exit: 0
+Test Files: 3 passed
+Tests: 15 passed
+
+Deterministic runtime smoke (fixture/state API only; not natural QA):
+- artifacts/fix/attempt-2/viewport-smoke.json
+- artifacts/fix/attempt-2/runtime-smoke.json
+- immediate keyboard smoke moved player y from 760 to 746.8000000000002 at 390x844
+- settlement controls were visible and within bounds at 540x960 and 844x390
+- restart click returned operating stage, hid settlement, and left #toast empty
+
+Production preview smoke:
+Command: pnpm exec vite preview --host 127.0.0.1 --port 4173 (served on 4174 after port collision)
+Exit: 0
+Viewport: 844x390
+Canvas: 208x370, right=374.515625, bottom=380
+HUD: 286.953125x96.234375, right=834, bottom=106.234375
+Console/page errors: none

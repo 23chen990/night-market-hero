@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260930161712-79985df5",
+  "runKind": "game",
+  "stage": "FAILED",
+  "status": "failed",
+  "readiness": "FAILED",
+  "createdAt": "2026-09-30T16:17:12.449Z",
+  "updatedAt": "2026-10-01T06:24:37.883Z",
+  "fixAttempts": 0,
+  "prototypeBatch": 1,
+  "providerMode": "codex-account",
+  "failureReason": "Error: {\"error\":{\"message\":\"Failed to parse request body\",\"type\":\"invalid_request_error\"}}",
+  "canonicalGameId": "海滩渔货铺",
+  "variantId": "continuation-v2",
+  "identityManifestHash": "84c0be2a1c4f5ec1a9f2b5640c8e4ca69e6aac4529cff6fb98ecea015087365c",
+  "stages": {
+    "REFERENCE_DEEP_RESEARCH": {
+      "stage": "REFERENCE_DEEP_RESEARCH",
+      "status": "completed",
+      "startedAt": "2026-09-30T16:19:20.084Z",
+      "finishedAt": "2026-09-30T17:03:22.421Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "input/seed.yaml",
+        "artifacts/reference-evidence-pack.json",
+        "artifacts/reference-code-analysis.json",
+        "reference-evidence/manifest.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/reference-evidence-pack.json",
+        "artifacts/reference-fidelity-contract.json",
+        "artifacts/reference-behavior-analysis.model-output.raw.json",
+        "artifacts/reference-behavior-analysis.raw.json",
+        "artifacts/reference-research-resolution.json",
+        "artifacts/reference-behavior-analysis.json",
+        "artifacts/reference-failure-pressure-contract.json"
+      ],
+      "errors": [
+        "ZodError: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      0,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      0,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      0,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      0,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      0,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      0,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      0\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      1,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      1,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      1,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      1,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      1,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      1,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      1\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      2,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      2,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      2,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      2,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      2,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      2,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      2\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      3,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      3,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      3,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      3,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      3,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      3,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      3\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      4,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      4,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      4,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      4,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      4,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      4,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      4\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      5,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      5,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      5,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      5,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      5,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      5,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      5\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      6,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      6,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      6,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      6,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      6,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      6,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      6\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      7,\n      \"sourceRefs\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      7,\n      \"stateBranch\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      7,\n      \"playerInput\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      7,\n      \"spatialRelationship\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      7,\n      \"visibleFeedback\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"behaviorChecks\",\n      7,\n      \"viewport\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"lifecycleStateBranch\",\n      \"normalPlayerInput\",\n      \"causalSpatialRelationship\",\n      \"feedbackAnchor\",\n      \"eventOrder\",\n      \"evidence\"\n    ],\n    \"path\": [\n      \"behaviorChecks\",\n      7\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"lifecycleStateBranch\\\", \\\"normalPlayerInput\\\", \\\"causalSpatialRelationship\\\", \\\"feedbackAnchor\\\", \\\"eventOrder\\\", \\\"evidence\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"observations\",\n      0\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"observations\",\n      1\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"observations\",\n      2\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"observations\",\n      3\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"observations\",\n      4\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inferences\",\n      0\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"inferences\",\n      1\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"unknowns\",\n      0\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"unknowns\",\n      1\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"unknowns\",\n      2\n    ],\n    \"message\": \"Invalid input: expected string, received object\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      1\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"schemaVersion\"\n    ],\n    \"message\": \"Invalid input: expected 1\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"purpose\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      0,\n      \"competitor\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      0,\n      \"observed\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"adopt\",\n      \"adapt\",\n      \"reject\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      0,\n      \"applicability\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"adopt\\\"|\\\"adapt\\\"|\\\"reject\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      0,\n      \"applicabilityRationale\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"high\",\n      \"medium\",\n      \"low\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      0,\n      \"confidence\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"high\\\"|\\\"medium\\\"|\\\"low\\\"\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"classification\",\n      \"statement\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      0\n    ],\n    \"message\": \"Unrecognized keys: \\\"classification\\\", \\\"statement\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      1,\n      \"competitor\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      1,\n      \"observed\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"adopt\",\n      \"adapt\",\n      \"reject\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      1,\n      \"applicability\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"adopt\\\"|\\\"adapt\\\"|\\\"reject\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      1,\n      \"applicabilityRationale\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"high\",\n      \"medium\",\n      \"low\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      1,\n      \"confidence\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"high\\\"|\\\"medium\\\"|\\\"low\\\"\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"classification\",\n      \"statement\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      1\n    ],\n    \"message\": \"Unrecognized keys: \\\"classification\\\", \\\"statement\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      2,\n      \"competitor\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      2,\n      \"observed\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"adopt\",\n      \"adapt\",\n      \"reject\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      2,\n      \"applicability\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"adopt\\\"|\\\"adapt\\\"|\\\"reject\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      2,\n      \"applicabilityRationale\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"high\",\n      \"medium\",\n      \"low\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      2,\n      \"confidence\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"high\\\"|\\\"medium\\\"|\\\"low\\\"\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"classification\",\n      \"statement\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      2\n    ],\n    \"message\": \"Unrecognized keys: \\\"classification\\\", \\\"statement\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      3,\n      \"competitor\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      3,\n      \"observed\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"adopt\",\n      \"adapt\",\n      \"reject\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      3,\n      \"applicability\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"adopt\\\"|\\\"adapt\\\"|\\\"reject\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      3,\n      \"applicabilityRationale\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"high\",\n      \"medium\",\n      \"low\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      3,\n      \"confidence\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"high\\\"|\\\"medium\\\"|\\\"low\\\"\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"classification\",\n      \"statement\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      3\n    ],\n    \"message\": \"Unrecognized keys: \\\"classification\\\", \\\"statement\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      4,\n      \"competitor\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      4,\n      \"observed\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"adopt\",\n      \"adapt\",\n      \"reject\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      4,\n      \"applicability\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"adopt\\\"|\\\"adapt\\\"|\\\"reject\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      4,\n      \"applicabilityRationale\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"high\",\n      \"medium\",\n      \"low\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      4,\n      \"confidence\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"high\\\"|\\\"medium\\\"|\\\"low\\\"\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"classification\",\n      \"statement\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"evidence\",\n      4\n    ],\n    \"message\": \"Unrecognized keys: \\\"classification\\\", \\\"statement\\\"\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"timing\",\n      \"hazard\",\n      \"resource_loss\",\n      \"wrong_choice\",\n      \"pursuit\",\n      \"collapse\",\n      \"stamina\",\n      \"other\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      0,\n      \"pressureType\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"timing\\\"|\\\"hazard\\\"|\\\"resource_loss\\\"|\\\"wrong_choice\\\"|\\\"pursuit\\\"|\\\"collapse\\\"|\\\"stamina\\\"|\\\"other\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      0,\n      \"playerSignal\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      0,\n      \"failureOutcome\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      0,\n      \"attribution\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      0,\n      \"recovery\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      0,\n      \"implementationImplications\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"applicability\",\n      \"visiblePlayerSignal\",\n      \"attributableFailureOutcome\",\n      \"recoveryReplay\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      0\n    ],\n    \"message\": \"Unrecognized keys: \\\"applicability\\\", \\\"visiblePlayerSignal\\\", \\\"attributableFailureOutcome\\\", \\\"recoveryReplay\\\"\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"timing\",\n      \"hazard\",\n      \"resource_loss\",\n      \"wrong_choice\",\n      \"pursuit\",\n      \"collapse\",\n      \"stamina\",\n      \"other\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      1,\n      \"pressureType\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"timing\\\"|\\\"hazard\\\"|\\\"resource_loss\\\"|\\\"wrong_choice\\\"|\\\"pursuit\\\"|\\\"collapse\\\"|\\\"stamina\\\"|\\\"other\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      1,\n      \"playerSignal\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      1,\n      \"failureOutcome\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      1,\n      \"attribution\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      1,\n      \"recovery\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      1,\n      \"implementationImplications\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"applicability\",\n      \"visiblePlayerSignal\",\n      \"attributableFailureOutcome\",\n      \"recoveryReplay\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      1\n    ],\n    \"message\": \"Unrecognized keys: \\\"applicability\\\", \\\"visiblePlayerSignal\\\", \\\"attributableFailureOutcome\\\", \\\"recoveryReplay\\\"\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"timing\",\n      \"hazard\",\n      \"resource_loss\",\n      \"wrong_choice\",\n      \"pursuit\",\n      \"collapse\",\n      \"stamina\",\n      \"other\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      2,\n      \"pressureType\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"timing\\\"|\\\"hazard\\\"|\\\"resource_loss\\\"|\\\"wrong_choice\\\"|\\\"pursuit\\\"|\\\"collapse\\\"|\\\"stamina\\\"|\\\"other\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      2,\n      \"playerSignal\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      2,\n      \"failureOutcome\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      2,\n      \"attribution\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      2,\n      \"recovery\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      2,\n      \"implementationImplications\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"applicability\",\n      \"visiblePlayerSignal\",\n      \"attributableFailureOutcome\",\n      \"recoveryReplay\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      2\n    ],\n    \"message\": \"Unrecognized keys: \\\"applicability\\\", \\\"visiblePlayerSignal\\\", \\\"attributableFailureOutcome\\\", \\\"recoveryReplay\\\"\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"timing\",\n      \"hazard\",\n      \"resource_loss\",\n      \"wrong_choice\",\n      \"pursuit\",\n      \"collapse\",\n      \"stamina\",\n      \"other\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      3,\n      \"pressureType\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"timing\\\"|\\\"hazard\\\"|\\\"resource_loss\\\"|\\\"wrong_choice\\\"|\\\"pursuit\\\"|\\\"collapse\\\"|\\\"stamina\\\"|\\\"other\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      3,\n      \"playerSignal\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      3,\n      \"failureOutcome\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      3,\n      \"attribution\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      3,\n      \"recovery\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      3,\n      \"implementationImplications\"\n    ],\n    \"message\": \"Invalid input: expected array, received string\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"applicability\",\n      \"visiblePlayerSignal\",\n      \"attributableFailureOutcome\",\n      \"recoveryReplay\"\n    ],\n    \"path\": [\n      \"failurePressureContract\",\n      \"rules\",\n      3\n    ],\n    \"message\": \"Unrecognized keys: \\\"applicability\\\", \\\"visiblePlayerSignal\\\", \\\"attributableFailureOutcome\\\", \\\"recoveryReplay\\\"\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"failurePressureContract\",\n      \"noCopyBoundary\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"status\",\n      \"referenceGame\",\n      \"boundaryAgainstCopyingExpression\"\n    ],\n    \"path\": [\n      \"failurePressureContract\"\n    ],\n    \"message\": \"Unrecognized keys: \\\"status\\\", \\\"referenceGame\\\", \\\"boundaryAgainstCopyingExpression\\\"\"\n  },\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"artifactType\",\n      \"targetGame\",\n      \"reference\",\n      \"sourceFiles\",\n      \"frameManifestStatus\",\n      \"qaTargetViewport\",\n      \"seedOnlyDesignProposals\",\n      \"conflictsForHumanApproval\",\n      \"expressionBoundary\",\n      \"runtimeAcceptanceNote\"\n    ],\n    \"path\": [],\n    \"message\": \"Unrecognized keys: \\\"artifactType\\\", \\\"targetGame\\\", \\\"reference\\\", \\\"sourceFiles\\\", \\\"frameManifestStatus\\\", \\\"qaTargetViewport\\\", \\\"seedOnlyDesignProposals\\\", \\\"conflictsForHumanApproval\\\", \\\"expressionBoundary\\\", \\\"runtimeAcceptanceNote\\\"\"\n  }\n]\n    at ReferenceResearchAgent.run (/Users/kker/Documents/ChatGPT/妖怪夜市/src/agents/index.ts:31:53)\n    at async analyzeReferenceBehavior (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:922:20)\n    at async executeReplicaPreview (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:2584:24)\n    at async Object.execute (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:4152:14)\n    at async main (/Users/kker/Documents/ChatGPT/妖怪夜市/src/cli/factory.ts:64:44)"
+      ],
+      "evidence": [
+        "research:recovered-existing-output",
+        "research:completed-log:logs/codex/REFERENCE_DEEP_RESEARCH.attempt-1.stdout.jsonl",
+        "research:raw-truth-preserved",
+        "research:code-only-resolution",
+        "reference:resolution-provenance",
+        "reference:evidence-pack",
+        "reference:five-dimension-behavior-contract",
+        "reference:failure-pressure-contract",
+        "zod:ReferenceEvidencePackSchema",
+        "zod:ReferenceFidelityContractSchema",
+        "model:gpt-5.6-luna",
+        "usage:successful-output-log-only"
+      ],
+      "providerCalls": {
+        "agent": 1,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 463469,
+        "outputTokens": 24423,
+        "totalTokens": 487892
+      }
+    },
+    "REFERENCE_MECHANIC_LOCK": {
+      "stage": "REFERENCE_MECHANIC_LOCK",
+      "status": "completed",
+      "startedAt": "2026-09-30T17:03:47.753Z",
+      "finishedAt": "2026-09-30T17:03:47.761Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "input/seed.yaml",
+        "artifacts/reference-evidence-pack.json",
+        "artifacts/reference-fidelity-contract.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/reference-mechanic-spec.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "zod:ReferenceMechanicSpecSchema",
+        "locked-by:human",
+        "agent-ideation:false",
+        "mechanic-fidelity:maximum-core-mechanics",
+        "expression-isolation:true"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "WAITING_FOR_REFERENCE_APPROVAL": {
+      "stage": "WAITING_FOR_REFERENCE_APPROVAL",
+      "status": "completed",
+      "startedAt": "2026-09-30T17:03:47.763Z",
+      "finishedAt": "2026-10-01T06:22:14.785Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/reference-mechanic-spec.json",
+        "artifacts/reference-fidelity-contract.json"
+      ],
+      "outputArtifacts": [
+        "human/reference-mechanic-review.json",
+        "human/reference-decision.yaml"
+      ],
+      "errors": [],
+      "evidence": [
+        "human/reference-decision.example.yaml",
+        "decision:APPROVE"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "BLUEPRINT": {
+      "stage": "BLUEPRINT",
+      "status": "completed",
+      "startedAt": "2026-09-30T17:23:10.029Z",
+      "finishedAt": "2026-09-30T17:30:16.043Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "input/seed.yaml",
+        "artifacts/production-line-resolution.json",
+        "artifacts/reference-mechanic-spec.json",
+        "artifacts/reference-fidelity-contract.json",
+        "artifacts/reference-research-resolution.json",
+        "artifacts/reference-failure-pressure-contract.json",
+        "artifacts/open-source-research.json",
+        "artifacts/iaa-contract.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/game-blueprint.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "zod:GameBlueprintSchema",
+        "reference-fidelity:consumed",
+        "reference-failure-pressure:consumed",
+        "open-source:scoped-no-candidate",
+        "open-source-research-before-blueprint:true",
+        "preview:original-expression",
+        "model:gpt-5.6-luna"
+      ],
+      "providerCalls": {
+        "agent": 1,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 1113507,
+        "outputTokens": 5786,
+        "totalTokens": 1119293
+      }
+    },
+    "ABANDONED": {
+      "stage": "ABANDONED",
+      "status": "completed",
+      "startedAt": "2026-09-30T17:30:16.062Z",
+      "finishedAt": "2026-09-30T17:30:16.062Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "stage:BLUEPRINT",
+        "state.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/abandonment-decision.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "abandonment:decision",
+        "cost-or-fix-cap-exceeded"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "PRODUCT_EXPERIENCE_CONTRACT": {
+      "stage": "PRODUCT_EXPERIENCE_CONTRACT",
+      "status": "completed",
+      "startedAt": "2026-09-30T17:59:29.958Z",
+      "finishedAt": "2026-09-30T17:59:29.972Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/experience-contract.json",
+        "artifacts/reference-fidelity-contract.json",
+        "artifacts/reference-research-resolution.json",
+        "artifacts/reference-failure-pressure-contract.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/product-experience-contract.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "product:signals-explicit",
+        "product:state-only-blocked",
+        "product:exact-branch-viewport-matrix"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "CORE_SPEC_FROZEN": {
+      "stage": "CORE_SPEC_FROZEN",
+      "status": "completed",
+      "startedAt": "2026-09-30T17:59:29.980Z",
+      "finishedAt": "2026-09-30T17:59:29.988Z",
+      "attempts": 1,
+      "inputArtifacts": [
+        "artifacts/game-blueprint.json",
+        "artifacts/production-line-resolution.json",
+        "artifacts/experience-hypothesis.json",
+        "artifacts/production-line-contract.json",
+        "artifacts/reference-fidelity-contract.json",
+        "artifacts/reference-research-resolution.json"
+      ],
+      "outputArtifacts": [
+        "artifacts/core-spec-lock.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "zod:CoreSpecLockSchema",
+        "spec:frozen",
+        "reference-fidelity:four-dimensions"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "FULL_BUILD": {
+      "stage": "FULL_BUILD",
+      "status": "failed",
+      "startedAt": "2026-10-01T06:22:14.806Z",
+      "finishedAt": "2026-10-01T06:24:37.882Z",
+      "attempts": 2,
+      "inputArtifacts": [
+        "artifacts/game-blueprint.json",
+        "artifacts/production-line-resolution.json",
+        "artifacts/production-line-contract.json",
+        "artifacts/experience-hypothesis.json",
+        "artifacts/core-spec-lock.json",
+        "artifacts/experience-contract.json",
+        "artifacts/product-experience-contract.json",
+        "artifacts/profile-experience-contract.json",
+        "artifacts/natural-play-plan.json",
+        "artifacts/reference-fidelity-contract.json",
+        "artifacts/reference-research-resolution.json",
+        "artifacts/reference-failure-pressure-contract.json",
+        "artifacts/style-lock.json",
+        "artifacts/asset-manifest.json",
+        "templates/web-lite/spatial-shop-v1"
+      ],
+      "outputArtifacts": [],
+      "errors": [
+        "Error: Reconnecting... 1/5 (unexpected status 404 Not Found: The model `gpt-5.6-luna-codex-abuse-1p-codexswic-ev3` does not exist or you do not have access to it., url: http://127.0.0.1:8765/v1/responses)\n    at CodexCliProvider.execute (/Users/kker/Documents/ChatGPT/妖怪夜市/src/providers/codex-cli.ts:268:21)\n    at async CodexAccountProvider.build (/Users/kker/Documents/ChatGPT/妖怪夜市/src/providers/codex-account.ts:239:20)\n    at async BuilderAgent.run (/Users/kker/Documents/ChatGPT/妖怪夜市/src/agents/index.ts:210:25)\n    at async executeReplicaPreview (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:2821:24)\n    at async execute (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:4167:14)\n    at async main (/Users/kker/Documents/ChatGPT/妖怪夜市/src/cli/factory.ts:134:47)",
+        "Error: {\"error\":{\"message\":\"Failed to parse request body\",\"type\":\"invalid_request_error\"}}\n    at CodexCliProvider.execute (/Users/kker/Documents/ChatGPT/妖怪夜市/src/providers/codex-cli.ts:268:21)\n    at async CodexAccountProvider.build (/Users/kker/Documents/ChatGPT/妖怪夜市/src/providers/codex-account.ts:239:20)\n    at async BuilderAgent.run (/Users/kker/Documents/ChatGPT/妖怪夜市/src/agents/index.ts:210:25)\n    at async executeReplicaPreview (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:2821:24)\n    at async execute (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:4167:14)\n    at async main (/Users/kker/Documents/ChatGPT/妖怪夜市/src/cli/factory.ts:142:46)"
+      ],
+      "evidence": [],
+      "failureReason": "Error: {\"error\":{\"message\":\"Failed to parse request body\",\"type\":\"invalid_request_error\"}}",
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    }
+  },
+  "transitionHistory": [
+    {
+      "from": "CREATED",
+      "to": "REFERENCE_DEEP_RESEARCH",
+      "reason": "state-save",
+      "at": "2026-09-30T16:19:20.084Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "REFERENCE_DEEP_RESEARCH",
+      "to": "FAILED",
+      "reason": "state-save",
+      "at": "2026-09-30T16:27:16.471Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "FAILED",
+      "to": "REFERENCE_DEEP_RESEARCH",
+      "reason": "state-save",
+      "at": "2026-09-30T17:03:22.421Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "REFERENCE_DEEP_RESEARCH",
+      "to": "REFERENCE_MECHANIC_LOCK",
+      "reason": "state-save",
+      "at": "2026-09-30T17:03:47.753Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "REFERENCE_MECHANIC_LOCK",
+      "to": "WAITING_FOR_REFERENCE_APPROVAL",
+      "reason": "state-save",
+      "at": "2026-09-30T17:03:47.765Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "WAITING_FOR_REFERENCE_APPROVAL",
+      "to": "BLUEPRINT",
+      "reason": "state-save",
+      "at": "2026-09-30T17:23:10.030Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "BLUEPRINT",
+      "to": "ABANDONED",
+      "reason": "state-save",
+      "at": "2026-09-30T17:30:16.064Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "ABANDONED",
+      "to": "BLUEPRINT",
+      "reason": "cost-cap-authorized:a7d66bc58dc51de796005fe13a095518ca8dafb972d9726279b5a8cf5749400c",
+      "at": "2026-09-30T17:57:05.437Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "BLUEPRINT",
+      "to": "PRODUCT_EXPERIENCE_CONTRACT",
+      "reason": "state-save",
+      "at": "2026-09-30T17:59:29.959Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "PRODUCT_EXPERIENCE_CONTRACT",
+      "to": "CORE_SPEC_FROZEN",
+      "reason": "state-save",
+      "at": "2026-09-30T17:59:29.981Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "CORE_SPEC_FROZEN",
+      "to": "FULL_BUILD",
+      "reason": "state-save",
+      "at": "2026-09-30T17:59:30.003Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "FULL_BUILD",
+      "to": "FAILED",
+      "reason": "state-save",
+      "at": "2026-09-30T18:13:52.457Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "FAILED",
+      "to": "FIX",
+      "reason": "state-save",
+      "at": "2026-10-01T06:20:18.324Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "FIX",
+      "to": "FULL_BUILD",
+      "reason": "state-save",
+      "at": "2026-10-01T06:22:14.806Z",
+      "runId": "20260930161712-79985df5"
+    },
+    {
+      "from": "FULL_BUILD",
+      "to": "FAILED",
+      "reason": "state-save",
+      "at": "2026-10-01T06:24:37.883Z",
+      "runId": "20260930161712-79985df5"
+    }
+  ]
+}

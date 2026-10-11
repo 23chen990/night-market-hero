@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only audit of simulation.ts, revision.ts and source-corresponding QA trace. No writes, builds, browser runs or report edits."
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/triage.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/reproduction-matrix.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/natural-540x960-keyboard-root-resume9/natural.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/natural-attempt8-resume-20261009.mjs"
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Do not modify or revert any file. Do not load the full conversation or unrelated factory code.",
+    "Inspect processor input consumption, carried mixed product deposit, nearest station, orders and the failing Coral trace. Distinguish confirmed source behavior from inference. Assess whether the fixed natural script supplies processing input; recommend one minimal next natural route or formal repair if necessary.",
+    "Read only relevant source ranges and compact parsed trace fields, not the entire megabyte JSON output. Return JSON only, following outputSchema; do not free-chat."
+  ],
+  "acceptance": [
+    "Cite immutable current-source path/line and prior trace phase for each claim.",
+    "Recommend one evidence-backed next action; preserve all acceptance gates.",
+    "No game workspace or build mutation."
+  ],
+  "outputSchema": "{schemaVersion:1,role:\"QAAgent\",targetGame:\"海滩渔货铺\",workspace:string,sourceEvidence:[{path:string,line:number,finding:string}],traceEvidence:[{phase:string,finding:string}],classification:\"harness-route\"|\"product-defect\"|\"unresolved\",hypothesis:string,nextAction:string,acceptanceChecks:string[]}"
+}

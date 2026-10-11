@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺 / continuation-v2",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "REFERENCE_DEEP_RESEARCH completed one model turn, but the returned artifact used instruction vocabulary aliases instead of the strict ReferenceBehaviorAnalysisSchema field names. The factory correctly rejected the artifact before build.",
+  "classification": [
+    "factory-schema-boundary",
+    "research-output-recovery"
+  ],
+  "scope": {
+    "route": "shared-factory",
+    "rationale": "The failure occurs before any generated-game write. The raw research content is complete, hash-bound, and semantically scoped; the defect is the shared normalization boundary between the research prompt vocabulary and the strict artifact schema.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other games and media",
+      "third-party code and expression",
+      "generated game workspace source"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Create an allowlisted codex-account continuation run with verified code evidence",
+      "Run REFERENCE_DEEP_RESEARCH once with CODEX_EXEC_MAX_RETRIES=0",
+      "Observe a completed model turn whose JSON uses lifecycleStateBranch, normalPlayerInput, causalSpatialRelationship, feedbackAnchor, eventOrder and evidence",
+      "Observe strict schema rejection requiring stateBranch, playerInput, spatialRelationship, visibleFeedback, viewport and structured sourceRefs"
+    ],
+    "observed": [
+      "Model turn completed with reported usage of 463469 input tokens and 24423 output tokens",
+      "No Builder or generated-game mutation occurred",
+      "Raw output was preserved at artifacts/reference-behavior-analysis.json",
+      "Run ended FAILED with a ZodError and no automatic retry"
+    ],
+    "evidence": [
+      {
+        "path": "artifacts/reference-behavior-analysis.json",
+        "sha256": "43aa881e8d659df6e700db5f31413e2d94c25b5e9d86d77748c9c8931201bc19",
+        "kind": "provider-output"
+      },
+      {
+        "path": "logs/codex/REFERENCE_DEEP_RESEARCH.attempt-1.stdout.jsonl",
+        "sha256": "f1ba46b83f00791795ab3f876b53f72240665e4ebc3f758b42550daefd205f32",
+        "kind": "provider-log"
+      },
+      {
+        "path": "logs/codex/REFERENCE_DEEP_RESEARCH.schema.json",
+        "sha256": "436ecbef524453f9005e89f9d800bafcd9d7331f25581cec19bd53a21809052c",
+        "kind": "schema"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "A failing test reproduces the exact alias-shaped behavior check and failure-pressure output",
+    "The normalizer maps representation aliases only and preserves every gameplay claim, status, source statement and unknown",
+    "Normalized output passes ReferenceBehaviorAnalysisSchema",
+    "recover-reference-research consumes the completed attempt without a second provider call",
+    "The recovered run remains BLOCKED where source evidence is genuinely unknown and does not enter BUILD prematurely",
+    "Targeted tests, lint, typecheck and the relevant recovery integration tests pass"
+  ],
+  "status": "REPRODUCED",
+  "createdAt": "2026-09-30T16:30:00.000Z"
+}

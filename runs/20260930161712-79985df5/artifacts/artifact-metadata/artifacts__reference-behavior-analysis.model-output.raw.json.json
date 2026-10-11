@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260930161712-79985df5",
+  "path": "artifacts/reference-behavior-analysis.model-output.raw.json",
+  "artifactId": "c6b08e4eb167dcab2010ced8640f8ede5af3076ea6140e5a25da922d2a858553",
+  "artifactType": "generic",
+  "producerStage": "REFERENCE_DEEP_RESEARCH",
+  "inputHashes": {
+    "input/seed.yaml": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+    "artifacts/reference-evidence-pack.json": "074a4391d4313fcfd5d4e58c63fe4b42d7bfabb7ee2c7425088043d65535d0ab",
+    "artifacts/reference-code-analysis.json": "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+    "reference-evidence/manifest.json": "e629e8f0ba7db5f05d633e5921c48e6f403a2b47c85ab5561a0fe40754c40aaa"
+  },
+  "inputArtifactHashes": {
+    "input/seed.yaml": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+    "artifacts/reference-evidence-pack.json": "074a4391d4313fcfd5d4e58c63fe4b42d7bfabb7ee2c7425088043d65535d0ab",
+    "artifacts/reference-code-analysis.json": "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+    "reference-evidence/manifest.json": "e629e8f0ba7db5f05d633e5921c48e6f403a2b47c85ab5561a0fe40754c40aaa"
+  },
+  "dependsOn": [
+    "input/seed.yaml",
+    "artifacts/reference-evidence-pack.json",
+    "artifacts/reference-code-analysis.json",
+    "reference-evidence/manifest.json"
+  ],
+  "supersedes": [],
+  "outputHash": "43aa881e8d659df6e700db5f31413e2d94c25b5e9d86d77748c9c8931201bc19",
+  "model": "gpt-5.6-luna",
+  "reasoning": "max",
+  "promptVersion": "unspecified",
+  "policyVersion": "unspecified",
+  "dataClassification": "internal",
+  "retentionPolicy": "run-lifetime",
+  "sourceRefs": [],
+  "status": "ACTIVE",
+  "invalidatedBy": [],
+  "approval": {
+    "status": "NONE"
+  },
+  "createdAt": "2026-09-30T17:03:22.418Z",
+  "updatedAt": "2026-09-30T17:03:22.418Z"
+}

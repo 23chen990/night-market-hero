@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "status": "BLOCKED",
+  "viewport": {
+    "width": 540,
+    "height": 960
+  },
+  "buildHash": "62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e",
+  "inspectedScreenshots": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/001-startup.png",
+      "sha256": "210babff5687db79cdf469ab167dce9cd09072417ce549e23cf20ee3c89bde09"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/020-player-at-runner-hire.png",
+      "sha256": "171ba013018c7295a458de9ef3018b17da7630f918f4c1b6dc945c8438249d79"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/047-gull-visible-target.png",
+      "sha256": "f3b5b234fcaed05ea8d456d6836ecc76084222f7377d11d17b5ac85641d6b565"
+    }
+  ],
+  "observations": [
+    "Startup beach canvas, HUD and controls fit 540x960.",
+    "Avatar head and torso visible at runner hire, whose progress reads 2/3.",
+    "Gull target screenshot shows an empty fish shelf with waiting customer and no clear active white bird.",
+    "No Moon screenshot was captured; topology and goal cannot receive a perceptual pass."
+  ],
+  "moonTopologyObserved": false,
+  "moonGoalObserved": false
+}

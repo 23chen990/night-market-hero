@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "route": "formal-fixer",
+  "attempt": 1,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "The validated issue set crosses simulation lifecycle, queue ordering, cash flow, runtime rendering, settlement, and replay; formal QA to fixer to QA retest is required.",
+  "contextIntentionallyOmitted": [
+    "other run workspaces and assets",
+    "unbound or unverified media",
+    "third-party code, assets, names, UI, expression, and raw tuning values",
+    "unrelated factory history and logs"
+  ],
+  "changes": [
+    {
+      "issueIds": ["BUG-LOCKED-DEMAND", "BUG-PATIENCE-START", "BUG-MOVING-PAYMENT"],
+      "result": "Preserved unlocked demand filtering and stationary-only payment; changed shelf arrival so the 8000ms patience clock begins after entering an empty waiting shelf, with the arrival frame free."
+    },
+    {
+      "issueIds": ["REF-SPATIAL-QUEUE"],
+      "result": "Added queue tickets, deterministic independent positions, queue-head-only servicing, and reflow after service."
+    },
+    {
+      "issueIds": ["REF-CASH-FLOW"],
+      "result": "Kept service proceeds in cashPile, added an explicit leave-and-return collection action, and rendered the counter pile and HUD status."
+    },
+    {
+      "issueIds": ["REF-OBJECT-FEEDBACK"],
+      "result": "Added typed source-to-target feedback events for pickup, deposit, customer pickup, queue entry, packing, collection, investment, upgrade, and construction completion; rendered local trails and object markers."
+    },
+    {
+      "issueIds": ["QA-TERMINAL-STAGE-CONTINUATION"],
+      "result": "Added operating/settlement state, construction completion transition, save compatibility, and runtime-wired continue/restart controls."
+    }
+  ],
+  "filesChanged": [
+    {"path": "src/simulation.ts", "sha256": "9fa2b26f6ac479a3a8ee4274ab5db5a6dfe4a2f2c8235b3b67337aa660ec4517"},
+    {"path": "src/simulation.test.ts", "sha256": "9879b6de57a4cecbe0a015f6c37eecdf2696c325f20a888dbccb6e043a3ee08a"},
+    {"path": "src/main.ts", "sha256": "609c5662ea259fb8570c3737b395f099430fa44688cfd21af2b792a75dbd164e"},
+    {"path": "src/style.css", "sha256": "4d617f5656fb614cb9d3e87979c7e326533d9c2e20e33ce97a14f1130d40ac10"},
+    {"path": "index.html", "sha256": "49a67e8bd8aa83130d6dae7cb1d4ded13c9c388c009c850ab0a6f8d2a7b314a0"},
+    {"path": "dist/index.html", "sha256": "95f01a1df5f823ec36467b0861c8149a01d3b89c22ea5894258cbe36cdcec751"},
+    {"path": "dist/assets/index-BFzsoeFw.js", "sha256": "db6aabd27fc336609b00a34322ae09f4f78195027fe737547b2f65b75467ed13"},
+    {"path": "dist/assets/index-Cy-x0kGx.css", "sha256": "b33d4d368252ea95db6902b259d9d31bc9a1d9011aa20c7a45d6cc91c0e51913"}
+  ],
+  "verification": {
+    "redTests": {
+      "command": "pnpm test -- --run src/simulation.test.ts",
+      "exitCode": 1,
+      "result": "vitest command unavailable in the shared node_modules; the targeted RED suite was written and the dependency failure is preserved in red-tests.log"
+    },
+    "greenTests": {
+      "command": "pnpm dlx --yes vitest@4.1.11 run src/simulation.test.ts",
+      "exitCode": 0,
+      "result": "1 test file passed, 9 tests passed"
+    },
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "exitCode": 0
+    },
+    "lint": {
+      "command": "pnpm lint",
+      "exitCode": 1,
+      "result": "package.json has no lint script; recorded in lint.log"
+    },
+    "build": {
+      "command": "pnpm build",
+      "exitCode": 0,
+      "result": "Vite production build completed once; only a chunk-size warning was emitted"
+    },
+    "manualSimulationProbe": {
+      "command": "pnpm exec tsx -e <targeted simulation assertions>",
+      "exitCode": 0,
+      "result": "locked demand, patience boundary, stationary payment, queue ordering/reflow, cash collection, settlement/restart checks passed"
+    }
+  },
+  "remainingNaturalEvidenceGaps": [
+    "Independent Playwright natural-input retest has not yet exercised startup through harvest, deposit, customer service, cash collection, construction, settlement, continue, restart, and replay.",
+    "Exact branch screenshots are still required at 360x800, 390x844, 430x932, 540x960, and 844x390; touch release and prefers-reduced-motion remain unobserved.",
+    "Natural evidence must verify the cash pile remains visible until a leave-and-return collection action and that queue reflow is readable on mobile.",
+    "The locked blueprint still contains only one construction successor; broader multi-stage market depth remains a scope gap and was not invented in this attempt.",
+    "The formal QA report and perceptual gate have not been regenerated after this attempt; this artifact does not claim QA acceptance."
+  ],
+  "preBuildDiffCheck": {
+    "command": "git diff --check",
+    "exitCode": 2,
+    "result": "reported pre-existing trailing whitespace in docs/phase5-runtime-evidence-design.md outside the authorized target paths; targeted diff check for the game workspace passed"
+  },
+  "evidencePaths": [
+    "artifacts/fix/attempt-1/task.json",
+    "artifacts/fix/attempt-1/red-tests.log",
+    "artifacts/fix/attempt-1/green-tests.log",
+    "artifacts/fix/attempt-1/tests.log",
+    "artifacts/fix/attempt-1/typecheck.log",
+    "artifacts/fix/attempt-1/lint.log",
+    "artifacts/fix/attempt-1/build.log",
+    "artifacts/fix/attempt-1/source-hashes.json"
+  ]
+}

@@ -1,0 +1,67 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/presentation-runtime.test.ts (7 tests | 7 failed) 44493ms
+     × shows one full-width continue command at 360x800 and preserves two market destinations 9988ms
+     × shows one full-width continue command at 390x844 and preserves two market destinations 4407ms
+     × shows one full-width continue command at 430x932 and preserves two market destinations 3918ms
+     × shows one full-width continue command at 540x960 and preserves two market destinations 4640ms
+     × shows one full-width continue command at 844x390 and preserves two market destinations 4688ms
+     × keeps the avatar body and head visible through funding labels at 540x960 9969ms
+     × keeps the avatar body and head visible through funding labels at 844x390 5867ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 360x800 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 390x844 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 430x932 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 540x960 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 844x390 and preserves two market destinations
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/presentation-runtime.test.ts:72:39
+     70|         await expansionSettlement(page);
+     71|         const choices = page.locator('#settlement [data-market-id]:vis…
+     72|         expect(await choices.count()).toBe(1);
+       |                                       ^
+     73|         expect(await page.locator('#restart-round:visible').count()).t…
+     74|         const widths = await page.locator('#continue-round').evaluate(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > keeps the avatar body and head visible through funding labels at 540x960
+AssertionError: {"position":{"x":174,"y":786},"pixels":{"body":630.9770195967856,"head":316.7066121528267}}: expected 630.9770195967856 to be greater than 720
+ ❯ src/presentation-runtime.test.ts:105:67
+    103|         }, position);
+    104|         const pixels = await avatarPixels(page, position);
+    105|         expect(pixels.body, JSON.stringify({ position, pixels })).toBe…
+       |                                                                   ^
+    106|         expect(pixels.head, JSON.stringify({ position, pixels })).toBe…
+    107|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > keeps the avatar body and head visible through funding labels at 844x390
+AssertionError: {"position":{"x":174,"y":786},"pixels":{"body":608.2644628099174,"head":327.2727272727273}}: expected 608.2644628099174 to be greater than 720
+ ❯ src/presentation-runtime.test.ts:105:67
+    103|         }, position);
+    104|         const pixels = await avatarPixels(page, position);
+    105|         expect(pixels.body, JSON.stringify({ position, pixels })).toBe…
+       |                                                                   ^
+    106|         expect(pixels.head, JSON.stringify({ position, pixels })).toBe…
+    107|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  17:21:55
+   Duration  45.83s (transform 41ms, setup 0ms, import 1.09s, tests 44.49s, environment 0ms)
+

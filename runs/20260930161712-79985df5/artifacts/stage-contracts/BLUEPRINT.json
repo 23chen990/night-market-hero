@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "stage": "BLUEPRINT",
+  "passed": true,
+  "ownerRole": "ProducerAgent",
+  "verifierRole": "FactoryControlPlane",
+  "verifiedByRole": "FactoryControlPlane",
+  "independent": true,
+  "checkedAt": "2026-09-30T17:30:16.035Z",
+  "missing": [],
+  "observedInputs": [
+    "input/seed.yaml",
+    "artifacts/production-line-resolution.json",
+    "artifacts/reference-mechanic-spec.json",
+    "artifacts/reference-fidelity-contract.json",
+    "artifacts/reference-research-resolution.json",
+    "artifacts/reference-failure-pressure-contract.json",
+    "artifacts/open-source-research.json",
+    "artifacts/iaa-contract.json"
+  ],
+  "observedArtifacts": [
+    "artifacts/game-blueprint.json"
+  ],
+  "observedEvidence": [
+    "zod:GameBlueprintSchema",
+    "reference-fidelity:consumed",
+    "reference-failure-pressure:consumed",
+    "open-source:scoped-no-candidate",
+    "open-source-research-before-blueprint:true",
+    "preview:original-expression"
+  ],
+  "artifactVersions": {
+    "input/seed.yaml": 1,
+    "artifacts/open-source-research.json": 1,
+    "artifacts/iaa-contract.json": 1,
+    "artifacts/game-blueprint.json": 1
+  },
+  "failureRoute": {
+    "stage": "BLUEPRINT",
+    "classes": [
+      "core_experience",
+      "rights",
+      "unknown"
+    ],
+    "rationale": "Blueprint ambiguity is an upstream design error and must not be patched in the generated workspace."
+  }
+}

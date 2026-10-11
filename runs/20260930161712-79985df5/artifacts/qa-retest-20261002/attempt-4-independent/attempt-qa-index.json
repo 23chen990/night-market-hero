@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "attempt-independent-qa-index",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "attempt": 4,
+  "buildHash": "2e07d6ee4276ee159ca64ce868b27c2610b4a0a46009dcc434074adf89118d60",
+  "status": "FAILED",
+  "tracks": {
+    "deterministic": "PASS:5viewports fixture-only",
+    "natural": "BLOCKED:HUD/controls and unobserved funded staff/new-market settlement/replay",
+    "perceptual": "FAIL:actual HUD occlusion, controls clipping, landscape small field/reversed input"
+  },
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/landing-input.json",
+      "sha256": "08bcbe46409f06960b3cac0e48cdb412b20b4d94ac24bd1a2b9ec5721833188c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/directions.json",
+      "sha256": "f67bf13ac2a24ddf78b519dc246af00181583ef307eb7c9749c133004ee7435e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/deterministic-depth.json",
+      "sha256": "e0f17ac782ff782c64aa7f5de131e0a2ea0bd13d480dba28ebf3869edda2b7a1"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/independent-landing-pixel-review.json",
+      "sha256": "a3c6fadfb259949e73efe8598ee91f22ad4d1dee4abcae39b1206a8da826d955"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/layout-input-qa-report.json",
+      "sha256": "99ee3324c4c3592852cb02f98b8fe5896803fe20696ff1b08207f3f07ef417aa"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/route-corrected/qa-natural-journey-report.json",
+      "sha256": "e72bb55cb9c8f4a45379a8ef5e1f510cc6b9ae4133dc79cad37fb8328b593c7c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/route-corrected/natural-540x960.json",
+      "sha256": "70b1ffb220e90dbf8f531ddc0b0c7d4503b4743702efb6535d50266701a78998"
+    }
+  ],
+  "nextAttempt": 5,
+  "nextHypothesis": "Measured full HUD/control chrome and coherent landscape canvas/input transform; meaningful lint configuration.",
+  "checkedAt": "2026-10-02T16:49:57.794Z"
+}

@@ -1,0 +1,230 @@
+require('main.gamecore.GameState')
+require('main.gamecore.Player')
+require('main.gamecore.Parrot')
+require('main.gamecore.Crab')
+
+local CAMERA_ID = hash("/cameraGame")
+
+gameState = GameState:new()
+
+function addObject(vFactoryName, vX, vY, vZ)
+	local p = vmath.vector3(vX, vY, vZ)
+	local component = vFactoryName
+	return factory.create(component, p)
+end
+
+function addGraphic(data)
+	local p = vmath.vector3(data.x, data.y, data.z)
+
+	local factoryName = "#factoryGraphic"
+
+	if data.layer == 'top' then
+		factoryName = "#factoryGraphicTop"
+	end
+
+	local obj = factory.create(factoryName, p)
+
+	if data.sprite then
+		msg.post(obj, "changeSprite", {sprite = data.sprite})
+	elseif data.hash then
+		msg.post(obj, "changeSprite", {hash = data.hash})
+	end
+
+    return obj
+end
+
+function addIndicator(data)
+	local p = vmath.vector3(data.x, data.y, data.z)
+	local obj = factory.create("#factoryIndicator", p)
+
+	return obj
+end
+
+function addIndicatorCoins(data)
+	local p = vmath.vector3(data.x, data.y, data.z)
+	local obj = factory.create("#factoryIndicatorCoins", p)
+
+	return obj
+end
+
+function addCloudZavod(p)
+	local object_ids = collectionfactory.create("#factoryCloudZavod", p)
+
+	return {
+		root	= object_ids[hash("/cloud")]
+	}
+end
+
+function addCloudFood(p)
+	local object_ids = collectionfactory.create("#factoryCloudFood", p)
+
+	return {
+		root	= object_ids[hash("/cloud")]
+	}
+end
+
+function addFactorySpine(data)
+	local p = vmath.vector3(data.x, data.y, data.z)
+	local object_ids = collectionfactory.create(data.factoryName, p)
+
+    return {
+		root	= object_ids[hash("/root")],
+		spine	= object_ids[hash("/spine")]
+	}
+end
+
+function addFactoryAimzone(p)
+	local object_ids = collectionfactory.create("#factoryAimzone", p)
+
+    return {
+		root = object_ids[hash("/root")]
+	}
+end
+
+function addFactoryPanelZavod(p)
+	local object_ids = collectionfactory.create("#factoryPanelZavod", p)
+
+    return {
+		root = object_ids[hash("/root")]
+	}
+end
+
+function addEffect(vLayer, vNameEffect, vPosition, vIsFlip)
+	if (gameState.countEffect >= LIMIT_EFFECT) then
+
+		for i=#gameState.listEffectObjects,1, -1 do
+			if not go.exists(gameState.listEffectObjects[i]) then
+				table.remove(gameState.listEffectObjects, i)
+			end
+		end
+
+		local getFirstObject = gameState.listEffectObjects[1]
+
+		if getFirstObject then
+			if go.exists(getFirstObject) then
+				msg.post(getFirstObject, "remove")
+			end
+
+			table.remove(gameState.listEffectObjects, 1)
+		end
+
+	end
+
+	local vIsFlip = false or vIsFlip
+	local deepZ = vPosition.z or DEEP_EFFECT
+
+	local factoryName = "#factoryEffect"
+	if vLayer == 'top' then
+		factoryName = "#factoryEffectTop"
+	end
+
+	local effect = addObject(factoryName, -100, -100, deepZ)
+	msg.post(effect, "playAnimation", {anim = vNameEffect, pos = vPosition, flip = vIsFlip})
+
+	gameState.countEffect = gameState.countEffect + 1
+
+	table.insert(gameState.listEffectObjects, effect)
+
+	return effect
+end
+
+function addCollectionMart(vNum)
+	if vNum == 101 then
+		vNum = 'H'
+	elseif vNum == 102 then
+		vNum = 'C'
+	end
+
+	local object_ids = collectionfactory.create("#factoryMart"..vNum, vmath.vector3(0,0,0.1))
+
+	return object_ids
+end
+
+function setCamera(vValue, vTarget, vLerp, vW, vH)
+	if vValue == "follow" then
+		
+		
+		local lerp = vLerp or 0.25
+
+		msg.post(CAMERA_ID, "follow",
+			{
+				target		= vTarget,
+				lerp		= lerp,
+				
+				horizontal	= true,
+				vertical	= true
+			})
+
+	elseif vValue == "unfollow" then
+		msg.post(CAMERA_ID, "unfollow")
+
+	elseif vValue == "setDeadzone" then
+		local w = 900/2
+		local h = 600/2
+		msg.post(CAMERA_ID, "deadzone", { left = w/2, right = w/2, bottom = h/2, top = h/2 })
+
+	elseif vValue == "cancelDeadzone" then
+		msg.post(CAMERA_ID, "deadzone", {})
+
+	elseif vValue == "setBounds" then
+		local cameraW = vW
+		local cameraH = vH
+		msg.post(CAMERA_ID, "bounds", { left = -cameraW, right = cameraW, bottom = -cameraH, top = cameraH })
+
+	elseif vValue == "cancelBounds" then
+		msg.post(CAMERA_ID, "bounds", {})
+
+	end
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	msg.post(CAMERA_ID, "enable")
+	msg.post(CAMERA_ID, "use_projection", { projection = hash("FIXED_AUTO") })
+
+	global.currentUrl = msg.url()
+	global.cameraURL = CAMERA_ID
+
+	gameState:init()
+
+	if global.isDesktop then
+		msg.post(url_gamepad_gui, "disable")
+	else
+		msg.post(url_gamepad_gui, "register")
+		msg.post(url_gamepad_gui, "hideActionButton")
+	end
+
+	msg.post(url_controller_gui, 'disable')
+
+	
+end
+
+function final(self)
+	msg.post(".", "release_input_focus")
+
+	msg.post(CAMERA_ID, "disable")
+
+	gameState:final()
+
+end
+
+function update(self, dt)
+	gameState:update(self, dt)
+
+end
+
+
+
+
+
+
+function on_message(self, message_id, message, sender)
+	gameState:on_message(self, message_id, message, sender)
+
+end
+
+function on_input(self, action_id, action)
+	gameState:on_input(self, action_id, action)
+
+end

@@ -1,0 +1,67 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/repair-runtime.test.ts (5 tests | 5 failed) 5393ms
+     × attributes coral-cove-market settlement to its completed goal 1123ms
+     × attributes moon-tide-market settlement to its completed goal 273ms
+     × loads an explicit existing icon successfully 225ms
+     × keeps the raiding gull distinct from shelf labels at 540x960 286ms
+     × keeps the raiding gull distinct from shelf labels at 844x390 236ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > attributes coral-cove-market settlement to its completed goal
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > attributes moon-tide-market settlement to its completed goal
+Error: page.goto: net::ERR_HTTP_RESPONSE_CODE_FAILURE at http://127.0.0.1:57262/
+Call log:
+[2m  - navigating to "http://127.0.0.1:57262/", waiting until "load"[22m
+
+ ❯ load src/repair-runtime.test.ts:29:14
+     27|     key: `ai-game-factory:spatial-shop:${generatedConfig.title}`, save…
+     28|   });
+     29|   await page.goto(baseUrl);
+       |              ^
+     30|   await page.waitForFunction(() => !!window.__GAME_TEST__ && !!documen…
+     31|   await page.waitForTimeout(150);
+ ❯ src/repair-runtime.test.ts:78:45
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > loads an explicit existing icon successfully
+Error: page.goto: net::ERR_HTTP_RESPONSE_CODE_FAILURE at http://127.0.0.1:57262/
+Call log:
+[2m  - navigating to "http://127.0.0.1:57262/", waiting until "load"[22m
+
+ ❯ src/repair-runtime.test.ts:93:18
+     91|     const page = await browser.newPage();
+     92|     try {
+     93|       await page.goto(baseUrl);
+       |                  ^
+     94|       const icon = page.locator('link[rel="icon"]');
+     95|       expect(await icon.count()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > keeps the raiding gull distinct from shelf labels at 540x960
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > keeps the raiding gull distinct from shelf labels at 844x390
+Error: page.goto: net::ERR_HTTP_RESPONSE_CODE_FAILURE at http://127.0.0.1:57262/
+Call log:
+[2m  - navigating to "http://127.0.0.1:57262/", waiting until "load"[22m
+
+ ❯ load src/repair-runtime.test.ts:29:14
+     27|     key: `ai-game-factory:spatial-shop:${generatedConfig.title}`, save…
+     28|   });
+     29|   await page.goto(baseUrl);
+       |              ^
+     30|   await page.waitForFunction(() => !!window.__GAME_TEST__ && !!documen…
+     31|   await page.waitForTimeout(150);
+ ❯ src/repair-runtime.test.ts:111:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  18:17:46
+   Duration  6.18s (transform 102ms, setup 0ms, import 529ms, tests 5.39s, environment 0ms)
+

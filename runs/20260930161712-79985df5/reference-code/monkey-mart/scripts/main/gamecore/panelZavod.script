@@ -1,0 +1,95 @@
+local PATH_CLOUD1		= "cloud_back"
+local PATH_CLOUD2		= "cloud_icon"
+local PATH_CLOUD3		= "cloud_text"
+local PATH_CLOUD_ICON	= "cloud_icon#sprite"
+local PATH_CLOUD_BACK	= "cloud_back#sprite"
+local PATH_CLOUD_TEXT	= "cloud_text#label"
+
+local function updateSprite(vNum, vTick)
+    local frameName = ''
+
+    if vTick == 0 then
+        vNum = 1
+    end
+
+    if vNum < 10 then
+        if vNum < 1 then
+            vNum = 1
+        end
+        frameName = 'facility_bar000'..vNum
+    else
+        if vNum > 12 then
+            vNum = 12
+        end
+        frameName = 'facility_bar00'..vNum
+    end
+
+    sprite.play_flipbook(PATH_CLOUD_BACK, frameName)
+
+end
+
+local function updateTick(vTick, vBuild)
+    local step = vBuild / 12  
+    local tick = vTick + 1
+
+    local frameNum = math.ceil(tick / step)
+
+    
+
+    updateSprite(frameNum, vTick)
+
+end
+
+function init(self)
+    go.set_position(vmath.vector3(0,0,DEEP_CURSOR + 0.01), PATH_CLOUD1)
+    go.set_position(vmath.vector3(20,-2,DEEP_TEXT), PATH_CLOUD3)
+
+end
+
+ 
+
+
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("show") then
+        msg.post(PATH_CLOUD1, "enable")
+        msg.post(PATH_CLOUD2, "enable")
+        msg.post(PATH_CLOUD3, "enable")
+
+    elseif message_id == hash("hide") then
+        msg.post(PATH_CLOUD1, "disable")
+        msg.post(PATH_CLOUD2, "disable")
+        msg.post(PATH_CLOUD3, "disable")
+
+    elseif message_id == hash("updateIcon") then
+        
+        sprite.play_flipbook(PATH_CLOUD_ICON, "food"..message.type.."_icon")
+
+        
+
+        go.set_scale(vmath.vector3(1.0,1.0,1.0), PATH_CLOUD2)
+
+        go.set_position(vmath.vector3(-30,-1,DEEP_CURSOR + 0.02), PATH_CLOUD2)
+
+        if message.type == 1 then
+            go.set_position(vmath.vector3(-30,-1,DEEP_CURSOR + 0.02), PATH_CLOUD2)
+        elseif message.type == 2 then
+            go.set_position(vmath.vector3(-26,-4,DEEP_CURSOR + 0.02), PATH_CLOUD2)
+        elseif message.type == 18 then
+            go.set_position(vmath.vector3(-30,-3,DEEP_CURSOR + 0.02), PATH_CLOUD2)
+            go.set_scale(vmath.vector3(0.9,0.9,0.9), PATH_CLOUD2)
+        elseif message.type == 33 then
+            go.set_scale(vmath.vector3(0.8,0.8,0.8), PATH_CLOUD2)
+        end
+
+        go.set_position(vmath.vector3(20,0,DEEP_TEXT), PATH_CLOUD3)
+
+    elseif message_id == hash("updateText") then
+        label.set_text(PATH_CLOUD_TEXT, message.text1.."/"..message.text2)
+
+    elseif message_id == hash("updateTick") then
+        updateTick(message.tick, message.build)
+
+    end
+
+end

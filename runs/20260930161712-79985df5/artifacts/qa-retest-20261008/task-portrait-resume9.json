@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "QA-only, own outputs/logs for390x844 touch and430x932 keyboard under attempt8, portrait-resume9-summary.json. No shared runner/helper edits or game/build changes. You are not alone.",
+  "inputs": [
+    "artifacts/qa-retest-20261008/natural-attempt8-resume-20261009.mjs",
+    "artifacts/qa-retest-20261008/qa-lib-attempt8.mjs",
+    "artifacts/fix/attempt-8/build-manifest.json"
+  ],
+  "acceptance": [
+    "Run sequentially fresh natural runner with SHOP_QA_WIDTH/HEIGHT/INPUT390/844/touch then430/932/keyboard, SHOP_QA_SESSION=portrait-resume9, SHOP_QA_URL=http://127.0.0.1:4178. Direct node --import tsx. Full ChromiumMetal configured. Sandbox launch may require require_escalated justified for localgameQA; no package installation.",
+    "No __GAME_TEST__, state injection orlocalStoragechanges. Must observe bothmarketactualgoals/settlements/newtransaction, employee,gullsametarget, reload,restartnewtransaction. Close browsers, awaitfinalizedvideo, preservefailed evidence and verify hashes. StrictZodsummary. On failure inspect screenshots to distinguishharness/scenario/product, notifyviaartifact; do notchangeacceptance."
+  ],
+  "output": "portrait-resume9-summary.json"
+}

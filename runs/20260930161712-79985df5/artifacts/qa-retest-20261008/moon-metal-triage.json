@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "Moon Metal supplemental natural QA stopped in the beach-stall prerequisite journey; Moon market never reached.",
+  "classification": [
+    "qa-false-positive",
+    "failure-attribution"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Retain the formal attempt-7 QA obligation. Infrastructure versus product cause remains unresolved; parent must decide a distinct next hypothesis before any rerun or game repair.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Other runs and unrelated game history",
+      "No internal game state or fixture-derived conclusions"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Run moon-metal-natural.mjs with fresh 540x960 keyboard Chromium Metal context against immutable attempt-7 preview4177.",
+      "Complete ordinary startup, fish sales, expansion settlement, continue locally, processor route and employee funding walk.",
+      "Stock shelves, leave the seagull area, observe loss feedback and attempt rendered gull-target identification."
+    ],
+    "observed": [
+      "Initial settlement, one continue-local choice, processor route and avatar visibility passed.",
+      "Runner action check and cashier action check had no matching visible action events; runner capture visibly shows recruitment 2/3. These checks are failures, not validated product root causes.",
+      "Visible loss toast appeared; subsequent gull target screenshot yielded no candidate. The harness stopped without substituting a shelf.",
+      "One resource 404 was preserved; no page exceptions.",
+      "Moon topology, three dual-shelf orders, Moon settlement, replay, save reload and restart were not reached."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/natural.json",
+        "sha256": "c77580aef22a784825a198d3b1f44476b18c50420d8a09a84ca5a3fca0f88f94",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/020-player-at-runner-hire.png",
+        "sha256": "171ba013018c7295a458de9ef3018b17da7630f918f4c1b6dc945c8438249d79",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/040-cashier-service-away-from-player.png",
+        "sha256": "e8138cf570b9a268eb0edb5f7875b1f0d32139fcf72a6427dc97419d4f328038",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/045-gull-visible-loss.png",
+        "sha256": "d815c448d6fcab2cc5a8077e1e3f6dffbbc56488c8535e8f5430ffbf4de72a69",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/047-gull-visible-target.png",
+        "sha256": "f3b5b234fcaed05ea8d456d6836ecc76084222f7377d11d17b5ac85641d6b565",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/natural.webm",
+        "sha256": "842106545eae4e7c4adf763d76170f727f8aaa64e55e2da1fc8c564d296f7e9d",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Preserve failed report, video, screenshots and source/build identity.",
+    "Parent resolves lifecycle capture or product cause using this exact branch before any repeat.",
+    "Fresh normal Moon journey must reach actual changed topology, three dual-shelf orders, own settlement, new transaction replay, save reload and restart.",
+    "No fixture/state injection or title-only market pass."
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-08T10:09:39.267Z"
+}

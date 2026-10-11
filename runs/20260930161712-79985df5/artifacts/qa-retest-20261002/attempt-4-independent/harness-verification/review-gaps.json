@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "cash-collection-leave-location",
+      "passed": false,
+      "evidence": "New5 collect() uses capacity-upgrade as leave waypoint. Stationary arrival/screenshots can pay upgrade and drain wages. Use a safe aisle coordinate away from ALL funded/purchase and market marker stations. Old4 used checkout.x-160,checkout.y; choose documented safe coordinate, verify normal visible wallet."
+    },
+    {
+      "name": "employee-pixel-threshold-scales-with-canvas",
+      "passed": false,
+      "evidence": "New5 hire() scans PLAYER_MARKERS.body (teal player colour) then requires component>=120pixel area for blue runner. This does not isolate runner and a fixed120 fails at small-phone scale. Use actual renderer runner blue RGB independently, baseline/after/action paired snapshots and scale area to world/canvas; exact final independent pixel review remains required."
+    },
+    {
+      "name": "processor-and-gull-causal-depth-gates",
+      "passed": false,
+      "evidence": "New5 broad packing+processor-starved-object check does not establish processor output/deposit; gull event+arrival does not establish loss->scared->no further loss/refill. Keep raw phases for independent pixel reviewer and do not promote coarse passed gates into all-six branch completion."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-HARNESS-SPENDING-WAYPOINT",
+      "severity": "error",
+      "message": "Capacity purchase station is an inappropriate cash-collection leave waypoint; it can prevent worker funding.",
+      "evidence": "/tmp/shop-natural-depth5.mjs collect()"
+    },
+    {
+      "id": "QA-HARNESS-WORKER-PIXEL-MISMATCH",
+      "severity": "error",
+      "message": "Teal player component threshold cannot prove blue worker actor, and fixed pixel areas are viewport-dependent.",
+      "evidence": "/tmp/shop-natural-depth5.mjs hire()"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Root read-only QA-harness review. No product bug inferred. Modify only owned harness outside workspace; exact player/worker/pixel truth still independent.",
+  "testedAt": "2026-10-02T17:05:26.690Z"
+}

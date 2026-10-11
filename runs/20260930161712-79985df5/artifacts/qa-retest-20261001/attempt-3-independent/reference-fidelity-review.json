@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "contractHash": "b6565757d769df0d499c8392ba768253c22879c0544f195f6103a3df00d80473",
+  "buildHash": "2bd4b7cff5d7614e7a01a742b71070b0062a70b28731d62975cf344c8e01a109",
+  "reviewer": "QAAgent",
+  "authorIndependent": true,
+  "cases": [
+    {
+      "checkId": "qa-input-build-payment",
+      "objectType": "Construction point, player wallet, paid-contribution state and remaining construction debt",
+      "stateBranch": "Construction point is for sale; player is inside its interaction range; player is stationary; payment is in progress",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": false,
+      "perceptualPassed": false,
+      "observedStateChange": "Natural journey reached the construction completion state, but the intermediate balance-limited payment and player-to-construction feedback sequence was not separately observed in player-visible evidence.",
+      "observedFeedback": "Cycle-10 shows completed construction and successor context; it does not prove the full wallet debit → contribution → remaining debt → currency-flight order.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-10-settlement.png",
+          "sha256": "8290f7b1a500c201887b3d94510cf5cd6562a490e98c3f6050c11a6e9cee2c07"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    },
+    {
+      "checkId": "qa-input-production-gating",
+      "objectType": "Active producer or processor station, station inventory and connected input shelf",
+      "stateBranch": "Producer is active and has operating capacity; processor branch may require one or more connected input shelves to contain the required inputs",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": false,
+      "perceptualPassed": false,
+      "observedStateChange": "A fresh producer and shelf are observed, but the contract's processor with connected-input gating branch is absent from the default runtime.",
+      "observedFeedback": "The screenshot shows the producer route only; no processor input gate or blocked-capacity signal is observed.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-02-harvest-1.png",
+          "sha256": "a892a41e368965bd56458b894ece01a4e10cc37d9eac29d4a9cd36a543bb0d5e"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    },
+    {
+      "checkId": "qa-spatial-harvest-and-deposit",
+      "objectType": "Player, typed producer inventory, player carried inventory and compatible customer shelf",
+      "stateBranch": "Producer contains collectable stock; player capacity is not full; player then enters the matching shelf interaction polygon while carrying the product",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": true,
+      "perceptualPassed": true,
+      "observedStateChange": "Natural movement reaches the nearshore net, carries fresh fish, then enters the compatible fish tray and advances shelf stock.",
+      "observedFeedback": "Cycle-02 and cycle-03 show the beach route, fresh fish product, active order card, shelf route, stock and mission progression.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-02-harvest-1.png",
+          "sha256": "a892a41e368965bd56458b894ece01a4e10cc37d9eac29d4a9cd36a543bb0d5e"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-03-deposit-1.png",
+          "sha256": "761215e10973f584f9f88fafdd3ee2c5c3d5aa199f4c7a929f659966c8552732"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    },
+    {
+      "checkId": "qa-failure-customer-wait-recovery",
+      "objectType": "Ordinary customer, desired product shelf, player carried stock and checkout queue",
+      "stateBranch": "Ordinary customer takes a basket, walks to the desired shelf, waits for the desired product, takes the product, then moves to checkout and queues",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": false,
+      "perceptualPassed": false,
+      "observedStateChange": "Normal replenishment and queueing are observed, but the exact unavailable-shelf waiting branch and recovery are not triggered.",
+      "observedFeedback": "The screenshot shows a successful shelf path; it cannot prove the sibling wait/failure branch.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-03-deposit-1.png",
+          "sha256": "761215e10973f584f9f88fafdd3ee2c5c3d5aa199f4c7a929f659966c8552732"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    },
+    {
+      "checkId": "qa-failure-disruption-branch",
+      "objectType": "Disruption visitor, usable product shelf and shelf inventory",
+      "stateBranch": "Disruption visitor reaches a usable shelf; the shelf contains stock; disruption behavior repeats periodically while stock remains",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": false,
+      "perceptualPassed": false,
+      "observedStateChange": "No disruption visitor reaches a stocked shelf in the default runtime trace.",
+      "observedFeedback": "Startup contains no shelf-localized disruption alert or periodic goods-loss event.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-01-boot.png",
+          "sha256": "effa85af428d7a47d2efb7564c6f86576e6dbbedbadb0506bf86ccdce8a74482"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    },
+    {
+      "checkId": "qa-feedback-construction-sequence",
+      "objectType": "Player wallet, construction point debt state and currency feedback entity",
+      "stateBranch": "Construction payment step executes while the player is eligible to pay at the construction point",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": false,
+      "perceptualPassed": false,
+      "observedStateChange": "Construction reaches completion and settlement naturally, but the short currency feedback entity/order is not isolated in a player-visible frame.",
+      "observedFeedback": "Cycle-10 proves completion and successor context; it does not prove the exact currency animation attachment and timing.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-10-settlement.png",
+          "sha256": "8290f7b1a500c201887b3d94510cf5cd6562a490e98c3f6050c11a6e9cee2c07"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    },
+    {
+      "checkId": "qa-feedback-checkout-cash",
+      "objectType": "Checkout queue head, checkout station, packing state, counter cash pile and player",
+      "stateBranch": "A customer at the front of the queue has arrived; checkout service is active; the player or an employed cashier can operate the checkout branch",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": true,
+      "perceptualPassed": true,
+      "observedStateChange": "Natural player movement drives queue head → packing → counter cash → leave-and-return collection twice at 540x960.",
+      "observedFeedback": "Active product/order card, packing status/toast, counter cash and wallet change are visible and causally ordered.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-03-deposit-1.png",
+          "sha256": "761215e10973f584f9f88fafdd3ee2c5c3d5aa199f4c7a929f659966c8552732"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-04-checkout-1.png",
+          "sha256": "74c39f0ed5bd95e9790e52bcaa35c476138181cfe497803ceb4a456fc403775c"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-05-collect-1.png",
+          "sha256": "b6db983f29269386c83b6693d34039616a72d34369bdceb2d39e9907c9c71129"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-08-checkout-2.png",
+          "sha256": "cc2e87489ea813f13052cfa239a1317943b4796311c9609ed32fd888cc116167"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-09-collect-2.png",
+          "sha256": "b514d5692fd49bccdf8c5ecb4b71c7354d21a1d8827f7fd39df6f5d22d40eb3c"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    },
+    {
+      "checkId": "qa-terminal-stage-continuation",
+      "objectType": "Next-market entry marker, stage progression state and shop-selection interface",
+      "stateBranch": "Stage expansion is complete; the next-market entry marker is active; player enters the marker area and becomes stationary",
+      "viewport": {
+        "width": 540,
+        "height": 960
+      },
+      "passed": false,
+      "perceptualPassed": false,
+      "observedStateChange": "Attempt 3 adds visible market choices and a normal selection return to operating, but the contract's separate next-market marker entry and stationary-player step are not observed; selection does not change world content.",
+      "observedFeedback": "Cycle-10 and cycle-11 prove the new selection UI and return path, while retaining the marker/world-transition gap.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-10-settlement.png",
+          "sha256": "8290f7b1a500c201887b3d94510cf5cd6562a490e98c3f6050c11a6e9cee2c07"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-11-continue.png",
+          "sha256": "5a18fc078901bfb18852c39ae4c9ae4add332f249367afbbec96197f5bd5d51e"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/natural-flow-attempt-3-540.json",
+        "sha256": "eacab00852cda3fa5f1d52182127b87596919a8d0562b735bf0230b5b5b6ba38"
+      }
+    }
+  ]
+}

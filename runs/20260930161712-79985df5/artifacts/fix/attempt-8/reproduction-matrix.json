@@ -1,0 +1,623 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "settlement panel",
+      "active gull and targeted shelf",
+      "browser identity asset",
+      "gull pressure episode"
+    ],
+    "lifecycleStateBranches": [
+      "beach first expansion settlement",
+      "Coral authored smoked-order objective complete",
+      "Moon authored dual-shelf objective complete",
+      "stock loss before player approaches",
+      "fresh page load",
+      "after same-target chase; player guards recovered shelf"
+    ],
+    "rendererPaths": [
+      "DOM primary terminal heading/cause",
+      "Phaser entityGraphics and station Text labels",
+      "HTML head / static asset response",
+      "pressure respawn state and visible alert/bird lifecycle"
+    ],
+    "viewports": [
+      {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "beach-360x800",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "beach first expansion settlement",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Expansion-specific cause",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "beach-390x844",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "beach first expansion settlement",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Expansion-specific cause",
+      "observed": "Correct expansion panel",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png",
+          "sha256": "db3ecde965b2565a769ce6e63243d1327a392dd22b7f890cf8f3081e85a1080d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/natural-finalized.json",
+          "sha256": "a4ed45fbd9f9b692e0cd427f65f07b168a41b47741e54577943e12551b5b0c5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "beach-430x932",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "beach first expansion settlement",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Expansion-specific cause",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "beach-540x960",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "beach first expansion settlement",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "PASS",
+      "expected": "Expansion-specific cause",
+      "observed": "Correct expansion panel",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png",
+          "sha256": "db3ecde965b2565a769ce6e63243d1327a392dd22b7f890cf8f3081e85a1080d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/natural-finalized.json",
+          "sha256": "a4ed45fbd9f9b692e0cd427f65f07b168a41b47741e54577943e12551b5b0c5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "beach-844x390",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "beach first expansion settlement",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Expansion-specific cause",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "coral-360x800",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Coral authored smoked-order objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Coral objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "coral-390x844",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Coral authored smoked-order objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Coral objective-specific success and progress",
+      "observed": "Wrong tide-pool expansion cause",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png",
+          "sha256": "db3ecde965b2565a769ce6e63243d1327a392dd22b7f890cf8f3081e85a1080d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/natural-finalized.json",
+          "sha256": "a4ed45fbd9f9b692e0cd427f65f07b168a41b47741e54577943e12551b5b0c5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/perceptual-settlement-finding.json",
+          "sha256": "9df32445a0182ae78ea7c2d9529d6c86093a5d6c5606a6ef31aec022ecb06c49",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "coral-430x932",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Coral authored smoked-order objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Coral objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "coral-540x960",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Coral authored smoked-order objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Coral objective-specific success and progress",
+      "observed": "Wrong tide-pool expansion cause",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png",
+          "sha256": "db3ecde965b2565a769ce6e63243d1327a392dd22b7f890cf8f3081e85a1080d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/natural-finalized.json",
+          "sha256": "a4ed45fbd9f9b692e0cd427f65f07b168a41b47741e54577943e12551b5b0c5f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/perceptual-settlement-finding.json",
+          "sha256": "9df32445a0182ae78ea7c2d9529d6c86093a5d6c5606a6ef31aec022ecb06c49",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "coral-844x390",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Coral authored smoked-order objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Coral objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "moon-360x800",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Moon authored dual-shelf objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Moon objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "moon-390x844",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Moon authored dual-shelf objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Moon objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "moon-430x932",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Moon authored dual-shelf objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Moon objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "moon-540x960",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Moon authored dual-shelf objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Moon objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "moon-844x390",
+      "objectType": "settlement panel",
+      "lifecycleStateBranch": "Moon authored dual-shelf objective complete",
+      "rendererPath": "DOM primary terminal heading/cause",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Moon objective-specific success and progress",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "gull-360x800",
+      "objectType": "active gull and targeted shelf",
+      "lifecycleStateBranch": "stock loss before player approaches",
+      "rendererPath": "Phaser entityGraphics and station Text labels",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct bird silhouette and local target alert",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "gull-390x844",
+      "objectType": "active gull and targeted shelf",
+      "lifecycleStateBranch": "stock loss before player approaches",
+      "rendererPath": "Phaser entityGraphics and station Text labels",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct bird silhouette and local target alert",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "gull-430x932",
+      "objectType": "active gull and targeted shelf",
+      "lifecycleStateBranch": "stock loss before player approaches",
+      "rendererPath": "Phaser entityGraphics and station Text labels",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct bird silhouette and local target alert",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "gull-540x960",
+      "objectType": "active gull and targeted shelf",
+      "lifecycleStateBranch": "stock loss before player approaches",
+      "rendererPath": "Phaser entityGraphics and station Text labels",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct bird silhouette and local target alert",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "gull-844x390",
+      "objectType": "active gull and targeted shelf",
+      "lifecycleStateBranch": "stock loss before player approaches",
+      "rendererPath": "Phaser entityGraphics and station Text labels",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Distinct bird silhouette and local target alert",
+      "observed": "Bird silhouette obscured under dense shelf labels",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png",
+          "sha256": "64b6be02b8cf5eee63308713497b40724bf5c73eb7c9d614ae758d6db7097a0b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/failure-analysis.json",
+          "sha256": "387a788316f4d84c42a301bc08c1a0c2dc2ca1d8a4001a3064c201cd4e4639d8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "icon-360x800",
+      "objectType": "browser identity asset",
+      "lifecycleStateBranch": "fresh page load",
+      "rendererPath": "HTML head / static asset response",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Explicit icon resolves without404",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "icon-390x844",
+      "objectType": "browser identity asset",
+      "lifecycleStateBranch": "fresh page load",
+      "rendererPath": "HTML head / static asset response",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Explicit icon resolves without404",
+      "observed": "implicit favicon404; original product.svg200",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/origin-check.json",
+          "sha256": "3f10f694f6d5b3567ae1c44a3e11ecdb39210f8855f4bdb764de683085dcd123",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "icon-430x932",
+      "objectType": "browser identity asset",
+      "lifecycleStateBranch": "fresh page load",
+      "rendererPath": "HTML head / static asset response",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Explicit icon resolves without404",
+      "observed": "Exact natural cell unobserved",
+      "evidence": []
+    },
+    {
+      "id": "icon-540x960",
+      "objectType": "browser identity asset",
+      "lifecycleStateBranch": "fresh page load",
+      "rendererPath": "HTML head / static asset response",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Explicit icon resolves without404",
+      "observed": "implicit favicon404; original product.svg200",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/origin-check.json",
+          "sha256": "3f10f694f6d5b3567ae1c44a3e11ecdb39210f8855f4bdb764de683085dcd123",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "icon-844x390",
+      "objectType": "browser identity asset",
+      "lifecycleStateBranch": "fresh page load",
+      "rendererPath": "HTML head / static asset response",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Explicit icon resolves without404",
+      "observed": "implicit favicon404; original product.svg200",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/origin-check.json",
+          "sha256": "3f10f694f6d5b3567ae1c44a3e11ecdb39210f8855f4bdb764de683085dcd123",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "gull-relief-360x800",
+      "objectType": "gull pressure episode",
+      "lifecycleStateBranch": "after same-target chase; player guards recovered shelf",
+      "rendererPath": "pressure respawn state and visible alert/bird lifecycle",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct current episode ends; visible relief before a later eligible episode, with guarded target protected.",
+      "observed": "Exact natural cell pending",
+      "evidence": []
+    },
+    {
+      "id": "gull-relief-390x844",
+      "objectType": "gull pressure episode",
+      "lifecycleStateBranch": "after same-target chase; player guards recovered shelf",
+      "rendererPath": "pressure respawn state and visible alert/bird lifecycle",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct current episode ends; visible relief before a later eligible episode, with guarded target protected.",
+      "observed": "Exact natural cell pending",
+      "evidence": []
+    },
+    {
+      "id": "gull-relief-430x932",
+      "objectType": "gull pressure episode",
+      "lifecycleStateBranch": "after same-target chase; player guards recovered shelf",
+      "rendererPath": "pressure respawn state and visible alert/bird lifecycle",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct current episode ends; visible relief before a later eligible episode, with guarded target protected.",
+      "observed": "Exact natural cell pending",
+      "evidence": []
+    },
+    {
+      "id": "gull-relief-540x960",
+      "objectType": "gull pressure episode",
+      "lifecycleStateBranch": "after same-target chase; player guards recovered shelf",
+      "rendererPath": "pressure respawn state and visible alert/bird lifecycle",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Distinct current episode ends; visible relief before a later eligible episode, with guarded target protected.",
+      "observed": "Independent pixel/video review sees repeated bird/alert while player guards recovered shelf.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/visual-review-attempt7.json",
+          "sha256": "e398b80c5b5179371bd95cc49ee942de2bb31d17512136db06b2a5cc1ea91b77",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "gull-relief-844x390",
+      "objectType": "gull pressure episode",
+      "lifecycleStateBranch": "after same-target chase; player guards recovered shelf",
+      "rendererPath": "pressure respawn state and visible alert/bird lifecycle",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Distinct current episode ends; visible relief before a later eligible episode, with guarded target protected.",
+      "observed": "Exact natural cell pending",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Natural Coral terminal is reached; its own visible cause is incorrect.",
+    "Player visibility and duplicate continue regressions pass in attempt7; preserve them.",
+    "Gull must be validated as its own exact object branch; avatar success cannot close it.",
+    "Natural chase alone is insufficient: final independent perceptual gate reports no clear relief from repeated alert/bird."
+  ],
+  "remainingGaps": [
+    "Moon branch and all affected viewports need current natural/perceptual evidence.",
+    "Separate QA locator geometry race and source/body detector robustness are being repaired outside the game."
+  ],
+  "createdAt": "2026-10-08T10:11:51.043Z"
+}

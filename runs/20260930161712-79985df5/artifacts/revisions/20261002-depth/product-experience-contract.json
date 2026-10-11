@@ -1,0 +1,847 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "product-experience-contract",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "runtime": "web-lite",
+  "runtimeEntrypoints": [
+    "src/main.ts",
+    "src/simulation.ts",
+    "src/generated/game-config.json",
+    "index.html"
+  ],
+  "sourceArtifact": {
+    "kind": "reference-fidelity",
+    "path": "artifacts/reference-fidelity-contract.json",
+    "sha256": "b6565757d769df0d499c8392ba768253c22879c0544f195f6103a3df00d80473"
+  },
+  "features": [
+    {
+      "id": "qa-input-build-payment",
+      "sourceCheckIds": [
+        "qa-input-build-payment"
+      ],
+      "objectType": "Construction point, player wallet, paid-contribution state and remaining construction debt",
+      "stateBranch": "Construction point is for sale; player is inside its interaction range; player is stationary; payment is in progress",
+      "playerAction": "Use the single movement input to enter the construction point interaction range, then stop moving.",
+      "visibleSignal": "Code-established state anchors are wallet balance, paid contribution, remaining construction price, and successor-unlock state; no pixel appearance is claimed.: Player enters the construction point interaction range. → Player remains stationary. → Payment amount is limited by remaining debt and available wallet balance. → Wallet decreases. → Paid contribution is saved or increased. → Construction point remaining debt decreases. → Successor construction or station becomes available only when debt reaches zero.",
+      "naturalTrigger": "Use the single movement input to enter the construction point interaction range, then stop moving.",
+      "expectedEventOrder": [
+        "Player enters the construction point interaction range.",
+        "Player remains stationary.",
+        "Payment amount is limited by remaining debt and available wallet balance.",
+        "Wallet decreases.",
+        "Paid contribution is saved or increased.",
+        "Construction point remaining debt decreases.",
+        "Successor construction or station becomes available only when debt reaches zero."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established state anchors are wallet balance, paid contribution, remaining construction price, and successor-unlock state; no pixel appearance is claimed.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim build-payment; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3402-3463@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim build-payment; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3402-3463@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim build-payment; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3820-3835@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim build-payment; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3820-3835@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "qa-input-production-gating",
+      "sourceCheckIds": [
+        "qa-input-production-gating"
+      ],
+      "objectType": "Active producer or processor station, station inventory and connected input shelf",
+      "stateBranch": "Producer is active and has operating capacity; processor branch may require one or more connected input shelves to contain the required inputs",
+      "playerAction": "Use the single movement input to route through the production area; no separate production button is required by the cited claim.",
+      "visibleSignal": "Code-established anchors are station active state, station capacity, and connected input availability; exact visual treatment is unverified.: Station is active and has operating capacity. → Station inventory is checked for available capacity. → For a processor, connected input shelves are checked. → Production advances only when all required conditions are satisfied. → Production remains blocked when capacity or required input is unavailable.",
+      "naturalTrigger": "Use the single movement input to route through the production area; no separate production button is required by the cited claim.",
+      "expectedEventOrder": [
+        "Station is active and has operating capacity.",
+        "Station inventory is checked for available capacity.",
+        "For a processor, connected input shelves are checked.",
+        "Production advances only when all required conditions are satisfied.",
+        "Production remains blocked when capacity or required input is unavailable."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established anchors are station active state, station capacity, and connected input availability; exact visual treatment is unverified.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim production-input; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:8345-8373@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim production-input; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:8345-8373@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "qa-spatial-harvest-and-deposit",
+      "sourceCheckIds": [
+        "qa-spatial-harvest-and-deposit"
+      ],
+      "objectType": "Player, typed producer inventory, player carried inventory and compatible customer shelf",
+      "stateBranch": "Producer contains collectable stock; player capacity is not full; player then enters the matching shelf interaction polygon while carrying the product",
+      "playerAction": "Use the single movement input to enter the valid producer range, allow automatic pickup, then route to the compatible shelf range.",
+      "visibleSignal": "Code-established anchors are producer stock, carried inventory count, shelf inventory count, and pickup/drop state; no visual appearance is asserted.: Player enters the valid producer range. → Producer has available stock and player capacity is not full. → Automatic pickup transfers a typed item to carried inventory. → Player moves into the corresponding shelf interaction polygon. → Shelf accepts the carried product. → Carried inventory decreases and shelf inventory increases until either side reaches its constraint.",
+      "naturalTrigger": "Use the single movement input to enter the valid producer range, allow automatic pickup, then route to the compatible shelf range.",
+      "expectedEventOrder": [
+        "Player enters the valid producer range.",
+        "Producer has available stock and player capacity is not full.",
+        "Automatic pickup transfers a typed item to carried inventory.",
+        "Player moves into the corresponding shelf interaction polygon.",
+        "Shelf accepts the carried product.",
+        "Carried inventory decreases and shelf inventory increases until either side reaches its constraint."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established anchors are producer stock, carried inventory count, shelf inventory count, and pickup/drop state; no visual appearance is asserted.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim harvest-stock; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4018-4047@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim harvest-stock; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4018-4047@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "qa-failure-customer-wait-recovery",
+      "sourceCheckIds": [
+        "qa-failure-customer-wait-recovery"
+      ],
+      "objectType": "Ordinary customer, desired product shelf, player carried stock and checkout queue",
+      "stateBranch": "Ordinary customer takes a basket, walks to the desired shelf, waits for the desired product, takes the product, then moves to checkout and queues",
+      "playerAction": "Use the single movement input to route to the compatible shelf, replenish it, then move toward the checkout area.",
+      "visibleSignal": "Code-established anchors are customer lifecycle state, desired-shelf wait state, product acquisition state and checkout queue entry; no pixel or readability claim is made.: Customer takes a basket. → Customer moves to the desired product shelf. → Customer enters the shelf-wait branch when the desired product is unavailable. → Player enters the compatible shelf interaction polygon. → Player replenishes the shelf from carried stock. → Customer takes the desired product. → Customer moves to and enters the checkout queue.",
+      "naturalTrigger": "Use the single movement input to route to the compatible shelf, replenish it, then move toward the checkout area.",
+      "expectedEventOrder": [
+        "Customer takes a basket.",
+        "Customer moves to the desired product shelf.",
+        "Customer enters the shelf-wait branch when the desired product is unavailable.",
+        "Player enters the compatible shelf interaction polygon.",
+        "Player replenishes the shelf from carried stock.",
+        "Customer takes the desired product.",
+        "Customer moves to and enters the checkout queue."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established anchors are customer lifecycle state, desired-shelf wait state, product acquisition state and checkout queue entry; no pixel or readability claim is made.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim buyer-wait-branch; reference-code/monkey-mart/scripts/main/gamecore/Player.lua:940-983@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim buyer-wait-branch; reference-code/monkey-mart/scripts/main/gamecore/Player.lua:940-983@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim buyer-wait-branch; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4132-4154@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim buyer-wait-branch; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4132-4154@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim harvest-stock; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4018-4047@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim harvest-stock; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4018-4047@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "qa-failure-disruption-branch",
+      "sourceCheckIds": [
+        "qa-failure-disruption-branch"
+      ],
+      "objectType": "Disruption visitor, usable product shelf and shelf inventory",
+      "stateBranch": "Disruption visitor reaches a usable shelf; the shelf contains stock; disruption behavior repeats periodically while stock remains",
+      "playerAction": "Use the single movement input to approach the alerted shelf. The cited claim does not establish a separate recovery action or terminal failure state.",
+      "visibleSignal": "Code-established anchor is the alert targeting the affected shelf plus the periodic goods-throw event; appearance, audio and readability are unverified.: Disruption visitor reaches a usable shelf. → Shelf-localized alert is emitted. → Shelf inventory is checked. → While stock exists, goods are periodically thrown out. → Further recovery or terminal outcome is not established by the cited claim.",
+      "naturalTrigger": "Use the single movement input to approach the alerted shelf. The cited claim does not establish a separate recovery action or terminal failure state.",
+      "expectedEventOrder": [
+        "Disruption visitor reaches a usable shelf.",
+        "Shelf-localized alert is emitted.",
+        "Shelf inventory is checked.",
+        "While stock exists, goods are periodically thrown out.",
+        "Further recovery or terminal outcome is not established by the cited claim."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established anchor is the alert targeting the affected shelf plus the periodic goods-throw event; appearance, audio and readability are unverified.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim disruption-recovery; reference-code/monkey-mart/scripts/main/gamecore/Player.lua:986-1033@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim disruption-recovery; reference-code/monkey-mart/scripts/main/gamecore/Player.lua:986-1033@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "qa-feedback-construction-sequence",
+      "sourceCheckIds": [
+        "qa-feedback-construction-sequence"
+      ],
+      "objectType": "Player wallet, construction point debt state and currency feedback entity",
+      "stateBranch": "Construction payment step executes while the player is eligible to pay at the construction point",
+      "playerAction": "Use the single movement input to enter the construction point range and remain stationary.",
+      "visibleSignal": "Code-established anchor is the player-to-construction-point currency animation after the wallet and debt updates; no inspected pixel path is claimed.: Wallet is debited. → Paid contribution is saved or increased. → Construction point remaining price is updated. → Currency animation is emitted from player toward construction point. → Construction remains incomplete until the remaining debt reaches zero.",
+      "naturalTrigger": "Use the single movement input to enter the construction point range and remain stationary.",
+      "expectedEventOrder": [
+        "Wallet is debited.",
+        "Paid contribution is saved or increased.",
+        "Construction point remaining price is updated.",
+        "Currency animation is emitted from player toward construction point.",
+        "Construction remains incomplete until the remaining debt reaches zero."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established anchor is the player-to-construction-point currency animation after the wallet and debt updates; no inspected pixel path is claimed.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim construction-feedback; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3433-3450@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim construction-feedback; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3433-3450@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "qa-feedback-checkout-cash",
+      "sourceCheckIds": [
+        "qa-feedback-checkout-cash"
+      ],
+      "objectType": "Checkout queue head, checkout station, packing state, counter cash pile and player",
+      "stateBranch": "A customer at the front of the queue has arrived; checkout service is active; the player or an employed cashier can operate the checkout branch",
+      "playerAction": "Use the single movement input to enter the checkout interaction range and remain there to service or collect.",
+      "visibleSignal": "Code-established anchors are queue-head selection, packing state, delayed counter cash creation and player proximity-based cash collection.: Arrived customer is identified as the queue head. → Customer enters packing or checkout service. → Service delay elapses. → Payment appears in the counter cash pile. → Player approaches the counter. → Player collects the counter cash.",
+      "naturalTrigger": "Use the single movement input to enter the checkout interaction range and remain there to service or collect.",
+      "expectedEventOrder": [
+        "Arrived customer is identified as the queue head.",
+        "Customer enters packing or checkout service.",
+        "Service delay elapses.",
+        "Payment appears in the counter cash pile.",
+        "Player approaches the counter.",
+        "Player collects the counter cash."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established anchors are queue-head selection, packing state, delayed counter cash creation and player proximity-based cash collection.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim checkout-cash; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3862-3879@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim checkout-cash; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3862-3879@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim checkout-cash; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4091-4112@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim checkout-cash; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4091-4112@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim checkout-cash; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4132-4154@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim checkout-cash; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:4132-4154@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "qa-terminal-stage-continuation",
+      "sourceCheckIds": [
+        "qa-terminal-stage-continuation"
+      ],
+      "objectType": "Next-market entry marker, stage progression state and shop-selection interface",
+      "stateBranch": "Stage expansion is complete; the next-market entry marker is active; player enters the marker area and becomes stationary",
+      "playerAction": "Use the single movement input to reach the next-market entry marker, then stop moving.",
+      "visibleSignal": "Code-established anchors are expansion completion, active entry marker, stationary player state and shop-selection open event; no visual treatment is verified.: Stage expansion completes. → Next-market entry marker becomes available. → Player enters the marker area. → Player becomes stationary. → Shop-selection interface opens. → The source evidence does not establish a terminal game-over or replay-button branch.",
+      "naturalTrigger": "Use the single movement input to reach the next-market entry marker, then stop moving.",
+      "expectedEventOrder": [
+        "Stage expansion completes.",
+        "Next-market entry marker becomes available.",
+        "Player enters the marker area.",
+        "Player becomes stationary.",
+        "Shop-selection interface opens.",
+        "The source evidence does not establish a terminal game-over or replay-button branch."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "the visible signal remains anchored to Code-established anchors are expansion completion, active entry marker, stationary player state and shop-selection open event; no visual treatment is verified.",
+        "a sibling object or lifecycle branch cannot satisfy this check",
+        "debug, fixture and state-injection operations cannot trigger or prove this check"
+      ],
+      "sourceEvidence": [
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim next-market; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:8561-8581@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim next-market; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:8561-8581@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json#claim next-market; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3925-3934@6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "artifacts/reference-code-analysis.json#claim next-market; reference-code/monkey-mart/scripts/main/gamecore/GameState.lua:3925-3934@83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ],
+      "blockingIf": [
+        "the exact object and lifecycle branch are not observed",
+        "the declared event order is missing or reordered",
+        "any required phone viewport lacks player-visible natural-input evidence"
+      ]
+    },
+    {
+      "id": "depth-shopping-list",
+      "sourceCheckIds": [
+        "REF-SHOPPING-LIST"
+      ],
+      "objectType": "shoppingList[{productId,quantity,collected}]; activeLineIndex; basketValue; queueTicket",
+      "stateBranch": "shopping-list normal-input lifecycle",
+      "playerAction": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand.",
+      "visibleSignal": "Per-customer original item bubbles with icons/count/check marks; focused HUD order keeps product/route/status and remaining quantity.",
+      "naturalTrigger": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand.",
+      "expectedEventOrder": [
+        "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand.",
+        "Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout.",
+        "Show gathered versus outstanding items; price earned only after all items, queue-head service and packing."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "No debug/fixture/state injection may trigger a natural branch.",
+        "No sibling object/lifecycle/viewpoint may close this case.",
+        "No hidden state value alone proves a visible action."
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#shopping-list"
+      ],
+      "blockingIf": [
+        "Missing acceptance: Natural expanded shopper visits two compatible shelves before queueing.",
+        "Missing acceptance: Unit tests cover quantity conservation, locked demand, partial order, basket value and queue gating."
+      ]
+    },
+    {
+      "id": "depth-processing",
+      "sourceCheckIds": [
+        "QA-ATTEMPT3-PROCESSOR-BRANCH-MISSING",
+        "REF-SYSTEM-DEPTH"
+      ],
+      "objectType": "processor recipe/input shelf refs; processing progress; ready output; blocked input/capacity",
+      "stateBranch": "processing normal-input lifecycle",
+      "playerAction": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity.",
+      "visibleSignal": "Input product arrow/quantity, empty-input amber icon, processing dial/smoke and ready finished goods on the machine; product-specific cargo/transfer path.",
+      "naturalTrigger": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity.",
+      "expectedEventOrder": [
+        "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity.",
+        "With input absent the progress remains stopped; replenishing the connected shelf resumes processing.",
+        "Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "No debug/fixture/state injection may trigger a natural branch.",
+        "No sibling object/lifecycle/viewpoint may close this case.",
+        "No hidden state value alone proves a visible action."
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#processing"
+      ],
+      "blockingIf": [
+        "Missing acceptance: Fresh natural input shows input-starved processor -> restock -> output -> deposit.",
+        "Missing acceptance: Unit tests prove input gating, atomic consumption, capacity stop/resume and no locked processor output."
+      ]
+    },
+    {
+      "id": "depth-employees",
+      "sourceCheckIds": [
+        "REF-SYSTEM-DEPTH"
+      ],
+      "objectType": "hire payment; employee role/position/cargo/target; role unlocked",
+      "stateBranch": "employees normal-input lifecycle",
+      "playerAction": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments.",
+      "visibleSignal": "Role icon and badge; runner visibly moves with fish, hire progress/price, cashier active service indicator.",
+      "naturalTrigger": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments.",
+      "expectedEventOrder": [
+        "Original hire stations let the player fund a visible stock runner and cashier through stationary installments.",
+        "Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch.",
+        "Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "No debug/fixture/state injection may trigger a natural branch.",
+        "No sibling object/lifecycle/viewpoint may close this case.",
+        "No hidden state value alone proves a visible action."
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#employees"
+      ],
+      "blockingIf": [
+        "Missing acceptance: Normal funded hire leads to visible worker action and inventory change.",
+        "Missing acceptance: Unit tests cover insufficient wallet, installment conservation, runner limits and cashier using queue/packing without double payment."
+      ]
+    },
+    {
+      "id": "depth-shelf-pressure",
+      "sourceCheckIds": [
+        "QA-ATTEMPT3-DISRUPTION-BRANCH-MISSING",
+        "QA-ATTEMPT3-CUSTOMER-SHORTAGE-SIGNAL-UNPROVEN"
+      ],
+      "objectType": "disruption seagull/target/grace/period; loss event source/destination; waiting-shelf patience; departure reason",
+      "stateBranch": "shelf-pressure normal-input lifecycle",
+      "playerAction": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item.",
+      "visibleSignal": "Seagull silhouette and shelf-localized alert halo, visible item loss; player proximity escape; ordinary customer product bubble and shrinking amber/red patience ring.",
+      "naturalTrigger": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item.",
+      "expectedEventOrder": [
+        "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item.",
+        "Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference.",
+        "Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "No debug/fixture/state injection may trigger a natural branch.",
+        "No sibling object/lifecycle/viewpoint may close this case.",
+        "No hidden state value alone proves a visible action."
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#shelf-pressure"
+      ],
+      "blockingIf": [
+        "Missing acceptance: Fresh normal-input evidence observes disruption alert/loss -> player approach -> no further loss and replenish.",
+        "Missing acceptance: Fresh normal-input evidence observes shortage wait -> correct restock -> customer pickup/queue; unit tests cover loss cadence/grace and approved timeout origin."
+      ]
+    },
+    {
+      "id": "depth-progression-and-markets",
+      "sourceCheckIds": [
+        "REF-PROGRESSION",
+        "QA-ATTEMPT3-NEXT-MARKET-WORLD-TRANSITION-MISSING"
+      ],
+      "objectType": "marketId; perMarketProgress; market-entry enabled/progress; stage operating/settlement/market-selection; nextMarketId compatibility only",
+      "stateBranch": "progression-and-markets normal-input lifecycle",
+      "playerAction": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks.",
+      "visibleSignal": "Visible locked/open next-market marker with route icon; two market cards showing different topology/goal; active market name, topology and construction progress.",
+      "naturalTrigger": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks.",
+      "expectedEventOrder": [
+        "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks.",
+        "After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel.",
+        "Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target.",
+        "Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "No debug/fixture/state injection may trigger a natural branch.",
+        "No sibling object/lifecycle/viewpoint may close this case.",
+        "No hidden state value alone proves a visible action."
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#progression-and-markets"
+      ],
+      "blockingIf": [
+        "Missing acceptance: Natural path proves expansion -> continue -> marker arrival/stop -> selection -> visibly different market -> core loop -> settlement/replay.",
+        "Missing acceptance: Unit tests cover stationary marker gating, invalid choices, world differences, preservation of upgrades/progress and replay."
+      ]
+    },
+    {
+      "id": "depth-runtime-and-persistence",
+      "sourceCheckIds": [
+        "QA-RUNTIME-PRODUCT-GATE",
+        "QA-MOBILE-EXACT-BRANCH"
+      ],
+      "objectType": "save schemaVersion; market/employee/order/pressure fields; normal input release; reduced motion flag",
+      "stateBranch": "runtime-and-persistence normal-input lifecycle",
+      "playerAction": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey.",
+      "visibleSignal": "Consistent order/route HUD, inventory/cash/goal progress; original station and actor hierarchy; readable portrait/landscape controls.",
+      "naturalTrigger": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey.",
+      "expectedEventOrder": [
+        "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey.",
+        "Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence.",
+        "Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable."
+      ],
+      "requiredViewports": [
+        {
+          "width": 360,
+          "height": 800,
+          "label": "small-phone"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "baseline-phone"
+        },
+        {
+          "width": 430,
+          "height": 932,
+          "label": "large-phone"
+        },
+        {
+          "width": 540,
+          "height": 960,
+          "label": "reference-540x960"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "landscape-phone"
+        }
+      ],
+      "negativeAssertions": [
+        "No debug/fixture/state injection may trigger a natural branch.",
+        "No sibling object/lifecycle/viewpoint may close this case.",
+        "No hidden state value alone proves a visible action."
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#runtime-and-persistence"
+      ],
+      "blockingIf": [
+        "Missing acceptance: Independent deterministic, natural and perceptual QA at 360x800,390x844,430x932,540x960,844x390.",
+        "Missing acceptance: Tests pass, typecheck passes, lint passes via an existing local ESLint config without adding dependencies, exactly one build per formal attempt, hashed runtime-product gate and save reload proof."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "track": "deterministic-fixture-implementation-evidence-only",
+  "report": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic-resume/qa-report.json",
+  "passed": true,
+  "checkCount": 44,
+  "failures": [],
+  "viewports": [
+    "360x800",
+    "390x844",
+    "430x932",
+    "540x960",
+    "844x390",
+    "1440x900"
+  ],
+  "fixtureCorrection": "completeOrder stops with the customer still packing (320 ms packing minus 200 ms advanced after service). Explicitly finish the remaining packing duration, assert cash on counter with wallet unchanged, leave and return to collect, then assert full sale value in wallet.",
+  "remainingEvidence": [
+    "Independent natural-input and perceptual gates remain separate and cannot be closed by this fixture suite."
+  ],
+  "testedAt": "2026-10-08T09:37:04.576Z"
+}

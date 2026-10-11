@@ -1,0 +1,226 @@
+
+local function on_animation_done(self, node)
+    gui.animate(
+    node,
+    gui.PROP_POSITION,
+    vmath.vector3(0, 100, 0),
+    gui.EASING_INBACK,
+    0.45,
+    1.6)
+
+end
+
+local function updateLanguage(self)
+    if self.text_messageId then
+        gui.set_text(self.text_message, utf8.upper(translate(self.text_messageId)))
+        utils.updateTextWidth(self.text_message, 350, 1)
+    end
+
+end
+
+local function show_window(self, vTextId)
+    gui.cancel_animation(self.node_window, gui.PROP_POSITION)
+    gui.set_position(self.node_window,vmath.vector3(0, 100, 0))
+
+    local posY = -55
+
+    if global.isMobileTrue then
+        posY = -100
+
+        if (config.platform == PLATFORM_IOS) then
+            posY = -125
+        end
+    end
+
+    gui.animate(
+	self.node_window,
+	gui.PROP_POSITION,
+	vmath.vector3(0, posY, 0),
+    gui.EASING_OUTBACK,
+	0.45,
+    0,
+    on_animation_done)
+
+    self.text_messageId = vTextId
+    updateLanguage(self)
+
+end
+
+local function update_arm(self, vBool, vPos, vPos2)
+    gui.set_enabled(self.tutorial_arm, vBool)
+    gui.set_enabled(self.tutorial_circle, vBool)
+
+    if vBool then
+        gui.set_screen_position(self.tutorial_arm, vPos)
+        gui.set_screen_position(self.tutorial_circle, vPos2)
+    end
+
+end
+
+local function update_load_indicator(self, vBool)
+    gui.set_enabled(self.load_ads, vBool)
+
+end
+
+
+
+local function onAnimationRewardEffect(self, node)
+	gui.set_enabled(node, false)
+
+end
+
+local function finishFlyCoin(self, node)
+	gui.set_enabled(node, false)
+
+end
+
+local function animationCoins(vNum, vPosEnd)
+	local node = gui.get_node("icon_reward_coins"..vNum)
+	gui.set_enabled(node, true)
+	gui.animate(node, gui.PROP_POSITION, vPosEnd, gui.EASING_LINEAR, 0.3, 0, finishFlyCoin)
+
+end
+
+local function showRewardedCoins(self, vValue, vIsGems)
+	gui.set_enabled(self.panel_reward_coins, true)
+	gui.set_enabled(gui.get_node("icon_reward_coins"), true)
+	gui.set_enabled(gui.get_node("panel_reward_effect"), true)
+
+	gui.set_enabled(gui.get_node("text_reward_coins"), true)
+	gui.set_text(gui.get_node("text_reward_coins"), "+"..vValue)
+
+	local frameName = coinmanager.get_icon_name()
+
+    if vIsGems then
+        frameName = "gem1"
+    end
+
+	gui.play_flipbook(gui.get_node("icon_reward_coins"), frameName)
+	gui.play_flipbook(gui.get_node("icon_reward_coins1"), frameName)
+	gui.play_flipbook(gui.get_node("icon_reward_coins2"), frameName)
+	gui.play_flipbook(gui.get_node("icon_reward_coins3"), frameName)
+	gui.play_flipbook(gui.get_node("icon_reward_coins4"), frameName)
+	gui.play_flipbook(gui.get_node("icon_reward_coins5"), frameName)
+
+	local pos = vmath.vector3(2, -15, 0)
+	gui.set_position(gui.get_node("icon_reward_coins1"), pos)
+	gui.set_position(gui.get_node("icon_reward_coins2"), pos)
+	gui.set_position(gui.get_node("icon_reward_coins3"), pos)
+	gui.set_position(gui.get_node("icon_reward_coins4"), pos)
+	gui.set_position(gui.get_node("icon_reward_coins5"), pos)
+
+	gui.set_enabled(gui.get_node("icon_reward_coins1"), true)
+	gui.set_enabled(gui.get_node("icon_reward_coins2"), false)
+	gui.set_enabled(gui.get_node("icon_reward_coins3"), false)
+	gui.set_enabled(gui.get_node("icon_reward_coins4"), false)
+	gui.set_enabled(gui.get_node("icon_reward_coins5"), false)
+
+	gui.set_scale(gui.get_node("body_reward_coins"), vmath.vector3(1.0, 1.0, 1.0))
+	gui.set_scale(gui.get_node("panel_reward_effect"), vmath.vector3(1.0, 1.0, 1.0))
+
+	local node = gui.get_node("body_reward_coins")
+	gui.cancel_animation(node, gui.PROP_SCALE)
+	gui.animate(node, gui.PROP_SCALE, vmath.vector3(1.4, 1.4, 1.4), gui.EASING_LINEAR, 0.8, 0, nil, gui.PLAYBACK_ONCE_PINGPONG)
+
+	local pos_reward_coins = gui.get_screen_position(gui.get_node("icon_reward_coins1"))
+
+	local new_pos = global.pos_window_money - pos_reward_coins
+
+	gui.cancel_animation(gui.get_node("panel_reward_effect"), gui.PROP_SCALE)
+	gui.cancel_animation(gui.get_node("panel_reward_effect"), gui.PROP_EULER)
+
+	gui.set_euler(gui.get_node("panel_reward_effect"), vmath.vector3(0, 0, 0))
+	gui.animate(gui.get_node("panel_reward_effect"), gui.PROP_EULER, vmath.vector3(0, 0, -135), gui.EASING_LINEAR, 1.6, 0)
+
+	timer.delay(1.0, false, function()
+		animationCoins(1, new_pos)
+	end)
+	timer.delay(1.1, false, function()
+		animationCoins(2, new_pos)
+	end)
+	timer.delay(1.2, false, function()
+		animationCoins(3, new_pos)
+	end)
+	timer.delay(1.3, false, function()
+		animationCoins(4, new_pos)
+	end)
+	timer.delay(1.4, false, function()
+		animationCoins(5, new_pos)
+		gui.set_enabled(gui.get_node("text_reward_coins"), false)
+		gui.set_enabled(gui.get_node("icon_reward_coins"), false)
+
+		gui.animate(gui.get_node("panel_reward_effect"), gui.PROP_SCALE, vmath.vector3(0.5, 0.5, 0.5), gui.EASING_LINEAR, 0.2, 0, onAnimationRewardEffect)
+	end)
+
+
+end
+
+local function initPanelRewardedCoins(self)
+    self.panel_reward_coins = gui.get_node("panel_reward_coins")
+    gui.set_enabled(self.panel_reward_coins, false)
+
+end
+
+local function play_particles(self)
+	gui.play_particlefx(gui.get_node("particlefx_stars1"))
+	gui.play_particlefx(gui.get_node("particlefx_stars2"))
+
+end
+
+
+
+function init(self)
+    self.text_message = gui.get_node("text_message")
+    self.node_window = gui.get_node("window")
+
+    self.tutorial_arm = gui.get_node("tutorial_arm")
+    self.tutorial_circle = gui.get_node("tutorial_circle")
+    self.load_ads = gui.get_node("load_ads")
+
+    gui.animate(self.tutorial_arm, "scale", vmath.vector3(1.3,1.3,1.3), gui.EASING_LINEAR, 0.8, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+    gui.set_enabled(self.tutorial_arm, false)
+    gui.set_enabled(self.tutorial_circle, false)
+
+    self.text_messageId = nil
+    gui.set_position(self.node_window,vmath.vector3(0, 100, 0))
+
+    gui.set_render_order(5)
+
+    update_load_indicator(self, false)
+
+    initPanelRewardedCoins(self)
+
+end
+
+ 
+
+
+
+function on_message(self, message_id, message, sender)
+    if (message_id == hash("show_message")) then
+        show_window(self, message.text_id)
+
+    elseif (message_id == hash("updateLoadAds")) then
+        if (config.platform == PLATFORM_ANDROID) or (config.platform == PLATFORM_IOS) then
+            if global.isDebug then
+                update_load_indicator(self, message.value)
+            end
+        else
+            update_load_indicator(self, message.value)
+        end
+
+    elseif (message_id == hash("play_particles")) then
+        play_particles(self)
+
+    elseif (message_id == hash("updateArm")) then
+        update_arm(self, message.bool, message.pos, message.pos2)
+
+    elseif message_id == hash("showRewardedCoins") then
+        showRewardedCoins(self, message.value, message.isGems)
+
+    elseif (message_id == hash("update_language")) then
+        updateLanguage(self)
+
+    end
+
+end

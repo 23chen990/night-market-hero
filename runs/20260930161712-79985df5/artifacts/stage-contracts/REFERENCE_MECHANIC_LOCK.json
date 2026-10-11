@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "stage": "REFERENCE_MECHANIC_LOCK",
+  "passed": true,
+  "ownerRole": "HumanReviewer",
+  "verifierRole": "FactoryControlPlane",
+  "verifiedByRole": "FactoryControlPlane",
+  "independent": true,
+  "checkedAt": "2026-09-30T17:03:47.757Z",
+  "missing": [],
+  "observedInputs": [
+    "input/seed.yaml",
+    "artifacts/reference-evidence-pack.json",
+    "artifacts/reference-fidelity-contract.json"
+  ],
+  "observedArtifacts": [
+    "artifacts/reference-mechanic-spec.json"
+  ],
+  "observedEvidence": [
+    "zod:ReferenceMechanicSpecSchema",
+    "locked-by:human",
+    "agent-ideation:false",
+    "mechanic-fidelity:maximum-core-mechanics",
+    "expression-isolation:true"
+  ],
+  "artifactVersions": {
+    "input/seed.yaml": 1,
+    "artifacts/reference-mechanic-spec.json": 1
+  },
+  "failureRoute": {
+    "stage": "REFERENCE_MECHANIC_LOCK",
+    "classes": [
+      "rights",
+      "core_experience"
+    ],
+    "rationale": "Reference lock ambiguity must be resolved before design."
+  }
+}

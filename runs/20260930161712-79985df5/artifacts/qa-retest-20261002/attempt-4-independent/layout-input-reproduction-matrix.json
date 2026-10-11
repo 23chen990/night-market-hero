@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "order HUD and mobile controls",
+      "player"
+    ],
+    "lifecycleStateBranches": [
+      "startup; empty order",
+      "operating; ArrowUp press/release"
+    ],
+    "rendererPaths": [
+      "DOM grid/chrome plus Phaser canvas",
+      "CSS canvas rotation plus input inverse transform"
+    ],
+    "viewports": [
+      {
+        "label": "portrait-360",
+        "width": 360,
+        "height": 800
+      },
+      {
+        "label": "portrait-390",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "portrait-430",
+        "width": 430,
+        "height": 932
+      },
+      {
+        "label": "portrait-540",
+        "width": 540,
+        "height": 960
+      },
+      {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "hud-startup@360",
+      "objectType": "order HUD and mobile controls",
+      "lifecycleStateBranch": "startup; empty order",
+      "rendererPath": "DOM grid/chrome plus Phaser canvas",
+      "viewport": {
+        "label": "portrait-360",
+        "width": 360,
+        "height": 800
+      },
+      "status": "REPRODUCED",
+      "expected": "Card/HUD/controls within viewport and outside canvas overlap",
+      "observed": "Overlap=17384.9375; HUD top=-5.9375; controls bottom=805.9375",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png",
+          "sha256": "8576ad9f441b457232439a3f728428c5cd86938dfb1f59367844e12c97cd0553",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-arrow-up.png",
+          "sha256": "421428cb0421a1f808b4a5fa3c6edf255c957846b780aca283df280b9a8925b4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "player-up@360",
+      "objectType": "player",
+      "lifecycleStateBranch": "operating; ArrowUp press/release",
+      "rendererPath": "CSS canvas rotation plus input inverse transform",
+      "viewport": {
+        "label": "portrait-360",
+        "width": 360,
+        "height": 800
+      },
+      "status": "PASS",
+      "expected": "ArrowUp moves visible player upward; pointer uses same screen mapping",
+      "observed": "Visible body y 483.6457680250784 -> 460.66875",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png",
+          "sha256": "8576ad9f441b457232439a3f728428c5cd86938dfb1f59367844e12c97cd0553",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-arrow-up.png",
+          "sha256": "421428cb0421a1f808b4a5fa3c6edf255c957846b780aca283df280b9a8925b4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "hud-startup@390",
+      "objectType": "order HUD and mobile controls",
+      "lifecycleStateBranch": "startup; empty order",
+      "rendererPath": "DOM grid/chrome plus Phaser canvas",
+      "viewport": {
+        "label": "portrait-390",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Card/HUD/controls within viewport and outside canvas overlap",
+      "observed": "Overlap=19519.5; HUD top=-9.9375; controls bottom=853.9375",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png",
+          "sha256": "41723d46ab6e7cf9fdf24ed9f83fa2c3b6c1c07a71b2657c2b4dacc95b03dd42",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-arrow-up.png",
+          "sha256": "575e99ad6029d69c4d428b194f9ebf3d116b56c2baf6d8462f0690a81adcb904",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "player-up@390",
+      "objectType": "player",
+      "lifecycleStateBranch": "operating; ArrowUp press/release",
+      "rendererPath": "CSS canvas rotation plus input inverse transform",
+      "viewport": {
+        "label": "portrait-390",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "ArrowUp moves visible player upward; pointer uses same screen mapping",
+      "observed": "Visible body y 525.2697547683923 -> 500.3027027027027",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png",
+          "sha256": "41723d46ab6e7cf9fdf24ed9f83fa2c3b6c1c07a71b2657c2b4dacc95b03dd42",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-arrow-up.png",
+          "sha256": "575e99ad6029d69c4d428b194f9ebf3d116b56c2baf6d8462f0690a81adcb904",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "hud-startup@430",
+      "objectType": "order HUD and mobile controls",
+      "lifecycleStateBranch": "startup; empty order",
+      "rendererPath": "DOM grid/chrome plus Phaser canvas",
+      "viewport": {
+        "label": "portrait-430",
+        "width": 430,
+        "height": 932
+      },
+      "status": "REPRODUCED",
+      "expected": "Card/HUD/controls within viewport and outside canvas overlap",
+      "observed": "Overlap=22454.25; HUD top=-2.4375; controls bottom=934.4375",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png",
+          "sha256": "cbb7ba112e5ca0860b96d027a4bbde395dc13111b561d7b9a90b1f168e42b4f3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-arrow-up.png",
+          "sha256": "42eda27127af2510aae06159db4c784d80fa0eb0f03eda3d859a796bfa11e0d1",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "player-up@430",
+      "objectType": "player",
+      "lifecycleStateBranch": "operating; ArrowUp press/release",
+      "rendererPath": "CSS canvas rotation plus input inverse transform",
+      "viewport": {
+        "label": "portrait-430",
+        "width": 430,
+        "height": 932
+      },
+      "status": "PASS",
+      "expected": "ArrowUp moves visible player upward; pointer uses same screen mapping",
+      "observed": "Visible body y 584.0457516339869 -> 556.2051835853132",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png",
+          "sha256": "cbb7ba112e5ca0860b96d027a4bbde395dc13111b561d7b9a90b1f168e42b4f3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-arrow-up.png",
+          "sha256": "42eda27127af2510aae06159db4c784d80fa0eb0f03eda3d859a796bfa11e0d1",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "hud-startup@540",
+      "objectType": "order HUD and mobile controls",
+      "lifecycleStateBranch": "startup; empty order",
+      "rendererPath": "DOM grid/chrome plus Phaser canvas",
+      "viewport": {
+        "label": "portrait-540",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Card/HUD/controls within viewport and outside canvas overlap",
+      "observed": "Overlap=29085.71875; HUD top=-9.96875; controls bottom=969.96875",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png",
+          "sha256": "6491fb321ea13a7359c4cdb7ce3effe064baead1bbd78e10fbdbc1dd21b38943",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-arrow-up.png",
+          "sha256": "9e8bb66854d316802bc685210d1118750ab8a0366439033474b7723404791f38",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "player-up@540",
+      "objectType": "player",
+      "lifecycleStateBranch": "operating; ArrowUp press/release",
+      "rendererPath": "CSS canvas rotation plus input inverse transform",
+      "viewport": {
+        "label": "portrait-540",
+        "width": 540,
+        "height": 960
+      },
+      "status": "PASS",
+      "expected": "ArrowUp moves visible player upward; pointer uses same screen mapping",
+      "observed": "Visible body y 631.3116883116883 -> 590.5714285714286",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png",
+          "sha256": "6491fb321ea13a7359c4cdb7ce3effe064baead1bbd78e10fbdbc1dd21b38943",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-arrow-up.png",
+          "sha256": "9e8bb66854d316802bc685210d1118750ab8a0366439033474b7723404791f38",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "hud-startup@844",
+      "objectType": "order HUD and mobile controls",
+      "lifecycleStateBranch": "startup; empty order",
+      "rendererPath": "DOM grid/chrome plus Phaser canvas",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Card/HUD/controls within viewport and outside canvas overlap",
+      "observed": "Overlap=0; HUD top=19.265625; controls bottom=338.734375",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png",
+          "sha256": "a884fedfd5a6f260dccc30cbf43528ea5ccba7b9b9f5f37e0e32ff05a0835197",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png",
+          "sha256": "d14c53a904db7b471a7a3ce80f47785dab6649e6ddf087499b05bc3ad11ce9d1",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "player-up@844",
+      "objectType": "player",
+      "lifecycleStateBranch": "operating; ArrowUp press/release",
+      "rendererPath": "CSS canvas rotation plus input inverse transform",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "ArrowUp moves visible player upward; pointer uses same screen mapping",
+      "observed": "Visible body y 103.45378151260505 -> 123.03603603603604",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png",
+          "sha256": "a884fedfd5a6f260dccc30cbf43528ea5ccba7b9b9f5f37e0e32ff05a0835197",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png",
+          "sha256": "d14c53a904db7b471a7a3ce80f47785dab6649e6ddf087499b05bc3ad11ce9d1",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Exact portrait startup/card overlap is reproduced at every required portrait viewport.",
+    "Exact landscape normal-up input branch visibly reverses movement."
+  ],
+  "remainingGaps": [
+    "Need current-build active-order, settlement, touch and reduced-motion retest after repair; a startup-only pass cannot close those branches."
+  ],
+  "createdAt": "2026-10-02T16:19:34.460Z"
+}

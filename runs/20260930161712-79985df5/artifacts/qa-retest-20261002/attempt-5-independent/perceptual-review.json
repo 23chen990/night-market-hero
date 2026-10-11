@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "boot-and-layout-input",
+      "passed": true,
+      "evidence": "PASS. 540x960 portrait has a readable HUD, centered beach board, instruction strip, and four reachable controls in /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/001-boot.png. The fresh natural landing captures remain inside the viewport at 540x960 and 844x390 in /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-5-independent/landing-input/540x960-boot.png and /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-5-independent/landing-input/844x390-boot.png. The landscape title is ellipsized but the HUD, board, instruction, and arrow controls do not overlap."
+    },
+    {
+      "name": "processor-starved",
+      "passed": false,
+      "evidence": "BLOCKED. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/022-processor-no-input.png and /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/025-processor-making.png show zero shelf/basket counts and the global 等待补货 label, but the 鲜鱼冰盘 processor has no clearly distinguishable local empty-input/starved treatment. The route-selection panel and unchanged board presentation dominate the frame, so the player cannot attribute the state to the processor itself."
+    },
+    {
+      "name": "packing",
+      "passed": true,
+      "evidence": "PASS for the visible packing action. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/006-event-packing.png shows customer avatars at the counter, object-local check badges, and the direct 打包完成：2 贝壳币落入柜台 toast; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/007-event-packing.png shows the customer departure transition. The next-order HUD still reads 等待补货 while the completion toast is shown, so the handoff is visually understandable but temporally dense."
+    },
+    {
+      "name": "staff-hired-runner-and-cashier",
+      "passed": false,
+      "evidence": "BLOCKED for both exact branches. Runner screenshots /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/029-runner-hired-toast.png and /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/031-runner-action.png remain on the 航标停靠：路线选择已开启 state with no runner marker or action feedback. Cashier screenshots /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/081-cashier-hired-toast.png and /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/083-cashier-action.png show the same unchanged selection panel and toast, with no cashier marker or action feedback."
+    },
+    {
+      "name": "gull-pressure-recovery",
+      "passed": false,
+      "evidence": "BLOCKED. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/086-gull-alert-and-loss.png and /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/087-gull-scared-and-loss-stopped.png contain no visible gull, loss, recovery marker, or corresponding toast; they visually remain the route-selection scene. The deterministic event log may contain gull text, but this natural screenshot branch has no player-visible causal signal."
+    },
+    {
+      "name": "market-selection-new-market-settlement-replay",
+      "passed": false,
+      "evidence": "Market selection PASS: /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/088-market-selection.png shows two large market buttons and 重开本轮 within the portrait viewport. New-market settlement BLOCKED for action clarity: /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/129-new-market-settlement.png shows two adjacent buttons both labeled 继续当地 with the same subtitle, so their choices cannot be distinguished despite being reachable; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/142-new-market-continue.png confirms the coral-market world/title after continuation. Replay PASS: /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/155-replay-fish-cargo.png, /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/157-replay-fish-stock.png, /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/174-replay-smoked-stock.png, /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/195-new-market-replay-service.png, and /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/206-new-market-replay-cash-collected.png show the changed coral-market loop, progressing stock/order counts, service, and cash collection with controls visible."
+    }
+  ],
+  "issues": [
+    {
+      "id": "processor-starved-feedback",
+      "severity": "error",
+      "message": "BLOCKED: processor starvation is communicated only by global HUD text and zero counts; the processor object has no distinct local empty-input state in the natural screenshot.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/022-processor-no-input.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/025-processor-making.png"
+    },
+    {
+      "id": "runner-action-feedback",
+      "severity": "error",
+      "message": "BLOCKED: funded runner hire/action branch has no visible runner role marker or action-specific feedback.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/029-runner-hired-toast.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/031-runner-action.png"
+    },
+    {
+      "id": "cashier-action-feedback",
+      "severity": "error",
+      "message": "BLOCKED: funded cashier hire/action branch has no visible cashier role marker or action-specific feedback.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/081-cashier-hired-toast.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/083-cashier-action.png"
+    },
+    {
+      "id": "gull-pressure-feedback",
+      "severity": "error",
+      "message": "BLOCKED: gull pressure and recovery are absent from the player-visible branch despite deterministic event text.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/086-gull-alert-and-loss.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/087-gull-scared-and-loss-stopped.png"
+    },
+    {
+      "id": "settlement-choice-labels",
+      "severity": "error",
+      "message": "BLOCKED: new-market settlement presents two visually reachable controls with the same label and subtitle, preventing reliable choice attribution.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/129-new-market-settlement.png"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/001-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-5-independent/landing-input/540x960-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-5-independent/landing-input/844x390-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/022-processor-no-input.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/025-processor-making.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/006-event-packing.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/007-event-packing.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/029-runner-hired-toast.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/031-runner-action.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/081-cashier-hired-toast.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/083-cashier-action.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/086-gull-alert-and-loss.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/087-gull-scared-and-loss-stopped.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/088-market-selection.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/129-new-market-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/142-new-market-continue.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/155-replay-fish-cargo.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/157-replay-fish-stock.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/158-replay-smoked-cargo.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/174-replay-smoked-stock.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/195-new-market-replay-service.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/206-new-market-replay-cash-collected.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/screenshots/depth/540x960/207-depth-final.png"
+  ],
+  "consoleLog": "No console or page errors reported by attempt-5 natural/depth run; source: /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/qa-report.json",
+  "testedAt": "2026-10-02T17:59:53Z"
+}

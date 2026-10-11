@@ -1,0 +1,67 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/repair-runtime.test.ts (5 tests | 3 failed) 16828ms
+     × attributes coral-cove-market settlement to its completed goal 3720ms
+     × attributes moon-tide-market settlement to its completed goal 1603ms
+     × loads an explicit existing icon successfully 784ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > attributes coral-cove-market settlement to its completed goal
+AssertionError: expected '扩建结算' to contain '交付两份烟熏鱼订单'
+
+Expected: "交付两份烟熏鱼订单"
+Received: "扩建结算"
+
+ ❯ src/repair-runtime.test.ts:81:70
+     79|       const terminal = page.locator('#settlement');
+     80|       expect(await terminal.isVisible()).toBe(true);
+     81|       expect(await terminal.locator('strong').first().textContent()).t…
+       |                                                                      ^
+     82|       expect(await terminal.textContent()).not.toContain('潮池扩建完成');
+     83|       const goal = terminal.locator('[role="progressbar"]');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > attributes moon-tide-market settlement to its completed goal
+AssertionError: expected '扩建结算' to contain '补齐月潮双货架'
+
+Expected: "补齐月潮双货架"
+Received: "扩建结算"
+
+ ❯ src/repair-runtime.test.ts:81:70
+     79|       const terminal = page.locator('#settlement');
+     80|       expect(await terminal.isVisible()).toBe(true);
+     81|       expect(await terminal.locator('strong').first().textContent()).t…
+       |                                                                      ^
+     82|       expect(await terminal.textContent()).not.toContain('潮池扩建完成');
+     83|       const goal = terminal.locator('[role="progressbar"]');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > loads an explicit existing icon successfully
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/repair-runtime.test.ts:95:34
+     93|       await page.goto(baseUrl);
+     94|       const icon = page.locator('link[rel="icon"]');
+     95|       expect(await icon.count()).toBe(1);
+       |                                  ^
+     96|       const href = await icon.getAttribute('href');
+     97|       expect((await page.request.get(new URL(href!, baseUrl).href)).st…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  18:18:04
+   Duration  17.40s (transform 97ms, setup 0ms, import 433ms, tests 16.83s, environment 0ms)
+

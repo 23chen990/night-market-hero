@@ -1,0 +1,16 @@
+
+ 
+ 
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_font") then
+		if message.font == "main" then
+			self.my_font = self.my_font1
+		elseif message.font == "japanese" then
+			self.my_font = self.my_font2
+		end
+		
+		go.set(message.url_gui, "fonts", self.my_font, {key = "main"})
+	end
+	
+end

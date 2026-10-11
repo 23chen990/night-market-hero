@@ -1,0 +1,158 @@
+$ node ../../../../node_modules/vitest/vitest.mjs run -- src/responsive.test.ts src/input.test.ts
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/input.test.ts (5 tests | 4 failed) 8ms
+     × maps up keyboard input through the landscape renderer 5ms
+     × maps left keyboard input through the landscape renderer 1ms
+     × maps down keyboard input through the landscape renderer 1ms
+     × maps right keyboard input through the landscape renderer 0ms
+ ❯ src/responsive.test.ts (4 tests | 3 failed) 8ms
+     × allocates a side panel in landscape so controls and the canvas can coexist 2ms
+     × budgets the measured mobile-control row with the other chrome 0ms
+     × keeps landscape world labels upright with an invertible touch transform 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/input.test.ts > screen-relative movement input > maps up keyboard input through the landscape renderer
+AssertionError: expected { x: 1, y: +0 } to deeply equal { x: -1, y: +0 }
+
+- Expected
++ Received
+
+  {
+-   "x": -1,
++   "x": 1,
+    "y": 0,
+  }
+
+ ❯ src/input.test.ts:11:72
+      9|     ['right', { left: false, right: true, up: false, down: false }, { …
+     10|   ])('maps %s keyboard input through the landscape renderer', (_label,…
+     11|     expect(rotateDisplayMoveForWorld(keyboardMove(keys), 'landscape'))…
+       |                                                                        ^
+     12|   });
+     13|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/input.test.ts > screen-relative movement input > maps left keyboard input through the landscape renderer
+AssertionError: expected { x: +0, y: -1 } to deeply equal { x: +0, y: 1 }
+
+- Expected
++ Received
+
+  {
+    "x": 0,
+-   "y": 1,
++   "y": -1,
+  }
+
+ ❯ src/input.test.ts:11:72
+      9|     ['right', { left: false, right: true, up: false, down: false }, { …
+     10|   ])('maps %s keyboard input through the landscape renderer', (_label,…
+     11|     expect(rotateDisplayMoveForWorld(keyboardMove(keys), 'landscape'))…
+       |                                                                        ^
+     12|   });
+     13|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/input.test.ts > screen-relative movement input > maps down keyboard input through the landscape renderer
+AssertionError: expected { x: -1, y: +0 } to deeply equal { x: 1, y: +0 }
+
+- Expected
++ Received
+
+  {
+-   "x": 1,
++   "x": -1,
+    "y": 0,
+  }
+
+ ❯ src/input.test.ts:11:72
+      9|     ['right', { left: false, right: true, up: false, down: false }, { …
+     10|   ])('maps %s keyboard input through the landscape renderer', (_label,…
+     11|     expect(rotateDisplayMoveForWorld(keyboardMove(keys), 'landscape'))…
+       |                                                                        ^
+     12|   });
+     13|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/input.test.ts > screen-relative movement input > maps right keyboard input through the landscape renderer
+AssertionError: expected { x: +0, y: 1 } to deeply equal { x: +0, y: -1 }
+
+- Expected
++ Received
+
+  {
+    "x": 0,
+-   "y": -1,
++   "y": 1,
+  }
+
+ ❯ src/input.test.ts:11:72
+      9|     ['right', { left: false, right: true, up: false, down: false }, { …
+     10|   ])('maps %s keyboard input through the landscape renderer', (_label,…
+     11|     expect(rotateDisplayMoveForWorld(keyboardMove(keys), 'landscape'))…
+       |                                                                        ^
+     12|   });
+     13|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/responsive.test.ts > responsive world frame > allocates a side panel in landscape so controls and the canvas can coexist
+AssertionError: expected 370 to be greater than or equal to 420
+ ❯ src/responsive.test.ts:32:25
+     30|     expect(frame.height).toBeLessThanOrEqual(390);
+     31|     expect(frame.width + frame.panelWidth).toBeLessThanOrEqual(844);
+     32|     expect(frame.width).toBeGreaterThanOrEqual(420);
+       |                         ^
+     33|   });
+     34|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/responsive.test.ts > responsive world frame > budgets the measured mobile-control row with the other chrome
+AssertionError: expected 840 to be less than or equal to 800
+ ❯ src/responsive.test.ts:38:78
+     36|     const chrome = { top: 88, bottom: 80, controls: 48 };
+     37|     const frame = getResponsiveGameSize({ width: 360, height: 800 }, c…
+     38|     expect(frame.height + chrome.top + chrome.bottom + chrome.controls…
+       |                                                                              ^
+     39|     expect(frame.fitsViewport).toBe(true);
+     40|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  src/responsive.test.ts > responsive world frame > keeps landscape world labels upright with an invertible touch transform
+AssertionError: expected { x: +0, y: 1 } to deeply equal { x: +0, y: -1 }
+
+- Expected
++ Received
+
+  {
+    "x": 0,
+-   "y": -1,
++   "y": 1,
+  }
+
+ ❯ src/responsive.test.ts:46:60
+     44|     const logical = { x: 120, y: 420 };
+     45|     expect(transform.displayToLogical(transform.logicalToDisplay(logic…
+     46|     expect(transform.displayMoveToLogical({ x: 1, y: 0 })).toEqual({ x…
+       |                                                            ^
+     47|     expect(transform.displayMoveToLogical({ x: 0, y: 1 })).toEqual({ x…
+     48|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  2 failed | 4 passed (6)
+      Tests  7 failed | 30 passed (37)
+   Start at  00:47:23
+   Duration  301ms (transform 372ms, setup 0ms, import 469ms, tests 104ms, environment 0ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
+exit=1

@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/repair-runtime.test.ts (5 tests | 2 failed | 3 skipped) 9709ms
+     × keeps the raiding gull distinct from shelf labels at 540x960 5178ms
+     × keeps the raiding gull distinct from shelf labels at 844x390 2886ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > keeps the raiding gull distinct from shelf labels at 540x960
+AssertionError: expected 87.70336951924433 to be greater than 132.52953616241368
+ ❯ src/repair-runtime.test.ts:119:25
+    117|     if (evidence) await writeFile(resolve(evidence, `${width}x${height…
+    118|     expect(control!.body).toBeGreaterThan(75); expect(control!.wings).…
+    119|     expect(shelf!.body).toBeGreaterThan(control!.body * 0.8);
+       |                         ^
+    120|     expect(shelf!.wings).toBeGreaterThan(control!.wings * 0.8);
+    121|   }, 30_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > keeps the raiding gull distinct from shelf labels at 844x390
+AssertionError: expected 36.36363636363637 to be greater than 148.09917355371903
+ ❯ src/repair-runtime.test.ts:119:25
+    117|     if (evidence) await writeFile(resolve(evidence, `${width}x${height…
+    118|     expect(control!.body).toBeGreaterThan(75); expect(control!.wings).…
+    119|     expect(shelf!.body).toBeGreaterThan(control!.body * 0.8);
+       |                         ^
+    120|     expect(shelf!.wings).toBeGreaterThan(control!.wings * 0.8);
+    121|   }, 30_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 skipped (5)
+   Start at  18:21:10
+   Duration  10.33s (transform 77ms, setup 0ms, import 434ms, tests 9.71s, environment 0ms)
+

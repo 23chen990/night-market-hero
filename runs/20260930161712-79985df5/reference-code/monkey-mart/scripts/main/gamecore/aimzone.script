@@ -1,0 +1,69 @@
+local PATH_CLOUD_BACK	= "cloud_back"
+local PATH_CLOUD_ICON	= "cloud_icon"
+local PATH_CLOUD_COIN	= "cloud_coin"
+local PATH_CLOUD_TEXT	= "cloud_text"
+local PATH_CLOUD_ZONE	= "cloud_zone"
+local PATH_CLOUD_TEXT	= "cloud_text#label"
+local PATH_ICON_SPRITE	= "cloud_coin#sprite"
+
+local function hideCloud()
+	msg.post(PATH_CLOUD_BACK, "disable")
+	msg.post(PATH_CLOUD_ICON, "disable")
+	msg.post(PATH_CLOUD_COIN, "disable")
+	msg.post(PATH_CLOUD_TEXT, "disable")
+	msg.post(PATH_CLOUD_ZONE, "disable")
+
+end
+
+local function updateIcon(vId)
+	msg.post(PATH_CLOUD_ICON, "disable")
+
+	if (gameState.NUMPLACE_NEXTMART > 0) and (vId == gameState.dataMart.PLACES["placebox_nextmart"].id) then
+		msg.post(PATH_CLOUD_ICON, "enable")
+		sprite.play_flipbook(PATH_CLOUD_ICON, "icon_next_mart")
+		go.set_position(vmath.vector3(0,140,DEEP_CURSOR + 0.04), PATH_CLOUD_ICON)
+	end
+
+	local spriteName = gameState.dataMart:getAimzoneSprite(vId)
+
+	if spriteName then
+		msg.post(PATH_CLOUD_ICON, "enable")
+		sprite.play_flipbook(PATH_CLOUD_ICON, spriteName)
+	end
+
+end
+
+
+function init(self)
+	go.set_position(vmath.vector3(-3,74,DEEP_CURSOR + 0.02), PATH_CLOUD_BACK)
+	go.set_position(vmath.vector3(0,90,DEEP_CURSOR + 0.03), PATH_CLOUD_COIN)
+	go.set_position(vmath.vector3(0,147,DEEP_CURSOR + 0.04), PATH_CLOUD_ICON)
+	go.set_position(vmath.vector3(0,58,DEEP_TEXT), PATH_CLOUD_TEXT)
+	go.set_position(vmath.vector3(0,0,DEEP_BACKGROUND), PATH_CLOUD_ZONE)
+
+	local frameName = coinmanager.get_icon_name()
+	sprite.play_flipbook(PATH_ICON_SPRITE, frameName)
+
+	local s = 0.88
+	go.set_scale(vmath.vector3(s,s,s), PATH_CLOUD_COIN)
+
+end
+
+ 
+
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("setup") then
+		updateIcon(message.id)
+		label.set_text(PATH_CLOUD_TEXT, message.price)
+
+	elseif message_id == hash("updateText") then
+		label.set_text(PATH_CLOUD_TEXT, message.price)
+
+	elseif message_id == hash("hide") then
+		hideCloud()
+
+	end
+
+end

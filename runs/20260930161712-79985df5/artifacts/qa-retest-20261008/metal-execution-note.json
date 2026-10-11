@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "classification": "QA_INFRASTRUCTURE",
+  "evidence": [
+    "browser-probe.json confirms full Chromium with --use-angle=metal --enable-gpu uses Apple M1 Pro Metal renderer, screenshots515–741ms.",
+    "Current shell software rendering causes input transport latency and positional overshoot; game sale did complete on390touch."
+  ],
+  "instructions": [
+    "Preserve current natural run; do not start another viewport with old paired harness.",
+    "Parent is saving natural-attempt7-metal.mjs and qa-lib-attempt7-metal.mjs; use that profile for the next run with a new session suffix.",
+    "Use installed Node/tsx directly; do not allow pnpm auto-install or purge dependencies.",
+    "If current browser already active, let it finish preserving report then switch. Max two natural browsers preferred; root will start one Metal after portrait old browser finishes."
+  ]
+}

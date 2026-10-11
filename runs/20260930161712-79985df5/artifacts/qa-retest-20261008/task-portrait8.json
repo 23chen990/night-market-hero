@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "QA-only; own run outputs/logs for 390x844 touch, 430x932 keyboard under attempt-8 and portrait8-summary.json. You are not alone. No source/build or shared harness/runner edits. Report failures before making scenario changes.",
+  "inputs": [
+    "artifacts/qa-retest-20261008/natural-attempt8.mjs",
+    "artifacts/qa-retest-20261008/qa-lib-attempt8.mjs",
+    "artifacts/fix/attempt-8/build-manifest.json"
+  ],
+  "acceptance": [
+    "Run fresh natural runner directly node --import tsx with SHOP_QA_ATTEMPT=8, SHOP_QA_WIDTH/HEIGHT/INPUT values 390x844 touch; 430x932 keyboard. SHOP_QA_SESSION=portrait8. Base URL4177. Run your viewports sequentially. Full Chromium Metal configured; no dependencies/install/build. Freeze and verify runner hash.",
+    "Default complete loop, employees, exact gull loss/recovery, Coral AND Moon actual goals/settlements/newtransactions, reload, restart/newfishsale. Normal keyboard/touch only, visible UI/pixel observations; no __GAME_TEST__, state injection or localStorage modifications.",
+    "Close context, await finalized video; verify all screenshots/video/source build hashes; strict Zod summary + raw natural JSON. If blocked inspect actual screenshot and identify scenario/harness/product separately without changing acceptance. Preserve failed evidence."
+  ],
+  "output": "portrait8-summary.json"
+}

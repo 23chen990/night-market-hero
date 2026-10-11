@@ -1,0 +1,4527 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-natural-shop-depth",
+  "attempt": 7,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "runtime": "web-lite",
+  "buildHash": "62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e",
+  "buildFiles": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/assets/background.svg",
+      "sha256": "23b5bf091491b1fc279de3d00b048daee8d522dcfea117e2b70d841f7362c84e",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/assets/customer.svg",
+      "sha256": "d079a1447227e95a094ace07151d2b5387da8550599a12f6a8355050f743d874",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/assets/index-BoR8MCvQ.css",
+      "sha256": "a3a5b84c7ae929506ef6a3ee3f5570f972319cf73813680103da451c02845cb0",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/assets/index-CvtMFlBl.js",
+      "sha256": "62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/assets/product.svg",
+      "sha256": "b705a8a7b6c89d42d5675a9f92c7ba4794e3853948358238a1f51e4b0d2cf22b",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/assets/promo.svg",
+      "sha256": "90e03f729056ca022814c69086ed60d71cbda2c1715a7c13a01d7ef7d3c52488",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/assets/upgrade.svg",
+      "sha256": "9b80c70495c3b97808b5e637a5ad131481c5c8b06cdd6985aedc0a0309c2404f",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/dist/index.html",
+      "sha256": "864533df04523a5f4f50b7d8f68c3780627f01a989c6c11ce87a0280e01e2b18",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/depth-systems.test.ts",
+      "sha256": "9405778c983abf0361e846e3c58a124062cdeacc5f89ee3c58b252910d571617",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/generated/game-config.json",
+      "sha256": "a679ad1585eb4d3570cdbeb22d15651dc4dca0d3da79dc07587a9ff86c924dc8",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/input.test.ts",
+      "sha256": "3e11846efb9d645c842bd7126cecdbbf921b06fcd2acf368b56b6a4f843b3d13",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/input.ts",
+      "sha256": "442bc72007563d117d9bde01eacb96c5617f0c13cec70905bc2e0e78dcdb0d2e",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts",
+      "sha256": "e0290af82676544f437aba836981cc42240db321b7abf0882160b7f83c93522c",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/order-presentation.test.ts",
+      "sha256": "2286c98166d6d6ef8b8e7fb9f7eae2c4fb06bd5f6b75f3fdd3b6e20b491aded1",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/order-presentation.ts",
+      "sha256": "189dd737511dedf7f1f38e9457c62816da55e0ab558fbb655fad92a2a72d6663",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/presentation-runtime.test.ts",
+      "sha256": "252cf6d08f313f8015269d8e0d4548a47016c7fc7b98e030f6c53694003c289d",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/presentation.test.ts",
+      "sha256": "a563ad67dde614602f7969f3f3dfe69ee14448e2e9590ea2a1620976c4fcdd88",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/presentation.ts",
+      "sha256": "0e1400b3e3b0d3b44ad13decdfd9457172b6425b025a6fe619f65489c2219a56",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/responsive.test.ts",
+      "sha256": "ea1724e82090e08c33aaa4d66b54d05f60194d806857785698cb44af62007cd8",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/responsive.ts",
+      "sha256": "a5fdf87e387e4a64d6fb86482ecb1eabb801f87537f206c8c76f111ddd8af6e0",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts",
+      "sha256": "1d13ebf01f52a216dce0b719d0cecffad88913035804a4772cadc5eadbda8e06",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/save.ts",
+      "sha256": "ae7f5c22b68ebe6fd4387966bd7d7e37ed61ad12286694598272ce35992f3232",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.test.ts",
+      "sha256": "6e916512f08259078d3953ecc324376ed0692712ddd7544e6fe038ddae888517",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+      "sha256": "6d98f2f760cd4238bb847e4513b887c8edc88034eb50ef6ac6f3d8e3d742109d",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/style.css",
+      "sha256": "b0d9b05860726dcdf42116bb308184ff02c7b840d305e9da26cdc9c5549ad11b",
+      "matches": true
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/index.html",
+      "sha256": "158048534cc186c5d2adfa79325897fedc5ca956a27f9c1987c58128d7a47519",
+      "matches": true
+    }
+  ],
+  "sourceBindings": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/natural-attempt7-metal-finalized.mjs",
+      "sha256": "f619a3d60e4d6291b9f7f0b484d11bccd8c260204c94a5e450dd723d2e812616"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/qa-lib-attempt7-metal.mjs",
+      "sha256": "e2a82effeb65ad43e739ea0ca6371f83f7f3faa6af8574083009fd33dbf5bb73"
+    }
+  ],
+  "viewport": {
+    "width": 360,
+    "height": 800
+  },
+  "input": "keyboard",
+  "startedAt": "2026-10-08T10:03:22.864Z",
+  "finishedAt": "2026-10-08T10:05:47.678Z",
+  "passed": false,
+  "blockers": [
+    "runtime-console-and-runner",
+    "unobserved:first-settlement",
+    "unobserved:settlement-choice-clarity",
+    "unobserved:continue-local-no-unintended-selection",
+    "unobserved:processor-natural-route",
+    "unobserved:avatar-at-employee-label-crossing",
+    "unobserved:runner-funded-action",
+    "unobserved:cashier-funded-action",
+    "unobserved:seagull-loss-recovery",
+    "unobserved:deliberate-market-selection",
+    "unobserved:real-market-change",
+    "unobserved:new-market-own-settlement",
+    "unobserved:operating-replay",
+    "unobserved:natural-save-reload",
+    "unobserved:restart-clears-overlays"
+  ],
+  "checks": [
+    {
+      "name": "startup-viewport",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"首要动作：去近岸渔网采集鲜货\",\"#toast\":\"\",\"#coins\":\"贝壳币 0\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 1\",\"#order-lines\":\"—\",\"#order-product\":\"暂无订单\",\"#order-route\":\"路线 · 等待顾客 · 暂无顾客\",\"#order-status\":\"等待顾客\",\"#order-stock\":\"暂无顾客\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":60,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":114,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":122,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":176,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":184,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":238,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":246,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":300,\"bottom\":779.390625,\"hidden\":false}],\"viewport\":{\"width\":360,\"height\":800},\"overflow\":{\"width\":360,\"height\":800}}"
+    },
+    {
+      "name": "base-normal-sales-funded",
+      "passed": true,
+      "evidence": "{\"#title\":\"海滩渔货铺 · 潮汐渔货铺\",\"#status\":\"晴湾集市 · 完成潮池扩建\",\"#mission\":\"首要动作：去近岸渔网采集鲜货\",\"#toast\":\"新顾客到店\",\"#coins\":\"贝壳币 16\",\"#cash-pile\":\"柜台现金 0\",\"#level\":\"等级 1\",\"#order-lines\":\"○ 鲜鱼 0/1\",\"#order-product\":\"鲜鱼\",\"#order-route\":\"路线 · 鲜鱼冰盘 · 0/1 件已收集\",\"#order-status\":\"等待补货\",\"#order-stock\":\"货架 0 · 货篮 0\",\"#settlement\":null,\"settlementVisible\":false,\"selectionVisible\":false,\"buttons\":[{\"id\":\"\",\"text\":\"↑\",\"x\":60,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":114,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"←\",\"x\":122,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":176,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"↓\",\"x\":184,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":238,\"bottom\":779.390625,\"hidden\":false},{\"id\":\"\",\"text\":\"→\",\"x\":246,\"y\":731.390625,\"width\":54,\"height\":48,\"right\":300,\"bottom\":779.390625,\"hidden\":false}],\"viewport\":{\"width\":360,\"height\":800},\"overflow\":{\"width\":360,\"height\":800}}"
+    },
+    {
+      "name": "runtime-console-and-runner",
+      "passed": false,
+      "evidence": "{\"errors\":[\"Error: Rendered teal avatar body not observed; no prior-coordinate fallback\"],\"consoleErrors\":[\"Failed to load resource: the server responded with a status of 404 (File not found)\"],\"pageErrors\":[]}"
+    }
+  ],
+  "completion": "none",
+  "firstSettlement": false,
+  "newSettlement": false,
+  "replayObserved": false,
+  "forbiddenOperations": [],
+  "errors": [
+    "Error: Rendered teal avatar body not observed; no prior-coordinate fallback"
+  ],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (File not found)"
+  ],
+  "pageErrors": [],
+  "trace": [
+    {
+      "phase": "empty-shelf-shortage",
+      "elapsedMs": 9000,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/002-empty-shelf-shortage.png"
+    },
+    {
+      "phase": "base-first-harvest",
+      "target": {
+        "x": 120,
+        "y": 180
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 7228,
+      "samples": [
+        {
+          "x": 268.9328063241107,
+          "y": 756.9873015873015,
+          "distance": 595.8987556561691,
+          "observationMs": 747
+        },
+        {
+          "x": 268.9328063241107,
+          "y": 562.3581395348837,
+          "distance": 410.3397710046549,
+          "observationMs": 303
+        },
+        {
+          "x": 268.9328063241107,
+          "y": 426.8914728682171,
+          "distance": 288.3337999170625,
+          "observationMs": 125
+        },
+        {
+          "x": 268.9328063241107,
+          "y": 315.2329317269076,
+          "distance": 201.16890073525164,
+          "observationMs": 95
+        },
+        {
+          "x": 163.37063669698557,
+          "y": 315.36144578313247,
+          "distance": 142.13983654135043,
+          "observationMs": 78
+        },
+        {
+          "x": 163.2298136645963,
+          "y": 219.23492063492063,
+          "distance": 58.37975493871345,
+          "observationMs": 113
+        },
+        {
+          "x": 130.2974828375286,
+          "y": 219.59961013645227,
+          "distance": 40.91658924871683,
+          "observationMs": 81
+        },
+        {
+          "x": 130.23442824042525,
+          "y": 189.9624521072797,
+          "distance": 14.28264588226759,
+          "observationMs": 78
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "采集：鲜货到手",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "base-first-cargo",
+      "elapsedMs": 900,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "生产完成：可采集",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/003-base-first-cargo.png"
+    },
+    {
+      "phase": "base-first-deposit",
+      "target": {
+        "x": 270,
+        "y": 420
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 2957,
+      "samples": [
+        {
+          "x": 130.16103896103894,
+          "y": 189.89904761904762,
+          "distance": 269.26080908865555,
+          "observationMs": 80
+        },
+        {
+          "x": 130.28763274441638,
+          "y": 301.68755020080323,
+          "distance": 183.07752822683216,
+          "observationMs": 114
+        },
+        {
+          "x": 233.78832887339505,
+          "y": 301.48695652173916,
+          "distance": 123.92185683026841,
+          "observationMs": 89
+        },
+        {
+          "x": 233.71541501976284,
+          "y": 385.8,
+          "distance": 49.86192041215471,
+          "observationMs": 196
+        },
+        {
+          "x": 270.1905702992659,
+          "y": 385.77460317460316,
+          "distance": 34.22592737815656,
+          "observationMs": 116
+        },
+        {
+          "x": 270.1725402949043,
+          "y": 413.87824351297405,
+          "distance": 6.124187508544293,
+          "observationMs": 85
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "补货：货物进入货架",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "base-first-stock",
+      "elapsedMs": 1600,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/004-base-first-stock.png"
+    },
+    {
+      "phase": "base-first-checkout",
+      "target": {
+        "x": 270,
+        "y": 640
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 1799,
+      "samples": [
+        {
+          "x": 270.1725402949043,
+          "y": 413.87824351297405,
+          "distance": 226.12182231472315,
+          "observationMs": 90
+        },
+        {
+          "x": 270.2717698180836,
+          "y": 527.9383022774327,
+          "distance": 112.06202726748279,
+          "observationMs": 108
+        },
+        {
+          "x": 270.1725402949043,
+          "y": 609.4167664670658,
+          "distance": 30.583720236154317,
+          "observationMs": 96
+        },
+        {
+          "x": 270.0323392022997,
+          "y": 631.1721212121212,
+          "distance": 8.827938021842156,
+          "observationMs": 84
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "顾客取货：前往收银",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "base-first-service",
+      "elapsedMs": 2800,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/005-base-first-service.png"
+    },
+    {
+      "phase": "base-first-leave",
+      "target": {
+        "x": 120,
+        "y": 640
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 2168,
+      "samples": [
+        {
+          "x": 270.0323392022997,
+          "y": 631.1721212121212,
+          "distance": 150.29183028497388,
+          "observationMs": 264
+        },
+        {
+          "x": 156.9098095580309,
+          "y": 631.1721212121212,
+          "distance": 37.950829839459246,
+          "observationMs": 302
+        },
+        {
+          "x": 123.79446640316206,
+          "y": 631.368992248062,
+          "distance": 9.428269729846484,
+          "observationMs": 249
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "base-first-return",
+      "target": {
+        "x": 270,
+        "y": 640
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 1462,
+      "samples": [
+        {
+          "x": 123.79446640316206,
+          "y": 631.368992248062,
+          "distance": 146.46007083553565,
+          "observationMs": 120
+        },
+        {
+          "x": 232.5010222161646,
+          "y": 631.1578544061302,
+          "distance": 38.52735227777495,
+          "observationMs": 128
+        },
+        {
+          "x": 263.5068336587456,
+          "y": 631.0947791164658,
+          "distance": 11.021078355575382,
+          "observationMs": 146
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "收钱：+8 贝壳币",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "base-first-cash",
+      "found": true,
+      "elapsedMs": 17,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "收钱：+8 贝壳币",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/006-base-first-cash.png"
+    },
+    {
+      "phase": "pre-expansion-0-fish-harvest",
+      "target": {
+        "x": 120,
+        "y": 180
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 16341,
+      "samples": [
+        {
+          "x": 263.5068336587456,
+          "y": 631.0947791164658,
+          "distance": 473.3716415807901,
+          "observationMs": 112
+        },
+        {
+          "x": 263.48128194154225,
+          "y": 425.191932059448,
+          "distance": 284.0879473237703,
+          "observationMs": 716
+        },
+        {
+          "x": 263.56488603820026,
+          "y": 272.50339321357285,
+          "distance": 170.7856968811683,
+          "observationMs": 120
+        },
+        {
+          "x": 154.47307014619744,
+          "y": 272.41204819277107,
+          "distance": 98.6325464361926,
+          "observationMs": 349
+        },
+        {
+          "x": 154.46496586417535,
+          "y": 183.63757575757575,
+          "distance": 34.65639665935966,
+          "observationMs": 2492
+        },
+        {
+          "x": 84.26972712986333,
+          "y": 183.4160642570281,
+          "distance": 35.89320122784494,
+          "observationMs": 875
+        },
+        {
+          "x": 147.4887069452287,
+          "y": 183.78095238095239,
+          "distance": 27.747515391971476,
+          "observationMs": 915
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "pre-expansion-0-fish-cargo",
+      "elapsedMs": 900,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/007-pre-expansion-0-fish-cargo.png"
+    },
+    {
+      "phase": "pre-expansion-0-fish-deposit",
+      "target": {
+        "x": 270,
+        "y": 420
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 21198,
+      "samples": [
+        {
+          "x": 147.4887069452287,
+          "y": 183.78095238095239,
+          "distance": 266.09858207815,
+          "observationMs": 1735
+        },
+        {
+          "x": 147.37200110304255,
+          "y": 340.6031007751938,
+          "distance": 146.087281171176,
+          "observationMs": 3129
+        },
+        {
+          "x": 288.06869292626413,
+          "y": 340.61992337164753,
+          "distance": 81.41052898481091,
+          "observationMs": 2755
+        },
+        {
+          "x": 288.06911349520044,
+          "y": 569.3641904761904,
+          "distance": 150.45316300799436,
+          "observationMs": 1052
+        },
+        {
+          "x": 288.3180655661474,
+          "y": 437.3262745098039,
+          "distance": 25.21410943251331,
+          "observationMs": 651
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "补货：货物进入货架",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 2 · 货篮 2",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "pre-expansion-0-fish-stock",
+      "elapsedMs": 1600,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（2）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/008-pre-expansion-0-fish-stock.png"
+    },
+    {
+      "phase": "pre-expansion-0-checkout",
+      "target": {
+        "x": 270,
+        "y": 640
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 12280,
+      "samples": [
+        {
+          "x": 288.3180655661474,
+          "y": 437.3262745098039,
+          "distance": 203.4998538824071,
+          "observationMs": 624
+        },
+        {
+          "x": 288.00735995638547,
+          "y": 569.0091954022988,
+          "distance": 73.23905617925332,
+          "observationMs": 1103
+        },
+        {
+          "x": 288.31910564352034,
+          "y": 763.2863905325444,
+          "distance": 124.63997642057505,
+          "observationMs": 558
+        },
+        {
+          "x": 288.06911349520044,
+          "y": 596.9634285714286,
+          "distance": 46.67589680797747,
+          "observationMs": 334
+        },
+        {
+          "x": 288.2701001159736,
+          "y": 691.5309381237525,
+          "distance": 54.67388903454475,
+          "observationMs": 560
+        },
+        {
+          "x": 288.6504799548278,
+          "y": 628.2634920634921,
+          "distance": 22.036016452370575,
+          "observationMs": 233
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "pre-expansion-0-service",
+      "elapsedMs": 2800,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/009-pre-expansion-0-service.png"
+    },
+    {
+      "phase": "pre-expansion-0-leave",
+      "target": {
+        "x": 120,
+        "y": 640
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 4062,
+      "samples": [
+        {
+          "x": 288.6504799548278,
+          "y": 628.2634920634921,
+          "distance": 169.05836272582758,
+          "observationMs": 338
+        },
+        {
+          "x": 109.92094861660078,
+          "y": 628.5317073170731,
+          "distance": 15.267907972295204,
+          "observationMs": 1187
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "pre-expansion-0-return",
+      "target": {
+        "x": 270,
+        "y": 640
+      },
+      "reached": true,
+      "stoppedByOverlay": false,
+      "elapsedMs": 23817,
+      "samples": [
+        {
+          "x": 109.92094861660078,
+          "y": 628.5317073170731,
+          "distance": 160.48932808405124,
+          "observationMs": 812
+        },
+        {
+          "x": 335.06158654288083,
+          "y": 628.3178294573644,
+          "distance": 66.10206617091478,
+          "observationMs": 2309
+        },
+        {
+          "x": 199.64929931728352,
+          "y": 628.159595959596,
+          "distance": 71.34014476008008,
+          "observationMs": 1103
+        },
+        {
+          "x": 289.32946652010196,
+          "y": 628.4445759368837,
+          "distance": 22.52012658113161,
+          "observationMs": 6469
+        }
+      ],
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      }
+    },
+    {
+      "phase": "pre-expansion-0-cash",
+      "found": true,
+      "elapsedMs": 174,
+      "observation": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null,
+        "settlementVisible": false,
+        "selectionVisible": false,
+        "buttons": [
+          {
+            "id": "",
+            "text": "↑",
+            "x": 60,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 114,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "←",
+            "x": 122,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 176,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "↓",
+            "x": 184,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 238,
+            "bottom": 779.390625,
+            "hidden": false
+          },
+          {
+            "id": "",
+            "text": "→",
+            "x": 246,
+            "y": 731.390625,
+            "width": 54,
+            "height": 48,
+            "right": 300,
+            "bottom": 779.390625,
+            "hidden": false
+          }
+        ],
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "overflow": {
+          "width": 360,
+          "height": 800
+        }
+      },
+      "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/010-pre-expansion-0-cash.png"
+    }
+  ],
+  "visibleDomEvents": [
+    {
+      "atMs": 0,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "—",
+        "#order-product": "暂无订单",
+        "#order-route": "路线 · 等待顾客 · 暂无顾客",
+        "#order-status": "等待顾客",
+        "#order-stock": "暂无顾客",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 3653,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "前往货架",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 5095,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 13162,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 14173,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 15157,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 16602,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 17682,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 19237,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "采集：鲜货到手",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 19838,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "生产完成：可采集",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 19938,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "采集：鲜货到手",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 20118,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 20166,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 20580,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "生产完成：可采集",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 21184,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 21483,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "生产完成：可采集",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 23207,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客取货：前往收银",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 23672,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "补货：货物进入货架",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 24571,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（1）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 24688,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（1）",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 24918,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（2）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 25439,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 26121,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "顾客取货：前往收银",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 27570,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（2）",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 27898,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 2 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 2",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 28021,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 2 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 2",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 28198,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 2 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 2",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 28276,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 2 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 2",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 28595,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 4 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 4",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 28974,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 4 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 4",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 29299,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 6 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 6",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 29673,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 6 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 6",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 30003,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 31697,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 0",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 33877,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "收钱：+8 贝壳币",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 35213,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 37638,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 38719,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 41144,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 42221,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 42503,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "采集：鲜货到手",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 43420,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "生产完成：可采集",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 44956,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 45470,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 45480,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "生产完成：可采集",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 46010,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 46073,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "生产完成：可采集",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 48442,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 49514,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 50457,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 52202,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 53294,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 55687,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 57039,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 59483,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 60542,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 64268,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 65331,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 68958,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 69998,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 72432,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 73912,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客取货：前往收银",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 73935,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 74039,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "顾客取货：前往收银",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 74166,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：靠近鲜鱼冰盘补货",
+        "#toast": "补货：货物进入货架",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 74277,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "补货：货物进入货架",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "前往收银",
+        "#order-stock": "货架 2 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 75359,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（1）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 2 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 75372,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（1）",
+        "#toast": "顾客取货：前往收银",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 75708,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（2）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 77267,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 77430,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 78828,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 1 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 78870,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "顾客取货：前往收银",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 80935,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 80988,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "下一步：在收银桌服务队首（4）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 83826,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（4）",
+        "#toast": "顾客入队：队首服务",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 84443,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（4）",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 87570,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "下一步：在收银桌服务队首（3）",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 87875,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 2 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 2",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 87946,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 2 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 2",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 88244,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 2 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 2",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 88581,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 4 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 4",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 88951,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 4 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 4",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 89280,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 6 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 6",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "排队待结算",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 89645,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 6 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包中：正在封装货品",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 6",
+        "#level": "等级 1",
+        "#order-lines": "✓ 鲜鱼 1/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 1/1 件已收集",
+        "#order-status": "打包中",
+        "#order-stock": "货架 0 · 货篮 2",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 89972,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "打包完成：2 贝壳币落入柜台",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 90388,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 91446,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 93881,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 94967,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 97384,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 98468,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 100900,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 102205,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 104655,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "柜台有 8 贝壳币，靠近收取",
+        "#mission": "下一步：离开柜台再回来收取现金",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 8",
+        "#cash-pile": "柜台现金 8",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 105345,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "收钱：+8 贝壳币",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 105719,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 108146,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 109657,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 109824,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 112248,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 113326,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "当前节奏：涨潮",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 114686,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 115744,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 116840,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 119251,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 120324,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 122770,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 124289,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 126708,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 127784,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 130209,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 131288,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 133977,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "顾客离开：缺货等待超时",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 135032,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "新顾客到店",
+        "#coins": "贝壳币 16",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 136529,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "投资：已投入 1",
+        "#coins": "贝壳币 15",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 136680,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "投资：已投入 1",
+        "#coins": "贝壳币 14",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 136858,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": "晴湾集市 · 完成潮池扩建",
+        "#mission": "首要动作：去近岸渔网采集鲜货",
+        "#toast": "投资：已投入 1",
+        "#coins": "贝壳币 13",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 1",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": null
+      },
+      "segment": "main"
+    },
+    {
+      "atMs": 137073,
+      "ui": {
+        "#title": "海滩渔货铺 · 潮汐渔货铺",
+        "#status": null,
+        "#mission": null,
+        "#toast": "建设完成：潮池已解锁",
+        "#coins": "贝壳币 12",
+        "#cash-pile": "柜台现金 0",
+        "#level": "等级 2",
+        "#order-lines": "○ 鲜鱼 0/1",
+        "#order-product": "鲜鱼",
+        "#order-route": "路线 · 鲜鱼冰盘 · 0/1 件已收集",
+        "#order-status": "等待补货",
+        "#order-stock": "货架 0 · 货篮 0",
+        "#settlement": "扩建结算\n        潮池扩建完成。继续当地会保留已完成的解锁，再走到航标开启路线选择。\n        \n          继续当地保留解锁，前往下一市场航标\n          继续当地保留解锁，前往下一市场航标\n        \n        \n          重开本轮"
+      },
+      "segment": "main"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/001-startup.png",
+      "sha256": "ecbefcb1a4b90989744040444547d696b690154d665747e3b61378c50c684794"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/002-empty-shelf-shortage.png",
+      "sha256": "41c5745ed9678a1843c540d7cd582c94807bf068de53da45f51a0810653e6411"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/003-base-first-cargo.png",
+      "sha256": "ace94256a9a92d61601e74931be48b76e9fdec8807c895fe2a9d84439463e785"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/004-base-first-stock.png",
+      "sha256": "8659a00089ff6a26192278942d29080b3cd3bccb147f821f405a093b85223db0"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/005-base-first-service.png",
+      "sha256": "03875db1cd1ee37e1b6d83acd5d04ade39eb4ea781823d5a1f4a2973382b961a"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/006-base-first-cash.png",
+      "sha256": "7cbf678553b3126ad8618dd3335b8cfe4e14c58fe091ccf020c8a275a2b271dc"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/007-pre-expansion-0-fish-cargo.png",
+      "sha256": "fae44e9f171c0807ffce66a527348ffbcff16bf7c3e13a5786dc9533ad82cef9"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/008-pre-expansion-0-fish-stock.png",
+      "sha256": "8d609a27cf85137fd7de276d184b9081da94600e36658b366db023c1c9845d81"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/009-pre-expansion-0-service.png",
+      "sha256": "6b24f491185f3f3e46b919ac62dff497c198316ad21aed36cc8d5d49ca94a570"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/010-pre-expansion-0-cash.png",
+      "sha256": "f6311cdace4e6378a2078b08dc07415454ab4d3e95894ead334c4ef46bea9f86"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/011-blocked.png",
+      "sha256": "535ffa4d4a5ecceddd3c692d07bac33f46813281a579c958fed8cb69eb36a1d1"
+    }
+  ],
+  "holds": [
+    {
+      "key": "ArrowUp",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 473.8771110312612,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 430.69550930996695,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 137.54940711462456,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 125.99875952507539,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 444.5393503586751,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 377.086956521739,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 115.45095220984548,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 108.89898989898995,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 356.55994729907763,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 97.31028851388146,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 477.3756247345899,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 117.4403031391892,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 465.19942508084796,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 119.3149293122035,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 456.79736466700086,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 294.03833515881706,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 109.66125502237612,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 113.68723185952578,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 390.1799964903191,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 252.5729710902124,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 475.24969696969663,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 225.8798328108674,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 392.27487896718657,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 136.93454545454534,
+      "released": true
+    },
+    {
+      "key": "ArrowUp",
+      "hold": 163.96207584830356,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 500,
+      "released": true
+    },
+    {
+      "key": "ArrowLeft",
+      "hold": 207.01413900007537,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 223.84313853591607,
+      "released": true
+    },
+    {
+      "key": "ArrowRight",
+      "hold": 383.9516974360392,
+      "released": true
+    },
+    {
+      "key": "ArrowDown",
+      "hold": 291.72869041290096,
+      "released": true
+    }
+  ],
+  "video": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/natural.webm",
+    "sha256": "e65754d0158ddc08c0751bd76256aa09759f558d31fd616f7b02bb638a6c7017"
+  }
+}

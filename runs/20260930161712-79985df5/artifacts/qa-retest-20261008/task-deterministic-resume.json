@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "Own only deterministic-attempt7-resume.mjs and deterministic-resume outputs under this artifact directory; read-only generated game. Preserve all edits.",
+  "inputs": [
+    "deterministic-attempt7.mjs",
+    "attempt-7/deterministic/qa-report.json"
+  ],
+  "acceptance": [
+    "Diagnose failed fixture-core-settlement checks: completeOrder helper returned zero currency/pile; current assertion assumes helper completes actual sale. Inspect source helper and make correct explicit fixture sequence from source; do not change game or weaken sale acceptance.",
+    "Save a versioned QA script, run against attempt7 current immutable build on4177. Parent starts preview. All6 viewports required for current presentation checks. Validate QaReportSchema and output compact JSON artifact.",
+    "No other browser-heavy work will run until this deterministic suite returns; run promptly and report."
+  ],
+  "output": "deterministic-resume-summary.json"
+}

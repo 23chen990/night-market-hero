@@ -1,0 +1,115 @@
+local PATH_CLOUD		= "cloud"
+local PATH_ROOT_BACK	= "cloud_back"
+local PATH_ROOT_ICON	= "cloud_icon"
+local PATH_ROOT_TEXT	= "cloud_text"
+local PATH_ROOT_ICON2	= "cloud_icon2"
+local PATH_ROOT_TEXT2	= "cloud_text2"
+local PATH_CLOUD_ICON	= "cloud_icon#sprite"
+local PATH_CLOUD_ICON2	= "cloud_icon2#sprite"
+local PATH_CLOUD_BACK	= "cloud_back#sprite"
+local PATH_CLOUD_TEXT	= "cloud_text#label"
+local PATH_CLOUD_TEXT2	= "cloud_text2#label"
+
+local function showCloud()
+	msg.post(PATH_ROOT_BACK, "enable")
+	msg.post(PATH_ROOT_ICON, "enable")
+	msg.post(PATH_ROOT_TEXT, "enable")
+
+end
+
+local function hideCloud()
+	msg.post(PATH_ROOT_BACK, "disable")
+	msg.post(PATH_ROOT_ICON, "disable")
+	msg.post(PATH_ROOT_TEXT, "disable")
+	msg.post(PATH_ROOT_ICON2, "disable")
+	msg.post(PATH_ROOT_TEXT2, "disable")
+
+end
+
+local function updateCount(self, vCountFood1, vCountFood2)
+	label.set_text(PATH_CLOUD_TEXT, vCountFood1.."/"..vCountFood2)
+
+end
+
+local function updateCount2(self, vCountFood1, vCountFood2)
+	label.set_text(PATH_CLOUD_TEXT2, vCountFood1.."/"..vCountFood2)
+
+end
+
+local function initCloud(self, vPos, vTypeFood, vCountFood1, vCountFood2)
+	go.set_scale(vmath.vector3(1,1,1), PATH_ROOT_BACK)
+	go.set_scale(vmath.vector3(1,1,1), PATH_ROOT_ICON)
+
+	go.set_position(vmath.vector3(vPos.x,vPos.y,DEEP_CLOUD), PATH_CLOUD)
+
+	go.set_position(vmath.vector3(0,0,DEEP_CLOUD+0.01), PATH_ROOT_BACK)
+	go.set_position(vmath.vector3(-30,6,DEEP_CLOUD+0.02), PATH_ROOT_ICON)
+	go.set_position(vmath.vector3(20,6,DEEP_TEXT), PATH_ROOT_TEXT)
+
+	go.set_scale(vmath.vector3(0.86,0.86,0.86), PATH_ROOT_ICON)
+
+	sprite.play_flipbook(PATH_CLOUD_BACK, "cloud1")
+	sprite.play_flipbook(PATH_CLOUD_ICON, "food"..vTypeFood.."_icon")
+
+	updateCount(self, vCountFood1, vCountFood2)
+
+end
+
+local function initCloud2(self, vPos, vTypeFood, vCountFood1, vCountFood2)
+	go.set_scale(vmath.vector3(1.1,1.1,1.1), PATH_ROOT_BACK)
+
+	msg.post(PATH_ROOT_ICON2, "enable")
+	msg.post(PATH_ROOT_TEXT2, "enable")
+
+	go.set_scale(vmath.vector3(1,1,1), PATH_ROOT_ICON2)
+
+	go.set_position(vmath.vector3(0,22,DEEP_CLOUD+0.01), PATH_ROOT_BACK)
+	go.set_position(vmath.vector3(-25,47,DEEP_CLOUD+0.02), PATH_ROOT_ICON2)
+	go.set_position(vmath.vector3(20,47,DEEP_TEXT), PATH_ROOT_TEXT2)
+
+		
+	go.set_position(vmath.vector3(-25,6,DEEP_CLOUD+0.02), PATH_ROOT_ICON)
+	go.set_position(vmath.vector3(20,6,DEEP_TEXT), PATH_ROOT_TEXT)
+
+	go.set_scale(vmath.vector3(0.86,0.86,0.86), PATH_ROOT_ICON2)
+
+	sprite.play_flipbook(PATH_CLOUD_BACK, "cloud2")
+	sprite.play_flipbook(PATH_CLOUD_ICON2, "food"..vTypeFood.."_icon")
+
+	updateCount2(self, vCountFood1, vCountFood2)
+
+end
+
+function init(self)
+	msg.post(PATH_ROOT_ICON2, "disable")
+	msg.post(PATH_ROOT_TEXT2, "disable")
+
+end
+
+ 
+
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("initCloud") then
+		showCloud()
+        initCloud(self, message.pos, message.type, message.count1, message.count2)
+
+	elseif message_id == hash("initCloud2") then
+        initCloud2(self, nil, message.type, message.count1, message.count2)
+
+	elseif message_id == hash("updateCount") then
+		showCloud()
+        updateCount(self, message.count1, message.count2)
+
+	elseif message_id == hash("updateCount2") then
+        updateCount2(self, message.count1, message.count2)
+
+    elseif message_id == hash("show") then
+        showCloud()
+
+    elseif message_id == hash("hide") then
+        hideCloud()
+
+    end
+end

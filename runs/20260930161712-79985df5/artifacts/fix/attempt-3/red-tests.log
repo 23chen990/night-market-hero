@@ -1,0 +1,19 @@
+Attempt 3 RED phase (tests authored before production implementation)
+Target: runs/20260930161712-79985df5/workspace/game
+Timestamp: 2026-10-01
+
+Planned regression tests added before implementation:
+- active order presentation names the requested product and exposes route/status/stock context
+- continueRound records an explicit original next-market selection while preserving operating progression
+- restart clears the selected market
+
+Command:
+pnpm test -- --run src/simulation.test.ts src/order-presentation.test.ts
+
+Result:
+exit=1
+$ vitest run -- --run src/simulation.test.ts src/order-presentation.test.ts
+sh: vitest: command not found
+[ELIFECYCLE] Test failed. See above for more details.
+
+The package script has no local vitest binary. This real failure is preserved; implementation verification will use the available pnpm dlx vitest command.

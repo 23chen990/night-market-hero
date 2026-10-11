@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "blueprint-token-preflight-underrun-20260930",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "runs/20260930161712-79985df5/workspace/game",
+  "reportedConcern": "用户询问超过 token 上限后如何处理，并批准总上限 100 万后继续。",
+  "reproduction": {
+    "stage": "BLUEPRINT",
+    "command": "FACTORY_MODE=codex-account pnpm factory resume 20260930161712-79985df5",
+    "evidence": [
+      "artifacts/cost-budget-authorization.json",
+      "artifacts/cost-preflight.json",
+      "state.json#stages.BLUEPRINT.tokenUsage",
+      "artifacts/cost-usage.json",
+      "artifacts/abandonment-decision.json"
+    ],
+    "expected": "阶段调用前预检应以保守储备阻止无法覆盖的代理调用。",
+    "actual": "BLUEPRINT 预留 0 token，实际使用 1,119,293 token；累计 1,607,185，超过 1,000,000 后才自动 ABANDON。"
+  },
+  "classification": "cost-governance-preflight-underestimation",
+  "scope": {
+    "sharedFactory": [
+      "src/core/cost-accounting.ts",
+      "src/factory.ts"
+    ],
+    "generatedWorkspaceChanges": []
+  },
+  "acceptanceCriteria": [
+    "可为单个阶段配置保守 agent-token reserve，并在 provider 调用前写入 cost-preflight.json。",
+    "配置后的 FULL_BUILD 预留若超过剩余上限，必须在 BuilderAgent 调用前阻断。",
+    "只影响 agent-token 投影，不放宽金额、时间、构建、修复或平台上限。",
+    "增加单元测试并通过 typecheck、目标 lint 与全量测试。"
+  ],
+  "route": "direct-builder",
+  "routeReason": "根因明确且共享工厂修复只涉及成本预估配置与调用接线，不修改生成游戏工作区。",
+  "contextOmitted": [
+    "第三方参考原始代码",
+    "无关游戏运行",
+    "旧运行完整日志"
+  ],
+  "createdAt": "2026-09-30T17:39:38.303Z"
+}

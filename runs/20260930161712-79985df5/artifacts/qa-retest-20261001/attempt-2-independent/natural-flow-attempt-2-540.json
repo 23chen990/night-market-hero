@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "fresh Chromium context at 540x960 with localStorage cleared",
+    "ArrowUp, ArrowLeft, ArrowRight and ArrowDown movement only",
+    "stopped inside the net, fish shelf, checkout, cash collection and construction interaction ranges",
+    "clicked visible 继续经营 control after settlement",
+    "no __GAME_TEST__, teleport, state injection or internal event dispatch"
+  ],
+  "transitions": [
+    {"name":"fresh-startup","changed":true,"evidence":"cycle-01-boot.png shows 海滩渔货铺, 0 currency, visible beach world and first mission."},
+    {"name":"harvest-and-deposit","changed":true,"evidence":"cycle-02-harvest-1.png and cycle-03-deposit-1.png show player routing to 近岸渔网 and 鲜鱼冰盘; HUD mission advances to 收银桌服务队首."},
+    {"name":"checkout-queue-head","changed":true,"evidence":"cycle-03-deposit-1.png and cycle-1-queue.png show multiple visible customers aligned at the checkout route; checkout-1 trace reports 顾客入队/队首 service."},
+    {"name":"checkout-packing","changed":true,"evidence":"cycle-04-checkout-1.png visibly shows the purple packing customer, 打包中 label and player at 收银桌; checkout-1 trace reports toast 打包中：正在封装货品."},
+    {"name":"counter-cash-and-collection","changed":true,"evidence":"cycle-04-checkout-1.png shows 柜台现金 2; cycle-05-collect-1.png shows cash cleared and wallet increased. A second natural order is shown by cycle-06/07 and cycle-08/09."},
+    {"name":"second-order-packing","changed":true,"evidence":"cycle-08-checkout-2.png visibly shows the second purple packing customer and checkout feedback; checkout-2 trace reports 打包中 with counter cash present."},
+    {"name":"construction-settlement","changed":true,"evidence":"cycle-10-settlement.png shows 4/4 建设, unlocked 潮池/海带篮, and visible settlement controls."},
+    {"name":"replay-continuation","changed":true,"evidence":"cycle-11-continue.png shows settlement hidden, operating HUD restored, and unlocked stations retained."}
+  ],
+  "completion":"settlement",
+  "replayObserved":true,
+  "forbiddenOperations":[],
+  "screenshots":[
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-01-boot.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-02-harvest-1.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-03-deposit-1.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-04-checkout-1.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-05-collect-1.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-06-harvest-2.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-07-deposit-2.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-08-checkout-2.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-09-collect-2.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-10-settlement.png",
+    "runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-11-continue.png"
+  ],
+  "passed":true,
+  "blockers":[],
+  "runner":"trusted-qa-runner",
+  "buildHash":"660025067d67194e7e04f669da2fe82ed52dd186917e63fe9f94060a052eacc6",
+  "runtime":"web-lite",
+  "device":{"width":540,"height":960,"label":"reference-540x960"},
+  "seed":"fresh-browser-localStorage-clear",
+  "observedAt":"2026-10-01T14:58:12Z"
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "Resume unfinished attempt-6 QA. Natural expansion settlement shows two identical continue-local controls; near employee funding, station labels cover the player avatar and normal-input pixel navigation loses both player body and head. Employee actions, gull recovery, market settlement and replay remain unobserved.",
+  "classification": [
+    "visual-hierarchy",
+    "mobile-readability",
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Validated failed recovery QA affects the default settlement and employee journey; preserve attempt-6 failure and use attempt 7 with exact-branch natural/perceptual retest.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Other games and factory changes",
+      "Entire conversation and unrelated history",
+      "Third-party content and media",
+      "Historical fixture passes as natural evidence"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Use a fresh 540x960 browser and normal directional-key pulses to harvest, stock, pack, collect cash, and fund expansion.",
+      "Observe the first settlement controls, continue locally, collect processor output, and walk toward runner-hire.",
+      "Inspect the settlement PNG and blocked PNG; compare normal trace avatar locator failure with station-label presentation."
+    ],
+    "observed": [
+      "First settlement PNG visibly shows two identical continue-local buttons despite the second DOM button having hidden=true.",
+      "Continue-local keeps operating without automatic market selection, so preserve attempt-6 geometry.",
+      "At player position around x174/y786, labels overlap avatar; the renderer gives player graphics depth 0 and station labels depth 5. Exact source ownership must be confirmed with red runtime coverage before editing.",
+      "Employee, gull, and subsequent market checks are blocked by the failed route; do not close them from unit tests."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/natural.json",
+        "sha256": "7ec2057a40b1dc1d9d3b817638b9308bbbf860caccf9ee13115c6c6ab8e279c0",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/011-first-settlement.png",
+        "sha256": "369cd9bdfa2076d428da1e3704215938ce7767ce8b60931e77416b9716438737",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/019-blocked.png",
+        "sha256": "59c4b0a467a934f0870bf401278adb279d53fbf801d0fd70f2e26153954017c4",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Settlement presents exactly one visible continue-local command and one restart command; market-selection still presents two distinct market destinations.",
+    "The player remains visibly locatable crossing construction/upgrade/employee label regions in portrait and landscape.",
+    "A fresh normal-input journey completes core loop, first settlement, continue without unintended market overlay, processor output, funded runner pickup/deposit, cashier service, gull loss and chase recovery, deliberate market entry, next-market settlement, replay, reload, and restart.",
+    "Check 360x800, 390x844, 430x932, 540x960 and 844x390; deterministic, natural and perceptual reports must use current hashes and preserve any unresolved BLOCKED result.",
+    "Test first; lint, typecheck, tests and exactly one build for this attempt; only causal presentation files may change."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-08T08:51:34.913Z"
+}

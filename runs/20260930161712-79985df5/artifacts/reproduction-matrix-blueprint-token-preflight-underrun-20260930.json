@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "issueId": "blueprint-token-preflight-underrun-20260930",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "dimensions": {
+    "executionType": [
+      "structured-read-only-agent",
+      "workspace-write-builder",
+      "deterministic-stage"
+    ],
+    "lifecycleBranch": [
+      "active-with-headroom",
+      "active-near-cap",
+      "abandoned-after-cap"
+    ],
+    "providerPath": [
+      "codex-account",
+      "mock"
+    ],
+    "viewport": [
+      "not-applicable-cost-control"
+    ]
+  },
+  "cases": [
+    {
+      "id": "blueprint-codex-near-cap",
+      "executionType": "structured-read-only-agent",
+      "lifecycleBranch": "active-near-cap",
+      "providerPath": "codex-account",
+      "viewport": "not-applicable-cost-control",
+      "represented": true,
+      "result": "FAIL",
+      "evidence": "BLUEPRINT reserve=0; actual=1,119,293; run abandoned after call"
+    },
+    {
+      "id": "full-build-codex-near-cap",
+      "executionType": "workspace-write-builder",
+      "lifecycleBranch": "active-near-cap",
+      "providerPath": "codex-account",
+      "viewport": "not-applicable-cost-control",
+      "represented": true,
+      "result": "UNTESTED",
+      "evidence": "default reserve=30,000; must be protected before next authorization"
+    },
+    {
+      "id": "deterministic-contracts",
+      "executionType": "deterministic-stage",
+      "lifecycleBranch": "active-with-headroom",
+      "providerPath": "mock",
+      "viewport": "not-applicable-cost-control",
+      "represented": true,
+      "result": "PASS",
+      "evidence": "no provider token usage expected"
+    },
+    {
+      "id": "abandoned-resume",
+      "executionType": "structured-read-only-agent",
+      "lifecycleBranch": "abandoned-after-cap",
+      "providerPath": "codex-account",
+      "viewport": "not-applicable-cost-control",
+      "represented": true,
+      "result": "PASS",
+      "evidence": "cost-cap abandonment artifact and hash-bound continuation mechanism exist"
+    }
+  ],
+  "conclusion": "当前失败分支是 codex-account 模型阶段的预留严重偏低；mock 或确定性兄弟分支不能关闭该问题。",
+  "createdAt": "2026-09-30T17:39:38.304Z"
+}

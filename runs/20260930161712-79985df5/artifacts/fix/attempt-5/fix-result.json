@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "route": "formal-fixer",
+  "attempt": 5,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "Formal fixer was required for the validated core-loop replay state machine plus cross-viewport responsive/input failures. The attempt-5 supplement added two real checkout regressions: Coral's completed smoked-order goal and Moon's completed dual-shelf goal re-entered settlement after continue-local. The repair keeps authored first-time settlement, prevents repeated refreeze after a settled goal, accounts for the mobile control row, restores readable portrait chrome, provides a 528 CSS px landscape field with coherent clockwise input mapping, keeps route cards distinct, and enables causal lint rules.",
+  "contextIntentionallyOmitted": [
+    "Other games and shared factory history",
+    "Unbound media, unrelated screenshots, and first-version source history",
+    "Passing fixture-only sibling branches as perceptual closure",
+    "Root QA's independent runtime and natural-player verdict"
+  ],
+  "filesChanged": [
+    "src/main.ts",
+    "src/style.css",
+    "src/responsive.ts",
+    "src/responsive.test.ts",
+    "src/input.ts",
+    "src/input.test.ts",
+    "src/simulation.ts",
+    "src/depth-systems.test.ts",
+    "eslint.config.js",
+    "dist/index.html",
+    "dist/assets/index-C4evObWO.css",
+    "dist/assets/index-Rt73Z142.js"
+  ],
+  "tests": [
+    {
+      "name": "responsive/input red tests before implementation",
+      "command": "pnpm test -- src/responsive.test.ts src/input.test.ts",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-tests.log"
+    },
+    {
+      "name": "post-settlement real-checkout red tests before guard",
+      "command": "pnpm test -- src/depth-systems.test.ts",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-post-settlement-tests.log"
+    },
+    {
+      "name": "lint diagnostic before cleanup",
+      "command": "pnpm lint",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-lint.log"
+    },
+    {
+      "name": "normal-input responsive/layout red runtime before repair",
+      "command": "inline node --input-type=module red runtime assertion against prechange source",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-runtime-before.log"
+    },
+    {
+      "name": "all unit tests after repair",
+      "command": "pnpm test",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-tests.log"
+    },
+    {
+      "name": "typecheck after repair",
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-typecheck.log"
+    },
+    {
+      "name": "enforced lint after repair",
+      "command": "pnpm lint",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-lint.log"
+    },
+    {
+      "name": "current-source Coral and Moon checkout replay conservation",
+      "command": "pnpm exec tsx /tmp/shop-attempt5-post-settlement.mts",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/post-settlement-regression.json"
+    },
+    {
+      "name": "fresh normal-input five-viewport keyboard/layout check",
+      "command": "node /tmp/shop-attempt5-runtime.mjs",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-dev-runtime.log"
+    },
+    {
+      "name": "fresh normal-input landscape touch direction/release check",
+      "command": "node /tmp/shop-attempt5-touch.mjs",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/dev-touch-check.log"
+    },
+    {
+      "name": "settlement layout and single continue-local choice check",
+      "command": "node /tmp/shop-attempt5-settlement.mjs",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/dev-settlement-check.log"
+    },
+    {
+      "name": "market selection distinct route-card check",
+      "command": "node /tmp/shop-attempt5-market-selection.mjs",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/dev-market-selection-check.log"
+    },
+    {
+      "name": "attempt-5 single production build",
+      "command": "pnpm build",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/build.log"
+    }
+  ],
+  "buildCount": 1,
+  "evidencePaths": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/checkpoint.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-runtime-before.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-post-settlement-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/red-lint.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/post-settlement-regression.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-dev-runtime.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/dev-touch-check.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/dev-settlement-check.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/dev-market-selection-check.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-typecheck.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/prebuild-lint.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/build.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/build-manifest.json"
+  ],
+  "remainingEvidenceGaps": [
+    "Root QA must independently verify the hashed production build on the exact natural five-viewport startup, active-order, settlement, market-selection, replay, and post-settlement journeys.",
+    "Perceptual readability and upright-label judgment on the production build remains with independent QA; the fixer does not self-approve it.",
+    "The web-lite build is evidence for this attempt; target mini-game platform package acceptance remains outside this repair artifact."
+  ]
+}

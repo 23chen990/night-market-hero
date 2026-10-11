@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "shopping-list",
+      "passed": false,
+      "evidence": "Attempt-3 independent perceptual/reference reviews plus default source show this exact branch missing or unobserved. Required: Natural expanded shopper visits two compatible shelves before queueing. Unit tests cover quantity conservation, locked demand, partial order, basket value and queue gating."
+    },
+    {
+      "name": "processing",
+      "passed": false,
+      "evidence": "Attempt-3 independent perceptual/reference reviews plus default source show this exact branch missing or unobserved. Required: Fresh natural input shows input-starved processor -> restock -> output -> deposit. Unit tests prove input gating, atomic consumption, capacity stop/resume and no locked processor output."
+    },
+    {
+      "name": "employees",
+      "passed": false,
+      "evidence": "Attempt-3 independent perceptual/reference reviews plus default source show this exact branch missing or unobserved. Required: Normal funded hire leads to visible worker action and inventory change. Unit tests cover insufficient wallet, installment conservation, runner limits and cashier using queue/packing without double payment."
+    },
+    {
+      "name": "shelf-pressure",
+      "passed": false,
+      "evidence": "Attempt-3 independent perceptual/reference reviews plus default source show this exact branch missing or unobserved. Required: Fresh normal-input evidence observes disruption alert/loss -> player approach -> no further loss and replenish. Fresh normal-input evidence observes shortage wait -> correct restock -> customer pickup/queue; unit tests cover loss cadence/grace and approved timeout origin."
+    },
+    {
+      "name": "progression-and-markets",
+      "passed": false,
+      "evidence": "Attempt-3 independent perceptual/reference reviews plus default source show this exact branch missing or unobserved. Required: Natural path proves expansion -> continue -> marker arrival/stop -> selection -> visibly different market -> core loop -> settlement/replay. Unit tests cover stationary marker gating, invalid choices, world differences, preservation of upgrades/progress and replay."
+    },
+    {
+      "name": "runtime-and-persistence",
+      "passed": false,
+      "evidence": "Attempt-3 independent perceptual/reference reviews plus default source show this exact branch missing or unobserved. Required: Independent deterministic, natural and perceptual QA at 360x800,390x844,430x932,540x960,844x390. Tests pass, typecheck passes, lint passes via an existing local ESLint config without adding dependencies, exactly one build per formal attempt, hashed runtime-product gate and save reload proof."
+    }
+  ],
+  "issues": [
+    {
+      "id": "REF-SHOPPING-LIST",
+      "severity": "error",
+      "message": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand. Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout. Show gathered versus outstanding items; price earned only after all items, queue-head service and packing.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#shopping-list; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "QA-ATTEMPT3-PROCESSOR-BRANCH-MISSING",
+      "severity": "error",
+      "message": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity. With input absent the progress remains stopped; replenishing the connected shelf resumes processing. Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#processing; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "REF-SYSTEM-DEPTH",
+      "severity": "error",
+      "message": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity. With input absent the progress remains stopped; replenishing the connected shelf resumes processing. Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#processing; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "REF-SYSTEM-DEPTH",
+      "severity": "error",
+      "message": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments. Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch. Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#employees; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "QA-ATTEMPT3-DISRUPTION-BRANCH-MISSING",
+      "severity": "error",
+      "message": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item. Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference. Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#shelf-pressure; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "QA-ATTEMPT3-CUSTOMER-SHORTAGE-SIGNAL-UNPROVEN",
+      "severity": "error",
+      "message": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item. Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference. Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#shelf-pressure; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "REF-PROGRESSION",
+      "severity": "error",
+      "message": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks. After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel. Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target. Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#progression-and-markets; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "QA-ATTEMPT3-NEXT-MARKET-WORLD-TRANSITION-MISSING",
+      "severity": "error",
+      "message": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks. After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel. Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target. Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#progression-and-markets; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "QA-RUNTIME-PRODUCT-GATE",
+      "severity": "error",
+      "message": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey. Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence. Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#runtime-and-persistence; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    },
+    {
+      "id": "QA-MOBILE-EXACT-BRANCH",
+      "severity": "error",
+      "message": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey. Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence. Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json#runtime-and-persistence; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Formal design-scope issue handoff; historical runtime evidence is preserved; this is not a passing browser QA.",
+  "testedAt": "2026-10-02T15:33:27.261Z"
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "QA-only. Own artifacts/qa-retest-20261008/qa-lib-attempt8.mjs, gull-target-tests.mjs, qa-harness-attempt8.json. No generated source or natural runner edits; parent owns runner. Preserve other changes.",
+  "inputs": [
+    "artifacts/qa-retest-20261008/qa-lib-attempt7-metal.mjs",
+    "artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/failure-analysis.json",
+    "artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/failure-analysis.json",
+    "artifacts/qa-retest-20261008/natural-attempt7-metal-finalized.mjs"
+  ],
+  "acceptance": [
+    "Copy existing driver to qa-lib-attempt8.mjs; preserve pixel-only movement and normal-input restrictions. Fix geometry/overlay race: recheck overlay/layout after screenshot; on legitimate settlement transition stop movement rather than treating stale crop as invisible avatar. Never substitute internal coordinates or prior-coordinate fallback.",
+    "Export detectGullTarget(image, stationPositions, landscape) for runner to call, returning unique target plus candidate evidence. Retain paired visible bird cues, add actual visible shelf-local orange alert annulus and cream warning triangle as independently observable target cues. Confirm exact target from pixels; unknown/ambiguous remains null. This is target localization, not a perceptual pass for obscured bird.",
+    "Use existing saved PNGs including844 target failure,540 target and clean negative screenshots to verify detector; no new browser needed while Fixer tests run. Preserve input screenshot hashes and output detection results in strict Zod artifact.",
+    "Maintain30000 screenshot timeout, latency-aware movement budget, paired body/head identity. Do not weaken product acceptance or manipulate game. Return exact export API for parent natural runner."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/qa-harness-attempt8.json"
+}

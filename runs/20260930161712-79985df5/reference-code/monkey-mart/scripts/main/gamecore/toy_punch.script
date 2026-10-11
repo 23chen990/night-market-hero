@@ -1,0 +1,116 @@
+local PATH_SPINE		= "spine#spinemodel"
+local PATH_VIEW			= "spine"
+local PATH_SHADOW		= "shadow"
+
+local function updateGoPosition(self)
+	
+	local posY = self.follower.pos.y + 10
+	local posZ = DEEP_PLAYERS - posY / 10000
+
+	if self.follower.isFlip then
+		self.offset_position.x = -25
+	else
+		self.offset_position.x = 25
+	end
+
+	go.set_position(vmath.vector3(self.follower.pos.x + self.offset_position.x, self.follower.pos.y + self.offset_position.y, posZ))
+
+end
+
+local function updateVisible(vBool)
+	if vBool then
+		msg.post(PATH_VIEW, "enable")
+		msg.post(PATH_SHADOW, "enable")
+	else
+		msg.post(PATH_VIEW, "disable")
+		msg.post(PATH_SHADOW, "disable")
+	end
+
+end
+
+local function updatePositionTarget(self, dt)
+	local len_vel = vmath.length(self.follower.velocity)
+
+	local dX = self.follower.velocity.x
+	local dY = self.follower.velocity.y
+	local angle = math.atan2(dY, dX)
+
+	if (len_vel > 0) then
+		local value = 100
+
+		local rndX = lume.random(-10, 10) * 1
+		local rndY = lume.random(-10, 10) * 1
+
+		self.waveCount = self.waveCount + 0.15
+
+		self.target_position.x = self.follower.pos.x - value * math.cos(angle) + math.cos(self.waveCount) * 25
+		self.target_position.y = self.follower.pos.y - value * math.sin(angle) + math.sin(self.waveCount) * 25
+
+		spine.set_ik_target_position(PATH_SPINE, 'target', self.target_position)
+	end
+
+	
+	local bone_body = spine.get_go(PATH_SPINE, hash('bone_body'))
+	local pos_body = go.get_position(bone_body)
+
+	go.set_position(vmath.vector3(pos_body.x, pos_body.y - 20, self.posZ_shadow), PATH_SHADOW)
+	
+
+end
+
+local function setShadowLocalZ(parent_z, shadow_global_z)
+    local local_z = shadow_global_z - parent_z
+    return local_z
+end
+
+function init(self)
+	self.init_position = go.get_position()
+	self.offset_position = vmath.vector3(25, 11, 0)
+	self.target_position = vmath.vector3()
+	self.waveCount = 0
+
+	self.posZ_shadow = setShadowLocalZ(DEEP_PLAYERS, DEEP_SHADOW)
+
+	go.set_position(vmath.vector3(0, 0, self.posZ_shadow), PATH_SHADOW)
+	go.set_scale(vmath.vector3(1.0, 1.2, 1.0), PATH_SHADOW)
+
+	self.follower = nil
+
+end
+
+ 
+
+
+
+function update(self, dt)
+	if (self.follower) then
+		updateGoPosition(self)
+		updatePositionTarget(self, dt)
+
+	end
+
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("set_follower") then
+		self.follower = gameState.players[message.id]
+		updateGoPosition(self)
+
+	elseif message_id == hash("remove_follower") then
+		self.follower = nil
+
+	elseif message_id == hash("randomCursor") then
+		go.set(PATH_SPINE, "cursor", message.value)
+
+	elseif message_id == hash("updateVisible") then
+		updateVisible(message.value)
+
+    elseif message_id == hash("show") or message_id == hash("enable") then
+		updateVisible(true)
+
+    elseif message_id == hash("hide") or message_id == hash("disable") then
+		updateVisible(false)
+
+	end
+	
+end

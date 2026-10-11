@@ -1,0 +1,208 @@
+local PATH_SPRITE = "#sprite"
+
+function init(self)
+	self.init_position = go.get_position()
+
+	
+	
+	
+
+end
+
+  
+	
+	
+	
+	
+	
+	
+	
+
+
+
+local function finishMoveXY(self)
+	msg.post(PATH_SPRITE, "disable")
+
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show") then
+		msg.post(PATH_SPRITE, "enable")
+
+	elseif message_id == hash("hide") then
+		msg.post(PATH_SPRITE, "disable")
+
+	elseif message_id == hash("changeSprite") then
+		if message.sprite then
+			msg.post(PATH_SPRITE, "play_animation", {id = hash(message.sprite)})
+		else
+			msg.post(PATH_SPRITE, "play_animation", {id = message.hash})
+		end
+
+	elseif message_id == hash("updateScale") then
+		local scale = message.value
+		go.set_scale(vmath.vector3(scale,scale,scale))
+
+	elseif message_id == hash("setPosition") then
+		local p = vmath.vector3()
+		p.x = message.x
+		p.y = message.y
+
+		if(message.z) then
+			p.z = message.z
+		end
+
+		go.set_position(p, go.get_id())
+		self.init_position = go.get_position()
+
+	elseif message_id == hash("movePosition") then
+		local p = vmath.vector3()
+		local movePos = message.position
+		p.x = self.init_position.x + movePos.x
+		p.y = self.init_position.y + movePos.y
+		go.set_position(p, go.get_id())
+
+	elseif message_id == hash("updateTint") then
+		local r,g,b = utils.hex2rgb(message.color)
+
+		sprite.set_constant(PATH_SPRITE, "tint", vmath.vector4(r/ 256, g/ 256, b/ 256, 1))
+
+	elseif message_id == hash("setAngle") then
+		go.set_rotation(vmath.quat_rotation_z(math.rad(message.angle)))
+
+	elseif message_id == hash("setWaveEffect") then
+		go.cancel_animations(go.get_id())
+		local offset = message.offset
+		local duration = message.duration
+
+		local p = go.get_position()
+		p.y = p.y - offset
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_LOOP_PINGPONG, p.y, go.EASING_INOUTSINE, duration)
+
+	elseif message_id == hash("setSwingEffect") then
+		go.animate(go.get_id(), "euler.z", go.PLAYBACK_LOOP_PINGPONG, message.angle, go.EASING_INOUTSINE, 3)
+
+	elseif message_id == hash("setAddEffect") then
+		go.cancel_animations(go.get_id())
+
+		go.set_position(self.init_position, go.get_id())
+		local p = go.get_position()
+		local offY = 30
+		p.y = p.y - offY
+		go.set_position(p, go.get_id())
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, p.y + offY, go.EASING_OUTBACK, message.time+0.1)
+
+		local scale = 0.5
+		go.set_scale(vmath.vector3(scale,scale,scale))
+		go.animate(go.get_id(), "scale.x", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTBACK, message.time)
+		go.animate(go.get_id(), "scale.y", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_OUTBACK, message.time)
+
+	elseif message_id == hash("setTreeEffect") then
+		go.cancel_animations(go.get_id())
+		local scale = 1
+		go.set_scale(vmath.vector3(scale,scale,scale))
+		go.animate(go.get_id(), "scale.y", go.PLAYBACK_ONCE_PINGPONG, 0.9, go.EASING_LINEAR, message.time)
+
+	elseif message_id == hash("setWideEffect") then
+		go.animate(go.get_id(), "scale.x", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, message.time, 0.1)
+
+	elseif message_id == hash("moveCar") then
+		msg.post(PATH_SPRITE, "enable")
+		go.cancel_animations(go.get_id())
+
+		local p = go.get_position()
+		p.x = message.start.x
+		p.y = message.start.y
+		go.set_position(p, go.get_id())
+
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.finish.x, go.EASING_LINEAR, message.time)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.finish.y, go.EASING_LINEAR, message.time)
+
+	elseif message_id == hash("moveXY") then
+		msg.post(PATH_SPRITE, "enable")
+		go.cancel_animations(go.get_id())
+
+		local p = vmath.vector3()
+		p.x = message.start.x
+		p.y = message.start.y
+		p.z = DEEP_CURSOR
+
+		go.set_position(p, go.get_id())
+
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.finish.x, go.EASING_LINEAR, message.time, 0, finishMoveXY)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.finish.y, go.EASING_LINEAR, message.time)
+
+	elseif message_id == hash("moveFlyXY") then
+		msg.post(PATH_SPRITE, "enable")
+		go.cancel_animations(go.get_id())
+
+		local p = go.get_position()
+		p.x = message.start.x
+		p.y = message.start.y
+		p.z = message.start.z
+		go.set_position(p, go.get_id())
+
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.finish.x, go.EASING_LINEAR, message.time, 0, finishMoveXY)
+
+		local time1 = 0.1
+		local time2 = message.time - time1
+
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.start.y + 50, go.EASING_OUTSINE, time1)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.finish.y, go.EASING_INSINE, time2, time1)
+
+	elseif message_id == hash("move_x") then
+		local p = go.get_position()
+		self.init_position = p
+
+		go.cancel_animations(go.get_id(), "position.x")
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.new_x, go.EASING_LINEAR, message.time)
+
+	elseif message_id == hash("set_x") then
+		go.cancel_animations(go.get_id(), "position.x")
+		go.set_position(message.position, go.get_id())
+
+	elseif message_id == hash("hide_arm_help") then
+		go.cancel_animations(go.get_id(), "position")
+		msg.post(PATH_SPRITE, "disable")
+
+	elseif message_id == hash("move_arm_help") then
+		msg.post(PATH_SPRITE, "enable")
+
+		local p = go.get_position()
+		p.x = message.x1
+		p.y = message.y1
+		go.set_position(p, go.get_id())
+
+		go.cancel_animations(go.get_id(), "position")
+
+		local duration = 0.7
+		local delay = 0.3
+
+		go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, message.x2, go.EASING_OUTCUBIC, duration, delay)
+		go.animate(go.get_id(), "position.y", go.PLAYBACK_ONCE_FORWARD, message.y2, go.EASING_OUTCUBIC, duration, delay)
+
+	elseif message_id == hash("animation_done") then
+		if message.id == hash("btn_vote_push") then
+			msg.post(PATH_SPRITE, "play_animation", {id = hash("btn_vote_light")})
+
+		elseif message.id == hash("bomb_show") then
+			msg.post(PATH_SPRITE, "play_animation", {id = hash("bomb_idle")})
+
+		elseif	message.id == hash("bomb_hide") or
+				message.id == hash("balloon1_hide") or
+				message.id == hash("balloon2_hide") or
+				message.id == hash("balloon3_hide") or
+				message.id == hash("balloon4_hide")
+		then
+			msg.post(PATH_SPRITE, "disable")
+
+		end
+
+	elseif message_id == hash("remove") then
+		go.delete()
+
+	elseif message_id == hash("test_reload") then
+		self.isTest = true
+
+	end
+end

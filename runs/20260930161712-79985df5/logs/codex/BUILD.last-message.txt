@@ -1,0 +1,18 @@
+**Implemented**
+- Replaced template order gameplay with the locked beach logistics loop: auto-harvest → finite carry → shelf deposit → customer queue → player checkout → currency sinks → construction unlock → settlement continue/restart.
+- Added stockout patience/failure feedback, tide production boost, capacity upgrades, construction debt, atomic kelp unlocks, and refresh-safe persistence.
+- Added all seven required `window.__GAME_TEST__` controls, plus legacy position/time compatibility helpers.
+- Added time-based motion utilities with preload gating, easing, reduced-motion fallback, and refresh-rate parity tests.
+- Added traceability and structured handoff artifacts: `artifacts/mechanic-fidelity-traceability.json`, `artifacts/implementation-handoff.json`.
+
+**Verification**
+- `npm test` — **PASS: 10 tests**
+- `npm run typecheck` — **PASS**
+- `npm run build` — **PASS**
+- Artifact JSON validation — **PASS**
+
+**Evidence Status**
+- Deterministic engineering QA — **PASS**: `artifacts/qa-report.json`
+- Player-visible and natural-input QA — **BLOCKED**: Chromium could not launch in the managed sandbox due MachPort permission failure.
+- Blocker evidence: `artifacts/runtime-evidence.json`, `artifacts/qa-natural-journey-report.json`, `artifacts/perceptual-qa-report.json`, `logs/console.log`
+- No screenshot or natural-journey pass is claimed until the browser playtest is rerun in a browser-capable QA environment.

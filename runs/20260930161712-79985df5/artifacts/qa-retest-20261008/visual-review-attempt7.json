@@ -1,0 +1,617 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "passed": false,
+  "cases": [
+    {
+      "id": "deterministic-settlement-controls-360x800",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: exactly one yellow continue-local command and one outlined restart command are visible, fully in-frame, with distinct labels. Fixture-only presentation evidence; does not close the natural first-expansion-settlement cell.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-settlement.png",
+          "sha256": "dc34999acafe275e88ec94c8d725b2546f7994cdbde9f2707a2a0754717e5796"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-avatar-employee-label-crossing-360x800",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review of three positions (174,786), (120,820), (270,820): cream head and teal body remain visible above the upgrade/hire region and at runner/cashier funding stations. Landscape avatar rotates with the field but remains identifiable. Fixture-only presentation evidence; no natural crossing or funded worker action is established.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-174-786.png",
+          "sha256": "93a0fab6c77556e39e10e41421d8366acbaa595746713cb85b72399a65a7d2d6"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-120-820.png",
+          "sha256": "742d873a3cb346ed3dabac50fdc43883853ac5780fbf3de8ef02ab39af17c971"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/360x800-avatar-270-820.png",
+          "sha256": "88edac6cde5a50dfd4533e9e79188eb8a92501a3c3ce3359b8f9200f949c75a8"
+        }
+      ]
+    },
+    {
+      "id": "natural-avatar-exact-branch-360x800",
+      "status": "BLOCKED",
+      "evidence": "Current natural run natural-360x800-keyboard-landscape-metal-finalized reached first settlement, but stopped at a locator error before continue/processor/runner-hire. Actual full-page 011 shows a visible teal avatar at construction; locator-failure.png is clipped across the post-transition game and settlement layout. This is not the repaired employee-label branch; that exact cell remains unobserved. Deterministic fixture cannot close it. Report SHA-256 fadc1866ce449d4fce55ef9dcdab7ec26e32d20010a1a73ab8b208e08046997c.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/011-blocked.png",
+          "sha256": "535ffa4d4a5ecceddd3c692d07bac33f46813281a579c958fed8cb69eb36a1d1"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/locator-failure.png",
+          "sha256": "2813dac9f7d1d1cf56fc6e4d872a597ad342fd1e87f00613f540bd21acf99125"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-settlement-controls-390x844",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: exactly one yellow continue-local command and one outlined restart command are visible, fully in-frame, with distinct labels. Fixture-only presentation evidence; does not close the natural first-expansion-settlement cell.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-settlement.png",
+          "sha256": "3ad7b470a5cc84c4c100833db98276e0f465de723a5fc5537cccd5e14491688d"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-avatar-employee-label-crossing-390x844",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review of three positions (174,786), (120,820), (270,820): cream head and teal body remain visible above the upgrade/hire region and at runner/cashier funding stations. Landscape avatar rotates with the field but remains identifiable. Fixture-only presentation evidence; no natural crossing or funded worker action is established.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-174-786.png",
+          "sha256": "5ded5e55a39633075eb72ba5afba9e0b6e10960e15dd1ff9ea0d696763a13770"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-120-820.png",
+          "sha256": "4cc67805adbbd3917531c2c10b0126abf4141165c11657e7ceb7a57fdb3e5957"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/390x844-avatar-270-820.png",
+          "sha256": "059d996f932062fd4b8f66574476b8688d800e2fae4cb55ccb9cd5cba3035404"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-settlement-controls-430x932",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: exactly one yellow continue-local command and one outlined restart command are visible, fully in-frame, with distinct labels. Fixture-only presentation evidence; does not close the natural first-expansion-settlement cell.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-settlement.png",
+          "sha256": "899336a1a9894ec4064f499bc8f4f542fb37255419266352604fb64df1c7ffcc"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-avatar-employee-label-crossing-430x932",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review of three positions (174,786), (120,820), (270,820): cream head and teal body remain visible above the upgrade/hire region and at runner/cashier funding stations. Landscape avatar rotates with the field but remains identifiable. Fixture-only presentation evidence; no natural crossing or funded worker action is established.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-174-786.png",
+          "sha256": "3db3ada023cde240a230ed28843c9bcac1e92e85f9f6dc52db16ea5194091101"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-120-820.png",
+          "sha256": "7a8512d5af861aa46f9ed519ffaa5e83594342b3076f0a2ecf10eb5d87adf5b5"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/430x932-avatar-270-820.png",
+          "sha256": "2efdf990129a5497f91bb728169ffe8634b1562731abfedb470fc9cad82669e5"
+        }
+      ]
+    },
+    {
+      "id": "natural-avatar-exact-branch-430x932",
+      "status": "BLOCKED",
+      "evidence": "Current natural run natural-430x932-keyboard-portrait-metal reached first settlement, but stopped at a locator error before continue/processor/runner-hire. Actual full-page 011 shows a visible teal avatar at construction; locator-failure.png is clipped across the post-transition game and settlement layout. This is not the repaired employee-label branch; that exact cell remains unobserved. Deterministic fixture cannot close it. Report SHA-256 89a28d697b5d2434b2bd637ee8366feb35bcff4107006c474043d0381b165cf8.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-430x932-keyboard-portrait-metal/screenshots/011-blocked.png",
+          "sha256": "0331edb800d6894347f2b14457f2642f43e871020d59f71284a67e52d1c96feb"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-430x932-keyboard-portrait-metal/screenshots/locator-failure.png",
+          "sha256": "0a9dc7d92aa5dbd28cfe97e38f17066f71cfda555afcf28909d7a41e761fae2b"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-settlement-controls-540x960",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: exactly one yellow continue-local command and one outlined restart command are visible, fully in-frame, with distinct labels. Fixture-only presentation evidence; does not close the natural first-expansion-settlement cell.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-settlement.png",
+          "sha256": "dfcd57e6b6cae2cc7600b6ba2d48ce4d7b505d7f83e8f858353990bc0f0bd644"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-avatar-employee-label-crossing-540x960",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review of three positions (174,786), (120,820), (270,820): cream head and teal body remain visible above the upgrade/hire region and at runner/cashier funding stations. Landscape avatar rotates with the field but remains identifiable. Fixture-only presentation evidence; no natural crossing or funded worker action is established.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-174-786.png",
+          "sha256": "f6a93fd94ec028174b0ac0e2171b9cb441de7fea78cbe4c53f823d80166c5c1a"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-120-820.png",
+          "sha256": "99798e8cc364c37814fd734830f9b656fa3d6e47bd98031360a184eb4ed6053d"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/540x960-avatar-270-820.png",
+          "sha256": "60952b522eb41f9d978caac4f397c5ced6ebeb480fe22f9a98a18ccbea6d109a"
+        }
+      ]
+    },
+    {
+      "id": "natural-settlement-exact-branch-540x960",
+      "status": "PASS",
+      "evidence": "Attempt-7 current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e. Actual view_image pixel inspection of root-paired natural screenshot sequence. Completed natural report SHA-256 7e207af9b874a412c66fa128ed7f0e0ea9b646700fdd58eba5eb48eb559b2dff; all its screenshot/harness bindings match; video binding mismatch is recorded separately. 011 shows first expansion settlement with exactly one continue-local button and one restart button, both fully visible. 012 shows local expanded shop after continue, no selection overlay. This pixel case is passed at 540x960 only.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/011-first-settlement.png",
+          "sha256": "27f56712e3ca5ef8b43d345532f66894365a85729eac1a447eb113b009a15f55"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/012-continue-local.png",
+          "sha256": "0947e4bad88dc5cee7e6007532e71786c42bfede7ad354525c1f81dda1846450"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-settlement-controls-844x390",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: exactly one yellow continue-local command and one outlined restart command are visible, fully in-frame, with distinct labels. Fixture-only presentation evidence; does not close the natural first-expansion-settlement cell.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-settlement.png",
+          "sha256": "dade9044b4cbd8abb13cdcf39c3aeda534f31790fd287229fb38fadeeb32926a"
+        }
+      ]
+    },
+    {
+      "id": "deterministic-avatar-employee-label-crossing-844x390",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review of three positions (174,786), (120,820), (270,820): cream head and teal body remain visible above the upgrade/hire region and at runner/cashier funding stations. Landscape avatar rotates with the field but remains identifiable. Fixture-only presentation evidence; no natural crossing or funded worker action is established.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-174-786.png",
+          "sha256": "95496b2c962f3604de9c4da6f81dccca237d19a7d7a0800b5befeef13fbf7c71"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-120-820.png",
+          "sha256": "1e6cd164e740f70dfad5ddbd2d86a1ffebc8094a57c63d99571c0dc578f8321e"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/deterministic/844x390-avatar-270-820.png",
+          "sha256": "0280dc948bebc949be124818a4271924dfc4fd6c02e4c1f8dc6941f16815b3e7"
+        }
+      ]
+    },
+    {
+      "id": "natural-startup-pixels-390x844",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: visible teal player, active fish net, stocked-resource indicator, empty shelf, checkout, locked stations and four reachable directional buttons. Scope: startup frame only. Does not establish a shortage episode, movement or core-loop sequence. The associated run stopped at base-first-harvest with no downstream evidence.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-worker/screenshots/001-startup.png",
+          "sha256": "3ec11a9de69cc925de8d0adb887ad498f4eaa4d666d356fe6e6073153acf7e22"
+        }
+      ]
+    },
+    {
+      "id": "natural-startup-pixels-540x960",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: visible teal player, active fish net, stocked-resource indicator, empty shelf, checkout, locked stations and four reachable directional buttons. Scope: startup frame only. Does not establish a shortage episode, movement or core-loop sequence. The associated run stopped at base-first-harvest with no downstream evidence.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-first/screenshots/001-startup.png",
+          "sha256": "c9c7bb3aeecb9b63192f387759fad6aaa96fbb65f2c475f4becc2ee3bf3150b6"
+        }
+      ]
+    },
+    {
+      "id": "natural-startup-pixels-844x390",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game; attempt 7 build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; build manifest SHA-256 7e70bfc7a969579d1efcde3fffd2a120c88355dd0fc192dc1259615c28eee3cc; every listed source/dist hash verified against manifest. Actual view_image pixel review: visible teal player, active fish net, stocked-resource indicator, empty shelf, checkout, locked stations and four reachable directional buttons. Scope: startup frame only. Does not establish a shortage episode, movement or core-loop sequence. The associated run stopped at base-first-harvest with no downstream evidence.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-worker/screenshots/001-startup.png",
+          "sha256": "b44fb478ce1fd7f55cf59679c7d7bb72eb479358cfd246fc9b8c578cd70e07ee"
+        }
+      ]
+    },
+    {
+      "id": "natural-processing-all-required-viewports",
+      "status": "BLOCKED",
+      "evidence": "CURRENT COVERAGE: 360x800 and 430x932 have no post-settlement processing evidence. Portrait 390x844/540x960 and landscape 844x390 have partial normal processing evidence; a complete target-viewport sequence is not independently closed in this visual report. Current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-runner-all-required-viewports",
+      "status": "BLOCKED",
+      "evidence": "CURRENT COVERAGE: 360x800 and 430x932 never reached funded hire. Runner travel/delivery pixels exist at 390x844,540x960,844x390. Clear empty-versus-loaded cargo transition remains unproven; the full cross-viewport employee visual gate is incomplete. Current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-cashier-all-required-viewports",
+      "status": "BLOCKED",
+      "evidence": "CURRENT COVERAGE: Exact funded cashier service/cash/collection visual chain passed at 540x960. 390x844 and 844x390 have partial role/counter-action evidence. 360x800 and 430x932 did not reach funded hires. Passing 540x960 cannot close the remaining cells. Current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-pressure-recovery-all-required-viewports",
+      "status": "BLOCKED",
+      "evidence": "CURRENT COVERAGE: 390x844 and 540x960 show same-target loss/approach/refill but visual relief remains BLOCKED because warning/bird immediately reappear while guarding. 844x390 stopped before recovery at its image-detector failure. 360x800 and 430x932 have no pressure branch evidence. Current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-coral-market-settlement-replay-all-required-viewports",
+      "status": "BLOCKED",
+      "evidence": "CURRENT COVERAGE: 390x844 and 540x960 show distinct Coral topology, authored objective and its own settlement, but both have incorrect home-expansion settlement cause (separate FAIL cases). Exact newly arriving post-continue shopper through fresh cash collection is not established by wallet delta alone. 360x800,430x932,844x390 never reached a new market. Current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-moon-market-settlement-replay-all-required-viewports",
+      "status": "BLOCKED",
+      "evidence": "CURRENT COVERAGE: The dedicated 540x960 moon-metal run stopped in the original home shop at gull detection; actual last screenshots still show the home title/layout and unfunded role stations. No Moon-Tide world, three dual-shelf orders, own settlement or replay was reached at any required viewport. Do not substitute Coral evidence. Current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-reload-restart-all-required-viewports",
+      "status": "BLOCKED",
+      "evidence": "CURRENT COVERAGE: 390x844 and 540x960 show retained Coral world/roles/goal across reload and visible reset to initial beach. No new shopping/packing/cash transaction after restart is recorded. 360x800,430x932,844x390 have no reload/restart sequence. Required complete runtime journey therefore remains BLOCKED. Current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-root-resume-locator-failure-540x960",
+      "status": "BLOCKED",
+      "evidence": "Actual view_image pixel review: teal player body and cream head remain visible immediately below the fresh-fish shelf near canvas center in this blocked frame. Natural harness reports Rendered teal avatar body not observed; no prior-coordinate fallback. This frame does not establish the reported locator failure as player disappearance. This is startup/base-fish branch, not the repaired post-expansion hire-label crossing. Build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e. HISTORICAL EVIDENCE: superseded for current 540x960 closure by the independently verified root-metal report and video. The historical failed artifact is retained but this old run is not an additional current release blocker.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-resume/screenshots/003-blocked.png",
+          "sha256": "20428e52d3320cbf23427ddf1e43c7bf26e2c866e160213d3591247ec7e54abd"
+        }
+      ]
+    },
+    {
+      "id": "natural-base-loop-visible-sequence-540x960",
+      "status": "PASS",
+      "evidence": "Attempt-7 current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e. Actual view_image pixel inspection of root-paired natural screenshot sequence. Completed natural report SHA-256 7e207af9b874a412c66fa128ed7f0e0ea9b646700fdd58eba5eb48eb559b2dff; all its screenshot/harness bindings match; video binding mismatch is recorded separately. 003 player visibly carries blue stacked fish at net; 004 player at shelf with completed product checkmarks and visible customer queue; 005 counter pile/HUD show 8 cash while wallet remains 0; 006 wallet becomes 8 and counter 0. This supports this one base-loop visible sequence, not later employee service.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/003-base-first-cargo.png",
+          "sha256": "2c64fa32878c44dc95b967b5d8b654f30a03ccec7a3a50e660651ea13c8b6d98"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/004-base-first-stock.png",
+          "sha256": "71ac1a681a9d722a111a3e4ce1c4c65b9489f30bf54b797c771b87b2f812d9f8"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/005-base-first-service.png",
+          "sha256": "d95cd7e28e824770bc2a810c2bab1e93619d855d910a02b9bb1849e3f45bd35d"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/006-base-first-cash.png",
+          "sha256": "de67737c1b50d7c3bbdfb97538da473f8a03e8c8a89ba377e06ef5072e263eb1"
+        }
+      ]
+    },
+    {
+      "id": "natural-runner-visible-sequence-540x960",
+      "status": "BLOCKED",
+      "evidence": "Attempt-7 current build JS SHA-256 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e. Actual view_image pixel inspection of root-paired natural screenshot sequence. Completed natural report SHA-256 7e207af9b874a412c66fa128ed7f0e0ea9b646700fdd58eba5eb48eb559b2dff; all its screenshot/harness bindings match; video binding mismatch is recorded separately. 019 identifies blue runner above hire area; 020 runner reaches machine-height on outward leg; 021 reaches net; 022 runner appears on diagonal return; 023 runner reaches fish shelf with local runner-delivery feedback and shelf 2/8. Actual travel and visible delivery are observed. Empty-versus-loaded cargo state is not clearly distinguishable across these snapshots; bounded pickup/deposit sequence still requires continuous natural video and scoped trace.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/019-runner-hired.png",
+          "sha256": "fa3d958a93b2c0d01c209de919c5d62109c9d650fd84c4e2fb99d14e0e180325"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/020-player-at-runner-hire.png",
+          "sha256": "afa708e85076a9364876086abc68e67aa18ce62333b677a4116dee8ca4b584b2"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/021-runner-moving-a.png",
+          "sha256": "041a109abd988b74743ec5822e61bf9f41a1372d4976931627b85fcf262634f7"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/022-runner-action.png",
+          "sha256": "d16db16ae399b16a7dc9ba042a301f691e7668fd26e94d44ab762fdee3bf9146"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/screenshots/023-runner-moving-b.png",
+          "sha256": "6c7b1f0c5f7d7f730fd0ed658faca88546f06bd349633147b9c212353bac6ddf"
+        }
+      ]
+    },
+    {
+      "id": "natural-video-binding-540x960-root-paired",
+      "status": "BLOCKED",
+      "evidence": "Completed natural report /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/natural.json SHA-256 7e207af9b874a412c66fa128ed7f0e0ea9b646700fdd58eba5eb48eb559b2dff records video SHA-256 f9ba93e082c940afd8d5448b74be453ae8f0068efb910e850d1e0bf19fa84c88, but current exact-path video /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-paired/video/page@40a6a14c684f9f39c8433395485b0110.webm independently hashes to 88bb7787fefbbba67513250ae7ac42df533fa46b9f640311ff5e7cda9ffb5488. All 41 screenshot bindings and both harness bindings match. Video frames at 181-187 seconds were decoded in memory without writing files; avatar remains visible while crossing the upgrade/hire labels. Pixel observations are retained, but the mismatched report video binding must be reconciled before using this video to close a branch. HISTORICAL EVIDENCE: superseded for current 540x960 closure by the independently verified root-metal report and video. The historical failed artifact is retained but this old run is not an additional current release blocker.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-coral-settlement-cause-mismatch-540x960",
+      "status": "FAIL",
+      "evidence": "Actual view_image: 044 identifies Coral Bay and authored goal 交付两份烟熏鱼订单 0/2; 050 shows this market reaching its own terminal state with 市场目标进度 2. The primary terminal panel incorrectly says 扩建结算 and 潮池扩建完成 rather than describing completion of the Coral smoked-order objective. The same old home-expansion cause is presented in the new-market settlement. This obscures which market goal caused success; generic complete/continue controls do not establish causal goal feedback. Root-metal report/screenshot/harness/video hashes verified; current build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png",
+          "sha256": "db3ecde965b2565a769ce6e63243d1327a392dd22b7f890cf8f3081e85a1080d"
+        }
+      ]
+    },
+    {
+      "id": "natural-avatar-exact-branch-540x960",
+      "status": "PASS",
+      "evidence": "Exact target: 海滩渔货铺, workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game. Attempt-7 build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e. Root-metal completed report SHA-256 7fe6c2758df06e5025d2ff2d9e5d6f0db9c08a3c207b1917a19f288959677b77; all screenshot/harness/video hashes independently verified. Actual view_image of 020 and in-memory video frames 80,81,82,83 seconds from /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/video/page@78f9182c1362940c101bfb1b33eb49fc.webm (SHA-256 dafd117210ed96b32a14215dc0b78b6c296f17c5800363ec9258a9f5289f6122) show cream head and teal body throughout approach across upgrade-label region into runner-hire; head and body remain recognizable above station/label graphics. This closes the natural exact repaired avatar cell at 540x960 only.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/020-player-at-runner-hire.png",
+          "sha256": "c6d000a1f2d1952e276d1c36925614e94c51a780da60699ac6e29a42e2090e30"
+        }
+      ]
+    },
+    {
+      "id": "natural-settlement-exact-branch-844x390",
+      "status": "PASS",
+      "evidence": "Actual view_image of landscape-metal 011 first settlement: exactly one continue-local command and one restart command, both distinct and fully reachable visually. 012 shows expanded shop after continue without a selection overlay. Report SHA-256 470917e933476e65ea192f881d8d37ab8e25882f906c26df79c8719f63190932; every media/harness hash verified; current build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e. No downstream market journey is inferred.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/011-first-settlement.png",
+          "sha256": "1f918a528087c4a9982433ef9966cf4fd0a7420d0aaac6ee023acfbdcc0b704a"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/012-continue-local.png",
+          "sha256": "bda80a467731a60d68cc3d01c25df74e700cfd201ea8b43bab7d92d6d1a8131a"
+        }
+      ]
+    },
+    {
+      "id": "natural-avatar-exact-branch-844x390",
+      "status": "PASS",
+      "evidence": "Actual view_image of landscape-metal 019/020: at runner-hire the teal body and cream head are clearly visible above the station label. Endpoint visibility is demonstrated. Transient passage across the upgrade text has not yet been independently inspected in the natural video. Report SHA-256 470917e933476e65ea192f881d8d37ab8e25882f906c26df79c8719f63190932, video /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/natural.webm SHA-256 be86d665d1ebaae9b85afda3b50333b52fa3c284e9bde85b90cb50b15b1d8e36; all bindings verified. Subsequent independent in-memory video review at 143,144,145,146,147,148,149 seconds shows continuous player approach across hire/upgrade label region and funded arrival, with head/body recognizable in the rotated field. This closes the exact natural repaired cell at 844x390; it does not close later worker/gull/market branches.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/019-runner-hired.png",
+          "sha256": "187124a97cfe833947afc37055f1f4d48c1426445c6422cbb0e7e1bd0f187a03"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/020-player-at-runner-hire.png",
+          "sha256": "a3424534dc61bee244d6561054a44d214e04d9a64045f853d2a8a946bcd8ca8a"
+        }
+      ]
+    },
+    {
+      "id": "natural-cashier-visible-sequence-540x960",
+      "status": "PASS",
+      "evidence": "Actual root-metal pixels: 024 shows funded cashier state and player at hire with wallet 0; 037 shows player away at left, identified completed fish/kelp queue-head order in packing state, a checkout-local purple service-ring and packing feedback, counter 61, wallet 0. 039 shows counter 66 while wallet stays 0; 042 shows counter 71; 043 after normal approach/crossing of checkout shows wallet 71 and counter 0. The same newly generated employee-service cash is transferred only on player approach. Visual active-service feedback is observed at checkout, closing the earlier snapshot-only indicator gap at 540x960. No independent standing cashier body is claimed. Build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; complete root-metal media bindings verified.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/024-cashier-hired.png",
+          "sha256": "7d545e755d350699a737a6b3bee46a04df233684aa0c670ad6a6d90c75dcf28a"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/037-gull-visible-loss.png",
+          "sha256": "536c4cd5137c9fb297273da7c97977355feb0610059a902a7419205c73901759"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/039-gull-visible-target.png",
+          "sha256": "c51bf5ad7daa38d91ed6b03019ca7088716b2446b91274e46bdd9667961460af"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/042-gull-replenish-stock.png",
+          "sha256": "549060d503ba683838483d92c5403d1e285e2f797e910cea472d0c7e4334f9ec"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/043-market-selection.png",
+          "sha256": "992b2a63d458afb8146df10933876fb2580a73d03c7c67796037c2e5cd529eda"
+        }
+      ]
+    },
+    {
+      "id": "natural-gull-target-identification-844x390",
+      "status": "PASS",
+      "evidence": "Actual view_image of landscape-metal 037/039/040: orange alert rings and the small white bird attach to the vertically oriented fresh-fish shelf at viewport approximately (300,195). This is the fish-shelf branch; it is visually distinguishable from the smoked shelf near (244,275). The natural runner stopped with Visible gull target not identified, so its detector error is not evidence that the player cannot see the target. No approach/scare/recovery was executed after this failure, which remains BLOCKED.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/037-gull-visible-loss.png",
+          "sha256": "6203abd9e2b046f23e6dee242e3768302709a23ca498824b3c70ac2cb77fa2f0"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png",
+          "sha256": "64b6be02b8cf5eee63308713497b40724bf5c73eb7c9d614ae758d6db7097a0b"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/040-blocked.png",
+          "sha256": "a7c62a44afbdec15b4415facfc731bd2c1ef0e872d2acdcc56f6bcb1834b846d"
+        }
+      ]
+    },
+    {
+      "id": "natural-gull-recovery-visual-relief-540x960",
+      "status": "BLOCKED",
+      "evidence": "Actual root-metal screenshots 037/039 attach bird and local loss feedback to fish shelf. 040 shows player guarding the same shelf but the orange alert ring and bird persist; 041 is normal net pickup and 042 fish-shelf replenishment. Independently decoded video frames at 192,194,196 seconds show the bird approaching/returning while the player stands at that shelf. The natural trace records scares followed approximately 12ms later by renewed alerts, so isolated scare text cannot prove visually legible recovery. Need a clearly observable departure/relief interval and same-target customer recovery; these exact perceptual conditions are not established by the current snapshots. Build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; video hash dafd117210ed96b32a14215dc0b78b6c296f17c5800363ec9258a9f5289f6122 verified.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/037-gull-visible-loss.png",
+          "sha256": "536c4cd5137c9fb297273da7c97977355feb0610059a902a7419205c73901759"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/039-gull-visible-target.png",
+          "sha256": "c51bf5ad7daa38d91ed6b03019ca7088716b2446b91274e46bdd9667961460af"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/040-gull-guarded-no-loss.png",
+          "sha256": "a15fee6523480f37e5ad8396d0919c870c3a9597bb6f20b980439f227b138e07"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/041-gull-replenish-cargo.png",
+          "sha256": "1042ba4623a7cfd8861f7844b4cbb2a67787df0e09717208cf6d676f4795fd9a"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/042-gull-replenish-stock.png",
+          "sha256": "549060d503ba683838483d92c5403d1e285e2f797e910cea472d0c7e4334f9ec"
+        }
+      ]
+    },
+    {
+      "id": "natural-reload-restart-partial-540x960",
+      "status": "BLOCKED",
+      "evidence": "Actual view_image of 057/058 confirms same Coral topology, wallet 106, level 3, goal 2/2, unlocked processor and funded role labels across reload; 058 shows a visible runner deposit after reload. 059 opens a distinct two-route menu; 060 resets to initial beach with wallet/level/locks restored. No new shopping/packing/cash transaction after restart was executed. Continued replay wallet increase can include old pre-settlement cash and is not sufficient alone to establish a newly arriving shopper completing a fresh transaction.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/057-replay-cash.png",
+          "sha256": "0e0086812fedc42e09520a68dc86830d52699af81054f16978eb99f90f70407d"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/058-save-reload.png",
+          "sha256": "86d653ef98eb409fd73499ff68749516ea1cdfb9780ad9d599c5c02c7a896181"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/059-restart-menu.png",
+          "sha256": "a5dd8f4a11387f3e6037d18dbe5296aa4b396a77c9c0e6581f6ca98e07dcb385"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/060-restart-round.png",
+          "sha256": "210babff5687db79cdf469ab167dce9cd09072417ce549e23cf20ee3c89bde09"
+        }
+      ]
+    },
+    {
+      "id": "natural-settlement-exact-branch-390x844",
+      "status": "PASS",
+      "evidence": "Actual view_image 011/012: exactly one continue-local and one restart button, both fully in-frame; continuing retains expanded field and opens no unintended market menu. Current attempt-7 build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e. Completed report hash 63c872e440d6c60c81d7cffe49deda1d2999228029721c89d0c4d05680f5ee8b; all screenshot/harness/video bindings independently verified.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/011-first-settlement.png",
+          "sha256": "9c8f4a0a1682cb7c407b8bbda08e6aa3679ae4541c74ba18433859a17bbf5160"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/012-continue-local.png",
+          "sha256": "750c4c8406986751da768998e61091b3261f522af4aad6f8038fd4bc050bf1b0"
+        }
+      ]
+    },
+    {
+      "id": "natural-avatar-exact-branch-390x844",
+      "status": "PASS",
+      "evidence": "Actual view_image of 019/020 and independent decoded frames 137,138,139,141,142 seconds of /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/natural.webm, SHA-256 d73100dfc56879a11218c3195db61eaf37b2c1a0008060fa40fef9b0daf62def: cream head and teal body remain visible as player passes the upgrade text and funds runner-hire. Frame 140 is a recorder downscale artifact and is not used to establish target viewport readability; adjacent full-size frames cover approach/crossing/arrival. Build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e; report hash 63c872e440d6c60c81d7cffe49deda1d2999228029721c89d0c4d05680f5ee8b.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/019-runner-hired.png",
+          "sha256": "61e515304b6d5cedf9fdc6802ef04d790dabd0a61afa3c30706fe8f8693319a7"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/020-player-at-runner-hire.png",
+          "sha256": "73e6f1c779c8a9f9a4c9c76d9ee8f5f0740d887289b8bc580592f8f36ebf2faf"
+        }
+      ]
+    },
+    {
+      "id": "natural-coral-settlement-cause-mismatch-390x844",
+      "status": "FAIL",
+      "evidence": "Actual view_image 044 names Coral and smoke-order goal 0/2, while 050 reaches market goal 2 but renders the same home-expansion terminal explanation 扩建结算 / 潮池扩建完成. This repeats the incorrect success cause observed at 540x960. Distinct Coral topology and goal are visible, so this is the exact new-market settlement branch, not a home-settlement screenshot.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/044-coral-market.png",
+          "sha256": "1e03f9be3215deced719ce36f60087e74d2be517008f419d9722f44a239a8784"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/050-coral-settlement.png",
+          "sha256": "66bbc34131c2ac7ba8d0fb32c85708adc09de2880991c8dad36ce3889445567e"
+        }
+      ]
+    },
+    {
+      "id": "natural-gull-recovery-visual-relief-390x844",
+      "status": "BLOCKED",
+      "evidence": "Actual view_image 037 attaches loss to fish-shelf. At same-shelf guard 040 and replenishment 042 the bird/alert ring still presents a threat. A legible cleared-threat interval is not established by these screenshots; full recovery is not passed from seagull-scare text alone.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/037-gull-visible-loss.png",
+          "sha256": "4af9548b87c0305ecd7212d16ca98fa91c43cb40ed1a776526065e9eb38b149b"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/040-gull-guarded-no-loss.png",
+          "sha256": "0094841214f80ef1bd34e878a5aa35d2762aaadd5ff73e874c32cdb7a633aae0"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/042-gull-replenish-stock.png",
+          "sha256": "7caac11a6caf78df0a13bf8dd4a532af247fd17076c584186e0821254dae35e8"
+        }
+      ]
+    },
+    {
+      "id": "natural-settlement-exact-branch-360x800",
+      "status": "PASS",
+      "evidence": "Actual view_image of natural 011-blocked.png clearly shows first expansion settlement at 360x800: exactly one continue-local and one restart command, both fully in-frame and distinct. The report incorrectly labels first-settlement unobserved because its avatar locator failed while the responsive settlement layout changed; pixels establish the exact branch. This passes only the repaired duplicate-control presentation, not execution of continue/replay. Report SHA-256 fadc1866ce449d4fce55ef9dcdab7ec26e32d20010a1a73ab8b208e08046997c; screenshot/harness/video hashes independently verified; current build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/011-blocked.png",
+          "sha256": "535ffa4d4a5ecceddd3c692d07bac33f46813281a579c958fed8cb69eb36a1d1"
+        }
+      ]
+    },
+    {
+      "id": "natural-settlement-exact-branch-430x932",
+      "status": "PASS",
+      "evidence": "Actual view_image of natural 011-blocked.png clearly shows first expansion settlement at 430x932: exactly one continue-local and one restart command, both fully in-frame and distinct. The report incorrectly labels first-settlement unobserved because its avatar locator failed while the responsive settlement layout changed; pixels establish the exact branch. This passes only the repaired duplicate-control presentation, not execution of continue/replay. Report SHA-256 89a28d697b5d2434b2bd637ee8366feb35bcff4107006c474043d0381b165cf8; screenshot/harness/video hashes independently verified; current build JS 62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-430x932-keyboard-portrait-metal/screenshots/011-blocked.png",
+          "sha256": "0331edb800d6894347f2b14457f2642f43e871020d59f71284a67e52d1c96feb"
+        }
+      ]
+    },
+    {
+      "id": "natural-moon-exact-market-unobserved-540x960",
+      "status": "BLOCKED",
+      "evidence": "Dedicated moon-metal report SHA-256 c77580aef22a784825a198d3b1f44476b18c50420d8a09a84ca5a3fca0f88f94. All screenshot/harness/video hashes verified. Actual last 047/048 frames remain original beach shop, with no visible gull at capture time, unfunded runner/cashier labels, wallet 5, no market selector. The detector failure cannot be used as Moon-Tide evidence. This run did not reach the requested market branch.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/047-gull-visible-target.png",
+          "sha256": "f3b5b234fcaed05ea8d456d6836ecc76084222f7377d11d17b5ac85641d6b565"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/048-blocked.png",
+          "sha256": "f3b5b234fcaed05ea8d456d6836ecc76084222f7377d11d17b5ac85641d6b565"
+        }
+      ]
+    },
+    {
+      "id": "review-integrity-and-scope",
+      "status": "PASS",
+      "evidence": "Independent QAAgent review of 海滩渔货铺 at /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game. Only this visual-review-attempt7.json was written; no source, other QA artifacts, browser sessions or build mutations. Images were inspected using actual view_image; video samples decoded read-only in memory via bundled Playwright FFmpeg. Every screenshot in this report and every current build-manifest source/dist file was rehashed successfully at final validation. Task input task-visual.json was validated against its strict Zod QAAgent task schema. Report schema is strict {schemaVersion:1,role:QAAgent,passed:boolean,cases:[{id,status:PASS|FAIL|BLOCKED,evidence:string,screenshots:[{path,sha256}]}],blockers:string[]}. Historical failed evidence is explicitly labeled; current unresolved blockers remain. No unit-test or fixture-only result is used to claim natural/perceptual completion.",
+      "screenshots": []
+    }
+  ],
+  "blockers": [
+    "natural-avatar-exact-branch-360x800",
+    "natural-avatar-exact-branch-430x932",
+    "natural-processing-all-required-viewports",
+    "natural-funded-runner-all-required-viewports",
+    "natural-funded-cashier-all-required-viewports",
+    "natural-gull-pressure-recovery-all-required-viewports",
+    "natural-coral-market-settlement-replay-all-required-viewports",
+    "natural-moon-market-settlement-replay-all-required-viewports",
+    "natural-reload-restart-all-required-viewports",
+    "natural-runner-visible-sequence-540x960",
+    "natural-coral-settlement-cause-mismatch-540x960",
+    "natural-gull-recovery-visual-relief-540x960",
+    "natural-reload-restart-partial-540x960",
+    "natural-coral-settlement-cause-mismatch-390x844",
+    "natural-gull-recovery-visual-relief-390x844",
+    "natural-moon-exact-market-unobserved-540x960"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "gameId": "continuation-v2",
+  "monetization": "IAA",
+  "placements": [],
+  "delivery": {
+    "firstRun": "ENDING_ONLY",
+    "minSecondsBetweenAds": 180,
+    "maxAdsPerSession": 1,
+    "rewardRequiredForRewarded": true,
+    "noFill": "continue-without-ad",
+    "closeBehavior": "after-reward",
+    "backgroundBehavior": "pause-and-resume"
+  },
+  "analyticsEvents": [
+    "ad_show",
+    "ad_complete",
+    "ad_no_fill"
+  ],
+  "safety": {
+    "consent": true,
+    "ageGate": true,
+    "testUnitsExcluded": true,
+    "rewardGrantTerminalOnly": true,
+    "rewardIdempotent": true,
+    "forbiddenContexts": [
+      "first-run",
+      "mid-action",
+      "before-terminal-state"
+    ]
+  },
+  "status": "PASS",
+  "blockers": [],
+  "sourceReview": "replica-preview:deferred",
+  "createdAt": "2026-09-30T17:23:10.022Z"
+}

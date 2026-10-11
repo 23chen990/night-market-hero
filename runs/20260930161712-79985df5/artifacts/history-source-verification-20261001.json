@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "HistorySourceVerification",
+  "createdAt": "2026-10-01",
+  "mode": "READ_ONLY",
+  "targetRunId": "20260930161712-79985df5",
+  "historyRunId": "20260830210424-pawshop-v1",
+  "fixedCommit": "2a1a0e60833cba4365f9b036a1e153d97872035a",
+  "declaredBranch": "codex/pawshop-v1-upload-20260925",
+  "localHistoryPath": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/workspace/game",
+    "exists": true,
+    "note": "目录存在；src 下共 14 个文件，确认包含 src/game/simulation.ts，不存在 src/simulation.ts"
+  },
+  "remoteFetch": {
+    "url": "https://raw.githubusercontent.com/23chen990/night-market-hero/2a1a0e60833cba4365f9b036a1e153d97872035a/runs/20260830210424-pawshop-v1/workspace/game/src/game/simulation.ts",
+    "status": "fetched",
+    "httpStatus": 200,
+    "note": "已取得原始字节并实际运行 shasum -a 256 校验（remoteSha256=9747156501e8ab9b406de0bcf8bf7306d03a6d0cad17a88568df5b9ee0004a4c, 56575 bytes, 1175 lines）。真实性另经 git blob sha1 复算：本地对下载字节计算 sha1('blob <len>\\0'+content)=ac969e49d5bb4b9650e01577cef3891ab0f359d2，与 GitHub API tree 接口返回的 blob sha 完全一致，故哈希为真复验。同路径在指定分支 codex/pawshop-v1-upload-20260925 上取回内容 sha256 同为 97471565...（HTTP 200），即分支头与固定提交内容一致。另：src/simulation.ts（无 src/game 层）远程返回 HTTP 404，确认历史版不存在该路径。GitHub 目录页 WebFetch 仅返回页面框架（前端渲染，文件列表未出现在返回文本中），文件清单改由 api.github.com git/trees 接口取得（HTTP 200，truncated=false）。"
+  },
+  "hashVerification": {
+    "method": "shasum -a 256 实跑 + git blob sha1 复算交叉校验",
+    "remoteSimulationSha256": "9747156501e8ab9b406de0bcf8bf7306d03a6d0cad17a88568df5b9ee0004a4c",
+    "remoteGitBlobSha1": "ac969e49d5bb4b9650e01577cef3891ab0f359d2",
+    "localSimulationSha256": "0562d0158855ed057f11184c63669ce2cb6251162aaedf21ac708820db9c1f10",
+    "localGitBlobSha1": "916aa70836fe1298fe1ba805590446daf952ba6e",
+    "verdict": "HASH_MISMATCH_LOCAL_NEWER",
+    "detail": "本机历史副本与固定提交不一致：simulation.ts 本机 57945 bytes / 1197 行 vs 远程 56575 bytes / 1175 行。差异内容显示本机多了 'cashier' 员工角色、cashierHire 交互点、orderValue 抽取与 purchaseCashier 函数，即本机为固定提交之后的本地改动版。按硬约束 4 未做任何恢复/覆盖/checkout，仅如实记录。"
+  },
+  "fileDivergenceSummary": {
+    "matchCount": 9,
+    "differCount": 5,
+    "differFiles": [
+      "src/game/economy.ts",
+      "src/game/simulation.ts",
+      "src/main.ts",
+      "src/style.css",
+      "src/ui/view-model.ts"
+    ],
+    "note": "5 个差异文件的本机 mtime 均为 2026-09-26（晚于提交日期 2026-09-25），其余 9 个一致文件的 mtime 为 2026-08-31~2026-09-06，佐证本机存在提交后的本地改动。"
+  },
+  "files": [
+    {
+      "path": "src/game/economy.ts",
+      "exists": true,
+      "localSha256": "76b7bac6a74a32374ad47fd682259a8d50f8556461cd848d080336387b3102e8",
+      "remoteSha256AtFixedCommit": "1564e9f50a5cd66922074318ed09b461ade017295ea1584057b13eb150dd4256",
+      "localBytes": 1885,
+      "remoteBytesAtFixedCommit": 1826,
+      "lines": 53,
+      "remoteLinesAtFixedCommit": 52,
+      "mtime": "2026-09-26T00:34:08+0800",
+      "localMatchesFixedCommit": false,
+      "verified": true
+    },
+    {
+      "path": "src/game/persistence.ts",
+      "exists": true,
+      "localSha256": "91f44bdaa7cfee87e71d22d85883ac6ebacac0e75c8a9cc413f71ea41d8e491b",
+      "remoteSha256AtFixedCommit": "91f44bdaa7cfee87e71d22d85883ac6ebacac0e75c8a9cc413f71ea41d8e491b",
+      "localBytes": 2235,
+      "remoteBytesAtFixedCommit": 2235,
+      "lines": 69,
+      "remoteLinesAtFixedCommit": 69,
+      "mtime": "2026-08-31T11:51:50+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/game/simulation.ts",
+      "exists": true,
+      "localSha256": "0562d0158855ed057f11184c63669ce2cb6251162aaedf21ac708820db9c1f10",
+      "remoteSha256AtFixedCommit": "9747156501e8ab9b406de0bcf8bf7306d03a6d0cad17a88568df5b9ee0004a4c",
+      "localBytes": 57945,
+      "remoteBytesAtFixedCommit": 56575,
+      "lines": 1197,
+      "remoteLinesAtFixedCommit": 1175,
+      "mtime": "2026-09-26T00:51:06+0800",
+      "localMatchesFixedCommit": false,
+      "verified": true
+    },
+    {
+      "path": "src/generated/game-config.json",
+      "exists": true,
+      "localSha256": "fc215ce562e8c1d3a6bf0640806b44356ddd48a4e73f9677c2ac34e3c6568fe1",
+      "remoteSha256AtFixedCommit": "fc215ce562e8c1d3a6bf0640806b44356ddd48a4e73f9677c2ac34e3c6568fe1",
+      "localBytes": 2125,
+      "remoteBytesAtFixedCommit": 2125,
+      "lines": 56,
+      "remoteLinesAtFixedCommit": 56,
+      "mtime": "2026-08-31T11:57:05+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/main.ts",
+      "exists": true,
+      "localSha256": "ed05f424cc463be78a9ead97d770ba35f5eca136714bb55981fe10ec1da0ca56",
+      "remoteSha256AtFixedCommit": "3c9e7ebe0bf16186f049dfd8fe10bfed1c3973d0b701860f729b0e73f34af622",
+      "localBytes": 52762,
+      "remoteBytesAtFixedCommit": 45931,
+      "lines": 1074,
+      "remoteLinesAtFixedCommit": 976,
+      "mtime": "2026-09-26T02:24:34+0800",
+      "localMatchesFixedCommit": false,
+      "verified": true
+    },
+    {
+      "path": "src/platform/adapters.ts",
+      "exists": true,
+      "localSha256": "6f05e701cfb7a4e6e7869cf3d5046ebd5f070634b0fa7229392c26d4c68067ae",
+      "remoteSha256AtFixedCommit": "6f05e701cfb7a4e6e7869cf3d5046ebd5f070634b0fa7229392c26d4c68067ae",
+      "localBytes": 750,
+      "remoteBytesAtFixedCommit": 750,
+      "lines": 17,
+      "remoteLinesAtFixedCommit": 17,
+      "mtime": "2026-09-06T02:38:00+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/platform/ads-runtime.ts",
+      "exists": true,
+      "localSha256": "213c094496df89e4e04f317d2e718dca7f6173950caaac608943553f489bb761",
+      "remoteSha256AtFixedCommit": "213c094496df89e4e04f317d2e718dca7f6173950caaac608943553f489bb761",
+      "localBytes": 1101,
+      "remoteBytesAtFixedCommit": 1101,
+      "lines": 27,
+      "remoteLinesAtFixedCommit": 27,
+      "mtime": "2026-09-06T02:43:34+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/platform/ads.ts",
+      "exists": true,
+      "localSha256": "a840c996d14a17597e133220cba344cff519f42894ae9e3133f9e98e230e14a8",
+      "remoteSha256AtFixedCommit": "a840c996d14a17597e133220cba344cff519f42894ae9e3133f9e98e230e14a8",
+      "localBytes": 3340,
+      "remoteBytesAtFixedCommit": 3340,
+      "lines": 64,
+      "remoteLinesAtFixedCommit": 64,
+      "mtime": "2026-09-06T02:14:30+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/platform/package-stager.ts",
+      "exists": true,
+      "localSha256": "7ab80b3d5c2542e60b6a808a4ebd5d0e4c0c082da4beff3c4d0c82ca9c1eaeb8",
+      "remoteSha256AtFixedCommit": "7ab80b3d5c2542e60b6a808a4ebd5d0e4c0c082da4beff3c4d0c82ca9c1eaeb8",
+      "localBytes": 1420,
+      "remoteBytesAtFixedCommit": 1420,
+      "lines": 30,
+      "remoteLinesAtFixedCommit": 30,
+      "mtime": "2026-09-06T02:30:00+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/style.css",
+      "exists": true,
+      "localSha256": "848d1955dc0d1b6a98e64ef810e88ec0e95d92de33f6ca7f8bc1d2442374a91a",
+      "remoteSha256AtFixedCommit": "7ed6ae651f8d2bd4308602c9ef88d10527d5265de1416b705681d0f740c957db",
+      "localBytes": 9392,
+      "remoteBytesAtFixedCommit": 8814,
+      "lines": 376,
+      "remoteLinesAtFixedCommit": 354,
+      "mtime": "2026-09-26T00:35:23+0800",
+      "localMatchesFixedCommit": false,
+      "verified": true
+    },
+    {
+      "path": "src/ui/customer-routes.ts",
+      "exists": true,
+      "localSha256": "3b72d402c4fa215ce05bb3c28c2931234cb2621d59f381769d57d6738de065d2",
+      "remoteSha256AtFixedCommit": "3b72d402c4fa215ce05bb3c28c2931234cb2621d59f381769d57d6738de065d2",
+      "localBytes": 4834,
+      "remoteBytesAtFixedCommit": 4834,
+      "lines": 125,
+      "remoteLinesAtFixedCommit": 125,
+      "mtime": "2026-09-06T22:19:02+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/ui/motion.ts",
+      "exists": true,
+      "localSha256": "aacbafce1841c19a30e54f83e514de61832177c08b67e99f850d320c3358dbec",
+      "remoteSha256AtFixedCommit": "aacbafce1841c19a30e54f83e514de61832177c08b67e99f850d320c3358dbec",
+      "localBytes": 6208,
+      "remoteBytesAtFixedCommit": 6208,
+      "lines": 184,
+      "remoteLinesAtFixedCommit": 184,
+      "mtime": "2026-08-31T03:27:00+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    },
+    {
+      "path": "src/ui/view-model.ts",
+      "exists": true,
+      "localSha256": "7100ea49451b0987b25377b59fcd9c599eb45ebf10063302b189d24497d14e90",
+      "remoteSha256AtFixedCommit": "5f67ddd484492ef2b3e16f0f62598467da09591afd6412c7710967fabf58205e",
+      "localBytes": 8303,
+      "remoteBytesAtFixedCommit": 6518,
+      "lines": 148,
+      "remoteLinesAtFixedCommit": 117,
+      "mtime": "2026-09-26T02:24:34+0800",
+      "localMatchesFixedCommit": false,
+      "verified": true
+    },
+    {
+      "path": "src/world/areas.ts",
+      "exists": true,
+      "localSha256": "cac0c87df6333d89a505095a63d2df8e339115fb1cfb93699350fa96fccc280d",
+      "remoteSha256AtFixedCommit": "cac0c87df6333d89a505095a63d2df8e339115fb1cfb93699350fa96fccc280d",
+      "localBytes": 2410,
+      "remoteBytesAtFixedCommit": 2410,
+      "lines": 50,
+      "remoteLinesAtFixedCommit": 50,
+      "mtime": "2026-09-06T03:34:39+0800",
+      "localMatchesFixedCommit": true,
+      "verified": true
+    }
+  ],
+  "pathDivergence": {
+    "historyEntry": "runs/20260830210424-pawshop-v1/workspace/game/src/game/simulation.ts",
+    "targetEntry": "runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+    "targetFileSha256": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+    "targetFileBytes": 19423,
+    "targetFileLines": 227,
+    "targetSrcFileCount": 7,
+    "targetSrcTree": [
+      "src/generated/game-config.json",
+      "src/input.ts",
+      "src/main.ts",
+      "src/simulation.test.ts",
+      "src/simulation.ts",
+      "src/style.css",
+      "src/uiMotion.ts"
+    ],
+    "hasSrcGameLayerInTarget": false,
+    "hasSrcGameLayerInHistory": true,
+    "hasSrcSimulationTsInHistory": false,
+    "structuralNote": "历史版有 src/game/ 这一层，模拟逻辑按 game/（economy、persistence、simulation）+ platform/ + ui/ + world/ + generated/ 分模块，共 14 个源文件，入口 simulation.ts 达 1175 行（固定提交版）。目标版无 src/game/ 层，源文件扁平放在 src/ 根下共 7 个，simulation.ts 仅 227 行；platform/（ads、adapters、package-stager）、world/areas.ts、ui/ 三件套（customer-routes、motion、view-model）均未在目标版出现，目标版改为 src/input.ts 与 src/uiMotion.ts。两者是不同结构的独立实现，行号、哈希与测试结论不可混用；本次仅做结构差异说明，未复制任何代码。"
+  },
+  "claimClassification": [
+    {
+      "claimId": "HS-01",
+      "claim": "两份研究报告（reference-code-gap-review-20261001.json、github-reference-review-20261001.json）中是否包含涉及历史源码（20260830210424-pawshop-v1 / src/game/simulation.ts / 2a1a0e6 / 23chen990 / night-market-hero / pawshop）的断言",
+      "source": "reference-code-gap-review",
+      "classification": "A",
+      "basis": "对两份报告全文分别按 pawshop|20260830210424|src/game/|2a1a0e6|23chen990|历史|night-market-hero 检索，两份均为 No matches found。故报告内涉及历史源码的断言数量为 0，属直接读取确认。"
+    },
+    {
+      "claimId": "HS-02",
+      "claim": "报告记载的目标源码入口 workspace/game/src/simulation.ts 及 sha256 638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+      "source": "reference-code-gap-review",
+      "classification": "A",
+      "basis": "实跑 shasum -a 256 于目标文件，结果一致（19423 bytes / 227 行）。当前目标源码直接确认。"
+    },
+    {
+      "claimId": "HS-03",
+      "claim": "报告记载的 workspace/game/src/main.ts sha256 3f3df507c2feb172b8ea617ae0dd6a67d0718ff048eff7b9bd99cb281b5b44d1",
+      "source": "reference-code-gap-review",
+      "classification": "A",
+      "basis": "实跑 shasum -a 256 结果一致。当前目标源码直接确认。"
+    },
+    {
+      "claimId": "HS-04",
+      "claim": "报告记载的 workspace/game/src/generated/game-config.json sha256 f1f2669c3dfcf5297727d0ba4832fe0e9e77ab18809f0305c86c2f12a892700a",
+      "source": "reference-code-gap-review",
+      "classification": "A",
+      "basis": "实跑 shasum -a 256 结果一致。当前目标源码直接确认。"
+    },
+    {
+      "claimId": "HS-05",
+      "claim": "报告记载的 workspace/game/src/simulation.test.ts sha256 799613ccb22376d25b9ed732499c79cd2d223c5905b4074d2a640a845c0a60a8",
+      "source": "reference-code-gap-review",
+      "classification": "A",
+      "basis": "实跑 shasum -a 256 结果一致。当前目标源码直接确认。"
+    },
+    {
+      "claimId": "HS-06",
+      "claim": "referencePackage 路径 reference-evidence/verified/reference-code-package-6255b13cbfcf.json 及其 sha256 6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+      "source": "reference-code-gap-review",
+      "classification": "A",
+      "basis": "文件存在且实跑 shasum -a 256 完全一致。属 monkey-mart 参考证据包，非历史源码。"
+    },
+    {
+      "claimId": "HS-07",
+      "claim": "monkey-mart GameState.lua sha256 1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e、Player.lua 739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11、DataMart1.lua 86c8a4e6f69a419571f9216e6874bceecf52fa36bf283a936d99ccf9742f1d3a",
+      "source": "reference-code-gap-review",
+      "classification": "A",
+      "basis": "三个文件均存在于本 run reference-code/monkey-mart/scripts/main/gamecore/ 且实跑 shasum -a 256 全部一致。此为外部原版参考源码，不是历史对照源码。"
+    },
+    {
+      "claimId": "HS-08",
+      "claim": "github-reference-review 中 8 份外部仓库 codeEvidence 的 sha256（CookieNoir/TA-Casual-Farm、Rodser/MyMiniMart、Jeffrey-Searcy/shopkeepers-legacy、breineng/supermarket-simulator）及各自 LICENSE",
+      "source": "github-reference-review",
+      "classification": "A",
+      "basis": "按报告 localPath 在 research/github-20261001/sources/ 下逐文件实跑 sha256，抽检 8 份 codeEvidence 全部 MATCH。属第三方公开参考仓库，与历史源码无关。"
+    },
+    {
+      "claimId": "HS-09",
+      "claim": "历史版模拟入口为 src/game/simulation.ts（而非 src/simulation.ts）",
+      "source": "reference-code-gap-review",
+      "classification": "B",
+      "basis": "历史源码直接确认：本机目录存在该文件；远程固定提交经 GitHub API tree 列出 blob ...src/game/simulation.ts；远程 src/simulation.ts 返回 HTTP 404。注意此断言并非报告记载，而是本核实新增。"
+    },
+    {
+      "claimId": "HS-10",
+      "claim": "历史版存在 src/game/ 分层，目标版无该层，两者结构不同、行号与哈希不可混用",
+      "source": "reference-code-gap-review",
+      "classification": "B",
+      "basis": "历史源码与目标源码两侧目录树直接对比确认（历史 14 文件含 src/game/；目标 7 文件、ls -d src/game 报 No such file or directory）。非报告记载。"
+    },
+    {
+      "claimId": "HS-11",
+      "claim": "本机历史副本与固定提交 2a1a0e6 内容一致",
+      "source": "reference-code-gap-review",
+      "classification": "B",
+      "basis": "已证伪并重新定位：实跑比对显示 14 个文件中 9 个一致、5 个不一致（economy.ts、simulation.ts、main.ts、style.css、view-model.ts）。固定提交版 simulation.ts 为 97471565...(56575B/1175行)，本机为 0562d015...(57945B/1197行)。历史对照应以固定提交为准。"
+    },
+    {
+      "claimId": "HS-12",
+      "claim": "报告各 finding 的 impactInference（如『反馈层次被压平』『顾客可能聚在收银范围边缘』）",
+      "source": "reference-code-gap-review",
+      "classification": "D",
+      "basis": "报告自身以『推断：』前缀标注，且 runtimeVerified 全为 false，未做运行时或感知实测。"
+    },
+    {
+      "claimId": "HS-13",
+      "claim": "github-reference-review 的 targetPlatformVerdicts 中 webLite 为 REFERENCE_ONLY_*_NOT_TESTED、其余三平台为 UNVERIFIED",
+      "source": "github-reference-review",
+      "classification": "D",
+      "basis": "报告自述未测试（NOT_TESTED / UNVERIFIED），为未验证声明而非实测结论。"
+    },
+    {
+      "claimId": "HS-14",
+      "claim": "历史源码可作为本轮修复的机制基线或对照证据",
+      "source": "reference-code-gap-review",
+      "classification": "E",
+      "basis": "未知：两份报告均未引用历史源码，本轮 run 内不存在任何把历史源码作为基线的记载或批准；且本机副本与固定提交已不一致，其是否代表批准状态无法从现有材料判定。"
+    }
+  ],
+  "blockers": [
+    "哈希不匹配需重新定位：本机历史副本 src/game/simulation.ts（0562d0158855ed057f11184c63669ce2cb6251162aaedf21ac708820db9c1f10, 57945B/1197行）与固定提交 2a1a0e6 远程原始字节（9747156501e8ab9b406de0bcf8bf7306d03a6d0cad17a88568df5b9ee0004a4c, 56575B/1175行）不一致，本机为提交之后的本地改动版（多出 cashier 角色、cashierHire 交互点、orderValue、purchaseCashier）。src/game/economy.ts、src/main.ts、src/style.css、src/ui/view-model.ts 同样不一致（共 5 个文件）。按硬约束未执行任何 checkout/覆盖/cherry-pick，历史对照应以固定提交远程字节为准。",
+    "两份研究报告均不含任何涉及历史源码的断言（全文检索 pawshop / 20260830210424 / src/game/ / 2a1a0e6 / 23chen990 / night-market-hero 全部无匹配），报告中的『参考源码』一律指 monkey-mart 原版与第三方公开仓库，不含 20260830210424-pawshop-v1 旧 run。历史对照基线在报告层面缺失。",
+    "GitHub 目录页 WebFetch 未返回文件清单（页面为前端渲染，返回文本只有框架与 parent directory），无法通过 WebFetch 本身确认目录内容；已改用 api.github.com git/trees 接口（HTTP 200, truncated=false）完成清单核实。",
+    "指定分支 codex/pawshop-v1-upload-20260925 上该路径内容与固定提交完全相同（sha256 同为 97471565...），说明本机那 5 个文件的改动从未进入该分支，分支头无法作为本机副本的对照基线。",
+    "远程仅校验了 workspace/game/src 下 14 个文件；历史 run 的 tests/、dist/、artifacts/ 等未纳入本次对照范围，若后续需要以历史测试结论作为对照，须另行核实。"
+  ],
+  "readOnlyCompliance": {
+    "gameWorkspaceModified": false,
+    "gitCheckoutOrCherryPick": false,
+    "filesWrittenIntoGameWorkspace": 0,
+    "onlyArtifactWritten": "artifacts/history-source-verification-20261001.json"
+  }
+}

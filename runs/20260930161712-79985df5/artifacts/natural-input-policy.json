@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "line": "idle-management",
+  "profile": "STRATEGIC_SYSTEM",
+  "minimumActions": 5,
+  "requiredTransitions": [
+    "produce",
+    "deliver",
+    "upgrade",
+    "refresh"
+  ],
+  "acceptedCompletions": [
+    "settlement",
+    "terminal"
+  ],
+  "requireReplay": true,
+  "minimumScreenshots": 2,
+  "forbiddenOperations": [
+    "resetGame",
+    "setRandomSeed",
+    "spawnCustomer",
+    "completeOrder",
+    "grantCurrency",
+    "upgradeStation",
+    "setState",
+    "loadScenario",
+    "teleport",
+    "setPlayerPosition",
+    "advanceTime",
+    "advanceTicks",
+    "act",
+    "direct-state-mutation"
+  ]
+}

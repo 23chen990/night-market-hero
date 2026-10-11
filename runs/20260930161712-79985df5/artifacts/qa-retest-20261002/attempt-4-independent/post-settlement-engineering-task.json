@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "route": "formal-fixer",
+  "attempt": 4,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only generated source; QA evidence only in attempt-4-independent/post-settlement-engineering/**"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/before/src/simulation.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/pinned-dist-hashes.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json"
+  ],
+  "instructions": [
+    "You are not alone; never modify generated workspace, shared files, existing evidence, or source tests. Target pinned immutable attempt4 at http://127.0.0.1:4173. Do not stop it.",
+    "Independently reproduce coral AND moon: normal state transitions via deterministic fixture engine or __GAME_TEST__ engineering API allowed and label fixture-only. Get market own objective to settlement, continue local, then pack a further eligible order. Verify continued operating replay does not immediately refreeze from old satisfied goal counters. Do not use recordMarketGoal as sole replay proof; drive actual checkout path. Read source only enough to construct exact causal branches.",
+    "If failed, capture exact before/after fields, minimal causal source locations and hypothesis. Passing stage right after continue is insufficient. Produce QaReportSchema validated summary plus machine-readable traces/hash of pinned bundle; no claim natural/perceptual pass. Keep triage status limited to deterministic repro pending natural confirmation.",
+    "Secondary scope: inspect seagull recovery acceptance and state cadence after approach/refill/depart; identify coverage gaps without inventing a cooldown requirement. A renewed attack after departure is not automatically a bug."
+  ],
+  "acceptance": [
+    "Both exact new-market checkout/settlement/continue/new-order state branches causally tested.",
+    "Return validated QaReport summary/evidence paths; identify unobserved natural gates."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/qa-report.json"
+}

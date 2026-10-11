@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "contractId": "experience-continuation-v2-strategic-system",
+  "startCommand": "resetGame",
+  "inputMode": "mouse_and_touch",
+  "forbiddenApis": [
+    "window.__GAME_TEST__ state-forcing methods",
+    "loadScenario",
+    "debugSetState",
+    "setVelocity",
+    "setPose",
+    "grantCurrency"
+  ],
+  "scenarios": [
+    {
+      "id": "scenario-1",
+      "goal": "reset"
+    },
+    {
+      "id": "scenario-2",
+      "goal": "produce"
+    },
+    {
+      "id": "scenario-3",
+      "goal": "deliver"
+    },
+    {
+      "id": "scenario-4",
+      "goal": "choose one upgrade trade-off"
+    },
+    {
+      "id": "scenario-5",
+      "goal": "refresh and recover progress"
+    }
+  ],
+  "successCriteria": [
+    "complete the STRATEGIC_SYSTEM representative flow with visible state changes",
+    "reach a clear success or failure terminal state",
+    "restart and observe a materially different or replayable outcome"
+  ],
+  "evidenceCheckpoints": [
+    "clean reset screenshot and input trace",
+    "terminal/settlement screenshot and retry trace"
+  ],
+  "oracleFree": true
+}

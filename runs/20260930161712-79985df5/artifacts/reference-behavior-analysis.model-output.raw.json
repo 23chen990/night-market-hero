@@ -1,0 +1,721 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "reference-behavior-analysis",
+  "targetRunId": "20260930161712-79985df5",
+  "targetGame": "continuation-v2",
+  "status": "BLOCKED",
+  "reference": {
+    "name": "Monkey Mart 通用空间服务机制",
+    "url": "https://poki.com/zh/g/monkey-mart"
+  },
+  "sourceFiles": [
+    {
+      "path": "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+      "sha256": "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+    },
+    {
+      "path": "artifacts/reference-code-analysis.json",
+      "sha256": "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+    }
+  ],
+  "frameManifestStatus": "ABSENT",
+  "levelReconstruction": null,
+  "qaTargetViewport": {
+    "width": 540,
+    "height": 960,
+    "orientation": "portrait",
+    "basis": "qa-target",
+    "sourceRefs": [
+      "input/seed.yaml",
+      "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c"
+    ],
+    "note": "Proposed mobile QA target from the seed; not an observed reference viewport."
+  },
+  "behaviorChecks": [
+    {
+      "id": "qa-input-build-payment",
+      "dimension": "input_state",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Construction point, player wallet, paid-contribution state and remaining construction debt",
+      "lifecycleStateBranch": "Construction point is for sale; player is inside its interaction range; player is stationary; payment is in progress",
+      "normalPlayerInput": "Use the single movement input to enter the construction point interaction range, then stop moving.",
+      "expectedStateChange": "A payment step reduces the wallet by the balance-limited installment, increases the paid contribution, and reduces the remaining debt. The successor construction point or linked station opens only after the remaining debt reaches zero.",
+      "causalSpatialRelationship": "The player must be inside the active construction point range and satisfy the stationary branch; the construction point is the recipient of the contribution.",
+      "feedbackAnchor": "Code-established state anchors are wallet balance, paid contribution, remaining construction price, and successor-unlock state; no pixel appearance is claimed.",
+      "eventOrder": [
+        "Player enters the construction point interaction range.",
+        "Player remains stationary.",
+        "Payment amount is limited by remaining debt and available wallet balance.",
+        "Wallet decreases.",
+        "Paid contribution is saved or increased.",
+        "Construction point remaining debt decreases.",
+        "Successor construction or station becomes available only when debt reaches zero."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "build-payment",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 3402,
+            "endLine": 3463
+          }
+        },
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "build-payment",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 3820,
+            "endLine": 3835
+          }
+        }
+      ]
+    },
+    {
+      "id": "qa-input-production-gating",
+      "dimension": "input_state",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Active producer or processor station, station inventory and connected input shelf",
+      "lifecycleStateBranch": "Producer is active and has operating capacity; processor branch may require one or more connected input shelves to contain the required inputs",
+      "normalPlayerInput": "Use the single movement input to route through the production area; no separate production button is required by the cited claim.",
+      "expectedStateChange": "Production advances only while the station is active, has operating capacity, and is not full. A processor remains blocked when required connected input shelves lack the required material.",
+      "causalSpatialRelationship": "The processor depends on its connected input shelf or shelves; production availability is constrained by station state, capacity, and linked input inventory.",
+      "feedbackAnchor": "Code-established anchors are station active state, station capacity, and connected input availability; exact visual treatment is unverified.",
+      "eventOrder": [
+        "Station is active and has operating capacity.",
+        "Station inventory is checked for available capacity.",
+        "For a processor, connected input shelves are checked.",
+        "Production advances only when all required conditions are satisfied.",
+        "Production remains blocked when capacity or required input is unavailable."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "production-input",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 8345,
+            "endLine": 8373
+          }
+        }
+      ]
+    },
+    {
+      "id": "qa-spatial-harvest-and-deposit",
+      "dimension": "spatial_relation",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Player, typed producer inventory, player carried inventory and compatible customer shelf",
+      "lifecycleStateBranch": "Producer contains collectable stock; player capacity is not full; player then enters the matching shelf interaction polygon while carrying the product",
+      "normalPlayerInput": "Use the single movement input to enter the valid producer range, allow automatic pickup, then route to the compatible shelf range.",
+      "expectedStateChange": "Entering a valid producer range transfers typed stock into the player's carried inventory while capacity remains. Entering the matching shelf polygon transfers carried matching product into shelf inventory subject to pickup, drop and capacity state.",
+      "causalSpatialRelationship": "Pickup requires the player to overlap the active producer range; deposit requires the player to overlap the corresponding shelf interaction polygon and carry a product accepted by that shelf.",
+      "feedbackAnchor": "Code-established anchors are producer stock, carried inventory count, shelf inventory count, and pickup/drop state; no visual appearance is asserted.",
+      "eventOrder": [
+        "Player enters the valid producer range.",
+        "Producer has available stock and player capacity is not full.",
+        "Automatic pickup transfers a typed item to carried inventory.",
+        "Player moves into the corresponding shelf interaction polygon.",
+        "Shelf accepts the carried product.",
+        "Carried inventory decreases and shelf inventory increases until either side reaches its constraint."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "harvest-stock",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 4018,
+            "endLine": 4047
+          }
+        }
+      ]
+    },
+    {
+      "id": "qa-failure-customer-wait-recovery",
+      "dimension": "failure_recovery",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Ordinary customer, desired product shelf, player carried stock and checkout queue",
+      "lifecycleStateBranch": "Ordinary customer takes a basket, walks to the desired shelf, waits for the desired product, takes the product, then moves to checkout and queues",
+      "normalPlayerInput": "Use the single movement input to route to the compatible shelf, replenish it, then move toward the checkout area.",
+      "expectedStateChange": "After the compatible shelf is replenished, the waiting customer can take the desired product and advance to the checkout queue. If the shelf remains unavailable, the cited branch remains in the shelf-wait state. No timeout departure branch is evidenced.",
+      "causalSpatialRelationship": "Customer progress depends on the desired product shelf becoming available; player recovery requires entering the matching shelf interaction polygon and transferring compatible carried stock.",
+      "feedbackAnchor": "Code-established anchors are customer lifecycle state, desired-shelf wait state, product acquisition state and checkout queue entry; no pixel or readability claim is made.",
+      "eventOrder": [
+        "Customer takes a basket.",
+        "Customer moves to the desired product shelf.",
+        "Customer enters the shelf-wait branch when the desired product is unavailable.",
+        "Player enters the compatible shelf interaction polygon.",
+        "Player replenishes the shelf from carried stock.",
+        "Customer takes the desired product.",
+        "Customer moves to and enters the checkout queue."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "buyer-wait-branch",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+            "startLine": 940,
+            "endLine": 983
+          }
+        },
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "buyer-wait-branch",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 4132,
+            "endLine": 4154
+          }
+        },
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "harvest-stock",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 4018,
+            "endLine": 4047
+          }
+        }
+      ]
+    },
+    {
+      "id": "qa-failure-disruption-branch",
+      "dimension": "failure_recovery",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Disruption visitor, usable product shelf and shelf inventory",
+      "lifecycleStateBranch": "Disruption visitor reaches a usable shelf; the shelf contains stock; disruption behavior repeats periodically while stock remains",
+      "normalPlayerInput": "Use the single movement input to approach the alerted shelf. The cited claim does not establish a separate recovery action or terminal failure state.",
+      "expectedStateChange": "The disruption visitor emits a shelf-localized alert and periodically throws goods out while the shelf has stock. The exact player recovery transition is not evidenced.",
+      "causalSpatialRelationship": "The disruption branch activates at a usable shelf and is conditioned on that shelf containing goods; the alert is localized to the affected shelf.",
+      "feedbackAnchor": "Code-established anchor is the alert targeting the affected shelf plus the periodic goods-throw event; appearance, audio and readability are unverified.",
+      "eventOrder": [
+        "Disruption visitor reaches a usable shelf.",
+        "Shelf-localized alert is emitted.",
+        "Shelf inventory is checked.",
+        "While stock exists, goods are periodically thrown out.",
+        "Further recovery or terminal outcome is not established by the cited claim."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "disruption-recovery",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+            "startLine": 986,
+            "endLine": 1033
+          }
+        }
+      ]
+    },
+    {
+      "id": "qa-feedback-construction-sequence",
+      "dimension": "feedback_sequence",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Player wallet, construction point debt state and currency feedback entity",
+      "lifecycleStateBranch": "Construction payment step executes while the player is eligible to pay at the construction point",
+      "normalPlayerInput": "Use the single movement input to enter the construction point range and remain stationary.",
+      "expectedStateChange": "The wallet, paid contribution and construction remainder update in order; a currency animation travels from the player toward the construction point. Reduced construction debt represents investment, not collected earnings.",
+      "causalSpatialRelationship": "The feedback originates at the player and targets the construction point receiving the investment.",
+      "feedbackAnchor": "Code-established anchor is the player-to-construction-point currency animation after the wallet and debt updates; no inspected pixel path is claimed.",
+      "eventOrder": [
+        "Wallet is debited.",
+        "Paid contribution is saved or increased.",
+        "Construction point remaining price is updated.",
+        "Currency animation is emitted from player toward construction point.",
+        "Construction remains incomplete until the remaining debt reaches zero."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "construction-feedback",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 3433,
+            "endLine": 3450
+          }
+        }
+      ]
+    },
+    {
+      "id": "qa-feedback-checkout-cash",
+      "dimension": "feedback_sequence",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Checkout queue head, checkout station, packing state, counter cash pile and player",
+      "lifecycleStateBranch": "A customer at the front of the queue has arrived; checkout service is active; the player or an employed cashier can operate the checkout branch",
+      "normalPlayerInput": "Use the single movement input to enter the checkout interaction range and remain there to service or collect.",
+      "expectedStateChange": "Only the arrived customer at the queue head enters packing. After a delay, payment becomes a cash pile at the counter. The player must approach the counter separately to collect that cash.",
+      "causalSpatialRelationship": "Service eligibility depends on queue-head position at the checkout; cash collection depends on player proximity to the counter cash pile.",
+      "feedbackAnchor": "Code-established anchors are queue-head selection, packing state, delayed counter cash creation and player proximity-based cash collection.",
+      "eventOrder": [
+        "Arrived customer is identified as the queue head.",
+        "Customer enters packing or checkout service.",
+        "Service delay elapses.",
+        "Payment appears in the counter cash pile.",
+        "Player approaches the counter.",
+        "Player collects the counter cash."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "checkout-cash",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 3862,
+            "endLine": 3879
+          }
+        },
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "checkout-cash",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 4091,
+            "endLine": 4112
+          }
+        },
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "checkout-cash",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 4132,
+            "endLine": 4154
+          }
+        }
+      ]
+    },
+    {
+      "id": "qa-terminal-stage-continuation",
+      "dimension": "terminal_replay",
+      "status": "OBSERVED",
+      "evidenceBasis": "code-analysis",
+      "viewportBasis": "qa-target",
+      "objectType": "Next-market entry marker, stage progression state and shop-selection interface",
+      "lifecycleStateBranch": "Stage expansion is complete; the next-market entry marker is active; player enters the marker area and becomes stationary",
+      "normalPlayerInput": "Use the single movement input to reach the next-market entry marker, then stop moving.",
+      "expectedStateChange": "The stage-completion transition opens a shop-selection interface. This is a continuation or stage-conversion branch, not evidence of game-over, replay button, countdown or settlement screen.",
+      "causalSpatialRelationship": "The selection interface opens only after the player reaches the active entry marker and satisfies the stationary interaction condition.",
+      "feedbackAnchor": "Code-established anchors are expansion completion, active entry marker, stationary player state and shop-selection open event; no visual treatment is verified.",
+      "eventOrder": [
+        "Stage expansion completes.",
+        "Next-market entry marker becomes available.",
+        "Player enters the marker area.",
+        "Player becomes stationary.",
+        "Shop-selection interface opens.",
+        "The source evidence does not establish a terminal game-over or replay-button branch."
+      ],
+      "evidence": [
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "next-market",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 8561,
+            "endLine": 8581
+          }
+        },
+        {
+          "sourceRefs": [
+            "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+            "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+            "artifacts/reference-code-analysis.json",
+            "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+          ],
+          "claimId": "next-market",
+          "locator": {
+            "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+            "startLine": 3925,
+            "endLine": 3934
+          }
+        }
+      ]
+    }
+  ],
+  "failurePressureContract": {
+    "status": "BLOCKED",
+    "referenceGame": {
+      "name": "Monkey Mart 通用空间服务机制",
+      "url": "https://poki.com/zh/g/monkey-mart"
+    },
+    "evidence": [
+      {
+        "id": "pressure-evidence-buyer-wait",
+        "classification": "observed",
+        "statement": "The ordinary customer branch creates pressure by moving to the desired product shelf, entering a wait state when the product is unavailable, then advancing after product acquisition; the reviewed branch has no timeout-departure path.",
+        "sourceRefs": [
+          "artifacts/reference-code-analysis.json",
+          "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+          "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+          "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+        ]
+      },
+      {
+        "id": "pressure-evidence-throughput-inference",
+        "classification": "inferred",
+        "statement": "Shelf waiting and checkout queue occupancy can form a throughput bottleneck, and replenishment or restoring checkout service can allow the loop to continue. This inference is limited to the reviewed ordinary-customer branch and does not establish a universal failure state.",
+        "sourceRefs": [
+          "artifacts/reference-code-analysis.json",
+          "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+          "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+          "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+        ]
+      },
+      {
+        "id": "pressure-evidence-disruption",
+        "classification": "observed",
+        "statement": "A separate disruption visitor branch reaches a usable shelf, emits a shelf-localized alert, and periodically throws goods out while the shelf contains stock.",
+        "sourceRefs": [
+          "artifacts/reference-code-analysis.json",
+          "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+          "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+          "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+        ]
+      },
+      {
+        "id": "pressure-evidence-capital-gate",
+        "classification": "observed",
+        "statement": "Construction payment is constrained by available wallet balance, reduces the remaining construction debt, and keeps the successor locked until the payment is complete.",
+        "sourceRefs": [
+          "artifacts/reference-code-analysis.json",
+          "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+          "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+          "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+        ]
+      },
+      {
+        "id": "pressure-evidence-stockout-timeout-unknown",
+        "classification": "unknown",
+        "statement": "The reference evidence does not establish the seed-proposed stockout patience timer, timeout departure, failure reason or recovery branch.",
+        "sourceRefs": [
+          "artifacts/reference-code-analysis.json",
+          "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+        ]
+      }
+    ],
+    "rules": [
+      {
+        "id": "pressure-rule-shelf-wait",
+        "applicability": "adapt",
+        "trigger": "An ordinary customer reaches the desired product shelf while the desired product is unavailable.",
+        "visiblePlayerSignal": "Code-established signal anchor: customer remains in the desired-shelf wait branch; exact appearance, readability and audio are unverified.",
+        "escalation": "Additional waiting customers and checkout queue occupancy may accumulate as inferred throughput pressure only.",
+        "attributableFailureOutcome": "No timeout departure or ordinary-customer failure outcome is evidenced in the reviewed branch.",
+        "recoveryReplay": "Replenish the compatible shelf, allow the customer to acquire the desired product, then allow the customer to proceed to checkout.",
+        "implementationImplications": "Preserve the causal relation between shelf availability, customer waiting and later checkout, but author original names, signals, layout, audio and tuning.",
+        "sourceEvidenceRefs": [
+          "pressure-evidence-buyer-wait",
+          "pressure-evidence-throughput-inference"
+        ]
+      },
+      {
+        "id": "pressure-rule-disruption-visitor",
+        "applicability": "reject",
+        "trigger": "A disruption visitor reaches a usable shelf that contains stock.",
+        "visiblePlayerSignal": "Code-established shelf-localized alert followed by periodic goods-throw events; exact visual or audio treatment is unverified.",
+        "escalation": "Goods continue to be thrown periodically while shelf stock remains.",
+        "attributableFailureOutcome": "Shelf goods are removed or displaced by the disruption branch; a terminal player failure outcome is not evidenced.",
+        "recoveryReplay": "Player recovery behavior is not established by the cited claim and must remain unknown.",
+        "implementationImplications": "Do not port this branch into the target game without explicit human approval; do not copy its expression, assets, names or tuning.",
+        "sourceEvidenceRefs": [
+          "pressure-evidence-disruption"
+        ]
+      },
+      {
+        "id": "pressure-rule-capital-gate",
+        "applicability": "reject",
+        "trigger": "Player is stationary inside an on-sale construction point while attempting payment.",
+        "visiblePlayerSignal": "Wallet, paid contribution, remaining construction debt and player-to-construction-point currency animation are the code-established anchors.",
+        "escalation": "Available wallet balance limits the current payment, and the successor remains locked until the debt is fully paid.",
+        "attributableFailureOutcome": "Construction remains incomplete when funds are insufficient; no broader game-over outcome is evidenced.",
+        "recoveryReplay": "Return to the construction point after the wallet has increased; the exact source of additional funds is outside the cited branch.",
+        "implementationImplications": "The seed explicitly rejects the reference startup-capital rule, so only a separately approved original economy may be used.",
+        "sourceEvidenceRefs": [
+          "pressure-evidence-capital-gate"
+        ]
+      },
+      {
+        "id": "pressure-rule-stockout-timeout",
+        "applicability": "blocked",
+        "trigger": "Seed-only proposal that a customer waits for a bounded period after stockout.",
+        "visiblePlayerSignal": "Unknown from the reference evidence.",
+        "escalation": "Unknown from the reference evidence.",
+        "attributableFailureOutcome": "Timeout departure and displayed stockout reason are not evidenced by the reference code analysis.",
+        "recoveryReplay": "Unknown from the reference evidence; requires an approved target-game rule and natural-input QA.",
+        "implementationImplications": "Keep this as an original target-game proposal, not as a reference fact. Human approval and runtime validation are required.",
+        "sourceEvidenceRefs": [
+          "pressure-evidence-stockout-timeout-unknown"
+        ]
+      }
+    ],
+    "boundaryAgainstCopyingExpression": "Use only source-bound causal pressure relationships and state transitions. Do not copy third-party code, assets, names, text, UI layout, audio, visual expression or raw tuning values."
+  },
+  "observations": [
+    {
+      "id": "observation-build-payment",
+      "claimId": "build-payment",
+      "statement": "Stationary player payment at an active construction point is balance-limited, changes wallet and construction debt separately, and unlocks the successor only after completion.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+      ]
+    },
+    {
+      "id": "observation-harvest-stock",
+      "claimId": "harvest-stock",
+      "statement": "Producer pickup requires valid producer-range occupancy and available player capacity; shelf replenishment requires the corresponding shelf interaction polygon and compatible carried stock.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+      ]
+    },
+    {
+      "id": "observation-buyer-wait-branch",
+      "claimId": "buyer-wait-branch",
+      "statement": "The reviewed ordinary-customer branch progresses from basket acquisition to desired-shelf waiting, product acquisition and checkout queueing, without an observed timeout-departure branch.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+      ]
+    },
+    {
+      "id": "observation-checkout-cash",
+      "claimId": "checkout-cash",
+      "statement": "The queue-head customer enters packing, payment appears after a delay as counter cash, and the player separately approaches the counter to collect it.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+      ]
+    },
+    {
+      "id": "observation-next-market",
+      "claimId": "next-market",
+      "statement": "After stage expansion, an active entry marker can open shop selection when the player reaches it and becomes stationary; this does not evidence a game-over or replay-button state.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+      ]
+    }
+  ],
+  "inferences": [
+    {
+      "id": "inference-throughput-pressure",
+      "statement": "Shelf waiting and checkout queue occupancy can create throughput pressure, with replenishment or restored checkout service allowing the ordinary loop to continue. This is an inference limited to the reviewed ordinary-customer branch.",
+      "sourceClaimIds": [
+        "buyer-wait-branch",
+        "checkout-cash",
+        "throughput-pressure"
+      ]
+    },
+    {
+      "id": "inference-causal-topology",
+      "statement": "The transferable research value is the causal topology of movement, typed inventory, compatible shelf replenishment, customer service and reinvestment; all expression must remain original.",
+      "sourceClaimIds": [
+        "harvest-stock",
+        "buyer-wait-branch",
+        "checkout-cash",
+        "build-payment"
+      ]
+    }
+  ],
+  "seedOnlyDesignProposals": [
+    {
+      "id": "seed-proposal-direct-operation-start",
+      "status": "PROPOSED",
+      "statement": "The target game starts with directly available core stations and does not adopt the reference startup-capital construction rule.",
+      "sourceRefs": [
+        "input/seed.yaml",
+        "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c"
+      ],
+      "sourceFactConflict": "Conflicts with the reference startup-capital claim; requires no reuse of reference startup prices or node identifiers."
+    },
+    {
+      "id": "seed-proposal-stockout-patience",
+      "status": "PROPOSED",
+      "statement": "The target game may add an original stockout waiting period followed by customer departure and an explicit shortage reason.",
+      "sourceRefs": [
+        "input/seed.yaml",
+        "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c"
+      ],
+      "sourceFactConflict": "Conflicts with the reviewed reference branch, which has no observed timeout-departure transition; requires human approval and natural-input QA."
+    },
+    {
+      "id": "seed-proposal-stage-settlement-restart",
+      "status": "PROPOSED",
+      "statement": "The target game may add an original first-expansion settlement with continue-running or restart-round choices.",
+      "sourceRefs": [
+        "input/seed.yaml",
+        "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c"
+      ],
+      "sourceFactConflict": "The reference evidence establishes stage continuation through shop selection but does not establish a settlement, restart or replay-button branch; requires human approval and natural-input QA."
+    }
+  ],
+  "conflictsForHumanApproval": [
+    {
+      "id": "conflict-stockout-timeout",
+      "status": "BLOCKED",
+      "proposalId": "seed-proposal-stockout-patience",
+      "conflict": "Seed-only timeout departure and shortage-reason behavior is not supported by the reference code analysis and must not be described as observed reference behavior."
+    },
+    {
+      "id": "conflict-stage-settlement-restart",
+      "status": "BLOCKED",
+      "proposalId": "seed-proposal-stage-settlement-restart",
+      "conflict": "Seed-only settlement, continue and restart-round behavior is not supported by the reference next-market claim and must remain a target-game proposal."
+    }
+  ],
+  "evidenceLimitations": [
+    "No verified frame manifest is present; levelReconstruction is therefore null.",
+    "No source-backed pixel, layout, pacing, appearance, readability, audio or feel claims can be made.",
+    "Feedback anchors and event orders describe code-established state and event relationships, not inspected pixels.",
+    "The numeric viewport is a proposed mobile QA target from input/seed.yaml and is not an observed reference viewport.",
+    "Reference code analysis establishes mechanic evidence only; it does not replace independent natural-input or perceptual QA for the built game.",
+    "The absence of recording frames does not block mechanic research, but appearance, readability, audio and feel remain unverified."
+  ],
+  "unknowns": [
+    {
+      "id": "unknown-stockout-timeout-transition",
+      "dimension": "failure_recovery",
+      "status": "BLOCKED",
+      "statement": "The reference evidence does not establish a customer stockout timer, timeout departure, shortage reason, failure outcome or recovery transition.",
+      "requiredFor": "The seed-defined stockout pressure rule.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "input/seed.yaml",
+        "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c"
+      ]
+    },
+    {
+      "id": "unknown-stage-settlement-replay",
+      "dimension": "terminal_replay",
+      "status": "BLOCKED",
+      "statement": "The reference evidence does not establish a stage settlement screen, continue button, restart-round action, replay button, game-over state or post-terminal reset.",
+      "requiredFor": "The seed-defined first-expansion settlement and continue-or-restart rule.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+        "input/seed.yaml",
+        "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c"
+      ]
+    },
+    {
+      "id": "unknown-disruption-recovery-outcome",
+      "dimension": "failure_recovery",
+      "status": "BLOCKED",
+      "statement": "The disruption visitor claim establishes alerting and periodic goods removal but does not establish the exact player recovery input, recovery state, terminal outcome or replay behavior.",
+      "requiredFor": "Any target-game adoption of the disruption pressure branch.",
+      "sourceRefs": [
+        "artifacts/reference-code-analysis.json",
+        "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed"
+      ]
+    }
+  ],
+  "expressionBoundary": {
+    "allowed": [
+      "Generic mechanic relationships",
+      "Causal order and state transitions",
+      "Human-approved adaptable mechanic slots"
+    ],
+    "forbidden": [
+      "Third-party code",
+      "Third-party assets",
+      "Names and logos",
+      "UI layout",
+      "Text and dialogue",
+      "Audio",
+      "Raw tuning values"
+    ]
+  },
+  "runtimeAcceptanceNote": "This artifact is reference mechanic research, not runtime acceptance. Independent natural-input engineering QA and perceptual QA remain mandatory for the built game."
+}

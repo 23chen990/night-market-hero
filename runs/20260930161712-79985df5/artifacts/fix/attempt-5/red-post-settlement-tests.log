@@ -1,0 +1,50 @@
+$ node ../../../../node_modules/vitest/vitest.mjs run -- src/depth-systems.test.ts
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/depth-systems.test.ts (14 tests | 2 failed) 63ms
+     × keeps coral checkout operating after continuing a completed smoked-order goal 9ms
+     × keeps moon checkout operating after continuing a completed dual-shelf goal 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > keeps coral checkout operating after continuing a completed smoked-order goal
+AssertionError: expected 'settlement' to be 'operating' // Object.is equality
+
+Expected: "operating"
+Received: "settlement"
+
+ ❯ src/depth-systems.test.ts:263:26
+    261|     const continued = continueRound(settled);
+    262|     const replay = packEligibleOrder(continued, 'coral-cove-market', 1…
+    263|     expect(replay.stage).toBe('operating');
+       |                          ^
+    264|     expect(replay.perMarketProgress['coral-cove-market']?.goalProgress…
+    265|     expect(replay.perMarketProgress['coral-cove-market']?.smokedOrders…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > keeps moon checkout operating after continuing a completed dual-shelf goal
+AssertionError: expected 'settlement' to be 'operating' // Object.is equality
+
+Expected: "operating"
+Received: "settlement"
+
+ ❯ src/depth-systems.test.ts:279:26
+    277|     const continued = continueRound(settled);
+    278|     const replay = packEligibleOrder(continued, 'moon-tide-market', 20…
+    279|     expect(replay.stage).toBe('operating');
+       |                          ^
+    280|     expect(replay.perMarketProgress['moon-tide-market']?.goalProgress)…
+    281|     expect(replay.perMarketProgress['moon-tide-market']?.dualShelfOrde…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  2 failed | 37 passed (39)
+   Start at  00:55:26
+   Duration  322ms (transform 382ms, setup 0ms, import 484ms, tests 111ms, environment 0ms)
+
+[ELIFECYCLE] Test failed. See above for more details.
+exit=1

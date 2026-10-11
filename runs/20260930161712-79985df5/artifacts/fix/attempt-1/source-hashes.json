@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "attempt": 1,
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "changedFiles": [
+    {
+      "path": "src/simulation.ts",
+      "sha256": "9fa2b26f6ac479a3a8ee4274ab5db5a6dfe4a2f2c8235b3b67337aa660ec4517",
+      "reason": "queue lifecycle, patience boundary, cash collection state, settlement, and typed local feedback"
+    },
+    {
+      "path": "src/simulation.test.ts",
+      "sha256": "9879b6de57a4cecbe0a015f6c37eecdf2696c325f20a888dbccb6e043a3ee08a",
+      "reason": "targeted regression tests for each repaired branch"
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "609c5662ea259fb8570c3737b395f099430fa44688cfd21af2b792a75dbd164e",
+      "reason": "cash pile and feedback rendering, settlement controls, save compatibility, and runtime wiring"
+    },
+    {
+      "path": "src/style.css",
+      "sha256": "4d617f5656fb614cb9d3e87979c7e326533d9c2e20e33ce97a14f1130d40ac10",
+      "reason": "visible cash and settlement/replay UI"
+    },
+    {
+      "path": "index.html",
+      "sha256": "49a67e8bd8aa83130d6dae7cb1d4ded13c9c388c009c850ab0a6f8d2a7b314a0",
+      "reason": "cash status, settlement panel, continue and restart controls"
+    },
+    {
+      "path": "dist/index.html",
+      "sha256": "95f01a1df5f823ec36467b0861c8149a01d3b89c22ea5894258cbe36cdcec751",
+      "reason": "single Vite build output"
+    },
+    {
+      "path": "dist/assets/index-BFzsoeFw.js",
+      "sha256": "db6aabd27fc336609b00a34322ae09f4f78195027fe737547b2f65b75467ed13",
+      "reason": "single Vite build output"
+    },
+    {
+      "path": "dist/assets/index-Cy-x0kGx.css",
+      "sha256": "b33d4d368252ea95db6902b259d9d31bc9a1d9011aa20c7a45d6cc91c0e51913",
+      "reason": "single Vite build output"
+    }
+  ],
+  "unchangedRelevantFiles": [
+    "src/generated/game-config.json",
+    "src/input.ts",
+    "package.json"
+  ]
+}

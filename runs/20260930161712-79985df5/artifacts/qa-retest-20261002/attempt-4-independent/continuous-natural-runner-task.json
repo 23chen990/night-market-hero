@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "route": "formal-fixer",
+  "attempt": 4,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Only new /tmp/shop-natural-v5-lib.mjs and /tmp/shop-natural-depth5.mjs plus QA harness evidence in attempt-4-independent/harness-verification/**; generated source read only"
+  ],
+  "inputs": [
+    "/tmp/shop-natural-v4-lib.mjs",
+    "/tmp/shop-natural-depth4.mjs",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/pinned-dist-hashes.json"
+  ],
+  "instructions": [
+    "You are not alone. Root old natural script is still running; never overwrite its files or stop browser/server. No generated-game/shared code edits.",
+    "Copy existing in-memory PNG/DOM-only natural runner to version5. Improve movement by holding keyboard or browser physical touch continuously between screenshot observations until direction changes/arrival/visible overlay, always release in finally. Existing tap+release on every110ms sample is far slower than natural human movement and triggers unwanted station interactions. Browser DOM observer only; never game API/state reads/fixture/teleport/internal-event injection. Use player PNG locator, no fallback.",
+    "Add SHOP_QA_URL and SHOP_QA_DIST env for immutable preview/hash. Capture/source hash in result. Respect current landscape world->screen orientation: current4 is CSS clockwise but helper assumed counterclockwise;5Fixer may correct CSS. Detect actual CSS matrix in DOM allowed for geometric transform rather than hardcode unverified formula. Keep player locator and steering coherent with rendered orientation.",
+    "Improve natural economic route: after first expansion wallet normally4; hire runner3 early, then replenish fresh input/finished smoked/kelp and earn cashier5 using visible order needs. Do not hoard8 before workers, and do not declare hired from a walk alone: require actual hired visible staff state and pixel evidence. Keep all six depth branches plus two markets own loop/settle/replay; gaps BLOCKED. Limit unsupported waits.",
+    "Verify harness movement only against pinned4 fresh portrait normal keyboard with no __GAME_TEST__; take before/after screenshot and release drift. Do not need full depth run now, root runs5 after build. Return TaskSchema or QaReportSchema validated result with runner paths, source hashes, verification report."
+  ],
+  "acceptance": [
+    "Continuous normal input reaches planned portrait station materially faster without touching internal state.",
+    "Driver release guaranteed; invalid/closed overlay stops; no source state mutations.",
+    "5 harness includes immutable URL/build binding and truthful worker/market gates."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/harness-verification/qa-report.json"
+}

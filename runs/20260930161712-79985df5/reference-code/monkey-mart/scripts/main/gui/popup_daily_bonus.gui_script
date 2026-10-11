@@ -1,0 +1,271 @@
+local H_POPUP = hash("popup")
+local H_DEACTIVATE = hash("deactivate")
+local H_UNLOCK = hash("unlock_input")
+
+local node_popup_body = nil
+local node_popup_fade = nil
+
+local owner_url = nil
+local is_lock_input = true
+
+local function show_popup()
+	is_lock_input = false
+	gui.set_enabled(node_popup_fade, true)
+	gui.set_enabled(node_popup_body, true)
+
+	local window_width, window_height = camera.get_window_size()
+	gui.set_size(node_popup_fade,vmath.vector3(window_width*2,window_height*2,0))
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0.5),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_position(node_popup_body, vmath.vector3(global.half_width,global.half_height,0))
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 0))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 1),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(0.8, 0.8, 0.8))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(1, 1, 1),
+	gui.EASING_OUTBACK,
+	0.25)
+
+end
+
+local function hide_popup()
+	is_lock_input = true
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0.5))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(0.6, 0.6, 0.6),
+	gui.EASING_INSINE,
+	0.25,
+	0,
+	function()
+		if (owner_url) then
+			msg.post(owner_url, "unlock_input")
+		end
+	end)
+
+end
+
+local function cancel_handler()
+	hide_popup()
+	gameState:closePopup()
+	global.isPopupOpened = false
+
+end
+
+local function on_close_button(self, params)
+	cancel_handler()
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function on_claim_button(self, params)
+	local num_day = params
+	global.rewardedGems = global.daily_gems[num_day]
+	global.state_daily_bonus = global.state_daily_bonus + 1
+
+	global.isAllowBonus = false
+
+	datamanager.update_save_value('daily_bonus')
+	gameState:addRewardedGems()
+
+	if (num_day < 7) then
+		gui.set_enabled(gui.get_node("day"..num_day.."/galka"), true)
+		gui.set_enabled(gui.get_node("day"..num_day.."/btn_claim"), false)
+		gui.play_flipbook(gui.get_node("day"..num_day.."/window_day"), "window_daily2")
+	elseif (num_day == 7) then
+		gui.set_enabled(gui.get_node("galka7"), true)
+		gui.set_enabled(gui.get_node("btn_claim7"), false)
+		gui.play_flipbook(gui.get_node("day7"), "window_daily2_big")
+
+		datamanager.setHaveHats(21)	
+		msg.post(url_popup_shop, "bought_item", {index = 21, is_not_lock = true})
+
+		datamanager.update_saves()
+	end
+
+	is_lock_input = true
+
+	timer.delay(2.0, false, function()
+		cancel_handler()
+	end)
+
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function updateButtons(self)
+	local state = global.state_daily_bonus
+
+	if (state < 7) then
+		gui.set_enabled(gui.get_node("day"..state.."/btn_claim"), true)
+	elseif (state == 7) then
+		gui.set_enabled(gui.get_node("btn_claim7"), true)
+	end
+
+	for i=1,6 do
+		if (i < state) then
+			gui.set_enabled(gui.get_node("day"..i.."/galka"), true)
+			gui.play_flipbook(gui.get_node("day"..i.."/window_day"), "window_daily2")
+		end
+	end
+
+	local isHaveTopHat = global.have_hats[21][1]
+
+	if isHaveTopHat then
+		gui.set_enabled(gui.get_node("icon_hat7"), false)
+		gui.set_enabled(gui.get_node("text_hat7"), false)
+		gui.set_enabled(gui.get_node("text_plus7"), false)
+
+		gui.set_position(gui.get_node("icon_gem7"), vmath.vector3(-5, -22, 0))
+		gui.set_position(gui.get_node("text_value7"), vmath.vector3(0, 33, 0))
+	end
+
+end
+
+local function initButtons(self)
+	local str_day = translate("DAY")
+	local str_claim = utf8.upper(translate("CLAIM"))
+
+	for i=1,6 do
+		gui.set_text(gui.get_node("day"..i.."/text_value"), global.daily_gems[i])
+		gui.set_enabled(gui.get_node("day"..i.."/galka"), false)
+		gui.set_enabled(gui.get_node("day"..i.."/btn_claim"), false)
+
+		utils.updateTextWidth(gui.get_node("day"..i.."/text_title"), 70, 1.0)
+	end
+
+	gui.play_flipbook(gui.get_node("day4/icon"), "gem1_bundle2")
+	gui.play_flipbook(gui.get_node("day5/icon"), "gem1_bundle2")
+	gui.play_flipbook(gui.get_node("day6/icon"), "gem1_bundle2")
+
+	gui.set_position(gui.get_node("day4/icon"), vmath.vector3(0, -20, 0))
+	gui.set_position(gui.get_node("day5/icon"), vmath.vector3(0, -20, 0))
+	gui.set_position(gui.get_node("day6/icon"), vmath.vector3(0, -20, 0))
+
+	local num = 7
+	gui.set_text(gui.get_node("text_value7"), global.daily_gems[num])
+
+	gui.set_enabled(gui.get_node("galka7"), false)
+	gui.set_enabled(gui.get_node("btn_claim7"), false)
+
+	utils.updateTextWidth(gui.get_node("text_title7"), 70, 1.0)
+
+end
+
+local function updateLanguage(self)
+	gui.set_text(gui.get_node("text_title"), utf8.upper(translate("DAILY_BONUS")))
+	gui.set_text(gui.get_node("text_hat7"), translate("BONUS_HAT"))
+
+	utils.updateTextWidth(gui.get_node("text_title"), 180, 1.4)
+	utils.updateTextWidth(gui.get_node("text_hat7"), 150, 1)
+
+	local str_day = translate("DAY")
+	local str_claim = utf8.upper(translate("CLAIM"))
+
+	for i=1,6 do
+		gui.set_text(gui.get_node("day"..i.."/text_title"), str_day.." "..i)
+		gui.set_text(gui.get_node("day"..i.."/text_button"), str_claim)
+	end
+
+	local num = 7
+	gui.set_text(gui.get_node("text_title7"), str_day.." "..num)
+	gui.set_text(gui.get_node("text_button7"), str_claim)
+
+end
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    gui.set_render_order(4)
+
+    node_popup_body = gui.get_node("body")
+    node_popup_fade = gui.get_node("fade")
+
+    gui.set_enabled(node_popup_body, false)
+    gui.set_enabled(node_popup_fade, false)
+
+    self.druid = druid.new(self)
+
+	for i=1,6 do
+		self.druid:new_button(gui.get_node("day"..i.."/btn_claim"), on_claim_button, i)
+	end
+	self.druid:new_button("btn_claim7", on_claim_button, 7)
+
+	initButtons(self)
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+
+    if (message_id == H_POPUP) then
+		owner_url = message.owner_url
+
+		updateLanguage(self)
+		updateButtons(self)
+		show_popup()
+
+	elseif (message_id == H_DEACTIVATE) then
+		gui.set_enabled(node_popup_body, false)
+		gui.set_enabled(node_popup_fade, false)
+
+    elseif (message_id == H_UNLOCK) then
+		is_lock_input = false
+
+	end
+
+end
+
+function on_input(self, action_id, action)
+    if (not is_lock_input) then
+
+		self.druid:on_input(action_id, action)
+
+		return true
+
+	end
+
+end

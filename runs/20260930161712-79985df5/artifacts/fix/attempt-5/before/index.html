@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+    <meta name="theme-color" content="#13293d" />
+    <title>Spatial Shop</title>
+  </head>
+  <body>
+    <main id="game-shell">
+      <section id="hud" aria-live="polite">
+        <div class="hud-copy"><h1 id="title"></h1><p id="status"></p><p id="mission">首要动作：去近岸渔网采集鲜货</p></div>
+        <div class="stats"><span id="coins"></span><span id="level"></span><span id="cash-pile">柜台现金 0</span></div>
+        <div id="order-card" aria-label="当前订单">
+          <span id="order-product-mark" aria-hidden="true"></span>
+          <div class="order-copy"><strong id="order-product">暂无订单</strong><span id="order-route">路线 · 等待顾客</span></div>
+          <span id="order-status">等待顾客</span>
+          <span id="order-stock">暂无顾客</span>
+          <span id="order-lines" aria-label="订单明细">—</span>
+        </div>
+      </section>
+      <div id="game" aria-label="空间物流经营游戏区域"></div>
+      <section id="settlement" hidden aria-live="polite">
+        <strong>下一市场开放</strong>
+        <p>潮池扩建完成，选择一条原创海滩经营路线继续。</p>
+        <div class="market-options" aria-label="下一市场选择">
+          <button id="continue-round" data-market-id="coral-cove-market" type="button"><span>继续当地</span><small>保留解锁，前往下一市场航标</small></button>
+          <button id="moon-tide-market" data-market-id="moon-tide-market" type="button"><span>继续当地</span><small>保留解锁，前往下一市场航标</small></button>
+        </div>
+        <div class="settlement-actions">
+          <button id="restart-round" type="button">重开本轮</button>
+        </div>
+      </section>
+      <p id="toast" role="status" aria-live="polite"></p>
+      <p id="instructions">拖动任意空白处移动；靠近站点会自动采集、补货、收银或投建。桌面端也可使用 WASD / 方向键。</p>
+      <nav id="mobile-controls" aria-label="移动控制">
+        <button type="button" data-move="up" aria-label="向上移动">↑</button>
+        <button type="button" data-move="left" aria-label="向左移动">←</button>
+        <button type="button" data-move="down" aria-label="向下移动">↓</button>
+        <button type="button" data-move="right" aria-label="向右移动">→</button>
+      </nav>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+01 BOOT {"x":270,"y":760,"inv":{"fresh-fish":0,"kelp":0},"currency":0,"stage":"operating","elapsed":846,"queue":0,"customers":[],"shelf":{},"ready":6,"contributed":0,"completed":false,"unlocked":["net","fish-shelf","checkout","kelp-build","capacity-upgrade"],"settlementHidden":true}
+02 HARVEST+DEPOSIT by keyboard: shelf={"fresh-fish":3} inv={"fresh-fish":0,"kelp":0} lastEvent=production-ready
+04 REF-SPATIAL-QUEUE (live): queued coords=[{"id":1,"x":253,"y":583},{"id":2,"x":252,"y":580}] checkout=(270,640)
+05 STOCKOUT (live): {"id":1,"p":"fresh-fish","ph":"leaving","tgt":"fish-shelf","pat":4783,"x":276,"y":577} lastEvent=checkout-cash
+06 CHECKOUT: currency=4 queue=0 lastEvent=checkout-cash | REF-CASH-FLOW: wallet += value directly at service, no cash-pile submit point
+07 BUG-MOVING-PAYMENT (live): before currency=4 contributed=0 pos=(257,668)
+   holding KeyA 500ms -> currency=4 contributed=0 pos=(134,668) displacement=123px | paid while moving=false
+08 SETTLEMENT: stage=operating contributed=0 completed=false unlocked=["net","fish-shelf","checkout","kelp-build","capacity-upgrade"] panelHidden=true
+09 CONTINUE via real #continue-round: clicked=false stage=operating currency=0 unlocked=["net","fish-shelf","checkout","kelp-build","capacity-upgrade"] elapsed=198774
+10 POST-CONTINUE OPERATION: inv={"fresh-fish":0,"kelp":0} elapsed 198774 -> 198774
+11 RESTART ENTRY: {"panelHidden":true,"hasContinue":true,"hasRestart":true,"restartVisible":false}
+12 SECOND SETTLEMENT: stage=operating currency=0
+14 CONSOLE ERRORS: []

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "method": "engineering-simulation",
+  "agentNote": "经济基线子代理被沙箱回收。本文件用主代理只读探针的可用数据 + 源码约束补齐，明确标注非完整多策略对比。",
+  "configFingerprint": "f1f2669c3dfcf5297727d0ba4832fe0e9e77ab18809f0305c86c2f12a892700a",
+  "sourceFingerprint": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+  "seeds": [1, 2, 3, 4, 5],
+  "strategies": {
+    "A_" "_STRATEGY_DEFERRED_NOT_RUN": "先攒钱扩建策略未实际跑",
+    "B_STRATEGY_DEFERRED_NOT_RUN": "先买容量升级策略未实际跑"
+  },
+  "results": {
+    "partialBaselineFromMainProbe": {
+      "demandSampling400": { "fresh-fish": 298, "kelp": 102 },
+      "firstServiceIncome": 2,
+      "firstExpansionCost": 4,
+      "buildDurationEstimate": "需4次服务循环（每次收入2）才能达到4成本，单次服务约8-12秒模拟时间，预计扩建达成约40-60秒模拟时间",
+      "stockoutObserved": true,
+      "stockoutTime": "t=8000ms from customer spawn (BUG-PATIENCE-START 实测)"
+    }
+  },
+  "comparison": "NOT_RUN — 两种策略实际跑数未取",
+  "limitations": [
+    "本文件仅记录主代理探针的部分基线数据，非策略 A/B 对比",
+    "事件日志截断处理（每步扫描 lastEvent）未实施",
+    "无现金堆指标不适用（当前服务即到账）"
+  ]
+}

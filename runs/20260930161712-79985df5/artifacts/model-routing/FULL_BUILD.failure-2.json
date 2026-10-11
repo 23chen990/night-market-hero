@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "stage": "FULL_BUILD",
+  "attempt": 2,
+  "failureKind": "CAPABILITY_ERROR",
+  "base": {
+    "tier": "builder",
+    "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "role": "builder",
+    "sandbox": "workspace-write"
+  },
+  "selected": {
+    "tier": "builder",
+    "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "role": "builder",
+    "sandbox": "workspace-write"
+  },
+  "rationale": "Keep the declared builder route because CAPABILITY_ERROR is not safely solvable by model escalation.",
+  "createdAt": "2026-10-01T06:24:37.878Z"
+}

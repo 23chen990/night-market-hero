@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "Attempt4 independent natural/perceptual audit of user quality complaint reproduces occluded order HUD, clipped controls and reversed landscape input.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Validated formal QA retest failed after core revision attempt4; input/renderer/responsive paths require causal correction and exact natural/pixel retest.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other games/shared factory history",
+      "unbound media and first-version source",
+      "passing sibling state assertions as perceptual closure"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Fresh browser at each declared viewport.",
+      "Capture startup geometry/pixels and locate original teal actor from canvas screenshot.",
+      "Press normal ArrowUp700ms, release, capture visible movement."
+    ],
+    "observed": [
+      "All four portrait startup branches have order-card overlap with canvas, a negative top HUD coordinate and bottom control overflow. Active-order screenshot also shows the same occlusion. Fix actual measured responsive chrome/grid rows; visible order and controls must remain readable throughout startup, operation and settlement.",
+      "At844x390 normal ArrowUp moves the visible player downward. CSS rotate(90deg) and counterclockwise logical/input transform disagree. Match the actual renderer transform and both keyboard/touch directions, keep labels upright and verify real pixel movement.",
+      "Landscape canvas is only370x208 CSSpx, smaller than the declared readable wide field; station labels are sideways/tiny and controls overlap helper copy. Allocate available width correctly and use one coherent field transform with readable upright labels and unobstructed control hierarchy."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png",
+        "sha256": "8576ad9f441b457232439a3f728428c5cd86938dfb1f59367844e12c97cd0553",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-arrow-up.png",
+        "sha256": "421428cb0421a1f808b4a5fa3c6edf255c957846b780aca283df280b9a8925b4",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png",
+        "sha256": "41723d46ab6e7cf9fdf24ed9f83fa2c3b6c1c07a71b2657c2b4dacc95b03dd42",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-arrow-up.png",
+        "sha256": "575e99ad6029d69c4d428b194f9ebf3d116b56c2baf6d8462f0690a81adcb904",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png",
+        "sha256": "cbb7ba112e5ca0860b96d027a4bbde395dc13111b561d7b9a90b1f168e42b4f3",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-arrow-up.png",
+        "sha256": "42eda27127af2510aae06159db4c784d80fa0eb0f03eda3d859a796bfa11e0d1",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png",
+        "sha256": "6491fb321ea13a7359c4cdb7ce3effe064baead1bbd78e10fbdbc1dd21b38943",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-arrow-up.png",
+        "sha256": "9e8bb66854d316802bc685210d1118750ab8a0366439033474b7723404791f38",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png",
+        "sha256": "a884fedfd5a6f260dccc30cbf43528ea5ccba7b9b9f5f37e0e32ff05a0835197",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png",
+        "sha256": "d14c53a904db7b471a7a3ce80f47785dab6649e6ddf087499b05bc3ad11ce9d1",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Order HUD, buttons and controls remain fully visible without canvas occlusion at all5viewports during startup/active order/settlement.",
+    "Landscape field uses available width >=420CSSpx at844x390 with readable upright labels.",
+    "All4 normal keyboard and touch directions move screen-relative correctly and release stops motion.",
+    "Complete existing depth journey and required branches on repaired immutable build; no acceptance criteria removed."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-02T16:19:34.462Z"
+}

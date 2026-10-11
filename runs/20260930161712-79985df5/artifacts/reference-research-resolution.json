@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "reference-research-resolution",
+  "targetRunId": "20260930161712-79985df5",
+  "targetGame": "continuation-v2",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "sourceAnalysis": {
+    "path": "artifacts/reference-behavior-analysis.raw.json",
+    "sha256": "4ee1db1b6c27d195e903e17d31b3964a151ba49da119cdccf9e4bf2a7aab96f9"
+  },
+  "humanLock": {
+    "path": "input/seed.yaml",
+    "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4"
+  },
+  "entries": [
+    {
+      "gap": "The reference evidence does not establish a customer stockout timer, timeout departure, shortage reason, failure outcome or recovery transition.",
+      "disposition": "HUMAN_LOCK_REQUIREMENT",
+      "rationale": "The verified reference code does not establish stockout departure, while the human-authored target lock explicitly defines it as an original adaptation.",
+      "sourceRefs": [
+        {
+          "path": "input/seed.yaml",
+          "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+          "locator": "referenceMechanics.coreLoop/adaptableMechanics: original stockout timeout and visible departure reason"
+        }
+      ]
+    },
+    {
+      "gap": "The reference evidence does not establish a stage settlement screen, continue button, restart-round action, replay button, game-over state or post-terminal reset.",
+      "disposition": "HUMAN_LOCK_REQUIREMENT",
+      "rationale": "The reference establishes stage continuation only; the human-authored target lock explicitly defines original settlement and continue-or-restart behavior.",
+      "sourceRefs": [
+        {
+          "path": "input/seed.yaml",
+          "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+          "locator": "referenceMechanics.coreLoop/playerActions/progressionSystems: original settlement and restart requirement"
+        }
+      ]
+    },
+    {
+      "gap": "The disruption visitor claim establishes alerting and periodic goods removal but does not establish the exact player recovery input, recovery state, terminal outcome or replay behavior.",
+      "disposition": "ORIGINAL_TUNING_EXCLUDED",
+      "rationale": "The source-specific disruption branch is explicitly excluded from the human-authored target lock and therefore is not a required target mechanic.",
+      "sourceRefs": [
+        {
+          "path": "input/seed.yaml",
+          "sha256": "afe74fed0426675d4f73002bd90efb952f093c8ec7d781ce90e916400c96b3d4",
+          "locator": "referenceMechanics.adaptableMechanics: disruption visitor branch is not adopted"
+        }
+      ]
+    }
+  ],
+  "status": "READY",
+  "blockers": [],
+  "createdAt": "2026-09-30T17:03:22.392Z"
+}

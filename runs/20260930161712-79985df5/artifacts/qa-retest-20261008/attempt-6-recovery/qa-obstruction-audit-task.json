@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "route": "formal-fixer",
+  "attempt": 6,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only prior natural QA audit; no filesystem writes"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/depth-verification.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/touch-depth/depth-verification.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/v4-locator/natural-540x960.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-5-independent/depth-verification.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/deterministic-depth.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261003/attempt-6-independent/landing-input-v5.json"
+  ],
+  "instructions": [
+    "Compare the failed traces and their source/build hashes. Distinguish harness overshoot, locator error, screenshot infrastructure timeout and actual product failure using evidence; do not speculate as fact. Source /tmp scripts no longer exist. Recommend a bounded normal-input QA recovery method from pixels/visible DOM only.",
+    "Return only QaReportSchema-valid JSON object as final response; no filesystem writes."
+  ],
+  "acceptance": [
+    "No closing product issues from implementation fixtures.",
+    "Identify exact last observed natural branch and remaining evidence gaps; explain why markers can/cannot be assessed by old traces."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/qa-obstruction-audit.json"
+}

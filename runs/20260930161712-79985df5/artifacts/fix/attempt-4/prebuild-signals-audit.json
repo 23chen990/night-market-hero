@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "settlement-control-identity",
+      "passed": false,
+      "evidence": "index.html still labels #continue-round as 珊瑚湾市场 while main.ts now performs continueGame() for settlement. Use a visible 继续当地 control at settlement, and show route cards only at marker selection. Player intent and outcome must match, including replay."
+    },
+    {
+      "name": "authored-market-goal-causality",
+      "passed": false,
+      "evidence": "revision.ts goalLabel is 交付两份烟熏鱼订单 / 补齐月潮双货架, but current updateCheckout counts every basket identically in both worlds. Each goal must check its declared concrete smoke-order / shelf condition, and visible progress must represent that condition. Test actual step path, not only helper recordMarketGoal."
+    },
+    {
+      "name": "landscape-control-mapping",
+      "passed": false,
+      "evidence": "readMoveAction currently inverse-transforms only joystick; keyboard stays logical while field is planned rotated. All normal directional input needs the same screen-relative mapping. getResponsiveGameSize must actually allocate a wide landscape field and resize Phaser logical display rather than leaving the 208px portrait canvas."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-ATTEMPT4-PREBUILD-SETTLEMENT-CONTROL-IDENTITY",
+      "severity": "error",
+      "message": "index.html still labels #continue-round as 珊瑚湾市场 while main.ts now performs continueGame() for settlement. Use a visible 继续当地 control at settlement, and show route cards only at marker selection. Player intent and outcome must match, including replay.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/index.html"
+    },
+    {
+      "id": "QA-ATTEMPT4-PREBUILD-AUTHORED-MARKET-GOAL-CAUSALITY",
+      "severity": "error",
+      "message": "revision.ts goalLabel is 交付两份烟熏鱼订单 / 补齐月潮双货架, but current updateCheckout counts every basket identically in both worlds. Each goal must check its declared concrete smoke-order / shelf condition, and visible progress must represent that condition. Test actual step path, not only helper recordMarketGoal.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/index.html"
+    },
+    {
+      "id": "QA-ATTEMPT4-PREBUILD-LANDSCAPE-CONTROL-MAPPING",
+      "severity": "error",
+      "message": "readMoveAction currently inverse-transforms only joystick; keyboard stays logical while field is planned rotated. All normal directional input needs the same screen-relative mapping. getResponsiveGameSize must actually allocate a wide landscape field and resize Phaser logical display rather than leaving the 208px portrait canvas.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/revision.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/index.html"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Current implementation is in progress. These are causal default-path acceptance reminders observed before production build, not final QA. All requirements already exist in the validated revision.",
+  "testedAt": "2026-10-02T16:06:03.307Z"
+}

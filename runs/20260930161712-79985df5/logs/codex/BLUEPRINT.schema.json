@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "gameId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string"
+    },
+    "runtime": {
+      "type": "string",
+      "enum": [
+        "web-lite",
+        "cocos-3d"
+      ]
+    },
+    "template": {
+      "type": "string",
+      "enum": [
+        "idle-shop-v1",
+        "spatial-shop-v1",
+        "spatial-shop-3d-v1",
+        "cut-stack-dodge-v1"
+      ]
+    },
+    "designMode": {
+      "default": "prototype_tournament",
+      "type": "string",
+      "enum": [
+        "reference_reskin",
+        "prototype_tournament"
+      ]
+    },
+    "targetPlatforms": {
+      "minItems": 3,
+      "maxItems": 3,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "wechat-minigame",
+          "douyin-minigame",
+          "taptap-minigame"
+        ]
+      }
+    },
+    "concept": {
+      "type": "string"
+    },
+    "coreLoop": {
+      "minItems": 4,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "customerName": {
+          "type": "string"
+        },
+        "currencyName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "productName",
+        "customerName",
+        "currencyName"
+      ],
+      "additionalProperties": false
+    },
+    "balance": {
+      "type": "object",
+      "properties": {
+        "startingCurrency": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "orderReward": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "baseUpgradeCost": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "startingCurrency",
+        "orderReward",
+        "baseUpgradeCost"
+      ],
+      "additionalProperties": false
+    },
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "tone": {
+          "type": "string",
+          "const": "轻快、清爽、有明显物流忙碌感"
+        },
+        "audience": {
+          "type": "string",
+          "const": "轻度休闲玩家"
+        },
+        "session_minutes": {
+          "type": "integer",
+          "const": 5
+        },
+        "original_expression_only": {
+          "type": "boolean",
+          "const": true
+        },
+        "continuation_decisions": {
+          "type": "object",
+          "properties": {
+            "authorized_by_user": {
+              "type": "boolean",
+              "const": true
+            },
+            "authorized_on": {
+              "type": "string",
+              "const": "2026-10-01"
+            },
+            "direct_operation_start": {
+              "type": "boolean",
+              "const": true
+            },
+            "customer_stockout_patience": {
+              "type": "string",
+              "const": "original_adaptation"
+            },
+            "first_expansion_settlement": {
+              "type": "string",
+              "const": "continue_or_restart_round"
+            }
+          },
+          "required": [
+            "authorized_by_user",
+            "authorized_on",
+            "direct_operation_start",
+            "customer_stockout_patience",
+            "first_expansion_settlement"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "tone",
+        "audience",
+        "session_minutes",
+        "original_expression_only",
+        "continuation_decisions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "gameId",
+    "title",
+    "theme",
+    "runtime",
+    "template",
+    "designMode",
+    "targetPlatforms",
+    "concept",
+    "coreLoop",
+    "content",
+    "balance",
+    "preferences"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "continuation-v2",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "route": "direct-builder",
+  "mechanics": [
+    {"featureId": "mechanic.single-input-auto-task", "lockedMechanic": "Movement is the only primary operation; proximity auto-executes the valid task.", "implementation": ["src/main.ts:69-97", "src/simulation.ts:143-181"], "regressionTests": ["src/simulation.test.ts:17-27"], "status": "implemented"},
+    {"featureId": "mechanic.harvest-carry-deposit", "lockedMechanic": "Harvest, finite carry, and compatible shelf deposit preserve order.", "implementation": ["src/simulation.ts:97-105", "src/simulation.ts:164-181"], "regressionTests": ["src/simulation.test.ts:17-27"], "status": "implemented"},
+    {"featureId": "mechanic.customer-queue-checkout", "lockedMechanic": "Customers consume shelf stock, queue, and require player checkout to pay.", "implementation": ["src/simulation.ts:107-137", "src/simulation.ts:178-187"], "regressionTests": ["src/simulation.test.ts:30-42"], "status": "implemented"},
+    {"featureId": "mechanic.stockout-pressure", "lockedMechanic": "Stockout customers wait eight seconds, leave with a cause, and recover through later supply.", "implementation": ["src/simulation.ts:116-137"], "regressionTests": ["src/simulation.test.ts:44-52"], "status": "implemented"},
+    {"featureId": "progression.construction-unlock", "lockedMechanic": "Paid construction contributions unlock both kelp stations atomically and open settlement.", "implementation": ["src/simulation.ts:188-198"], "regressionTests": ["src/simulation.test.ts:54-61"], "status": "implemented"},
+    {"featureId": "progression.capacity-upgrade", "lockedMechanic": "Capacity upgrades spend currency, escalate cost, and raise level.", "implementation": ["src/simulation.ts:157-162", "src/simulation.ts:198-201"], "regressionTests": ["src/simulation.test.ts:64-72"], "status": "implemented"},
+    {"featureId": "progression.settlement-continue-restart", "lockedMechanic": "After first expansion, continue preserves progress while restart resets the round.", "implementation": ["src/simulation.ts:219-220", "src/main.ts:145-146", "index.html:15-26"], "regressionTests": ["src/simulation.test.ts:74-84"], "status": "implemented"},
+    {"featureId": "feedback.cadence-and-bottlenecks", "lockedMechanic": "Inventory, station readiness, queue, construction debt, event toast, and tide boost are visible.", "implementation": ["src/main.ts:118-143", "src/style.css:1-38"], "regressionTests": ["src/simulation.test.ts:54-72"], "status": "implemented-unverified-in-browser"},
+    {"featureId": "ui.time-based-motion", "lockedMechanic": "Motion uses elapsed-time playback, preload gating, easing tokens, and reduced-motion fallback.", "implementation": ["src/uiMotion.ts:1-48", "src/main.ts:71-96"], "regressionTests": ["src/simulation.test.ts:98-119"], "status": "implemented"},
+    {"featureId": "persistence.refresh-recovery", "lockedMechanic": "Save is throttled during time-driven progress and forced on key state changes.", "implementation": ["src/main.ts:18-42", "src/simulation.ts:221-228"], "regressionTests": ["src/simulation.test.ts:86-96"], "status": "implemented-unverified-in-browser"}
+  ],
+  "acceptance": {"unitAndBuild": "PASS", "playerVisibleEvidence": "BLOCKED_BY_BROWSER_SANDBOX", "naturalTriggerEvidence": "BLOCKED_BY_BROWSER_SANDBOX"}
+}

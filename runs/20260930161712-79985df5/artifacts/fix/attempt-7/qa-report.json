@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "settlement-choice-clarity",
+      "passed": false,
+      "evidence": "{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/011-first-settlement.png\",\"sha256\":\"369cd9bdfa2076d428da1e3704215938ce7767ce8b60931e77416b9716438737\",\"kind\":\"runtime-capture\",\"provenance\":\"verified-run-artifact\"}"
+    },
+    {
+      "name": "avatar-at-employee-label-crossing",
+      "passed": false,
+      "evidence": "{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/019-blocked.png\",\"sha256\":\"59c4b0a467a934f0870bf401278adb279d53fbf801d0fd70f2e26153954017c4\",\"kind\":\"runtime-capture\",\"provenance\":\"verified-run-artifact\"}"
+    },
+    {
+      "name": "continue-local-no-unintended-selection",
+      "passed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/natural.json"
+    }
+  ],
+  "issues": [
+    {
+      "id": "settlement-hidden-choice-still-visible",
+      "severity": "error",
+      "message": "First settlement renders two identical continue-local controls.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/011-first-settlement.png"
+    },
+    {
+      "id": "avatar-station-label-occlusion",
+      "severity": "error",
+      "message": "Station labels cover the avatar at the employee-funding route, blocking natural verification.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/019-blocked.png"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/011-first-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/natural-540x960/screenshots/019-blocked.png"
+  ],
+  "consoleLog": "Preserved attempt-6 recovery natural trace; no gameplay-state injection. No current release claim.",
+  "testedAt": "2026-10-08T08:51:34.913Z"
+}

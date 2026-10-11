@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "initial-natural-false-block-interpretation",
+      "passed": true,
+      "evidence": "first-natural script declared movement failure while legal construction settlement had already frozen movement. Screenshot014-first-expansion/settlement is product success. Harness demanded32worldpx center despite ~75station activation radius; route-corrected harness treats visible settlement interruption separately."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-HARNESS-INITIAL-FALSE-BLOCK",
+      "severity": "warning",
+      "message": "Initial natural movement failure is a harness error, not accepted as a product bug.",
+      "evidence": "Preserved first-natural/natural-540x960.json and screenshots; continue corrected route."
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Root evidence interpretation; game workspace unchanged.",
+  "testedAt": "2026-10-02T16:45:17.347962+00:00"
+}

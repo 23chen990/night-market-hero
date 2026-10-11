@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺 / continuation-v2",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "behavior-check",
+      "failure-pressure-contract",
+      "top-level-research-metadata"
+    ],
+    "lifecycleStateBranches": [
+      "completed provider turn -> strict parse",
+      "failed run -> deterministic recovery"
+    ],
+    "rendererPaths": [
+      "CodexAccountProvider structured output",
+      "normalizeReferenceBehaviorAnalysis",
+      "recover-reference-research"
+    ],
+    "viewports": [
+      {
+        "label": "research artifact; viewport is payload data, not a renderer",
+        "width": 540,
+        "height": 960
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "behavior-alias",
+      "objectType": "behavior-check",
+      "lifecycleStateBranch": "completed provider turn -> strict parse",
+      "rendererPath": "CodexAccountProvider structured output",
+      "status": "FAIL",
+      "expected": "Schema fields sourceRefs, stateBranch, playerInput, spatialRelationship, visibleFeedback and viewport",
+      "observed": "Alias fields evidence, lifecycleStateBranch, normalPlayerInput, causalSpatialRelationship, feedbackAnchor and eventOrder"
+    },
+    {
+      "id": "pressure-alias",
+      "objectType": "failure-pressure-contract",
+      "lifecycleStateBranch": "completed provider turn -> strict parse",
+      "rendererPath": "CodexAccountProvider structured output",
+      "status": "FAIL",
+      "expected": "Schema fields pressureType, playerSignal, failureOutcome, attribution, recovery, implementationImplications array and noCopyBoundary",
+      "observed": "Alias fields applicability, visiblePlayerSignal, attributableFailureOutcome, recoveryReplay, implementationImplications string and boundaryAgainstCopyingExpression"
+    },
+    {
+      "id": "recovery-boundary",
+      "objectType": "top-level-research-metadata",
+      "lifecycleStateBranch": "failed run -> deterministic recovery",
+      "rendererPath": "normalizeReferenceBehaviorAnalysis + recover-reference-research",
+      "status": "PENDING",
+      "expected": "Alias representation is canonicalized without changing BLOCKED findings or making a new provider call",
+      "observed": "No canonicalization exists for these aliases yet"
+    }
+  ],
+  "confirmedFindings": [
+    "The reported branch is the actual code-analysis-only research branch",
+    "The model completed and raw output is available",
+    "The strict parser blocked before generated-game build",
+    "A sibling recording branch cannot close this defect"
+  ],
+  "remainingGaps": [
+    "Normalizer regression test is not yet green",
+    "Deterministic recovery has not yet been executed"
+  ],
+  "createdAt": "2026-09-30T16:30:00.000Z"
+}

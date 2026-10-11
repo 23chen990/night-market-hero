@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "role": "FixerAgent",
+  "attempt": 8,
+  "status": "VERIFYING_BEFORE_SINGLE_BUILD",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "findings": [
+    "Valid actual loss-event pixel red: landscape body36.36 vs unoccluded185.12; body now161.98, above80% criterion. Pressure layer above station/feedback text, below player.",
+    "Five-second persisted recovery interval; no guarded-shelf selection; later unguarded pressure still loses stock. Exact simulation tests pass.",
+    "Both market terminal headers/goals/counts plus prominent success/progress visuals now pass browser tests. Existing original favicon returns200.",
+    "Six targeted browser tests pass; lint/types pass; full tests running."
+  ],
+  "evidence": [
+    "red-pressure-valid.log",
+    "red-runtime-valid.log",
+    "red-gull-after-loss.log",
+    "red-recovery-visual.log",
+    "green-pressure.log",
+    "green-runtime.log",
+    "lint.log",
+    "typecheck.log"
+  ],
+  "remaining": [
+    "Full tests",
+    "Exactly one build",
+    "Manifest and final fix-result",
+    "Independent QA natural/perceptual gates remain BLOCKED until retest"
+  ]
+}

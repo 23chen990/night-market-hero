@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "portrait-order-hud-canvas-separation",
+      "passed": false,
+      "evidence": "Independent QAAgent /root/presentation_reader4 inspected all four portrait actual startup pixels: order-card begins behind canvas; narrow clipped card strip and title/status/mission crowd top. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png"
+    },
+    {
+      "name": "portrait-control-safe-area",
+      "passed": false,
+      "evidence": "Independent actual pixels: bottom arrow-controls visibly cut/at viewport edge on all four portraits. Helper copy competes with clipped controls. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png"
+    },
+    {
+      "name": "landscape-field-presentation",
+      "passed": false,
+      "evidence": "Independent actual844x390pixels:370px field appears thumbnail, unused space, tiny/sideways labels and controls overlap helper. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png"
+    },
+    {
+      "name": "landscape-arrow-up-pixel-direction",
+      "passed": false,
+      "evidence": "Independent paired pixels: teal player bbox y205..216 startup -> y225..235 after normalArrowUp; actual screen downward. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png"
+    },
+    {
+      "name": "original-procedural-baseline",
+      "passed": true,
+      "evidence": "All five fresh pixels inspected; original sea/sand/awning/route-line treatment remains coherent. Style baseline only."
+    },
+    {
+      "name": "expanded-branch-approval",
+      "passed": false,
+      "evidence": "Landing/movement captures contain no processor, employees, gull recovery or new-market branch; no approval inferred."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-ATTEMPT4-PIXEL-1",
+      "severity": "error",
+      "message": "portrait-order-hud-canvas-separation",
+      "evidence": "Independent QAAgent /root/presentation_reader4 inspected all four portrait actual startup pixels: order-card begins behind canvas; narrow clipped card strip and title/status/mission crowd top. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png"
+    },
+    {
+      "id": "QA-ATTEMPT4-PIXEL-2",
+      "severity": "error",
+      "message": "portrait-control-safe-area",
+      "evidence": "Independent actual pixels: bottom arrow-controls visibly cut/at viewport edge on all four portraits. Helper copy competes with clipped controls. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png"
+    },
+    {
+      "id": "QA-ATTEMPT4-PIXEL-3",
+      "severity": "error",
+      "message": "landscape-field-presentation",
+      "evidence": "Independent actual844x390pixels:370px field appears thumbnail, unused space, tiny/sideways labels and controls overlap helper. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png"
+    },
+    {
+      "id": "QA-ATTEMPT4-PIXEL-4",
+      "severity": "error",
+      "message": "landscape-arrow-up-pixel-direction",
+      "evidence": "Independent paired pixels: teal player bbox y205..216 startup -> y225..235 after normalArrowUp; actual screen downward. /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png"
+    },
+    {
+      "id": "QA-ATTEMPT4-UNOBSERVED-DEPTH",
+      "severity": "warning",
+      "message": "Expanded branches remain unobserved in this landing pixel audit.",
+      "evidence": "Landing/movement captures contain no processor, employees, gull recovery or new-market branch; no approval inferred."
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png"
+  ],
+  "consoleLog": "Independent read-only QAAgent /root/presentation_reader4; TaskSchema validated and view_image inspected six exact natural PNG captures. Root persisted findings unchanged in substance.",
+  "testedAt": "2026-10-02T16:45:17.347157+00:00"
+}

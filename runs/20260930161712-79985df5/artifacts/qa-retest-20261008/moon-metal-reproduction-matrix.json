@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "runner employee",
+      "cashier employee",
+      "seagull and attacked shelf",
+      "moon-tide-market"
+    ],
+    "lifecycleStateBranches": [
+      "recruitment partially funded at 2/3, attempted post-funding action",
+      "recruited cashier while customer remains stock-constrained",
+      "loss observed then active target snapshot",
+      "selection → three dual-shelf orders → settlement → replay → reload/restart"
+    ],
+    "rendererPaths": [
+      "Canvas employee + visible DOM toast",
+      "Canvas white bird component + visible loss toast",
+      "Canvas topology + DOM goal/order panel"
+    ],
+    "viewports": [
+      {
+        "label": "540x960 portrait",
+        "width": 540,
+        "height": 960
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "runner-funded-action",
+      "objectType": "runner employee",
+      "lifecycleStateBranch": "recruitment partially funded at 2/3, attempted post-funding action",
+      "rendererPath": "Canvas employee + visible DOM toast",
+      "viewport": {
+        "label": "540x960 portrait",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Fully fund runner with normal input and observe its pickup and restock actions.",
+      "observed": "Recruitment screenshot 2/3; movement/action check had zero matching toast events.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/020-player-at-runner-hire.png",
+          "sha256": "171ba013018c7295a458de9ef3018b17da7630f918f4c1b6dc945c8438249d79",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/natural.json",
+          "sha256": "c77580aef22a784825a198d3b1f44476b18c50420d8a09a84ca5a3fca0f88f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "cashier-funded-action",
+      "objectType": "cashier employee",
+      "lifecycleStateBranch": "recruited cashier while customer remains stock-constrained",
+      "rendererPath": "Canvas employee + visible DOM toast",
+      "viewport": {
+        "label": "540x960 portrait",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Observe completed packing with player away.",
+      "observed": "No cashier action toast in the observation window; customer waited for missing stock.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/040-cashier-service-away-from-player.png",
+          "sha256": "e8138cf570b9a268eb0edb5f7875b1f0d32139fcf72a6427dc97419d4f328038",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/natural.json",
+          "sha256": "c77580aef22a784825a198d3b1f44476b18c50420d8a09a84ca5a3fca0f88f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "gull-target-after-loss",
+      "objectType": "seagull and attacked shelf",
+      "lifecycleStateBranch": "loss observed then active target snapshot",
+      "rendererPath": "Canvas white bird component + visible loss toast",
+      "viewport": {
+        "label": "540x960 portrait",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Identify exact attacked shelf from active rendered bird, then show natural-input drive-away and recovery.",
+      "observed": "Loss toast observed; next target capture contained no qualifying rendered bird component, candidates=[]; recovery unobserved.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/045-gull-visible-loss.png",
+          "sha256": "d815c448d6fcab2cc5a8077e1e3f6dffbbc56488c8535e8f5430ffbf4de72a69",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/screenshots/047-gull-visible-target.png",
+          "sha256": "f3b5b234fcaed05ea8d456d6836ecc76084222f7377d11d17b5ac85641d6b565",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "moon-market-full-journey",
+      "objectType": "moon-tide-market",
+      "lifecycleStateBranch": "selection → three dual-shelf orders → settlement → replay → reload/restart",
+      "rendererPath": "Canvas topology + DOM goal/order panel",
+      "viewport": {
+        "label": "540x960 portrait",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Changed layout and goal visible; all Moon journey phases reached by normal input.",
+      "observed": "Prerequisite stopped before market selection; no Moon screenshot exists.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/natural.json",
+          "sha256": "c77580aef22a784825a198d3b1f44476b18c50420d8a09a84ca5a3fca0f88f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "The requested Moon branch is unobserved and cannot be closed by Beach or Coral evidence.",
+    "No generated workspace writes or rebuild occurred."
+  ],
+  "remainingGaps": [
+    "Root cause of unavailable gull target snapshot and incomplete employee action observations.",
+    "Moon topology, orders, own settlement, replay, persistence, restart and perceptual evidence."
+  ],
+  "createdAt": "2026-10-08T10:09:39.267Z"
+}

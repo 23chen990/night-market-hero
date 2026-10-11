@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "Read source and run-bound screenshots. Write only artifacts/qa-retest-20261008/visual-review-attempt7.json; no source writes.",
+  "inputs": [
+    "artifacts/qa-retest-20261008/natural-attempt7.mjs",
+    "artifacts/fix/attempt-7/task.json",
+    "artifacts/revisions/20261002-depth/product-experience-contract.json"
+  ],
+  "acceptance": [
+    "Initially inspect recovery and attempt7 red pixels at exact settlement and avatar employee branches. Wait for attempt7 new natural evidence before final review.",
+    "Independent pixel review required: actual view_image of new screenshots, sequence, visual hints runner/cashier/gull/actionable controls landscape and portrait. Bind screenshot/build hashes. Identify exact unobserved branches as BLOCKED.",
+    "Return strict Zod-validated JSON with schemaVersion, role, passed, cases [{id,status,evidence,screenshots}], blockers. Do not infer pass from unit tests, text events or fixture-only images."
+  ],
+  "output": "artifacts/qa-retest-20261008/visual-review-attempt7.json"
+}

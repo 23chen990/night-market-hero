@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "classification": "QA_INFRASTRUCTURE",
+  "evidence": [
+    "root-metal reached expansion and processor in about90 seconds; actual player observation136–281ms with same game build.",
+    "Root paired source software graphics caused up to120s movement and10s screenshot timeout; no further old-profile execution useful."
+  ],
+  "instructions": [
+    "If currently running old paired/headless-shell profile, stop YOUR own old QA process, preserve screenshots/log/video and write interrupted infrastructure status. Do not affect other process trees.",
+    "Rerun remaining target viewports with natural-attempt7-metal-finalized.mjs and a fresh session suffix. Use node --import tsx directly; no pnpm installation.",
+    "New finalized script awaits context.close and video.saveAs before hashing. Already-running Metal runs may finish, then reconcile video binding with separately recorded final hash.",
+    "Target requirements stay unchanged; no generated source changes, fixture injection or ignored blocked branches."
+  ]
+}

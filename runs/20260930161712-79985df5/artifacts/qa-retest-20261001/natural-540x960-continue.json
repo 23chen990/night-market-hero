@@ -1,0 +1,716 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-qa-retest",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "runtime": "web-lite",
+  "viewport": {
+    "width": 540,
+    "height": 960,
+    "label": "540x960"
+  },
+  "startedAt": "2026-10-01T11:58:15.845Z",
+  "actions": [
+    "fresh context",
+    "keyboard movement only",
+    "normal stationary interaction",
+    "normal pointer click on settlement continue"
+  ],
+  "forbiddenOperations": [
+    "no __GAME_TEST__ setters",
+    "no state injection",
+    "no teleport",
+    "no debug event dispatch"
+  ],
+  "trace": [
+    {
+      "name": "boot",
+      "at": 1790855857191,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 270,
+        "y": 760
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": []
+    },
+    {
+      "name": "at-net",
+      "at": 1790855860880,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 113,
+        "y": 263
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "to-shelf",
+          "x": 90,
+          "y": 495,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "harvested",
+      "at": 1790855861799,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 113,
+        "y": 263
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "to-shelf",
+          "x": 238,
+          "y": 433,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "at-shelf",
+      "at": 1790855863567,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 302,
+        "y": 462
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "deposited",
+      "at": 1790855864496,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 302,
+        "y": 462
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "to-shelf",
+          "x": 103,
+          "y": 490,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "at-checkout",
+      "at": 1790855865965,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 302,
+        "y": 691
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "waited-checkout",
+      "at": 1790855873920,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 302,
+        "y": 691
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "leaving",
+          "x": 312,
+          "y": 438,
+          "queuePosition": null
+        },
+        {
+          "id": 3,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 4,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "left-checkout",
+      "at": 1790855875192,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 494,
+        "y": 691
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 3,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 4,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 5,
+          "phase": "to-shelf",
+          "x": 136,
+          "y": 476,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "returned-checkout",
+      "at": 1790855876200,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 306,
+        "y": 691
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 3,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 4,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 5,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "second-service-wait",
+      "at": 1790855882927,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 306,
+        "y": 691
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 3,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 4,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 5,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 6,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 7,
+          "phase": "to-shelf",
+          "x": 257,
+          "y": 425,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "second-collect",
+      "at": 1790855884895,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 307,
+        "y": 691
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 3,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 4,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 5,
+          "phase": "leaving",
+          "x": 418,
+          "y": 482,
+          "queuePosition": null
+        },
+        {
+          "id": 6,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 7,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "restocked-and-collected",
+      "at": 1790855893351,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 324,
+        "y": 891
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 3,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 4,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 5,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 6,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 7,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 8,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 9,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 10,
+          "phase": "to-shelf",
+          "x": 240,
+          "y": 433,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "construction-settlement",
+      "at": 1790855895603,
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "player": {
+        "x": 480,
+        "y": 891
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 2,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 3,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 4,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 5,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 6,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 7,
+          "phase": "left",
+          "x": 508,
+          "y": 520,
+          "queuePosition": null
+        },
+        {
+          "id": 8,
+          "phase": "leaving",
+          "x": 451,
+          "y": 496,
+          "queuePosition": null
+        },
+        {
+          "id": 9,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 10,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        },
+        {
+          "id": 11,
+          "phase": "to-shelf",
+          "x": 32,
+          "y": 520,
+          "queuePosition": null
+        }
+      ]
+    }
+  ],
+  "screenshots": [],
+  "completion": "none",
+  "replayObserved": false,
+  "settlementVisible": false,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "blockers": [
+    "natural input did not reach construction settlement",
+    "settlement panel not player-visible",
+    "continue button did not return to operating stage"
+  ]
+}

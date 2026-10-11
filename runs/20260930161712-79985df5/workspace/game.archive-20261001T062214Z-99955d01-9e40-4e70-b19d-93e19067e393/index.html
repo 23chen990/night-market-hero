@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+    <meta name="theme-color" content="#13293d" />
+    <title>海滩渔货铺</title>
+  </head>
+  <body>
+    <main id="game-shell">
+      <section id="hud" aria-live="polite">
+        <div><h1 id="title"></h1><p id="status"></p></div>
+        <div class="stats"><span id="coins"></span><span id="level"></span></div>
+      </section>
+      <div id="game" aria-label="空间物流经营游戏区域"></div>
+      <div id="toast" aria-live="assertive"></div>
+      <section id="settlement" hidden aria-live="polite">
+        <div class="settlement-card">
+          <p class="eyebrow">阶段结算</p>
+          <h2>潮池已开放</h2>
+          <p>继续经营会保留当前等级与解锁；重开本轮会回到直接经营开局。</p>
+          <div class="decision-row">
+            <button id="continue-round" class="primary">继续经营</button>
+            <button id="restart-round">重开本轮</button>
+          </div>
+        </div>
+      </section>
+      <p id="instructions">拖动屏幕移动；靠近站点自动采集、补货、收银或投建。桌面端可使用 WASD / 方向键。</p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

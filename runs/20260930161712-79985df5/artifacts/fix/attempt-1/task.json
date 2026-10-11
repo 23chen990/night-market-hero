@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "attempt": 1,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "issueIds": [
+    "BUG-LOCKED-DEMAND",
+    "BUG-PATIENCE-START",
+    "BUG-MOVING-PAYMENT",
+    "REF-SPATIAL-QUEUE",
+    "REF-CASH-FLOW",
+    "REF-OBJECT-FEEDBACK",
+    "QA-TERMINAL-STAGE-CONTINUATION"
+  ],
+  "whyFormalFixer": "The validated issue set spans simulation lifecycle, queue ordering, cash flow, runtime rendering, and settlement/replay; it requires deterministic and independent natural/perceptual retesting.",
+  "contextIntentionallyOmitted": [
+    "other runs and workspaces",
+    "unbound or unverified recordings and screenshots",
+    "third-party source expression, assets, names, UI, and tuning values",
+    "unrelated factory logs and history"
+  ],
+  "acceptance": [
+    "Every implementation behavior has a targeted regression test.",
+    "Customer demand is gated by unlocked shelves, patience starts at empty waiting-shelf, and movement never pays.",
+    "Queue slots are unique, service is queue-head-only, and remaining customers reflow after service.",
+    "Service deposits visible cashPile before wallet collection.",
+    "Settlement, continue, restart, and local action feedback are runtime-wired.",
+    "Run typecheck, tests, lint (or record missing script), and exactly one build; preserve evidence and natural/perceptual gaps."
+  ]
+}

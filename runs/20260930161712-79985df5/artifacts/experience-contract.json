@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "contractId": "experience-continuation-v2-strategic-system",
+  "targetGame": "continuation-v2",
+  "targetWorkspace": "workspace/game",
+  "lockedBy": "human",
+  "pillars": [
+    {
+      "id": "strategic_system-pillar-1",
+      "name": "goal clarity",
+      "observable": "Evidence must show goal clarity during a clean natural run."
+    },
+    {
+      "id": "strategic_system-pillar-2",
+      "name": "resource trade-off",
+      "observable": "Evidence must show resource trade-off during a clean natural run."
+    },
+    {
+      "id": "strategic_system-pillar-3",
+      "name": "reward readability",
+      "observable": "Evidence must show reward readability during a clean natural run."
+    },
+    {
+      "id": "strategic_system-pillar-4",
+      "name": "growth pacing",
+      "observable": "Evidence must show growth pacing during a clean natural run."
+    },
+    {
+      "id": "strategic_system-pillar-5",
+      "name": "refresh recovery",
+      "observable": "Evidence must show refresh recovery during a clean natural run."
+    }
+  ],
+  "feedbackTiming": {
+    "impactMs": 250,
+    "settleMs": 1200,
+    "inputNeverBlocked": true
+  },
+  "motionInvariants": [
+    "Preserve produce action through the complete representative flow.",
+    "Preserve delivery resolution through the complete representative flow.",
+    "Preserve upgrade choice through the complete representative flow."
+  ],
+  "causalRules": [
+    "A player-visible consequence must be attributable to resource sink.",
+    "A player-visible consequence must be attributable to meaningful trade-off.",
+    "A player-visible consequence must be attributable to visible next goal."
+  ],
+  "antiPatterns": [
+    "cosmetic-only variation presented as new gameplay",
+    "debug/state-forcing APIs used as natural-play proof",
+    "an ad or overlay blocking the primary action"
+  ],
+  "acceptanceIds": [
+    "strategic_system:goal-clarity",
+    "strategic_system:resource-trade-off",
+    "strategic_system:reward-readability",
+    "strategic_system:growth-pacing",
+    "strategic_system:refresh-recovery"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "viewport": { "width": 540, "height": 960 },
+  "inputMethod": "keyboard WASD",
+  "source": "playwright-chromium-emulation",
+  "buildHash": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+  "runtime": "web-lite",
+  "logPath": "screenshots/natural-input-20261001/540x960/natural-journey-log.txt",
+  "stepsObserved": [
+    { "step": "01 BOOT", "method": "keyboard", "observed": true, "evidence": ["screenshots/natural-input-20261001/540x960/01-boot.png"], "note": "开局已解锁 net/fish-shelf/checkout/kelp-build/capacity-upgrade；kelp-pool/kelp-shelf 未在 unlocked 列表" },
+    { "step": "02 HARVEST+DEPOSIT", "method": "keyboard", "observed": true, "evidence": ["screenshots/natural-input-20261001/540x960/02-harvest-deposit.png"], "note": "键盘移动采集+补货成功，shelf fresh-fish=3" },
+    { "step": "03 BUG-LOCKED-DEMAND live", "method": "read-only state", "observed": true, "evidence": ["screenshots/natural-input-20261001/540x960/03-bug-locked-demand.png"], "note": "kelp 顾客在 kelp-pool/kelp-shelf 锁定时生成（与主代理 400 次采样探针一致）" },
+    { "step": "04 REF-SPATIAL-QUEUE live", "method": "read-only state", "observed": true, "evidence": ["screenshots/natural-input-20261001/540x960/04-ref-spatial-queue.png"], "note": "2 名 queued 顾客坐标 (253,583)/(252,580) 几乎重合" },
+    { "step": "05 STOCKOUT TIMEOUT", "method": "read-only state", "observed": true, "evidence": ["screenshots/natural-input-20261001/540x960/05-stockout-timeout.png"], "note": "顾客 patience=4783 时已 leaving，缺货耐心从生成即扣减（复现 BUG-PATIENCE-START）" },
+    { "step": "06 CHECKOUT-CASH", "method": "keyboard", "observed": true, "evidence": ["screenshots/natural-input-20261001/560x960/06-checkout-cash.png"], "note": "currency 直接 +4，无独立现金堆字段（复现 REF-CASH-FLOW）" },
+    { "step": "07 BUG-MOVING-PAYMENT probe", "method": "keyboard hold KeyA", "observed": false, "note": "本次脚本探针：按住 KeyA 500ms 位移 123px 但 contributed=0——未在 540 视口复现主代理探针的'移动中付款'。差异原因：探针起步位置(257,668)距建设点(410,720)=161px>interactionRadius 64，玩家未进入交互半径。主代理探针起步位置已在半径内，故复现成功。本视口证据视为 NOT_CONFIRMED_BY_THIS_RUN" },
+    { "step": "08 SETTLEMENT", "method": "natural", "observed": false, "note": "脚本跑完 contributed=0 completed=false，stage 仍 operating——未真实到达结算（玩家未能停在建地点逐份投资）。改为后续补做" },
+    { "step": "09 CONTINUE", "method": "click #continue-round", "observed": false, "note": "clicked=false，未真实触发继续" },
+    { "step": "10 POST-CONTINUE", "method": "natural", "observed": false, "note": "未到达" },
+    { "step": "11 RESTART", "method": "click #restart-round", "observed": false, "note": "restartVisible=false，未触发" },
+    { "step": "12 SECOND SETTLEMENT", "method": "natural", "observed": false, "note": "未到达" },
+    { "step": "VIEWPORT/HUD check", "method": "read-only DOM", "observed": true, "evidence": ["screenshots/natural-input-20261001/540x960/12-viewport-hud.png"], "note": "HUD #coins/#level/#status/#toast 在 540x960 下可见；canvas 缩放正常" }
+  ],
+  "liveBugObservations": {
+    "BUG-LOCKED-DEMAND": "CONFIRMED alive",
+    "BUG-PATIENCE-START": "CONFIRMED alive (patience=4783 at leaving)",
+    "REF-SPATIAL-QUEUE": "CONFIRMED alive (queued coords nearly identical)",
+    "REF-CASH-FLOW": "CONFIRMED alive (currency += directly)",
+    "BUG-MOVING-PAYMENT": "NOT_CONFIRMED_BY_THIS_RUN (probe start outside radius); main-agent probe confirms"
+  },
+  "consoleErrors": [],
+  "blockers": [
+    "脚本未真实到达首次扩建结算，结算/继续/重开三步证据缺",
+    "BUG-MOVING-PAYMENT 在本视口未复现，需补做'起步已在半径内'的探针"
+  ]
+}

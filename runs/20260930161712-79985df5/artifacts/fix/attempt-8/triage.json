@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "Attempt7 natural journey reaches Coral settlement but primary terminal panel still states tide-pool expansion. Landscape active gull silhouette overlaps station labels and cannot be distinctly identified at its attacked shelf. Full Chromium also reports implicit favicon404; existing product.svg is available. Preserve working attempt7 settlement count/avatar fixes. Independent final perceptual QA also confirms that the bird/alert repeats while the player guards the recovered shelf: there is no clear recovery interval.",
+  "classification": [
+    "failure-attribution",
+    "visual-hierarchy",
+    "mobile-readability",
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Validated independent natural/perceptual failure in market goal settlement plus exact active-gull renderer branch; already in formal repair flow. Attempt8 is a new evidence-backed hypothesis, no unchanged rebuild.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Other games/shared factory changes",
+      "Whole conversation and unrelated history",
+      "Old QA harness latency as a product defect",
+      "Unrelated economy, progression, adapters and unrelated save fields"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Fresh normal-input beach loop -> expansion -> continue -> processors/employees/gull -> marker -> Coral -> two smoked orders -> terminal panel.",
+      "At844x390 follow visible gull loss on fish shelf, inspect bird silhouette under station labels.",
+      "Load built page in full Chromium; implicit favicon requests404; existing product.svg returns200."
+    ],
+    "observed": [
+      "Coral authored goal completes but panel says 扩建结算 / 潮池扩建完成 at540keyboard and390touch.",
+      "At844landscape orange target ring is visible; white bird silhouette is occluded by station labels. Root and QA screenshot inspection agree the actual target must remain distinguishable. Fixer must confirm draw-layer hypothesis with valid red pixel test before modifying it.",
+      "Only known resource404 is implicit /favicon.ico; main game bundle and CSS load successfully.",
+      "After same-target natural chase at540x960, repeated bird/alert while guarding blocks perceptual recovery. A new arrival must not be emitted continuously on the protected recovered shelf."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png",
+        "sha256": "db3ecde965b2565a769ce6e63243d1327a392dd22b7f890cf8f3081e85a1080d",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/natural-finalized.json",
+        "sha256": "a4ed45fbd9f9b692e0cd427f65f07b168a41b47741e54577943e12551b5b0c5f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/perceptual-settlement-finding.json",
+        "sha256": "9df32445a0182ae78ea7c2d9529d6c86093a5d6c5606a6ef31aec022ecb06c49",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png",
+        "sha256": "64b6be02b8cf5eee63308713497b40724bf5c73eb7c9d614ae758d6db7097a0b",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/failure-analysis.json",
+        "sha256": "387a788316f4d84c42a301bc08c1a0c2dc2ca1d8a4001a3064c201cd4e4639d8",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/origin-check.json",
+        "sha256": "3f10f694f6d5b3567ae1c44a3e11ecdb39210f8855f4bdb764de683085dcd123",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/visual-review-attempt7.json",
+        "sha256": "e398b80c5b5179371bd95cc49ee942de2bb31d17512136db06b2a5cc1ea91b77",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Beach first expansion retains expansion meaning; Coral and Moon own settlements show their actual authored objective and completed count with a prominent success/goal visual signal. One continue-local plus restart remains; market choices remain two distinct routes.",
+    "Active gull silhouette and target alert remain visible at shelf under labels, particularly844x390; normal loss -> approach same target -> stopped current loss -> same-shelf refill has exact pixels. Do not equate detection failure alone with product absence.",
+    "Explicit favicon loads from an existing original run asset without new dependency/assets; no missing authored or implicit resource errors.",
+    "New default normal journeys, both markets, replay/reload/restart and independent perceptual review at five viewports; any unobserved cell remains BLOCKED.",
+    "After a successful chase, show a bounded readable relief interval and do not repeatedly spawn/alert on a shelf currently guarded by the player. Existing pressure resumes on eligible unguarded stock afterward; preserve saves/continuation and test any new cooldown field.",
+    "Tests first; lint/types/full tests and exactly one build. Only directly causal pressure state/normalization and presentation fields may change; no economy or platform changes."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-08T10:11:51.043Z"
+}

@@ -1,0 +1,242 @@
+:root {
+  color: #fffdf2;
+  background: #092832;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overscroll-behavior: none; }
+body {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 0%, #2a6470 0%, #092832 72%);
+}
+
+#game-shell {
+  --game-width: min(100%, 540px);
+  --game-height: auto;
+  width: min(100vw, 540px);
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  display: grid;
+  grid-template-rows: auto auto auto auto auto auto;
+  align-content: start;
+  justify-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+#hud {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 16px;
+  min-height: 0;
+  padding: 11px 16px 10px;
+  border: 1px solid #d8f4e84a;
+  border-radius: 18px 18px 9px 9px;
+  background: #103945eb;
+  box-shadow: 0 12px 36px #00151b80;
+}
+
+h1, p { margin: 0; }
+h1 { font-size: clamp(20px, 5vw, 28px); line-height: 1.08; letter-spacing: 0.02em; }
+.hud-copy { min-width: 0; }
+#title, #status, #mission { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#status { margin-top: 5px; color: #b9eee0; font-size: 12px; }
+#mission { margin-top: 4px; color: #f5d88f; font-size: 12px; font-weight: 800; }
+body.is-settlement #status, body.is-settlement #mission { display: none; }
+body.is-settlement #hud { min-height: 145px; }
+body.is-settlement .stats {
+  grid-auto-flow: column;
+  grid-template-columns: repeat(3, max-content);
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+.stats { display: grid; gap: 4px; justify-items: end; font-weight: 800; white-space: nowrap; }
+#coins { color: #fff2bc; }
+#level { color: #d8f4e8; font-size: 12px; }
+#cash-pile { color: #f2c572; font-size: 12px; }
+#order-card {
+  --order-color: #d8f4e8;
+  grid-column: 1 / -1;
+  min-height: 42px;
+  display: grid;
+  grid-template-columns: 27px minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 9px;
+  border: 1px solid #d8f4e84a;
+  border-left: 4px solid var(--order-color);
+  border-radius: 11px;
+  background: #0a2b36b8;
+}
+#order-product-mark { width: 25px; height: 25px; border-radius: 8px; background: var(--order-color); box-shadow: inset 0 0 0 4px #fff8; }
+.order-copy { grid-column: 2; grid-row: 1; }
+.order-copy { min-width: 0; display: grid; gap: 1px; }
+#order-product { overflow: hidden; color: #fff2bc; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+#order-route, #order-status, #order-stock { color: #c9e8dd; font-size: 11px; white-space: nowrap; }
+#order-status { padding: 3px 7px; border-radius: 999px; background: #ffffff18; }
+#order-product-mark { grid-column: 1; grid-row: 1 / 4; align-self: start; }
+#order-status { grid-column: 3; grid-row: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+#order-stock { grid-column: 2 / -1; grid-row: 2; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+#order-lines {
+  grid-column: 2 / -1;
+  grid-row: 3;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #f5d88f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+#game {
+  position: relative;
+  width: var(--game-width);
+  height: var(--game-height);
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 540 / 960;
+  min-width: 160px;
+  min-height: 240px;
+  border-radius: 18px;
+  overflow: hidden;
+  touch-action: none;
+  align-self: center;
+}
+#game canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  border: 1px solid #d8f4e82f;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px #00151b99;
+}
+
+#settlement {
+  width: 100%;
+  display: grid;
+  gap: 8px;
+  padding: 13px 16px 14px;
+  border: 1px solid #f2c572a8;
+  border-radius: 16px;
+  background: #244a50f2;
+  box-shadow: 0 12px 36px #00151b80;
+}
+#settlement[hidden] { display: none; }
+#settlement strong { color: #fff2bc; }
+.settlement-heading { display: flex; align-items: center; gap: 8px; }
+#settlement-result-icon { display: grid; place-items: center; flex: 0 0 26px; height: 26px; border-radius: 50%; background: #8fcdbb; color: #173b40; font-weight: 900; }
+#settlement-result-icon[hidden], #settlement-goal-progress[hidden] { display: none; }
+#settlement-goal-progress { border-radius: 6px; padding: 3px 8px; background: #8fcdbb; color: #173b40; font-size: 12px; font-weight: 800; text-align: center; }
+#settlement p { color: #d9eee5; font-size: 12px; }
+.settlement-actions { display: flex; gap: 8px; }
+.market-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.market-options button, .settlement-actions button {
+  min-height: 44px;
+  flex: 1;
+  border: 1px solid #f2c57299;
+  border-radius: 12px;
+  background: #f2c572;
+  color: #17343d;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.market-options button { display: grid; gap: 2px; padding: 6px 8px; background: #f2c572; color: #17343d; }
+.market-options button[hidden] { display: none; }
+.market-options:has(button[hidden]) { grid-template-columns: minmax(0, 1fr); }
+.market-options button:nth-child(2) { background: #8fcdbb; }
+.market-options small { font-size: 10px; font-weight: 700; opacity: 0.75; }
+.settlement-actions button { width: 100%; background: #235664; color: #fffdf2; }
+#toast { min-height: 20px; padding: 2px 8px 0; color: #d8f4e8; font-size: 12px; font-weight: 700; text-align: center; }
+#instructions { max-width: 540px; padding: 0 8px; color: #d4e6dc; font-size: 11px; line-height: 1.45; text-align: center; }
+
+#mobile-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(48px, 1fr));
+  gap: 8px;
+  width: min(100%, 240px);
+  justify-self: center;
+}
+#mobile-controls button {
+  min-width: 48px;
+  min-height: 48px;
+  border: 1px solid #d8f4e866;
+  border-radius: 13px;
+  background: #103945dd;
+  color: #fff2bc;
+  font: inherit;
+  font-size: 22px;
+  font-weight: 900;
+  touch-action: none;
+}
+
+body.is-landscape #game-shell {
+  width: 100vw;
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 34vw);
+  grid-template-rows: auto auto auto auto auto;
+  grid-template-areas:
+    "game hud"
+    "game settlement"
+    "game toast"
+    "game instructions"
+    "game controls";
+  gap: 8px 16px;
+  justify-items: stretch;
+  align-items: center;
+  align-content: start;
+}
+body.is-landscape #game { grid-area: game; justify-self: center; }
+body.is-landscape #game { aspect-ratio: 960 / 540; }
+body.is-landscape #game canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--game-height) !important;
+  height: var(--game-width) !important;
+  transform: translate(-50%, -50%) rotate(90deg);
+  transform-origin: center;
+}
+body.is-landscape #hud { grid-area: hud; align-self: start; }
+body.is-landscape #settlement { grid-area: settlement; }
+body.is-landscape #toast { grid-area: toast; }
+body.is-landscape #instructions { grid-area: instructions; max-width: 34vw; }
+body.is-landscape.is-settlement #instructions { display: none; }
+body.is-landscape #mobile-controls { grid-area: controls; align-self: start; margin: 0 auto; }
+body.is-landscape #settlement {
+  padding: 8px 10px;
+  gap: 4px;
+}
+body.is-landscape #settlement p, body.is-landscape .market-options small { display: none; }
+body.is-landscape .market-options { gap: 4px; }
+body.is-landscape .market-options button { min-height: 38px; padding: 4px 6px; }
+body.is-landscape .settlement-actions button { min-height: 32px; }
+
+@media (max-height: 740px) and (orientation: portrait) {
+  #status { display: none; }
+  #mission { font-size: 11px; }
+  #hud { min-height: 68px; padding-block: 8px; }
+  #instructions { display: none; }
+}
+
+@media (max-width: 360px) {
+  #hud { padding-inline: 11px; gap: 6px; }
+  h1 { font-size: 19px; }
+  .stats { font-size: 12px; }
+  #settlement { padding-inline: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

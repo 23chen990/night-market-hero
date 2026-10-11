@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "route": "formal-fixer",
+  "attempt": 4,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "Formal-fixer attempt 4 implemented the ten validated QA issue ids across the six revision systems while preserving the existing simulation and renderer. The route was required because the issues span the core loop, state transitions, persistence, runtime wiring and natural/perceptual evidence obligations.",
+  "contextIntentionallyOmitted": [
+    "Other runs, shared factory code and unrelated source/assets",
+    "Third-party game source, expression, UI, names and tuning",
+    "Independent QA conclusions not available to this FixerAgent"
+  ],
+  "filesChanged": [
+    "src/simulation.ts",
+    "src/revision.ts",
+    "src/save.ts",
+    "src/generated/game-config.json",
+    "src/main.ts",
+    "src/input.ts",
+    "src/responsive.ts",
+    "src/responsive.test.ts",
+    "src/order-presentation.ts",
+    "src/depth-systems.test.ts",
+    "src/style.css",
+    "index.html",
+    "package.json",
+    "eslint.config.js",
+    "dist/"
+  ],
+  "tests": [
+    {
+      "name": "TDD red behavior assertions before implementation",
+      "command": "node /Users/kker/Documents/ChatGPT/妖怪夜市/node_modules/vitest/vitest.mjs run src/depth-systems.test.ts --reporter=verbose (before implementation)",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/red-tests.log"
+    },
+    {
+      "name": "expanded Vitest behavior suite",
+      "command": "pnpm test -- --reporter=verbose",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/expanded-tests.log"
+    },
+    {
+      "name": "TypeScript typecheck",
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/typecheck.log"
+    },
+    {
+      "name": "target-local ESLint",
+      "command": "pnpm lint",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/lint.log"
+    },
+    {
+      "name": "single production build",
+      "command": "pnpm build",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/build.log"
+    },
+    {
+      "name": "browser startup and implementation smoke",
+      "command": "Playwright Chromium against Vite preview: startup, keyboard movement, settlement continue, stationary marker, Coral Bay selection, portrait controls and landscape frame",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/runtime-product-gate.json"
+    }
+  ],
+  "buildCount": 1,
+  "evidencePaths": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/red-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/expanded-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/typecheck.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/lint.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/build.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/build-hashes.txt",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/runtime-product-gate.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/runtime-portrait.png"
+  ],
+  "remainingEvidenceGaps": [
+    "Independent QA must rerun deterministic, natural-input and perceptual tracks for the exact shopping, processor, employee, seagull, shortage and market branches at 360x800, 390x844, 430x932, 540x960 and 844x390.",
+    "The browser smoke used the implementation test API for settlement and market progression; it is not a substitute for the independent natural journey gate.",
+    "WeChat, Douyin and TapTap platform adapters remain conditional per the approved open-source research artifact and were not packaged in this web-lite FIX attempt."
+  ]
+}

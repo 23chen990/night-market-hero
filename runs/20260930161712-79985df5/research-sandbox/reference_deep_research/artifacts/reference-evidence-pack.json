@@ -1,0 +1,324 @@
+{
+"schemaVersion": 1,
+"targetRunId": "20260930161712-79985df5",
+"benchmark": {
+"name": "Monkey Mart 通用空间服务机制",
+"url": "https://poki.com/zh/g/monkey-mart"
+},
+"sourceFiles": [
+{
+"path": "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+"sha256": "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+"observations": [
+"provenance:code-package-monkey-mart:code-reference"
+]
+},
+{
+"path": "artifacts/reference-code-analysis.json",
+"sha256": "83d80b72c663f0265e48be47559dc971d3b0bc039415db384ea6e9e1c782e1ed",
+"observations": [
+"{",
+"\"schemaVersion\": 1,",
+"\"artifactType\": \"reference-code-analysis\",",
+"\"targetRunId\": \"20260930161712-79985df5\",",
+"\"targetGame\": \"continuation-v2\",",
+"\"workspace\": \"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game\",",
+"\"package\": {",
+"\"evidenceId\": \"code-package-monkey-mart\",",
+"\"indexPath\": \"reference-evidence/verified/reference-code-package-6255b13cbfcf.json\",",
+"\"sha256\": \"6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1\"",
+"},",
+"\"coreLoop\": ["
+]
+}
+],
+"observations": [
+"provenance:code-package-monkey-mart:code-reference",
+"source:artifacts/reference-code-analysis.json:{",
+"source:artifacts/reference-code-analysis.json:\"schemaVersion\": 1,",
+"source:artifacts/reference-code-analysis.json:\"artifactType\": \"reference-code-analysis\",",
+"source:artifacts/reference-code-analysis.json:\"targetRunId\": \"20260930161712-79985df5\",",
+"source:artifacts/reference-code-analysis.json:\"targetGame\": \"continuation-v2\",",
+"source:artifacts/reference-code-analysis.json:\"workspace\": \"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game\",",
+"source:artifacts/reference-code-analysis.json:\"package\": {",
+"source:artifacts/reference-code-analysis.json:\"evidenceId\": \"code-package-monkey-mart\",",
+"source:artifacts/reference-code-analysis.json:\"indexPath\": \"reference-evidence/verified/reference-code-package-6255b13cbfcf.json\",",
+"source:artifacts/reference-code-analysis.json:\"sha256\": \"6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1\"",
+"source:artifacts/reference-code-analysis.json:},",
+"source:artifacts/reference-code-analysis.json:\"coreLoop\": [",
+"human-lock:玩家移动到产出站点自动采集货物",
+"human-lock:携带有限货物到兼容货架自动补货",
+"human-lock:顾客取货、排队并由玩家完成结算",
+"human-lock:缺货顾客进入目标游戏原创的等待倒计时，超时离店并显示缺货原因",
+"human-lock:将收益逐份投入建设或升级站点",
+"human-lock:完成首次扩建后进入目标游戏原创的阶段结算，可选择继续经营或重开本轮"
+],
+"inferences": [
+"The locked core-loop order is the reusable mechanic relationship; all expression must be authored independently.",
+"Declared adaptable mechanics may vary only after the human mechanic lock and must keep the same causal topology."
+],
+"unknowns": [],
+"mechanicMap": {
+"coreLoop": [
+"玩家移动到产出站点自动采集货物",
+"携带有限货物到兼容货架自动补货",
+"顾客取货、排队并由玩家完成结算",
+"缺货顾客进入目标游戏原创的等待倒计时，超时离店并显示缺货原因",
+"将收益逐份投入建设或升级站点",
+"完成首次扩建后进入目标游戏原创的阶段结算，可选择继续经营或重开本轮"
+],
+"playerActions": [
+"使用单移动输入调度采集、补货、收银、建设和升级",
+"在阶段结算界面明确选择继续经营或重开本轮"
+],
+"progressionSystems": [
+"站点解锁链、携带容量、移动速度和结算效率",
+"首次扩建完成后触发阶段结算，继续经营保留进度，重开本轮重置本轮经营状态"
+],
+"unlockRules": [
+"建设区按固定频率逐份投入货币，完成后原子解锁关联生产点和货架",
+"开局直接开放鲜鱼产出、鲜鱼货架和收银桌，不采用参考作品的启动建设资金规则",
+"潮池与海带货架完成首次扩建后同时开放，并触发一次阶段结算"
+],
+"mustPreserveMechanics": [
+"移动是唯一主操作，进入交互范围后自动执行当前有效任务",
+"采集、携带、补货、顾客消费、结算和再投资的顺序不变",
+"货架库存、生产能力、结账队列和玩家路程共同形成可见瓶颈"
+],
+"feedbackCadence": {
+"immediateSeconds": 1,
+"microGoalMinSeconds": 10,
+"microGoalMaxSeconds": 180
+}
+},
+"behaviorChecks": [],
+"failurePressureContract": null,
+"expressionBoundary": {
+"allowed": [
+"generic mechanic relationships",
+"causal order and state transitions",
+"human-approved adaptable mechanic slots"
+],
+"forbidden": [
+"third-party code",
+"third-party assets",
+"names and logos",
+"UI layout",
+"text and dialogue",
+"audio",
+"raw tuning values"
+]
+},
+"similarityRedFlags": [],
+"evidenceQuality": "supplemented",
+"status": "READY",
+"claims": [
+{
+"id": "claim-1",
+"statement": "provenance:code-package-monkey-mart:code-reference",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-2",
+"statement": "source:artifacts/reference-code-analysis.json:{",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-3",
+"statement": "source:artifacts/reference-code-analysis.json:\"schemaVersion\": 1,",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-4",
+"statement": "source:artifacts/reference-code-analysis.json:\"artifactType\": \"reference-code-analysis\",",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-5",
+"statement": "source:artifacts/reference-code-analysis.json:\"targetRunId\": \"20260930161712-79985df5\",",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-6",
+"statement": "source:artifacts/reference-code-analysis.json:\"targetGame\": \"continuation-v2\",",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-7",
+"statement": "source:artifacts/reference-code-analysis.json:\"workspace\": \"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game\",",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-8",
+"statement": "source:artifacts/reference-code-analysis.json:\"package\": {",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-9",
+"statement": "source:artifacts/reference-code-analysis.json:\"evidenceId\": \"code-package-monkey-mart\",",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-10",
+"statement": "source:artifacts/reference-code-analysis.json:\"indexPath\": \"reference-evidence/verified/reference-code-package-6255b13cbfcf.json\",",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-11",
+"statement": "source:artifacts/reference-code-analysis.json:\"sha256\": \"6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1\"",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-12",
+"statement": "source:artifacts/reference-code-analysis.json:},",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-13",
+"statement": "source:artifacts/reference-code-analysis.json:\"coreLoop\": [",
+"status": "OBSERVED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 1,
+"evidence": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-14",
+"statement": "The locked core-loop order is the reusable mechanic relationship; all expression must be authored independently.",
+"status": "INFERRED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 0.5,
+"evidence": [],
+"createdAt": "2026-09-30T16:19:20.073Z"
+},
+{
+"id": "claim-15",
+"statement": "Declared adaptable mechanics may vary only after the human mechanic lock and must keep the same causal topology.",
+"status": "INFERRED",
+"sourceRefs": [
+"https://poki.com/zh/g/monkey-mart"
+],
+"sourceHashes": [],
+"confidence": 0.5,
+"evidence": [],
+"createdAt": "2026-09-30T16:19:20.073Z"
+}
+],
+"researchedAt": "2026-09-30T16:19:20.073Z"
+}

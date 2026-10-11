@@ -1,0 +1,1080 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "targetRunId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "behaviorChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "input_state",
+              "spatial_relation",
+              "failure_recovery",
+              "feedback_sequence",
+              "terminal_replay"
+            ]
+          },
+          "sourceRefs": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "locator": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "locator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "objectType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stateBranch": {
+            "type": "string",
+            "minLength": 1
+          },
+          "playerInput": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expectedStateChange": {
+            "type": "string",
+            "minLength": 1
+          },
+          "spatialRelationship": {
+            "type": "string",
+            "minLength": 1
+          },
+          "visibleFeedback": {
+            "type": "object",
+            "properties": {
+              "anchor": {
+                "type": "string",
+                "minLength": 1
+              },
+              "eventOrder": {
+                "minItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "anchor",
+              "eventOrder"
+            ],
+            "additionalProperties": false
+          },
+          "viewport": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "height": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ],
+            "additionalProperties": false
+          },
+          "evidenceBasis": {
+            "type": "string",
+            "const": "code-analysis"
+          },
+          "viewportBasis": {
+            "type": "string",
+            "const": "qa-target"
+          }
+        },
+        "required": [
+          "id",
+          "dimension",
+          "sourceRefs",
+          "objectType",
+          "stateBranch",
+          "playerInput",
+          "expectedStateChange",
+          "spatialRelationship",
+          "visibleFeedback",
+          "viewport",
+          "evidenceBasis",
+          "viewportBasis"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "inferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidenceLimitations": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "failurePressureContract": {
+      "default": null,
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "number",
+              "const": 1
+            },
+            "purpose": {
+              "type": "string",
+              "minLength": 1
+            },
+            "evidence": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "competitor": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sourceRefs": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "observed": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "inferred": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "applicability": {
+                    "type": "string",
+                    "enum": [
+                      "adopt",
+                      "adapt",
+                      "reject"
+                    ]
+                  },
+                  "applicabilityRationale": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "rejectExpression": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "confidence": {
+                    "type": "string",
+                    "enum": [
+                      "high",
+                      "medium",
+                      "low"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "competitor",
+                  "sourceRefs",
+                  "observed",
+                  "inferred",
+                  "applicability",
+                  "applicabilityRationale",
+                  "rejectExpression",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "rules": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "pressureType": {
+                    "type": "string",
+                    "enum": [
+                      "timing",
+                      "hazard",
+                      "resource_loss",
+                      "wrong_choice",
+                      "pursuit",
+                      "collapse",
+                      "stamina",
+                      "other"
+                    ]
+                  },
+                  "trigger": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "playerSignal": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "escalation": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "failureOutcome": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "attribution": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "recovery": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sourceEvidenceRefs": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "implementationImplications": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "pressureType",
+                  "trigger",
+                  "playerSignal",
+                  "escalation",
+                  "failureOutcome",
+                  "attribution",
+                  "recovery",
+                  "sourceEvidenceRefs",
+                  "implementationImplications"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "noCopyBoundary": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "purpose",
+            "evidence",
+            "rules",
+            "noCopyBoundary"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "levelReconstruction": {
+      "default": null,
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "number",
+              "const": 1
+            },
+            "artifactType": {
+              "type": "string",
+              "const": "reference-level-reconstruction"
+            },
+            "targetRunId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "targetGame": {
+              "type": "string",
+              "minLength": 1
+            },
+            "workspace": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "frameManifestPath": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "frameManifestSha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "recordingSha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "viewport": {
+                  "type": "object",
+                  "properties": {
+                    "width": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "height": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "width",
+                    "height"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "frameManifestPath",
+                "frameManifestSha256",
+                "recordingSha256",
+                "viewport"
+              ],
+              "additionalProperties": false
+            },
+            "checkpoints": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "phase": {
+                    "type": "string",
+                    "enum": [
+                      "ready",
+                      "input",
+                      "interaction",
+                      "aftermath",
+                      "terminal",
+                      "replay"
+                    ]
+                  },
+                  "atMs": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sourceFrameIds": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "input": {
+                    "type": "object",
+                    "properties": {
+                      "actionId": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "tap",
+                          "press",
+                          "release",
+                          "swipe",
+                          "drag"
+                        ]
+                      },
+                      "targetObjectId": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "gestureDirection": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "up",
+                          "down",
+                          "left",
+                          "right"
+                        ]
+                      },
+                      "sourcePointNormalized": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                              },
+                              "y": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                              }
+                            },
+                            "required": [
+                              "x",
+                              "y"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "confidence": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    },
+                    "required": [
+                      "actionId",
+                      "kind",
+                      "targetObjectId",
+                      "gestureDirection",
+                      "sourcePointNormalized",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "camera": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "static",
+                          "follow",
+                          "scroll",
+                          "cut",
+                          "unknown"
+                        ]
+                      },
+                      "focusObjectIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "motion": {
+                        "type": "string",
+                        "enum": [
+                          "static",
+                          "forward",
+                          "backward",
+                          "vertical",
+                          "cut",
+                          "unknown"
+                        ]
+                      },
+                      "confidence": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    },
+                    "required": [
+                      "mode",
+                      "focusObjectIds",
+                      "motion",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "objects": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "semanticId": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "player",
+                            "cuttable",
+                            "support",
+                            "hazard",
+                            "finish",
+                            "reward",
+                            "hud",
+                            "replay-control",
+                            "decorative"
+                          ]
+                        },
+                        "lifecycle": {
+                          "type": "string",
+                          "enum": [
+                            "not-spawned",
+                            "ready",
+                            "moving",
+                            "contact",
+                            "resolved",
+                            "falling",
+                            "settled",
+                            "terminal",
+                            "hidden"
+                          ]
+                        },
+                        "boundsNormalized": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "minimum": 0,
+                              "maximum": 1
+                            },
+                            "y": {
+                              "type": "number",
+                              "minimum": 0,
+                              "maximum": 1
+                            },
+                            "width": {
+                              "type": "number",
+                              "exclusiveMinimum": 0,
+                              "maximum": 1
+                            },
+                            "height": {
+                              "type": "number",
+                              "exclusiveMinimum": 0,
+                              "maximum": 1
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y",
+                            "width",
+                            "height"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "rotationDegrees": {
+                          "type": "number",
+                          "minimum": -360,
+                          "maximum": 360
+                        },
+                        "visible": {
+                          "type": "boolean"
+                        },
+                        "confidence": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      },
+                      "required": [
+                        "semanticId",
+                        "role",
+                        "lifecycle",
+                        "boundsNormalized",
+                        "rotationDegrees",
+                        "visible",
+                        "confidence"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "visibleFeedback": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "anchorObjectId": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "order": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "event": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "anchorObjectId",
+                        "order",
+                        "event"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "phase",
+                  "atMs",
+                  "sourceFrameIds",
+                  "input",
+                  "camera",
+                  "objects",
+                  "visibleFeedback"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "spatialRelations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "fromObjectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "relation": {
+                    "type": "string",
+                    "enum": [
+                      "supported-by",
+                      "precedes",
+                      "above",
+                      "below",
+                      "left-of",
+                      "right-of",
+                      "inside",
+                      "attached-to",
+                      "reachable-after",
+                      "intersects-path",
+                      "finish-after"
+                    ]
+                  },
+                  "toObjectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "checkpointIds": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "observed": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "fromObjectId",
+                  "relation",
+                  "toObjectId",
+                  "checkpointIds",
+                  "observed"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "interactionSequence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "order": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "actionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "tap",
+                      "press",
+                      "release",
+                      "swipe",
+                      "drag"
+                    ]
+                  },
+                  "targetObjectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "fromCheckpointId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "toCheckpointId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "responseClass": {
+                    "type": "string",
+                    "enum": [
+                      "immediate",
+                      "short",
+                      "deferred"
+                    ]
+                  },
+                  "expectedStateChange": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "order",
+                  "actionId",
+                  "kind",
+                  "targetObjectId",
+                  "fromCheckpointId",
+                  "toCheckpointId",
+                  "responseClass",
+                  "expectedStateChange"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "cameraSequence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "order": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "checkpointId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "static",
+                      "follow",
+                      "scroll",
+                      "cut",
+                      "unknown"
+                    ]
+                  },
+                  "focusObjectRole": {
+                    "type": "string",
+                    "enum": [
+                      "player",
+                      "cuttable",
+                      "support",
+                      "hazard",
+                      "finish",
+                      "reward",
+                      "hud",
+                      "replay-control",
+                      "decorative"
+                    ]
+                  }
+                },
+                "required": [
+                  "order",
+                  "checkpointId",
+                  "mode",
+                  "focusObjectRole"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "terminal": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "checkpointId": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "result": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "causeVisible": {
+                      "type": "boolean"
+                    },
+                    "settlementVisible": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "checkpointId",
+                    "result",
+                    "causeVisible",
+                    "settlementVisible"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "replay": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "checkpointId": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "actionId": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "targetObjectId": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "returnsToCheckpointId": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "checkpointId",
+                    "actionId",
+                    "targetObjectId",
+                    "returnsToCheckpointId"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "observations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "inferences": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "unknowns": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "READY",
+                "BLOCKED"
+              ]
+            },
+            "blockers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "analyzedAt": {
+              "type": "string",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "artifactType",
+            "targetRunId",
+            "targetGame",
+            "workspace",
+            "source",
+            "checkpoints",
+            "spatialRelations",
+            "interactionSequence",
+            "cameraSequence",
+            "terminal",
+            "replay",
+            "observations",
+            "inferences",
+            "unknowns",
+            "status",
+            "blockers",
+            "analyzedAt"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "READY",
+        "BLOCKED"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "targetRunId",
+    "behaviorChecks",
+    "observations",
+    "inferences",
+    "unknowns",
+    "evidenceLimitations",
+    "failurePressureContract",
+    "levelReconstruction",
+    "status"
+  ],
+  "additionalProperties": false
+}

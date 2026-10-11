@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "order-hud-clear@360x800",
+      "passed": false,
+      "evidence": "Fresh normal startup: HUD/card must fit and remain outside canvas. Actual overlap area=17384.9375 CSS square px; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png"
+    },
+    {
+      "name": "screen-relative-up@360x800",
+      "passed": true,
+      "evidence": "Normal ArrowUp release moves screen body from y=483.6457680250784 to y=460.66875; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-arrow-up.png"
+    },
+    {
+      "name": "order-hud-clear@390x844",
+      "passed": false,
+      "evidence": "Fresh normal startup: HUD/card must fit and remain outside canvas. Actual overlap area=19519.5 CSS square px; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png"
+    },
+    {
+      "name": "screen-relative-up@390x844",
+      "passed": true,
+      "evidence": "Normal ArrowUp release moves screen body from y=525.2697547683923 to y=500.3027027027027; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-arrow-up.png"
+    },
+    {
+      "name": "order-hud-clear@430x932",
+      "passed": false,
+      "evidence": "Fresh normal startup: HUD/card must fit and remain outside canvas. Actual overlap area=22454.25 CSS square px; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png"
+    },
+    {
+      "name": "screen-relative-up@430x932",
+      "passed": true,
+      "evidence": "Normal ArrowUp release moves screen body from y=584.0457516339869 to y=556.2051835853132; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-arrow-up.png"
+    },
+    {
+      "name": "order-hud-clear@540x960",
+      "passed": false,
+      "evidence": "Fresh normal startup: HUD/card must fit and remain outside canvas. Actual overlap area=29085.71875 CSS square px; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png"
+    },
+    {
+      "name": "screen-relative-up@540x960",
+      "passed": true,
+      "evidence": "Normal ArrowUp release moves screen body from y=631.3116883116883 to y=590.5714285714286; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-arrow-up.png"
+    },
+    {
+      "name": "order-hud-clear@844x390",
+      "passed": true,
+      "evidence": "Fresh normal startup: HUD/card must fit and remain outside canvas. Actual overlap area=0 CSS square px; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png"
+    },
+    {
+      "name": "screen-relative-up@844x390",
+      "passed": false,
+      "evidence": "Normal ArrowUp release moves screen body from y=103.45378151260505 to y=123.03603603603604; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png"
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-ATTEMPT4-PORTRAIT-HUD-OCCLUSION",
+      "severity": "error",
+      "message": "All four portrait startup branches have order-card overlap with canvas, a negative top HUD coordinate and bottom control overflow. Active-order screenshot also shows the same occlusion. Fix actual measured responsive chrome/grid rows; visible order and controls must remain readable throughout startup, operation and settlement.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/landing-input.json; first-natural/540x960/007-event-packing.png"
+    },
+    {
+      "id": "QA-ATTEMPT4-LANDSCAPE-INPUT-REVERSED",
+      "severity": "error",
+      "message": "At844x390 normal ArrowUp moves the visible player downward. CSS rotate(90deg) and counterclockwise logical/input transform disagree. Match the actual renderer transform and both keyboard/touch directions, keep labels upright and verify real pixel movement.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/landing-input.json; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png"
+    },
+    {
+      "id": "QA-ATTEMPT4-LANDSCAPE-FIELD-THUMBNAIL",
+      "severity": "error",
+      "message": "Landscape canvas is only370x208 CSSpx, smaller than the declared readable wide field; station labels are sideways/tiny and controls overlap helper copy. Allocate available width correctly and use one coherent field transform with readable upright labels and unobstructed control hierarchy.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/360x800-arrow-up.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/390x844-arrow-up.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/430x932-arrow-up.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/540x960-arrow-up.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261002/attempt-4-independent/landing-input/844x390-arrow-up.png"
+  ],
+  "consoleLog": "Fresh Chromium normal keyboard only; DOM bounds and in-memory screenshot pixel locator; no gameplay test API, state reads or injected game events.",
+  "testedAt": "2026-10-02T16:19:34.455Z"
+}

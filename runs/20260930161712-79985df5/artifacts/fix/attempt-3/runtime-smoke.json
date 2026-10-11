@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "runtime-smoke",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "runtime": "web-lite-dev",
+  "fixtureOnly": true,
+  "results": [
+    {
+      "startup": {
+        "order": {
+          "product": "暂无订单",
+          "route": "路线 · 等待顾客",
+          "status": "等待顾客",
+          "stock": "暂无顾客"
+        },
+        "orderBox": {
+          "width": 486,
+          "height": 49,
+          "right": 513,
+          "bottom": 159.609375
+        },
+        "title": "海滩渔货铺"
+      },
+      "orderAfterSpawn": {
+        "order": {
+          "product": "暂无订单",
+          "route": "路线 · 等待顾客",
+          "status": "等待顾客",
+          "stock": "暂无顾客"
+        },
+        "customers": 0
+      },
+      "errors": []
+    },
+    {
+      "panel": {
+        "stage": "settlement",
+        "nextMarketId": null,
+        "title": "下一市场开放",
+        "copy": "潮池扩建完成，选择一条原创海滩经营路线继续。",
+        "buttons": [
+          {
+            "id": "continue-round",
+            "marketId": "coral-cove-market",
+            "text": "珊瑚湾市场鲜货客流"
+          },
+          {
+            "id": "moon-tide-market",
+            "marketId": "moon-tide-market",
+            "text": "月潮码头夜潮订单"
+          }
+        ],
+        "restart": "重开本轮",
+        "panelBox": {
+          "width": 520,
+          "height": 188,
+          "right": 530,
+          "bottom": 893.609375
+        }
+      },
+      "selected": {
+        "stage": "operating",
+        "nextMarketId": "coral-cove-market",
+        "hidden": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "report": "用户表示唯一目标是海滩渔货铺 run 20260930161712-79985df5，希望它按 Money Market/Monkey Mart 的经营机制改造，但当前结果与参考差异很大，并且主观感受不如第一个版本。",
+  "classification": [
+    "core-experience",
+    "reference-fidelity",
+    "visual-hierarchy",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "差异横跨默认核心循环、顾客生命周期、收银/现金状态、扩建进度、反馈渲染和重玩路径；当前已有经 QA 验证的核心错误，且需要与同一游戏首版基线进行回归，不能用两文件直修或静态单测关闭。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "其他 run 的生成工作区和资产",
+      "未绑定或未验证的录屏、截图和第三方表达",
+      "与当前核心循环无关的工厂日志和历史提交"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "确认目标工作区为 runs/20260930161712-79985df5/workspace/game，并检查当前默认入口为 src/main.ts。",
+      "对照当前 run 的 blueprint、reference-fidelity-contract、已验证 Monkey Mart 代码包和 QA 报告，核对生产→补货→顾客→收银→扩建→继续/重开的默认链路。",
+      "检查当前源树与同一游戏首版 history run 的源树：当前为 7 个扁平 src 文件、2 个商品和单屏空间商店；首版为分层商店系统并有自然流程、结算和重玩证据。",
+      "读取当前 540x960 自然输入截图和 QA 报告，确认队列重叠、现金直接入账、结算/重玩未完成及当前实现缺少局部因果反馈。",
+      "读取已验证参考代码差异审查，确认现金堆、空间队列、对象反馈、购物清单和持续进度等差异，以及当前 QA 的锁定需求、耐心计时和移动付款问题。"
+    ],
+    "observed": [
+      "当前 run 的 seed/blueprint 只锁定了最小单屏切片；它没有把首版的多阶段商店深度或参考代码中的现金堆、队列站位、打包阶段和对象到对象反馈接入默认运行路径。",
+      "当前参考代码审查明确记录 REF-CASH-FLOW、REF-SPATIAL-QUEUE、REF-OBJECT-FEEDBACK、REF-SHOPPING-LIST、REF-PROGRESSION 和 REF-SYSTEM-DEPTH；这些是机制/体验差异，不是素材换皮问题。",
+      "当前 QA 报告还记录 BUG-LOCKED-DEMAND、BUG-PATIENCE-START、BUG-MOVING-PAYMENT，并显示 typecheck/build/test/natural settlement 证据不一致；当前 workspace 后续已有局部 simulation 变更，但没有对应完整 QA 回归。",
+      "当前自然输入截图显示的是彩色圆形站点、文字站牌、抽象圆形顾客和全局 HUD；首版自然流程证据显示了可读的顾客进店→货架→收银→结算→重玩链路。",
+      "当前 540x960 自然旅程没有完成真实结算、继续和重开，触摸分支与感知分支仍为未观察，不能声称默认体验达到首版质量。"
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/reference-code-gap-review-20261001.json",
+        "sha256": "a8fdf9351927eca03888dd8d0d799d84781c63c8f438e96a1ce37958ba602f7b",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-report-formal-20261001.json",
+        "sha256": "392a86b05be2242ca9dda0bd27d14519f45b369fb4f2bf322692ff050d0020aa",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/natural-input-journey-540x960-20261001.json",
+        "sha256": "867447c06e59e0c6dea988fdd926f53507328ef7688965ff6e998650f6531ffb",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/natural-input-20261001/540x960/04-ref-spatial-queue.png",
+        "sha256": "51cb235f0b1982af052b9544256e8cf8366de228a6a25d52e7ce982720cfba59",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/natural-input-20261001/540x960/06-checkout-cash.png",
+        "sha256": "4906da7e7ecd223b54693cafe43915d0aca5e475ef5dcc49359595f32dd46291",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/history-source-verification-20261001.json",
+        "sha256": "38375bae4e97727260ed5abce8ab71da809f81c244c8f231dc791b7f4e40d209",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/artifacts/qa-report.json",
+        "sha256": "e891902831f5b8c3cb436f41fc96bd09003a4071616ad4b5abf51d6162883926",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260830210424-pawshop-v1/artifacts/perceptual-qa-report.json",
+        "sha256": "3990d55adb98bd225aa6db7ccfa85f028fee96b7bb0299d3aad212a559ebc3dc",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+        "sha256": "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1",
+        "kind": "reference",
+        "provenance": "verified-reference"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "只在目标 workspace/game 修改与上述问题有因果关系的文件；保留用户现有改动并记录实际文件清单。",
+    "默认运行路径必须在清爽新浏览器中自然完成 startup → 采集/补货 → 顾客取货/排队 → 打包/现金堆 → 玩家收钱 → 建设或升级 → 阶段转换/继续或重开，并在每一步给出玩家可见的因果反馈。",
+    "参考机制采用原创海滩表达：队列顾客有独立站位并按队首服务、服务收入先进入可见现金堆再由玩家收取、建设/收钱/补货/顾客取货各有来源到目的地的局部反馈；不得复制第三方代码、资产、名称、UI、文案或原始数值。",
+    "锁定商品不会在对应生产点和货架解锁前进入顾客需求；缺货耐心只在顾客真正到达目标货架后开始计时；移动穿过建设点不会扣款。",
+    "保留并恢复首版已证实的可玩质量基线：顾客进店→目标货架→收银、结算可达、继续/重开可达、刷新后状态可恢复；不得用状态注入或测试 API 代替自然输入。",
+    "在 360x800、390x844、430x932 和 540x960 竖屏及 844x390 横屏完成精确分支的自然输入和玩家可见截图；触摸/键盘释放、HUD 可读性、减少动画分支均需有证据。",
+    "修复后必须通过目标 workspace 的 typecheck、lint、测试和一次构建，并由独立 QA 重跑确定性、自然旅程和感知轨道；任何精确分支的 BLOCKED 保持发布阻塞。"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-01T15:05:00.000Z"
+}

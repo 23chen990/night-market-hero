@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "reference-code-analysis",
+  "targetRunId": "20260930161712-79985df5",
+  "targetGame": "continuation-v2",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "package": {
+    "evidenceId": "code-package-monkey-mart",
+    "indexPath": "reference-evidence/verified/reference-code-package-6255b13cbfcf.json",
+    "sha256": "6255b13cbfcf1384d098474f98d46eaccdb4a270edd15071c1be88fbb4cf6be1"
+  },
+  "coreLoop": [
+    {
+      "step": "用启动资金投资当前开放建设点",
+      "claimIds": [
+        "startup-capital",
+        "build-payment",
+        "construction-feedback"
+      ]
+    },
+    {
+      "step": "进入生产点范围取得有类型的货物",
+      "claimIds": [
+        "production-input",
+        "harvest-stock"
+      ]
+    },
+    {
+      "step": "移动到兼容货架交互区补货",
+      "claimIds": [
+        "harvest-stock"
+      ]
+    },
+    {
+      "step": "顾客取货并到柜台排队，玩家恢复服务",
+      "claimIds": [
+        "buyer-wait-branch",
+        "checkout-cash"
+      ]
+    },
+    {
+      "step": "收取柜台现金，再投资后继节点",
+      "claimIds": [
+        "checkout-cash",
+        "ordered-expansion"
+      ]
+    },
+    {
+      "step": "完成阶段扩建后通过进入标记选择后续店铺",
+      "claimIds": [
+        "next-market"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "build-payment",
+      "dimension": "input_state",
+      "status": "OBSERVED",
+      "statement": "玩家静止且处在正在出售的建设点范围内时，按剩余欠款的比例分次付款；余额限制单次支出；欠款与钱包分别变化，支付完成后才开放后继建设点。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3402,
+          "endLine": 3463
+        },
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3820,
+          "endLine": 3835
+        }
+      ]
+    },
+    {
+      "id": "construction-feedback",
+      "dimension": "feedback_sequence",
+      "status": "OBSERVED",
+      "statement": "建设付款依次扣减钱包、保存已付款、更新建设点剩余价格并播放从玩家到建设点的货币动画；地面欠款减少表示投资，不表示拾取收益。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3433,
+          "endLine": 3450
+        }
+      ]
+    },
+    {
+      "id": "harvest-stock",
+      "dimension": "spatial_relation",
+      "status": "OBSERVED",
+      "statement": "处在有效生产点范围且背包未满时可以自动收取库存；顾客货架的玩家补货分支还要求进入对应货架的交互多边形，库存转移受拾取与放下状态限制。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4018,
+          "endLine": 4047
+        }
+      ]
+    },
+    {
+      "id": "production-input",
+      "dimension": "core_loop",
+      "status": "OBSERVED",
+      "statement": "已激活且有体力的生产点仅在未满库存时推进生产；加工点还需要相连输入货架具备原料，多输入加工点需要对应输入同时有货。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 8345,
+          "endLine": 8373
+        }
+      ]
+    },
+    {
+      "id": "buyer-wait-branch",
+      "dimension": "failure_recovery",
+      "status": "OBSERVED",
+      "statement": "已审阅的普通顾客行为分支依次取篮、前往愿望商品货架等待、取货后前往收银排队；此等待分支由取货状态推进，没有按等待超时离店的分支。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+          "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+          "startLine": 940,
+          "endLine": 983
+        },
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4132,
+          "endLine": 4154
+        }
+      ]
+    },
+    {
+      "id": "checkout-cash",
+      "dimension": "feedback_sequence",
+      "status": "OBSERVED",
+      "statement": "玩家在收银范围内或受雇收银员可工作时，队首完成抵达的顾客才进入打包；延迟后货款进入柜台现金堆，玩家靠近柜台另行收取现金。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3862,
+          "endLine": 3879
+        },
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4091,
+          "endLine": 4112
+        },
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4132,
+          "endLine": 4154
+        }
+      ]
+    },
+    {
+      "id": "ordered-expansion",
+      "dimension": "progression",
+      "status": "OBSERVED",
+      "statement": "主要建设点按已声明的主顺序逐个开放；支线购买与从存档恢复走不同分支，不应把任意购买都视为主线推进。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3320,
+          "endLine": 3367
+        }
+      ]
+    },
+    {
+      "id": "throughput-pressure",
+      "dimension": "failure_recovery",
+      "status": "INFERRED",
+      "statement": "普通顾客货架等待和收银排队主要形成吞吐瓶颈；补货或恢复收银即可继续循环。该推断限定在审阅的普通顾客分支，不能推导所有模式都不存在失败。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+          "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+          "startLine": 943,
+          "endLine": 983
+        },
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 4132,
+          "endLine": 4154
+        }
+      ]
+    },
+    {
+      "id": "disruption-recovery",
+      "dimension": "failure_recovery",
+      "status": "OBSERVED",
+      "statement": "捣乱访客是独立角色分支：抵达可用货架后发出定位到货架的警报，并在货架有货时周期性将货物扔出；普通顾客等待与捣乱行为不能混为同一压力来源。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/Player.lua",
+          "sha256": "739bf483fded8681576c9ffa48649f73b7aa1a1698a81b0dc75a5702b9fe4a11",
+          "startLine": 986,
+          "endLine": 1033
+        }
+      ]
+    },
+    {
+      "id": "next-market",
+      "dimension": "terminal_replay",
+      "status": "OBSERVED",
+      "statement": "阶段扩建可开放下一店铺的进入标记；玩家在该区域静止后打开店铺选择界面。此分支属于阶段转换，不证明存在通关后重开按钮或失败倒计时。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 8561,
+          "endLine": 8581
+        },
+        {
+          "script": "reference-code/monkey-mart/scripts/main/gamecore/GameState.lua",
+          "sha256": "1bfed898c059fe716c5e332a8e753474b64a74bdaa6bde7b9f67ca7f9fb6352e",
+          "startLine": 3925,
+          "endLine": 3934
+        }
+      ]
+    },
+    {
+      "id": "startup-capital",
+      "dimension": "progression",
+      "status": "OBSERVED",
+      "statement": "初始资金由指定开局建设节点的价格合计得到；应把启动建设资金与顾客服务赚取的收入区分开来，不沿用参考作品的价格或节点编号。",
+      "codeRefs": [
+        {
+          "script": "reference-code/monkey-mart/scripts/main/datamanager.lua",
+          "sha256": "271b70f0131b7138d9e3fa90338cfbf49ef81803f324adca79e9cd2015aebed8",
+          "startLine": 786,
+          "endLine": 804
+        }
+      ]
+    }
+  ],
+  "reuseBoundary": {
+    "mechanicsOnly": true,
+    "noCodeCopied": true,
+    "noAssetsCopied": true,
+    "noNamesOrUiCopied": true,
+    "noTuningValuesCopied": true
+  },
+  "analyst": "Codex + Luna independent exact-package verification; mechanic claims unchanged",
+  "analyzedAt": "2026-09-30T16:19:04.091714Z"
+}

@@ -1,0 +1,126 @@
+local PATH_SPRITE1  = "#sprite1"
+local PATH_SPRITE2  = "#sprite2"
+local PATH_SPRITE3  = "#sprite3"
+local PATH_SPRITE4  = "#sprite4"
+local PATH_LABEL    = "#label"
+
+ 
+ 
+
+local function updateSprite(self, vNum)
+    local frameName = ''
+
+    if vNum < 10 then
+        frameName = 'ads_bar000'..vNum
+    else
+        frameName = 'ads_bar00'..vNum
+    end
+
+    if vNum == 1 then
+        msg.post(PATH_SPRITE1, "disable")
+        msg.post(PATH_SPRITE4, "enable")
+        msg.post(PATH_LABEL, "enable")
+    else
+        msg.post(PATH_SPRITE1, "enable")
+        msg.post(PATH_SPRITE4, "disable")
+        msg.post(PATH_LABEL, "disable")
+    end
+
+    msg.post(PATH_SPRITE1, "play_animation", {id = hash(frameName)})
+
+end
+
+local function show(self)
+    msg.post(PATH_SPRITE1, "enable")
+    msg.post(PATH_SPRITE2, "enable")
+    msg.post(PATH_SPRITE3, "enable")
+    msg.post(PATH_SPRITE4, "enable")
+    msg.post(PATH_LABEL, "enable")
+
+    if self.type_bonus == 'boost_boots' then
+        msg.post(PATH_SPRITE3, "disable")
+    end
+
+end
+
+local function hide(self)
+    msg.post(PATH_SPRITE1, "disable")
+    msg.post(PATH_SPRITE2, "disable")
+    msg.post(PATH_SPRITE3, "disable")
+    msg.post(PATH_SPRITE4, "disable")
+    msg.post(PATH_LABEL, "disable")
+
+end
+
+function init(self)
+    self.frameTick = global.timeIndicator / 32
+
+    local frameName = coinmanager.get_cashads_name()
+    sprite.play_flipbook(PATH_SPRITE3, frameName)
+
+    self.type_bonus = nil
+
+    hide(self)
+
+end
+
+ 
+
+
+
+function update(self, dt)
+    if self.type_bonus == 'boost_pig' then
+        if gameState.indicatorPig and gameState.indicatorPig.isReady then
+            local frameNum = math.ceil(gameState.indicatorPig.tick / self.frameTick)
+            updateSprite(self, frameNum)
+        end
+
+    elseif self.type_bonus == 'boost_boots' then
+        if gameState.indicatorSpeedBoots and gameState.indicatorSpeedBoots.isReady then
+            local frameNum = math.ceil(gameState.indicatorSpeedBoots.tick / self.frameTick)
+            updateSprite(self, frameNum)
+        end
+    end
+
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("updateCoins") then
+        label.set_text(PATH_LABEL, "+"..message.value)
+        self.type_bonus = message.type_bonus
+
+    elseif message_id == hash("setSpeedBoots") then
+        label.set_text(PATH_LABEL, message.value)
+        self.type_bonus = message.type_bonus
+
+    elseif message_id == hash("update_text") then
+        if (global.defaultLanguage == 'ja') then
+            go.set(PATH_LABEL, "font", self.font_japanese)
+        else
+            go.set(PATH_LABEL, "font", self.font_main)
+        end
+
+
+        label.set_text(PATH_LABEL, message.value)
+
+    elseif message_id == hash("setVisible") then
+        if message.value then
+            show(self)
+        else
+            hide(self)
+        end
+
+    elseif message_id == hash("setPosition") then
+		local p = vmath.vector3()
+		p.x = message.x
+		p.y = message.y
+
+		if(message.z) then
+			p.z = message.z
+		end
+
+		go.set_position(p, go.get_id())
+        
+    end
+
+end

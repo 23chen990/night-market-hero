@@ -1,0 +1,501 @@
+local H_POPUP = hash("popup")
+local H_DEACTIVATE = hash("deactivate")
+local H_BOUGHT_ITEM = hash("bought_item")
+local H_UNLOCK = hash("unlock_input")
+
+local ButtonComponent = require("main.gui.button_component1")
+
+local node_popup_body = nil
+local node_popup_fade = nil
+
+local owner_url = nil
+local is_lock_input = true
+
+local function show_popup()
+	is_lock_input = false
+	gui.set_enabled(node_popup_fade, true)
+	gui.set_enabled(node_popup_body, true)
+
+	local window_width, window_height = camera.get_window_size()
+	gui.set_size(node_popup_fade,vmath.vector3(window_width*2,window_height*2,0))
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0.5),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_position(node_popup_body, vmath.vector3(global.half_width,global.half_height,0))
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 0))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 1),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(0.8, 0.8, 0.8))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(1, 1, 1),
+	gui.EASING_OUTBACK,
+	0.25)
+
+	if gameState.isTutorial then
+		if (gameState.stepTutorial == 8) then
+			local pos = gui.get_screen_position(gui.get_node("body"))
+			gameState.stepTutorial = 9
+			gameState:updateTutorial(pos)
+		end
+	end
+
+end
+
+local function hide_popup()
+	is_lock_input = true
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0.5))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(0.6, 0.6, 0.6),
+	gui.EASING_INSINE,
+	0.25,
+	0,
+	function()
+		if (owner_url) then
+			msg.post(owner_url, "unlock_input")
+		end
+	end)
+
+end
+
+local function cancel_handler()
+	hide_popup()
+	gameState:closePopup()
+	global.isPopupOpened = false
+
+	if gameState.isTutorial then
+		if (gameState.stepTutorial < 10) then
+			return
+		elseif (gameState.stepTutorial == 10) then
+			gameState.stepTutorial = 11
+			gameState:updateTutorial(pos)
+		end
+	end
+
+end
+
+local function on_close_button(self, params)
+	cancel_handler()
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function clear_check(self)
+	local data = self.data_list_hat:get_data()
+	for _, entry in pairs(data) do
+		entry.is_checked = false
+	end
+
+	local components = self.data_list_hat:get_created_components()
+	for _, component in pairs(components) do
+		component:set_checked(false)
+	end
+
+end
+
+local function update_btns(self)
+	local components = self.data_list_hat:get_created_components()
+	for _, component in pairs(components) do
+		component:update_btn()
+	end
+
+end
+
+local function getIndexDataSet(self, vNum)
+	for k,v in pairs(self.data_set_hat) do
+		if (v.num == vNum) then
+			return k
+		end
+	end
+
+	return nil, -1
+end
+
+local function checkItem(self, vNum, vIsRewarded)
+	local num = vNum
+	local data, k = datamanager.getDataHatByNum(num)
+
+	if (k == -1) then
+		lume.trace('[ WARNING ] zero index getDataHatByNum')
+		return
+	end
+
+	if vIsRewarded then
+		global.have_hats[num][2] = global.have_hats[num][2] + 1
+
+		if data.amount == global.have_hats[num][2] then
+			global.have_hats[num][1] = true
+		end
+	end
+
+	local index = getIndexDataSet(self, num)
+
+	if (index > 0) then
+		if (global.have_hats[num][1] == true) then
+			clear_check(self)
+			self.data_set_hat[index].is_have = true
+			self.data_set_hat[index].is_checked = true
+
+			global.selectedHat = data.view
+			msg.post(url_screen_game, "updateHat", {value = global.selectedHat})
+
+		else
+			self.data_set_hat[index].ads_shown = global.have_hats[num][2]
+
+		end
+
+		update_btns(self)
+	end
+
+	datamanager.update_saves()
+
+end
+
+local function on_button_quest(vNum)
+	local type_button = 'hat_join_event'
+
+	if (vNum == 21) then
+		type_button = 'bonus_hat'
+	elseif (vNum == 26) then
+		type_button = 'fruit_pack'
+	end
+
+	msg.post(url_popup_info, "popup", {
+		owner_url = msg.url(),
+		type = type_button
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function on_button_click(self, button, button_data)
+	local num = button_data.num
+	local isHave = button_data.is_have
+
+	if isHave then
+		clear_check(self)
+		button:set_checked(true)
+		update_btns(self)
+
+		global.selectedHat = button_data.view
+		datamanager.update_saves()
+
+		msg.post(url_screen_game, "updateHat", {value = global.selectedHat})
+
+		playSound("sfx_tap"..global.selected_sfx[10])
+
+	else
+		local typeCoins = button_data.type
+
+		if (typeCoins == 'gems') or (typeCoins == 'coinsH') or (typeCoins == 'coinsC') then
+			local price = button_data.price
+			local coins_value = coinmanager.get_balance(typeCoins)
+
+			if (coins_value >= price) then
+				global.have_hats[num][1] = true
+				coinmanager.minus_balance(price, typeCoins)
+
+				clear_check(self)
+				button:set_buy(true)
+				button:set_checked(true)
+				update_btns(self)
+
+				global.selectedHat = button_data.view
+				datamanager.update_saves()
+
+				msg.post(url_screen_game, "updateHat", {value = global.selectedHat})
+
+				if (typeCoins == 'gems') then
+					msg.post(url_screen_gui_game, "update_gems")
+				else
+					msg.post(url_screen_gui_game, "update_money")
+				end
+
+				playSound("sfx_buy"..global.selected_sfx[1])
+			else
+				if (typeCoins == 'gems') then
+					msg.post(url_popup_message, "show_message", {text_id = "NO_GEMS"})
+				else
+					msg.post(url_popup_message, "show_message", {text_id = "NO_MONEY"})
+				end
+			end
+
+		elseif typeCoins == 'quest' then
+			on_button_quest(button_data.num)
+
+		elseif typeCoins == 'free' then
+			global.have_hats[num][1] = true
+
+			clear_check(self)
+			button:set_buy(true)
+			button:set_checked(true)
+			update_btns(self)
+
+			global.selectedHat = button_data.view
+			datamanager.update_saves()
+
+			msg.post(url_screen_game, "updateHat", {value = global.selectedHat})
+			playSound("sfx_buy"..global.selected_sfx[1])
+
+			if gameState.isTutorial then
+				if (gameState.stepTutorial == 9) then
+					local pos = gui.get_screen_position(gui.get_node("btn_close"))
+					gameState.stepTutorial = 10
+					gameState:updateTutorial(pos)
+				end
+			end
+
+		elseif typeCoins == 'ads' then
+			if (config.isMobileTrue) and (not global.isNetworkConnected) then
+				msg.post(url_popup_message, "show_message", {text_id = "NETWORK_DISCONNECTED"})
+				return
+			end
+
+			is_lock_input = true
+
+			if global.isMobileTrue then
+				global.typeOffer = 'hats'
+				global.rewardedHat = num
+
+				msg.post(url_popup_watch, "popup", {
+					owner_url = msg.url()
+				})
+
+				playSound("sfx_tap"..global.selected_sfx[10])
+
+			else
+				msg.post(url_controller, "showAds", {
+					type = 'hats',
+					index = num,
+					category = 'cosmetic',
+					details = 'mart-'..global.numMarket,
+					placement = 'shop'
+				})
+
+				playSound("sfx_buy"..global.selected_sfx[1])
+
+			end
+
+		elseif typeCoins == 'iap' then
+			if iap then
+				if (num == 26) then
+					iap_manager.buy(apimanager.HAT_FRUIT1_ID)
+				elseif (num == 27) then
+					iap_manager.buy(apimanager.HAT_FRUIT2_ID)
+				elseif (num == 28) then
+					iap_manager.buy(apimanager.HAT_INDIAN_ID)
+				end
+			else
+				if (num == 26) then
+					apimanager.iap_purchased(apimanager.HAT_FRUIT1_ID)
+				elseif (num == 27) then
+					apimanager.iap_purchased(apimanager.HAT_FRUIT2_ID)
+				elseif (num == 28) then
+					apimanager.iap_purchased(apimanager.HAT_INDIAN_ID)
+				end
+
+			end
+
+		end
+
+	end
+
+end
+
+local function create_element_hat(self, data, index, data_list)
+	local nodes = gui.clone_tree(self.prefab_hat)
+	local button = self.druid:new(ButtonComponent, "button_component", nodes)
+	gui.set_enabled(button.root, true)
+	button:set_data(data)
+	button:set_click_zone(data_list.scroll.view_node)
+	
+
+	button.on_click:subscribe(function()
+		on_button_click(self, button, data)
+	end, self)
+
+	return button.root, button
+end
+
+local function on_scroll(self)
+	local scroll_percent = self.scroll:get_percent()
+	self.slider:set(1 - scroll_percent.y, true)
+	
+end
+
+local function on_slider(self, value)
+	self.scroll:scroll_to_percent(vmath.vector3(0, 1 - value, 0), true)
+	
+end
+
+local function updateLanguage(self)
+	gui.set_text(gui.get_node("text_title"), utf8.upper(translate("ACCESSORIES")))
+
+	utils.updateTextWidth(gui.get_node("text_title"), 140, 1.4)
+
+end
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    gui.set_render_order(3)
+
+    node_popup_body = gui.get_node("body")
+    node_popup_fade = gui.get_node("fade")
+
+    gui.set_enabled(node_popup_body, false)
+    gui.set_enabled(node_popup_fade, false)
+
+    self.druid = druid.new(self)
+
+    self.druid:new_button("btn_close", on_close_button)
+
+    
+
+	self.prefab_hat = gui.get_node("button_component/root")
+	gui.set_enabled(self.prefab_hat, false)
+
+	self.data_set_hat = {}
+	local num = 0
+	local data = nil
+
+	local countHats = #global.data_hats
+
+	
+	
+
+	for i = 1, countHats do
+		data = global.data_hats[i]
+		num = data.num
+
+		table.insert(self.data_set_hat, {
+			is_checked	= false,
+			num			= data.num,
+			view		= data.view,
+			type		= data.type,
+			price		= data.amount,
+			is_have		= global.have_hats[num][1],
+			ads_shown	= global.have_hats[num][2]
+		})
+	end
+
+	local id = 1
+
+	for k,v in pairs(global.data_hats) do
+		if (v.view == global.selectedHat) then
+			id = k
+			break
+		end
+	end
+
+	self.data_set_hat[id].is_checked = true
+
+    
+    local scroll_hat = self.druid:new_scroll("shop_mask", "shop_content")
+    scroll_hat:set_horizontal_scroll(false)
+
+	scroll_hat.on_scroll:subscribe(on_scroll)
+
+	self.slider = self.druid:new_slider("slider_pin", vmath.vector3(-15, -484, 0), on_slider)
+	self.slider:set_input_node("slider_back")
+
+	local grid_hat = self.druid:new_grid("shop_content", self.prefab_hat, 3)
+
+    self.data_list_hat = self.druid:new_data_list(scroll_hat, grid_hat, create_element_hat)
+    self.data_list_hat:set_data(self.data_set_hat)
+
+	updateLanguage(self)
+
+	self.scroll = scroll_hat
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+
+    if (message_id == H_POPUP) then
+		owner_url = message.owner_url
+
+		updateLanguage(self)
+		update_btns(self)
+		show_popup()
+
+	elseif (message_id == H_DEACTIVATE) then
+		gui.set_enabled(node_popup_body, false)
+		gui.set_enabled(node_popup_fade, false)
+
+    elseif (message_id == H_UNLOCK) then
+		is_lock_input = false
+
+    elseif (message_id == H_BOUGHT_ITEM) then
+		is_lock_input = false
+
+		if (message.is_not_lock == true) then
+			is_lock_input = true
+		end
+
+		checkItem(self, message.index, message.isRewarded)
+
+	end
+
+end
+
+function on_input(self, action_id, action)
+    if (not is_lock_input) then
+
+		self.druid:on_input(action_id, action)
+
+		if (action_id == hash("touch")) then
+			if (action.pressed and (not gui.pick_node(node_popup_body, action.x, action.y))) then
+				cancel_handler()
+			end
+		end
+
+		return true
+
+	end
+
+end

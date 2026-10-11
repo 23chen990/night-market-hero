@@ -1,0 +1,534 @@
+local PATH_SPINE		= "spine#spinemodel"
+local PATH_VIEW			= "spine"
+local PATH_CLOUD		= "cloud"
+local PATH_CLOUD1		= "cloud_back"
+local PATH_CLOUD2		= "cloud_icon"
+local PATH_CLOUD3		= "cloud_text"
+local PATH_CLOUD4		= "cloud_zzz"
+local PATH_CLOUD_ICON	= "cloud_icon#sprite"
+local PATH_CLOUD_BACK	= "cloud_back#sprite"
+local PATH_CLOUD_TEXT	= "cloud_text#label"
+local PATH_BOOST		= "boost"
+local PATH_BOOST_SPINE	= "boost#spinemodel"
+local PATH_MAX_TEXT		= "text_max"
+local PATH_SHADOW		= "shadow"
+
+local function callback(self, message_id, message, sender)
+	
+	if message_id == hash("spine_animation_done") then
+		if message.animation_id == hash("sleep2") or
+			message.animation_id == hash("hi1") or
+			message.animation_id == hash("applause") or
+			message.animation_id == hash("diler1")
+		then
+			self.animation = "idle"..self.suffixAnim..self.suffixPunch
+			spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+
+		elseif message.animation_id == hash("crazy3") then
+			self.animation = "crazy2"
+			spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+
+		elseif message.animation_id == hash("hi2") then
+			self.animation = "idle5"
+			spine.play_anim(PATH_SPINE, self.animation, go.PLAYBACK_LOOP_FORWARD, {})
+
+		end
+	end
+end
+
+local function playAnim(self, vName, vIsLoop)
+	if self.animation == vName then
+		return
+	end
+
+	local loopPlay = go.PLAYBACK_LOOP_FORWARD
+	if not vIsLoop then
+		loopPlay = go.PLAYBACK_ONCE_FORWARD
+	end
+	spine.play_anim(PATH_SPINE, vName, loopPlay, {}, callback)
+	
+
+	self.animation = vName
+end
+
+local function updateSpineSkin(self, vSelectedSkin)
+    if vSelectedSkin ~= '' then
+		spine.set_skin(PATH_SPINE, vSelectedSkin)
+    end
+
+end
+
+local function updateSpineHat(self, vSelectedHat)
+	spine.set_attachment(PATH_SPINE, "hat", vSelectedHat)
+
+end
+
+local function setVisibleBoost(vBool)
+	if vBool then
+		msg.post(PATH_BOOST, "enable")
+	else
+		msg.post(PATH_BOOST, "disable")
+	end
+
+end
+
+local function setVisibleTextMax(vBool)
+	if vBool then
+		msg.post(PATH_MAX_TEXT, "enable")
+	else
+		msg.post(PATH_MAX_TEXT, "disable")
+	end
+
+end
+
+local function checkCountFood(self)
+	local count = #self.listFood
+	if (count > 0) then
+		self.suffixAnim = self.suffixCollect
+
+		if count >= self.MAX_FOOD then
+			if (self.linkBody.roleType ~= ROLE_BUYER) and (not self.isDisableText) then
+				setVisibleTextMax(true)
+			end
+
+			local posY = 44 + 27*count
+			go.set_position(vmath.vector3(0,posY,DEEP_CLOUD), PATH_MAX_TEXT)
+		else
+			setVisibleTextMax(false)
+		end
+
+	else
+		self.suffixAnim = 1
+	end
+
+	playAnim(self, "idle"..self.suffixAnim..self.suffixPunch, true)
+
+end
+
+local function clearCountFood(self)
+	self.listFood = {}
+	checkCountFood(self)
+
+	for i=1,12 do
+		spine.set_attachment(PATH_SPINE, "food"..i, nil)
+	end
+
+end
+
+local function showFood(self, vList)
+	self.suffixAnim = self.suffixCollect
+
+	for i=1,5 do
+		spine.set_attachment(PATH_SPINE, "food"..i, "food"..vList[i])
+	end
+
+end
+
+local function setFood(self, vList)
+	self.suffixAnim = self.suffixCollect
+	
+	self.listFood = {}
+
+	for k,v in pairs(vList) do
+		table.insert(self.listFood, v)
+		spine.set_attachment(PATH_SPINE, "food"..k, "food"..v)
+	end
+
+end
+
+local function removeCountFood(self, vIndex, vDelay)
+	if (vIndex > 0) and (vIndex <= 12) then
+
+		local count = #self.listFood
+
+		if vIndex < count then
+			for i = count, vIndex+1, -1 do
+				spine.set_attachment(PATH_SPINE, "food"..(i-1), "food"..self.listFood[i])
+			end
+
+			spine.set_attachment(PATH_SPINE, "food"..count, "empty")
+			table.remove(self.listFood, vIndex)
+
+		else
+			spine.set_attachment(PATH_SPINE, "food"..vIndex, "empty")
+			table.remove(self.listFood, vIndex)
+
+
+		end
+
+		checkCountFood(self, count)
+
+	end
+
+end
+
+local function addCountFood(self, vFood, vCount, vDelay)
+	table.insert(self.listFood, vFood)
+
+	local count = #self.listFood
+	checkCountFood(self)
+
+	if count <= 12 then
+		timer.delay(TIME_COLLECT, false, function()
+			spine.set_attachment(PATH_SPINE, "food"..count, "food"..vFood)
+		end)
+	end
+
+end
+
+local function updateGoPosition(self)
+	
+	local posY = self.linkBody.pos.y
+	local posZ = DEEP_PLAYERS - posY / 10000
+
+	go.set_position(vmath.vector3(self.linkBody.pos.x, self.linkBody.pos.y, posZ))
+
+end
+
+local function updatePosZ(self, vPos)
+	local posZ = DEEP_PLAYERS - vPos.y / 10000
+	go.set_position(vmath.vector3(vPos.x, vPos.y, posZ))
+
+end
+
+local function showCloud()
+	msg.post(PATH_CLOUD1, "enable")
+	msg.post(PATH_CLOUD2, "enable")
+	msg.post(PATH_CLOUD3, "enable")
+	msg.post(PATH_CLOUD4, "disable")
+
+end
+
+local function hideCloud()
+	msg.post(PATH_CLOUD1, "disable")
+	msg.post(PATH_CLOUD2, "disable")
+	msg.post(PATH_CLOUD3, "disable")
+	msg.post(PATH_CLOUD4, "disable")
+
+end
+
+local function updateCloud(self, vTypeCloud, vTypeFood, vCountFood)
+	go.set_scale(vmath.vector3(1,1,1), PATH_CLOUD2)
+
+	if vTypeCloud == ACTION_PICKING then
+		go.set_position(vmath.vector3(0,125,0), PATH_CLOUD)
+
+		go.set_position(vmath.vector3(0,0,DEEP_CLOUD+0.01), PATH_CLOUD1)
+		go.set_position(vmath.vector3(-30,6,DEEP_CLOUD+0.02), PATH_CLOUD2)
+		go.set_position(vmath.vector3(20,6,DEEP_TEXT), PATH_CLOUD3)
+
+		go.set_scale(vmath.vector3(0.86,0.86,0.86), PATH_CLOUD2)
+
+		sprite.play_flipbook(PATH_CLOUD_BACK, "cloud1")
+		sprite.play_flipbook(PATH_CLOUD_ICON, "food"..vTypeFood.."_icon")
+		label.set_text(PATH_CLOUD_TEXT, "0/"..vCountFood)
+
+	elseif vTypeCloud == ACTION_GO_PAY then
+		go.set_position(vmath.vector3(0,145,0), PATH_CLOUD)
+
+		sprite.play_flipbook(PATH_CLOUD_BACK, "cloud2")
+		sprite.play_flipbook(PATH_CLOUD_ICON, "terminal")
+
+		go.set_position(vmath.vector3(0,0,DEEP_CLOUD+0.01), PATH_CLOUD1)
+		go.set_position(vmath.vector3(3,3,DEEP_CLOUD+0.02), PATH_CLOUD2)
+		msg.post(PATH_CLOUD3, "disable")
+
+	elseif vTypeCloud == ACTION_EXIT then
+		go.set_position(vmath.vector3(0,145,0), PATH_CLOUD)
+
+		sprite.play_flipbook(PATH_CLOUD_BACK, "cloud2")
+		sprite.play_flipbook(PATH_CLOUD_ICON, "smile")
+
+		go.set_position(vmath.vector3(0,0,DEEP_CLOUD+0.01), PATH_CLOUD1)
+		go.set_position(vmath.vector3(3,3,DEEP_CLOUD+0.02), PATH_CLOUD2)
+		msg.post(PATH_CLOUD3, "disable")
+
+	elseif vTypeCloud == ACTION_SLEEP then
+		go.set_position(vmath.vector3(0,145,0), PATH_CLOUD)
+
+		go.set_position(vmath.vector3(0,0,DEEP_CLOUD+0.01), PATH_CLOUD1)
+		go.set_position(vmath.vector3(3,3,DEEP_CLOUD+0.02), PATH_CLOUD2)
+		go.set_position(vmath.vector3(-120,-22,DEEP_CLOUD+0.03), PATH_CLOUD4)
+
+		sprite.play_flipbook(PATH_CLOUD_BACK, "cloud2")
+		sprite.play_flipbook(PATH_CLOUD_ICON, "smile_sleepy")
+		msg.post(PATH_CLOUD3, "disable")
+		msg.post(PATH_CLOUD4, "enable")
+
+	elseif vTypeCloud == ACTION_WAKEUP then
+
+	elseif vTypeCloud == ACTION_CRAZY then
+		go.set_position(vmath.vector3(0,145,0), PATH_CLOUD)
+
+		sprite.play_flipbook(PATH_CLOUD_BACK, "cloud2")
+		sprite.play_flipbook(PATH_CLOUD_ICON, "smile_crazy")
+
+		go.set_position(vmath.vector3(0,0,DEEP_CLOUD+0.01), PATH_CLOUD1)
+		go.set_position(vmath.vector3(3,3,DEEP_CLOUD+0.02), PATH_CLOUD2)
+		msg.post(PATH_CLOUD3, "disable")
+
+	end
+
+end
+
+local function updateVisible(vBool)
+	if vBool then
+		msg.post(PATH_VIEW, "enable")
+		msg.post(PATH_SHADOW, "enable")
+	else
+		msg.post(PATH_VIEW, "disable")
+		msg.post(PATH_SHADOW, "disable")
+		hideCloud()
+	end
+
+end
+
+local function updateAction(self, vMessage)
+	local action = vMessage.action
+
+	if action == ACTION_IDLE then
+		hideCloud()
+
+		self.suffixAnim = 1
+		playAnim(self, "idle"..self.suffixAnim..self.suffixPunch, true)
+
+	elseif action == ACTION_PICKING then
+		local typeFood = vMessage.list.type
+		local countFood = vMessage.list.count
+
+		showCloud()
+		updateCloud(self, action, typeFood, countFood)
+
+	elseif action == ACTION_GO_PAY then
+		showCloud()
+		updateCloud(self, action)
+
+	elseif action == ACTION_PACKING then
+		
+
+	elseif action == ACTION_EXIT then
+		showCloud()
+		updateCloud(self, action)
+
+		self.suffixAnim = 4
+		playAnim(self, "idle"..self.suffixAnim..self.suffixPunch, true)
+
+	elseif action == ACTION_SLEEP then
+		showCloud()
+		updateCloud(self, action)
+		playAnim(self, "sleep1", true)
+
+	elseif action == ACTION_WAKEUP then
+		playAnim(self, "sleep2", false)
+		hideCloud()
+
+	elseif action == ACTION_CRAZY then
+		showCloud()
+		updateCloud(self, action)
+
+	end
+
+end
+
+local function updateWishList(vCount1, vCount2)
+	label.set_text(PATH_CLOUD_TEXT, vCount1.."/"..vCount2)
+
+end
+
+local function updateFlip(self, isFlip)
+	local rotation = isFlip and 180 or 0
+	go.set_rotation(vmath.quat_rotation_y(math.rad(rotation)), PATH_VIEW)
+
+	if(isFlip) then
+		self.flip = 1
+	else
+		self.flip = -1
+	end
+
+	self.lastFlip = self.flip
+
+end
+
+local function setShadowLocalZ(parent_z, shadow_global_z)
+    local local_z = shadow_global_z - parent_z
+    return local_z
+end
+
+function init(self)
+	self.animation		= nil
+	self.flip			= 0
+	self.lastFlip		= 0
+	self.isSortingZ 	= true
+	self.suffixAnim 	= 1
+	self.suffixCollect 	= 2
+	self.suffixPunch	= ''
+	self.listFood		= {}
+	self.MAX_FOOD		= 12
+	self.isDisableText	= false
+
+	
+	
+	setVisibleBoost(false)
+
+	hideCloud()
+	setVisibleTextMax(false)
+
+	local posZ_shadow = setShadowLocalZ(DEEP_PLAYERS, DEEP_SHADOW)
+	go.set_position(vmath.vector3(0, -3, posZ_shadow), PATH_SHADOW)
+
+end
+
+ 
+
+
+
+function update(self, dt)
+	if (self.linkBody) then
+		if (self.linkBody.isAlive) and (self.linkBody.isUpdateMovement) then
+			if (not self.linkBody.isCollision) then
+				updateGoPosition(self)
+			end
+
+			
+			if self.linkBody.pos.x ~= self.linkBody.posLast.x then
+				local isFlip = self.linkBody.isFlip
+				if(isFlip) then
+					self.flip = 1
+				else
+					self.flip = -1
+				end
+
+				if(self.flip ~= self.lastFlip) then
+					local rotation = isFlip and 180 or 0
+					go.set_rotation(vmath.quat_rotation_y(math.rad(rotation)), PATH_VIEW)
+					self.lastFlip = self.flip
+				end
+
+			end
+
+			if (self.linkBody.pos.x ~= self.linkBody.posLast.x) or (self.linkBody.pos.y ~= self.linkBody.posLast.y)  then
+				playAnim(self, "run"..self.suffixAnim..self.suffixPunch, true)
+			else
+				playAnim(self, "idle"..self.suffixAnim..self.suffixPunch, true)
+			end
+
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("updateView") then
+		if message.skin then
+        	updateSpineSkin(self, message.skin)
+
+			if (not message.isSkipClearFood) then
+				clearCountFood(self)
+			end
+		end
+
+		if message.hat then
+			updateSpineHat(self, message.hat)
+		end
+
+    elseif message_id == hash("setOptions") then
+		self.MAX_FOOD = message.maxFood
+
+		if (message.disableText) then
+			self.isDisableText = message.disableText
+		end
+
+    elseif message_id == hash("initBody") then
+		self.linkBody = gameState.players[message.num]
+		updateGoPosition(self)
+
+	elseif message_id == hash("updatePosZ") then
+		updatePosZ(self, message.pos)
+
+	elseif message_id == hash("randomCursor") then
+		go.set(PATH_SPINE, "cursor", message.value)
+
+    elseif message_id == hash("updateVisible") then
+		updateVisible(message.value)
+
+    elseif message_id == hash("updateFlip") then
+		updateFlip(self, message.value)
+
+    elseif message_id == hash("food_add") then
+		addCountFood(self, message.food, message.count, message.time)
+
+    elseif message_id == hash("food_remove") then
+		removeCountFood(self, message.index, message.time)
+
+	elseif message_id == hash("food_clear") then
+		clearCountFood(self)
+		setVisibleTextMax(false)
+
+	elseif message_id == hash("updateAction") then
+		updateAction(self, message)
+
+	elseif message_id == hash("updateWishList") then
+		updateWishList(message.count1, message.count2)
+
+	elseif message_id == hash("showBasket") then
+		self.suffixCollect = 3
+		self.suffixAnim = self.suffixCollect..self.suffixPunch
+
+	elseif message_id == hash("updateSuffix") then
+		if message.tickMax > 4 then
+			self.suffixCollect = 3
+		else
+			self.suffixCollect = 2
+		end
+	elseif message_id == hash("setToyPunch") then
+		if message.bool then
+			self.suffixPunch = '_punch'
+		else
+			self.suffixPunch = ''
+		end
+
+    elseif message_id == hash("playAnim") then
+        playAnim(self, message.name, message.loop)
+
+	elseif message_id == hash("hideCloud") then
+		hideCloud()
+
+	elseif message_id == hash("setVisibleBoost") then
+		setVisibleBoost(message.bool)
+
+	elseif message_id == hash("smile_exit") then
+		sprite.play_flipbook(PATH_CLOUD_ICON, "smile_exit")
+
+    elseif message_id == hash("setFood") then
+		setFood(self, message.list)
+		checkCountFood(self)
+
+    elseif message_id == hash("showFood") then
+		showFood(self, message.list)
+
+	elseif message_id == hash("set_pompom") then
+		spine.set_attachment(PATH_SPINE, "toolR", "pompom1")
+		spine.set_attachment(PATH_SPINE, "toolL", "pompom1")
+
+    elseif message_id == hash("test1") then
+		local posY = 44 + 27*3
+		go.set_position(vmath.vector3(0,posY,DEEP_CLOUD), PATH_MAX_TEXT)
+		setVisibleTextMax(true)
+
+		pprint(go.get_position(PATH_MAX_TEXT))
+
+    elseif message_id == hash("test2") then
+		showCloud()
+		updateCloud(self, ACTION_EXIT)
+		sprite.play_flipbook(PATH_CLOUD_ICON, "smile_exit")
+
+    elseif message_id == hash("test3") then
+		local typeFood = 1
+		local countFood = 5
+
+		showCloud()
+		updateCloud(self, ACTION_PICKING, 1, 5)
+
+
+    end
+
+end

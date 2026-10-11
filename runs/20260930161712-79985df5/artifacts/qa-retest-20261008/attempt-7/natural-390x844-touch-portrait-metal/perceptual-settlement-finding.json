@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "buildHash": "62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e",
+  "classification": "PERCEPTUAL_UI_CAUSE_MISMATCH",
+  "status": "BLOCKED",
+  "reproductionMatrix": [
+    {
+      "objectType": "Coral Cove market settlement overlay",
+      "stateBranch": "Naturally complete coral smoked-order goal after choosing new market",
+      "renderer": "Default DOM settlement panel over Phaser canvas",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/044-coral-market.png",
+      "sha256": "1e03f9be3215deced719ce36f60087e74d2be517008f419d9722f44a239a8784"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/050-coral-settlement.png",
+      "sha256": "66bbc34131c2ac7ba8d0fb32c85708adc09de2880991c8dad36ce3889445567e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/057-replay-cash.png",
+      "sha256": "616fb456ed387ef9f099abcfd7e64aff7029dada9b4934a9dad8cce496e8ee55"
+    }
+  ],
+  "observed": "Coral market starts with visible market goal smoked orders0/2. After that market reaches its own settlement, overlay title is 扩建结算 and body says 潮池扩建完成, although the completed objective was two smoked-fish orders. Post-continue UI shows 珊瑚浅湾·交付两份烟熏鱼订单2/2. Visible terminal attribution remains the old beach expansion message.",
+  "acceptance": "New-market settlement must visibly attribute completion to its current authored objective and retain clear continue/restart actions; prior beach expansion text must not misidentify the completion cause.",
+  "limitations": [
+    "This is independently inspected natural screenshot evidence, not a source mutation or repaired outcome.",
+    "390 natural harness records16 passing gameplay checks but overall fail due one unidentified404.",
+    "430 viewport natural run is still active."
+  ]
+}

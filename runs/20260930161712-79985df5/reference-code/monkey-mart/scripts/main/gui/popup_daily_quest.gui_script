@@ -1,0 +1,302 @@
+local H_POPUP = hash("popup")
+local H_DEACTIVATE = hash("deactivate")
+local H_UNLOCK = hash("unlock_input")
+local H_UPDATE_SECONDS = hash("update_remaining_time")
+local H_UPDATE_BUTTONS = hash("update_buttons")
+
+local node_popup_body = nil
+local node_popup_fade = nil
+
+local owner_url = nil
+local is_lock_input = true
+
+local function show_popup()
+	is_lock_input = false
+	gui.set_enabled(node_popup_fade, true)
+	gui.set_enabled(node_popup_body, true)
+
+	local window_width, window_height = camera.get_window_size()
+	gui.set_size(node_popup_fade,vmath.vector3(window_width*2,window_height*2,0))
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0.5),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_position(node_popup_body, vmath.vector3(global.half_width,global.half_height,0))
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 0))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 1),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(0.8, 0.8, 0.8))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(1, 1, 1),
+	gui.EASING_OUTBACK,
+	0.25)
+
+end
+
+local function hide_popup()
+	is_lock_input = true
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0.5))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(0.6, 0.6, 0.6),
+	gui.EASING_INSINE,
+	0.25,
+	0,
+	function()
+		if (owner_url) then
+			msg.post(owner_url, "unlock_input")
+		end
+	end)
+
+end
+
+local function cancel_handler()
+	hide_popup()
+	gameState:closePopup()
+	global.isPopupOpened = false
+	global.isPopupQuestsOpened = false
+
+end
+
+local function on_close_button(self, params)
+	cancel_handler()
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function updateQuestWindow(self, vNum)
+	local n = vNum
+	local data = quest_manager.getQuestData(n)
+
+	if (data == nil) then
+		return
+	end
+
+	local count_now		= data.count_now
+	local count_max		= data.count_max
+	local reward		= data.reward
+	local description	= data.description
+	local isClaimed		= data.is_claimed
+
+	local isCompleted = false
+
+	local node_description = gui.get_node("quest"..n.."/text_title")
+	gui.set_text(node_description, translate(description))
+	utils.updateTextWidth(node_description, 300, 0.9)
+
+	if (count_now >= count_max) then
+		isCompleted = true
+	end
+
+	gui.set_enabled(gui.get_node("quest"..n.."/btn_claim"), false)
+	gui.set_enabled(gui.get_node("quest"..n.."/galka"), false)
+	gui.set_enabled(gui.get_node("quest"..n.."/quest_cloud"), false)
+	gui.set_enabled(gui.get_node("quest"..n.."/progress_back"), false)
+	gui.set_enabled(gui.get_node("quest"..n.."/progress_mask"), false)
+	gui.set_enabled(gui.get_node("quest"..n.."/text_progress"), false)
+	gui.set_color(gui.get_node("quest"..n.."/window_day"), vmath.vector4(1, 1, 1, 1))
+	gui.play_flipbook(gui.get_node("quest"..n.."/window_day"), "window_quest1")
+
+	if isCompleted then
+		if isClaimed then
+			gui.set_enabled(gui.get_node("quest"..n.."/galka"), true)
+			gui.play_flipbook(gui.get_node("quest"..n.."/window_day"), "window_quest1")
+
+			local DISABLED_COLOR = vmath.vector4(1, 1, 1, 0.8)
+			gui.set_color(gui.get_node("quest"..n.."/window_day"), DISABLED_COLOR)
+
+		else
+			gui.set_enabled(gui.get_node("quest"..n.."/btn_claim"), true)
+			gui.play_flipbook(gui.get_node("quest"..n.."/window_day"), "window_quest2")
+			gui.set_enabled(gui.get_node("quest"..n.."/quest_cloud"), true)
+
+			gui.set_text(gui.get_node("quest"..n.."/text_value"), reward)
+
+		end
+
+	else
+		gui.set_enabled(gui.get_node("quest"..n.."/quest_cloud"), true)
+		gui.set_enabled(gui.get_node("quest"..n.."/progress_back"), true)
+		gui.set_enabled(gui.get_node("quest"..n.."/progress_mask"), true)
+		gui.set_enabled(gui.get_node("quest"..n.."/text_progress"), true)
+
+		local text_progress = count_now..'/'..count_max
+		gui.set_text(gui.get_node("quest"..n.."/text_progress"), text_progress)
+
+		local ratio = utils.roundDecimal(count_now/count_max, 2)
+		local sizeProgress = vmath.vector3(152 * ratio, 38, 0)
+		gui.set_size(gui.get_node("quest"..n.."/progress_mask"), sizeProgress)
+
+		gui.set_text(gui.get_node("quest"..n.."/text_value"), reward)
+
+	end
+
+end
+
+local function on_claim_button(self, params)
+	local num_quest = params
+	local value = quest_manager.getQuestReward(num_quest)
+
+	global.rewardedGems = value
+	gameState:addRewardedGems()
+
+	quest_manager.setQuestClaimed(num_quest)
+	updateQuestWindow(self, num_quest)
+
+	gameState:checkAvailableQuest()
+
+end
+
+local function updateRemainingTime(self)
+	local data = datamanager:get_remaining_time()
+	local list_text = {translate("SHORT_HOURS"),translate("SHORT_MINUTES"),translate("SHORT_SECONDS")}
+	local str_time = utils.secToHMS(data.remaining_seconds, true, list_text)
+	local str_quest_time = translate("NEW_QUESTS_IN").." "..str_time
+	gui.set_text(self.text_quest_time, str_quest_time)
+
+end
+
+local function updateButtons(self)
+	updateQuestWindow(self, 1)
+	updateQuestWindow(self, 2)
+	updateQuestWindow(self, 3)
+	updateQuestWindow(self, 4)
+	updateQuestWindow(self, 5)
+
+end
+
+local function initButtons(self)
+	for i=1,5 do
+		gui.set_enabled(gui.get_node("quest"..i.."/btn_claim"), false)
+		gui.set_enabled(gui.get_node("quest"..i.."/galka"), false)
+		gui.set_enabled(gui.get_node("quest"..i.."/quest_cloud"), false)
+		gui.set_enabled(gui.get_node("quest"..i.."/progress_back"), false)
+		gui.set_enabled(gui.get_node("quest"..i.."/progress_mask"), false)
+		gui.set_enabled(gui.get_node("quest"..i.."/text_progress"), false)
+	end
+
+end
+
+local function updateLanguage(self)
+	gui.set_text(gui.get_node("text_title"), utf8.upper(translate("DAILY_QUESTS")))
+
+	utils.updateTextWidth(gui.get_node("text_title"), 180, 1.4)
+
+	local str_claim = utf8.upper(translate("CLAIM"))
+
+	for i=1,5 do
+		gui.set_text(gui.get_node("quest"..i.."/text_button"), str_claim)
+	end
+
+end
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    gui.set_render_order(4)
+
+    node_popup_body = gui.get_node("body")
+    node_popup_fade = gui.get_node("fade")
+
+    gui.set_enabled(node_popup_body, false)
+    gui.set_enabled(node_popup_fade, false)
+
+	self.text_quest_time = gui.get_node("text_quest_time")
+
+    self.druid = druid.new(self)
+
+    self.druid:new_button("btn_close", on_close_button)
+
+	for i=1,5 do
+		self.druid:new_button(gui.get_node("quest"..i.."/btn_claim"), on_claim_button, i)
+	end
+
+	initButtons(self)
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+
+    if (message_id == H_POPUP) then
+		owner_url = message.owner_url
+
+		updateLanguage(self)
+		updateRemainingTime(self)
+		updateButtons(self)
+		show_popup()
+		global.isPopupQuestsOpened = true
+
+	elseif (message_id == H_UPDATE_SECONDS) then
+		updateRemainingTime(self)
+
+	elseif (message_id == H_UPDATE_BUTTONS) then
+		updateButtons(self)
+
+	elseif (message_id == H_DEACTIVATE) then
+		gui.set_enabled(node_popup_body, false)
+		gui.set_enabled(node_popup_fade, false)
+
+    elseif (message_id == H_UNLOCK) then
+		is_lock_input = false
+
+	end
+
+end
+
+function on_input(self, action_id, action)
+    if (not is_lock_input) then
+
+		self.druid:on_input(action_id, action)
+
+		if (action_id == hash("touch")) then
+			if (action.pressed and (not gui.pick_node(node_popup_body, action.x, action.y))) then
+				cancel_handler()
+			end
+		end
+
+		return true
+
+	end
+
+end

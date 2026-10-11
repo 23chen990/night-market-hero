@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "track": "deterministic-fixture-implementation-evidence-only",
+  "report": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/qa-report.json",
+  "passed": true,
+  "checkCount": 46,
+  "failures": [],
+  "viewports": [
+    "360x800",
+    "390x844",
+    "430x932",
+    "540x960",
+    "844x390",
+    "1440x900"
+  ],
+  "fixtureCorrection": "completeOrder stops with the customer still packing (320 ms packing minus 200 ms advanced after service). Explicitly finish the remaining packing duration, assert cash on counter with wallet unchanged, leave and return to collect, then assert full sale value in wallet.",
+  "remainingEvidence": [
+    "Independent natural-input and perceptual gates remain separate and cannot be closed by this fixture suite."
+  ],
+  "media": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/360x800-settlement.png",
+      "sha256": "cb9986b2c89f397d74ec91c6dbd5dff3d0d6bdfce86c9159c22830a7dc38fe16",
+      "bytes": 108927
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/360x800-avatar-174-786.png",
+      "sha256": "ca2c003b7d71ad5e495d2d76d7f38adb2e0cf8a06ee2329c454d06f86fda7593",
+      "bytes": 44901
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/360x800-avatar-120-820.png",
+      "sha256": "2dc61488908b3eafd888f1f88db000abbe6625794c5cd3df653f110158f9f8f6",
+      "bytes": 44540
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/360x800-avatar-270-820.png",
+      "sha256": "1ea17377edf4b93c7d51594e4032b0d850c3d4835633daec6613657489071d3f",
+      "bytes": 45536
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/390x844-settlement.png",
+      "sha256": "2d599a677f40ccc34910a652564beaf77f6efac25af151e9dd23891c1c554358",
+      "bytes": 119021
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/390x844-avatar-174-786.png",
+      "sha256": "b400589f923c6b0708c5a74861004df843fd95ecf2f7a5e47a16beed0a8892db",
+      "bytes": 51378
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/390x844-avatar-120-820.png",
+      "sha256": "c8a78df91db1a740077f945fcc67bc6e470788722b6ee43c1ed484dc8e82b709",
+      "bytes": 52089
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/390x844-avatar-270-820.png",
+      "sha256": "6c1fa020a12131ddb4007131734f25cadfde241f1f59d1d3a76cadbac90afb8e",
+      "bytes": 52159
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/430x932-settlement.png",
+      "sha256": "4c79ae7a3979b885e721d56740341d28952ed4ba292566d9104a54f22d276919",
+      "bytes": 137923
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/430x932-avatar-174-786.png",
+      "sha256": "3ff882a1784a282e1c2c8b11cafb9258ee0eb43d3e7a9581eb4e46a8482829fc",
+      "bytes": 66216
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/430x932-avatar-120-820.png",
+      "sha256": "7c30d923a7b75c173986bab8e6f97da73d174aee3085b2a7779befd2cafb3387",
+      "bytes": 66651
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/430x932-avatar-270-820.png",
+      "sha256": "87ff023a570ad2719077f0b33b474960d75e6b6d762aefe08744106ebf310008",
+      "bytes": 67407
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/540x960-settlement.png",
+      "sha256": "72f952cd55bc74054fb7bebf05d4b89b1dc65a66c822ecb0e563870daa391955",
+      "bytes": 171587
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/540x960-avatar-174-786.png",
+      "sha256": "1b57c498b753b9bf97f8dba936b4e94f7a1e8e87171f058ec2e185d4e972423c",
+      "bytes": 72433
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/540x960-avatar-120-820.png",
+      "sha256": "faf3ce625d0558fdc3bf10e0f4d6af8f7251820e0cb0a13894733a480b743e52",
+      "bytes": 74328
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/540x960-avatar-270-820.png",
+      "sha256": "f859ba7043da592e32d9c9f871ca92cc54108837a39f82c63bf3771206d2b2e4",
+      "bytes": 76370
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/844x390-settlement.png",
+      "sha256": "6fbd1e081541054f0490c445d0ab25f30de618a1e8bf812dd6dc45b2109aaf7e",
+      "bytes": 108736
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/844x390-avatar-174-786.png",
+      "sha256": "c906c81f59969d357e3a1de9d7fd84434ce38d30d7d90eaf9e240ca3a9e4072e",
+      "bytes": 51022
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/844x390-avatar-120-820.png",
+      "sha256": "d05f1c296987396074423e39b44473849cc037f1007d5f85625372678523b3cd",
+      "bytes": 52483
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/844x390-avatar-270-820.png",
+      "sha256": "58fb8bd1d7bd772153668bae71b4afc8c817f7d25ce00bab7b69efdcaa17e8af",
+      "bytes": 52014
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/1440x900-settlement.png",
+      "sha256": "415b37018e1a97b46c2178ef088ec9f597a67616258c06204d0fa3c2549e73f4",
+      "bytes": 275625
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/1440x900-avatar-174-786.png",
+      "sha256": "e204a01e2510561fcdb5447adb445ca42fd2cb60c7e6a3ed78561adf0ef37a0e",
+      "bytes": 122022
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/1440x900-avatar-120-820.png",
+      "sha256": "58f4c630f72832d54b94b0a29796153a8001f1516bbbe49397577235e57f313d",
+      "bytes": 124970
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/deterministic/1440x900-avatar-270-820.png",
+      "sha256": "c8f42ff15262bc52f2e0801cad39ea6851cf68c57f26de3206c6421325a508f8",
+      "bytes": 122347
+    }
+  ],
+  "sourceBindingBefore": true,
+  "sourceBindingAfter": true,
+  "testedAt": "2026-10-08T10:31:30.556Z"
+}

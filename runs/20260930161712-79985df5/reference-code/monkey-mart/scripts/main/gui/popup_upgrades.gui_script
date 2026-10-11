@@ -1,0 +1,1121 @@
+local H_POPUP = hash("popup")
+local H_DEACTIVATE = hash("deactivate")
+local H_BOUGHT_ITEM = hash("bought_item")
+local H_UNLOCK = hash("unlock_input")
+local H_INIT = hash("init_upgrades")
+
+local ButtonComponent2 = require("main.gui.button_component2")
+
+local node_popup_body = nil
+local node_popup_fade = nil
+
+local owner_url = nil
+local is_lock_input = true
+
+local function show_popup()
+	is_lock_input = false
+	gui.set_enabled(node_popup_fade, true)
+	gui.set_enabled(node_popup_body, true)
+
+	local window_width, window_height = camera.get_window_size()
+	gui.set_size(node_popup_fade,vmath.vector3(window_width*2,window_height*2,0))
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0.5),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_position(node_popup_body, vmath.vector3(global.half_width,global.half_height,0))
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 0))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 1),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(0.8, 0.8, 0.8))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(1, 1, 1),
+	gui.EASING_OUTBACK,
+	0.25)
+
+	if gameState.isTutorial then
+		if (gameState.stepTutorial == 5) then
+			local pos = gui.get_screen_position(gui.get_node("body"))
+			gameState.stepTutorial = 6
+			gameState:updateTutorial(pos)
+		end
+	end
+
+end
+
+local function hide_popup()
+	is_lock_input = true
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0.5))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	gui.set_scale(node_popup_body, vmath.vector3(1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(0.8, 0.8, 0.8),
+	gui.EASING_INSINE,
+	0.1,
+	0,
+	function()
+		if (owner_url) then
+			msg.post(owner_url, "unlock_input")
+		end
+	end)
+
+end
+
+local function cancel_handler()
+	if gameState.isTutorial then
+		if (gameState.stepTutorial < 7) then
+			return
+		elseif (gameState.stepTutorial == 7) then
+			gameState.stepTutorial = 8
+			gameState:updateTutorial()
+		end
+	end
+
+	hide_popup()
+	gameState:closePopup()
+	global.isPopupOpened = false
+
+	gameState:checkAvailableUpgrade()
+
+end
+
+local function on_close_button(self, params)
+	cancel_handler()
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function update_btns(self)
+	local components = self.data_list:get_created_components()
+	for _, component in pairs(components) do
+		component:update_btn()
+	end
+
+end
+
+local function update_from_ads(self, id, type)
+	local upgrades_level = nil
+
+	local upgrades_level = gameState.dataMart:getUpgradesData('upgrades_level')
+
+	if (id == 1) then
+		upgrades_level	= global.upgrades_level1
+	end
+
+	upgrades_level[id][type] = upgrades_level[id][type] + 1
+	datamanager.update_saves()
+
+	gameState:upgradeObject(id, type)
+
+	update_btns(self)
+
+end
+
+local function check_upgrade(self, id, type)
+	local upgrades_level = gameState.dataMart:getUpgradesData('upgrades_level')
+	local upgrades_price = gameState.dataMart:getUpgradesData('upgrades_price')
+	local upgrades_max = gameState.dataMart:getUpgradesData('upgrades_max')
+
+	if (id == 1) then
+		upgrades_level	= global.upgrades_level1
+		upgrades_price	= global.upgrades_price1
+		upgrades_max	= global.upgrades_max1
+	end
+
+	local get_lvl = upgrades_level[id][type]
+	local price = 0
+	local maxLevelUpgrade = upgrades_max[id][type]
+
+	if get_lvl <= maxLevelUpgrade then
+		price = upgrades_price[id][type][get_lvl]
+
+		if price == 'ads' then
+			is_lock_input = true
+
+			msg.post(url_controller, "showAds", {
+				type = 'upgrade',
+				index = id,
+				index2 = type
+			})
+
+			playSound("sfx_buy"..global.selected_sfx[1])
+		elseif price == 'free' then
+			upgrades_level[id][type] = upgrades_level[id][type] + 1
+			datamanager.update_saves()
+			gameState:upgradeObject(id, type)
+			update_btns(self)
+			playSound("sfx_buy"..global.selected_sfx[1])
+
+			if gameState.isTutorial then
+				if (gameState.stepTutorial == 6) then
+					local pos = gui.get_screen_position(gui.get_node("btn_close"))
+					gameState.stepTutorial = 7
+					gameState:updateTutorial(pos)
+				end
+			end
+		else
+			local coins_value = coinmanager.get_balance()
+
+			if (coins_value >= price) then
+				coinmanager.minus_balance(price)
+				upgrades_level[id][type] = upgrades_level[id][type] + 1
+
+				datamanager.update_saves()
+
+				gameState:upgradeObject(id, type)
+
+				gameState:upgradeFromPopup()
+
+				msg.post(url_screen_gui_game, "update_money")
+				msg.post(url_screen_gui_game, "updateAttention", {type = "upgrade", bool = false})
+
+				update_btns(self)
+
+				playSound("sfx_buy"..global.selected_sfx[1])
+			else
+				msg.post(url_popup_message, "show_message", {text_id = "NO_MONEY"})
+			end
+		end
+
+	end
+end
+
+local function on_button_click1(self, button, button_data)
+	check_upgrade(self, button_data.value, 1)
+
+end
+
+local function on_button_click2(self, button, button_data)
+	check_upgrade(self, button_data.value, 2)
+
+end
+
+local function on_button_click3(self, button, button_data)
+	check_upgrade(self, button_data.value, 3)
+
+end
+
+local function create_element(self, data, index, data_list)
+	local nodes = gui.clone_tree(self.prefab)
+	local button = self.druid:new(ButtonComponent2, "button_component", nodes)
+	gui.set_enabled(button.root, true)
+	button:set_data(data)
+	button:set_click_zone(data_list.scroll.view_node)
+
+	button.on_click1:subscribe(function()
+		on_button_click1(self, button, data)
+	end, self)
+
+	button.on_click2:subscribe(function()
+		on_button_click2(self, button, data)
+	end, self)
+
+	button.on_click3:subscribe(function()
+		on_button_click3(self, button, data)
+	end, self)
+
+	return button.root, button
+end
+
+local function updateLanguage(self)
+	gui.set_text(gui.get_node("text_title"), utf8.upper(translate("UPGRADES")))
+
+	utils.updateTextWidth(gui.get_node("text_title"), 140, 1.4)
+
+end
+
+local function initUpgrades1(self)
+	table.insert(self.data_set, {
+		value		= 1,
+		placeId		= 0,
+		icon		= 'icon_player',
+		textId		= "PLAYER",
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= 28,
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food2_icon',
+		icon2		= 'food3_icon',
+		icon3		= 'food4_icon'
+	})
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= 27,
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food1_icon',
+		icon2		= 'food5_icon',
+		icon3		= 'food6_icon'
+	})
+	table.insert(self.data_set, {
+		value		= 4,
+		placeId		= 29,
+		icon		= 'icon_farmer1',
+		textId		= "FARMER",
+		icon1		= datamanager.getFrameNameZavod_mini(4),
+		icon2		= datamanager.getFrameNameZavod_mini(3),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 5,
+		placeId		= 30,
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(5),
+		icon2		= datamanager.getFrameNameZavod_mini(6),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 6,
+		placeId		= 13,
+		icon		= datamanager.getFrameNameZavod_normal(3),
+		textId		= "ZAVOD_FOOD"..3,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 7,
+		placeId		= 16,
+		icon		= datamanager.getFrameNameZavod_normal(4),
+		textId		= "ZAVOD_FOOD"..4,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 8,
+		placeId		= 21,
+		icon		= datamanager.getFrameNameZavod_normal(5),
+		textId		= "ZAVOD_FOOD"..5,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 9,
+		placeId		= 24,
+		icon		= datamanager.getFrameNameZavod_normal(6),
+		textId		= "ZAVOD_FOOD"..6,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+
+end
+
+local function initUpgrades2(self)
+	table.insert(self.data_set, {
+		value		= 1,
+		placeId		= 0,
+		icon		= 'icon_player',
+		textId		= "PLAYER",
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= gameState.dataMart.listUpgradesId[3],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food8_icon',
+		icon2		= 'food11_icon',
+		icon3		= 'food13_icon'
+	})
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= gameState.dataMart.listUpgradesId[2],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food7_icon',
+		icon2		= 'food10_icon',
+		icon3		= 'food14_icon'
+	})
+	table.insert(self.data_set, {
+		value		= 4,
+		placeId		= gameState.dataMart.listUpgradesId[4],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food9_icon',
+		icon2		= 'food12_icon',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 5,
+		placeId		= gameState.dataMart.listUpgradesId[5],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(11),
+		icon2		= datamanager.getFrameNameZavod_mini(12),
+		icon3		= datamanager.getFrameNameZavod_mini(13)
+	})
+	table.insert(self.data_set, {
+		value		= 6,
+		placeId		= gameState.dataMart.listUpgradesId[6],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(10),
+		icon2		= datamanager.getFrameNameZavod_mini(14),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 7,
+		placeId		= gameState.dataMart.listUpgradesId[7],
+		icon		= datamanager.getFrameNameZavod_normal(11),
+		textId		= "ZAVOD_FOOD"..11,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 8,
+		placeId		= gameState.dataMart.listUpgradesId[8],
+		icon		= datamanager.getFrameNameZavod_normal(13),
+		textId		= "ZAVOD_FOOD"..13,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 9,
+		placeId		= gameState.dataMart.listUpgradesId[9],
+		icon		= datamanager.getFrameNameZavod_normal(12),
+		textId		= "ZAVOD_FOOD"..12,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 10,
+		placeId		= gameState.dataMart.listUpgradesId[10],
+		icon		= datamanager.getFrameNameZavod_normal(10),
+		textId		= "ZAVOD_FOOD"..10,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 11,
+		placeId		= gameState.dataMart.listUpgradesId[11],
+		icon		= datamanager.getFrameNameZavod_normal(14),
+		textId		= "ZAVOD_FOOD"..14,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+
+end
+
+local function initUpgrades3(self)
+	table.insert(self.data_set, {
+		value		= 1,
+		placeId		= 0,
+		icon		= 'icon_player',
+		textId		= "PLAYER",
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= gameState.dataMart.listUpgradesId[2],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food15_icon',
+		icon2		= 'food4_icon',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= gameState.dataMart.listUpgradesId[3],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food18_icon',
+		icon2		= 'food17_icon',
+		icon3		= 'food19_icon'
+	})
+	table.insert(self.data_set, {
+		value		= 4,
+		placeId		= gameState.dataMart.listUpgradesId[4],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food20_icon',
+		icon2		= 'food16_icon',
+		icon3		= 'food10_icon'
+	})
+	table.insert(self.data_set, {
+		value		= 5,
+		placeId		= gameState.dataMart.listUpgradesId[5],
+		icon		= 'icon_farmer1',
+		textId		= "FARMER",
+		icon1		= datamanager.getFrameNameZavod_mini(4),
+		icon2		= datamanager.getFrameNameZavod_mini(4),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 6,
+		placeId		= gameState.dataMart.listUpgradesId[6],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(18),
+		icon2		= datamanager.getFrameNameZavod_mini(17),
+		icon3		= datamanager.getFrameNameZavod_mini(16)
+	})
+	table.insert(self.data_set, {
+		value		= 7,
+		placeId		= gameState.dataMart.listUpgradesId[7],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(19),
+		icon2		= datamanager.getFrameNameZavod_mini(18),
+		icon3		= datamanager.getFrameNameZavod_mini(20)
+	})
+	table.insert(self.data_set, {
+		value		= 8,
+		placeId		= gameState.dataMart.listUpgradesId[8],
+		icon		= datamanager.getFrameNameZavod_normal(4),
+		textId		= "ZAVOD_FOOD"..4,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 9,
+		placeId		= gameState.dataMart.listUpgradesId[9],
+		icon		= datamanager.getFrameNameZavod_normal(4),
+		textId		= "ZAVOD_FOOD"..4,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 10,
+		placeId		= gameState.dataMart.listUpgradesId[10],
+		icon		= datamanager.getFrameNameZavod_normal(16),
+		textId		= "ZAVOD_FOOD"..16,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 11,
+		placeId		= gameState.dataMart.listUpgradesId[11],
+		icon		= datamanager.getFrameNameZavod_normal(17),
+		textId		= "ZAVOD_FOOD"..17,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 12,
+		placeId		= gameState.dataMart.listUpgradesId[12],
+		icon		= datamanager.getFrameNameZavod_normal(18),
+		textId		= "ZAVOD_FOOD"..18,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 13,
+		placeId		= gameState.dataMart.listUpgradesId[13],
+		icon		= datamanager.getFrameNameZavod_normal(19),
+		textId		= "ZAVOD_FOOD"..19,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 14,
+		placeId		= gameState.dataMart.listUpgradesId[14],
+		icon		= datamanager.getFrameNameZavod_normal(20),
+		textId		= "ZAVOD_FOOD"..20,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+
+	table.insert(self.data_set, {
+		value		= 15,
+		placeId		= gameState.dataMart.listUpgradesId[15],
+		icon		= 'icon_car1',
+		textId		= "DELIVERY_CAR",
+		icon1		= nil,
+		icon2		= 'food10_icon',
+		icon3		= nil
+	})
+end
+
+local function initUpgrades4(self)
+	table.insert(self.data_set, {
+		value		= 1,
+		placeId		= 0,
+		icon		= 'icon_player',
+		textId		= "PLAYER",
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= gameState.dataMart.listUpgradesId[3],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food22_icon',
+		icon2		= 'food21_icon',
+		icon3		= 'food24_icon',
+	})
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= gameState.dataMart.listUpgradesId[2],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food23_icon',
+		icon2		= 'food27_icon',
+		icon3		= 'food28_icon',
+	})
+	table.insert(self.data_set, {
+		value		= 4,
+		placeId		= gameState.dataMart.listUpgradesId[4],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food26_icon',
+		icon2		= 'food25_icon',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 5,
+		placeId		= gameState.dataMart.listUpgradesId[5],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(24),
+		icon2		= datamanager.getFrameNameZavod_mini(28),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 6,
+		placeId		= gameState.dataMart.listUpgradesId[6],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(26),
+		icon2		= datamanager.getFrameNameZavod_mini(25),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 7,
+		placeId		= gameState.dataMart.listUpgradesId[7],
+		icon		= datamanager.getFrameNameZavod_normal(24),
+		textId		= "ZAVOD_FOOD"..24,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 8,
+		placeId		= gameState.dataMart.listUpgradesId[8],
+		icon		= datamanager.getFrameNameZavod_normal(28),
+		textId		= "ZAVOD_FOOD"..28,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 9,
+		placeId		= gameState.dataMart.listUpgradesId[9],
+		icon		= datamanager.getFrameNameZavod_normal(26),
+		textId		= "ZAVOD_FOOD"..26,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 10,
+		placeId		= gameState.dataMart.listUpgradesId[10],
+		icon		= datamanager.getFrameNameZavod_normal(25),
+		textId		= "ZAVOD_FOOD"..25,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+
+end
+
+local function initUpgrades5(self)
+	table.insert(self.data_set, {
+		value		= 1,
+		placeId		= 0,
+		icon		= 'icon_player',
+		textId		= "PLAYER",
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= gameState.dataMart.listUpgradesId[2],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food35_icon',
+		icon2		= 'food36_icon',
+		icon3		= 'food3_icon',
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= gameState.dataMart.listUpgradesId[3],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food15_icon',
+		icon2		= 'food18_icon',
+		icon3		= 'food38_icon',
+	})
+	table.insert(self.data_set, {
+		value		= 4,
+		placeId		= gameState.dataMart.listUpgradesId[4],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food37_icon',
+		icon2		= 'food39_icon',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 5,
+		placeId		= gameState.dataMart.listUpgradesId[5],
+		icon		= 'icon_farmer1',
+		textId		= "FARMER",
+		icon1		= datamanager.getFrameNameZavod_mini(36),
+		icon2		= datamanager.getFrameNameZavod_mini(3),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 6,
+		placeId		= gameState.dataMart.listUpgradesId[6],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(18),
+		icon2		= datamanager.getFrameNameZavod_mini(38),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 7,
+		placeId		= gameState.dataMart.listUpgradesId[7],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(37),
+		icon2		= datamanager.getFrameNameZavod_mini(39),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 10,
+		placeId		= gameState.dataMart.listUpgradesId[10],
+		icon		= datamanager.getFrameNameZavod_normal(36),
+		textId		= "ZAVOD_FOOD"..36,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 8,
+		placeId		= gameState.dataMart.listUpgradesId[8],
+		icon		= datamanager.getFrameNameZavod_normal(3),
+		textId		= "ZAVOD_FOOD"..3,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 9,
+		placeId		= gameState.dataMart.listUpgradesId[9],
+		icon		= datamanager.getFrameNameZavod_normal(18),
+		textId		= "ZAVOD_FOOD"..18,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 11,
+		placeId		= gameState.dataMart.listUpgradesId[11],
+		icon		= datamanager.getFrameNameZavod_normal(37),
+		textId		= "ZAVOD_FOOD"..37,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 12,
+		placeId		= gameState.dataMart.listUpgradesId[12],
+		icon		= datamanager.getFrameNameZavod_normal(38),
+		textId		= "ZAVOD_FOOD"..38,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 13,
+		placeId		= gameState.dataMart.listUpgradesId[13],
+		icon		= datamanager.getFrameNameZavod_normal(39),
+		textId		= "ZAVOD_FOOD"..39,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+
+end
+
+local function initUpgrades6(self)
+	table.insert(self.data_set, {
+		value		= 1,
+		placeId		= 0,
+		icon		= 'icon_player',
+		textId		= "PLAYER",
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= gameState.dataMart.listUpgradesId[2],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food40_icon',
+		icon2		= 'food44_icon',
+		icon3		= 'food41_icon',
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= gameState.dataMart.listUpgradesId[3],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food42_icon',
+		icon2		= 'food43_icon',
+		icon3		= 'food46_icon',
+	})
+	table.insert(self.data_set, {
+		value		= 4,
+		placeId		= gameState.dataMart.listUpgradesId[4],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food45_icon',
+		icon2		= 'food47_icon',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 5,
+		placeId		= gameState.dataMart.listUpgradesId[5],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(41),
+		icon2		= datamanager.getFrameNameZavod_mini(46),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 6,
+		placeId		= gameState.dataMart.listUpgradesId[6],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= datamanager.getFrameNameZavod_mini(45),
+		icon2		= datamanager.getFrameNameZavod_mini(47),
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 7,
+		placeId		= gameState.dataMart.listUpgradesId[7],
+		icon		= datamanager.getFrameNameZavod_normal(41),
+		textId		= "ZAVOD_FOOD"..41,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 8,
+		placeId		= gameState.dataMart.listUpgradesId[8],
+		icon		= datamanager.getFrameNameZavod_normal(45),
+		textId		= "ZAVOD_FOOD"..45,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 9,
+		placeId		= gameState.dataMart.listUpgradesId[9],
+		icon		= datamanager.getFrameNameZavod_normal(46),
+		textId		= "ZAVOD_FOOD"..46,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 10,
+		placeId		= gameState.dataMart.listUpgradesId[10],
+		icon		= datamanager.getFrameNameZavod_normal(47),
+		textId		= "ZAVOD_FOOD"..47,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+
+end
+
+local function initUpgradesH(self)
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= gameState.dataMart.listUpgradesId[2],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food29_icon',
+		icon2		= 'food30_icon',
+		icon3		= 'food31_icon',
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= gameState.dataMart.listUpgradesId[3],
+		icon		= datamanager.getFrameNameZavod_normal(31),
+		textId		= "ZAVOD_FOOD"..31,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+
+end
+
+local function initUpgradesC(self)
+	table.insert(self.data_set, {
+		value		= 2,
+		placeId		= gameState.dataMart.listUpgradesId[2],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food33_icon',
+		icon2		= 'food34_icon',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 3,
+		placeId		= gameState.dataMart.listUpgradesId[3],
+		icon		= 'icon_assistant1',
+		textId		= "ASSISTANT",
+		icon1		= 'food18_icon',
+		icon2		= 'food32_icon',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 4,
+		placeId		= gameState.dataMart.listUpgradesId[4],
+		icon		= 'icon_chef1',
+		textId		= "CHEF",
+		icon1		= 'icon_wreath_maker2',
+		icon2		= 'icon_cookie_maker2',
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 5,
+		placeId		= gameState.dataMart.listUpgradesId[5],
+		icon		= datamanager.getFrameNameZavod_normal(34),
+		textId		= "ZAVOD_FOOD"..34,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 6,
+		placeId		= gameState.dataMart.listUpgradesId[6],
+		icon		= datamanager.getFrameNameZavod_normal(32),
+		textId		= "ZAVOD_FOOD"..32,
+		icon1		= nil,
+		icon2		= nil,
+		icon3		= nil
+	})
+	table.insert(self.data_set, {
+		value		= 7,
+		placeId		= gameState.dataMart.listUpgradesId[7],
+		icon		= 'icon_car1',
+		textId		= "DELIVERY_CAR",
+		icon1		= nil,
+		icon2		= 'food18_icon',
+		icon3		= nil
+	})
+
+end
+
+local function on_scroll(self)
+	local scroll_percent = self.scroll:get_percent()
+	self.slider:set(1 - scroll_percent.y, true)
+	
+end
+
+local function on_slider(self, value)
+	self.scroll:scroll_to_percent(vmath.vector3(0, 1 - value, 0), true)
+
+	
+	
+end
+
+local function update_scroll(self, value)
+	self.scroll:scroll_to(vmath.vector3(0, value, 0), true)
+
+end
+
+local function initListUpgrades(self)
+	if (global.numMarket == 1) then
+		initUpgrades1(self)
+	elseif (global.numMarket == 2) then
+		initUpgrades2(self)
+	elseif (global.numMarket == 3) then
+		initUpgrades3(self)
+	elseif (global.numMarket == 4) then
+		initUpgrades4(self)
+	elseif (global.numMarket == 5) then
+		initUpgrades5(self)
+	elseif (global.numMarket == 6) then
+		initUpgrades6(self)
+	elseif (global.numMarket == 101) then
+		initUpgradesH(self)
+	elseif (global.numMarket == 102) then
+		initUpgradesC(self)
+	end
+
+    local scroll = self.druid:new_scroll("shop_mask", "shop_content")
+    scroll:set_horizontal_scroll(false)
+
+	scroll.on_scroll:subscribe(on_scroll)
+
+	self.slider = self.druid:new_slider("slider_pin", vmath.vector3(-15, -484, 0), on_slider)
+	self.slider:set_input_node("slider_back")
+
+	self.scroll = scroll
+
+	local grid = self.druid:new_grid("shop_content", self.prefab, 1)
+
+    self.data_list = self.druid:new_data_list(scroll, grid, create_element)
+    self.data_list:set_data(self.data_set)
+
+	update_btns(self)
+
+	if (global.numMarket == 101) then
+		local sizeScroll = vmath.vector3(580, 520, 0)
+		scroll:set_size(sizeScroll)
+
+		gui.set_enabled(gui.get_node("slider_pin"), false)
+		
+	end
+
+end
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    gui.set_render_order(4)
+
+    node_popup_body = gui.get_node("body")
+    node_popup_fade = gui.get_node("fade")
+
+    gui.set_enabled(node_popup_body, false)
+    gui.set_enabled(node_popup_fade, false)
+
+    self.druid = druid.new(self)
+
+    self.druid:new_button("btn_close", on_close_button)
+
+    
+
+	self.prefab = gui.get_node("button_component/root")
+	gui.set_enabled(self.prefab, false)
+
+    self.data_set = {}
+
+	updateLanguage(self)
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+
+    if (message_id == H_POPUP) then
+		owner_url = message.owner_url
+
+		updateLanguage(self)
+		update_btns(self)
+		show_popup()
+
+		if message.scrollValue then
+			update_scroll(self, message.scrollValue)
+		end
+
+	elseif (message_id == H_DEACTIVATE) then
+		gui.set_enabled(node_popup_body, false)
+		gui.set_enabled(node_popup_fade, false)
+
+    elseif (message_id == H_UNLOCK) then
+		is_lock_input = false
+
+    elseif (message_id == H_BOUGHT_ITEM) then
+		is_lock_input = false
+
+		update_from_ads(self, message.index, message.index2)
+
+	elseif (message_id == H_INIT) then
+		initListUpgrades(self)
+
+	end
+
+end
+
+function on_input(self, action_id, action)
+    if (not is_lock_input) then
+
+		self.druid:on_input(action_id, action)
+
+		if (action_id == hash("touch")) then
+			if (action.pressed and (not gui.pick_node(node_popup_body, action.x, action.y))) then
+				cancel_handler()
+			end
+		end
+
+		return true
+
+	end
+
+end

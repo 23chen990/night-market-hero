@@ -1,0 +1,130 @@
+{
+  "report": {
+    "schemaVersion": 1,
+    "passed": false,
+    "checks": [
+      {
+        "name": "tsc --noEmit",
+        "passed": false,
+        "evidence": "EXIT=1，存在类型错误（详见工程日志）"
+      },
+      {
+        "name": "vite build",
+        "passed": true,
+        "evidence": "EXIT=0，dist 已生成"
+      },
+      {
+        "name": "npm run lint",
+        "passed": false,
+        "evidence": "package.json 无 lint 脚本，命令未执行"
+      },
+      {
+        "name": "npm test (vitest)",
+        "passed": false,
+        "evidence": "工厂 node_modules 无 vitest，npx 报模块未找到"
+      },
+      {
+        "name": "playwright 三视口冒烟",
+        "passed": true,
+        "evidence": "/tmp/beach-540x960.png /tmp/beach-390x844.png /tmp/beach-844x390.png 已生成"
+      }
+    ],
+    "issues": [
+      {
+        "id": "BUG-LOCKED-DEMAND",
+        "severity": "error",
+        "message": "锁定商品仍进入合法需求：chooseDemand() 直接按 config.customers.demand 权重抽样，不做 unlockedStationIds 过滤；spawnCustomer() 选货架只看 acceptsProductIds 不看解锁状态。海带(kelp)在 kelp-pool 与 kelp-shelf 均 initiallyUnlocked:false 时仍被生成需求。",
+        "evidence": "simulation.ts:79-95；400次采样 fresh-fish 298 / kelp 102。"
+      },
+      {
+        "id": "BUG-PATIENCE-START",
+        "severity": "error",
+        "message": "缺货8秒耐心从顾客生成即开始扣减，行走/排队/服务都在消耗。实测入口(32,520)→鲜鱼冰盘(270,420)距离258.2px步行1434ms，缺货超时发生在t=8000ms（从生成算起），按\"到架且取货失败后起算\"应为9434ms。queued 顾客耐心仍持续下降。",
+        "evidence": "simulation.ts:121 行 customer.patienceRemainingMs -= deltaMs 对所有 phase 无条件扣减。"
+      },
+      {
+        "id": "BUG-MOVING-PAYMENT",
+        "severity": "error",
+        "message": "建设点付款不检查移动状态，按住方向键穿过建设点(410,720)时位移154px仍付款3份(currency 10→7)；200ms内位移44px仍在半径内也付款1份。",
+        "evidence": "simulation.ts:166-197 updateInteraction() 缺少移动状态门禁。"
+      },
+      {
+        "id": "REF-SPATIAL-QUEUE",
+        "severity": "error",
+        "message": "队列无 per-customer 站位，所有 to-checkout 顾客朝同一 checkout.position 移动，进入64px半径即 phase=queued 并停止。实测6名 queued 顾客坐标全部是(253.4,579.5)。无 slot/queueIndex/targetPosition 字段。",
+        "evidence": "simulation.ts 中 customer 对象无 queuePosition 字段；main.ts drawWorld 直接画在同一坐标。"
+      },
+      {
+        "id": "REF-CASH-FLOW",
+        "severity": "error",
+        "message": "服务完成直接 currency += customer.basketValue，无独立现金堆字段。GameState 顶层键不含 cashPile/cashOnCounter。服务完成即到账，玩家无需靠近收取，REF-CASH-FLOW 三步提交点缺失。",
+        "evidence": "simulation.ts:180-185 checkout 分支；state.json 顶层键实测确认。"
+      },
+      {
+        "id": "REF-OBJECT-FEEDBACK",
+        "severity": "warning",
+        "message": "六类动作均无局部视觉反馈：feedbackEvents 任何变化只触发同一玩家缩放脉冲 + 共用 DOM #toast；顾客无携货图形；无来源→目的地物件转移动画。全局 toast 替代了局部因果反馈。",
+        "evidence": "main.ts drawWorld() 与 renderFeedback() 只画圆/矩形/缩放脉冲。"
+      },
+      {
+        "id": "QA-TEST-COVERAGE",
+        "severity": "error",
+        "message": "现有 simulation.test.ts 仅8用例+2动画用例，未覆盖锁定组合、7999/8000/8001ms边界、队列多人、现金堆、六类局部反馈；仓库无 lint 脚本；工厂 node_modules 无 vitest，npx vitest 实际报 ERR_MODULE_NOT_FOUND（test 命令不能跑成功）。",
+        "evidence": "package.json scripts 无 lint；typecheck/build/tsc 实际执行已记录。"
+      }
+    ],
+    "screenshots": [
+      "/tmp/beach-540x960.png",
+      "/tmp/beach-390x844.png",
+      "/tmp/beach-844x390.png"
+    ],
+    "consoleLog": "主控制台无运行时错误；playwright 冒烟三视口加载成功并完成采集/补货/服务模拟。typecheck 报类型错误（与 BUG 修复相关字段缺失）。",
+    "testedAt": "2026-09-30T21:36:17.369Z",
+    "evidence": [
+      {
+        "schemaVersion": 1,
+        "mode": "STATE_COVERAGE",
+        "actions": [
+          "读取 simulation.ts/main.ts/input.ts/uiMotion.ts/simulation.test.ts/game-config.json 全部源码",
+          "tsx 直驱 advanceGame 跑 400 次需求抽样，统计 fresh-fish/kelp 分布",
+          "tsx 模拟入口→鲜鱼冰盘步行，记录到达时刻 vs 缺货超时时刻",
+          "tsx 模拟按住方向键穿过建设点，记录位移与 contributed 变化",
+          "tsx 读取 GameState 顶层键确认无现金堆字段",
+          "tsx 读取 customer 对象确认无 queuePosition 字段",
+          "playwright chromium 三视口加载 dist 并截图"
+        ],
+        "artifacts": [
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/reference-code-gap-review-20261001.json",
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/github-reference-review-20261001.json",
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/reproduction-matrix-20261001.json",
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/history-source-verification-20261001.json",
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/economic-baseline-20261001.json",
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/perceptual-qa-evidence-20261001.json",
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/lifecycle-boundary-evidence-20261001.json",
+          "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/natural-input-journey-540x960-20261001.json"
+        ],
+        "forbiddenOperations": [],
+        "buildHash": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+        "runtime": "web-lite",
+        "device": {
+          "width": 540,
+          "height": 960,
+          "label": "playwright-chromium-emulated"
+        },
+        "runner": "local-coordination-agent"
+      }
+    ]
+  },
+  "validation": {
+    "ok": true,
+    "errors": null
+  },
+  "sourceFingerprints": {
+    "src/simulation.ts": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+    "src/main.ts": "3f3df507c2feb172b8ea617ae0dd6a67d0718ff048eff7b9bd99cb281b5b44d1",
+    "src/simulation.test.ts": "799613ccb22376d25b9ed732499c79cd2d223c5905b4074d2a640a845c0a60a8",
+    "src/input.ts": "cab9f5d6dd7133587f2d1332fda7c5311ccda40ca1ae9f570060e6c271604a47",
+    "src/uiMotion.ts": "c10de5788a92001ce8c66946c6cfb57c455ef72a59644d7cce3797dfddb24c8e",
+    "src/generated/game-config.json": "f1f2669c3dfcf5297727d0ba4832fe0e9e77ab18809f0305c86c2f12a892700a"
+  }
+}

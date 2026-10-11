@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "classification": "QA_INFRASTRUCTURE",
+  "status": "BLOCKED",
+  "report": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-430x932-keyboard-portrait-metal/natural.json",
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-430x932-keyboard-portrait-metal/screenshots/011-blocked.png",
+      "sha256": "0331edb800d6894347f2b14457f2642f43e871020d59f71284a67e52d1c96feb"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-430x932-keyboard-portrait-metal/screenshots/locator-failure.png",
+      "sha256": "0a9dc7d92aa5dbd28cfe97e38f17066f71cfda555afcf28909d7a41e761fae2b"
+    }
+  ],
+  "observed": "Independent pixels show first settlement visible and teal player at build station. Locator failure crop contains resized canvas plus settlement panel, proving crop geometry became stale during overlay/layout transition. Natural script stopped before recording first-settlement check; later branches remain unobserved.",
+  "hypothesis": "Driver.move reads overlay false, then player() samples old canvas geometry; stationary construction completes between geometry read and screenshot, shrinking canvas. Recheck overlay/geometry after capture and return stoppedByOverlay on verified transition, without accepting prior coordinates or widening positional tolerance.",
+  "acceptance": [
+    "Preserve this failed natural report and screenshots.",
+    "Use unchanged game build; fix only QA observation race with fresh session before430 rerun.",
+    "Require full natural journey afterward; real settlement screenshot alone does not close later branches."
+  ]
+}

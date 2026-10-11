@@ -1,0 +1,329 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/pressure-recovery.test.ts (5 tests | 5 failed) 57ms
+     × does not emit repeated arrival alerts while guarding a recovered shelf, even after relief expires 29ms
+     × allows a readable four-second relief after leaving, then resumes eligible pressure 11ms
+     × skips a guarded stocked shelf and selects another eligible shelf 3ms
+     × ends an approaching episode when the player reaches its target before the bird 2ms
+     × round-trips the remaining recovery interval and keeps it bounded for legacy or malformed saves 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pressure-recovery.test.ts > seagull recovery interval and guarded shelves > does not emit repeated arrival alerts while guarding a recovered shelf, even after relief expires
+AssertionError: expected [ { id: 5, …(4) }, …(15) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "atMs": 8100,
++     "id": 5,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 9500,
++     "id": 6,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 9600,
++     "id": 8,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 11000,
++     "id": 9,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 11100,
++     "id": 11,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 12500,
++     "id": 12,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 12600,
++     "id": 14,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 14000,
++     "id": 15,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 14100,
++     "id": 17,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 15500,
++     "id": 18,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 15600,
++     "id": 20,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 17000,
++     "id": 21,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 17100,
++     "id": 23,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 18500,
++     "id": 24,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 18600,
++     "id": 26,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 390,
++       "y": 348,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++   {
++     "atMs": 20000,
++     "id": 27,
++     "kind": "seagull-alert",
++     "source": {
++       "x": 270,
++       "y": 420,
++     },
++     "target": {
++       "x": 270,
++       "y": 420,
++     },
++   },
++ ]
+
+ ❯ src/pressure-recovery.test.ts:24:97
+     22|     state = advanceGame(shop, state, 12_000);
+     23|     expect(state.pressure.seagull.active).toBe(false);
+     24|     expect(state.feedback.filter(event => event.id > lastId && event.k…
+       |                                                                                                 ^
+     25|   });
+     26|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/pressure-recovery.test.ts > seagull recovery interval and guarded shelves > allows a readable four-second relief after leaving, then resumes eligible pressure
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/pressure-recovery.test.ts:31:43
+     29|     const lastId = state.feedbackEvents;
+     30|     state = advanceGame(shop, state, 4_000);
+     31|     expect(state.pressure.seagull.active).toBe(false);
+       |                                           ^
+     32|     expect(state.feedback.filter(event => event.id > lastId && event.k…
+     33|     state = advanceGame(shop, state, 8_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/pressure-recovery.test.ts > seagull recovery interval and guarded shelves > skips a guarded stocked shelf and selects another eligible shelf
+AssertionError: expected 'fish-shelf' to be 'kelp-shelf' // Object.is equality
+
+Expected: "kelp-shelf"
+Received: "fish-shelf"
+
+ ❯ src/pressure-recovery.test.ts:45:50
+     43|     state.stations['kelp-shelf']!.stock.kelp = 8;
+     44|     state = advanceGame(shop, setPlayerPosition(state, { x: 270, y: 42…
+     45|     expect(state.pressure.seagull.targetShelfId).toBe('kelp-shelf');
+       |                                                  ^
+     46|     expect(state.feedback.filter(event => event.kind === 'seagull-aler…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/pressure-recovery.test.ts > seagull recovery interval and guarded shelves > ends an approaching episode when the player reaches its target before the bird
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/pressure-recovery.test.ts:56:43
+     54|     expect(state.pressure.seagull.mode).toBe('approaching');
+     55|     state = advanceGame(shop, setPlayerPosition(state, { x: 270, y: 42…
+     56|     expect(state.pressure.seagull.active).toBe(false);
+       |                                           ^
+     57|     expect(state.feedback.at(-1)?.kind).toBe('seagull-scared');
+     58|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/pressure-recovery.test.ts > seagull recovery interval and guarded shelves > round-trips the remaining recovery interval and keeps it bounded for legacy or malformed saves
+AssertionError: expected { active: false, …(7) } to deeply equal ObjectContaining{…}
+
+- Expected
++ Received
+
+- ObjectContaining {
+-   "recoveryMs": Any<Number>,
++ {
++   "active": false,
++   "graceMs": 0,
++   "lossPeriodMs": 2200,
++   "lossTimerMs": 1300,
++   "mode": "scared",
++   "targetShelfId": null,
++   "x": 270,
++   "y": 420,
+  }
+
+ ❯ src/pressure-recovery.test.ts:63:22
+     61|     const state = chase();
+     62|     const pressure = state.pressure.seagull as typeof state.pressure.s…
+     63|     expect(pressure).toEqual(expect.objectContaining({ recoveryMs: exp…
+       |                      ^
+     64|     expect(pressure.recoveryMs).toBeGreaterThanOrEqual(4_000);
+     65|     expect(pressure.recoveryMs).toBeLessThanOrEqual(6_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  18:18:35
+   Duration  341ms (transform 98ms, setup 0ms, import 120ms, tests 57ms, environment 0ms)
+

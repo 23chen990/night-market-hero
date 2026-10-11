@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "targetRunId": "20260930161712-79985df5",
+  "attempt": 5,
+  "mode": "current-source-real-checkout-regression",
+  "results": [
+    {
+      "marketId": "coral-cove-market",
+      "target": 2,
+      "first": [
+        {
+          "order": 1,
+          "stage": "operating",
+          "goalProgress": 1,
+          "settled": false,
+          "cashPile": 5
+        },
+        {
+          "order": 2,
+          "stage": "settlement",
+          "goalProgress": 2,
+          "settled": true,
+          "cashPile": 10
+        }
+      ],
+      "continued": {
+        "stage": "operating",
+        "goalProgress": 2,
+        "settled": true,
+        "cashPile": 10
+      },
+      "replay": {
+        "stage": "operating",
+        "goalProgress": 2,
+        "settled": true,
+        "smokedOrders": 3,
+        "dualShelfOrders": 0,
+        "cashPile": 15
+      },
+      "passed": true
+    },
+    {
+      "marketId": "moon-tide-market",
+      "target": 3,
+      "first": [
+        {
+          "order": 1,
+          "stage": "operating",
+          "goalProgress": 1,
+          "settled": false,
+          "cashPile": 7
+        },
+        {
+          "order": 2,
+          "stage": "operating",
+          "goalProgress": 2,
+          "settled": false,
+          "cashPile": 14
+        },
+        {
+          "order": 3,
+          "stage": "settlement",
+          "goalProgress": 3,
+          "settled": true,
+          "cashPile": 21
+        }
+      ],
+      "continued": {
+        "stage": "operating",
+        "goalProgress": 3,
+        "settled": true,
+        "cashPile": 21
+      },
+      "replay": {
+        "stage": "operating",
+        "goalProgress": 3,
+        "settled": true,
+        "smokedOrders": 4,
+        "dualShelfOrders": 4,
+        "cashPile": 28
+      },
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "createdAt": "2026-10-02T17:04:01.636Z"
+}

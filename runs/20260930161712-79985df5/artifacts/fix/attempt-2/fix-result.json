@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "route": "formal-fixer",
+  "attempt": 2,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "Attempt 2 owns a cross-module validated issue set spanning queue ordering, checkout lifecycle, presentation reset, responsive layout, procedural renderer hierarchy, and startup input timing. The formal QA to fixer to independent QA route remains required.",
+  "contextIntentionallyOmitted": [
+    "other run workspaces and assets",
+    "unbound or unverified media",
+    "third-party code, assets, names, UI, expression, and tuning values",
+    "multi-item shopping lists, processing/employee systems, and broader multi-stage progression",
+    "unrelated factory history and logs"
+  ],
+  "changes": [
+    {
+      "issueIds": ["REF-SPATIAL-QUEUE-HEAD"],
+      "result": "Checkout now checks the earliest queue ticket before service and resets service progress when that head is still walking to checkout; later queued customers cannot be overtaken. Added a regression test with ticket 1 to-checkout and ticket 2 queued."
+    },
+    {
+      "issueIds": ["REF-CASH-PACKING-PHASE"],
+      "result": "Added queued -> packing -> leaving lifecycle with a 320ms packing delay, checkout-packing and checkout-pack feedback, cashPile deposit only after packing, and preserved wallet separation plus leave/re-enter collection. Added deterministic lifecycle and collection assertions."
+    },
+    {
+      "issueIds": ["RESTART-FEEDBACK-CLEAR"],
+      "result": "Restart now clears the stale toast and hides settlement presentation immediately through resetRoundPresentation; simulation restart feedback reset and presentation helper tests cover the behavior."
+    },
+    {
+      "issueIds": ["RESPONSIVE-LANDSCAPE", "RESPONSIVE-540"],
+      "result": "Added pure responsive sizing for all required portrait and landscape viewports while retaining 540x960 Phaser world coordinates. Portrait frames shrink to available chrome; landscape uses a side panel so HUD and settlement buttons remain visible. Captured viewport and settlement smoke evidence."
+    },
+    {
+      "issueIds": ["REF-OBJECT-FEEDBACK-PARTIAL", "VISUAL-EXPRESSION-REGRESSION"],
+      "result": "Replaced abstract station circles with original procedural beach, sea, sand, paths, station pads, fish/checkout/construction/upgrade icons, customer/player silhouettes, product stacks, cash coins, progress bars, queue slots, and semantic local feedback labels. No third-party or first-version source/assets were copied."
+    },
+    {
+      "issueIds": ["NATURAL-STARTUP-TIMING"],
+      "result": "Added window-level immediate keyboard state captured before Phaser scene readiness and merged it with Phaser keyboard state; development runtime smoke observed immediate ArrowUp movement."
+    }
+  ],
+  "filesChanged": [
+    {"path": "index.html"},
+    {"path": "src/main.ts"},
+    {"path": "src/presentation.ts"},
+    {"path": "src/presentation.test.ts"},
+    {"path": "src/responsive.ts"},
+    {"path": "src/responsive.test.ts"},
+    {"path": "src/simulation.ts"},
+    {"path": "src/simulation.test.ts"},
+    {"path": "src/style.css"},
+    {"path": "dist/index.html"},
+    {"path": "dist/assets/index-CBZjHaOA.js"},
+    {"path": "dist/assets/index-SvoHjvgX.css"}
+  ],
+  "verification": {
+    "redTests": {
+      "command": "pnpm test -- --run src/simulation.test.ts src/responsive.test.ts",
+      "exitCode": 1,
+      "result": "The package script could not find the local vitest binary; the real sh: vitest: command not found failure is preserved in red-tests.log."
+    },
+    "greenTests": {
+      "command": "pnpm dlx --yes vitest@4.1.11 run",
+      "exitCode": 0,
+      "result": "3 test files passed, 15 tests passed; see green-tests.log and tests.log."
+    },
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "result": "tsc --noEmit passed."
+    },
+    "lint": {
+      "command": "pnpm lint",
+      "exitCode": 1,
+      "result": "package.json has no lint script; the actual pnpm error is preserved in lint.log."
+    },
+    "build": {
+      "command": "pnpm build",
+      "exitCode": 0,
+      "count": 1,
+      "result": "Vite production build completed exactly once; only the existing chunk-size warning was emitted."
+    },
+    "responsiveViewportSmoke": {
+      "result": "Dev runtime canvas/HUD bounds passed at 360x800, 390x844, 430x932, 540x960, and 844x390; fixture evidence is viewport-smoke.json."
+    },
+    "settlementAndRestartSmoke": {
+      "result": "Fixture/state-API smoke observed settlement controls within bounds at 540x960 and 844x390, then restart returned operating, hid settlement, and cleared #toast; evidence is runtime-smoke.json. This is implementation evidence, not natural QA."
+    },
+    "productionPreviewSmoke": {
+      "result": "Vite preview at 844x390 rendered canvas and HUD with no console/page errors; see tests.log."
+    }
+  },
+  "remainingNaturalEvidenceGaps": [
+    "Independent QA must rerun a fresh-browser natural journey using normal keyboard/touch input through harvest, deposit, customer pickup, queue-head service, packing, cash pile leave/re-enter collection, construction, settlement, continue, restart, and replay.",
+    "Exact natural and perceptual captures are still required for 360x800, 390x844, 430x932, 540x960, and 844x390; fixture viewport smoke does not close those gates.",
+    "Independent perceptual review must verify the procedural beach hierarchy, semantic object feedback, packing visibility, queue reflow, HUD readability, touch release, and reduced-motion branch.",
+    "Independent QA must verify persistence/refresh and any platform adapter expectations after the web-lite repair.",
+    "The formal QA report and perceptual gate have not been regenerated after attempt 2; this result does not claim QA acceptance."
+  ],
+  "outOfScope": [
+    "multi-item shopping lists",
+    "processing or employee systems",
+    "broader multi-stage progression beyond the existing construction/settlement branch",
+    "third-party or first-version code/assets/expression"
+  ],
+  "evidencePaths": [
+    "artifacts/fix/attempt-2/task.json",
+    "artifacts/fix/attempt-2/red-tests.log",
+    "artifacts/fix/attempt-2/green-tests.log",
+    "artifacts/fix/attempt-2/tests.log",
+    "artifacts/fix/attempt-2/typecheck.log",
+    "artifacts/fix/attempt-2/lint.log",
+    "artifacts/fix/attempt-2/build.log",
+    "artifacts/fix/attempt-2/source-hashes.json",
+    "artifacts/fix/attempt-2/viewport-smoke.json",
+    "artifacts/fix/attempt-2/runtime-smoke.json"
+  ]
+}

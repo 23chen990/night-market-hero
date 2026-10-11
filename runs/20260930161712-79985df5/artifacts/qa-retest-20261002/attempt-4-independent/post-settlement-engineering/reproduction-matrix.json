@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "coral-cove-market checkout eligible-order + market progress",
+      "moon-tide-market checkout eligible-order + market progress"
+    ],
+    "lifecycleStateBranches": [
+      "own-goal-settled -> continue-local -> next actual packed order"
+    ],
+    "rendererPaths": [
+      "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending"
+    ],
+    "viewports": [
+      {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "coral-cove-market-post-continue@360x800",
+      "objectType": "coral-cove-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "coral-cove-market-post-continue@390x844",
+      "objectType": "coral-cove-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "coral-cove-market-post-continue@430x932",
+      "objectType": "coral-cove-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "coral-cove-market-post-continue@540x960",
+      "objectType": "coral-cove-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Fixture actual checkout increments old satisfied goal and re-enters settlement. Reported world/order branch confirmed; natural pixels unobserved.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/qa-report.json",
+          "sha256": "43b7107495dd08a5359070750302ecde6180ffeedf92164920aa5f45e527c4d5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/post-settlement-trace.json",
+          "sha256": "f94a3a86f254505c72dc437d6f8bb45bb1cda556bf2336b6d3b073c83275d3a3",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/before/src/simulation.ts",
+          "sha256": "a7a7f4cde51ab7599569af8a76345fe5e8c04c6a01f2191b08b9444bb4bb2af8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "coral-cove-market-post-continue@844x390",
+      "objectType": "coral-cove-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "moon-tide-market-post-continue@360x800",
+      "objectType": "moon-tide-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "moon-tide-market-post-continue@390x844",
+      "objectType": "moon-tide-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "moon-tide-market-post-continue@430x932",
+      "objectType": "moon-tide-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    },
+    {
+      "id": "moon-tide-market-post-continue@540x960",
+      "objectType": "moon-tide-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Fixture actual checkout increments old satisfied goal and re-enters settlement. Reported world/order branch confirmed; natural pixels unobserved.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/qa-report.json",
+          "sha256": "43b7107495dd08a5359070750302ecde6180ffeedf92164920aa5f45e527c4d5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/post-settlement-engineering/post-settlement-trace.json",
+          "sha256": "f94a3a86f254505c72dc437d6f8bb45bb1cda556bf2336b6d3b073c83275d3a3",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/before/src/simulation.ts",
+          "sha256": "a7a7f4cde51ab7599569af8a76345fe5e8c04c6a01f2191b08b9444bb4bb2af8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "moon-tide-market-post-continue@844x390",
+      "objectType": "moon-tide-market checkout eligible-order + market progress",
+      "lifecycleStateBranch": "own-goal-settled -> continue-local -> next actual packed order",
+      "rendererPath": "immutable4 simulation real checkout branch; natural DOM/canvas confirmation pending",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Completed goal is recorded once; continued business accepts new eligible packing and remains operating.",
+      "observed": "Exact viewport normal-input branch unobserved;540fixture cannot close it.",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Both exact authored-world branches refreeze via actual checkout, not recordMarketGoal helper.",
+    "Root cause accepts this state branch only; newly satisfied goals must still settle."
+  ],
+  "remainingGaps": [
+    "Fresh normal-input both worlds goal->settlement->continue->next eligible order screenshots/visible events at required five viewports."
+  ],
+  "createdAt": "2026-10-02T16:53:29.809Z"
+}

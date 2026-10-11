@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "role": "FixerAgent",
+  "route": "formal-fixer",
+  "attempt": 4,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Target workspace src/**, index.html, package.json, target-local lint config, dist/** only",
+    "Target artifacts/fix/attempt-4/** implementation evidence only; do not change task.json or before/**"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/qa-issues.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/failure-pressure-contract.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/reproduction-matrix.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/product-experience-contract.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/open-source-research.json"
+  ],
+  "instructions": [
+    "You are the sole FixerAgent writer. You are not alone in this repository; preserve all other agents/user changes. No other run/shared factory edits, no commits, no other workspace/third-party/first-version source or assets.",
+    "Read applicable AGENTS.md and the test-driven-development SKILL.md. Inspect target architecture. Use the validated revision sidecar as the exact implementation contract. Only causal additions for the ten QA issue ids; extend existing simulation and renderer rather than replacing the template.",
+    "Identify object/state/renderer ownership against the reproduction matrix. Before implementation, add behavior tests for partial two-line orders, recipe starvation/atomic input, physical worker delivery/queue service, shelf pressure/recovery, true market transition and v1 migration. Run actual local Vitest and preserve real assertion failures in red-tests.log. A missing binary/config is not a red behavior failure.",
+    "Existing modules and procedural original beach visuals are the base. You may add run-local typed modules for recipes/staff/markets/save and tests, and extend responsive/input/presentation. Keep cash-pile collection, ticket/packing, arrival-based8s wait, first kelp settlement continue/restart, normal stationary interactions. No new production dependency.",
+    "Implement all six revision systems into the default runtime: multi-line orders with local bubbles, fish-fed smokehouse + matching output shelf, paid runner/cashier with visible physical work, seagull shelf disturbance recoverable by player proximity, next marker + two actually different playable markets, versioned saves + landscape transform/readable HUD. No inert data-only substitutes.",
+    "Make added branches reachable with a few normal earn/fund cycles and clear local icons/progress; market goal must be reachable through its own loop, followed by settlement and replay. Preserve unlocks on local continuation. Required controls >=44 CSS pixels. Critical cues primarily visual.",
+    "Run all tests/typecheck/lint. Use installed Vitest direct package path if bin missing; existing root ESLint is available. Add a working target-local lint command/config with no dependency additions; lint must exit0. Exactly one production build for this attempt, after all checks pass; never rebuild unchanged code.",
+    "Runtime fixture checks are implementation evidence only; do not claim independent natural/perceptual success. Record hashes, actual logs, changed files, route rationale, omitted context and remaining independent QA gaps. Output FixResultSchema-validated fix-result.json using revision-schema.mjs. Report only JSON or artifact path."
+  ],
+  "acceptance": [
+    "Each behavior in shop-experience-revision.json is implemented on active main.ts→simulation.ts default path; no minimum legacy path selected.",
+    "Actual failing behavior assertions before implementation and green expanded tests, typecheck and lint logs; production build exactly once and hashes.",
+    "No workspace/file edits outside declared target scope; other changes preserved; tests verify all six new systems and migration.",
+    "A reachable normal startup→earn→first expansion settlement→continue→processing/staff/pressure→next-marker→distinct market→new objective settlement/replay path; independent QA remains required."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-4/fix-result.json"
+}

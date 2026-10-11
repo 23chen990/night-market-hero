@@ -1,0 +1,85 @@
+local PATH_SPRITE = "#sprite"
+
+function init(self)
+	msg.post(PATH_SPRITE, "disable")
+
+    self.isAutoDestroy = true
+	self.count = 0
+
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show") then
+		msg.post(PATH_SPRITE, "enable")
+
+	elseif message_id == hash("hide") then
+		msg.post(PATH_SPRITE, "disable")
+
+	elseif message_id == hash("playAnimation") then
+		go.set_position(message.pos)
+
+		if message.flip then
+			go.set_rotation(vmath.quat_rotation_y(math.rad(180)))
+		end
+
+		
+		
+		
+		
+
+        if message.anim == "effect_alarm" or
+		message.anim == "effect_repair" or
+		message.anim == "effect_broom"
+		then
+            go.set_scale(vmath.vector3(1.25,1.25,1.25))
+        end
+
+        if message.anim == "effect_aura" or
+		message.anim == "effect_splash" or
+		message.anim == "effect_footprint"
+		then
+            go.set_scale(vmath.vector3(2.0,2.0,2.0))
+        end
+
+        if message.anim == "effect_repair" then
+			self.isAutoDestroy = false
+			self.count = 2
+        end
+        if message.anim == "effect_broom" then
+			self.isAutoDestroy = false
+			self.count = 2
+        end
+
+		msg.post(PATH_SPRITE, "enable")
+		msg.post(PATH_SPRITE, "play_animation", {id = hash(message.anim)})
+
+	elseif message_id == hash("updateTint") then
+		local r,g,b = utils.hex2rgb(message.color)
+
+		sprite.set_constant(PATH_SPRITE, "tint", vmath.vector4(r/ 256, g/ 256, b/ 256, 1))
+
+	elseif message_id == hash("remove") then
+		go.delete()
+		gameState.countEffect = gameState.countEffect - 1
+
+	elseif message_id == hash("animation_done") then
+		if self.isAutoDestroy then
+			go.delete()
+			gameState.countEffect = gameState.countEffect - 1
+        end
+
+		if message.id == hash("effect_repair") or message.id == hash("effect_broom") then
+			self.count = self.count - 1
+
+			if self.count <= 0 then
+				go.delete()
+				gameState.countEffect = gameState.countEffect - 1
+			else
+				msg.post(PATH_SPRITE, "play_animation", {id = message.id})
+			end
+		end
+
+
+	end
+
+end

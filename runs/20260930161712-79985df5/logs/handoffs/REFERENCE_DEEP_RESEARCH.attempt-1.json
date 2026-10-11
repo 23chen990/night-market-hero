@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "fromStage": "CREATED",
+  "toStage": "REFERENCE_DEEP_RESEARCH",
+  "summary": "Convert the run-bound reference evidence into exact QA cases for input/state, spatial relation, failure/recovery, feedback sequence and terminal/replay. When a verified frame manifest is present, inspect the copied contact sheets and frames and produce the recording-level reconstruction. Cite only source paths and hashes already bound in the evidence pack; preserve unknowns and do not copy expression. A verified reference code analysis (artifacts/reference-code-analysis.json) is the authoritative mechanic evidence: base rules, state transitions and failure/recovery on its OBSERVED claims, cite the verified code package from the evidence pack with the claim id as locator, use recording frames only for layout, pacing and feel, and record any conflict between code and recording as an unknown.",
+  "artifactPaths": [
+    "input/seed.yaml",
+    "artifacts/reference-evidence-pack.json",
+    "artifacts/reference-code-analysis.json",
+    "reference-evidence/manifest.json",
+    "artifacts/reference-code-analysis.json"
+  ],
+  "artifactHashes": {
+    "input/seed.yaml": "9c41e0edca783753f36c847e2beb8646db6d555966c0d2143967d7eb03da0d7c",
+    "artifacts/reference-evidence-pack.json": "db953f8ea6cc9ce796cc6801058ea7959f3a8fafcf0f0e2cc554b6585253ddba",
+    "artifacts/reference-code-analysis.json": "2603c5221d9ac8fd0813b5519ffdabf1310ae09ab15ad4f864e9feaf84fecd28",
+    "reference-evidence/manifest.json": "84cecde57df093c65509d34fe2410c211634dae5efb4821a8e13391bdbd2d258"
+  },
+  "changedFiles": [],
+  "commandsRun": [],
+  "omittedContext": [
+    "raw transcript"
+  ],
+  "estimatedChars": 1934,
+  "estimatedTokens": 200,
+  "tokenBudget": 6000,
+  "truncationStrategy": "priority-preserving",
+  "integrityHash": "37fa7b8b851f8b6b1f77fec4e48052b08943c573af89d34623d2cd31bd08acbc",
+  "summaryHash": "9606724e2c933ebd92bdb203de116dcdd752156c5ce162bec3044ea743d6d528",
+  "contextPacketHash": "6aa86269af7cb44ac53a7a44e321fe0250c6f86f9b791ce0f02e960a6a968b1d"
+}

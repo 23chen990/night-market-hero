@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "gameId": "continuation-v2",
+  "profile": "STRATEGIC_SYSTEM",
+  "question": "Can a first-time player observe the locked reference loop, failure pressure and recovery within one short preview session?",
+  "hypotheses": [
+    {
+      "id": "reference-loop",
+      "statement": "The locked input/state transitions produce a visible consequence and a reason to retry.",
+      "metric": "reference fidelity dimensions observed in natural QA",
+      "target": "pass in preview QA",
+      "failureCondition": "the core loop or recovery rule is not visible to a fresh player"
+    }
+  ],
+  "status": "READY",
+  "sourceBlueprintHash": "3d7ac22227faba2d32456a0e0ce292429b2208722f299d1e4bf828ec607df360",
+  "createdAt": "2026-09-30T17:59:29.983Z"
+}

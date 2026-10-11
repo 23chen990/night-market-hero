@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/presentation-runtime.test.ts (7 tests | 2 failed | 5 skipped) 11998ms
+     × keeps the avatar body and head visible through funding labels at 540x960 6933ms
+     × keeps the avatar body and head visible through funding labels at 844x390 4758ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > keeps the avatar body and head visible through funding labels at 540x960
+AssertionError: {"position":{"x":120,"y":786},"pixels":{"body":92.57577893698013,"head":31.670661215282674}}: expected 92.57577893698013 to be greater than 608.0766953334273
+ ❯ src/presentation-runtime.test.ts:110:67
+    108|         }, position);
+    109|         const pixels = await avatarPixels(page, position);
+    110|         expect(pixels.body, JSON.stringify({ position, pixels })).toBe…
+       |                                                                   ^
+    111|         expect(pixels.head, JSON.stringify({ position, pixels })).toBe…
+    112|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > keeps the avatar body and head visible through funding labels at 844x390
+AssertionError: {"position":{"x":174,"y":786},"pixels":{"body":608.2644628099174,"head":327.2727272727273}}: expected 608.2644628099174 to be greater than 640
+ ❯ src/presentation-runtime.test.ts:110:67
+    108|         }, position);
+    109|         const pixels = await avatarPixels(page, position);
+    110|         expect(pixels.body, JSON.stringify({ position, pixels })).toBe…
+       |                                                                   ^
+    111|         expect(pixels.head, JSON.stringify({ position, pixels })).toBe…
+    112|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 skipped (7)
+   Start at  17:23:08
+   Duration  12.37s (transform 19ms, setup 0ms, import 275ms, tests 12.00s, environment 0ms)
+

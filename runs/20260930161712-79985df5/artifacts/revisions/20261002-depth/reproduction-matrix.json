@@ -1,0 +1,903 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "shoppingList[{productId,quantity,collected}]",
+      "processor recipe/input shelf refs",
+      "hire payment",
+      "disruption seagull/target/grace/period",
+      "marketId",
+      "save schemaVersion"
+    ],
+    "lifecycleStateBranches": [
+      "shopping-list normal-input lifecycle",
+      "processing normal-input lifecycle",
+      "employees normal-input lifecycle",
+      "shelf-pressure normal-input lifecycle",
+      "progression-and-markets normal-input lifecycle",
+      "runtime-and-persistence normal-input lifecycle"
+    ],
+    "rendererPaths": [
+      "Phaser world plus DOM HUD/overlays"
+    ],
+    "viewports": [
+      {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "shopping-list@360x800",
+      "objectType": "shoppingList[{productId,quantity,collected}]",
+      "lifecycleStateBranch": "shopping-list normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand. Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout. Show gathered versus outstanding items; price earned only after all items, queue-head service and packing.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shopping-list@390x844",
+      "objectType": "shoppingList[{productId,quantity,collected}]",
+      "lifecycleStateBranch": "shopping-list normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand. Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout. Show gathered versus outstanding items; price earned only after all items, queue-head service and packing.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shopping-list@430x932",
+      "objectType": "shoppingList[{productId,quantity,collected}]",
+      "lifecycleStateBranch": "shopping-list normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand. Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout. Show gathered versus outstanding items; price earned only after all items, queue-head service and packing.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shopping-list@540x960",
+      "objectType": "shoppingList[{productId,quantity,collected}]",
+      "lifecycleStateBranch": "shopping-list normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand. Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout. Show gathered versus outstanding items; price earned only after all items, queue-head service and packing.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shopping-list@844x390",
+      "objectType": "shoppingList[{productId,quantity,collected}]",
+      "lifecycleStateBranch": "shopping-list normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand. Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout. Show gathered versus outstanding items; price earned only after all items, queue-head service and packing.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "processing@360x800",
+      "objectType": "processor recipe/input shelf refs",
+      "lifecycleStateBranch": "processing normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity. With input absent the progress remains stopped; replenishing the connected shelf resumes processing. Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "processing@390x844",
+      "objectType": "processor recipe/input shelf refs",
+      "lifecycleStateBranch": "processing normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity. With input absent the progress remains stopped; replenishing the connected shelf resumes processing. Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "processing@430x932",
+      "objectType": "processor recipe/input shelf refs",
+      "lifecycleStateBranch": "processing normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity. With input absent the progress remains stopped; replenishing the connected shelf resumes processing. Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "processing@540x960",
+      "objectType": "processor recipe/input shelf refs",
+      "lifecycleStateBranch": "processing normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity. With input absent the progress remains stopped; replenishing the connected shelf resumes processing. Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "processing@844x390",
+      "objectType": "processor recipe/input shelf refs",
+      "lifecycleStateBranch": "processing normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity. With input absent the progress remains stopped; replenishing the connected shelf resumes processing. Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "employees@360x800",
+      "objectType": "hire payment",
+      "lifecycleStateBranch": "employees normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments. Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch. Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "employees@390x844",
+      "objectType": "hire payment",
+      "lifecycleStateBranch": "employees normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments. Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch. Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "employees@430x932",
+      "objectType": "hire payment",
+      "lifecycleStateBranch": "employees normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments. Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch. Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "employees@540x960",
+      "objectType": "hire payment",
+      "lifecycleStateBranch": "employees normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments. Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch. Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "employees@844x390",
+      "objectType": "hire payment",
+      "lifecycleStateBranch": "employees normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Original hire stations let the player fund a visible stock runner and cashier through stationary installments. Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch. Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shelf-pressure@360x800",
+      "objectType": "disruption seagull/target/grace/period",
+      "lifecycleStateBranch": "shelf-pressure normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item. Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference. Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shelf-pressure@390x844",
+      "objectType": "disruption seagull/target/grace/period",
+      "lifecycleStateBranch": "shelf-pressure normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item. Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference. Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shelf-pressure@430x932",
+      "objectType": "disruption seagull/target/grace/period",
+      "lifecycleStateBranch": "shelf-pressure normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item. Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference. Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shelf-pressure@540x960",
+      "objectType": "disruption seagull/target/grace/period",
+      "lifecycleStateBranch": "shelf-pressure normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item. Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference. Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "shelf-pressure@844x390",
+      "objectType": "disruption seagull/target/grace/period",
+      "lifecycleStateBranch": "shelf-pressure normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item. Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference. Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "progression-and-markets@360x800",
+      "objectType": "marketId",
+      "lifecycleStateBranch": "progression-and-markets normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks. After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel. Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target. Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "progression-and-markets@390x844",
+      "objectType": "marketId",
+      "lifecycleStateBranch": "progression-and-markets normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks. After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel. Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target. Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "progression-and-markets@430x932",
+      "objectType": "marketId",
+      "lifecycleStateBranch": "progression-and-markets normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks. After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel. Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target. Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "progression-and-markets@540x960",
+      "objectType": "marketId",
+      "lifecycleStateBranch": "progression-and-markets normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks. After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel. Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target. Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "progression-and-markets@844x390",
+      "objectType": "marketId",
+      "lifecycleStateBranch": "progression-and-markets normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks. After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel. Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target. Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "runtime-and-persistence@360x800",
+      "objectType": "save schemaVersion",
+      "lifecycleStateBranch": "runtime-and-persistence normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "small-phone",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey. Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence. Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "runtime-and-persistence@390x844",
+      "objectType": "save schemaVersion",
+      "lifecycleStateBranch": "runtime-and-persistence normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "baseline-phone",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey. Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence. Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "runtime-and-persistence@430x932",
+      "objectType": "save schemaVersion",
+      "lifecycleStateBranch": "runtime-and-persistence normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "large-phone",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey. Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence. Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "runtime-and-persistence@540x960",
+      "objectType": "save schemaVersion",
+      "lifecycleStateBranch": "runtime-and-persistence normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "reference-540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey. Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence. Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "runtime-and-persistence@844x390",
+      "objectType": "save schemaVersion",
+      "lifecycleStateBranch": "runtime-and-persistence normal-input lifecycle",
+      "rendererPath": "Phaser world plus DOM HUD/overlays",
+      "viewport": {
+        "label": "landscape-phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey. Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence. Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable.",
+      "observed": "Attempt-3 exact branch is missing or lacks current natural/pixel evidence. Passing base fish/checkout does not close this cell.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+          "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+          "sha256": "1afc855d8fadacb6b519195a3ebb6de59e410f8a8941440707c1e0b4d045c944",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Default data model is a minimum single-market slice, not the requested expanded experience."
+  ],
+  "remainingGaps": [
+    "All changed exact branches must be naturally triggered and perceptually reviewed after build."
+  ],
+  "createdAt": "2026-10-02T15:33:27.261Z"
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "lockedBy": "human",
+  "source": {
+    "name": "Monkey Mart 通用空间服务机制",
+    "url": "https://poki.com/zh/g/monkey-mart",
+    "researchFiles": [
+      "artifacts/reference-code-analysis.json"
+    ]
+  },
+  "coreLoop": [
+    "玩家移动到产出站点自动采集货物",
+    "携带有限货物到兼容货架自动补货",
+    "顾客取货、排队并由玩家完成结算",
+    "缺货顾客进入目标游戏原创的等待倒计时，超时离店并显示缺货原因",
+    "将收益逐份投入建设或升级站点",
+    "完成首次扩建后进入目标游戏原创的阶段结算，可选择继续经营或重开本轮"
+  ],
+  "playerActions": [
+    "使用单移动输入调度采集、补货、收银、建设和升级",
+    "在阶段结算界面明确选择继续经营或重开本轮"
+  ],
+  "progressionSystems": [
+    "站点解锁链、携带容量、移动速度和结算效率",
+    "首次扩建完成后触发阶段结算，继续经营保留进度，重开本轮重置本轮经营状态"
+  ],
+  "unlockRules": [
+    "建设区按固定频率逐份投入货币，完成后原子解锁关联生产点和货架",
+    "开局直接开放鲜鱼产出、鲜鱼货架和收银桌，不采用参考作品的启动建设资金规则",
+    "潮池与海带货架完成首次扩建后同时开放，并触发一次阶段结算"
+  ],
+  "feedbackCadence": {
+    "immediateSeconds": 1,
+    "microGoalMinSeconds": 10,
+    "microGoalMaxSeconds": 180
+  },
+  "mustPreserveMechanics": [
+    "移动是唯一主操作，进入交互范围后自动执行当前有效任务",
+    "采集、携带、补货、顾客消费、结算和再投资的顺序不变",
+    "货架库存、生产能力、结账队列和玩家路程共同形成可见瓶颈"
+  ],
+  "adaptableMechanics": [
+    "原创商品、站点类型、地图坐标、解锁顺序、流量窗口与全部数值",
+    "本续作采用直接经营开局，不采用参考作品的启动建设资金规则",
+    "本续作将顾客缺货等待八秒后离店定义为原创改编，不把它表述为参考作品的已观察规则",
+    "本续作将首次扩建后的阶段结算、继续经营和重开本轮定义为原创规则",
+    "主题特色模块可使用生产加速窗口或需求高峰窗口组合"
+  ],
+  "fidelityPolicy": {
+    "level": "maximum_core_mechanics",
+    "preserveInputStateTransitions": true,
+    "preserveCoreLoopOrder": true,
+    "preserveProgressionTopology": true,
+    "preserveUnlockDependencies": true,
+    "preserveFailureAndRecoveryRules": true,
+    "preserveFeedbackTimingBands": true
+  },
+  "expressionIsolation": {
+    "originalCode": true,
+    "originalAssets": true,
+    "originalNamesAndText": true,
+    "originalUiLayout": true,
+    "originalAudio": true,
+    "originalTuningValues": true
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "role": "FixerAgent",
+  "route": "formal-fixer",
+  "attempt": 7,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "Existing validated QA issue requires formal route. Hidden market option now obeys hidden attribute and one remaining choice spans available width. Player draws above labels and transient feedback but below input joystick. Actual-screen pixel regression compares visibility at reported employee-region crossings with an unobscured control at the same viewport.",
+  "contextIntentionallyOmitted": [
+    "Other games/shared factory dirty changes",
+    "Unbound media/unrelated conversation",
+    "Gameplay balance/state/save/adapter changes"
+  ],
+  "filesChanged": [
+    "src/main.ts",
+    "src/style.css",
+    "src/presentation-runtime.test.ts",
+    "dist/assets/background.svg",
+    "dist/assets/customer.svg",
+    "dist/assets/index-BoR8MCvQ.css",
+    "dist/assets/index-CvtMFlBl.js",
+    "dist/assets/product.svg",
+    "dist/assets/promo.svg",
+    "dist/assets/upgrade.svg",
+    "dist/index.html"
+  ],
+  "tests": [
+    {
+      "name": "red DOM and pixel",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-7/red-tests-valid-pixels-serial.log"
+    },
+    {
+      "name": "calibrated avatar red",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-7/red-avatar-calibrated.log"
+    },
+    {
+      "name": "48 tests pass",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-7/green-tests-2.log"
+    },
+    {
+      "name": "lint",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-7/lint-final.log"
+    },
+    {
+      "name": "typecheck",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-7/typecheck-final.log"
+    },
+    {
+      "name": "single build",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-7/build.log"
+    }
+  ],
+  "buildCount": 1,
+  "threadContinuity": {
+    "priorAttempt": 6,
+    "storedBuilderThreadId": null,
+    "replacementAgent": "/root acting as scoped FixerAgent",
+    "reason": "Previous scoped workers were interrupted by model switches before implementation. Root resumed the stored validated attempt7 artifacts serially; attempts1–6 retained."
+  },
+  "remainingEvidenceGaps": [
+    "Independent deterministic retest",
+    "Fresh natural journey at five viewports",
+    "Exact-object branch perceptual gate; unresolved checks remain BLOCKED",
+    "Platform package publishability unverified by web-lite"
+  ]
+}

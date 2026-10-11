@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "designMode": "reference_reskin",
+  "sessions": [
+    {
+      "id": "GO_NO_GO",
+      "purpose": "Confirm business readiness and the human-locked core premise before spending production effort.",
+      "requiredArtifacts": [
+        "artifacts/factory-profile.json",
+        "artifacts/business-preflight.json"
+      ],
+      "allowedDecisions": [
+        "APPROVE",
+        "REVISE",
+        "KILL"
+      ],
+      "approvalClass": "scheduled",
+      "owner": "HumanReviewer",
+      "countsTowardScheduledSession": true
+    },
+    {
+      "id": "CORE_DEMO",
+      "purpose": "Approve the core mechanic/demo lock before full content production.",
+      "requiredArtifacts": [
+        "artifacts/game-blueprint.json",
+        "artifacts/experience-contract.json",
+        "artifacts/art-directions.json",
+        "human/art-approval.yaml"
+      ],
+      "allowedDecisions": [
+        "APPROVE",
+        "REVISE",
+        "KILL"
+      ],
+      "approvalClass": "scheduled",
+      "owner": "HumanReviewer",
+      "countsTowardScheduledSession": true
+    },
+    {
+      "id": "FINAL_RELEASE",
+      "purpose": "Play the immutable candidate naturally and sign the release decision.",
+      "requiredArtifacts": [
+        "artifacts/release-candidate.json",
+        "artifacts/completion-gates.json",
+        "artifacts/platform-release-matrix.json"
+      ],
+      "allowedDecisions": [
+        "APPROVE",
+        "KILL"
+      ],
+      "approvalClass": "scheduled",
+      "owner": "HumanReviewer",
+      "countsTowardScheduledSession": true
+    }
+  ],
+  "scheduledSessions": [
+    {
+      "id": "GO_NO_GO",
+      "purpose": "Confirm business readiness and the human-locked core premise before spending production effort.",
+      "requiredArtifacts": [
+        "artifacts/factory-profile.json",
+        "artifacts/business-preflight.json"
+      ],
+      "allowedDecisions": [
+        "APPROVE",
+        "REVISE",
+        "KILL"
+      ],
+      "approvalClass": "scheduled",
+      "owner": "HumanReviewer",
+      "countsTowardScheduledSession": true
+    },
+    {
+      "id": "CORE_DEMO",
+      "purpose": "Approve the core mechanic/demo lock before full content production.",
+      "requiredArtifacts": [
+        "artifacts/game-blueprint.json",
+        "artifacts/experience-contract.json",
+        "artifacts/art-directions.json",
+        "human/art-approval.yaml"
+      ],
+      "allowedDecisions": [
+        "APPROVE",
+        "REVISE",
+        "KILL"
+      ],
+      "approvalClass": "scheduled",
+      "owner": "HumanReviewer",
+      "countsTowardScheduledSession": true
+    },
+    {
+      "id": "FINAL_RELEASE",
+      "purpose": "Play the immutable candidate naturally and sign the release decision.",
+      "requiredArtifacts": [
+        "artifacts/release-candidate.json",
+        "artifacts/completion-gates.json",
+        "artifacts/platform-release-matrix.json"
+      ],
+      "allowedDecisions": [
+        "APPROVE",
+        "KILL"
+      ],
+      "approvalClass": "scheduled",
+      "owner": "HumanReviewer",
+      "countsTowardScheduledSession": true
+    }
+  ],
+  "exceptionGates": [
+    "reference-conflict",
+    "rights-unknown",
+    "platform-unknown",
+    "differentiation-review",
+    "waiver",
+    "manual-dispute"
+  ],
+  "conditionalGates": [
+    {
+      "id": "reference-conflict",
+      "trigger": "Research and the human reference lock disagree on a core mechanic.",
+      "owner": "HumanReviewer",
+      "blocking": true,
+      "requiredEvidence": [
+        "artifacts/reference-evidence.json",
+        "human/reference-decision.yaml"
+      ],
+      "approvalClass": "conditional",
+      "countsTowardScheduledSession": false
+    },
+    {
+      "id": "rights-unknown",
+      "trigger": "Source, license or asset provenance cannot be verified.",
+      "owner": "HumanReviewer",
+      "blocking": true,
+      "requiredEvidence": [
+        "artifacts/open-source-research.json",
+        "artifacts/supply-chain.json"
+      ],
+      "approvalClass": "conditional",
+      "countsTowardScheduledSession": false
+    },
+    {
+      "id": "platform-unknown",
+      "trigger": "A target platform lacks account, package or device evidence.",
+      "owner": "HumanReviewer",
+      "blocking": true,
+      "requiredEvidence": [
+        "artifacts/platform-release-matrix.json",
+        "artifacts/platform-package-set.json"
+      ],
+      "approvalClass": "conditional",
+      "countsTowardScheduledSession": false
+    },
+    {
+      "id": "differentiation-review",
+      "trigger": "The game does not demonstrate meaningful structural differentiation from its reference.",
+      "owner": "HumanReviewer",
+      "blocking": true,
+      "requiredEvidence": [
+        "artifacts/differentiation-contract.json"
+      ],
+      "approvalClass": "conditional",
+      "countsTowardScheduledSession": false
+    },
+    {
+      "id": "waiver",
+      "trigger": "A non-critical unknown is explicitly waived with an expiry.",
+      "owner": "HumanReviewer",
+      "blocking": true,
+      "requiredEvidence": [
+        "artifacts/unknown-register.json"
+      ],
+      "approvalClass": "conditional",
+      "countsTowardScheduledSession": false
+    },
+    {
+      "id": "manual-dispute",
+      "trigger": "Independent reviewers disagree on a release-critical finding.",
+      "owner": "HumanReviewer",
+      "blocking": true,
+      "requiredEvidence": [
+        "artifacts/failure-report.json"
+      ],
+      "approvalClass": "conditional",
+      "countsTowardScheduledSession": false
+    }
+  ],
+  "asyncRecords": [
+    {
+      "id": "platform-paperwork",
+      "purpose": "Record account, certification and submission receipts without adding a scheduled play session.",
+      "owner": "HumanReviewer",
+      "requiredEvidence": [
+        "artifacts/certification-checklist.json"
+      ],
+      "approvalClass": "async",
+      "countsTowardScheduledSession": false
+    },
+    {
+      "id": "release-promotion",
+      "purpose": "Record an external platform submission or live verification event against the frozen hash.",
+      "owner": "ReleaseAgent",
+      "requiredEvidence": [
+        "artifacts/live-verification/"
+      ],
+      "approvalClass": "async",
+      "countsTowardScheduledSession": false
+    }
+  ],
+  "rule": "three-scheduled-sessions-plus-exceptions"
+}

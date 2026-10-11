@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "shop-experience-revision",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "authorization": "Human user said 继续吧 after the proposed enlargement of blueprint/runtime state to close reference and first-version quality gaps. This authorizes local implementation and independent QA in this same run. Earlier multi-agent request remains active.",
+  "createdAt": "2026-10-02T15:33:27.261Z",
+  "sourceArtifacts": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/game-blueprint.json",
+      "sha256": "1db92f3cb0f8c5d6a043f1c1fcbce6dd29ff662694eda14416380b2a82cd707f"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/reference-fidelity-contract.json",
+      "sha256": "b6565757d769df0d499c8392ba768253c22879c0544f195f6103a3df00d80473"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/reference-failure-pressure-contract.json",
+      "sha256": "b6335d1b5e77bc0728af8861b6249b810868c8c81fadf46ceadd52e1bcdd6532"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-3-independent/perceptual-attempt-3-report.json",
+      "sha256": "54621a3a30f25efcf1083c69ee988c1d133ccacb2ce9cb037a94a95db116a95e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/open-source-research.json",
+      "sha256": "33555e2bee30caf319f5fd346812d1b5af09d28d5d501c1d0ce6ab2a904740f1"
+    }
+  ],
+  "defaultRuntimeEntrypoints": [
+    "src/main.ts",
+    "src/simulation.ts",
+    "src/generated/game-config.json",
+    "index.html"
+  ],
+  "architecture": [
+    "Extend the existing run simulation and procedural Phaser renderer in place; preserve cash pile, queue tickets, packing, contribution, mobile input and proven flow. No template regeneration or copied first-version/third-party source/assets.",
+    "Use run-local typed data modules for recipes, employee duties, shopper line items and three original markets. Current shared SpatialShopSpec and GameplayRevisionLock cannot express all these branches; preserve original seed/blueprint as prior-version source and bind this validated revision sidecar as the current design authority. Do not attach the princess-specific lock or edit shared factory code.",
+    "A market selection must switch the actual active station topology/palette/demand/objective and instantiate a playable state. Store market id, per-market progress and selected route. Never pretend a stored nextMarketId is a completed world transition.",
+    "Version/migrate saves; preserve v1 wallet, unlocks and base contributions, clear stale entity references safely. New branches persist across reload. Restart clears the current run deliberately; normal continue preserves local progress.",
+    "Keep the portrait field prominent with a compact HUD. In landscape use an upright-label horizontal presentation of the same logical map (e.g. logical x,y -> display y,540-x; draw layers rotated, labels upright, input inverse transformed) or another tested readable camera solution. Do not squeeze the complete map into a 200px thumbnail.",
+    "Natural QA reads only visible DOM and screenshots and uses normal keyboard/touch input. Deterministic QA may use debug API in a separate context. Keep event observers active during movement and settlement."
+  ],
+  "systems": [
+    {
+      "id": "shopping-list",
+      "issueIds": [
+        "REF-SHOPPING-LIST"
+      ],
+      "requiredState": [
+        "shoppingList[{productId,quantity,collected}]",
+        "activeLineIndex",
+        "basketValue",
+        "queueTicket"
+      ],
+      "behavior": [
+        "Generate only product lines with unlocked producers/compatible shelves; no impossible locked demand.",
+        "Start with a single fish order, then naturally allow 2 different products and/or 2 units after expansion; collect all lines before entering checkout.",
+        "Show gathered versus outstanding items; price earned only after all items, queue-head service and packing."
+      ],
+      "visibleSignals": [
+        "Per-customer original item bubbles with icons/count/check marks; focused HUD order keeps product/route/status and remaining quantity."
+      ],
+      "acceptance": [
+        "Natural expanded shopper visits two compatible shelves before queueing.",
+        "Unit tests cover quantity conservation, locked demand, partial order, basket value and queue gating."
+      ]
+    },
+    {
+      "id": "processing",
+      "issueIds": [
+        "QA-ATTEMPT3-PROCESSOR-BRANCH-MISSING",
+        "REF-SYSTEM-DEPTH"
+      ],
+      "requiredState": [
+        "processor recipe/input shelf refs",
+        "processing progress",
+        "ready output",
+        "blocked input/capacity"
+      ],
+      "behavior": [
+        "Original smokehouse consumes fresh fish from its configured input shelf, subject to unlock and output capacity.",
+        "With input absent the progress remains stopped; replenishing the connected shelf resumes processing.",
+        "Player automatically picks up processed smoked fish and deposits it at the matching new shelf; no free output or negative inventories."
+      ],
+      "visibleSignals": [
+        "Input product arrow/quantity, empty-input amber icon, processing dial/smoke and ready finished goods on the machine; product-specific cargo/transfer path."
+      ],
+      "acceptance": [
+        "Fresh natural input shows input-starved processor -> restock -> output -> deposit.",
+        "Unit tests prove input gating, atomic consumption, capacity stop/resume and no locked processor output."
+      ]
+    },
+    {
+      "id": "employees",
+      "issueIds": [
+        "REF-SYSTEM-DEPTH"
+      ],
+      "requiredState": [
+        "hire payment",
+        "employee role/position/cargo/target",
+        "role unlocked"
+      ],
+      "behavior": [
+        "Original hire stations let the player fund a visible stock runner and cashier through stationary installments.",
+        "Stock runner physically travels between net and matching fish shelf with bounded cargo; cashier remains at checkout and services the same queue-head packing/cash branch.",
+        "Cashier money still enters the counter pile; the player must collect it. No instant revenue or teleporting replenishment."
+      ],
+      "visibleSignals": [
+        "Role icon and badge; runner visibly moves with fish, hire progress/price, cashier active service indicator."
+      ],
+      "acceptance": [
+        "Normal funded hire leads to visible worker action and inventory change.",
+        "Unit tests cover insufficient wallet, installment conservation, runner limits and cashier using queue/packing without double payment."
+      ]
+    },
+    {
+      "id": "shelf-pressure",
+      "issueIds": [
+        "QA-ATTEMPT3-DISRUPTION-BRANCH-MISSING",
+        "QA-ATTEMPT3-CUSTOMER-SHORTAGE-SIGNAL-UNPROVEN"
+      ],
+      "requiredState": [
+        "disruption seagull/target/grace/period",
+        "loss event source/destination",
+        "waiting-shelf patience",
+        "departure reason"
+      ],
+      "behavior": [
+        "An original beach seagull reaches a stocked compatible shelf after the shop is expanded; it alerts that shelf and periodically removes at most one available item.",
+        "Normal player approach scares it off and stops losses; refill recovers customer supply. The recovery is an original target-game rule, not a claim about the reference.",
+        "Keep approved 8-second stockout patience starting only at shelf arrival; show shrinking local patience and product shortage, explicit shortage departure and replenish recovery."
+      ],
+      "visibleSignals": [
+        "Seagull silhouette and shelf-localized alert halo, visible item loss; player proximity escape; ordinary customer product bubble and shrinking amber/red patience ring."
+      ],
+      "acceptance": [
+        "Fresh normal-input evidence observes disruption alert/loss -> player approach -> no further loss and replenish.",
+        "Fresh normal-input evidence observes shortage wait -> correct restock -> customer pickup/queue; unit tests cover loss cadence/grace and approved timeout origin."
+      ]
+    },
+    {
+      "id": "progression-and-markets",
+      "issueIds": [
+        "REF-PROGRESSION",
+        "QA-ATTEMPT3-NEXT-MARKET-WORLD-TRANSITION-MISSING"
+      ],
+      "requiredState": [
+        "marketId",
+        "perMarketProgress",
+        "market-entry enabled/progress",
+        "stage operating/settlement/market-selection",
+        "nextMarketId compatibility only"
+      ],
+      "behavior": [
+        "Preserve base fish operation and first kelp expansion settlement with continue locally/restart actions. Continue locally preserves completed unlocks.",
+        "After expansion a clearly separate next-market marker becomes reachable. Only stationary normal input inside the marker opens the market-selection panel.",
+        "Provide two original real markets, Coral Bay and Moon-Tide Pier, with distinct station arrangement, atmosphere, demand/processing bottleneck and authored construction target.",
+        "Choosing a valid market activates that world and a reachable new core loop/goal/settlement; invalid or locked choice cannot mutate state. No post-choice return to unchanged home disguised as a new market."
+      ],
+      "visibleSignals": [
+        "Visible locked/open next-market marker with route icon; two market cards showing different topology/goal; active market name, topology and construction progress."
+      ],
+      "acceptance": [
+        "Natural path proves expansion -> continue -> marker arrival/stop -> selection -> visibly different market -> core loop -> settlement/replay.",
+        "Unit tests cover stationary marker gating, invalid choices, world differences, preservation of upgrades/progress and replay."
+      ]
+    },
+    {
+      "id": "runtime-and-persistence",
+      "issueIds": [
+        "QA-RUNTIME-PRODUCT-GATE",
+        "QA-MOBILE-EXACT-BRANCH"
+      ],
+      "requiredState": [
+        "save schemaVersion",
+        "market/employee/order/pressure fields",
+        "normal input release",
+        "reduced motion flag"
+      ],
+      "behavior": [
+        "Default entrypoint wires every new branch into normal operating tick/render/save/load; compatibility-only old fields must be labeled and never select the old minimum journey.",
+        "Protect keyboard/pointer release and blur; no stuck motion. Reduced motion preserves visible critical signals without flight/bounce dependence.",
+        "Critical guidance uses icons/rings/station progress/route position; helper copy reinforces only. Compact mobile overlay controls >=44 CSS px and fully reachable."
+      ],
+      "visibleSignals": [
+        "Consistent order/route HUD, inventory/cash/goal progress; original station and actor hierarchy; readable portrait/landscape controls."
+      ],
+      "acceptance": [
+        "Independent deterministic, natural and perceptual QA at 360x800,390x844,430x932,540x960,844x390.",
+        "Tests pass, typecheck passes, lint passes via an existing local ESLint config without adding dependencies, exactly one build per formal attempt, hashed runtime-product gate and save reload proof."
+      ]
+    }
+  ],
+  "content": {
+    "originalProducts": [
+      "鲜鱼",
+      "海带",
+      "烟熏鱼"
+    ],
+    "marketIds": [
+      "beach-stall",
+      "coral-cove-market",
+      "moon-tide-market"
+    ],
+    "preservedDecisions": [
+      "direct operation start",
+      "8-second target-original stockout patience at shelf arrival",
+      "first expansion settlement with continue local/restart",
+      "all three target platforms remain declared; web-lite is QA only"
+    ],
+    "minimumProgression": [
+      "base fishing and stocking",
+      "kelp expansion and settlement",
+      "smokehouse and staff funding",
+      "next-marker selection and functional distinct market"
+    ]
+  },
+  "scopeBoundaries": [
+    "Only this run workspace and run artifacts may change; no unrelated repo edits or automatic commits.",
+    "No third-party game code/assets/UI/names/tuning; no first-version copying.",
+    "No new production dependency, backend, publishing, platform packaging or formal asset generation.",
+    "All new behavior is a response to validated experience QA gaps and is tested first."
+  ]
+}

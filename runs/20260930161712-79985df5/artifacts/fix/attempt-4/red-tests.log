@@ -1,0 +1,138 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ × src/depth-systems.test.ts > depth revision systems > creates a compatible multi-line order after expansion and preserves quantity accounting 5ms
+   → actual value must be number or bigint, received "undefined"
+ × src/depth-systems.test.ts > depth revision systems > gates smokehouse processing on connected input and output capacity 3ms
+   → expected undefined to match object { inputShelfId: 'fish-shelf', …(1) }
+ × src/depth-systems.test.ts > depth revision systems > funds employees in installments and gives the runner bounded physical cargo 1ms
+   → expected undefined to match object { role: 'runner', cargo: +0, …(1) }
+ × src/depth-systems.test.ts > depth revision systems > activates a shelf-local seagull pressure branch only after expansion 5ms
+   → expected undefined to be true // Object.is equality
+ × src/depth-systems.test.ts > depth revision systems > opens the next-market selector only after stationary marker arrival 1ms
+   → expected undefined to be true // Object.is equality
+ × src/depth-systems.test.ts > depth revision systems > starts with a versioned save state and explicit active market 1ms
+   → expected 1 to be 2 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > creates a compatible multi-line order after expansion and preserves quantity accounting
+TypeError: actual value must be number or bigint, received "undefined"
+ ❯ src/depth-systems.test.ts:18:53
+     16|
+     17|     expect(customer).toBeDefined();
+     18|     expect(recordOf(customer).shoppingList?.length).toBeGreaterThanOrE…
+       |                                                     ^
+     19|     expect(recordOf(customer).shoppingList?.every((line: any) => line.…
+     20|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > gates smokehouse processing on connected input and output capacity
+AssertionError: expected undefined to match object { inputShelfId: 'fish-shelf', …(1) }
+
+- Expected:
+{
+  "inputShelfId": "fish-shelf",
+  "outputShelfId": "smoked-shelf",
+}
+
++ Received:
+undefined
+
+ ❯ src/depth-systems.test.ts:26:36
+     24|     const processors = recordOf(state).processors;
+     25|
+     26|     expect(processors?.smokehouse).toMatchObject({ inputShelfId: 'fish…
+       |                                    ^
+     27|     expect(processors?.smokehouse?.blockedReason).toBe('input');
+     28|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > funds employees in installments and gives the runner bounded physical cargo
+AssertionError: expected undefined to match object { role: 'runner', cargo: +0, …(1) }
+
+- Expected:
+{
+  "cargo": 0,
+  "cargoCapacity": 2,
+  "role": "runner",
+}
+
++ Received:
+undefined
+
+ ❯ src/depth-systems.test.ts:34:31
+     32|     const employees = recordOf(state).employees;
+     33|
+     34|     expect(employees?.runner).toMatchObject({ role: 'runner', cargo: 0…
+       |                               ^
+     35|     expect(employees?.cashier).toMatchObject({ role: 'cashier', cargo:…
+     36|     expect(recordOf(state).hireStations?.runner?.remaining).toBeGreate…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > activates a shelf-local seagull pressure branch only after expansion
+AssertionError: expected undefined to be true // Object.is equality
+
+- Expected:
+true
+
++ Received:
+undefined
+
+ ❯ src/depth-systems.test.ts:47:55
+     45|     state = advanceGame(shop, state, 8_000);
+     46|
+     47|     expect(recordOf(state).pressure?.seagull?.active).toBe(true);
+       |                                                       ^
+     48|     expect(recordOf(state).pressure?.seagull?.targetShelfId).toBe('fis…
+     49|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > opens the next-market selector only after stationary marker arrival
+AssertionError: expected undefined to be true // Object.is equality
+
+- Expected:
+true
+
++ Received:
+undefined
+
+ ❯ src/depth-systems.test.ts:56:45
+     54|     const continued = recordOf(state);
+     55|
+     56|     expect(continued.marketMarker?.enabled).toBe(true);
+       |                                             ^
+     57|     expect(continued.stage).toBe('operating');
+     58|     const marker = continued.marketMarker.position;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/depth-systems.test.ts > depth revision systems > starts with a versioned save state and explicit active market
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/depth-systems.test.ts:69:33
+     67|     const stateRecord = recordOf(state);
+     68|
+     69|     expect(stateRecord.version).toBe(2);
+       |                                 ^
+     70|     expect(stateRecord.marketId).toBe('beach-stall');
+     71|     expect(stateRecord.perMarketProgress).toEqual(expect.any(Object));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  23:44:11
+   Duration  266ms (transform 68ms, setup 0ms, import 83ms, tests 16ms, environment 0ms)
+

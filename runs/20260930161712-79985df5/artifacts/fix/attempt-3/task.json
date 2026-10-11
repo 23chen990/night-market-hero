@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "attempt": 3,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "issueIds": [
+    "QA-ORDER-PRODUCT-HIERARCHY",
+    "QA-BEACH-SHOP-VISUAL-RICHNESS",
+    "QA-NEXT-MARKET-CONTINUATION"
+  ],
+  "whyFormalFixer": "Independent attempt-2 deterministic and natural tracks passed, but the independent perceptual report retains a product-shape blocker: the visible terminal branch is settlement plus continue/restart instead of a next-market selection branch. The repair also requires a small, causal order/product hierarchy and richer original beach-shop presentation. This crosses runtime renderer, DOM presentation, and progression state, so formal fixer routing remains required.",
+  "contextIntentionallyOmitted": [
+    "other runs and workspaces",
+    "unbound or unverified recordings and screenshots",
+    "third-party source, assets, names, UI, expression, and raw tuning values",
+    "multi-item shopping lists, processing/employee systems, disruption visitors, and broader multi-stage progression",
+    "unrelated factory history and logs"
+  ],
+  "authorizedFiles": [
+    "src/main.ts",
+    "src/simulation.ts",
+    "src/simulation.test.ts",
+    "src/order-presentation.ts",
+    "src/order-presentation.test.ts",
+    "index.html",
+    "src/style.css",
+    "dist/"
+  ],
+  "acceptance": [
+    "The HUD visibly presents one active customer order with product identity, product color/icon, route/status, and shelf/queue context without introducing multi-item shopping lists.",
+    "The world presentation adds original procedural beach-shop hierarchy and product merchandising cues while preserving current natural harvest/deposit/packing/cash mechanics.",
+    "Construction completion exposes a visible next-market selection branch with at least two original local market choices; the existing continue-round selector remains a valid normal-input path and restart remains available.",
+    "Selecting a market records the choice in simulation state, closes the selection branch, returns to operating, and preserves unlocked progression; restart clears the choice.",
+    "Every new behavior has a test-first regression test; run available vitest, typecheck, lint with honest missing-script evidence, and exactly one production build.",
+    "Fix result remains IMPLEMENTED_AWAITING_INDEPENDENT_QA and explicitly lists natural/perceptual evidence gaps; no QA acceptance is claimed."
+  ],
+  "outOfScope": [
+    "multi-item shopping lists",
+    "processing or employee systems",
+    "disruption visitor branch",
+    "broader multi-stage progression or world-state simulation",
+    "copied third-party or first-version source/assets/expression"
+  ]
+}

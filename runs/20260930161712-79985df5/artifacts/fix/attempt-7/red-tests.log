@@ -1,0 +1,64 @@
+$ node ../../../../node_modules/vitest/vitest.mjs run -- src/presentation-runtime.test.ts
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/presentation-runtime.test.ts (7 tests | 7 failed) 27684ms
+     × shows one full-width continue command at 360x800 and preserves two market destinations 7163ms
+     × shows one full-width continue command at 390x844 and preserves two market destinations 5533ms
+     × shows one full-width continue command at 430x932 and preserves two market destinations 5400ms
+     × shows one full-width continue command at 540x960 and preserves two market destinations 1747ms
+     × shows one full-width continue command at 844x390 and preserves two market destinations 2083ms
+     × keeps the avatar body and head visible through funding labels at 540x960 3137ms
+     × keeps the avatar body and head visible through funding labels at 844x390 1901ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 360x800 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 390x844 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 430x932 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 540x960 and preserves two market destinations
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > shows one full-width continue command at 844x390 and preserves two market destinations
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/presentation-runtime.test.ts:64:39
+     62|         await expansionSettlement(page);
+     63|         const choices = page.locator('#settlement [data-market-id]:vis…
+     64|         expect(await choices.count()).toBe(1);
+       |                                       ^
+     65|         expect(await page.locator('#restart-round:visible').count()).t…
+     66|         const widths = await page.locator('#continue-round').evaluate(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > keeps the avatar body and head visible through funding labels at 540x960
+ FAIL  src/presentation-runtime.test.ts > runtime settlement and avatar presentation > keeps the avatar body and head visible through funding labels at 844x390
+Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'renderer')
+    at image (eval at evaluate (:311:30), <anonymous>:4:9)
+    at new Promise (<anonymous>)
+    at eval (eval at evaluate (:311:30), <anonymous>:3:23)
+    at UtilityScript.evaluate (<anonymous>:313:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+ ❯ avatarPixels src/presentation-runtime.test.ts:35:15
+     33|
+     34| async function avatarPixels(page: Page, position: { x: number; y: numb…
+     35|   return page.evaluate(async (point) => {
+       |               ^
+     36|     const game = (window as unknown as { PHASER_GAME: Phaser.Game }).P…
+     37|     const image = await new Promise<HTMLImageElement>((resolve) => {
+ ❯ src/presentation-runtime.test.ts:96:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  7 failed | 41 passed (48)
+   Start at  17:08:48
+   Duration  28.65s (transform 1.01s, setup 0ms, import 1.83s, tests 27.90s, environment 0ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

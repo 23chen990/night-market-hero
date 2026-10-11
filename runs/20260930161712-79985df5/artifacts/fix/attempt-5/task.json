@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "role": "FixerAgent",
+  "route": "formal-fixer",
+  "attempt": 5,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Sole serial writer: src/main.ts, src/style.css, src/responsive.ts and its tests, src/input.ts and causal input tests, index.html if needed, eslint.config.js/package.json lint only, dist/**",
+    "artifacts/fix/attempt-5/** evidence only; never overwrite before/** or task/QA handoff"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/qa-issues.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/layout-input-reproduction-matrix.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/layout-input-triage.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/landing-input.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261002/attempt-4-independent/directions.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json"
+  ],
+  "instructions": [
+    "Continue stored Fixer agent in same target workspace. You are not alone; preserve all others/user edits. No shared factory/other-run edits or commits. Last attempt4=31unit tests, typecheck, fixture5viewports passed; independent exact UI/normal-input/pixel gates failed. Preserve attempt4 and increment once to5.",
+    "Causal scope is responsive presentation/input/lint only. Retain existing six new systems/core economy/persistence. Do not regenerate template or redesign game. Root is continuing immutable attempt4 deeper natural QA and may send a validated additional concrete failure if found.",
+    "True test-first: before code edits run a failing targeted runtime assertion on fresh normal input for portrait HUD/card/control boxes and landscape screen-relative movement. Also add meaningful failing responsive/input tests for measured chrome and rotation pairing. Do not use CSS substring assertions as the sole behavior proof; missing tooling is not red. Existing qa scripts in /tmp/shop-landing-input4.mjs and /tmp/shop-directions4.mjs may be reused against a dev server without a production build.",
+    "Fix measured chrome/grid layout, including full order card and control/safe-area rows; at360/390/430/540 portrait all HUD/card/buttons within bounds without canvas overlap for startup/active order/settlement. Compact title/market labeling is allowed where causal. Avoid two duplicate continue-local choices at settlement. Real marker selection retains two distinct named route cards.",
+    "At844x390 allocate readable wide field >=420CSSpx (prefer full available width), coherent CSS/Graphics/camera transform and keyboard+touch mapping, upright labels and controls outside helper text. Normal screen up/down/left/right must agree with both key and physical touch and release stops movement. Test actual pixels, not only declared math. Keep original procedural style.",
+    "Use meaningful installed ESLint rules and remedy causal diagnostics, preserve lint red and green evidence. No new production dependencies. Run lint/typecheck/all tests before build. Exactly one production build for attempt5 after all checks; never rebuild unchanged code.",
+    "Before production build use fresh normal-input dev runtime checks for the exact failed branches to catch transform/layout mismatches. Implementation fixtures remain implementation evidence only; root independently retests natural/perceptual5viewports and full depth branches after build.",
+    "Root QA attempt4 preview will be pinned on4173 to old build; use a distinct free dev port (4174 if free) for your source. Do not alter root preview. Final output validate RepairResultSchema (positive attempt5) from revision-schema.mjs; final status IMPLEMENTED_AWAITING_INDEPENDENT_QA, buildCount1. Report route reason, omitted context, changed files, true logs/hashes and remaining gaps."
+  ],
+  "acceptance": [
+    "Failing real branch assertions first, all target portrait UI/no-overlap/control bounds and landscape actual input corrected on default runtime.",
+    "All four keyboard and touch directions physically agree with display and releases stop; readable upright landscape field.",
+    "Meaningful lint/typecheck31+tests pass and exactly one build; no unrelated semantics/files changed.",
+    "No independent success self-approval; root must prove all exact branches, core->settlement->replay on current hashed build."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-5/fix-result.json"
+}

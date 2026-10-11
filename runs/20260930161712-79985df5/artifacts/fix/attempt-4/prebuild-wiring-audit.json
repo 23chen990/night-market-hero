@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "active-market-goal-wiring-prebuild",
+      "passed": false,
+      "evidence": "Current simulation.ts defines recordMarketGoal, but no default tick/pickup/packing/deposit call references it; main.ts currently has no goalProgress/marketId HUD/world path. This is an in-progress wiring observation, not an accepted final diagnosis. Ensure actual delivered smoked orders/target shelf stock update distinct authored goals and trigger real settlement, not only direct unit calls to recordMarketGoal."
+    },
+    {
+      "name": "selector-and-world-path-prebuild",
+      "passed": false,
+      "evidence": "Current main.ts data-market-id click handler still calls continueGame; it needs distinct local-continuation and marker selection paths, actual selectMarketGame and market-derived renderer positions/atmosphere, plus visible new goal. Current responsive.ts remains portrait thumbnail in landscape; planned horizontal transform still needs implementation and tests."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QA-ATTEMPT4-PREBUILD-DEFAULT-JOURNEY-WIRING",
+      "severity": "error",
+      "message": "Before the single production build, verify that market goals, selector, renderer, landscape input and feedback are all wired to normal default entrypoint. Data/helper tests alone cannot prove a playable new market.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts; /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/responsive.ts"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Read-only prebuild observation while implementation is in progress; preserves existing contract and is not a runtime acceptance report.",
+  "testedAt": "2026-10-02T15:59:54.033Z"
+}

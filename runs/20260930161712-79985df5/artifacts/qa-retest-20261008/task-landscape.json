@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "runRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": "Natural QA only; own artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-worker and natural-360x800-keyboard-landscape-worker. No generated source or shared QA script writes.",
+  "inputs": [
+    "artifacts/qa-retest-20261008/natural-attempt7.mjs",
+    "artifacts/fix/attempt-7/task.json",
+    "artifacts/revisions/20261002-depth/product-experience-contract.json"
+  ],
+  "acceptance": [
+    "Wait for artifacts/fix/attempt-7/build-manifest.json and preview http://127.0.0.1:4177. Parent builds exactly once.",
+    "Use existing natural-attempt7.mjs with SHOP_QA_WIDTH=844 SHOP_QA_HEIGHT=390 SHOP_QA_INPUT=touch SHOP_QA_SESSION=landscape-worker then width360 height800 inputkeyboard sessionlandscape-worker. Run with pnpm exec tsx from repository root, logs in your QA directories. Keep failures.",
+    "Do not inject state in natural runs. On harness failure report actual trace and hypothesis before rerun; no modifications to acceptance. Verify manifest hashes.",
+    "Return strict Zod-validated summary with schemaVersion, role, reports paths, passed, blockers."
+  ],
+  "output": "artifacts/qa-retest-20261008/landscape-worker-summary.json"
+}

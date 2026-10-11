@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "continuation-v2",
+  "track": "natural-player-experience",
+  "status": "BLOCKED",
+  "reason": "Playwright Chromium could not launch in the managed macOS sandbox, so startup -> core loop -> settlement -> replay cannot be independently observed here.",
+  "evidence": ["artifacts/runtime-evidence.json", "logs/console.log"]
+}

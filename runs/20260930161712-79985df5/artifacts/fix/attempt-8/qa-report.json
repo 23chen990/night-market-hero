@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "coral-terminal-cause",
+      "passed": false,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png"
+    },
+    {
+      "name": "gull-silhouette-landscape",
+      "passed": false,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png"
+    },
+    {
+      "name": "favicon-resource",
+      "passed": false,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/origin-check.json"
+    },
+    {
+      "name": "gull-recovery-relief",
+      "passed": false,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/visual-review-attempt7.json"
+    }
+  ],
+  "issues": [
+    {
+      "id": "market-settlement-wrong-cause",
+      "severity": "error",
+      "message": "New market terminal incorrectly presents first beach expansion cause.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png"
+    },
+    {
+      "id": "gull-silhouette-under-labels",
+      "severity": "error",
+      "message": "Active gull target branch not perceptually distinct in landscape; confirm causal draw-layer red before patch.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png"
+    },
+    {
+      "id": "implicit-favicon-404",
+      "severity": "error",
+      "message": "Missing explicit icon creates browser resource404; original run asset is available.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/origin-check.json"
+    },
+    {
+      "id": "gull-recovery-no-relief",
+      "severity": "error",
+      "message": "Repeated respawn/alert on the guarded recovered shelf prevents readable relief after successful chase.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/visual-review-attempt7.json"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/050-coral-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png"
+  ],
+  "consoleLog": "Root Metal natural:16 gameplay checks pass, no page errors, one resource404. Original failed reports retained.",
+  "testedAt": "2026-10-08T10:11:51.043Z"
+}

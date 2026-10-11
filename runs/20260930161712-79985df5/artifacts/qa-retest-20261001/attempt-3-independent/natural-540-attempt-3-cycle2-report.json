@@ -1,0 +1,2274 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-natural-qa-attempt-2-cycle-540",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "runtime": "web-lite",
+  "baseUrl": "http://127.0.0.1:4173/",
+  "buildHash": "2bd4b7cff5d7614e7a01a742b71070b0062a70b28731d62975cf344c8e01a109",
+  "viewport": {
+    "width": 540,
+    "height": 960
+  },
+  "startedAt": "2026-10-01T15:44:42.760Z",
+  "finishedAt": "2026-10-01T15:44:42.768Z",
+  "forbiddenOperations": [],
+  "observations": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-01-boot.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-02-harvest-1.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-03-deposit-1.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-04-checkout-1.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-05-collect-1.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-06-harvest-2.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-07-deposit-2.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-08-checkout-2.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-09-collect-2.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-10-settlement.png"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-11-continue.png"
+    }
+  ],
+  "trace": [
+    {
+      "phase": "boot",
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "原创海滩物流经营",
+        "mission": "首要动作：去近岸渔网采集鲜货",
+        "toast": "",
+        "coins": "贝壳币 0",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 262,
+            "y": 897.609375,
+            "width": 16,
+            "height": 20,
+            "right": 278,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "harvest-1",
+      "move": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 269,
+            "y": 759
+          },
+          {
+            "x": 269,
+            "y": 747
+          },
+          {
+            "x": 269,
+            "y": 733
+          },
+          {
+            "x": 270,
+            "y": 672
+          },
+          {
+            "x": 269,
+            "y": 642
+          },
+          {
+            "x": 269,
+            "y": 612
+          },
+          {
+            "x": 269,
+            "y": 579
+          },
+          {
+            "x": 269,
+            "y": 545
+          },
+          {
+            "x": 269,
+            "y": 507
+          },
+          {
+            "x": 271,
+            "y": 461
+          },
+          {
+            "x": 269,
+            "y": 424
+          },
+          {
+            "x": 269,
+            "y": 383
+          },
+          {
+            "x": 269,
+            "y": 353
+          },
+          {
+            "x": 269,
+            "y": 323
+          },
+          {
+            "x": 231,
+            "y": 323
+          },
+          {
+            "x": 231,
+            "y": 293
+          },
+          {
+            "x": 231,
+            "y": 251
+          },
+          {
+            "x": 219,
+            "y": 251
+          },
+          {
+            "x": 183,
+            "y": 251
+          },
+          {
+            "x": 183,
+            "y": 219
+          },
+          {
+            "x": 145,
+            "y": 214
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 56,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "原创海滩物流经营",
+          "mission": "下一步：靠近鲜鱼冰盘补货",
+          "toast": "新顾客到店",
+          "coins": "贝壳币 0",
+          "cashPile": "柜台现金 0",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 232,
+              "y": 897.609375,
+              "width": 76,
+              "height": 20,
+              "right": 308,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "原创海滩物流经营",
+        "mission": "下一步：靠近鲜鱼冰盘补货",
+        "toast": "新顾客到店",
+        "coins": "贝壳币 0",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 232,
+            "y": 897.609375,
+            "width": 76,
+            "height": 20,
+            "right": 308,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "deposit-1",
+      "move": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 145,
+            "y": 214
+          },
+          {
+            "x": 147,
+            "y": 254
+          },
+          {
+            "x": 144,
+            "y": 282
+          },
+          {
+            "x": 144,
+            "y": 316
+          },
+          {
+            "x": 179,
+            "y": 316
+          },
+          {
+            "x": 179,
+            "y": 352
+          },
+          {
+            "x": 212,
+            "y": 352
+          },
+          {
+            "x": 212,
+            "y": 385
+          },
+          {
+            "x": 237,
+            "y": 386
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 226,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "原创海滩物流经营",
+          "mission": "下一步：在收银桌服务队首（1）",
+          "toast": "顾客入队：队首服务",
+          "coins": "贝壳币 0",
+          "cashPile": "柜台现金 0",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 208,
+              "y": 897.609375,
+              "width": 124,
+              "height": 20,
+              "right": 332,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "原创海滩物流经营",
+        "mission": "下一步：在收银桌服务队首（1）",
+        "toast": "顾客入队：队首服务",
+        "coins": "贝壳币 0",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 208,
+            "y": 897.609375,
+            "width": 124,
+            "height": 20,
+            "right": 332,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "checkout-1",
+      "move": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 242,
+            "y": 386
+          },
+          {
+            "x": 241,
+            "y": 419
+          },
+          {
+            "x": 241,
+            "y": 449
+          },
+          {
+            "x": 236,
+            "y": 485
+          },
+          {
+            "x": 242,
+            "y": 524
+          },
+          {
+            "x": 242,
+            "y": 558
+          },
+          {
+            "x": 242,
+            "y": 591
+          },
+          {
+            "x": 242,
+            "y": 627
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 50,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "柜台有 2 贝壳币，靠近收取",
+          "mission": "下一步：离开柜台再回来收取现金",
+          "toast": "打包中：正在封装货品",
+          "coins": "贝壳币 0",
+          "cashPile": "柜台现金 2",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 202,
+              "y": 897.609375,
+              "width": 136,
+              "height": 20,
+              "right": 338,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "visible": {
+        "events": [
+          {
+            "name": "queue",
+            "atMs": 43,
+            "summary": {
+              "title": "海滩渔货铺",
+              "status": "原创海滩物流经营",
+              "mission": "下一步：在收银桌服务队首（2）",
+              "toast": "顾客入队：队首服务",
+              "coins": "贝壳币 0",
+              "cashPile": "柜台现金 0",
+              "settlementHidden": true,
+              "viewport": {
+                "width": 540,
+                "height": 960
+              },
+              "bodyScroll": {
+                "width": 540,
+                "height": 960
+              },
+              "boxes": {
+                "#game-shell": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 540,
+                  "height": 960,
+                  "right": 540,
+                  "bottom": 960
+                },
+                "#hud": {
+                  "x": 10,
+                  "y": 18.453125,
+                  "width": 520,
+                  "height": 152.15625,
+                  "right": 530,
+                  "bottom": 170.609375
+                },
+                "#game": {
+                  "x": 70,
+                  "y": 178.609375,
+                  "width": 400,
+                  "height": 711,
+                  "right": 470,
+                  "bottom": 889.609375
+                },
+                "#game canvas": {
+                  "x": 70,
+                  "y": 178.609375,
+                  "width": 400,
+                  "height": 711,
+                  "right": 470,
+                  "bottom": 889.609375
+                },
+                "#settlement": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0,
+                  "right": 0,
+                  "bottom": 0
+                },
+                "#toast": {
+                  "x": 208,
+                  "y": 897.609375,
+                  "width": 124,
+                  "height": 20,
+                  "right": 332,
+                  "bottom": 917.609375
+                },
+                "#instructions": {
+                  "x": 17.65625,
+                  "y": 925.609375,
+                  "width": 504.671875,
+                  "height": 15.9375,
+                  "right": 522.328125,
+                  "bottom": 941.546875
+                }
+              }
+            },
+            "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-1-queue.png"
+          }
+        ],
+        "elapsedMs": 7026
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "柜台有 4 贝壳币，靠近收取",
+        "mission": "下一步：离开柜台再回来收取现金",
+        "toast": "打包完成：2 贝壳币落入柜台",
+        "coins": "贝壳币 0",
+        "cashPile": "柜台现金 4",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 184.390625,
+            "y": 897.609375,
+            "width": 171.203125,
+            "height": 20,
+            "right": 355.59375,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "collect-1",
+      "leave": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 240,
+            "y": 629
+          },
+          {
+            "x": 203,
+            "y": 627
+          },
+          {
+            "x": 165,
+            "y": 627
+          },
+          {
+            "x": 136,
+            "y": 627
+          },
+          {
+            "x": 104,
+            "y": 627
+          }
+        ]
+      },
+      "return": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 104,
+            "y": 627
+          },
+          {
+            "x": 134,
+            "y": 627
+          },
+          {
+            "x": 164,
+            "y": 627
+          },
+          {
+            "x": 195,
+            "y": 627
+          },
+          {
+            "x": 224,
+            "y": 627
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 48,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "原创海滩物流经营",
+          "mission": "首要动作：去近岸渔网采集鲜货",
+          "toast": "新顾客到店",
+          "coins": "贝壳币 8",
+          "cashPile": "柜台现金 0",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 232,
+              "y": 897.609375,
+              "width": 76,
+              "height": 20,
+              "right": 308,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "原创海滩物流经营",
+        "mission": "首要动作：去近岸渔网采集鲜货",
+        "toast": "新顾客到店",
+        "coins": "贝壳币 8",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 232,
+            "y": 897.609375,
+            "width": 76,
+            "height": 20,
+            "right": 308,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "harvest-2",
+      "move": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 225,
+            "y": 627
+          },
+          {
+            "x": 225,
+            "y": 587
+          },
+          {
+            "x": 225,
+            "y": 558
+          },
+          {
+            "x": 225,
+            "y": 514
+          },
+          {
+            "x": 224,
+            "y": 476
+          },
+          {
+            "x": 225,
+            "y": 435
+          },
+          {
+            "x": 225,
+            "y": 400
+          },
+          {
+            "x": 225,
+            "y": 365
+          },
+          {
+            "x": 225,
+            "y": 330
+          },
+          {
+            "x": 225,
+            "y": 301
+          },
+          {
+            "x": 225,
+            "y": 271
+          },
+          {
+            "x": 193,
+            "y": 271
+          },
+          {
+            "x": 194,
+            "y": 242
+          },
+          {
+            "x": 161,
+            "y": 243
+          },
+          {
+            "x": 160,
+            "y": 209
+          },
+          {
+            "x": 121,
+            "y": 208
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 87,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "当前节奏：涨潮",
+          "mission": "下一步：靠近鲜鱼冰盘补货",
+          "toast": "生产完成：可采集",
+          "coins": "贝壳币 8",
+          "cashPile": "柜台现金 0",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 214,
+              "y": 897.609375,
+              "width": 112,
+              "height": 20,
+              "right": 326,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "当前节奏：涨潮",
+        "mission": "下一步：靠近鲜鱼冰盘补货",
+        "toast": "生产完成：可采集",
+        "coins": "贝壳币 8",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 214,
+            "y": 897.609375,
+            "width": 112,
+            "height": 20,
+            "right": 326,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "deposit-2",
+      "move": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 121,
+            "y": 208
+          },
+          {
+            "x": 123,
+            "y": 245
+          },
+          {
+            "x": 121,
+            "y": 273
+          },
+          {
+            "x": 170,
+            "y": 273
+          },
+          {
+            "x": 170,
+            "y": 315
+          },
+          {
+            "x": 170,
+            "y": 345
+          },
+          {
+            "x": 203,
+            "y": 345
+          },
+          {
+            "x": 203,
+            "y": 379
+          },
+          {
+            "x": 241,
+            "y": 380
+          },
+          {
+            "x": 245,
+            "y": 414
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 66,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "原创海滩物流经营",
+          "mission": "下一步：在收银桌服务队首（3）",
+          "toast": "顾客取货：前往收银",
+          "coins": "贝壳币 8",
+          "cashPile": "柜台现金 0",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 208,
+              "y": 897.609375,
+              "width": 124,
+              "height": 20,
+              "right": 332,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "原创海滩物流经营",
+        "mission": "下一步：在收银桌服务队首（3）",
+        "toast": "顾客取货：前往收银",
+        "coins": "贝壳币 8",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 208,
+            "y": 897.609375,
+            "width": 124,
+            "height": 20,
+            "right": 332,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "checkout-2",
+      "move": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 246,
+            "y": 414
+          },
+          {
+            "x": 246,
+            "y": 448
+          },
+          {
+            "x": 240,
+            "y": 487
+          },
+          {
+            "x": 246,
+            "y": 517
+          },
+          {
+            "x": 246,
+            "y": 549
+          },
+          {
+            "x": 246,
+            "y": 585
+          },
+          {
+            "x": 246,
+            "y": 616
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 49,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "柜台有 2 贝壳币，靠近收取",
+          "mission": "下一步：离开柜台再回来收取现金",
+          "toast": "新顾客到店",
+          "coins": "贝壳币 8",
+          "cashPile": "柜台现金 2",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 232,
+              "y": 897.609375,
+              "width": 76,
+              "height": 20,
+              "right": 308,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "visible": {
+        "events": [
+          {
+            "name": "queue",
+            "atMs": 54,
+            "summary": {
+              "title": "海滩渔货铺",
+              "status": "原创海滩物流经营",
+              "mission": "下一步：在收银桌服务队首（3）",
+              "toast": "顾客取货：前往收银",
+              "coins": "贝壳币 8",
+              "cashPile": "柜台现金 0",
+              "settlementHidden": true,
+              "viewport": {
+                "width": 540,
+                "height": 960
+              },
+              "bodyScroll": {
+                "width": 540,
+                "height": 960
+              },
+              "boxes": {
+                "#game-shell": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 540,
+                  "height": 960,
+                  "right": 540,
+                  "bottom": 960
+                },
+                "#hud": {
+                  "x": 10,
+                  "y": 18.453125,
+                  "width": 520,
+                  "height": 152.15625,
+                  "right": 530,
+                  "bottom": 170.609375
+                },
+                "#game": {
+                  "x": 70,
+                  "y": 178.609375,
+                  "width": 400,
+                  "height": 711,
+                  "right": 470,
+                  "bottom": 889.609375
+                },
+                "#game canvas": {
+                  "x": 70,
+                  "y": 178.609375,
+                  "width": 400,
+                  "height": 711,
+                  "right": 470,
+                  "bottom": 889.609375
+                },
+                "#settlement": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0,
+                  "right": 0,
+                  "bottom": 0
+                },
+                "#toast": {
+                  "x": 208,
+                  "y": 897.609375,
+                  "width": 124,
+                  "height": 20,
+                  "right": 332,
+                  "bottom": 917.609375
+                },
+                "#instructions": {
+                  "x": 17.65625,
+                  "y": 925.609375,
+                  "width": 504.671875,
+                  "height": 15.9375,
+                  "right": 522.328125,
+                  "bottom": 941.546875
+                }
+              }
+            },
+            "screenshot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-3-independent-cycle2/540x960/cycle-2-queue.png"
+          }
+        ],
+        "elapsedMs": 7017
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "柜台有 2 贝壳币，靠近收取",
+        "mission": "下一步：离开柜台再回来收取现金",
+        "toast": "新顾客到店",
+        "coins": "贝壳币 8",
+        "cashPile": "柜台现金 2",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 232,
+            "y": 897.609375,
+            "width": 76,
+            "height": 20,
+            "right": 308,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "collect-2",
+      "leave": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 243,
+            "y": 616
+          },
+          {
+            "x": 211,
+            "y": 616
+          },
+          {
+            "x": 172,
+            "y": 616
+          },
+          {
+            "x": 135,
+            "y": 616
+          },
+          {
+            "x": 101,
+            "y": 616
+          }
+        ]
+      },
+      "return": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 101,
+            "y": 616
+          },
+          {
+            "x": 132,
+            "y": 616
+          },
+          {
+            "x": 179,
+            "y": 616
+          },
+          {
+            "x": 218,
+            "y": 616
+          },
+          {
+            "x": 255,
+            "y": 616
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 43,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "原创海滩物流经营",
+          "mission": "首要动作：去近岸渔网采集鲜货",
+          "toast": "新顾客到店",
+          "coins": "贝壳币 16",
+          "cashPile": "柜台现金 0",
+          "settlementHidden": true,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 18.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 170.609375
+            },
+            "#game": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#game canvas": {
+              "x": 70,
+              "y": 178.609375,
+              "width": 400,
+              "height": 711,
+              "right": 470,
+              "bottom": 889.609375
+            },
+            "#settlement": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "#toast": {
+              "x": 232,
+              "y": 897.609375,
+              "width": 76,
+              "height": 20,
+              "right": 308,
+              "bottom": 917.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 925.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 941.546875
+            }
+          }
+        }
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "原创海滩物流经营",
+        "mission": "首要动作：去近岸渔网采集鲜货",
+        "toast": "新顾客到店",
+        "coins": "贝壳币 16",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 232,
+            "y": 897.609375,
+            "width": 76,
+            "height": 20,
+            "right": 308,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "settlement",
+      "move": {
+        "reached": true,
+        "samples": [
+          {
+            "x": 255,
+            "y": 616
+          },
+          {
+            "x": 283,
+            "y": 616
+          },
+          {
+            "x": 319,
+            "y": 616
+          },
+          {
+            "x": 319,
+            "y": 652
+          },
+          {
+            "x": 355,
+            "y": 652
+          },
+          {
+            "x": 356,
+            "y": 690
+          },
+          {
+            "x": 434,
+            "y": 949
+          },
+          {
+            "x": 379,
+            "y": 689
+          }
+        ]
+      },
+      "wait": {
+        "found": true,
+        "elapsedMs": 46,
+        "value": {
+          "title": "海滩渔货铺",
+          "status": "扩建完成：选择下一市场路线或重开本轮",
+          "mission": "阶段完成：选择下一市场路线",
+          "toast": "建设完成：潮池已解锁",
+          "coins": "贝壳币 12",
+          "cashPile": "柜台现金 0",
+          "settlementHidden": false,
+          "viewport": {
+            "width": 540,
+            "height": 960
+          },
+          "bodyScroll": {
+            "width": 540,
+            "height": 960
+          },
+          "boxes": {
+            "#game-shell": {
+              "x": 0,
+              "y": 0,
+              "width": 540,
+              "height": 960,
+              "right": 540,
+              "bottom": 960
+            },
+            "#hud": {
+              "x": 10,
+              "y": 14.453125,
+              "width": 520,
+              "height": 152.15625,
+              "right": 530,
+              "bottom": 166.609375
+            },
+            "#game": {
+              "x": 123,
+              "y": 174.609375,
+              "width": 294,
+              "height": 523,
+              "right": 417,
+              "bottom": 697.609375
+            },
+            "#game canvas": {
+              "x": 123,
+              "y": 174.609375,
+              "width": 294,
+              "height": 523,
+              "right": 417,
+              "bottom": 697.609375
+            },
+            "#settlement": {
+              "x": 10,
+              "y": 705.609375,
+              "width": 520,
+              "height": 188,
+              "right": 530,
+              "bottom": 893.609375
+            },
+            "#toast": {
+              "x": 202,
+              "y": 901.609375,
+              "width": 136,
+              "height": 20,
+              "right": 338,
+              "bottom": 921.609375
+            },
+            "#instructions": {
+              "x": 17.65625,
+              "y": 929.609375,
+              "width": 504.671875,
+              "height": 15.9375,
+              "right": 522.328125,
+              "bottom": 945.546875
+            }
+          }
+        }
+      },
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "扩建完成：选择下一市场路线或重开本轮",
+        "mission": "阶段完成：选择下一市场路线",
+        "toast": "建设完成：潮池已解锁",
+        "coins": "贝壳币 12",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": false,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 14.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 166.609375
+          },
+          "#game": {
+            "x": 123,
+            "y": 174.609375,
+            "width": 294,
+            "height": 523,
+            "right": 417,
+            "bottom": 697.609375
+          },
+          "#game canvas": {
+            "x": 123,
+            "y": 174.609375,
+            "width": 294,
+            "height": 523,
+            "right": 417,
+            "bottom": 697.609375
+          },
+          "#settlement": {
+            "x": 10,
+            "y": 705.609375,
+            "width": 520,
+            "height": 188,
+            "right": 530,
+            "bottom": 893.609375
+          },
+          "#toast": {
+            "x": 202,
+            "y": 901.609375,
+            "width": 136,
+            "height": 20,
+            "right": 338,
+            "bottom": 921.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 929.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 945.546875
+          }
+        }
+      }
+    },
+    {
+      "phase": "controls",
+      "controls": [
+        {
+          "text": "珊瑚湾市场鲜货客流",
+          "disabled": false,
+          "right": 266,
+          "bottom": 826.609375
+        },
+        {
+          "text": "月潮码头夜潮订单",
+          "disabled": false,
+          "right": 513,
+          "bottom": 826.609375
+        },
+        {
+          "text": "重开本轮",
+          "disabled": false,
+          "right": 513,
+          "bottom": 878.609375
+        }
+      ]
+    },
+    {
+      "phase": "continue",
+      "summary": {
+        "title": "海滩渔货铺",
+        "status": "原创海滩物流经营",
+        "mission": "首要动作：去近岸渔网采集鲜货",
+        "toast": "建设完成：潮池已解锁",
+        "coins": "贝壳币 12",
+        "cashPile": "柜台现金 0",
+        "settlementHidden": true,
+        "viewport": {
+          "width": 540,
+          "height": 960
+        },
+        "bodyScroll": {
+          "width": 540,
+          "height": 960
+        },
+        "boxes": {
+          "#game-shell": {
+            "x": 0,
+            "y": 0,
+            "width": 540,
+            "height": 960,
+            "right": 540,
+            "bottom": 960
+          },
+          "#hud": {
+            "x": 10,
+            "y": 18.453125,
+            "width": 520,
+            "height": 152.15625,
+            "right": 530,
+            "bottom": 170.609375
+          },
+          "#game": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#game canvas": {
+            "x": 70,
+            "y": 178.609375,
+            "width": 400,
+            "height": 711,
+            "right": 470,
+            "bottom": 889.609375
+          },
+          "#settlement": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "#toast": {
+            "x": 202,
+            "y": 897.609375,
+            "width": 136,
+            "height": 20,
+            "right": 338,
+            "bottom": 917.609375
+          },
+          "#instructions": {
+            "x": 17.65625,
+            "y": 925.609375,
+            "width": 504.671875,
+            "height": 15.9375,
+            "right": 522.328125,
+            "bottom": 941.546875
+          }
+        }
+      }
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "passed": false,
+  "blockers": [
+    "packing-1",
+    "packing-2"
+  ]
+}

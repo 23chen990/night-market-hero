@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "role": "FixerAgent",
+  "attempt": 7,
+  "kind": "diagnostic-update",
+  "observations": [
+    "runtime-probe.mjs uses new URL(import.meta.url).pathname for output dir; the Chinese workspace path will be percent-encoded. Use fileURLToPath to preserve exact task scope.",
+    "At root resumption only runtime-probe.mjs and red-runtime.log exist; no source changes or build manifest are present."
+  ],
+  "requiredAction": "Correct causal probe path in attempt evidence before running; confirm output stays inside exact target run. Continue test-first patch and one build. Parent uses http://127.0.0.1:4177 for independent production QA after your build."
+}

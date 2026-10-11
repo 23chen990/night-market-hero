@@ -1,0 +1,316 @@
+local H_POPUP = hash("popup")
+local H_DEACTIVATE = hash("deactivate")
+local H_UNLOCK_INPUT = hash("unlock_input")
+local H_UPDATE_LANGUAGE = hash("update_language")
+local H_LAYOUT_CHANGED = hash("layout_changed")
+
+local node_popup_body = nil
+local node_popup_fade = nil
+local node_logo = nil
+
+local owner_url = nil
+local is_lock_input = true
+
+local function show_popup()
+	is_lock_input = false
+	gui.set_enabled(node_popup_fade, true)
+	gui.set_enabled(node_popup_body, true)
+
+	local window_width, window_height = camera.get_window_size()
+	gui.set_size(node_popup_fade,vmath.vector3(window_width*2,window_height*2,0))
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0.5),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_position(node_popup_body, vmath.vector3(global.half_width,global.half_height,0))
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 0))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 1),
+	gui.EASING_OUTSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(0.8, 0.8, 0.8))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(1, 1, 1),
+	gui.EASING_OUTBACK,
+	0.25)
+
+
+end
+
+local function hide_popup()
+	is_lock_input = true
+
+	gui.set_color(node_popup_fade, vmath.vector4(0, 0, 0, 0.5))
+	gui.animate(
+	node_popup_fade,
+	gui.PROP_COLOR,
+	vmath.vector4(0, 0, 0, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_color(node_popup_body, vmath.vector4(1, 1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_COLOR,
+	vmath.vector4(1, 1, 1, 0),
+	gui.EASING_INSINE,
+	0.1)
+
+	gui.set_scale(node_popup_body, vmath.vector3(1, 1, 1))
+	gui.animate(
+	node_popup_body,
+	gui.PROP_SCALE,
+	vmath.vector3(0.6, 0.6, 0.6),
+	gui.EASING_INSINE,
+	0.25,
+	0,
+	function()
+		if (owner_url) then
+			msg.post(owner_url, "unlock_input")
+		end
+	end)
+
+end
+
+local function cancel_handler()
+	hide_popup()
+	gameState:closePopup()
+	global.isPopupOpened = false
+
+end
+
+local function update_mute_buttons(self)
+	local caption = nil
+
+	if global.isMutedMusic then
+		caption = translate("SETTINGS_OFF")
+		icon = "btn_music0002"
+	else
+		caption = translate("SETTINGS_ON")
+		icon = "btn_music0001"
+	end
+
+	gui.play_flipbook(self.node_icon_btn_music, icon)
+	gui.set_text(self.node_text_btn_music, utf8.upper(translate("SETTINGS_MUSIC")).." "..caption)
+
+	if global.isMutedSfx then
+		caption = translate("SETTINGS_OFF")
+		icon = "btn_sound0002"
+	else
+		caption = translate("SETTINGS_ON")
+		icon = "btn_sound0001"
+	end
+
+
+	gui.play_flipbook(self.node_icon_btn_sounds, icon)
+	gui.set_text(self.node_text_btn_sounds, utf8.upper(translate("SETTINGS_SOUND")).." "..caption)
+
+	utils.updateTextWidth(self.node_text_btn_music, 160, 1)
+	utils.updateTextWidth(self.node_text_btn_sounds, 160, 1)
+
+end
+
+local function on_music_button(self, params)
+	global.isMutedMusic = not global.isMutedMusic
+
+	msg.post(url_controller, "updateMuteMusic")
+
+	update_mute_buttons(self)
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	datamanager.update_saves()
+
+end
+
+local function on_sounds_button(self, params)
+	global.isMutedSfx = not global.isMutedSfx
+
+	msg.post(url_controller, "updateMuteSfx")
+
+	update_mute_buttons(self)
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	datamanager.update_saves()
+
+end
+
+local function on_language_button(self, params)
+	msg.post(url_popup_language, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function on_reset_button(self, params)
+	msg.post(url_controller, "show_screen", {state="#proxy_game"})
+	datamanager.clear_saves()
+
+end
+
+local function on_privacy_button(self, params)
+	sys.open_url("https://tinydobbins.com/privacy/MonkeyMart/", {target = "_blank"})
+
+end
+
+local function on_coin_button(self, params)
+	msg.post(url_screen_game, "test_addCoins")
+
+end
+
+local function on_close_button(self, params)
+	cancel_handler()
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function updateLanguage(self)
+	gui.set_text(gui.get_node("text_title"), utf8.upper(translate("SETTINGS")))
+	gui.set_text(gui.get_node("text_developedby"), utf8.upper(translate("DEVELOPED_BY")))
+	gui.set_text(gui.get_node("text_madewith"), utf8.upper(translate("MADE_WITH")))
+	gui.set_text(gui.get_node("text_musicby"), utf8.upper(translate("MUSIC_BY")))
+	gui.set_text(gui.get_node("btn_language/text"), utf8.upper(translate("LANGUAGE")))
+	gui.set_text(gui.get_node("btn_privacy/text"), utf8.upper("Privacy Policy"))
+
+	utils.updateTextWidth(gui.get_node("text_title"), 140, 1.4)
+	utils.updateTextWidth(gui.get_node("text_developedby"), 200, 1)
+	utils.updateTextWidth(gui.get_node("text_madewith"), 200, 1)
+	utils.updateTextWidth(gui.get_node("text_musicby"), 200, 1)
+	utils.updateTextWidth(gui.get_node("btn_language/text"), 160, 1)
+	utils.updateTextWidth(gui.get_node("btn_privacy/text"), 160, 1)
+
+	update_mute_buttons(self)
+
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	gui.set_render_order(3)
+
+	node_popup_body = gui.get_node("body")
+	node_popup_fade = gui.get_node("fade")
+	node_logo = gui.get_node("icon_logo1")
+
+	gui.set_enabled(node_popup_body, false)
+	gui.set_enabled(node_popup_fade, false)
+
+	gui.set_text(gui.get_node("text_version"), global.version)
+
+	self.druid = druid.new(self)
+
+	self.druid:new_button("btn_music/button", on_music_button)
+	self.druid:new_button("btn_sound/button", on_sounds_button)
+	self.druid:new_button("btn_privacy/button", on_privacy_button)
+	self.druid:new_button("btn_language/button", on_language_button)
+	self.druid:new_button("btn_close", on_close_button)
+
+	self.node_text_btn_music = gui.get_node("btn_music/text")
+	self.node_icon_btn_music = gui.get_node("btn_music/icon")
+
+	self.node_text_btn_sounds = gui.get_node("btn_sound/text")
+	self.node_icon_btn_sounds = gui.get_node("btn_sound/icon")
+
+	gui.set_enabled(gui.get_node("btn_language/icon"), false)
+	gui.set_enabled(gui.get_node("btn_privacy/icon"), false)
+
+	update_mute_buttons(self)
+	updateLanguage(self)
+
+	
+	
+
+	
+	
+	
+
+	
+
+	if (not global.canCheat) then
+		
+	end
+
+	self.isKeyPressed = false
+	self.countPressed = 0
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+
+	if (message_id == H_POPUP) then
+		owner_url = message.owner_url
+
+		show_popup()
+
+	elseif (message_id == H_DEACTIVATE) then
+		gui.set_enabled(node_popup_body, false)
+		gui.set_enabled(node_popup_fade, false)
+
+	elseif (message_id == H_UNLOCK_INPUT) then
+		is_lock_input = false
+		msg.post(sender, "deactivate")
+
+	elseif (message_id == H_UPDATE_LANGUAGE) then
+		updateLanguage(self)
+
+	
+	
+	
+
+	end
+end
+
+function on_input(self, action_id, action)
+    if (not is_lock_input) then
+
+		self.druid:on_input(action_id, action)
+
+		if (action_id == hash("touch")) then
+			if (action.pressed and (not gui.pick_node(node_popup_body, action.x, action.y))) then
+				cancel_handler()
+			end
+		end
+
+		if action_id == hash("key_M") then
+			if action.pressed then
+				self.isKeyPressed = true
+			elseif action.released then
+				self.isKeyPressed = false
+			end
+		end
+
+		if ((action.pressed) and (self.isKeyPressed) and (gui.pick_node(node_logo, action.x, action.y))) then
+			self.countPressed = self.countPressed + 1
+
+			if self.countPressed >= 3 then
+				global.isAllowQA = true
+			end
+		end
+
+		return true
+
+	end
+
+end

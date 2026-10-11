@@ -1,0 +1,23 @@
+Attempt 3 production build (exactly one run)
+Target: runs/20260930161712-79985df5/workspace/game
+Timestamp: 2026-10-01
+
+Command:
+pnpm build
+
+Result: exit=0
+$ vite build
+vite v8.2.2 building client environment for production...
+transforming...
+✓ 12 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     2.21 kB │ gzip:   1.11 kB
+dist/assets/index-XRHTxfrd.css      4.49 kB │ gzip:   1.60 kB
+dist/assets/index-C3a6uKA1.js   1,230.64 kB │ gzip: 329.73 kB
+
+✓ built in 802ms
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Adjusting the chunk size warning limit or dynamic import() as needed.

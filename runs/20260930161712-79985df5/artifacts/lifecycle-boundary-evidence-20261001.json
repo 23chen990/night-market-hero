@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "source": "playwright-chromium-emulation",
+  "buildHash": "638b78d50869a7dc4100324a727b854a762dc4121d392288d259a9282bcb5b5f",
+  "agentNote": "存档生命周期子代理被沙箱回收，screenshots/lifecycle-20261001 目录未生成。本文件记录已知的源码约束（main.ts restoreState 逻辑），全部动态分支为 NOT_OBSERVED。",
+  "saveKey": "ai-game-factory:beach-logistics:海滩渔货铺",
+  "saveVersion": 1,
+  "scenarios": [
+    { "scenarioId": "1 operating reload", "method": "natural", "conclusion": "NOT_OBSERVED", "evidence": "源码约束：restoreState 在 version!==1 或缺字段时回退新局，正确 version=1 时恢复 elapsedMs/player/stations/unlockedStationIds/checkout/currency/level/stage/eventLog" },
+    { "scenarioId": "2 settlement reload", "method": "natural", "conclusion": "NOT_OBSERVED", "note": "需到达结算后刷新，未跑" },
+    { "scenarioId": "3 continue reload", "method": "natural", "conclusion": "NOT_OBSERVED" },
+    { "scenarioId": "4 restart residue", "method": "natural", "conclusion": "NOT_OBSERVED", "note": "重开是否清除 lastEvent/eventLog/queue 待验证" },
+    { "scenarioId": "5 mid-service reload", "method": "natural", "conclusion": "NOT_OBSERVED" },
+    { "scenarioId": "6 blur input residue", "method": "natural", "conclusion": "NOT_OBSERVED", "note": "input.ts 是否监听 window blur—未验证" },
+    { "scenarioId": "7 save namespace", "method": "natural", "conclusion": "NOT_OBSERVED", "note": "理论上只该有一个键" },
+    { "scenarioId": "8 corrupted save recovery", "method": "engineering-corrupted-save", "conclusion": "NOT_OBSERVED", "sourceCodeExpectation": "restoreState 含 try/catch 回退新局，但具体回退日志/是否静默覆盖未跑" }
+  ],
+  "consoleErrors": [],
+  "blockers": [
+    "全部场景 NOT_OBSERVED — 子代理失败",
+    "恢复后是否重复发奖/重复解锁需真实刷新验证"
+  ]
+}

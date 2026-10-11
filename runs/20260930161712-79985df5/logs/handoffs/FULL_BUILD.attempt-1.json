@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "fromStage": "CORE_SPEC_FROZEN",
+  "toStage": "FULL_BUILD",
+  "summary": "Build exactly one playable core slice from the product, reference fidelity, research-resolution, failure-pressure, and recording-level semantic contracts. Keep observed recording behavior distinct from human-locked failure/replay requirements. Do not expand levels, progression breadth or nonessential HUD before this slice passes independent QA and human play. Keep the workspace scoped to this run and preserve original expression.",
+  "artifactPaths": [
+    "artifacts/game-blueprint.json",
+    "artifacts/production-line-resolution.json",
+    "artifacts/production-line-contract.json",
+    "artifacts/experience-hypothesis.json",
+    "artifacts/core-spec-lock.json",
+    "artifacts/experience-contract.json",
+    "artifacts/product-experience-contract.json",
+    "artifacts/profile-experience-contract.json",
+    "artifacts/natural-play-plan.json",
+    "artifacts/reference-fidelity-contract.json",
+    "artifacts/reference-research-resolution.json",
+    "artifacts/reference-failure-pressure-contract.json",
+    "artifacts/style-lock.json",
+    "artifacts/asset-manifest.json",
+    "templates/web-lite/spatial-shop-v1"
+  ],
+  "artifactHashes": {
+    "artifacts/game-blueprint.json": "eeced5dd57cf35743577f045ebee6fc3833a9aa5b4598169bbd9aa1175d36dec",
+    "artifacts/production-line-resolution.json": "65d58409a06b8bfa0272f9fac2127427786a694ee56873816e1e71a23df5cb0f",
+    "artifacts/production-line-contract.json": "a0ab77c061cf99996243368a066a13596333279d3660d805e6fef7e4f6a6c96c",
+    "artifacts/experience-hypothesis.json": "c2f16f48c363c83eeca583f7058ff1317a2c9c5983112aaa3d1a1785dd366286",
+    "artifacts/core-spec-lock.json": "37e64bf17bcb412e4529880ce818bb7c79c9eb4dfea6598075d3c55fe1834c52",
+    "artifacts/experience-contract.json": "a93a9dd90d94d56a648648f272b9056e30780f57185bd77b6acb1c86a07536ef",
+    "artifacts/product-experience-contract.json": "1333565951a7d3571ae0a8a380163621bdeac3899c6561cffd37c5db4e63e633",
+    "artifacts/profile-experience-contract.json": "d5849b1cd1b42fb130124f7751062c825cffc633717f1cc8691f5c9eeedd9dd4",
+    "artifacts/natural-play-plan.json": "9074ae55e8cb79fcf99a63dccd04868f6aeeddece7536d4de65d3f10db072e81",
+    "artifacts/reference-fidelity-contract.json": "c0294e7037a79cc0d91bb34e0bdb35e5566cce6e982a03799416ec374e310ec3",
+    "artifacts/reference-research-resolution.json": "4e82f64c1aca9d1953c5b67d7b4f5bbd8cd0040b7f29386b16b80d16206cc2fe",
+    "artifacts/reference-failure-pressure-contract.json": "9aa40594da995c0991925de05ef271db339d8a84405c9495b9c5868ebeb45c0e",
+    "artifacts/style-lock.json": "897ccf88176864b36ba0ac0c00dd17237dbf2acd3df6bcae0d7a97cd618a159b",
+    "artifacts/asset-manifest.json": "adda0c1ede8a92a9f41f5f64817abc565504e8c34c22192190d4963577549882",
+    "templates/web-lite/spatial-shop-v1": "267003b679655753fbd60099664bf2dc56df1fa7f29bbcf5ee0e36c7f02a3f5b"
+  },
+  "changedFiles": [],
+  "commandsRun": [],
+  "omittedContext": [
+    "raw transcript"
+  ],
+  "estimatedChars": 3175,
+  "estimatedTokens": 109,
+  "tokenBudget": 6000,
+  "truncationStrategy": "priority-preserving",
+  "integrityHash": "4ab0fa2154977983293800ee9d525e451c409195bc20af7eaa380ae15de16c9d",
+  "summaryHash": "395d80ddd38f59180ec52d9e6e014a77c06d9a027399de9dcf6de436265c6d89",
+  "contextPacketHash": "34c0151b92f2988ff61dabd55454320bd2b913b365f7602ed35d1dfca7443447"
+}

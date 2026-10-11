@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "stage": "REFERENCE_MECHANIC_LOCK",
+  "attempt": 1,
+  "failureKind": "CAPABILITY_ERROR",
+  "base": {
+    "tier": "frontier",
+    "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "role": "reviewer",
+    "sandbox": "read-only"
+  },
+  "selected": {
+    "tier": "frontier",
+    "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "role": "reviewer",
+    "sandbox": "read-only"
+  },
+  "rationale": "Keep the declared frontier route because CAPABILITY_ERROR is not safely solvable by model escalation.",
+  "createdAt": "2026-09-30T17:03:47.755Z"
+}

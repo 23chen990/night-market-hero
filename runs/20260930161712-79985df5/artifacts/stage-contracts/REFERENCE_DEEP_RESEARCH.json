@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "stage": "REFERENCE_DEEP_RESEARCH",
+  "passed": true,
+  "ownerRole": "ResearchAgent",
+  "verifierRole": "FactoryControlPlane",
+  "verifiedByRole": "FactoryControlPlane",
+  "independent": true,
+  "checkedAt": "2026-09-30T17:03:22.411Z",
+  "missing": [],
+  "observedInputs": [
+    "input/seed.yaml",
+    "artifacts/reference-evidence-pack.json",
+    "artifacts/reference-code-analysis.json",
+    "reference-evidence/manifest.json"
+  ],
+  "observedArtifacts": [
+    "artifacts/reference-evidence-pack.json",
+    "artifacts/reference-fidelity-contract.json",
+    "artifacts/reference-behavior-analysis.model-output.raw.json",
+    "artifacts/reference-behavior-analysis.raw.json",
+    "artifacts/reference-research-resolution.json",
+    "artifacts/reference-behavior-analysis.json",
+    "artifacts/reference-failure-pressure-contract.json"
+  ],
+  "observedEvidence": [
+    "research:recovered-existing-output",
+    "research:completed-log:logs/codex/REFERENCE_DEEP_RESEARCH.attempt-1.stdout.jsonl",
+    "research:raw-truth-preserved",
+    "research:code-only-resolution",
+    "reference:resolution-provenance",
+    "reference:evidence-pack",
+    "reference:five-dimension-behavior-contract",
+    "reference:failure-pressure-contract",
+    "zod:ReferenceEvidencePackSchema",
+    "zod:ReferenceFidelityContractSchema",
+    "model:gpt-5.6-luna",
+    "usage:successful-output-log-only"
+  ],
+  "artifactVersions": {
+    "input/seed.yaml": 1,
+    "artifacts/reference-evidence-pack.json": 1,
+    "artifacts/reference-fidelity-contract.json": 1
+  },
+  "failureRoute": {
+    "stage": "REFERENCE_DEEP_RESEARCH",
+    "classes": [
+      "unknown",
+      "rights",
+      "core_experience"
+    ],
+    "rationale": "Reference evidence gaps must be resolved before the mechanic lock is trusted."
+  }
+}

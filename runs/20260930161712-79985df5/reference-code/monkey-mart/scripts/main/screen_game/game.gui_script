@@ -1,0 +1,1260 @@
+local is_lock_input = false
+
+
+
+
+
+
+local function on_btn_settings(self, params)
+	msg.post(url_popup_settings, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_info(self, params)
+	msg.post(url_popup_info, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_upgrades(self, params)
+	msg.post(url_popup_upgrades, "popup", {
+		owner_url = msg.url(),
+		scrollValue = params
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_shop(self, params)
+	msg.post(url_popup_shop, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function change_mart(vValue)
+	gameState:gameplayStop()
+	
+	msg.post(url_controller, "unload_background", {value = global.numMarket})
+
+	global.numMarket = vValue
+	datamanager.update_saves()
+
+	msg.post(url_controller, "show_screen", {state="#proxy_game"})
+
+	msg.post(url_controller, "show_background", {value = global.numMarket})
+
+end
+
+local function on_btn_marts(self, params)
+	if (global.numMarket > 100)  then
+		change_mart(1)
+		return
+	end
+	msg.post(url_popup_markets, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_event(self, params)
+	if (global.numEvent == 1) and (global.numMarket ~= 101) then
+		change_mart(101)
+	end
+	if (global.numEvent == 2) and (global.numMarket ~= 102) then
+		change_mart(102)
+	end
+
+end
+
+local function welcome_event(self)
+	local eventType = ''
+
+	if (global.numEvent == 1) then
+		eventType = 'welcome_halloween'
+	elseif (global.numEvent == 2) then
+		eventType = 'welcome_christmas'
+	end
+
+	msg.post(url_popup_info, "popup", {
+		owner_url = msg.url(),
+		type = eventType
+	})
+
+	is_lock_input = true
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function event_completed(self, event_id)
+	local numEvent = event_id
+	local eventType = ''
+
+	if (numEvent == 1) then
+		eventType = 'completed_halloween'
+	elseif (numEvent == 2) then
+		eventType = 'completed_christmas'
+	end
+
+	msg.post(url_popup_info, "popup", {
+		owner_url = msg.url(),
+		type = eventType
+	})
+
+	is_lock_input = true
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_iap(self, params)
+	msg.post(url_popup_iap, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_values(self, params)
+	if gameState.isTutorial then
+		return
+	end
+	
+
+	local value_scroll = 'gems'
+
+	if (params == 1) then
+		value_scroll = 'cash'
+	elseif (params == 2) then
+		value_scroll = 'gems'
+	end
+
+	msg.post(url_popup_iap, "popup", {
+		owner_url = msg.url(),
+		scroll_to = value_scroll
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_quests(self, params)
+	msg.post(url_popup_daily_quest, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_delivery(self, params)
+	msg.post(url_popup_delivery, "popup", {
+		owner_url = msg.url(),
+		data = gameState.dataDeliveryBoy
+	})
+
+	is_lock_input = true
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function show_popup_bonus(self, params)
+	msg.post(url_popup_daily_bonus, "popup", {
+		owner_url = msg.url()
+	})
+
+	is_lock_input = true
+	
+
+	global.isPopupOpened = true
+	gameState:gameplayStop()
+
+end
+
+local function on_btn_noads(self, params)
+	if global.noads_iap then
+		msg.post(url_screen_gui_game, "hide_noads")
+	else
+		iap_manager.buy(apimanager.NOADS_ID)
+	end
+
+end
+
+local function on_btn_boost(self, params)
+	global.typeOffer = self.typeOffer
+
+	if global.isMobileTrue then
+		msg.post(url_popup_watch, "popup", {
+			owner_url = msg.url()
+		})
+
+		is_lock_input = true
+		playSound("sfx_tap"..global.selected_sfx[10])
+
+		global.isPopupOpened = true
+		gameState:gameplayStop()
+
+		gameState:stopMovement()
+
+	else
+		gameState:showAdsForOffer()
+	end
+
+	playSound("sfx_tap"..global.selected_sfx[10])
+
+end
+
+local function updateWindowBoost(self, vData)
+	gui.set_text(gui.get_node("window_boost1/text"), utils.secToHHMMSS(vData.value1))
+	gui.set_text(gui.get_node("window_boost2/text"), utils.secToHHMMSS(vData.value2))
+	gui.set_text(gui.get_node("window_boost3/text"), utils.secToHHMMSS(vData.value3))
+	gui.set_text(gui.get_node("window_boost4/text"), utils.secToHHMMSS(vData.value4))
+	gui.set_text(gui.get_node("window_boost5/text"), utils.secToHHMMSS(vData.value5))
+
+end
+
+local function showWindowBoost(self, vIsVisible, vType)
+	if vType == 'boost_coinsX2' then
+		gui.set_enabled(self.window_boost1, vIsVisible)
+	elseif vType == 'boost_energyWork' then
+		gui.set_enabled(self.window_boost2, vIsVisible)
+	elseif vType == 'boost_energyZavod' then
+		gui.set_enabled(self.window_boost3, vIsVisible)
+	elseif vType == 'boost_manager' then
+		gui.set_enabled(self.window_boost4, vIsVisible)
+	elseif vType == 'boost_boots' then
+		gui.set_enabled(self.window_boost5, vIsVisible)
+	end
+
+	if vIsVisible then
+		local index = table.indexOfLast(self.listWindows, vType)
+
+		if (index <= 0) then
+			table.insert(self.listWindows, vType)
+		end
+
+	else
+		local index = table.indexOfLast(self.listWindows, vType)
+
+		if (index > 0) then
+			table.remove(self.listWindows, index)
+		end
+	end
+
+	local posX = -50
+	local listY = {-155,-255,-355,-455,-555}
+
+	if global.isMobileTrue then
+		posX = -55
+		listY = {-185,-285,-385,-485,-585}
+	end
+
+	local countBonuses = 6
+
+	
+	local index = table.indexOfLast(self.listWindows, 'boost_coinsX2')
+
+	if (index > 0) and (index < countBonuses) then
+		gui.set_position(self.window_boost1, vmath.vector3(posX,listY[index],0))
+	end
+
+	
+	local index = table.indexOfLast(self.listWindows, 'boost_energyWork')
+
+	if (index > 0) and (index < countBonuses) then
+		gui.set_position(self.window_boost2, vmath.vector3(posX,listY[index],0))
+	end
+
+	
+	local index = table.indexOfLast(self.listWindows, 'boost_energyZavod')
+
+	if (index > 0) and (index < countBonuses) then
+		gui.set_position(self.window_boost3, vmath.vector3(posX,listY[index],0))
+	end
+
+	
+	local index = table.indexOfLast(self.listWindows, 'boost_manager')
+
+	if (index > 0) and (index < countBonuses) then
+		gui.set_position(self.window_boost4, vmath.vector3(posX,listY[index],0))
+	end
+
+	
+	local index = table.indexOfLast(self.listWindows, 'boost_boots')
+
+	if (index > 0) and (index < countBonuses) then
+		gui.set_position(self.window_boost5, vmath.vector3(posX,listY[index],0))
+	end
+
+
+end
+
+local function updateFont(self)
+	local font_name = "main"
+
+	if (global.defaultLanguage == 'ja') then
+		font_name = "japanese"
+	end
+	
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_screen_gui_game, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_shop, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_upgrades, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_settings, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_markets, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_iap, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_info, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_message, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_daily_bonus, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_daily_quest, font = font_name})
+	msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_delivery, font = font_name})
+	
+	if global.isMobileTrue then
+		msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_details, font = font_name})
+		msg.post(url_gui_change_font, "update_font", { url_gui = url_popup_watch, font = font_name})
+	end
+
+end
+
+local function updateLanguage(self)
+	local type = self.typeOffer
+
+	if type == 'boost_coinsX2' then
+		gui.set_text(self.offer_text, 2 .. ' ' .. translate("MINUTES_SHORT"))
+	elseif type == 'boost_energyWork' then
+		gui.set_text(self.offer_text, 2 .. ' ' .. translate("MINUTES_SHORT"))
+	elseif type == 'boost_energyZavod' then
+		gui.set_text(self.offer_text, 2 .. ' ' .. translate("MINUTES_SHORT"))
+	end
+
+	utils.updateTextWidth(self.offer_text, 70, 1)
+
+	if self.text_messageId then
+		gui.set_text(gui.get_node("text_tutorial"), utf8.upper(translate(self.text_messageId)))
+
+		local maxWidth = 320
+
+		if (self.text_messageId == "DRAG_TO_MOVE") or (self.text_messageId == "ARROW_TO_MOVE") then
+			maxWidth = 260
+		end
+
+		utils.updateTextWidth(gui.get_node("text_tutorial"), maxWidth, 1)
+	end
+
+	if self.text_messageId2 then
+		gui.set_text(self.text_informer, utf8.upper(translate(self.text_messageId2)))
+
+		utils.updateTextWidth(self.text_informer, 280, 0.8)
+
+	end
+
+end
+
+local function update_text_adbreak(self)
+	local text = utf8.upper(translate("ASD_IN_T")) .. " " .. self.break_counter
+
+	if (global.defaultLanguage == 'ja') then
+		text = self.break_counter .. utf8.upper(translate("ASD_IN_T"))
+	end
+
+	gui.set_text(self.text_ad_break, text)
+end
+
+local function on_break_timer(self)
+	self.break_counter = self.break_counter - 1
+
+	if self.break_counter == 0 then
+		timer.cancel(self.break_timerCounter)
+
+		global.isTimeForAdBreak = true
+
+		if (not global.isPopupOpened) then
+			gui.set_enabled(self.panel_ad_break, false)
+			apimanager.finish_ad_break()
+
+		end
+	else
+		update_text_adbreak(self)
+	end
+
+end
+
+local function updateAdBreak(self, vAmount)
+	local maxWidth = 222
+
+	if self.break_timerCounter then
+		local result = timer.get_info(self.break_timerCounter)
+
+		if result then
+			timer.cancel(self.break_timerCounter)
+		end
+	end
+
+	gui.cancel_animation(self.break_bar_mask, gui.PROP_SIZE)
+
+	local sizeProgress = vmath.vector3(0, 52, 0)
+	gui.set_size(self.break_bar_mask, sizeProgress)
+
+	gui.animate(self.break_bar_mask, gui.PROP_SIZE, vmath.vector3(maxWidth, 52, 0), gui.EASING_LINEAR, TIME_BREAK_ADS)
+
+	self.break_counter = TIME_BREAK_ADS
+	self.break_timerCounter = timer.delay(1.0, true, on_break_timer)
+
+	update_text_adbreak(self)
+
+	gui.set_text(self.text_ad_reward, utf8.upper(translate("REWARD")))
+	utils.updateTextWidth(self.text_ad_reward, 120, 1.0)
+
+	if vAmount then
+		gui.set_text(self.text_reward_coins, vAmount)
+	end
+
+end
+
+local function showBreakAdsPanel(self, vIsVisible, vAmount)
+	gui.set_enabled(self.panel_ad_break, vIsVisible)
+
+	if vIsVisible then
+		updateAdBreak(self, vAmount)
+	else
+		if self.break_timerCounter then
+			local result = timer.get_info(self.break_timerCounter)
+
+			if result then
+				timer.cancel(self.break_timerCounter)
+			end
+		end
+
+	end
+
+end
+
+local function call_every_second(self)
+	self.counter = self.counter - 1
+
+	if self.counter == 0 then
+		timer.cancel(self.timerCounter)
+	else
+		gui.set_text(self.offer_time, self.counter..translate("SHORT_SECONDS"))
+	end
+
+end
+
+local function updateProgress(self, vRatio)
+	local maxWidth = 102
+	
+
+	gui.cancel_animation(self.boost_bar_mask, gui.PROP_SIZE)
+
+	if self.timerCounter then
+		timer.cancel(self.timerCounter)
+	end
+
+	local sizeProgress = vmath.vector3(maxWidth, 22, 0)
+	gui.set_size(self.boost_bar_mask, sizeProgress)
+
+	gui.animate(self.boost_bar_mask, gui.PROP_SIZE, vmath.vector3(0, 22, 0), gui.EASING_LINEAR, TIME_HIDE_OFFER)
+
+	self.counter = TIME_HIDE_OFFER
+	self.timerCounter = timer.delay(1, true, call_every_second)
+
+	gui.set_text(self.offer_time, self.counter..translate("SHORT_SECONDS"))
+
+end
+
+local function goAlignOfferIcon(self, vTypeFood)
+    local p1 = vmath.vector3(-15,65,0)
+    local p2 = vmath.vector3(7,65,0)
+    local p3 = vmath.vector3(17,24,0)
+
+	gui.set_position(self.offer_food1, p1)
+	gui.set_position(self.offer_food2, p2)
+	gui.set_position(self.offer_food3, p3)
+
+	gui.set_scale(self.offer_food1, vmath.vector3(0.7,0.7,0.7))
+	gui.set_scale(self.offer_food2, vmath.vector3(0.7,0.7,0.7))
+	gui.set_scale(self.offer_food3, vmath.vector3(0.7,0.7,0.7))
+
+end
+
+local function showWindowOffer(self, vIsVisible, vType)
+	gui.set_enabled(self.window_offer, vIsVisible)
+
+	if vIsVisible then
+		self.typeOffer = vType
+		gui.set_scale(self.offer_icon,vmath.vector3(1, 1, 1))
+
+		gui.set_enabled(self.offer_text, true)
+		gui.set_enabled(self.offer_food1, false)
+		gui.set_enabled(self.offer_food2, false)
+		gui.set_enabled(self.offer_food3, false)
+
+		if vType == 'boost_bankomat' then
+			gui.set_scale(self.offer_icon,vmath.vector3(0.75, 0.75, 0.75))
+			
+			gui.set_position(gui.get_node("offer_icon"), vmath.vector3(-6,54,0))
+
+			if (global.numMarket == 101) or (global.numMarket == 102) then
+				gui.set_position(gui.get_node("offer_icon"), vmath.vector3(-4,52,0))
+			end
+
+			gui.set_text(self.offer_text, '+'..global.amount_ads)
+
+			local frameCashAds = coinmanager.get_cashads_name()
+			gui.play_flipbook(self.offer_icon, frameCashAds)
+
+		elseif vType == 'boost_coinsX2' then
+			gui.set_position(self.offer_icon, vmath.vector3(-6,56,0))
+			gui.play_flipbook(self.offer_icon, 'boost_ads1')
+
+		elseif vType == 'boost_energyWork' then
+			gui.set_position(self.offer_icon, vmath.vector3(-2,59,0))
+			gui.play_flipbook(self.offer_icon, 'boost_ads2')
+
+		elseif vType == 'boost_energyZavod' then
+			gui.set_position(self.offer_icon, vmath.vector3(-2,59,0))
+			gui.play_flipbook(self.offer_icon, 'boost_ads3')
+
+		elseif vType == 'boost_fillWarehouse' then
+			gui.play_flipbook(self.offer_icon, 'boost_ads6')
+
+			local frameName = 'food'..global.typeFoodOffer
+			gui.play_flipbook(self.offer_food1, frameName)
+			gui.play_flipbook(self.offer_food2, frameName)
+			gui.play_flipbook(self.offer_food3, frameName)
+			
+			gui.set_enabled(self.offer_text, false)
+
+			gui.set_enabled(self.offer_food1, true)
+			gui.set_enabled(self.offer_food2, true)
+			gui.set_enabled(self.offer_food3, true)
+
+			gui.set_position(self.offer_icon, vmath.vector3(-4,35,0))
+
+			goAlignOfferIcon(self, global.typeFoodOffer)
+
+		end
+
+		updateLanguage(self)
+
+		local posOffer = vmath.vector3(0, 0, 0)
+
+		if global.isMobileTrue then
+			posOffer.x = -55
+			posOffer.y = -710.0
+		else
+			posOffer.x = 65
+			posOffer.y = -195
+		end
+
+		gui.set_position(self.window_offer, vmath.vector3(-posOffer.x, posOffer.y,0))
+		gui.animate(self.window_offer, gui.PROP_POSITION, vmath.vector3(posOffer.x, posOffer.y, 0), gui.EASING_OUTBACK, 0.4)
+
+		updateProgress(self, 0)
+
+	else
+		if self.timerCounter then
+			timer.cancel(self.timerCounter)
+		end
+
+		gui.cancel_animation(self.boost_bar_mask, gui.PROP_SIZE)
+
+	end
+
+end
+
+local function updateTutorial(self, vBool, vStep)
+	gui.set_enabled(self.panel_tutor, vBool)
+
+	if vBool then
+		if vStep == -1 then
+			gui.set_enabled(gui.get_node("tutorial_arm"), false)
+			gui.set_enabled(gui.get_node("tutorial_control"), false)
+
+			gui.set_position(gui.get_node("text_tutorial"), vmath.vector3(0,0,0))
+
+			self.text_messageId = "TAP_TO_FOCUS"
+
+		elseif vStep == 0 then
+			gui.set_enabled(gui.get_node("tutorial_arm"), true)
+			gui.set_enabled(gui.get_node("tutorial_control"), true)
+			gui.set_position(gui.get_node("text_tutorial"), vmath.vector3(40,0,0))
+
+			if global.isDesktop then
+				self.text_messageId = "ARROW_TO_MOVE"
+				gui.play_flipbook(gui.get_node("tutorial_control"), 'tutorial_keys')
+				gui.set_position(gui.get_node("tutorial_control"), vmath.vector3(-170,0,0))
+				gui.set_enabled(gui.get_node("tutorial_arm"), false)
+			else
+				self.text_messageId = "DRAG_TO_MOVE"
+				gui.play_flipbook(gui.get_node("tutorial_control"), 'tutor_mobile')
+				gui.set_position(gui.get_node("tutorial_control"), vmath.vector3(-130,0,0))
+				gui.set_enabled(gui.get_node("tutorial_arm"), true)
+
+				gui.animate(gui.get_node("tutorial_arm"), "position.x", -80, gui.EASING_LINEAR, 4.0, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+				gui.animate(gui.get_node("tutorial_arm"), "position.y", -50, gui.EASING_LINEAR, 2.0, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+			end
+
+		elseif vStep == 4 then
+			gui.set_enabled(gui.get_node("tutorial_arm"), false)
+			gui.set_enabled(gui.get_node("tutorial_control"), false)
+
+			gui.set_position(gui.get_node("text_tutorial"), vmath.vector3(0,0,0))
+
+			self.text_messageId = "TUTORIAL_CASHMACHINE"
+
+		elseif vStep == 5 then
+			self.text_messageId = "TUTORIAL_UPGRADE"
+
+			local pos = gui.get_screen_position(gui.get_node("btn_upgrades/button"))
+			local pos2 = gui.get_screen_position(gui.get_node("btn_upgrades/button"))
+			pos.x = pos.x + 20
+			pos.y = pos.y - 40
+
+			msg.post(url_popup_message, "updateArm", {bool = true, pos = pos, pos2 = pos2})
+
+			self.button_upgrade:set_enabled(true)
+			self.button_shop:set_enabled(false)
+
+		elseif vStep == 8 then
+			gui.set_enabled(gui.get_node("tutorial_arm"), false)
+			gui.set_enabled(gui.get_node("tutorial_control"), false)
+
+			gui.set_position(gui.get_node("text_tutorial"), vmath.vector3(0,0,0))
+
+			self.text_messageId = "TUTORIAL_SHOP"
+
+			local pos = gui.get_screen_position(gui.get_node("btn_shop/button"))
+			local pos2 = gui.get_screen_position(gui.get_node("btn_shop/button"))
+			pos.x = pos.x + 20
+			pos.y = pos.y - 40
+			msg.post(url_popup_message, "updateArm", {bool = true, pos = pos, pos2 = pos2})
+
+			self.button_upgrade:set_enabled(false)
+			self.button_shop:set_enabled(true)
+		end
+
+		updateLanguage(self)
+	end
+
+end
+
+local function updateAttention(self, vType, vBool)
+	local node = nil
+
+	if vType == 'upgrade' then
+		node = self.attention_upgrade
+	elseif vType == 'gems' then
+		if gui.is_enabled(self.btn_iap) then
+			node = self.attention_gems
+		end
+	elseif vType == 'quest' then
+		if gui.is_enabled(self.btn_quest) then
+			node = self.attention_quest
+		end
+	end
+
+	if node then
+		gui.set_enabled(node, vBool)
+
+		if vBool then
+			gui.set_scale(node, vmath.vector3(1, 1, 1))
+		end
+	end
+
+end
+
+local function finishAnimAlert(self)
+	gui.set_enabled(self.panel_informer, false)
+
+end
+
+local function updateAlert(self, vList)
+	updateLanguage(self)
+
+	local count = #vList
+
+	
+
+	gui.cancel_animation(self.panel_informer, gui.PROP_SCALE)
+	gui.set_scale(self.panel_informer,vmath.vector3(1, 1, 1))
+
+	if count == 0 then
+		gui.animate(self.panel_informer, gui.PROP_SCALE, vmath.vector3(0.5, 0.5, 0.5), gui.EASING_INBACK, 0.4, 0, finishAnimAlert)
+
+	else
+		gui.set_enabled(self.panel_informer, true)
+		gui.set_scale(self.panel_informer,vmath.vector3(1, 1, 1))
+
+	end
+
+	local iconName = {}
+	local countFood = #global.foodName
+
+	iconName['place'] 	= {t = 1, n = 'icon_magnifier', s = 1}
+	iconName['cow']		= {t = 4, n = datamanager.getFrameNameZavod_mini(4), s = 1}
+	iconName['cow2']	= {t = 4, n = datamanager.getFrameNameZavod_mini(4), s = 1}
+	iconName['chicken']	= {t = 4, n = datamanager.getFrameNameZavod_mini(3), s = 1}
+	iconName['pig']		= {t = 4, n = datamanager.getFrameNameZavod_mini(36), s = 1}
+
+	for k,v in pairs(global.foodZavodName) do
+		if (v ~= '-') then
+			iconName[global.foodName[k]] = {t = 3, n = datamanager.getFrameNameZavod_mini(k), s = 1}
+		end
+	end
+
+	for i=1,countFood do
+		iconName['f_'..global.foodName[i]] = {t = 2, n = 'food'..i, s = 0.7}
+	end
+
+	if (global.numMarket == 1) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a3']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a4']	= {t = 5, n = 'icon_farmer2', s = 0.8}
+		iconName['id_a5']	= {t = 5, n = 'icon_chef2', s = 0.8}
+
+	elseif (global.numMarket == 2) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a3']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a4']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a5']	= {t = 5, n = 'icon_chef2', s = 0.8}
+		iconName['id_a6']	= {t = 5, n = 'icon_chef2', s = 0.8}
+
+	elseif (global.numMarket == 3) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a3']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a4']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a5']	= {t = 5, n = 'icon_farmer2', s = 0.8}
+		iconName['id_a6']	= {t = 5, n = 'icon_chef2', s = 0.8}
+		iconName['id_a7']	= {t = 5, n = 'icon_chef2', s = 0.8}
+
+	elseif (global.numMarket == 4) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a3']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a4']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a5']	= {t = 5, n = 'icon_chef2', s = 0.8}
+		iconName['id_a6']	= {t = 5, n = 'icon_chef2', s = 0.8}
+
+	elseif (global.numMarket == 101) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+
+	elseif (global.numMarket == 102) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a3']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a4']	= {t = 5, n = 'icon_chef2', s = 0.8}
+
+	elseif (global.numMarket == 5) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a3']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a4']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a5']	= {t = 5, n = 'icon_farmer2', s = 0.8}
+		iconName['id_a6']	= {t = 5, n = 'icon_chef2', s = 0.8}
+		iconName['id_a7']	= {t = 5, n = 'icon_chef2', s = 0.8}
+	
+	elseif (global.numMarket == 6) then
+		iconName['id_a2']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a3']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a4']	= {t = 5, n = 'icon_assistant2', s = 0.8}
+		iconName['id_a5']	= {t = 5, n = 'icon_chef2', s = 0.8}
+		iconName['id_a6']	= {t = 5, n = 'icon_chef2', s = 0.8}
+
+	end
+
+	if (iconName == nil) then
+		lume.trace('[ WARNING ]', iconName, 'iconName missing!')
+		return
+	end
+
+	if (count > 0) then
+		local scale = 1
+		local numTask = 1
+		local typeTask = vList[numTask].t
+		local dataTask = iconName[typeTask]
+
+		if dataTask then
+			gui.play_flipbook(self.icon_informer, dataTask.n)
+
+			scale = dataTask.s
+			gui.set_scale(self.icon_informer, vmath.vector3(scale,scale,scale))
+		end
+
+		local string_informer = {
+			"BUY_NEW_ITEM",
+			"CHECK_WAREHOUSE",
+			"REPAIR_APPLIANCE",
+			"WAKEUP_ANIMAL",
+			"WAKEUP_EMPLOYEE"
+		}
+
+		if iconName[typeTask] then
+			local taskText = string_informer[iconName[typeTask].t]
+
+			self.text_messageId2 = taskText
+
+			gui.set_text(self.text_informer, utf8.upper(translate(self.text_messageId2)))
+			utils.updateTextWidth(self.text_informer, 280, 0.8)
+		end
+
+	end
+
+end
+
+local function on_show_task(self, params)
+	msg.post(url_screen_game, "show_task")
+
+end
+
+local function update_gui_event(self)
+	if (global.numMarket == 1) then
+		if (global.numSale1 < 17)  then
+			gui.set_enabled(self.btn_marts, false)
+		end
+		if (global.numSale1 < 3)  then
+			gui.set_enabled(self.btn_iap, false)
+
+			if global.isSkipTutorial then
+				gui.set_enabled(self.btn_iap, true)
+			end
+		end
+		if (global.numSale1 < 10)  then
+			gui.set_enabled(self.btn_quest, false)
+		end
+	end
+
+	if (global.numEvent == 0)  then
+		gui.set_enabled(gui.get_node("window_event"), false)
+		gui.set_enabled(gui.get_node("event_time"), false)
+
+	elseif (global.numEvent == 1)  then
+		gui.play_flipbook(gui.get_node("window_event"), "btn_event1")
+
+		if (global.numMarket == 1)  then
+			if (global.numSale1 < 6) then
+				gui.set_enabled(gui.get_node("window_event"), false)
+			end
+
+		elseif (global.numMarket == 101)  then
+			gui.set_enabled(gui.get_node("window_event"), false)
+
+			if (global.numSaleH < 1)  then
+				timer.delay(0.4, false, welcome_event)
+			end
+
+		end
+
+		if global.isMobileTrue then
+			gui.set_text(gui.get_node("event_time"), datamanager.get_limit_event(global.event_day_end))
+		else
+			gui.set_text(gui.get_node("event_time"), "")
+		end
+
+	elseif (global.numEvent == 2)  then
+		gui.play_flipbook(gui.get_node("window_event"), "btn_event2")
+
+		if (global.numMarket == 1)  then
+			if (global.numSale1 < 6) then
+				gui.set_enabled(gui.get_node("window_event"), false)
+			end
+
+		elseif (global.numMarket == 102)  then
+			gui.set_enabled(gui.get_node("window_event"), false)
+
+			if (global.numSaleC < 1)  then
+				timer.delay(0.4, false, welcome_event)
+			end
+
+		end
+
+		if global.isMobileTrue then
+			gui.set_text(gui.get_node("event_time"), datamanager.get_limit_event(global.event_day_end))
+		else
+			gui.set_text(gui.get_node("event_time"), "")
+		end
+
+	end
+
+end
+
+local function update_everyframe_money(self)
+	local coins_value = coinmanager.get_balance()
+
+	if gameState.isCheckCashbox or gameState.isUpdateCoins then
+		self.coins_value = coins_value
+		self.is_animation_coin = true
+		gameState.isUpdateCoins = false
+	else
+		if self.coins_value ~= coins_value then
+			self.coins_value = coins_value
+			self.is_animation_coin = true
+		end
+	end
+
+	if self.is_animation_coin then
+		if(utils.is_equal(self.coins_display, self.coins_value)) then
+			self.is_animation_coin = false
+			gameState:finishUpdateCoins()
+		else
+			self.coins_display = lume.lerp(self.coins_display, self.coins_value, 0.1)
+			gui.set_text(self.text_money, utils.round(self.coins_display))
+		end
+		
+	end
+
+end
+
+local function init_display_coins(self)
+	local coins_value = coinmanager.get_balance()
+	self.coins_value = coins_value
+	self.coins_display = coins_value
+
+	gui.set_text(self.text_money, utils.round(self.coins_display))
+
+	self.is_animation_coin = false
+
+end
+
+local function update_display_money(self, message)
+	local coins_value = coinmanager.get_balance()
+	self.coins_value = coins_value
+
+	if message.isForce then
+		self.coins_display = coins_value
+		gui.set_text(self.text_money, coins_value)
+	else
+		self.is_animation_coin = true
+
+	end
+
+end
+
+local function update_everyframe_gems(self)
+	if self.is_animation_gems then
+		if(utils.is_equal(self.gems_display, self.gems_value)) then
+			self.is_animation_gems = false
+		else
+			self.gems_display = lume.lerp(self.gems_display, self.gems_value, 0.1)
+			gui.set_text(self.text_gems, utils.round(self.gems_display))
+		end
+
+	end
+
+end
+
+local function init_display_gems(self, message)
+	self.gems_value = coinmanager.get_balance('gems')
+	self.gems_display = self.gems_value
+
+	gui.set_text(self.text_gems, self.gems_display)
+
+	self.is_animation_gems = false
+
+end
+
+local function update_display_gems(self, message)
+	self.gems_value = coinmanager.get_balance('gems')
+
+	if message.isForce then
+		self.gems_display = self.gems_value
+		gui.set_text(self.text_gems, self.gems_display)
+	else
+		self.is_animation_gems = true
+
+	end
+
+end
+
+function init(self)
+	self.druid = druid.new(self)
+
+	self.button_settings	= self.druid:new_button("btn_settings/button", on_btn_settings)
+    self.button_upgrade		= self.druid:new_button("btn_upgrades/button", on_btn_upgrades)
+    self.button_shop		= self.druid:new_button("btn_shop/button", on_btn_shop)
+    self.button_marts		= self.druid:new_button("btn_marts/button", on_btn_marts)
+    self.button_event		= self.druid:new_button("window_event", on_btn_event)
+	self.button_boost		= self.druid:new_button("window_offer", on_btn_boost)
+	self.button_informer	= self.druid:new_button("panel_informer", on_show_task)
+	self.button_iap			= self.druid:new_button("btn_iap/button", on_btn_iap)
+	self.button_quests		= self.druid:new_button("btn_quest/button", on_btn_quests)
+	self.button_delivery	= self.druid:new_button("btn_delivery/button", on_btn_delivery)
+
+	self.button_money		= self.druid:new_button("button_money", on_btn_values, 1)
+	self.button_gems		= self.druid:new_button("button_gems", on_btn_values, 2)
+
+	self.text_money		= gui.get_node("text_money")
+	self.text_gems		= gui.get_node("text_gems")
+	self.window_boost1	= gui.get_node("window_boost1/root")
+	self.window_boost2	= gui.get_node("window_boost2/root")
+	self.window_boost3	= gui.get_node("window_boost3/root")
+	self.window_boost4	= gui.get_node("window_boost4/root")
+	self.window_boost5	= gui.get_node("window_boost5/root")
+	self.attention_upgrade	= gui.get_node("attention_upgrade")
+	self.attention_gems		= gui.get_node("attention_gems")
+	self.attention_quest	= gui.get_node("attention_quest")
+	self.btn_marts 	= gui.get_node("btn_marts/button")
+	self.btn_iap 	= gui.get_node("btn_iap/button")
+	self.btn_quest 	= gui.get_node("btn_quest/button")
+	self.offer_icon = gui.get_node("offer_icon")
+
+	if global.isMobileTrue then
+		self.button_noads = self.druid:new_button("btn_noads/button", on_btn_noads)
+		self.btn_noads = gui.get_node("btn_noads/button")
+	end
+
+	self.panel_tutor = gui.get_node("panelTutor")
+	self.window_offer = gui.get_node("window_offer")
+
+	self.panel_informer = gui.get_node("panel_informer")
+	self.icon_informer = gui.get_node("icon_informer")
+	self.text_informer = gui.get_node("text_informer")
+
+	self.boost_bar_mask = gui.get_node("boost_bar_mask")
+	self.offer_time = gui.get_node("offer_time")
+
+	self.panel_ad_break = gui.get_node("panel_ad_break")
+	self.break_bar_mask = gui.get_node("break_bar_mask")
+	self.text_ad_break = gui.get_node("text_ad_break")
+	self.text_ad_reward = gui.get_node("text_ad_reward")
+	self.text_reward_coins = gui.get_node("text_reward_coins")
+
+	self.offer_text = gui.get_node("offer_text")
+	self.offer_food1 = gui.get_node("offer_food1")
+	self.offer_food2 = gui.get_node("offer_food2")
+	self.offer_food3 = gui.get_node("offer_food3")
+
+	self.btn_delivery = gui.get_node("btn_delivery/button")
+	self.text_delivery = gui.get_node("btn_delivery/text")
+
+	gui.set_enabled(self.panel_tutor, false)
+	gui.set_enabled(self.window_offer, false)
+	gui.set_enabled(self.window_boost1, false)
+	gui.set_enabled(self.window_boost2, false)
+	gui.set_enabled(self.window_boost3, false)
+	gui.set_enabled(self.window_boost4, false)
+	gui.set_enabled(self.window_boost5, false)
+	gui.set_enabled(self.attention_upgrade, false)
+	gui.set_enabled(self.attention_gems, false)
+	gui.set_enabled(self.attention_quest, false)
+	gui.set_enabled(self.panel_ad_break, false)
+	gui.set_enabled(self.panel_informer, false)
+	gui.set_enabled(self.offer_food1, false)
+	gui.set_enabled(self.offer_food2, false)
+	gui.set_enabled(self.offer_food3, false)
+	gui.set_enabled(self.btn_delivery, false)
+
+	gui.animate(self.attention_upgrade, gui.PROP_SCALE, vmath.vector3(1.2, 1.2, 1.2), gui.EASING_LINEAR, 0.5, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	gui.animate(self.attention_gems, gui.PROP_SCALE, vmath.vector3(1.2, 1.2, 1.2), gui.EASING_LINEAR, 0.5, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	gui.animate(self.attention_quest, gui.PROP_SCALE, vmath.vector3(1.2, 1.2, 1.2), gui.EASING_LINEAR, 0.5, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+
+	local frameName = coinmanager.get_icon_name()
+	gui.play_flipbook(gui.get_node("icon_money"), frameName)
+	gui.play_flipbook(gui.get_node("icon_reward_coins"), frameName)
+
+	self.typeOffer = ""
+
+	init_display_coins(self)
+	init_display_gems(self)
+	update_gui_event(self)
+
+	self.listWindows = {}
+
+	global.isGameGuiReady = true
+
+	global.pos_window_money = gui.get_screen_position(gui.get_node("window_money"))
+
+	if global.isMobileTrue then
+		if (global.noads_iap) or (not config.isEnableIAP) then
+			gui.set_enabled(self.btn_noads, false)
+		end
+
+		if (config.platform == PLATFORM_IOS) then
+			local deltaY = 50
+			gui.set_position(gui.get_node("panelTopLeft"), vmath.vector3(0, 960 - deltaY, 0))
+			gui.set_position(gui.get_node("panelTopRight"), vmath.vector3(640, 960 - deltaY, 0))
+			gui.set_position(gui.get_node("panelTop"), vmath.vector3(320, 960 - deltaY, 0))
+			gui.set_position(gui.get_node("panelRight"), vmath.vector3(640, 960 - deltaY, 0))
+		end
+
+	end
+
+	updateFont(self)
+
+	if global.isDebug and global.isUnlockPlaces then
+		gui.set_enabled(self.btn_marts, true)
+	end
+
+end
+
+function final(self)
+	self.druid:final()
+
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+
+	update_everyframe_money(self)
+	update_everyframe_gems(self)
+
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+
+	if message_id == hash("unlock_input") then
+		is_lock_input = false
+		msg.post(sender, "deactivate")
+
+	elseif message_id == hash("updateTutorial") then
+		updateTutorial(self, message.bool, message.step)
+
+	elseif message_id == hash("updateButtons") then
+		self.button_upgrade:set_enabled(message.bool)
+		self.button_shop:set_enabled(message.bool)
+
+		if message.bool then
+			gui.set_enabled(self.btn_iap, true)
+		end
+
+	elseif message_id == hash("showQuestButton") then
+		gui.set_enabled(self.btn_quest, true)
+
+	elseif message_id == hash("update_money") then
+		update_display_money(self, message)
+
+	elseif message_id == hash("update_gems") then
+		update_display_gems(self, message)
+
+	elseif message_id == hash("setWindowOffer") then
+		showWindowOffer(self, message.visible, message.type)
+
+	elseif message_id == hash("setWindowBoost") then
+		showWindowBoost(self, message.visible, message.type)
+
+	elseif message_id == hash("updateWindowBoost") then
+		updateWindowBoost(self, message)
+
+	elseif message_id == hash("setBreakAdsPanel") then
+		showBreakAdsPanel(self, message.value, message.amount)
+
+	elseif message_id == hash("showPopupMart") then
+		on_btn_marts(self)
+
+	elseif message_id == hash("showPopupDelivery") then
+		on_btn_delivery(self)
+
+	elseif message_id == hash("showPopupUpgrade") then
+		on_btn_upgrades(self, message.scrollValue)
+
+	elseif message_id == hash("setButtonDelivery") then
+		gui.set_enabled(self.btn_delivery, message.value)
+		
+	elseif message_id == hash("updateTextDelivery") then
+		gui.set_text(self.text_delivery, utils.secToHHMMSS(message.value))
+
+	elseif message_id == hash("showNextMart") then
+		on_btn_info(self, "nextmart")
+
+	elseif message_id == hash("showCaravan") then
+		on_btn_info(self, "caravan")
+
+	elseif message_id == hash("updateAlert") then
+		updateAlert(self, message.list)
+
+	elseif message_id == hash("updateAttention") then
+		updateAttention(self, message.type, message.bool)
+
+	elseif (message_id == hash("update_font")) then
+		updateFont(self)
+
+	elseif (message_id == hash("update_language")) then
+        updateLanguage(self)
+
+	elseif (message_id == hash("hide_noads")) then
+		if global.isMobileTrue then
+			gui.set_enabled(self.btn_noads, false)
+		end
+
+	elseif (message_id == hash("show_event_btn")) then
+		if (global.numEvent ~= 0) then
+			gui.set_enabled(gui.get_node("window_event"), true)
+		end
+
+	elseif (message_id == hash("show_event_completed")) then
+		event_completed(self, message.event)
+
+	elseif (message_id == hash("show_popup_bonus")) then
+		show_popup_bonus(self)
+
+	elseif (message_id == hash("hide_gui")) then
+		gui.set_enabled(gui.get_node("btn_settings/button"), global.hideGUI)
+		gui.set_enabled(gui.get_node("btn_iap/button"), global.hideGUI)
+		gui.set_enabled(gui.get_node("btn_upgrades/button"), global.hideGUI)
+		gui.set_enabled(gui.get_node("btn_shop/button"), global.hideGUI)
+		gui.set_enabled(gui.get_node("btn_marts/button"), global.hideGUI)
+		gui.set_enabled(gui.get_node("btn_noads/button"), global.hideGUI)
+		gui.set_enabled(gui.get_node("panelTop"), global.hideGUI)
+		gui.set_enabled(gui.get_node("panelRight"), global.hideGUI)
+		global.hideGUI = not global.hideGUI
+
+	end
+
+end
+
+
+function on_input(self, action_id, action)
+	if (not is_lock_input) then
+		local isAction = self.druid:on_input(action_id, action)
+		global.isGameGuiPressed = isAction
+	end
+
+end

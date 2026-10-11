@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only pixel review of current Attempt 8 natural screenshots; no edits to any file, no server or browser actions."
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/focused-540x960-keyboard-route1/progress.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-continue-20261009/focused-540x960-keyboard-route1/screenshots",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/build-manifest.json"
+  ],
+  "instructions": [
+    "Read only these target-run files. Do not change files or state. You are not alone in the workspace; do not revert any edits.",
+    "Inspect actual pixels with view_image, including 035-coral-settlement.png, 031-coral-1-processing-input.png and 032-coral-1-smoked-cargo.png. Inspect Moon settlement only if it exists. Distinguish exact natural branches, visible cues, overlays, carried goods and readability. A fixture or missing image cannot close a gate. Return JSON only."
+  ],
+  "acceptance": [
+    "Every PASS must name the inspected screenshot path and actual visible observation.",
+    "Record absent five-viewport, gull or staff evidence as gaps; do not claim full product acceptance."
+  ],
+  "outputSchema": "{schemaVersion:1,role:\"QAAgent\",targetGame:\"海滩渔货铺\",workspace:string,reviewerIndependent:true,cases:[{id:string,status:\"PASS\"|\"BLOCKED\",observed:string,screenshotPaths:string[]}],gaps:string[]}"
+}

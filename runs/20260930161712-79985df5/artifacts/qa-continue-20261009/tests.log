@@ -1,0 +1,21 @@
+$ node ../../../../node_modules/vitest/vitest.mjs run
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/presentation-runtime.test.ts (7 tests | 7 skipped) 66ms
+ ❯ src/repair-runtime.test.ts (6 tests | 6 skipped) 51ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/presentation-runtime.test.ts [ src/presentation-runtime.test.ts ]
+ FAIL  src/repair-runtime.test.ts [ src/repair-runtime.test.ts ]
+Error: listen EPERM: operation not permitted 127.0.0.1
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  2 failed | 7 passed (9)
+      Tests  46 passed | 13 skipped (59)
+   Start at  15:02:09
+   Duration  1.84s (transform 1.34s, setup 0ms, import 4.53s, tests 1.31s, environment 0ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

@@ -1,0 +1,17 @@
+Attempt 3 validation record
+Target: runs/20260930161712-79985df5/workspace/game
+Route: formal-fixer
+
+RED before implementation:
+pnpm test -- --run src/simulation.test.ts src/order-presentation.test.ts
+exit=1 because the package script could not find local vitest; preserved in red-tests.log.
+
+GREEN after implementation:
+pnpm dlx --yes vitest@4.1.11 run
+exit=0; 4 files passed, 18 tests passed. Full output is in green-tests.log.
+
+Runtime implementation evidence:
+- runtime-smoke.json: fixture-only startup order card and settlement next-market selection.
+- viewport-smoke.json: fixture-only bounds/overflow smoke passed for 360x800, 390x844, 430x932, 540x960, and 844x390; no page or console errors.
+
+These are implementation evidence only. Independent natural-input and perceptual QA retest remains required.

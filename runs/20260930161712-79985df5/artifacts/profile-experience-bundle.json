@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "gameId": "continuation-v2",
+  "title": "海滩渔货铺",
+  "theme": "原创海滩物流经营",
+  "line": "idle-management",
+  "profile": "STRATEGIC_SYSTEM",
+  "blueprintHash": "1db92f3cb0f8c5d6a043f1c1fcbce6dd29ff662694eda14416380b2a82cd707f",
+  "profileContract": {
+    "schemaVersion": 1,
+    "profile": "STRATEGIC_SYSTEM",
+    "resourceTradeoffs": [
+      "every spend has a visible opportunity cost",
+      "the next goal is visible before the player commits",
+      "resource changes identify their source and sink"
+    ],
+    "decisionConsequences": [
+      "upgrade choices alter a measurable bottleneck",
+      "short-term gain can trade against a later objective",
+      "refresh/recovery preserves an understandable state"
+    ],
+    "progressionRules": [
+      "growth changes capability or throughput, not only a number",
+      "one pressure variable rises at a time",
+      "a short session reaches a meaningful milestone"
+    ],
+    "acceptanceIds": [
+      "strategic_system:goal-clarity",
+      "strategic_system:resource-trade-off",
+      "strategic_system:reward-readability",
+      "strategic_system:growth-pacing",
+      "strategic_system:refresh-recovery"
+    ]
+  },
+  "experienceContract": {
+    "schemaVersion": 1,
+    "contractId": "experience-continuation-v2-strategic-system",
+    "targetGame": "continuation-v2",
+    "targetWorkspace": "workspace/game",
+    "lockedBy": "human",
+    "pillars": [
+      {
+        "id": "strategic_system-pillar-1",
+        "name": "goal clarity",
+        "observable": "Evidence must show goal clarity during a clean natural run."
+      },
+      {
+        "id": "strategic_system-pillar-2",
+        "name": "resource trade-off",
+        "observable": "Evidence must show resource trade-off during a clean natural run."
+      },
+      {
+        "id": "strategic_system-pillar-3",
+        "name": "reward readability",
+        "observable": "Evidence must show reward readability during a clean natural run."
+      },
+      {
+        "id": "strategic_system-pillar-4",
+        "name": "growth pacing",
+        "observable": "Evidence must show growth pacing during a clean natural run."
+      },
+      {
+        "id": "strategic_system-pillar-5",
+        "name": "refresh recovery",
+        "observable": "Evidence must show refresh recovery during a clean natural run."
+      }
+    ],
+    "feedbackTiming": {
+      "impactMs": 250,
+      "settleMs": 1200,
+      "inputNeverBlocked": true
+    },
+    "motionInvariants": [
+      "Preserve produce action through the complete representative flow.",
+      "Preserve delivery resolution through the complete representative flow.",
+      "Preserve upgrade choice through the complete representative flow."
+    ],
+    "causalRules": [
+      "A player-visible consequence must be attributable to resource sink.",
+      "A player-visible consequence must be attributable to meaningful trade-off.",
+      "A player-visible consequence must be attributable to visible next goal."
+    ],
+    "antiPatterns": [
+      "cosmetic-only variation presented as new gameplay",
+      "debug/state-forcing APIs used as natural-play proof",
+      "an ad or overlay blocking the primary action"
+    ],
+    "acceptanceIds": [
+      "strategic_system:goal-clarity",
+      "strategic_system:resource-trade-off",
+      "strategic_system:reward-readability",
+      "strategic_system:growth-pacing",
+      "strategic_system:refresh-recovery"
+    ]
+  },
+  "naturalPlayPlan": {
+    "schemaVersion": 1,
+    "contractId": "experience-continuation-v2-strategic-system",
+    "startCommand": "resetGame",
+    "inputMode": "mouse_and_touch",
+    "forbiddenApis": [
+      "window.__GAME_TEST__ state-forcing methods",
+      "loadScenario",
+      "debugSetState",
+      "setVelocity",
+      "setPose",
+      "grantCurrency"
+    ],
+    "scenarios": [
+      {
+        "id": "scenario-1",
+        "goal": "reset"
+      },
+      {
+        "id": "scenario-2",
+        "goal": "produce"
+      },
+      {
+        "id": "scenario-3",
+        "goal": "deliver"
+      },
+      {
+        "id": "scenario-4",
+        "goal": "choose one upgrade trade-off"
+      },
+      {
+        "id": "scenario-5",
+        "goal": "refresh and recover progress"
+      }
+    ],
+    "successCriteria": [
+      "complete the STRATEGIC_SYSTEM representative flow with visible state changes",
+      "reach a clear success or failure terminal state",
+      "restart and observe a materially different or replayable outcome"
+    ],
+    "evidenceCheckpoints": [
+      "clean reset screenshot and input trace",
+      "terminal/settlement screenshot and retry trace"
+    ],
+    "oracleFree": true
+  },
+  "createdAt": "2026-09-30T17:30:16.048Z"
+}

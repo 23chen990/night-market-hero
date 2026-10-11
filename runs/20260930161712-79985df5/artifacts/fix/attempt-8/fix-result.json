@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "fix-result",
+  "role": "FixerAgent",
+  "route": "formal-fixer",
+  "attempt": 8,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "IMPLEMENTED_AWAITING_INDEPENDENT_QA",
+  "why": "Four validated independent QA issues and pressure recovery state/save impact require formal-fixer. Minimal causal presentation, pressure eligibility/cooldown and save normalization changes; full lint/types/tests and exactly one build completed. Independent QA must retest; fixture pixels do not establish natural or perceptual acceptance.",
+  "issueIds": [
+    "market-settlement-wrong-cause",
+    "gull-silhouette-under-labels",
+    "implicit-favicon-404",
+    "gull-recovery-no-relief"
+  ],
+  "contextIntentionallyOmitted": [
+    "Whole conversation, unrelated logs/history, other games",
+    "Shared factory changes and independent QA harness work",
+    "Unbound media, competitor assets, unrelated economy/progression/adapters/release settings"
+  ],
+  "filesChanged": [
+    "src/main.ts",
+    "src/presentation-runtime.test.ts",
+    "src/pressure-recovery.test.ts",
+    "src/repair-runtime.test.ts",
+    "src/save.ts",
+    "src/simulation.ts",
+    "src/style.css",
+    "dist/assets/index-AYRn4H1N.css",
+    "dist/assets/index-DovFKkM7.js",
+    "dist/index.html",
+    "index.html"
+  ],
+  "tests": [
+    {
+      "name": "five pressure/state/save red regressions",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/red-pressure-valid.log",
+      "sha256": "9d17d95b8bb9e426a92636c22572d4e80400c926ce2fc8fd9ba25e3b844b5e36"
+    },
+    {
+      "name": "both market causes and implicit favicon red",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/red-runtime-valid.log",
+      "sha256": "db9fd9f4a51217fc05738659e3ea160c1d424cd007400a2bb60df5b45cc7937b"
+    },
+    {
+      "name": "actual loss-event portrait/landscape gull pixel red",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/red-gull-after-loss.log",
+      "sha256": "6fc9c1e1a362fe875f232c74978a6593ff0f35a08c743aa8561a5ef0d98f6f45"
+    },
+    {
+      "name": "recovery visual absent pixel red",
+      "exitCode": 1,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/red-recovery-visual.log",
+      "sha256": "a190a7d3ae2ab80fa1ca723521238a1f875d6012e369dda90475b745baeea21c"
+    },
+    {
+      "name": "21 pressure/depth unit tests pass",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/green-pressure.log",
+      "sha256": "984a4e00fe8e7e5f6bdf5e06380dfb5c11c8f1a0f74148223d2a2ea4d6697624"
+    },
+    {
+      "name": "6 targeted runtime tests pass",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/green-runtime.log",
+      "sha256": "33924f756d994dd5dcd5fd28d7adee2e1f456d2e54b95335277cc5f700530de0"
+    },
+    {
+      "name": "lint",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "typecheck",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "59 full tests in 9 files pass",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/full-tests.log",
+      "sha256": "11414e6835447a2d36ddf48c0effb9dff29bfeff8b6e32806314d688d2be4e30"
+    },
+    {
+      "name": "single build",
+      "exitCode": 0,
+      "evidencePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/build.log",
+      "sha256": "a6be33c844aa74f05c1bcbdfb48eb9f239f8e74e1f3b666d7bfea78c18ea775f"
+    }
+  ],
+  "buildCount": 1,
+  "manifestPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/build-manifest.json",
+  "threadContinuity": {
+    "priorAttempt": 7,
+    "storedBuilderThreadId": null,
+    "replacementAgent": "/root/fixer_attempt8",
+    "reason": "Continues stored validated attempt8 task after attempt7 source/dist snapshot. Parent remains attempt coordinator; no extra attempt created."
+  },
+  "branchFindings": [
+    "Terminal DOM branches on active market: beach expansion copy preserved; Coral/Moon use actual authored goal, completed count, success icon and prominent filled progress display. Local continue and restart preserved.",
+    "Exact active raiding object after first loss tested at 540x960 and844x390. Station/feedback labels overlay entityGraphics; pressure-specific layer18.5 now lies above labels/feedback and below player19. Landscape body36.36 became161.98 against185.12 unoccluded control. Earlier pre-loss sibling passed and was not used to close the defect.",
+    "Chase establishes5000ms recovery; countdown green ring/check rendered at recovered shelf and later disappears. Guarded stocked shelves are excluded from target selection; other eligible stock remains targetable; pressure/loss resumes after cooldown. Approaching gull is also scared by player reaching target.",
+    "The only new save field is pressure.seagull.recoveryMs; missing/non-numeric/non-finite/negative values normalize to0 and large values clamp to5000. Serialization and continued recovery tested. Save version remains2.",
+    "Explicit icon references existing public/assets/product.svg. Runtime returns200 without new asset/dependency.",
+    "Runtime screenshots and seeded simulation journeys are implementation evidence; they are not fresh natural QA or platform publication evidence."
+  ],
+  "remainingEvidenceGaps": [
+    "Independent deterministic QA must verify current built hashes.",
+    "Fresh normal-input default journey, both market branches, continue/replay/reload/restart at360x800,390x844,430x932,540x960,844x390.",
+    "Exact gull natural loss -> same-target approach -> readable relief -> same-shelf refill requires current natural trace and player-visible capture; perceptual gate must pass.",
+    "All unobserved reproduction cells remain BLOCKED. No independent QA completion or platform publishability claimed."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "continuation-v2",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "route": "direct-builder",
+  "filesChanged": ["src/simulation.ts", "src/simulation.test.ts", "src/uiMotion.ts", "src/main.ts", "src/style.css", "index.html", "package.json", "vitest.config.ts", "vite.config.ts"],
+  "features": [
+    {"featureId": "qa-spatial-harvest-and-deposit", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/main.ts:118-143", "src/simulation.ts:164-181"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "qa-input-build-payment", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/main.ts:118-143", "src/simulation.ts:188-198"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "qa-input-production-gating", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/main.ts:118-143", "src/simulation.ts:97-105"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "qa-failure-customer-wait-recovery", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/main.ts:138-143", "src/simulation.ts:116-137"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "qa-feedback-construction-sequence", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/main.ts:118-143", "index.html:15-26"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "qa-feedback-checkout-cash", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/main.ts:118-143", "src/simulation.ts:178-187"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "qa-terminal-stage-continuation", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["index.html:15-26", "src/main.ts:145-146"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "ui-animation-standard", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/uiMotion.ts:1-48", "src/style.css:35-38"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}},
+    {"featureId": "refresh-recovery", "runtimeWired": true, "playerVisible": {"status": "implemented-unverified", "evidencePaths": ["src/main.ts:18-42", "src/simulation.ts:221-228"]}, "naturalTriggerVerified": {"status": "blocked", "evidencePaths": ["artifacts/runtime-evidence.json", "logs/console.log"]}}
+  ],
+  "verification": {"npmTest": "PASS: 10 tests", "typecheck": "PASS", "productionBuild": "PASS", "browserPlaytest": "BLOCKED before browser launch by sandbox MachPort permission"}
+}

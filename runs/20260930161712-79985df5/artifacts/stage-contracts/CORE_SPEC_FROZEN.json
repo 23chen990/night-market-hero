@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "stage": "CORE_SPEC_FROZEN",
+  "passed": true,
+  "ownerRole": "ProducerAgent",
+  "verifierRole": "FactoryControlPlane",
+  "verifiedByRole": "FactoryControlPlane",
+  "independent": true,
+  "checkedAt": "2026-09-30T17:59:29.985Z",
+  "missing": [],
+  "observedInputs": [
+    "artifacts/game-blueprint.json",
+    "artifacts/production-line-resolution.json",
+    "artifacts/experience-hypothesis.json",
+    "artifacts/production-line-contract.json",
+    "artifacts/reference-fidelity-contract.json",
+    "artifacts/reference-research-resolution.json"
+  ],
+  "observedArtifacts": [
+    "artifacts/core-spec-lock.json"
+  ],
+  "observedEvidence": [
+    "zod:CoreSpecLockSchema",
+    "spec:frozen",
+    "reference-fidelity:four-dimensions"
+  ],
+  "artifactVersions": {
+    "artifacts/experience-hypothesis.json": 1,
+    "artifacts/production-line-contract.json": 1,
+    "artifacts/core-spec-lock.json": 1
+  },
+  "failureRoute": {
+    "stage": "CORE_SPEC_FROZEN",
+    "classes": [
+      "core_experience"
+    ],
+    "rationale": "A malformed or inconsistent core standard belongs to the design contract owner."
+  }
+}

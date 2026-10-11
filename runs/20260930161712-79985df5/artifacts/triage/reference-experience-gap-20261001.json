@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "reference-experience-gap-20261001",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "runs/20260930161712-79985df5/workspace/game",
+  "reportedConcern": "现在这个项目感觉还是和原版猴子超市差距比较大，你自己再看看检查下",
+  "classification": "reference-mechanic-and-player-experience-gap-under-review",
+  "status": "CODE_REVIEW_COMPLETE_RUNTIME_UNVERIFIED",
+  "reproduction": {
+    "entrypoint": "workspace/game/src/main.ts",
+    "method": "User narrowed scope to original-code reference only. Verify bound source hashes; compare reference mechanisms against target runtime wiring and simulation. No browser playtest or screenshots. Static checks do not establish player-visible acceptance.",
+    "evidence": [
+      "artifacts/reference-fidelity-contract.json",
+      "artifacts/reference-code-analysis.json",
+      "artifacts/reference-research-resolution.json",
+      "reference-evidence/manifest.json",
+      "artifacts/reproduction-matrix-reference-experience-gap-20261001.json"
+    ],
+    "referenceLimitation": "Verified code-reference package only. No verified reference recording/frame manifest; reference appearance, timing feel and readability are unknown. User explicitly requested code-only review."
+  },
+  "scope": {
+    "inspection": [
+      "default startup/core loop/checkout/expansion/settlement/replay",
+      "stockout patience and visible attribution",
+      "customer ordinary versus disruption branches",
+      "mobile presentation and normal-input affordances"
+    ],
+    "generatedWorkspaceChanges": [],
+    "sharedFactoryChanges": []
+  },
+  "route": "formal-fixer",
+  "routeReason": "Concern spans core-loop state machines, progression and presentation, with no accepted root cause. This turn performs the independent QA/triage portion only; no Fixer or Builder invocation is authorized.",
+  "contextOmitted": [
+    "other game runs",
+    "unbound media",
+    "unrelated logs and repository history"
+  ],
+  "acceptanceCriteria": [
+    "Verify target identity and reference-package hashes before using reference claims.",
+    "Record object type x lifecycle branch x presentation path x viewport before accepting hypotheses.",
+    "Report code-established differences with exact source paths, line ranges and file hashes; do not claim runtime, natural-input or perceptual verification.",
+    "Treat missing or unobserved exact branches as BLOCKED; a passing sibling cannot close them.",
+    "Separate source-proven behavior, human-locked deviations, implementation observations, and unknowns.",
+    "Return prioritized concrete gaps without declaring the failed FULL_BUILD or release complete."
+  ],
+  "reviewArtifact": "artifacts/reference-code-gap-review-20261001.json",
+  "confirmedCodeIssueIds": [
+    "BUG-LOCKED-DEMAND",
+    "BUG-PATIENCE-START",
+    "BUG-MOVING-PAYMENT"
+  ]
+}

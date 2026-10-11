@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "stage": "FULL_BUILD",
+  "failureClass": "build",
+  "routeTo": "FULL_BUILD",
+  "message": "Error: {\"error\":{\"message\":\"Failed to parse request body\",\"type\":\"invalid_request_error\"}}\n    at CodexCliProvider.execute (/Users/kker/Documents/ChatGPT/妖怪夜市/src/providers/codex-cli.ts:268:21)\n    at async CodexAccountProvider.build (/Users/kker/Documents/ChatGPT/妖怪夜市/src/providers/codex-account.ts:239:20)\n    at async BuilderAgent.run (/Users/kker/Documents/ChatGPT/妖怪夜市/src/agents/index.ts:210:25)\n    at async executeReplicaPreview (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:2821:24)\n    at async execute (/Users/kker/Documents/ChatGPT/妖怪夜市/src/factory.ts:4167:14)\n    at async main (/Users/kker/Documents/ChatGPT/妖怪夜市/src/cli/factory.ts:142:46)",
+  "hypotheses": [
+    {
+      "cause": "Error: {\"error\":{\"message\":\"Failed to parse request body\",\"type\":\"invalid_request_error\"}}",
+      "confidence": 0.5,
+      "evidence": [
+        "stage:FULL_BUILD",
+        "attempt:2",
+        "inputs:artifacts/game-blueprint.json,artifacts/production-line-resolution.json,artifacts/production-line-contract.json,artifacts/experience-hypothesis.json,artifacts/core-spec-lock.json,artifacts/experience-contract.json,artifacts/product-experience-contract.json,artifacts/profile-experience-contract.json,artifacts/natural-play-plan.json,artifacts/reference-fidelity-contract.json,artifacts/reference-research-resolution.json,artifacts/reference-failure-pressure-contract.json,artifacts/style-lock.json,artifacts/asset-manifest.json,templates/web-lite/spatial-shop-v1"
+      ]
+    }
+  ],
+  "symptom": "Error: {\"error\":{\"message\":\"Failed to parse request body\",\"type\":\"invalid_request_error\"}}",
+  "reproduction": "resume 20260930161712-79985df5 at FULL_BUILD; inputs=artifacts/game-blueprint.json,artifacts/production-line-resolution.json,artifacts/production-line-contract.json,artifacts/experience-hypothesis.json,artifacts/core-spec-lock.json,artifacts/experience-contract.json,artifacts/product-experience-contract.json,artifacts/profile-experience-contract.json,artifacts/natural-play-plan.json,artifacts/reference-fidelity-contract.json,artifacts/reference-research-resolution.json,artifacts/reference-failure-pressure-contract.json,artifacts/style-lock.json,artifacts/asset-manifest.json,templates/web-lite/spatial-shop-v1",
+  "suspectedRootCauses": [
+    {
+      "artifact": "artifacts/game-blueprint.json",
+      "confidence": 0.5,
+      "reason": "Error: {\"error\":{\"message\":\"Failed to parse request body\",\"type\":\"invalid_request_error\"}}"
+    }
+  ],
+  "primaryRoute": "FULL_BUILD",
+  "secondaryRoutes": [],
+  "owner": "BuilderAgent",
+  "regressionTest": "regression-required:FULL_BUILD",
+  "status": "OPEN",
+  "failureKind": "CAPABILITY_ERROR",
+  "retryable": true,
+  "attempts": 0,
+  "createdAt": "2026-10-01T06:24:37.880Z"
+}

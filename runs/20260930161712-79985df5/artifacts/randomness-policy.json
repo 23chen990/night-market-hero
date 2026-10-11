@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "gameId": "continuation-v2",
+  "injectable": true,
+  "modes": [
+    {
+      "name": "golden",
+      "seeds": [
+        3705391348
+      ]
+    },
+    {
+      "name": "fuzz",
+      "seeds": [
+        2892934492,
+        501692582,
+        2347827989,
+        718045749,
+        2628844836,
+        4275979944,
+        1295211183,
+        1323713757
+      ]
+    },
+    {
+      "name": "production",
+      "seeds": [
+        2477247770,
+        2838003011,
+        657638855,
+        4094031801
+      ]
+    }
+  ],
+  "evidenceFields": [
+    "seed",
+    "buildHash",
+    "inputTrace"
+  ]
+}

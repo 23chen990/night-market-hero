@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "runtimeEntrypoints": [
+    "src/main.ts",
+    "index.html"
+  ],
+  "contractHash": "b6565757d769df0d499c8392ba768253c22879c0544f195f6103a3df00d80473",
+  "buildHash": "db6aabd27fc336609b00a34322ae09f4f78195027fe737547b2f65b75467ed13",
+  "runtime": "web-lite",
+  "reviewer": "QAAgent",
+  "authorIndependent": true,
+  "passed": false,
+  "blockers": [
+    "startup visual hierarchy remains materially weaker than first-version baseline",
+    "landscape viewport and 390/430/360 exact branches not retested after repair",
+    "packing lifecycle and semantic product feedback remain incomplete"
+  ],
+  "cases": [
+    {
+      "featureId": "startup-visual-hierarchy",
+      "sourceCheckIds": [
+        "REF-OBJECT-FEEDBACK"
+      ],
+      "objectType": "shop-and-player",
+      "stateBranch": "startup",
+      "viewport": {
+        "width": 540,
+        "height": 960,
+        "label": "540x960"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": false,
+      "perceptualPassed": false,
+      "observedSignal": "Canvas and HUD are visible, but current screen still uses abstract circles/text station labels and lacks the first-version beach visual hierarchy.",
+      "observedEventOrder": [
+        "startup",
+        "HUD visible"
+      ],
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-01-boot.png",
+          "sha256": "86ff4fb200fb302a79aea77b932cf79b2b96afcf157212c30d1249f9958b3260"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/natural-540x960-adaptive.json",
+        "sha256": "b61896368fc49c7f8dc2e81b7b96675a2aee63275f8c64a231087e81cd9ea3d4"
+      },
+      "evidence": [
+        "Current fresh natural screenshot compared with first-version startup baseline."
+      ],
+      "notes": [
+        "Mechanics natural journey passed at 540x960; perceptual gate remains blocked."
+      ]
+    }
+  ],
+  "checkedAt": "2026-10-01T12:02:00.000Z"
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "classification": "QA_HARNESS_OR_PERCEPTUAL_UNRESOLVED",
+  "reproductionMatrix": [
+    {
+      "objectType": "seagull and attacked shelf",
+      "lifecycle": "active disruption after visible loss, before player chase recovery",
+      "renderer": "rotated landscape Canvas under Chromium Metal",
+      "viewport": "844x390",
+      "input": "browser-native touch"
+    }
+  ],
+  "report": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/natural.json",
+  "observations": [
+    "Visible DOM loss was observed at 519ms wait; screenshot trace 037 captured the moment.",
+    "visibleGullTarget returned zero white-pixel candidates in trace 039 and aborted before recovery.",
+    "Manual inspection of 039 shows the orange alert ring and cream directional warning at the center shelf; white bird body cannot be confidently isolated from dense station labels at this scale.",
+    "Nine completed natural checks passed: viewport, sales, first settlement, choice clarity, continue, processing, avatar employee crossing, runner action, cashier action."
+  ],
+  "hypothesis": "White-body component detection may not survive landscape downscaling and overlaid shelf labels. A shelf-local alert ring is visible, so a pure product absence cannot be concluded. Require parent review of exact pixels and detector before any rerun; do not substitute another shelf.",
+  "hypothesisConfirmed": false,
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/037-gull-visible-loss.png",
+      "sha256": "6203abd9e2b046f23e6dee242e3768302709a23ca498824b3c70ac2cb77fa2f0"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png",
+      "sha256": "64b6be02b8cf5eee63308713497b40724bf5c73eb7c9d614ae758d6db7097a0b"
+    }
+  ],
+  "nextAction": "Preserve failed report; continue independent 360x800 keyboard Metal finalized run. No rerun or shared harness edit performed.",
+  "passed": false,
+  "blockers": [
+    "runtime-console-and-runner",
+    "unobserved:seagull-loss-recovery",
+    "unobserved:deliberate-market-selection",
+    "unobserved:real-market-change",
+    "unobserved:new-market-own-settlement",
+    "unobserved:operating-replay",
+    "unobserved:natural-save-reload",
+    "unobserved:restart-clears-overlays"
+  ]
+}

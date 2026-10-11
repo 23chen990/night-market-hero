@@ -1,0 +1,520 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "api": "detectGullTarget(decodedCanvasImage, stationPositions, landscape) -> {targetId:string|null,candidates,reason}; Driver.player() may return {stoppedByOverlay:true,observation,geometry} when normal overlay appears; Driver.move() stops without further input.",
+  "fixtures": [
+    {
+      "id": "landscape-alert",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/039-gull-visible-target.png",
+      "sha256": "64b6be02b8cf5eee63308713497b40724bf5c73eb7c9d614ae758d6db7097a0b",
+      "crop": [
+        2,
+        46,
+        528,
+        297
+      ],
+      "landscape": true,
+      "expected": "fish-shelf"
+    },
+    {
+      "id": "portrait-alert",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/039-gull-visible-target.png",
+      "sha256": "c51bf5ad7daa38d91ed6b03019ca7088716b2446b91274e46bdd9667961460af",
+      "crop": [
+        97,
+        216,
+        346,
+        615
+      ],
+      "landscape": false,
+      "expected": "fish-shelf"
+    },
+    {
+      "id": "phone-alert",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-390x844-touch-portrait-metal/screenshots/039-gull-visible-target.png",
+      "sha256": "6f158802b5f51109ea23541302dbc9195251e6d5ecd39d46fa672799462de84f",
+      "crop": [
+        57,
+        208,
+        276,
+        491
+      ],
+      "landscape": false,
+      "expected": "fish-shelf"
+    },
+    {
+      "id": "landscape-clean",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-844x390-touch-landscape-metal-finalized/screenshots/001-startup.png",
+      "sha256": "27634312f26fbbd51391a24192885c35f55619a72fa36a7b87cd7ce619b690cc",
+      "crop": [
+        2,
+        46,
+        528,
+        297
+      ],
+      "landscape": true,
+      "expected": null
+    },
+    {
+      "id": "portrait-clean",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/001-startup.png",
+      "sha256": "210babff5687db79cdf469ab167dce9cd09072417ce549e23cf20ee3c89bde09",
+      "crop": [
+        97,
+        216,
+        346,
+        615
+      ],
+      "landscape": false,
+      "expected": null
+    },
+    {
+      "id": "portrait-alert-at-recovery",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-root-metal/screenshots/040-gull-guarded-no-loss.png",
+      "sha256": "a15fee6523480f37e5ad8396d0919c870c3a9597bb6f20b980439f227b138e07",
+      "crop": [
+        97,
+        216,
+        346,
+        615
+      ],
+      "landscape": false,
+      "expected": "fish-shelf"
+    },
+    {
+      "id": "overlay-race-stale-crop",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-360x800-keyboard-landscape-metal-finalized/screenshots/locator-failure.png",
+      "sha256": "2813dac9f7d1d1cf56fc6e4d872a597ad342fd1e87f00613f540bd21acf99125",
+      "crop": [
+        0,
+        0,
+        253,
+        450
+      ],
+      "landscape": false,
+      "expected": null
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-10-08T10:20:16.452Z",
+      "sourceHash": "e2a82effeb65ad43e739ea0ca6371f83f7f3faa6af8574083009fd33dbf5bb73",
+      "testHash": "3449f16e08ab6e54e09d6f34233b62d88100542e76a407e7df5a1e97d1f9bf81",
+      "passed": false,
+      "checks": [
+        {
+          "name": "pixels:landscape-alert",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:portrait-alert",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:phone-alert",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:landscape-clean",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:portrait-clean",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:portrait-recovered",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "unknown-station-does-not-substitute-nearby-shelf",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "ambiguous-visible-target-remains-null",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "overlay-between-geometry-and-screenshot-stops-movement",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+        },
+        {
+          "name": "player-does-not-return-coordinates-from-settlement-crop",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- true\n"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-08T10:21:38.396Z",
+      "sourceHash": "e2a82effeb65ad43e739ea0ca6371f83f7f3faa6af8574083009fd33dbf5bb73",
+      "testHash": "6991db3995b2153784a921fe91591cb50fd676937a81856cd542d4ba30d54d77",
+      "passed": false,
+      "checks": [
+        {
+          "name": "pixels:landscape-alert",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:portrait-alert",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:phone-alert",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:landscape-clean",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:portrait-clean",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "pixels:portrait-recovered",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: target detector export is required\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "unknown-station-does-not-substitute-nearby-shelf",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "ambiguous-visible-target-remains-null",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "unpaired-alert:annulus-only",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "unpaired-alert:triangle-only",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n"
+        },
+        {
+          "name": "overlay-between-geometry-and-screenshot-stops-movement",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+        },
+        {
+          "name": "player-does-not-return-coordinates-from-settlement-crop",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- true\n"
+        },
+        {
+          "name": "layout-change-without-overlay-recaptures-before-locating",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Missing expected rejection."
+        }
+      ]
+    },
+    {
+      "at": "2026-10-08T10:22:32.080Z",
+      "sourceHash": "0619a16bef7b2193c8d88bbbbd54508589a19549eb6ccb4637885e36b1f38bfc",
+      "testHash": "6991db3995b2153784a921fe91591cb50fd676937a81856cd542d4ba30d54d77",
+      "passed": false,
+      "checks": [
+        {
+          "name": "pixels:landscape-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":19,\"grayPixels\":31,\"whiteCenter\":{\"x\":1.2440191387559922,\"y\":-2.440191387559785},\"grayCenter\":{\"x\":-0.7038123167155305,\"y\":-0.26392961876832494}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":304,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":65}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":34,\"coveredSectors\":[0,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":26,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":7}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:phone-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":7,\"grayPixels\":27,\"whiteCenter\":{\"x\":0.6987577639751602,\"y\":-2.845504800698263},\"grayCenter\":{\"x\":-4.384057971014495,\"y\":2.792486988006321}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":230,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":40}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":30,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":8}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:landscape-clean",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-clean",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-recovered",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: {\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":false,\"whitePixels\":22,\"grayPixels\":1,\"whiteCenter\":{\"x\":20.147136100893338,\"y\":-8.753880266075386},\"grayCenter\":{\"x\":16.38728323699422,\"y\":-10.243902439024396}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":402,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}}],\"reason\":\"unique-visible-target\"}\n+ actual - expected\n\n+ 'fish-shelf'\n- null\n"
+        },
+        {
+          "name": "unknown-station-does-not-substitute-nearby-shelf",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":34,\"coveredSectors\":[0,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":26,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":7}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "ambiguous-visible-target-remains-null",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}},{\"stationId\":\"duplicate-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}}],\"reason\":\"ambiguous-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "unpaired-alert:annulus-only",
+          "passed": false,
+          "evidence": "null",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'fish-shelf'\n- null\n"
+        },
+        {
+          "name": "unpaired-alert:triangle-only",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":7,\"coveredSectors\":[5]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "overlay-between-geometry-and-screenshot-stops-movement",
+          "passed": true,
+          "evidence": "{\"stoppedByOverlay\":true,\"keyPresses\":0,\"screenshots\":1,\"geometryReads\":2}",
+          "error": null
+        },
+        {
+          "name": "player-does-not-return-coordinates-from-settlement-crop",
+          "passed": true,
+          "evidence": "{\"stoppedByOverlay\":true,\"observation\":{\"settlementVisible\":true,\"selectionVisible\":false},\"geometry\":{\"rect\":{\"x\":98,\"y\":164,\"width\":164,\"height\":292},\"landscape\":false},\"observationMs\":0}",
+          "error": null
+        },
+        {
+          "name": "layout-change-without-overlay-recaptures-before-locating",
+          "passed": true,
+          "evidence": "{\"screenshots\":2,\"geometryReads\":3}",
+          "error": null
+        }
+      ]
+    },
+    {
+      "at": "2026-10-08T10:23:27.232Z",
+      "sourceHash": "0619a16bef7b2193c8d88bbbbd54508589a19549eb6ccb4637885e36b1f38bfc",
+      "testHash": "a30f03f277c1ae8b8ef85f70ad5d931c53b7337b3933557a979801fd26535392",
+      "passed": true,
+      "checks": [
+        {
+          "name": "pixels:landscape-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":19,\"grayPixels\":31,\"whiteCenter\":{\"x\":1.2440191387559922,\"y\":-2.440191387559785},\"grayCenter\":{\"x\":-0.7038123167155305,\"y\":-0.26392961876832494}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":304,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":65}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":34,\"coveredSectors\":[0,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":26,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":7}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:phone-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":7,\"grayPixels\":27,\"whiteCenter\":{\"x\":0.6987577639751602,\"y\":-2.845504800698263},\"grayCenter\":{\"x\":-4.384057971014495,\"y\":2.792486988006321}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":230,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":40}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":30,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":8}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:landscape-clean",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-clean",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-alert-at-recovery",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":false,\"whitePixels\":22,\"grayPixels\":1,\"whiteCenter\":{\"x\":20.147136100893338,\"y\":-8.753880266075386},\"grayCenter\":{\"x\":16.38728323699422,\"y\":-10.243902439024396}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":402,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "unknown-station-does-not-substitute-nearby-shelf",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":34,\"coveredSectors\":[0,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":26,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":7}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "ambiguous-visible-target-remains-null",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}},{\"stationId\":\"duplicate-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}}],\"reason\":\"ambiguous-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "unpaired-alert:annulus-only",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":363,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "unpaired-alert:triangle-only",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":7,\"coveredSectors\":[5]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "overlay-between-geometry-and-screenshot-stops-movement",
+          "passed": true,
+          "evidence": "{\"stoppedByOverlay\":true,\"keyPresses\":0,\"screenshots\":1,\"geometryReads\":2}",
+          "error": null
+        },
+        {
+          "name": "player-does-not-return-coordinates-from-settlement-crop",
+          "passed": true,
+          "evidence": "{\"stoppedByOverlay\":true,\"observation\":{\"settlementVisible\":true,\"selectionVisible\":false},\"geometry\":{\"rect\":{\"x\":98,\"y\":164,\"width\":164,\"height\":292},\"landscape\":false},\"observationMs\":0}",
+          "error": null
+        },
+        {
+          "name": "layout-change-without-overlay-recaptures-before-locating",
+          "passed": true,
+          "evidence": "{\"screenshots\":2,\"geometryReads\":3}",
+          "error": null
+        }
+      ]
+    },
+    {
+      "at": "2026-10-08T10:25:46.568Z",
+      "sourceHash": "0619a16bef7b2193c8d88bbbbd54508589a19549eb6ccb4637885e36b1f38bfc",
+      "testHash": "ebdcf50097f16d2acf2ae1fe77595398b1da8c9b7469aa5ea30e96430cb54f16",
+      "passed": true,
+      "checks": [
+        {
+          "name": "pixels:landscape-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":19,\"grayPixels\":31,\"whiteCenter\":{\"x\":1.2440191387559922,\"y\":-2.440191387559785},\"grayCenter\":{\"x\":-0.7038123167155305,\"y\":-0.26392961876832494}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":304,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":65}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":34,\"coveredSectors\":[0,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":26,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":7}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:phone-alert",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":7,\"grayPixels\":27,\"whiteCenter\":{\"x\":0.6987577639751602,\"y\":-2.845504800698263},\"grayCenter\":{\"x\":-4.384057971014495,\"y\":2.792486988006321}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":230,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":40}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":30,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":8}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:landscape-clean",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-clean",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "pixels:portrait-alert-at-recovery",
+          "passed": true,
+          "evidence": "{\"targetId\":\"fish-shelf\",\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":false,\"whitePixels\":22,\"grayPixels\":1,\"whiteCenter\":{\"x\":20.147136100893338,\"y\":-8.753880266075386},\"grayCenter\":{\"x\":16.38728323699422,\"y\":-10.243902439024396}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":402,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}}],\"reason\":\"unique-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "unknown-station-does-not-substitute-nearby-shelf",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":34,\"coveredSectors\":[0,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":26,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":7}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "ambiguous-visible-target-remains-null",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":48,\"coveredSectors\":[5]},\"triangle\":{\"visible\":false,\"pixels\":9}}},{\"stationId\":\"duplicate-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":true,\"bird\":{\"pairedVisible\":true,\"whitePixels\":31,\"grayPixels\":44,\"whiteCenter\":{\"x\":0.8306917769904808,\"y\":-1.93548387096774},\"grayCenter\":{\"x\":-3.653441933788761,\"y\":1.5698447893569893}},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":378,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":true,\"pixels\":96}}}],\"reason\":\"ambiguous-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "unpaired-alert:annulus-only",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":true,\"pixels\":363,\"coveredSectors\":[0,1,2,3,4,5,6,7,8,9,10,11,13,14,15]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "unpaired-alert:triangle-only",
+          "passed": true,
+          "evidence": "{\"targetId\":null,\"candidates\":[{\"stationId\":\"fish-shelf\",\"position\":{\"x\":270,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":7,\"coveredSectors\":[5]},\"triangle\":{\"visible\":true,\"pixels\":96}}},{\"stationId\":\"kelp-shelf\",\"position\":{\"x\":410,\"y\":420},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}},{\"stationId\":\"smoked-shelf\",\"position\":{\"x\":420,\"y\":520},\"matched\":false,\"bird\":{\"pairedVisible\":false,\"whitePixels\":0,\"grayPixels\":0,\"whiteCenter\":null,\"grayCenter\":null},\"alert\":{\"annulus\":{\"visible\":false,\"pixels\":0,\"coveredSectors\":[]},\"triangle\":{\"visible\":false,\"pixels\":0}}}],\"reason\":\"no-visible-target\"}",
+          "error": null
+        },
+        {
+          "name": "overlay-between-geometry-and-screenshot-stops-movement",
+          "passed": true,
+          "evidence": "{\"stoppedByOverlay\":true,\"keyPresses\":0,\"screenshots\":1,\"geometryReads\":2}",
+          "error": null
+        },
+        {
+          "name": "player-does-not-return-coordinates-from-settlement-crop",
+          "passed": true,
+          "evidence": "{\"stoppedByOverlay\":true,\"observation\":{\"settlementVisible\":true,\"selectionVisible\":false},\"geometry\":{\"rect\":{\"x\":98,\"y\":164,\"width\":164,\"height\":292},\"landscape\":false},\"observationMs\":0}",
+          "error": null
+        },
+        {
+          "name": "layout-change-without-overlay-recaptures-before-locating",
+          "passed": true,
+          "evidence": "{\"screenshots\":2,\"geometryReads\":3}",
+          "error": null
+        }
+      ]
+    }
+  ],
+  "passed": true,
+  "limitations": [
+    "Offline detector and browser-boundary race tests are QA implementation evidence only.",
+    "Target localization does not constitute a perceptual pass for an obscured seagull.",
+    "Fresh natural runtime verification remains required against attempt-8 build."
+  ]
+}

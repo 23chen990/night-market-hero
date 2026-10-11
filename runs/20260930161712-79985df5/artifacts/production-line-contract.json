@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "line": "idle-management",
+  "primaryProfile": "STRATEGIC_SYSTEM",
+  "interactionKernel": [
+    "produce action",
+    "delivery resolution",
+    "upgrade choice"
+  ],
+  "contentTopology": [
+    "station chain",
+    "customer/order cards",
+    "milestone unlocks"
+  ],
+  "progressionShell": [
+    "resource sink",
+    "meaningful trade-off",
+    "visible next goal"
+  ],
+  "status": "stable",
+  "representativeFlow": [
+    "reset",
+    "produce",
+    "deliver",
+    "choose one upgrade trade-off",
+    "refresh and recover progress"
+  ],
+  "acceptanceDimensions": [
+    "goal clarity",
+    "resource trade-off",
+    "reward readability",
+    "growth pacing",
+    "refresh recovery"
+  ],
+  "requiredEvidence": [
+    "loop trace",
+    "resource ledger",
+    "refresh recovery trace"
+  ],
+  "template": "idle-management-v1",
+  "prototypeTemplate": "idle-loop-graybox-v1",
+  "experienceMetrics": [
+    "goal-comprehension-s",
+    "decision-interval-s",
+    "reward-readability"
+  ],
+  "automaticQaStrategy": [
+    "seeded-order-loop",
+    "resource-ledger-check",
+    "refresh-recovery"
+  ],
+  "contentGenerator": "seeded-order-and-upgrade-generator",
+  "uiTemplate": "management-dashboard-v1",
+  "performanceBudget": {
+    "maxFrameMs": 16.7,
+    "maxMemoryMb": 140,
+    "maxBundleMb": 7
+  },
+  "qaChecklist": [
+    "next goal is visible",
+    "trade-off is explicit",
+    "reward is attributed",
+    "refresh recovers state"
+  ],
+  "lockedAt": "2026-09-30T17:23:10.020Z"
+}

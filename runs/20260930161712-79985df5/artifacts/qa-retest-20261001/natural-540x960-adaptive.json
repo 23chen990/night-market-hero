@@ -1,0 +1,1580 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-qa-retest",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "runtime": "web-lite",
+  "viewport": {
+    "width": 540,
+    "height": 960,
+    "label": "540x960"
+  },
+  "startedAt": "2026-10-01T12:01:49.105Z",
+  "actions": [
+    "fresh context",
+    "adaptive keyboard movement only",
+    "normal stationary interaction",
+    "normal pointer click on settlement continue"
+  ],
+  "forbiddenOperations": [
+    "no __GAME_TEST__ setters",
+    "no state injection",
+    "no teleport",
+    "no debug event dispatch"
+  ],
+  "trace": [
+    {
+      "name": "boot",
+      "at": "2026-10-01T12:01:30.553Z",
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "cashCollectionArmed": false,
+      "player": {
+        "x": 270,
+        "y": 760
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": []
+    },
+    {
+      "name": "harvest-near-net",
+      "at": "2026-10-01T12:01:35.976Z",
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "cashCollectionArmed": false,
+      "player": {
+        "x": 143,
+        "y": 194
+      },
+      "inventory": {
+        "fresh-fish": 4,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 2,
+        "fishStock": {},
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "waiting-shelf",
+          "x": 270,
+          "y": 420,
+          "queuePosition": null
+        }
+      ]
+    },
+    {
+      "name": "deposit-near-shelf",
+      "at": "2026-10-01T12:01:38.875Z",
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "cashCollectionArmed": false,
+      "player": {
+        "x": 261,
+        "y": 397
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {
+          "fresh-fish": 2
+        },
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "to-checkout",
+          "x": 270,
+          "y": 572,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 2,
+          "phase": "to-checkout",
+          "x": 270,
+          "y": 437,
+          "queuePosition": {
+            "x": 270,
+            "y": 720
+          }
+        }
+      ]
+    },
+    {
+      "name": "near-checkout",
+      "at": "2026-10-01T12:01:40.494Z",
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 0,
+      "cashCollectionArmed": false,
+      "player": {
+        "x": 261,
+        "y": 605
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {
+          "fresh-fish": 2
+        },
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 1,
+          "phase": "queued",
+          "x": 270,
+          "y": 680,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 2,
+          "phase": "queued",
+          "x": 270,
+          "y": 720,
+          "queuePosition": {
+            "x": 270,
+            "y": 720
+          }
+        }
+      ]
+    },
+    {
+      "name": "collect-1",
+      "at": "2026-10-01T12:01:43.407Z",
+      "stage": "operating",
+      "currency": 2,
+      "cashPile": 0,
+      "cashCollectionArmed": false,
+      "player": {
+        "x": 300,
+        "y": 627
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {
+          "fresh-fish": 1
+        },
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 2,
+          "phase": "queued",
+          "x": 270,
+          "y": 720,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 3,
+          "phase": "to-checkout",
+          "x": 270,
+          "y": 622,
+          "queuePosition": {
+            "x": 270,
+            "y": 720
+          }
+        }
+      ]
+    },
+    {
+      "name": "collect-2",
+      "at": "2026-10-01T12:01:45.893Z",
+      "stage": "operating",
+      "currency": 4,
+      "cashPile": 0,
+      "cashCollectionArmed": false,
+      "player": {
+        "x": 295,
+        "y": 627
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {
+          "fresh-fish": 0
+        },
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 3,
+          "phase": "queued",
+          "x": 270,
+          "y": 680,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 4,
+          "phase": "to-checkout",
+          "x": 270,
+          "y": 434,
+          "queuePosition": {
+            "x": 270,
+            "y": 720
+          }
+        }
+      ]
+    },
+    {
+      "name": "before-construction",
+      "at": "2026-10-01T12:01:46.181Z",
+      "stage": "operating",
+      "currency": 4,
+      "cashPile": 0,
+      "cashCollectionArmed": false,
+      "player": {
+        "x": 295,
+        "y": 627
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {
+          "fresh-fish": 0
+        },
+        "build": 0
+      },
+      "customers": [
+        {
+          "id": 3,
+          "phase": "queued",
+          "x": 270,
+          "y": 680,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 4,
+          "phase": "to-checkout",
+          "x": 270,
+          "y": 484,
+          "queuePosition": {
+            "x": 270,
+            "y": 720
+          }
+        }
+      ]
+    },
+    {
+      "name": "construction-settlement",
+      "at": "2026-10-01T12:01:48.120Z",
+      "stage": "settlement",
+      "currency": 0,
+      "cashPile": 2,
+      "cashCollectionArmed": true,
+      "player": {
+        "x": 385,
+        "y": 690
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {
+          "fresh-fish": 0
+        },
+        "build": 4
+      },
+      "customers": [
+        {
+          "id": 3,
+          "phase": "leaving",
+          "x": 462,
+          "y": 551,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 4,
+          "phase": "queued",
+          "x": 270,
+          "y": 680,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        }
+      ]
+    },
+    {
+      "name": "continue-clicked",
+      "at": "2026-10-01T12:01:48.874Z",
+      "stage": "operating",
+      "currency": 0,
+      "cashPile": 2,
+      "cashCollectionArmed": true,
+      "player": {
+        "x": 385,
+        "y": 690
+      },
+      "inventory": {
+        "fresh-fish": 0,
+        "kelp": 0
+      },
+      "stations": {
+        "netReady": 6,
+        "fishStock": {
+          "fresh-fish": 0
+        },
+        "build": 4
+      },
+      "customers": [
+        {
+          "id": 3,
+          "phase": "leaving",
+          "x": 506,
+          "y": 521,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 4,
+          "phase": "queued",
+          "x": 270,
+          "y": 680,
+          "queuePosition": {
+            "x": 270,
+            "y": 680
+          }
+        },
+        {
+          "id": 5,
+          "phase": "to-shelf",
+          "x": 32,
+          "y": 520,
+          "queuePosition": null
+        }
+      ]
+    }
+  ],
+  "waits": [
+    {
+      "i": 0,
+      "elapsed": 449,
+      "state": {
+        "version": 1,
+        "elapsedMs": 10835.966666666667,
+        "randomSeed": 2165703038,
+        "currency": 0,
+        "cashPile": 2,
+        "cashCollectionArmed": false,
+        "level": 1,
+        "stage": "operating",
+        "player": {
+          "x": 261.4865476037552,
+          "y": 604.6937476037548,
+          "inventory": {
+            "fresh-fish": 0,
+            "kelp": 0
+          },
+          "capacity": 4,
+          "speed": 220,
+          "interactionStationId": "checkout",
+          "interactionProgressMs": 713.3000000000001
+        },
+        "stations": {
+          "net": {
+            "ready": 6,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "fish-shelf": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {
+              "fresh-fish": 2
+            },
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "checkout": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "kelp-pool": {
+            "ready": 5,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "kelp-shelf": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "kelp-build": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "capacity-upgrade": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          }
+        },
+        "unlockedStationIds": [
+          "net",
+          "fish-shelf",
+          "checkout",
+          "kelp-build",
+          "capacity-upgrade"
+        ],
+        "checkout": {
+          "queue": 1,
+          "serviceProgressMs": 149.96000000000018,
+          "speedBonusMs": 0
+        },
+        "customers": [
+          {
+            "id": 1,
+            "phase": "leaving",
+            "productId": "fresh-fish",
+            "targetShelfId": "fish-shelf",
+            "patienceRemainingMs": 5264.990000000002,
+            "basketValue": 2,
+            "queuePosition": {
+              "x": 270,
+              "y": 680
+            },
+            "queueTicket": 1,
+            "x": 292.0173663522319,
+            "y": 665.1984091749702
+          },
+          {
+            "id": 2,
+            "phase": "queued",
+            "productId": "fresh-fish",
+            "targetShelfId": "fish-shelf",
+            "patienceRemainingMs": 8000,
+            "basketValue": 2,
+            "queuePosition": {
+              "x": 270,
+              "y": 680
+            },
+            "queueTicket": 2,
+            "x": 270,
+            "y": 720
+          },
+          {
+            "id": 3,
+            "phase": "to-shelf",
+            "productId": "fresh-fish",
+            "targetShelfId": "fish-shelf",
+            "patienceRemainingMs": 8000,
+            "basketValue": 0,
+            "queuePosition": null,
+            "queueTicket": null,
+            "x": 82.87929498417594,
+            "y": 498.6221449646318
+          }
+        ],
+        "nextCustomerId": 4,
+        "nextQueueTicket": 3,
+        "feedbackEvents": 20,
+        "feedback": [
+          {
+            "id": 1,
+            "kind": "customer-arrival",
+            "atMs": 3511.016666666666,
+            "source": {
+              "x": 32,
+              "y": 520
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 2,
+            "kind": "pickup",
+            "atMs": 4851.036666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 7.4900000000000375
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 3,
+            "kind": "pickup",
+            "atMs": 5001.046666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 17.500000000000085
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 4,
+            "kind": "pickup",
+            "atMs": 5141.106666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 17.560000000000116
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 5,
+            "kind": "pickup",
+            "atMs": 5282.716666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 19.170000000000073
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 6,
+            "kind": "production-ready",
+            "atMs": 5761.026666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 7,
+            "kind": "production-ready",
+            "atMs": 6661.706666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 8,
+            "kind": "customer-arrival",
+            "atMs": 7026.916666666667,
+            "source": {
+              "x": 32,
+              "y": 520
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 9,
+            "kind": "production-ready",
+            "atMs": 7553.616666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 10,
+            "kind": "deposit",
+            "atMs": 7718.536666666667,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 4.899999999999906
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 11,
+            "kind": "customer-pickup",
+            "atMs": 7718.536666666667,
+            "source": {
+              "x": 270,
+              "y": 420
+            },
+            "target": {
+              "id": 1,
+              "phase": "to-checkout",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 5264.990000000002,
+              "basketValue": 2,
+              "queuePosition": null,
+              "queueTicket": 1,
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 12,
+            "kind": "deposit",
+            "atMs": 7847.6466666666665,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 14.009999999999934
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "kind": "deposit",
+            "atMs": 7970.996666666667,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 17.35999999999993
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "kind": "deposit",
+            "atMs": 8090.266666666666,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 16.629999999999995
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 15,
+            "kind": "production-ready",
+            "atMs": 8451.90666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 16,
+            "kind": "customer-pickup",
+            "atMs": 8471.126666666669,
+            "source": {
+              "x": 270,
+              "y": 420
+            },
+            "target": {
+              "id": 2,
+              "phase": "to-checkout",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 8000,
+              "basketValue": 2,
+              "queuePosition": null,
+              "queueTicket": 2,
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 17,
+            "kind": "customer-queued",
+            "atMs": 9174.396666666667,
+            "source": {
+              "id": 1,
+              "phase": "queued",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 5264.990000000002,
+              "basketValue": 2,
+              "queuePosition": {
+                "x": 270,
+                "y": 680
+              },
+              "queueTicket": 1,
+              "x": 270,
+              "y": 680
+            },
+            "target": {
+              "x": 270,
+              "y": 680
+            }
+          },
+          {
+            "id": 18,
+            "kind": "customer-queued",
+            "atMs": 10142.72666666667,
+            "source": {
+              "id": 2,
+              "phase": "queued",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 8000,
+              "basketValue": 2,
+              "queuePosition": {
+                "x": 270,
+                "y": 720
+              },
+              "queueTicket": 2,
+              "x": 270,
+              "y": 720
+            },
+            "target": {
+              "x": 270,
+              "y": 720
+            }
+          },
+          {
+            "id": 19,
+            "kind": "customer-arrival",
+            "atMs": 10529.366666666669,
+            "source": {
+              "x": 32,
+              "y": 520
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 20,
+            "kind": "checkout-pack",
+            "atMs": 10688.576666666668,
+            "source": {
+              "id": 1,
+              "phase": "leaving",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 5264.990000000002,
+              "basketValue": 2,
+              "queuePosition": {
+                "x": 270,
+                "y": 680
+              },
+              "queueTicket": 1,
+              "x": 270,
+              "y": 680
+            },
+            "target": {
+              "x": 270,
+              "y": 640
+            },
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "i": 1,
+      "elapsed": 229,
+      "state": {
+        "version": 1,
+        "elapsedMs": 13546.966666666665,
+        "randomSeed": 2165703038,
+        "currency": 2,
+        "cashPile": 2,
+        "cashCollectionArmed": false,
+        "level": 1,
+        "stage": "operating",
+        "player": {
+          "x": 300.0925541625455,
+          "y": 626.6017541625451,
+          "inventory": {
+            "fresh-fish": 0,
+            "kelp": 0
+          },
+          "capacity": 4,
+          "speed": 220,
+          "interactionStationId": null,
+          "interactionProgressMs": 0
+        },
+        "stations": {
+          "net": {
+            "ready": 6,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "fish-shelf": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {
+              "fresh-fish": 1
+            },
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "checkout": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "kelp-pool": {
+            "ready": 5,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "kelp-shelf": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "kelp-build": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          },
+          "capacity-upgrade": {
+            "ready": 0,
+            "cycleProgressMs": 0,
+            "stock": {},
+            "contributed": 0,
+            "completed": false,
+            "purchases": 0
+          }
+        },
+        "unlockedStationIds": [
+          "net",
+          "fish-shelf",
+          "checkout",
+          "kelp-build",
+          "capacity-upgrade"
+        ],
+        "checkout": {
+          "queue": 0,
+          "serviceProgressMs": 0,
+          "speedBonusMs": 0
+        },
+        "customers": [
+          {
+            "id": 1,
+            "phase": "left",
+            "productId": "fresh-fish",
+            "targetShelfId": "fish-shelf",
+            "patienceRemainingMs": 5264.990000000002,
+            "basketValue": 2,
+            "queuePosition": {
+              "x": 270,
+              "y": 680
+            },
+            "queueTicket": 1,
+            "x": 508,
+            "y": 520
+          },
+          {
+            "id": 2,
+            "phase": "leaving",
+            "productId": "fresh-fish",
+            "targetShelfId": "fish-shelf",
+            "patienceRemainingMs": 8000,
+            "basketValue": 2,
+            "queuePosition": {
+              "x": 270,
+              "y": 680
+            },
+            "queueTicket": 2,
+            "x": 272.86908053466857,
+            "y": 717.58900795406
+          },
+          {
+            "id": 3,
+            "phase": "to-checkout",
+            "productId": "fresh-fish",
+            "targetShelfId": "fish-shelf",
+            "patienceRemainingMs": 8000,
+            "basketValue": 2,
+            "queuePosition": {
+              "x": 270,
+              "y": 680
+            },
+            "queueTicket": 3,
+            "x": 270,
+            "y": 696.1614000000009
+          }
+        ],
+        "nextCustomerId": 4,
+        "nextQueueTicket": 4,
+        "feedbackEvents": 23,
+        "feedback": [
+          {
+            "id": 1,
+            "kind": "customer-arrival",
+            "atMs": 3511.016666666666,
+            "source": {
+              "x": 32,
+              "y": 520
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 2,
+            "kind": "pickup",
+            "atMs": 4851.036666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 7.4900000000000375
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 3,
+            "kind": "pickup",
+            "atMs": 5001.046666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 17.500000000000085
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 4,
+            "kind": "pickup",
+            "atMs": 5141.106666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 17.560000000000116
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 5,
+            "kind": "pickup",
+            "atMs": 5282.716666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 143.4775215193837,
+              "y": 194.41252151938346,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "net",
+              "interactionProgressMs": 19.170000000000073
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 6,
+            "kind": "production-ready",
+            "atMs": 5761.026666666668,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 7,
+            "kind": "production-ready",
+            "atMs": 6661.706666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 8,
+            "kind": "customer-arrival",
+            "atMs": 7026.916666666667,
+            "source": {
+              "x": 32,
+              "y": 520
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 9,
+            "kind": "production-ready",
+            "atMs": 7553.616666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 10,
+            "kind": "deposit",
+            "atMs": 7718.536666666667,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 4.899999999999906
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 11,
+            "kind": "customer-pickup",
+            "atMs": 7718.536666666667,
+            "source": {
+              "x": 270,
+              "y": 420
+            },
+            "target": {
+              "id": 1,
+              "phase": "to-checkout",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 5264.990000000002,
+              "basketValue": 2,
+              "queuePosition": null,
+              "queueTicket": 1,
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 12,
+            "kind": "deposit",
+            "atMs": 7847.6466666666665,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 14.009999999999934
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "kind": "deposit",
+            "atMs": 7970.996666666667,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 17.35999999999993
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "kind": "deposit",
+            "atMs": 8090.266666666666,
+            "source": {
+              "x": 261.4865476037552,
+              "y": 396.9653476037547,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "fish-shelf",
+              "interactionProgressMs": 16.629999999999995
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 15,
+            "kind": "production-ready",
+            "atMs": 8451.90666666667,
+            "source": {
+              "x": 120,
+              "y": 180
+            },
+            "target": {
+              "x": 120,
+              "y": 180
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 16,
+            "kind": "customer-pickup",
+            "atMs": 8471.126666666669,
+            "source": {
+              "x": 270,
+              "y": 420
+            },
+            "target": {
+              "id": 2,
+              "phase": "to-checkout",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 8000,
+              "basketValue": 2,
+              "queuePosition": null,
+              "queueTicket": 2,
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 17,
+            "kind": "customer-queued",
+            "atMs": 9174.396666666667,
+            "source": {
+              "id": 1,
+              "phase": "queued",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 5264.990000000002,
+              "basketValue": 2,
+              "queuePosition": {
+                "x": 270,
+                "y": 680
+              },
+              "queueTicket": 1,
+              "x": 270,
+              "y": 680
+            },
+            "target": {
+              "x": 270,
+              "y": 680
+            }
+          },
+          {
+            "id": 18,
+            "kind": "customer-queued",
+            "atMs": 10142.72666666667,
+            "source": {
+              "id": 2,
+              "phase": "queued",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 8000,
+              "basketValue": 2,
+              "queuePosition": {
+                "x": 270,
+                "y": 720
+              },
+              "queueTicket": 2,
+              "x": 270,
+              "y": 720
+            },
+            "target": {
+              "x": 270,
+              "y": 720
+            }
+          },
+          {
+            "id": 19,
+            "kind": "customer-arrival",
+            "atMs": 10529.366666666669,
+            "source": {
+              "x": 32,
+              "y": 520
+            },
+            "target": {
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish"
+          },
+          {
+            "id": 20,
+            "kind": "checkout-pack",
+            "atMs": 10688.576666666668,
+            "source": {
+              "id": 1,
+              "phase": "leaving",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 5264.990000000002,
+              "basketValue": 2,
+              "queuePosition": {
+                "x": 270,
+                "y": 680
+              },
+              "queueTicket": 1,
+              "x": 270,
+              "y": 680
+            },
+            "target": {
+              "x": 270,
+              "y": 640
+            },
+            "amount": 2
+          },
+          {
+            "id": 21,
+            "kind": "customer-pickup",
+            "atMs": 11971.096666666668,
+            "source": {
+              "x": 270,
+              "y": 420
+            },
+            "target": {
+              "id": 3,
+              "phase": "to-checkout",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 8000,
+              "basketValue": 2,
+              "queuePosition": null,
+              "queueTicket": 3,
+              "x": 270,
+              "y": 420
+            },
+            "productId": "fresh-fish",
+            "amount": 1
+          },
+          {
+            "id": 22,
+            "kind": "cash-collect",
+            "atMs": 12840.926666666666,
+            "source": {
+              "x": 270,
+              "y": 640
+            },
+            "target": {
+              "x": 330.1907541625455,
+              "y": 626.6017541625451,
+              "inventory": {
+                "fresh-fish": 0,
+                "kelp": 0
+              },
+              "capacity": 4,
+              "speed": 220,
+              "interactionStationId": "checkout",
+              "interactionProgressMs": 0
+            },
+            "amount": 2
+          },
+          {
+            "id": 23,
+            "kind": "checkout-pack",
+            "atMs": 13526.146666666666,
+            "source": {
+              "id": 2,
+              "phase": "leaving",
+              "productId": "fresh-fish",
+              "targetShelfId": "fish-shelf",
+              "patienceRemainingMs": 8000,
+              "basketValue": 2,
+              "queuePosition": {
+                "x": 270,
+                "y": 680
+              },
+              "queueTicket": 2,
+              "x": 270,
+              "y": 720
+            },
+            "target": {
+              "x": 270,
+              "y": 640
+            },
+            "amount": 2
+          }
+        ]
+      }
+    }
+  ],
+  "screenshots": [],
+  "completion": "settlement",
+  "replayObserved": true,
+  "settlementVisible": true,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "blockers": []
+}

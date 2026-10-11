@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "passed": false,
+  "cases": [
+    {
+      "id": "current8-build-integrity",
+      "status": "PASS",
+      "evidence": "Target 海滩渔货铺; exact workspace /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game. Attempt 8 build manifest SHA-256 d7468c176121e2578443fcc61ddb6d24150a1ad3cd09cf1379293458a3d5f407. Current JS dist/assets/index-DovFKkM7.js SHA-256 96719ccf27e6b5e688383b42852d1962252b00c96ea7e0a1938d6c7353859472. Every manifest source/dist file independently rehashed with no mismatches. This is identity evidence, not gameplay acceptance.",
+      "screenshots": []
+    },
+    {
+      "id": "fixture-coral-market-cause",
+      "status": "PASS",
+      "evidence": "IMPLEMENTATION-ONLY FIXTURE PIXELS; cannot close a natural/perceptual gate. Actual view_image: terminal panel names 交付两份烟熏鱼订单, shows success check and filled 目标达成 2/2; one continue-local and one restart control visible. Natural reachability and full mobile matrix remain pending.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/runtime-full-green/coral-cove-market.png",
+          "sha256": "3d804fc09224e680f5df2772ccdde7e2d0073ff07bf3d62097dfe62f2d3b9462"
+        }
+      ]
+    },
+    {
+      "id": "fixture-moon-market-cause",
+      "status": "PASS",
+      "evidence": "IMPLEMENTATION-ONLY FIXTURE PIXELS; cannot close a natural/perceptual gate. Actual view_image: terminal panel names 补齐月潮双货架, shows success check and filled 目标达成 3/3; one continue-local and one restart control visible. Natural reachability and full mobile matrix remain pending.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/runtime-full-green/moon-tide-market.png",
+          "sha256": "6484a634ff4ae27f4c262fdbd5e1caf488afc99cbc7b4559efe6867cecd8e517"
+        }
+      ]
+    },
+    {
+      "id": "fixture-gull-at-loss-portrait",
+      "status": "PASS",
+      "evidence": "IMPLEMENTATION-ONLY FIXTURE PIXELS; cannot close a natural/perceptual gate. Actual view_image at 540x960: white wings and grey central gull body remain visible over the fresh-fish shelf while local loss -1, orange warning ring and warning triangle identify the exact active-loss branch.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/runtime-full-green/540x960-shelf-branch.png",
+          "sha256": "cb370cce3d7d87f8266bc1ee310990212096be9caf383b770af54ec0c14e84fa"
+        }
+      ]
+    },
+    {
+      "id": "fixture-gull-at-loss-landscape",
+      "status": "PASS",
+      "evidence": "IMPLEMENTATION-ONLY FIXTURE PIXELS; cannot close a natural/perceptual gate. Actual view_image at 844x390: vertically oriented gull body/wings remain visible over the rotated fresh-fish shelf with local loss label and orange ring/triangle.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/runtime-full-green/844x390-shelf-branch.png",
+          "sha256": "6d2bc73e9d3c669394c8f1656b5c37eb37c6aa5bdfd4fa814d1a598c37289c9b"
+        }
+      ]
+    },
+    {
+      "id": "fixture-gull-relief-landscape",
+      "status": "PASS",
+      "evidence": "IMPLEMENTATION-ONLY FIXTURE PIXELS; cannot close a natural/perceptual gate. Actual view_image at 844x390: recovered fish shelf has green outer recovery ring and visible green check badge; orange active-threat ring and gull are absent. Player overlaps shelf but the recovery badge remains distinct. Requires actual natural same-target loss/approach/relief/refill sequence.",
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-8/runtime-full-green/recovery-ring.png",
+          "sha256": "31afe41f21813ba7a0e954373a70191b6fd209293c56d30c98fe539e948db45c"
+        }
+      ]
+    },
+    {
+      "id": "natural-coral-goal-cause-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: Coral normal entry, authored smoked-order completion and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-moon-goal-cause-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: Moon Tide normal entry, three dual-shelf orders and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-settlement-commands-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: One visible continue-local and one restart; actual continue/restart interactions at required terminal branches. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-active-loss-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: One naturally active gull with body/wings clearly visible over target shelf at a visible attributable stock-loss moment. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-same-target-relief-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: Same target loss → normal approach → green recovery ring/check and no active bird/alert → guarded no-loss interval → same-shelf refill and customer recovery. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-avatar-label-crossing-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: Post-expansion player coming from processor output across upgrade/employee labels into funded runner-hire, with head/body visible. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-runner-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: Visible role actor on outbound and return legs, meaningful carry/pickup/deposit cues and matching shelf inventory change; static hire icon is not an actor. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-cashier-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: Funded cashier active-service cue with player away, specific queue-head packing, delayed new pile, unchanged wallet while away and normal collection. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-runtime-replay-reload-restart-360x800",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 360x800; exact branch: Default startup/core-loop/own terminal/continued newly arriving shopper transaction; reload retains world/roles/progress and resumes activity; restart restores initial world and a fresh transaction succeeds. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-coral-goal-cause-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: Coral normal entry, authored smoked-order completion and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-moon-goal-cause-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: Moon Tide normal entry, three dual-shelf orders and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-settlement-commands-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: One visible continue-local and one restart; actual continue/restart interactions at required terminal branches. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-active-loss-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: One naturally active gull with body/wings clearly visible over target shelf at a visible attributable stock-loss moment. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-same-target-relief-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: Same target loss → normal approach → green recovery ring/check and no active bird/alert → guarded no-loss interval → same-shelf refill and customer recovery. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-avatar-label-crossing-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: Post-expansion player coming from processor output across upgrade/employee labels into funded runner-hire, with head/body visible. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-runner-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: Visible role actor on outbound and return legs, meaningful carry/pickup/deposit cues and matching shelf inventory change; static hire icon is not an actor. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-cashier-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: Funded cashier active-service cue with player away, specific queue-head packing, delayed new pile, unchanged wallet while away and normal collection. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-runtime-replay-reload-restart-390x844",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 390x844; exact branch: Default startup/core-loop/own terminal/continued newly arriving shopper transaction; reload retains world/roles/progress and resumes activity; restart restores initial world and a fresh transaction succeeds. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-coral-goal-cause-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: Coral normal entry, authored smoked-order completion and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-moon-goal-cause-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: Moon Tide normal entry, three dual-shelf orders and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-settlement-commands-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: One visible continue-local and one restart; actual continue/restart interactions at required terminal branches. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-active-loss-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: One naturally active gull with body/wings clearly visible over target shelf at a visible attributable stock-loss moment. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-same-target-relief-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: Same target loss → normal approach → green recovery ring/check and no active bird/alert → guarded no-loss interval → same-shelf refill and customer recovery. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-avatar-label-crossing-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: Post-expansion player coming from processor output across upgrade/employee labels into funded runner-hire, with head/body visible. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-runner-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: Visible role actor on outbound and return legs, meaningful carry/pickup/deposit cues and matching shelf inventory change; static hire icon is not an actor. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-cashier-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: Funded cashier active-service cue with player away, specific queue-head packing, delayed new pile, unchanged wallet while away and normal collection. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-runtime-replay-reload-restart-430x932",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 430x932; exact branch: Default startup/core-loop/own terminal/continued newly arriving shopper transaction; reload retains world/roles/progress and resumes activity; restart restores initial world and a fresh transaction succeeds. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-coral-goal-cause-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: Coral normal entry, authored smoked-order completion and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-moon-goal-cause-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: Moon Tide normal entry, three dual-shelf orders and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-settlement-commands-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: One visible continue-local and one restart; actual continue/restart interactions at required terminal branches. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-active-loss-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: One naturally active gull with body/wings clearly visible over target shelf at a visible attributable stock-loss moment. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-same-target-relief-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: Same target loss → normal approach → green recovery ring/check and no active bird/alert → guarded no-loss interval → same-shelf refill and customer recovery. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-avatar-label-crossing-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: Post-expansion player coming from processor output across upgrade/employee labels into funded runner-hire, with head/body visible. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-runner-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: Visible role actor on outbound and return legs, meaningful carry/pickup/deposit cues and matching shelf inventory change; static hire icon is not an actor. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-cashier-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: Funded cashier active-service cue with player away, specific queue-head packing, delayed new pile, unchanged wallet while away and normal collection. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-runtime-replay-reload-restart-540x960",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 540x960; exact branch: Default startup/core-loop/own terminal/continued newly arriving shopper transaction; reload retains world/roles/progress and resumes activity; restart restores initial world and a fresh transaction succeeds. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-coral-goal-cause-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: Coral normal entry, authored smoked-order completion and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-moon-goal-cause-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: Moon Tide normal entry, three dual-shelf orders and own goal-correct settlement. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-settlement-commands-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: One visible continue-local and one restart; actual continue/restart interactions at required terminal branches. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-active-loss-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: One naturally active gull with body/wings clearly visible over target shelf at a visible attributable stock-loss moment. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-gull-same-target-relief-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: Same target loss → normal approach → green recovery ring/check and no active bird/alert → guarded no-loss interval → same-shelf refill and customer recovery. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-avatar-label-crossing-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: Post-expansion player coming from processor output across upgrade/employee labels into funded runner-hire, with head/body visible. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-runner-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: Visible role actor on outbound and return legs, meaningful carry/pickup/deposit cues and matching shelf inventory change; static hire icon is not an actor. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-funded-cashier-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: Funded cashier active-service cue with player away, specific queue-head packing, delayed new pile, unchanged wallet while away and normal collection. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    },
+    {
+      "id": "natural-runtime-replay-reload-restart-844x390",
+      "status": "BLOCKED",
+      "evidence": "CURRENT8 NATURAL EVIDENCE PENDING. Required viewport 844x390; exact branch: Default startup/core-loop/own terminal/continued newly arriving shopper transaction; reload retains world/roles/progress and resumes activity; restart restores initial world and a fresh transaction succeeds. No current attempt-8 natural screenshots are available yet. Previous-attempt pixels and injected fixture branches cannot satisfy this case.",
+      "screenshots": []
+    }
+  ],
+  "blockers": [
+    "natural-coral-goal-cause-360x800",
+    "natural-moon-goal-cause-360x800",
+    "natural-settlement-commands-360x800",
+    "natural-gull-active-loss-360x800",
+    "natural-gull-same-target-relief-360x800",
+    "natural-avatar-label-crossing-360x800",
+    "natural-funded-runner-360x800",
+    "natural-funded-cashier-360x800",
+    "natural-runtime-replay-reload-restart-360x800",
+    "natural-coral-goal-cause-390x844",
+    "natural-moon-goal-cause-390x844",
+    "natural-settlement-commands-390x844",
+    "natural-gull-active-loss-390x844",
+    "natural-gull-same-target-relief-390x844",
+    "natural-avatar-label-crossing-390x844",
+    "natural-funded-runner-390x844",
+    "natural-funded-cashier-390x844",
+    "natural-runtime-replay-reload-restart-390x844",
+    "natural-coral-goal-cause-430x932",
+    "natural-moon-goal-cause-430x932",
+    "natural-settlement-commands-430x932",
+    "natural-gull-active-loss-430x932",
+    "natural-gull-same-target-relief-430x932",
+    "natural-avatar-label-crossing-430x932",
+    "natural-funded-runner-430x932",
+    "natural-funded-cashier-430x932",
+    "natural-runtime-replay-reload-restart-430x932",
+    "natural-coral-goal-cause-540x960",
+    "natural-moon-goal-cause-540x960",
+    "natural-settlement-commands-540x960",
+    "natural-gull-active-loss-540x960",
+    "natural-gull-same-target-relief-540x960",
+    "natural-avatar-label-crossing-540x960",
+    "natural-funded-runner-540x960",
+    "natural-funded-cashier-540x960",
+    "natural-runtime-replay-reload-restart-540x960",
+    "natural-coral-goal-cause-844x390",
+    "natural-moon-goal-cause-844x390",
+    "natural-settlement-commands-844x390",
+    "natural-gull-active-loss-844x390",
+    "natural-gull-same-target-relief-844x390",
+    "natural-avatar-label-crossing-844x390",
+    "natural-funded-runner-844x390",
+    "natural-funded-cashier-844x390",
+    "natural-runtime-replay-reload-restart-844x390"
+  ]
+}

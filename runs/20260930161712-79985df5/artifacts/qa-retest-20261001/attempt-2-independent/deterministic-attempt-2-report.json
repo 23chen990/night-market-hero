@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "fresh reset",
+      "passed": true,
+      "evidence": "resetGame -> stage=operating, currency=0, cashPile=0, player=(270,760)"
+    },
+    {
+      "name": "queue head enters packing",
+      "passed": true,
+      "evidence": "completeOrder -> customer phases=packing; fixture-only deterministic evidence"
+    },
+    {
+      "name": "packing deposits counter cash",
+      "passed": true,
+      "evidence": "advanceTime(400) -> cashPile=2, phases=leaving,to-shelf"
+    },
+    {
+      "name": "cash collection requires leave and return",
+      "passed": true,
+      "evidence": "leave/return -> currency=2, cashPile=0, latest=cash-collect"
+    },
+    {
+      "name": "construction settles and unlocks successor",
+      "passed": true,
+      "evidence": "construction -> stage=settlement, contributed=4, unlocked=net,fish-shelf,checkout,kelp-build,capacity-upgrade,kelp-pool,kelp-shelf"
+    },
+    {
+      "name": "restart clears round state",
+      "passed": true,
+      "evidence": "restartGame -> stage=operating, currency=0, cashPile=0, feedback=0"
+    },
+    {
+      "name": "responsive small-phone",
+      "passed": true,
+      "evidence": "360x800: bounded=true, noOverflow=true, canvas=true, title=海滩渔货铺"
+    },
+    {
+      "name": "responsive baseline-phone",
+      "passed": true,
+      "evidence": "390x844: bounded=true, noOverflow=true, canvas=true, title=海滩渔货铺"
+    },
+    {
+      "name": "responsive large-phone",
+      "passed": true,
+      "evidence": "430x932: bounded=true, noOverflow=true, canvas=true, title=海滩渔货铺"
+    },
+    {
+      "name": "responsive reference-540x960",
+      "passed": true,
+      "evidence": "540x960: bounded=true, noOverflow=true, canvas=true, title=海滩渔货铺"
+    },
+    {
+      "name": "responsive landscape-phone",
+      "passed": true,
+      "evidence": "844x390: bounded=true, noOverflow=true, canvas=true, title=海滩渔货铺"
+    }
+  ],
+  "issues": [],
+  "screenshots": [],
+  "consoleLog": "{\"errors\":[],\"pageErrors\":[]}",
+  "testedAt": "2026-10-01T15:04:22.082Z",
+  "evidence": [
+    {
+      "schemaVersion": 1,
+      "mode": "STATE_COVERAGE",
+      "actions": [
+        "fresh browser context per viewport",
+        "__GAME_TEST__.resetGame/getState/completeOrder/advanceTime/setPlayerPosition/grantCurrency/restartGame for deterministic state checks",
+        "DOM box measurement for responsive checks"
+      ],
+      "artifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-2/tests.log",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-2/runtime-smoke.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-2/viewport-smoke.json"
+      ],
+      "forbiddenOperations": [
+        "natural-journey claims",
+        "perceptual acceptance"
+      ],
+      "buildHash": "660025067d67194e7e04f669da2fe82ed52dd186917e63fe9f94060a052eacc6",
+      "runtime": "web-lite",
+      "device": {
+        "width": 540,
+        "height": 960,
+        "label": "deterministic-browser"
+      },
+      "runner": "independent-qa-runner"
+    }
+  ]
+}

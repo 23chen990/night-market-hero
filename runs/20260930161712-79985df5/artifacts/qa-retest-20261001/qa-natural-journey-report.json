@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "fresh browser context",
+    "keyboard walking to producer",
+    "stationary pickup",
+    "keyboard walking to shelf",
+    "stationary deposit",
+    "keyboard walking to checkout",
+    "wait for two customers",
+    "leave and re-enter checkout to collect cash twice",
+    "keyboard walking to construction",
+    "stationary construction payment",
+    "pointer click continue"
+  ],
+  "transitions": [
+    {
+      "name": "startup",
+      "changed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-01-boot.png"
+    },
+    {
+      "name": "harvest",
+      "changed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-02-harvest.png"
+    },
+    {
+      "name": "deposit",
+      "changed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-03-deposit.png"
+    },
+    {
+      "name": "queue-and-service",
+      "changed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-04-checkout.png"
+    },
+    {
+      "name": "cash-collection",
+      "changed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-06-collect.png"
+    },
+    {
+      "name": "settlement",
+      "changed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-08-settlement.png"
+    },
+    {
+      "name": "continue-replay",
+      "changed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-09-continue.png"
+    }
+  ],
+  "completion": "settlement",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-01-boot.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-08-settlement.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/540x960/natural2-09-continue.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "trusted-qa-runner",
+  "buildHash": "db6aabd27fc336609b00a34322ae09f4f78195027fe737547b2f65b75467ed13",
+  "runtime": "web-lite",
+  "device": {
+    "width": 540,
+    "height": 960,
+    "label": "540x960"
+  },
+  "seed": "fresh-browser-localStorage-clear",
+  "observedAt": "2026-10-01T12:02:00.000Z"
+}

@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ ❯ src/repair-runtime.test.ts (6 tests | 1 failed | 5 skipped) 5672ms
+     × shows shelf-local recovery pixels after a successful chase 3406ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/repair-runtime.test.ts > validated attempt8 runtime branches > shows shelf-local recovery pixels after a successful chase
+AssertionError: expected 0 to be greater than 400
+ ❯ src/repair-runtime.test.ts:87:29
+     85|       const pixels = await gullPixels(page, { x: 270, y: 420 });
+     86|       if (evidence) await writeFile(resolve(evidence, 'recovery-pixels…
+     87|       expect(pixels.relief).toBeGreaterThan(400);
+       |                             ^
+     88|       await page.evaluate(() => window.__GAME_TEST__.advanceTime(6_000…
+     89|       expect((await gullPixels(page, { x: 270, y: 420 })).relief).toBe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  18:22:22
+   Duration  6.31s (transform 100ms, setup 0ms, import 497ms, tests 5.67s, environment 0ms)
+

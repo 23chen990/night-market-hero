@@ -1,0 +1,470 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "axes": {
+    "objectTypes": [
+      "carried-goods",
+      "smokehouse",
+      "market-goal"
+    ],
+    "lifecycleStateBranches": [
+      "raw-fish-remains-in-cargo",
+      "processor-starved",
+      "processor-making-ready-harvested",
+      "coral-own-settlement",
+      "moon-own-settlement"
+    ],
+    "rendererPaths": [
+      "simulation-nearest-station",
+      "Phaser-canvas-and-visible-DOM"
+    ],
+    "viewports": [
+      {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "360x800-coral-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "coral-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "360x800-moon-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "moon-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "360x800-processor-starved",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-starved",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "360x800-processor-making-ready-harvested",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-making-ready-harvested",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "360x800-raw-fish-remains-in-cargo",
+      "objectType": "carried-goods",
+      "lifecycleStateBranch": "raw-fish-remains-in-cargo",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "360x800",
+        "width": 360,
+        "height": 800
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "390x844-coral-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "coral-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "390x844-moon-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "moon-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "390x844-processor-starved",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-starved",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "390x844-processor-making-ready-harvested",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-making-ready-harvested",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "390x844-raw-fish-remains-in-cargo",
+      "objectType": "carried-goods",
+      "lifecycleStateBranch": "raw-fish-remains-in-cargo",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "430x932-coral-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "coral-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "430x932-moon-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "moon-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "430x932-processor-starved",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-starved",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "430x932-processor-making-ready-harvested",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-making-ready-harvested",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "430x932-raw-fish-remains-in-cargo",
+      "objectType": "carried-goods",
+      "lifecycleStateBranch": "raw-fish-remains-in-cargo",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "430x932",
+        "width": 430,
+        "height": 932
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "540x960-coral-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "coral-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "REPRODUCED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Prior natural report stalled at 0/2; production versus harness cause unresolved.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/natural-540x960-keyboard-root-resume9/natural.json",
+          "sha256": "730cd9a55d281c190cdcf9f6d1bd6764870d570d3261b50ad5333463cbd9c5a4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "540x960-moon-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "moon-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/natural-540x960-keyboard-root-resume9/natural.json",
+          "sha256": "730cd9a55d281c190cdcf9f6d1bd6764870d570d3261b50ad5333463cbd9c5a4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "540x960-processor-starved",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-starved",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/natural-540x960-keyboard-root-resume9/natural.json",
+          "sha256": "730cd9a55d281c190cdcf9f6d1bd6764870d570d3261b50ad5333463cbd9c5a4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "540x960-processor-making-ready-harvested",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-making-ready-harvested",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/natural-540x960-keyboard-root-resume9/natural.json",
+          "sha256": "730cd9a55d281c190cdcf9f6d1bd6764870d570d3261b50ad5333463cbd9c5a4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "540x960-raw-fish-remains-in-cargo",
+      "objectType": "carried-goods",
+      "lifecycleStateBranch": "raw-fish-remains-in-cargo",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "540x960",
+        "width": 540,
+        "height": 960
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-8/natural-540x960-keyboard-root-resume9/natural.json",
+          "sha256": "730cd9a55d281c190cdcf9f6d1bd6764870d570d3261b50ad5333463cbd9c5a4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "844x390-coral-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "coral-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "844x390-moon-own-settlement",
+      "objectType": "market-goal",
+      "lifecycleStateBranch": "moon-own-settlement",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "844x390-processor-starved",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-starved",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "844x390-processor-making-ready-harvested",
+      "objectType": "smokehouse",
+      "lifecycleStateBranch": "processor-making-ready-harvested",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    },
+    {
+      "id": "844x390-raw-fish-remains-in-cargo",
+      "objectType": "carried-goods",
+      "lifecycleStateBranch": "raw-fish-remains-in-cargo",
+      "rendererPath": "Phaser-canvas-and-visible-DOM",
+      "viewport": {
+        "label": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Normal stocking and processing can satisfy the actual market objective with visible attributable feedback.",
+      "observed": "Exact current branch requires new natural evidence.",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "A fixed natural QA route stalled; fixture market completion cannot close the branch."
+  ],
+  "remainingGaps": [
+    "Root cause and other viewports remain unconfirmed."
+  ],
+  "createdAt": "2026-10-09T03:59:52.446Z"
+}

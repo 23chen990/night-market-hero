@@ -1,0 +1,15 @@
+Attempt 2 GREEN verification
+Command: pnpm dlx --yes vitest@4.1.11 run
+Exit: 0
+
+ RUN  v4.1.11 /Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+ Start at  2026-10-01 21:00:51
+ Duration  257ms (transform 161ms, setup 0ms, collect 204ms, tests 26ms)
+
+Covered suites:
+- src/simulation.test.ts: queue-head-only service, packing delay/cash separation, restart feedback state, existing core loop regressions
+- src/responsive.test.ts: 360x800, 390x844, 430x932, 540x960, 844x390 frame fit and landscape side panel
+- src/presentation.test.ts: stale toast and settlement presentation reset

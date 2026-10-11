@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "海滩渔货铺",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "status": "BLOCKED",
+  "passed": false,
+  "reports": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-7/natural-540x960-keyboard-moon-metal/natural.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/moon-metal-triage.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/moon-metal-reproduction-matrix.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/moon-metal-perceptual.json"
+  ],
+  "script": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/moon-metal-natural.mjs",
+  "log": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/moon-metal-natural.log",
+  "buildHash": "62b076e500069e965d70760bf7a5cfd71b36ce9442f2b064db50fc1358ee9f6e",
+  "sourceBuildUnchanged": true,
+  "evidenceHashesVerified": true,
+  "forbiddenOperations": [],
+  "blockers": [
+    "runner-funded-action",
+    "cashier-funded-action",
+    "runtime-console-and-runner",
+    "unobserved:moon-three-dual-shelf-orders",
+    "unobserved:moon-replay-new-transaction",
+    "unobserved:seagull-loss-recovery",
+    "unobserved:deliberate-market-selection",
+    "unobserved:real-market-change",
+    "unobserved:new-market-own-settlement",
+    "unobserved:operating-replay",
+    "unobserved:natural-save-reload",
+    "unobserved:restart-clears-overlays"
+  ],
+  "moonBranchObserved": false,
+  "needsParentDecision": true,
+  "rebuildCount": 0,
+  "finishedAt": "2026-10-08T10:09:39.267Z"
+}

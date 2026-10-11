@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "runtimeEntrypoints": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/responsive.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/presentation.ts"
+  ],
+  "contractHash": "b6565757d769df0d499c8392ba768253c22879c0544f195f6103a3df00d80473",
+  "buildHash": "660025067d67194e7e04f669da2fe82ed52dd186917e63fe9f94060a052eacc6",
+  "runtime": "web-lite",
+  "reviewer": "QAAgent",
+  "authorIndependent": true,
+  "passed": false,
+  "blockers": [
+    "qa-terminal-stage-continuation: current product shows a settlement panel with continue/restart, while the reference contract expects a next-market selection branch; this is a product-scope mismatch, not a transient test failure.",
+    "qa-feedback-checkout-cash: exact natural packing/cash branch has fresh player-visible evidence at 540x960 only; 360x800, 390x844 and 430x932 still require exact-branch perceptual retest before release.",
+    "qa-failure-customer-wait-recovery: customer-wait failure branch is not covered by the fresh natural trace.",
+    "qa-failure-disruption-branch: disruption visitor branch is not implemented or observed in this run."
+  ],
+  "cases": [
+    {
+      "featureId": "qa-spatial-harvest-and-deposit",
+      "sourceCheckIds": ["qa-spatial-harvest-and-deposit"],
+      "objectType": "player, 近岸渔网, 鲜鱼冰盘",
+      "stateBranch": "fresh producer stock → carried fresh fish → compatible shelf deposit",
+      "viewport": {"width":540,"height":960,"label":"reference-540x960"},
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "海滩/海水/沙滩路径、渔网图标、玩家货物堆叠、货架库存条和 HUD 任务推进均可见。",
+      "observedEventOrder": ["player enters net range","pickup feedback and carried fish visible","player enters fish shelf range","shelf stock and mission advance visible"],
+      "screenshots": [
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-01-boot.png","sha256":"05f70dbbe7e2004049c5184053adce33fb07d18fedddfe616555cd2f9728c6c0"},
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-03-deposit-1.png","sha256":"52dcac0769a9e9968eee9bc97bd10519d8ae376408530082d748aa0cf91075d0"}
+      ],
+      "trace":{"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-2-independent/natural-flow-attempt-2-540.json","sha256":"5cb1af1bb417f7483d4590f71fe9c2a3b14da7a1bcc1fba0a469ab14898d950e"},
+      "evidence":["Independent fresh-browser Arrow-key trace; no fixture operations."]
+    },
+    {
+      "featureId": "qa-feedback-checkout-cash",
+      "sourceCheckIds": ["qa-feedback-checkout-cash"],
+      "objectType": "checkout queue head, packing customer, counter cash pile and player",
+      "stateBranch": "queue head → packing delay → counter cash → leave-and-return collection",
+      "viewport": {"width":540,"height":960,"label":"reference-540x960"},
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "队列顾客、紫色打包状态、‘打包中：正在封装货品’、柜台现金数字和收钱后的 HUD 变化在同一自然链路中可见。",
+      "observedEventOrder": ["queue head visible","packing customer visible","counter cash visible","player leaves and returns","cash pile clears and wallet increases"],
+      "screenshots": [
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-04-checkout-1.png","sha256":"d542f74a3ae787db22e2edac4eabf0d5317c582e45eb673d5d88b3dd3676fad8"},
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-05-collect-1.png","sha256":"aa1b1284ac4e37098eaabd633d5e358fb67ff581f782195ebac4ef409123b1d1"},
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-08-checkout-2.png","sha256":"276c5354e8be7c70ee77a6b40051f5473b30107918d95042f9ad163ea38bd15f"}
+      ],
+      "trace":{"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-2-independent/natural-flow-attempt-2-540.json","sha256":"5cb1af1bb417f7483d4590f71fe9c2a3b14da7a1bcc1fba0a469ab14898d950e"},
+      "evidence":["Fresh browser natural trace; screenshot pixels reviewed by independent QA."]
+    },
+    {
+      "featureId": "qa-feedback-construction-sequence",
+      "sourceCheckIds": ["qa-feedback-construction-sequence"],
+      "objectType": "player, wallet, 扩建潮池 and successor stations",
+      "stateBranch": "stationary construction contribution reaches 4/4 and unlocks successor stations",
+      "viewport": {"width":540,"height":960,"label":"reference-540x960"},
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "投建反馈、4/4 建设进度、潮池/海带篮解锁和结算操作按钮均可读。",
+      "observedEventOrder": ["player reaches construction point","investment feedback visible","4/4 completion visible","successor stations unlocked","settlement controls visible"],
+      "screenshots": [
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-10-settlement.png","sha256":"86b0aaef11b57025a2842dd68a42089e9cb7510ccf76308da4a0000141a6b6f2"},
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-11-continue.png","sha256":"b8e75739140806ca5deffe6c7568bb4e059c6f6bb6a9c65c658b00fb02504346"}
+      ],
+      "trace":{"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-2-independent/natural-flow-attempt-2-540.json","sha256":"5cb1af1bb417f7483d4590f71fe9c2a3b14da7a1bcc1fba0a469ab14898d950e"},
+      "evidence":["Fresh browser natural trace; settlement and continuation pixels reviewed by independent QA."]
+    },
+    {
+      "featureId": "qa-terminal-stage-continuation",
+      "sourceCheckIds": ["qa-terminal-stage-continuation"],
+      "objectType": "stage completion panel and continuation controls",
+      "stateBranch": "construction completion opens settlement panel with continue/restart",
+      "viewport": {"width":540,"height":960,"label":"reference-540x960"},
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": false,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": false,
+      "observedSignal": "当前版本显示潮池扩建完成面板和继续经营/重开本轮按钮；它没有参考合同中的 next-market selection branch。",
+      "observedEventOrder": ["stage expansion completes","settlement panel opens","continue/restart controls appear"],
+      "screenshots": [
+        {"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/screenshots/qa-retest-20261001/attempt-2-independent-cycle/540x960/cycle-10-settlement.png","sha256":"86b0aaef11b57025a2842dd68a42089e9cb7510ccf76308da4a0000141a6b6f2"}
+      ],
+      "trace":{"path":"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261001/attempt-2-independent/natural-flow-attempt-2-540.json","sha256":"5cb1af1bb417f7483d4590f71fe9c2a3b14da7a1bcc1fba0a469ab14898d950e"},
+      "evidence":["The mismatch is visible in the settlement screenshot and is intentionally retained as a product-scope blocker."]
+    }
+  ],
+  "checkedAt":"2026-10-01T14:58:12Z"
+}

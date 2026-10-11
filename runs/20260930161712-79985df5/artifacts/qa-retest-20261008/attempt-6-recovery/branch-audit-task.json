@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "route": "formal-fixer",
+  "attempt": 6,
+  "targetGame": "海滩渔货铺",
+  "targetRunId": "20260930161712-79985df5",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game",
+  "ownership": [
+    "Read-only engineering branch audit; no filesystem writes"
+  ],
+  "inputs": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/simulation.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/workspace/game/src/depth-systems.test.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/revisions/20261002-depth/shop-experience-revision.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/fix/attempt-6/fix-result.json"
+  ],
+  "instructions": [
+    "Audit exact continue-local, worker hire/action, processor starvation/processing/output, seagull alert/loss/recovery, settlement choice and market entry branches. Report unhandled branch or reachable-flow defects from source; identify natural triggers needed to test each. Do not run fixture code or mutate workspace.",
+    "Return only QaReportSchema-valid JSON object, no filesystem writes. Cite exact source paths/lines in evidence and classify inferences as inference."
+  ],
+  "acceptance": [
+    "Identify which current branch could still block the natural default journey and precise normal-input check required.",
+    "Report system triggers/visible selectors without redefining requirements or duplicating general UI review."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/20260930161712-79985df5/artifacts/qa-retest-20261008/attempt-6-recovery/branch-audit.json"
+}
