@@ -1,0 +1,30 @@
+name: Runtime workspace export
+on:
+  push:
+    branches: [feat/playable-experience-20261012]
+    paths: [.github/workflows/workspace-export.yml]
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Export source and dependencies
+        run: |
+          mkdir -p transfer
+          git rev-parse HEAD > transfer/commit.txt
+          git ls-files src tests scripts docs platforms index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js runtime-product-gates.json README.md PROJECT_HANDOFF.md .gitignore | tar -czf transfer/runtime-source.tar.gz -T -
+          tar -czf transfer/runtime-dependencies.tar.gz node_modules
+      - uses: actions/upload-artifact@v4
+        with:
+          name: runtime-workspace
+          path: transfer/
+          retention-days: 1
+          compression-level: 0
