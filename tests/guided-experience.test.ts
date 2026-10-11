@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import { createGrappleGame, type GrappleState } from '../src/game-core.ts';
-import { directedVehicle, directedMutation, guidedPickups, completedCheckpoints, nextCheckpointX, pointSegmentDistance, controlCue } from '../src/experience-director.ts';
+import { OPENING_ENCOUNTERS, directedVehicle, directedMutation, guidedPickups, completedCheckpoints, nextCheckpointX, pointSegmentDistance, controlCue } from '../src/experience-director.ts';
 import { segmentStartPx, segmentLengthPx } from '../src/endless.ts';
 import { createRunSnapshot, parseRunSnapshot, isValidRunState } from '../src/run-snapshot.ts';
 const options = { marketGates: false, terrainMode: 'panorama', guidedExperience: true } as const;
@@ -173,4 +173,36 @@ test('pausing a held lantern cancels the virtual rope without losing the mount',
   const game = patrol(); enter(game, 6); game.act('press'); assert.ok(game.getState().vehicleVirtualAnchor);
   game.setPaused(true); const state = game.getState();
   assert.equal(state.vehiclePhase, 'idle'); assert.equal(state.vehicleVirtualAnchor, null); assert.equal(state.vehicleId, rideNames[2]);
+});
+
+
+test('a guided mount catches a low falling player before inheriting a fatal dive', () => {
+  for (const beat of OPENING_ENCOUNTERS) {
+    const game = createGrappleGame(31, options); game.restartEndless(31);
+    game.setPlayerForTest({ x: segmentStartPx(beat.segment) + 2, y: 870, vx: 50, vy: 800 }); game.advanceTicks(1);
+    assert.equal(game.getState().vehicleId, beat.vehicle);
+    assert.ok(game.getState().player.y <= 621);
+    assert.ok(game.getState().player.vy < 0);
+    assert.equal(game.getState().status, 'playing');
+  }
+});
+
+test('guided revival eligibility does not depend on repeating segment progress', () => {
+  const game = createGrappleGame(31, options); game.restartEndless(31);
+  game.setPlayerForTest({ x: segmentStartPx(3) + 10, y: 910, vx: 200, vy: 200 }); game.advanceTicks(1);
+  assert.equal(game.getState().status, 'failed');
+  assert.ok(game.getState().progress < 0.6);
+  assert.equal(game.canRewardedRevive(), true);
+  assert.equal(game.reviveFromSafeState(), true);
+  game.setPlayerForTest({ y: 910 }); game.advanceTicks(1);
+  assert.equal(game.canRewardedRevive(), false);
+});
+
+test('lantern release really launches forward and does not erase an earned grapple combo', () => {
+  const game = createGrappleGame(31, options); game.restartEndless(31);
+  game.setPlayerForTest({ x: segmentStartPx(6) + 2, y: 550, vx: 350, vy: 100 }); game.advanceTicks(1); game.act('press');
+  const snapshot = game.getState(); snapshot.combo = 3; snapshot.comboPeak = 3; snapshot.comboTier = 2; game.restoreSnapshot(snapshot);
+  game.setPlayerForTest({ vx: -90, vy: 330 }); game.act('release');
+  assert.ok(game.getState().player.vx >= 330); assert.ok(game.getState().player.vy <= -220);
+  assert.equal(game.getState().combo, 3); assert.equal(game.getState().comboTier, 2);
 });

@@ -1660,7 +1660,9 @@ async function navigateFromTerminal(showInterstitial: boolean): Promise<void> {
     }
     if (showInterstitial) {
       adNote.textContent = '正在前往下一段夜市路线…';
+      const enteringRunId = currentRunId;
       await adFlow.showNaturalTransitionInterstitial(performance.now());
+      if (currentRunId === enteringRunId) adNote.textContent = '';
     }
   } finally {
     if (terminalNavigationRunId === departingRunId) terminalNavigationRunId = null;

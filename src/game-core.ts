@@ -1357,7 +1357,11 @@ export class GrappleGame {
   }
 
   canRewardedRevive(): boolean {
-    return this.state.status === 'failed' && this.state.progress >= 0.6 && !this.state.reviveUsed;
+    // Patrol progress is local to each segment; using it here made revival
+    // disappear after every segment boundary. Guided play permits one rescue
+    // per run; the economy still owns daily-free/ad entitlement.
+    return this.state.status === 'failed' && !this.state.reviveUsed
+      && (this.options.guidedExperience === true || this.state.progress >= 0.6);
   }
 
   useTalisman(): boolean {
@@ -1398,6 +1402,7 @@ export class GrappleGame {
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
     this.state.reviveUsed = true;
+    if (this.options.guidedExperience) this.expireVehicle();
     this.state.chase.pressure = REVIVE_CHASE_PRESSURE;
     this.rebasePursuerToCurrentPressure();
     this.refreshDerived(false);
@@ -1438,6 +1443,10 @@ export class GrappleGame {
     if (this.state.vehicleId) {
       this.state.vehiclePhase = 'released';
       this.state.vehicleVirtualAnchor = null;
+      if (this.options.guidedExperience && this.state.vehicleId === '灯笼群') {
+        this.state.player.vx = Math.max(330, this.state.player.vx);
+        this.state.player.vy = Math.min(-220, this.state.player.vy);
+      }
       const rideDuration = VEHICLES.find(item => item.id === this.state.vehicleId)!.durationSeconds / FIXED_STEP;
       // A release already in flight when the ride appeared is not an intentional eject.
       const entryGrace = this.options.guidedExperience && rideDuration - this.state.vehicleTicksRemaining < 66;
@@ -1446,6 +1455,8 @@ export class GrappleGame {
         this.state.player.vy = Math.min(-300, this.state.player.vy);
         this.expireVehicle();
       }
+      // Mount controls are not a failed grapple release: preserve the earned combo.
+      if (this.options.guidedExperience) return true;
     }
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
@@ -1528,6 +1539,12 @@ export class GrappleGame {
 
   private startVehicle(id: VehicleId): void {
     const def = VEHICLES.find(item => item.id === id)!;
+    if (this.options.guidedExperience) {
+      // A new mount catches the rider instead of inheriting a fatal dive.
+      this.state.player.y = Math.min(620, Math.max(320, this.state.player.y));
+      this.state.player.vy = Math.min(-160, this.state.player.vy);
+      this.state.player.vx = Math.max(280, this.state.player.vx);
+    }
     this.state.vehicleId = id;
     this.state.vehiclePhase = this.state.inputHeld ? 'holding' : 'idle';
     this.state.vehicleTicksRemaining = Math.round(def.durationSeconds / FIXED_STEP);

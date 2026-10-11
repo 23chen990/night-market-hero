@@ -33,6 +33,8 @@ try {
     const seen = new Map<string, { firstTick: number; lastTick: number; elapsed: number }>();
     const seams = new Set<number>();
     let screenshotJob: Promise<unknown> | null = null;
+    let captureBusy = false;
+    const capturedRides = new Set<string>();
     let held = false;
     let lastRelease = -999;
     let holdAt = -999;
@@ -50,9 +52,12 @@ try {
       if (down) holdAt = tick; else lastRelease = tick;
       input.push({ tick, ms: Date.now() - started, edge: down ? 'press' : 'release', device: touch ? 'touch' : 'keyboard' });
     };
-    const shot = (name: string, state: GrappleState): void => {
+    const shot = (name: string, state: GrappleState): boolean => {
+      if (captureBusy) return false;
+      captureBusy = true;
       screenshots.push({ name, tick: state.tick, level: state.levelId, player: state.player, vehicle: state.vehicleId });
-      screenshotJob = page.screenshot({ path: `${out}/${label}-${name}.png` }).catch(error => errors.push(`screenshot: ${error}`));
+      screenshotJob = page.screenshot({ path: `${out}/${label}-${name}.png` }).catch(error => errors.push(`screenshot: ${error}`)).finally(() => { captureBusy = false; });
+      return true;
     };
     try {
       page.on('pageerror', error => errors.push(String(error)));
@@ -105,24 +110,26 @@ try {
           if (visit) visit.lastTick = state.tick;
           else {
             seen.set(state.vehicleId, { firstTick: state.tick, lastTick: state.tick, elapsed: state.elapsed });
-            await screenshotJob;
-            shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state);
+
           }
         }
+        if (state.vehicleId && !capturedRides.has(state.vehicleId) && shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
         if (state.levelId === 'night-patrol') {
           const view = await page.locator('#app').evaluate(element => ({ left: Number((element as HTMLElement).dataset.cameraX), width: Number((element as HTMLElement).dataset.worldViewportWidth) }));
           for (const seam of [8000, 9600, 11200, 12800]) {
             if (!seams.has(seam) && seam > view.left + view.width * .2 && seam < view.left + view.width * .8) {
-              seams.add(seam); await screenshotJob; shot(`seam-${seam}`, state); break;
+              if (shot(`seam-${seam}`, state)) seams.add(seam);
+              break;
             }
           }
         }
-        if (rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4) break;
+        if (rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4 && capturedRides.size === 4) break;
         await page.waitForTimeout(65);
       }
-      await edge(false, (await readState()).tick);
-      await screenshotJob;
       lifecycle.journey = await readState();
+      await edge(false, (await readState()).tick);
+      if ((await readState()).status === 'playing') await page.locator('.hub-settings').click();
+      await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
       for (const ride of rides) {
         assert.ok(seen.has(ride), `ordinary journey never reached ${ride}`);
@@ -130,7 +137,6 @@ try {
       }
       assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
-      await page.locator('.hub-settings').click();
       const paused = await readState();
       await page.waitForTimeout(350);
       assert.equal((await readState()).tick, paused.tick, 'pause stops simulation');
