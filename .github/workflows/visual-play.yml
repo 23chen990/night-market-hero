@@ -2,7 +2,7 @@ name: Browser playable evidence
 on:
   push:
     branches: [main, feat/playable-experience-20261012]
-    paths: ['src/**', 'tests/playable-browser-audit.ts', 'index.html', 'scripts/**', '.github/workflows/visual-play.yml']
+    paths: ['src/**', 'tests/playable-*.ts', 'index.html', 'scripts/**', '.github/workflows/visual-play.yml']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -22,9 +22,18 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - run: node --import tsx scripts/build.ts
+      - run: npm run build
+      - name: Record source and playable identity
+        run: |
+          mkdir -p evidence/playable-audit
+          git rev-parse HEAD > evidence/playable-audit/commit.txt
+          sha256sum dist/index.html > evidence/playable-audit/playable.sha256
       - run: npx playwright install --with-deps chromium
-      - run: node --import tsx tests/playable-browser-audit.ts
+      - name: Real input journeys and settlement lifecycle
+        run: npm run test:play
+      - name: Natural failure and safe recovery
+        if: ${{ !cancelled() }}
+        run: node --import tsx tests/playable-safety-audit.ts
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -32,4 +41,4 @@ jobs:
           path: |
             evidence/playable-audit/
             dist/index.html
-          retention-days: 7
+          retention-days: 30
