@@ -1,0 +1,70 @@
+name: Playable audit
+
+on:
+  push:
+    branches: [main, feat/playable-experience-20261012]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playable-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Capture exact runtime source
+        run: |
+          mkdir -p delivery
+          git rev-parse HEAD > delivery/commit.txt
+          git ls-files src tests scripts index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js runtime-product-gates.json | tar -czf delivery/runtime-source.tar.gz -T -
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Capture reproducible dependency workspace
+        run: tar -czf delivery/runtime-dependencies.tar.gz node_modules
+      - name: Static checks and complete unit suite
+        shell: bash
+        run: |
+          set +e
+          npm run lint > delivery/lint.log 2>&1
+          lint=$?
+          npm run typecheck > delivery/typecheck.log 2>&1
+          types=$?
+          node --import tsx --test tests/*.test.ts > delivery/tests.log 2>&1
+          tests=$?
+          node --import tsx scripts/build.ts > delivery/build.log 2>&1
+          build=$?
+          printf '{"lint":%s,"typecheck":%s,"tests":%s,"build":%s}\n' "$lint" "$types" "$tests" "$build" > delivery/checks.json
+          cat delivery/checks.json
+          tail -n 18 delivery/tests.log
+          cat delivery/build.log
+          test "$lint$types$tests$build" = '0000'
+      - name: Install browser engines
+        if: ${{ !cancelled() }}
+        run: npx playwright install --with-deps chromium webkit
+      - name: File URL launch smoke
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        run: node --import tsx tests/file-launch-smoke.ts
+      - name: Record playable identity
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        run: sha256sum dist/index.html > delivery/playable.sha256
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playable-audit-${{ github.sha }}
+          path: |
+            delivery/
+            dist/index.html
+          retention-days: 7
+          if-no-files-found: error
