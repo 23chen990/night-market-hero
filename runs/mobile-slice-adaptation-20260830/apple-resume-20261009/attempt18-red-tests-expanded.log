@@ -1,0 +1,82 @@
+✔ finish transition visibility hides competing HUD panels while keeping terminal text (0.441792ms)
+✔ finish transition state label is settlement copy while initial ready stays ready (0.078333ms)
+✔ reward fly target falls back to a visible rect when earnings banner is hidden (1.143875ms)
+✔ apple reward labels clear the opening fruit at desktop and both phone orientations (0.309334ms)
+✔ a fruit near the top edge places its reward beside the complete reveal envelope (0.114625ms)
+✖ a wide fruit at the top uses the clear lower slot when neither side can fit the reward label (2.189584ms)
+✖ reward flight hides before its target when a top-edge banner route would cross the apple reveal (0.643417ms)
+✖ an anchor message near an apple uses that apple envelope while distant anchors keep their origin (0.143416ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 5
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 227.855
+
+✖ failing tests:
+
+test at tests/finish-transition-hud.test.ts:1:3398
+✖ a wide fruit at the top uses the clear lower slot when neither side can fit the reward label (2.189584ms)
+  AssertionError [ERR_ASSERTION]: the fallback must use the open space below the full cap-reveal envelope
+      at TestContext.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/finish-transition-hud.test.ts:91:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/finish-transition-hud.test.ts:1:3887
+✖ reward flight hides before its target when a top-edge banner route would cross the apple reveal (0.643417ms)
+  AssertionError [ERR_ASSERTION]: reward flight needs a complete obstacle-aware path
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/finish-transition-hud.test.ts:101:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/finish-transition-hud.test.ts:1:4671
+✖ an anchor message near an apple uses that apple envelope while distant anchors keep their origin (0.143416ms)
+  AssertionError [ERR_ASSERTION]: anchor feedback needs to protect the nearby cap reveal too
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/finish-transition-hud.test.ts:113:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

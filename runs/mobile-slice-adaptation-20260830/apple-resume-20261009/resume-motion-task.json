@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "apple-coordination-audit-task",
+  "taskId": "resume-motion",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "role": "ReadOnlyQAAgent",
+  "fileScope": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/three-cut-visuals.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/food-cleave.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/apple-cleave.test.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/slice-alignment.test.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-cut-refinement-20261003/prompt-draft-v2.md",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/artifacts/apple-fix-20261008/triage.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-motion-audit-20261008/attempt16-motion-audit-report.json"
+  ],
+  "questions": [
+    "Measure current default revealCaps actual settled relative quaternion angle and half displacement projected onto cut normal, diameter-normalized gap, and floor contact for the EXACT level1-reward-token (also compare rune-7 and gallery). Run an in-memory tsx probe if useful; no file writes.",
+    "Is it geometrically possible to meet stored relative roll 6–14 degrees and cut-normal gap8–16%D while preserving current requirement that both opposing caps face the player? Identify conflicts that require a human preference; do not supersede the stored contract.",
+    "Recommend minimal causally connected patch options with exact tests for honest actual-transform telemetry. Confirm raw-delta clock fix retained. Do not implement."
+  ],
+  "constraints": [
+    "Read-only audit: do not write any file, modify game code/tests, rebuild, launch browser/server, or message another chat. You are not alone; preserve other work.",
+    "Exchange only structured artifacts. Return the JSON validated by ResultSchema from apple-coordination-20261008/audit-schema.ts in your final response; the parent persists it to outputPath.",
+    "Do not claim completion or combine historical and current build evidence. Inspect actual geometry/transforms and distinguish them from nominal telemetry."
+  ],
+  "outputPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/motion-audit-result.json",
+  "acceptanceCriteria": [
+    "Use precise file/line and SHA256 evidence.",
+    "Distinguish gallery and exact default instance/state branches.",
+    "Return validated structured findings, recommendations and limitations."
+  ]
+}

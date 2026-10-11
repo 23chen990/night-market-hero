@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "apple-coordination-audit-task",
+  "taskId": "attempt18-frozen-code-review",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "role": "ReadOnlyQAAgent",
+  "fileScope": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt18/src/theme.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt18/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt18/src/style.css",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt18/tests/finish-transition-hud.test.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-build-binding.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-triage.json"
+  ],
+  "questions": [
+    "Review only frozen attempt18 feedback changes. Does nearby anchor avoidance cover cap reveal? Check pop animation from below-fruit fallback, complete reward flight path/opacity and typography bounds, and danger tutorial safe dock. Identify evidence-backed causally connected defects and actual supported counterexamples. Default apple motion choice is settled: retain cap-reveal.",
+    "Return structured review only. Source reasoning and unit fixtures cannot certify natural/perceptual completion."
+  ],
+  "constraints": [
+    "You are not alone; preserve others work. Read-only, no file writes or browser/server/build.",
+    "Return only ResultSchema validated JSON from apple-coordination-20261008/audit-schema.ts; parent persists outputPath.",
+    "Current canonical workspace may drift; inspect the frozen review paths in fileScope."
+  ],
+  "outputPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-code-review-result.json",
+  "acceptanceCriteria": [
+    "Exact frozen hashes and lines support all findings.",
+    "Source animation trajectories including fallback are reviewed.",
+    "No production, build, server, browser, or file writes. Return ResultSchema JSON only."
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "report": "Resume approved default apple cap-reveal presentation; repair actual-motion telemetry and move reward feedback away from the exact apple opening, then capture one coherent build at all three viewports.",
+  "classification": [
+    "qa-false-positive",
+    "mobile-readability",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Existing validated apple QA issue and attempt16 remain open. User explicitly chose the current cap-reveal behavior; current chat is the serial Fixer owner. Minimal geometry-neutral telemetry/UI repair followed by exact-object natural/perceptual QA.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated food repair history",
+      "unrelated chat history",
+      "third-party media",
+      "prior build evidence as proof of current behavior"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Compare attempt16 default QA build5c620a with current frozen snapshot build046fd6 and landscape attempt18 report.",
+      "Inspect natural landscape844x390 level1-reward-token opening frame recovered from trace using the recorded navigation offset.",
+      "Compare default revealCaps actual transforms against stored apple acceptance; do not rely on nominal frame.roll telemetry."
+    ],
+    "observed": [
+      "Default build changed after attempt16 desktop/portrait QA. Those captures cannot certify the current default build.",
+      "Landscape attempt18 uses a different default build. Do not merge it with old desktop/portrait captures into one build-bound report.",
+      "Default revealCaps motion now rotates caps toward camera and separates on world X; conflicts with stored cut-normal 8–16% diameter gap and 6–14 degree relative roll contract. Preserve concurrent edits until responsibility and acceptance are resolved.",
+      "Landscape exact level1-reward-token opening is occluded by +4 reward overlay in recovered real screencast frame; independent perceptual gate remains BLOCKED."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-coordination-20261008/concurrent-change-checkpoint.json",
+        "sha256": "a62cf06222c2c04d1ac9d40631d9f7a0f45f2508a3d236b7adc4ab21bb7f8ca8",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/artifacts/apple-fix-20261008/attempt16/landscape-trace-recovery/apple-opening.jpeg",
+        "sha256": "ab7f5354f088638c74c5e234885fa8a98d5f060e53540f0e6be5e686e0698f24",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/artifacts/apple-fix-20261008/attempt16/landscape-trace-recovery/provenance.json",
+        "sha256": "3e7ae911326380510493ba7d9e7e8c633c7284e69a623d2386c232c7f4bcf0b0",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-landscape-capture-20261008/attempt18/qa-natural-journey-report.json",
+        "sha256": "8aa117315517f5ec39048ed8a9a4c93ed24e766c47861cfeeb347ba3d2c3dc3d",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-independent-qa-20261008/attempt16-default-perceptual.json",
+        "sha256": "4eb8fc6b75cf904898b2cd3080dc88f87e0ed527a6ecc44287c17f0b7ab7e3fb",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/human-motion-choice.json",
+        "sha256": "f429cc01b4b0f6e156517d990400d9804df941f11d917fe93fe78e2fdbe5e118",
+        "kind": "user-report",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Center crossing before split",
+    "Continuous 0.35–0.60 second motion and uncapped real animation time",
+    "Actual sealed cap geometry, crown ownership, hemisphere thickness",
+    "Both default caps readable without overlap/feedback occlusion",
+    "Grounding without hover/penetration and clean replay",
+    "Measured actual transforms; nominal sampler roll must not certify default motion",
+    "Existing gallery acceptance and shared source geometry/material/cut owner",
+    "All default screenshots and reports bind to one immutable current build; no old-build or sibling-object substitution.",
+    "Lint, typecheck, full tests and targeted Playwright checks pass."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-09T04:08:00.065Z"
+}

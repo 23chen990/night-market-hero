@@ -1,0 +1,51 @@
+{
+  "route": "formal-fixer",
+  "attempt": 16,
+  "previousAttempt": 15,
+  "previousRepairState": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/watermelon-game-integration-20261003/repair-state.json",
+  "threadContinuity": "User explicitly assigned current chat as Builder/Fixer; continue current chat. Previous attempt is retained; no replacement chat or agent.",
+  "threadId": "01a0fdda-7f41-7b10-a553-f50093700afd",
+  "status": "QA_BLOCKED",
+  "buildCount": 1,
+  "scope": [
+    "src/three-cut-visuals.ts",
+    "src/food-cleave.ts",
+    "src/food-cleave-demo.ts",
+    "apple tests and QA evidence"
+  ],
+  "galleryBuildCount": 1,
+  "resumeEvidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/reviews/apple-repair-resume-20261008.json",
+  "modifiedFiles": [
+    "src/three-cut-visuals.ts",
+    "src/food-cleave.ts",
+    "src/food-cleave-demo.ts",
+    "src/three-world-renderer.ts",
+    "tests/apple-cleave.test.ts",
+    "tests/food-cleave.test.ts",
+    "tests/authored-cut-softbody.test.ts",
+    "tests/slice-alignment.test.ts"
+  ],
+  "buildHashes": {
+    "default": "5c620ad9de3552d85221a13b52dd540ea3641475c2b0fd6f9b9d95caa521ef7e",
+    "gallery": "a6c6426a92db03151bdde7d3a0f3aade887025d621f15ba7317532066c6e6b3e"
+  },
+  "currentQaPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/artifacts/apple-fix-20261008/attempt16/qa-natural-journey-report.json",
+  "previousQaReport": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/artifacts/apple-fix-20261008/attempt16/input-qa-report.json",
+  "perceptualReports": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-independent-qa-20261008/attempt16-gallery-perceptual.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-independent-qa-20261008/attempt16-default-perceptual.json"
+  ],
+  "remainingBlockers": [
+    "Default build changed after attempt16 desktop/portrait QA. Those captures cannot certify the current default build.",
+    "Landscape attempt18 uses a different default build. Do not merge it with old desktop/portrait captures into one build-bound report.",
+    "Default revealCaps motion now rotates caps toward camera and separates on world X; conflicts with stored cut-normal 8–16% diameter gap and 6–14 degree relative roll contract. Preserve concurrent edits until responsibility and acceptance are resolved.",
+    "Landscape exact level1-reward-token opening is occluded by +4 reward overlay in recovered real screencast frame; independent perceptual gate remains BLOCKED."
+  ],
+  "completedAt": null,
+  "concurrentChangeCheckpoint": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-coordination-20261008/concurrent-change-checkpoint.json",
+  "currentObservedBuildHashes": {
+    "default": "046fd6cc5549524c5fa88292a5da94e3142cfd92d2bca3c47dc09d87b7a807e6",
+    "gallery": "a6c6426a92db03151bdde7d3a0f3aade887025d621f15ba7317532066c6e6b3e"
+  },
+  "currentEvidenceValidity": "Historical attempt16 evidence only; current default build not certified. Cross-build merge quarantined."
+}

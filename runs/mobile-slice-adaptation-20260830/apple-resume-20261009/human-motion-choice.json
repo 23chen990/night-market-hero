@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "apple-human-motion-choice",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "source": "current-user-question-reply",
+  "answer": "保留新版，优先让两半切面清楚可见（推荐）",
+  "adoptedBehavior": "Preserve the current default cap-reveal pose: both real sealed flesh caps face the player, thick hemispheres separate across the screen continuously after blade center crossing. Gallery keeps its existing authored camera/pose through the shared geometry and cut owner; report the presentation branches explicitly.",
+  "supersededDefaultConstraints": [
+    "6–14 degree TOTAL relative rotation",
+    "8–16%D cut-normal separation and no world-X separation"
+  ],
+  "retainedConstraints": [
+    "Center crossing before split",
+    "Continuous 0.35–0.60 second motion and uncapped real animation time",
+    "Actual sealed cap geometry, crown ownership, hemisphere thickness",
+    "Both default caps readable without overlap/feedback occlusion",
+    "Grounding without hover/penetration and clean replay",
+    "Measured actual transforms; nominal sampler roll must not certify default motion",
+    "Existing gallery acceptance and shared source geometry/material/cut owner"
+  ],
+  "selectedAt": "2026-10-09T04:08:00.054Z"
+}

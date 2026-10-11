@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "apple-coordination-audit-result",
+  "taskId": "resume-motion",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "status": "FAIL",
+  "findings": [
+    {
+      "claim": "Exact level1-reward-token and rune-7 engineering probes measured settled relative quaternion rotation 158.80567791591054 degrees; opening at0.24s already79.64610554580457 degrees. Existing roll reports nominal6degrees/half while default never applies frame.roll.",
+      "implication": "Default telemetry is misleading; the human now approves the large cap-reveal pose, and actual relative quaternion angle must be reported.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/three-cut-visuals.ts",
+          "sha256": "73308be171ef98533139fd8bb77afdeb804cd2cb654e7aac300008112bddb6dc",
+          "line": 978
+        }
+      ]
+    },
+    {
+      "claim": "Default root normal separation0.406135D, projected body X clearance0.037369D, and added geometry-center separation along cut normal0 are different quantities. Gallery settled quaternion relative angle12degrees; root-normal translation0.15D but actual normal surface clearance0.047529D.",
+      "implication": "Report gap metric and branch explicitly; do not use default X clearance as the old normal-translation metric.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/three-cut-visuals.ts",
+          "sha256": "73308be171ef98533139fd8bb77afdeb804cd2cb654e7aac300008112bddb6dc",
+          "line": 1010
+        }
+      ]
+    },
+    {
+      "claim": "Both opposing caps signed-facing score>0.65 requires relative rigid rotation>81.083degrees; no6–14degree pose can satisfy it. Reward-token fixture half minima4.34 equal shelf contact4.34; gallery minima0.25 equal table. Raw-delta clocks are retained; scoped16tests passed.",
+      "implication": "Human preference resolves the art conflict; fixture contact and tests do not close natural/perceptual gates.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/apple-cleave.test.ts",
+          "sha256": "bd1c20d21608090343bbf363cc6c6678e2602e0ff3e7c9f8d73ef092ed3ffcbe",
+          "line": 116
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/food-cleave.ts",
+          "sha256": "2510c689eb6d2e3fffcf8863689e1e237f1f6d67fddfde3482587b3fb7c588e6",
+          "line": 18
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    "Keep approved revealCaps poses and expose measured relativeRotation and explicit gap metric/motion mode.",
+    "Test measurements against actual world quaternions for exact reward-token, rune-7 and gallery.",
+    "Retest normal input and pixels for exact reward-token at all three viewports; preserve existing attempt16 history."
+  ],
+  "limitations": [
+    "Condensed parent-persisted summary of the completed independent explorer JSON audit.",
+    "Engineering fixtures only; no browser/device/pixel proof. No source or files were changed by the auditor."
+  ]
+}

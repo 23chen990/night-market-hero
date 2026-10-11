@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#92dca5" />
+    <title>物品切割预览</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+      body { background: #92dca5; color: #173f2a; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+      #stage { position: fixed; inset: 0; touch-action: manipulation; cursor: pointer; }
+      canvas { display: block; width: 100%; height: 100%; }
+      header { position: absolute; top: max(24px, env(safe-area-inset-top)); left: 28px; right: 28px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+      h1 { margin: 0; font-size: 21px; font-weight: 750; letter-spacing: .03em; }
+      #phase { padding: 8px 14px; border-radius: 30px; background: #ffffffa6; font-size: 13px; font-weight: 650; }
+      footer { position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); left: 20px; right: 20px; display: flex; flex-direction: column; align-items: center; gap: 13px; }
+      .controls { display: flex; align-items: center; gap: 12px; }
+      button { font: inherit; cursor: pointer; border: 0; -webkit-tap-highlight-color: transparent; }
+      #cut { display: flex; align-items: center; justify-content: center; gap: 11px; min-width: 185px; height: 56px; padding: 0 25px; border-radius: 18px; background: #183e2b; color: white; box-shadow: 0 6px 0 #102b1c, 0 12px 25px #21533526; font-weight: 650; font-size: 17px; transition: transform .15s; }
+      #cut:active { transform: translateY(3px); }
+      #cut:disabled { cursor: default; background: #36654a; }
+      #cut svg { width: 19px; height: 19px; }
+      #reset { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 17px; background: #ffffffa6; color: #21452e; }
+      #reset svg { width: 22px; height: 22px; }
+      label { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; min-height: 30px; }
+      input { width: 17px; height: 17px; accent-color: #183e2b; }
+      button:focus-visible, input:focus-visible { outline: 3px solid #ffffff; outline-offset: 4px; }
+      @media (max-width: 500px) { header { left: 20px; right: 20px; } h1 { font-size: 18px; } }
+      @media (max-height: 460px) { header { top: 14px; } footer { bottom: 14px; gap: 7px; flex-direction: row; justify-content: center; } #cut { height: 46px; } #reset { height: 46px; width: 46px; } }
+      #samples { position: absolute; top: 72px; left: 20px; right: 20px; display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: auto; max-width: 900px; }
+      #samples button { min-height: 36px; padding: 7px 12px; color: #21452e; border-radius: 10px; background: #ffffffa6; font-size: 13px; }
+      #samples button[aria-pressed="true"] { background: #183e2b; color: white; }
+      @media (max-width: 550px), (max-height: 460px) { #samples { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 7px; top: 66px; } #samples button { flex: 0 0 auto; } }
+      @media (max-height: 460px) { #samples { top: 48px; } }
+    </style>
+  </head>
+  <body>
+    <main id="stage" aria-label="点击物品开始切割"></main>
+    <header><h1><span id="object-name">苹果</span> · 切割预览</h1><span id="phase" aria-live="polite">准备好</span></header>
+    <nav id="samples" aria-label="选择切割物品"></nav>
+    <footer>
+      <div class="controls">
+        <button id="cut"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z" /></svg><span>切一刀</span></button>
+        <button id="reset" aria-label="重新摆放物品"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6" /></svg></button>
+      </div>
+      <label><input id="slow" type="checkbox" />慢放，看清切口</label>
+    </footer>
+    <script type="module" src="/src/food-cleave-demo.ts"></script>
+  </body>
+</html>

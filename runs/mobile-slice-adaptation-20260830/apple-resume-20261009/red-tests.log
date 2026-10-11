@@ -1,0 +1,108 @@
+✔ APPLE gallery clock gates its actual blade at the shared center time and settles in 0.48 seconds (1.14775ms)
+✔ APPLE gallery shares sealed cap UVs, a single crown owner and replay geometry with the default visual (108.712458ms)
+✔ APPLE default keeps its intact skin at rim contact until the visible blade sweeps through center (114.332625ms)
+✔ APPLE late frames preserve elapsed time in the visible gallery clock (0.139875ms)
+✔ APPLE default analytic clock advances through late frames without losing time (75.377375ms)
+✔ APPLE rune-7 opens two thick source hemispheres with both real flesh caps readable (308.674917ms)
+✖ APPLE exact default instances report their actual relative rotation and explicit gap metric (271.436ms)
+✖ APPLE gallery reports the measured bounded pose with its distinct normal-translation gap (67.546167ms)
+✔ finish transition visibility hides competing HUD panels while keeping terminal text (0.65225ms)
+✔ finish transition state label is settlement copy while initial ready stays ready (0.1115ms)
+✔ reward fly target falls back to a visible rect when earnings banner is hidden (0.450208ms)
+✖ apple reward labels clear the opening fruit at desktop and both phone orientations (1.420917ms)
+✖ a fruit near the top edge places its reward beside the complete reveal envelope (0.205875ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 9
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1313.248291
+
+✖ failing tests:
+
+test at tests/apple-cleave.test.ts:1:6509
+✖ APPLE exact default instances report their actual relative rotation and explicit gap metric (271.436ms)
+  AssertionError [ERR_ASSERTION]: report a measured angle rather than the nominal sampler
+      at TestContext.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/apple-cleave.test.ts:148:14)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/apple-cleave.test.ts:1:8091
+✖ APPLE gallery reports the measured bounded pose with its distinct normal-translation gap (67.546167ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Math.abs(apple.relativeRotation - measured) < 1e-8)
+  
+      at TestContext.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/apple-cleave.test.ts:163:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/finish-transition-hud.test.ts:1:1273
+✖ apple reward labels clear the opening fruit at desktop and both phone orientations (1.420917ms)
+  AssertionError [ERR_ASSERTION]: reward feedback needs a fruit-aware layout
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/finish-transition-hud.test.ts:40:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/finish-transition-hud.test.ts:1:1954
+✖ a fruit near the top edge places its reward beside the complete reveal envelope (0.205875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/finish-transition-hud.test.ts:53:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

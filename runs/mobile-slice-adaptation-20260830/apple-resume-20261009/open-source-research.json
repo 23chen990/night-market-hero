@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "researchId": "apple-repair-existing-three-infrastructure-20261008",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "researchedAt": "2026-10-08T06:37:49.095Z",
+  "candidates": [
+    {
+      "name": "three.js r185",
+      "repositoryUrl": "https://github.com/mrdoob/three.js",
+      "immutableRevision": "r185",
+      "version": "0.185.0",
+      "directLicenseEvidence": "https://raw.githubusercontent.com/mrdoob/three.js/r185/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "Reuse the installed pinned WebGL renderer and GLSL ShaderMaterial/BufferGeometry. Existing run research records the immutable revision and license; no new dependency."
+        },
+        "wechatMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "DOM-free CPU kernel can be adapted; this browser integration does not validate a WeChat package."
+        },
+        "douyinMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "DOM-free CPU kernel can be adapted; rendering adapter and device evidence required."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Existing isolated Cocos platform project requires its own kernel/material integration and QA."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "Retain the existing Three.js MIT notice."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Existing pinned Three.js 0.185.0 WebGL renderer, Vector/Matrix/Plane/BufferGeometry math and original object geometry. No external game code/assets or new dependency."
+      ],
+      "rationale": "Prior stored full commit returned upstream 404 during explicit license check; use verified release tag r185 and matching installed 0.185.0 MIT license. Existing mesh and softbody interfaces can support original contact-aligned slicing and authored support poses."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": [
+      "three.js r185"
+    ],
+    "rejectedCandidateNames": [],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Reuse only the approved pinned three.js r185 and original splitClosedGeometry; one apple visual owner supplies original silhouette, caps, decorations and motion to default and gallery. No new dependencies or external content."
+  }
+}

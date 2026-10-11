@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "apple-coordination-audit-result",
+  "taskId": "attempt18-ui-occlusion-readonly-review",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "status": "FAIL",
+  "findings": [
+    {
+      "claim": "Source-level failure: anchor feedback is still unprotected.",
+      "implication": "The exact apple cap-reveal acceptance remains unmet for an anchor beside the apple.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/main.ts",
+          "sha256": "46539a79aaa842b845148d7e36a62abf412533053ee8d47bb390b88d53ec7036",
+          "line": 294
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/tests/finish-transition-hud.test.ts",
+          "sha256": "1025ef4fee0830007e4f2dc11fe0997e0221d598ebf1ff07064ccb452e3feb5f",
+          "line": 64
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-red-tests.log",
+          "sha256": "5b3ad4f5fb80367b923e09b4a945e51f4af09e94704189e46893157275f29518",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "claim": "Source-level failure: the danger tutorial is still centered rather than lower-docked.",
+      "implication": "It can cover center gameplay and fails the defined three-viewport dock check.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/style.css",
+          "sha256": "cc58534f99e2981fa47fda4f101bc9038a79690bd0c67691e432b96d625ea9fd",
+          "line": 263
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/style.css",
+          "sha256": "cc58534f99e2981fa47fda4f101bc9038a79690bd0c67691e432b96d625ea9fd",
+          "line": 491
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/check-tutorial-layout.ts",
+          "sha256": "1d67f71c67439a106d20d677c7572fcc8965dc6a1e10ee3f23055fd20711609d",
+          "line": 15
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-tutorial-red.log",
+          "sha256": "c2138aa7740b1c21eb83013e70a38c844872a8d913a2509fab120cff526683eb",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "claim": "Natural-player evidence for attempt 18 is absent.",
+      "implication": "Even after source repairs, current-build normal-input and perceptual proof is required for exact apple opening, settled, and replay across all three target viewports.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-reproduction-matrix.json",
+          "sha256": "6215677e091a4312d20a0c5ca323f52714d1418bcdeba731b3d34fda020ff839",
+          "line": 19
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-reproduction-matrix.json",
+          "sha256": "6215677e091a4312d20a0c5ca323f52714d1418bcdeba731b3d34fda020ff839",
+          "line": 48
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/attempt18-triage.json",
+          "sha256": "4659d1603e6b798ef2b66f127dcfcaa7a84421b1bcf7962951393c3d240a6e14",
+          "line": 24
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    "Apply an apple-envelope resolver to anchor feedback before the pop is positioned; preserve the raw origin for anchors outside every active apple envelope.",
+    "Move the cue with a bottom/safe-area dock in the base and narrow-screen rules, and change tutorial keyframe transforms so they do not restore vertical centering during animation.",
+    "After the implementation, freeze and build once, then collect exact-object normal-input evidence for opening, settled, and replay at 1180x720, 390x844, and 844x390."
+  ],
+  "limitations": [
+    "This is a read-only source and retained-evidence review; no build, browser, or game state was executed.",
+    "The only natural capture cited by the triage is attempt 17, so it establishes the prior reproduction but cannot prove the attempt-18 repair.",
+    "The findings apply only to the listed file hashes and do not claim repair completion."
+  ]
+}

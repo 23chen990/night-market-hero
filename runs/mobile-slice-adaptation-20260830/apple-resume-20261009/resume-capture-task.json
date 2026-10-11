@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "apple-coordination-audit-task",
+  "taskId": "resume-capture",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "role": "ReadOnlyQAAgent",
+  "fileScope": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/artifacts/apple-fix-20261008/qa-natural.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-landscape-capture-20261008",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-input-search-20261008",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-independent-qa-20261008/attempt16-default-perceptual.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-coordination-20261008/evidence-binding-result.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/scripts/qa-all-food-melon.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/three-world-renderer.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/src/renderer.ts"
+  ],
+  "questions": [
+    "Identify best existing natural-input capture strategy for exact level1-reward-token intact→opening→settled→terminal→replay at1180x720,390x844,844x390. Give replayable normal-input schedule and which capture tool to reuse; no state injection allowed. Distinguish screenshot-time/state-sample binding from sibling fruit coverage.",
+    "Locate player-visible +4 reward overlay owning code and minimal tested layout fix to avoid occluding apple opening on landscape. Propose exact viewport test and pixel acceptance, without implementation.",
+    "Identify existing validated QA schemas, immutable build binding, trace frame recovery and default runtime entrypoints to reuse for independent perceptual handoff."
+  ],
+  "constraints": [
+    "Read-only audit: do not write any file, modify game code/tests, rebuild, launch browser/server, or message another chat. You are not alone; preserve other work.",
+    "Exchange only structured artifacts. Return the JSON validated by ResultSchema from apple-coordination-20261008/audit-schema.ts in your final response; the parent persists it to outputPath.",
+    "Do not claim completion or combine historical and current build evidence. Inspect actual geometry/transforms and distinguish them from nominal telemetry."
+  ],
+  "outputPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/capture-audit-result.json",
+  "acceptanceCriteria": [
+    "Evidence must identify exact target instance, renderer and viewport, with SHA256.",
+    "Recommendations must support natural inputs and same-build evidence.",
+    "Return validated structured findings, recommendations and limitations."
+  ]
+}

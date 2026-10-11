@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "report": "Exact landscape reward-token cap reveal is still obscured by anchor feedback and the large center tutorial; keep approved geometry/rotation and move those visual messages outside gameplay.",
+  "classification": [
+    "qa-false-positive",
+    "mobile-readability",
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Existing validated apple QA issue and attempt16 remain open. User explicitly chose the current cap-reveal behavior; current chat is the serial Fixer owner. Minimal geometry-neutral telemetry/UI repair followed by exact-object natural/perceptual QA.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated food repair history",
+      "unrelated chat history",
+      "third-party media",
+      "prior build evidence as proof of current behavior"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Play fixed attempt17 default using normal touchscreen at844x390.",
+      "Inspect continuous late-opening frame10 and settled screenshot."
+    ],
+    "observed": [
+      "Reward+4 is clear of target; anchored message follows the blade onto the cap.",
+      "Center danger tutorial covers both exact reward-token halves at their first settled frame."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/apple-settled.png",
+        "sha256": "7f15ff5eb50698b34fcc202d5b67522c0553a8a34dfe5d4b72e093e2540b3326",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/continuous-frames/frame-10.png",
+        "sha256": "9ef68ee61b1be2dafe524b0496ba0d4d070a524975626795c3738da16049b3f7",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Center crossing before split",
+    "Continuous 0.35–0.60 second motion and uncapped real animation time",
+    "Actual sealed cap geometry, crown ownership, hemisphere thickness",
+    "Both default caps readable without overlap/feedback occlusion",
+    "Grounding without hover/penetration and clean replay",
+    "Measured actual transforms; nominal sampler roll must not certify default motion",
+    "Existing gallery acceptance and shared source geometry/material/cut owner",
+    "All default screenshots and reports bind to one immutable current build; no old-build or sibling-object substitution.",
+    "Lint, typecheck, full tests and targeted Playwright checks pass.",
+    "Anchor feedback at the apple shelf cannot cover the opening cap; tutorial stays readable in a safe viewport edge region without covering the exact target."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-09T06:40:17.894Z"
+}

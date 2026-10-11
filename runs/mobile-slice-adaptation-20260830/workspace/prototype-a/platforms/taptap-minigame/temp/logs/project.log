@@ -1,0 +1,258 @@
+9-9-2026 13:51:53 - log: Load engine in /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine
+9-9-2026 13:51:53 - log: Register native engine in /Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/resources/3d/engine/native
+9-9-2026 13:51:53 - log: Request namespace: device-list
+9-9-2026 13:51:57 - log: [Tap小游戏] ========================================
+9-9-2026 13:51:57 - log: [Tap小游戏] TapTap 小游戏构建插件 v1.2.0
+9-9-2026 13:51:57 - log: [Tap小游戏] ----------------------------------------
+9-9-2026 13:51:57 - log: [Tap小游戏] 类型定义已就绪 → 代码中输入 tap. 即可获得提示
+9-9-2026 13:51:57 - log: [Tap小游戏] ----------------------------------------
+9-9-2026 13:51:57 - log: [Tap小游戏] AI Skills 位于 extensions/taptap-minigame-tools/ai-skills/
+9-9-2026 13:51:57 - log: [Tap小游戏]   tap-sdk-skill.md        → SDK 基础模块
+9-9-2026 13:51:57 - log: [Tap小游戏]   tap-ad-skill.md         → 广告模块
+9-9-2026 13:51:57 - log: [Tap小游戏]   tap-cloud-save-skill.md → 云存档模块
+9-9-2026 13:51:57 - log: [Tap小游戏] ========================================
+9-9-2026 13:51:57 - warn: wechatgame 插件构建配置无版本号，将跳过数据迁移
+9-9-2026 13:51:57 - warn: taptap-minigame-tools 插件构建配置无版本号，将跳过数据迁移
+9-9-2026 13:51:59 - warn: 构建参数 mainBundleCompressionType (merge_dep) 校验失败,  compression type(undefined) is invalid for this platform!, 将会使用默认值 "merge_dep"
+9-9-2026 13:51:59 - log: 2026-9-9 13:51:59 - log: [Tap小游戏] 准备构建微信小游戏
+
+9-9-2026 13:51:59 - log: 2026-9-9 13:51:59 - log: [Tap小游戏] Cocos Creator版本:3.8.8
+
+9-9-2026 13:52:00 - log: 2026-9-9 13:51:59 - log: Asset DB is paused with build!
+
+9-9-2026 13:52:00 - log: 2026-9-9 13:51:59 - log: creating executor ...
+
+9-9-2026 13:52:00 - log: 2026-9-9 13:51:59 - log: run build task 查询 Asset Bundle success in 48 ms√, progress: 16%
+
+9-9-2026 13:52:00 - log: 2026-9-9 13:51:59 - log: run build task 查询 Asset Bundle success in 1 ms√, progress: 21%
+
+9-9-2026 13:52:00 - log: 2026-9-9 13:51:59 - log: [buildPolyfillsCommand]enter sub process 15919, 9229, see: chrome://inspect/#devices
+
+9-9-2026 13:52:04 - log: 2026-9-9 13:52:04 - log: [buildScriptCommand]Number of non-entry chunks: 2
+
+9-9-2026 13:52:08 - error: [Assets] [BABEL] Note: The code generator has deoptimised the styling of /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild/game/cocos-js/_virtual_cc-BncijMet.js as it exceeds the max of 500KB.Error: [Assets] [BABEL] Note: The code generator has deoptimised the styling of /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild/game/cocos-js/_virtual_cc-BncijMet.js as it exceeds the max of 500KB.
+    at console.error (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/node_modules/@sentry/core/src/utils-hoist/instrument/console.ts:40:14)
+    at NewConsole.error (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/asset-db/dist/worker/console.ccc:1:1536)
+    at NewConsole.error (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/console.ccc:1:2258)
+    at normalizeOptions (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/@babel/generator/src/index.ts:75:15)
+    at generate (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/@babel/generator/src/index.ts:256:18)
+    at generateCode (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/@babel/core/src/transformation/file/generate.ts:35:22)
+    at run (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/@babel/core/src/transformation/index.ts:60:48)
+    at run.next (<anonymous>)
+    at Function.<anonymous> (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/@babel/core/src/transform-file.ts:27:20)
+    at Generator.next (<anonymous>)
+    at evaluateSync (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/gensync/index.js:251:28)
+    at Function.sync (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/gensync/index.js:89:14)
+    at Object.transformFileSync (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules/@babel/core/src/transform-file.ts:49:30)
+    at runBabelTransform (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/dist/converter-ts.js:391:34)
+    at convertWechatToTap (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/dist/converter-ts.js:559:15)
+    at onAfterBuild (/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/dist/hooks.js:305:9)
+    at BuildTask.handleHook (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/builder/index.ccc:1:14154)
+    at BuildTask.runPluginTask (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/builder/manager/task-base.ccc:1:1233)
+    at BuildTask.run (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/builder/index.ccc:1:5460)
+    at build (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/index.ccc:1:4763)
+    at Ipc.<anonymous> (/Applications/Cocos/Creator/3.8.8/CocosCreator.app/Contents/Resources/app.asar/builtin/builder/dist/worker/msg-util.ccc:1:210)
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: run build task 打包脚本 success in 4 s√, progress: 26%
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: run build task Build Assets success in 70 ms√, progress: 31%
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: run build task 整理部分构建选项内数据到 settings.json success in 2 ms√, progress: 34%
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: run build task 填充脚本数据到 settings.json success in 1 ms√, progress: 36%
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: run build task 整理部分构建选项内数据到 settings.json success in 5 ms√, progress: 38%
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: run build task 整理静态模板文件 success in 28 ms√, progress: 46%
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: run build task 给所有的资源加上 MD5 后缀 success in 2 ms√, progress: 62%
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 微信小游戏构建完成！
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 开始转换为Tap小游戏...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 微信小游戏路径:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/wechatgame
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 删除旧的TapBuild目录...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 创建TapBuild目录:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 📦 使用TypeScript转换器
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: === Tap小游戏转换器 (TypeScript版本) ===
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 步骤1: 检查转换器依赖
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] Node.js版本:v20.15.1
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ✓ Node.js版本兼容
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ✓ 转换器依赖已安装
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 依赖路径:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/node_modules
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 步骤2: 验证源路径
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 正在验证微信小游戏源路径...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ✓ 源路径验证通过
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 源路径:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/wechatgame
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 正在准备输出目录...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 删除旧的目标目录...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ✓ 目标目录创建成功
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 输出目录:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild/game
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 步骤3: 复制项目文件
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 正在复制微信小游戏文件...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 源目录:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/wechatgame
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 目标目录:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild/game
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ✓ 文件复制完成
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 步骤4: 处理game.json配置
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 处理game.json配置...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 游戏配置:
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log:   companyName:undefined
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log:   productName:undefined
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log:   productVersion:1.0.0
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ✓ 配置处理完成
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 步骤5: 注入插件
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 复制插件文件...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] ✓ 插件复制完成
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 步骤6: 运行Babel转换
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 正在进行JavaScript兼容性转换...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] Babel配置:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/extensions/taptap-minigame-tools/converter/.babelrc
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 转换目录:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild/game
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:04 - log: [Tap小游戏] 发现 20 个JS文件需要转换
+
+9-9-2026 13:52:09 - error: 2026-9-9 13:52:08 - error: [BABEL] Note: The code generator has deoptimised the styling of /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild/game/cocos-js/_virtual_cc-BncijMet.js as it exceeds the max of 500KB.
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] Babel转换完成: 成功 20, 跳过 0, 失败 0
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ✓ Babel转换完成
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 步骤7: 注入运行时代码
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 注入运行时代码...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ✓ 运行时代码注入完成
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 步骤8: 处理WASM兼容性
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 处理WASM兼容性...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] - wasm-split.js不存在，跳过
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 步骤9: 处理coverviewCustomized设置
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 处理coverviewCustomized设置...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] - UnityPlugin/index.js不存在，跳过
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 步骤10: 复制版本检查文件
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 复制版本检查文件...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ✓ 版本检查文件复制完成
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 步骤11: 创建分发包
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 创建ZIP包...
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ✓ game.zip创建完成: 1.15 MB
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ✅ 转换完成！
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 输出目录:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] game.zip已生成，可以上传到TapTap开发者中心
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ✅ TypeScript转换器执行成功
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ✅ 转换完成！
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] ========================================
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] game.zip已生成:/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/platforms/taptap-minigame/build/TapBuild/game.zip
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: [Tap小游戏] 文件大小:1.15MB
+
+9-9-2026 13:52:09 - log: 2026-9-9 13:52:09 - log: Asset DB is resume!
+

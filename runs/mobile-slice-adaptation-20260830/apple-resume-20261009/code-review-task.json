@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "apple-coordination-audit-task",
+  "taskId": "attempt17-code-review",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "role": "ReadOnlyQAAgent",
+  "fileScope": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt17/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt17/src/theme.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt17/src/style.css",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt17/src/three-cut-visuals.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt17/tests/apple-cleave.test.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/apple-review-attempt17/tests/finish-transition-hud.test.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/human-motion-choice.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/red-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/targeted-tests.log",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/triage.json"
+  ],
+  "questions": [
+    "Read-only review of frozen attempt17 actual relative rotation telemetry and reward-pop/reward-flight origins: do they preserve user-approved reveal pose and center gate, and keep both reward labels outside apple reveal bounds at desktop/portrait/landscape? Check CSS animation path, top-edge fallback and existing test evidence. Identify actionable defects only.",
+    "Check causally connected changes only; no source writes. State natural/perceptual gaps. This is an independent code review, not completion."
+  ],
+  "constraints": [
+    "You are not alone; preserve others work. Read-only, no file writes or browser/server/build.",
+    "Return only ResultSchema validated JSON from apple-coordination-20261008/audit-schema.ts; parent persists outputPath.",
+    "Current canonical workspace may drift; inspect the frozen review paths in fileScope."
+  ],
+  "outputPath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/code-review-result.json",
+  "acceptanceCriteria": [
+    "Actual transforms versus sampler intent and both DOM reward origins reviewed.",
+    "File hashes and lines substantiate findings.",
+    "No completion from unit tests or fixtures."
+  ]
+}

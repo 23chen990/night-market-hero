@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "axes": {
+    "objectTypes": [
+      "apple:level1-reward-token"
+    ],
+    "lifecycleStateBranches": [
+      "intact",
+      "opening",
+      "settled",
+      "replay"
+    ],
+    "rendererPaths": [
+      "default ThreeCutVisualManager / revealCaps"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1180,
+        "height": 720
+      },
+      {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "reward-token-default-desktop-intact",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "intact",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "desktop",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-desktop-opening",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "opening",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "desktop",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-desktop-settled",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "settled",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "desktop",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-desktop-replay",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "desktop",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-portrait-intact",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "intact",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-portrait-opening",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "opening",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-portrait-settled",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "settled",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-portrait-replay",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "New same-build natural/perceptual evidence required.",
+      "evidence": []
+    },
+    {
+      "id": "reward-token-default-landscape-intact",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "intact",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "Attempt17 exact-object natural frames confirm anchor/tutorial occlusion; reward+4 alone is fixed.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/apple-settled.png",
+          "sha256": "7f15ff5eb50698b34fcc202d5b67522c0553a8a34dfe5d4b72e093e2540b3326",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/continuous-frames/frame-10.png",
+          "sha256": "9ef68ee61b1be2dafe524b0496ba0d4d070a524975626795c3738da16049b3f7",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reward-token-default-landscape-opening",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "opening",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "Attempt17 exact-object natural frames confirm anchor/tutorial occlusion; reward+4 alone is fixed.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/apple-settled.png",
+          "sha256": "7f15ff5eb50698b34fcc202d5b67522c0553a8a34dfe5d4b72e093e2540b3326",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/continuous-frames/frame-10.png",
+          "sha256": "9ef68ee61b1be2dafe524b0496ba0d4d070a524975626795c3738da16049b3f7",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reward-token-default-landscape-settled",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "settled",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "Attempt17 exact-object natural frames confirm anchor/tutorial occlusion; reward+4 alone is fixed.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/apple-settled.png",
+          "sha256": "7f15ff5eb50698b34fcc202d5b67522c0553a8a34dfe5d4b72e093e2540b3326",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/continuous-frames/frame-10.png",
+          "sha256": "9ef68ee61b1be2dafe524b0496ba0d4d070a524975626795c3738da16049b3f7",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reward-token-default-landscape-replay",
+      "objectType": "apple:level1-reward-token",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "default ThreeCutVisualManager / revealCaps",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Current frozen default build; exact apple branch visible through ordinary input; no feedback occlusion or mixed-build substitution.",
+      "observed": "Attempt17 exact-object natural frames confirm anchor/tutorial occlusion; reward+4 alone is fixed.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/apple-settled.png",
+          "sha256": "7f15ff5eb50698b34fcc202d5b67522c0553a8a34dfe5d4b72e093e2540b3326",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/apple-resume-20261009/qa/capture1/landscape/continuous-frames/frame-10.png",
+          "sha256": "9ef68ee61b1be2dafe524b0496ba0d4d070a524975626795c3738da16049b3f7",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Only landscape opening overlay is independently confirmed on current046fd6 build for this complaint; no broader current-build PASS inferred.",
+    "Other all-food task uses rune-7 apple, which is a different instance/state branch.",
+    "Current user explicitly approved the large cap-reveal pose; the old default small-roll/gap limits are superseded only for that presentation branch."
+  ],
+  "remainingGaps": [
+    "Center crossing before split",
+    "Continuous 0.35–0.60 second motion and uncapped real animation time",
+    "Actual sealed cap geometry, crown ownership, hemisphere thickness",
+    "Both default caps readable without overlap/feedback occlusion",
+    "Grounding without hover/penetration and clean replay",
+    "Measured actual transforms; nominal sampler roll must not certify default motion",
+    "Existing gallery acceptance and shared source geometry/material/cut owner",
+    "All default screenshots and reports bind to one immutable current build; no old-build or sibling-object substitution.",
+    "Lint, typecheck, full tests and targeted Playwright checks pass.",
+    "Anchor feedback at the apple shelf cannot cover the opening cap; tutorial stays readable in a safe viewport edge region without covering the exact target."
+  ],
+  "createdAt": "2026-10-09T06:40:17.898Z"
+}
