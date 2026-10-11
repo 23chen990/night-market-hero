@@ -14,33 +14,43 @@ if (Object.values(gate.productSystems).some((value) => value !== true)) throw ne
 for (const file of gate.runtimeWiredEntrypoints) {
   if (!fs.existsSync(path.resolve(workspace, file))) throw new Error(`runtime entrypoint missing: ${file}`);
 }
-
 if (gate.checkpointRules.collisionEnabled !== false || gate.checkpointRules.rewardsPerSegmentPerRun !== 1) throw new Error('invalid open checkpoint rules');
 
-// The declaration proves wiring only. Current-build natural and perceptual
-// reports decide whether the product journey has actually been observed.
+// Declarations prove wiring only. Evidence must identify this exact build.
 const blockers = [];
+const args = process.argv.slice(2);
+const directoryIndex = args.indexOf('--evidence-dir');
+if (directoryIndex >= 0 && (!args[directoryIndex + 1] || args[directoryIndex + 1].startsWith('--'))) {
+  throw new Error('--evidence-dir requires a directory');
+}
+const evidenceDirectory = directoryIndex >= 0 ? args[directoryIndex + 1] : gate.qaEvidenceDirectory;
 const buildPath = path.resolve(workspace, 'dist/index.html');
-const buildHash = fs.existsSync(buildPath)
-  ? createHash('sha256').update(fs.readFileSync(buildPath)).digest('hex')
-  : null;
+const buildHash = fs.existsSync(buildPath) ? createHash('sha256').update(fs.readFileSync(buildPath)).digest('hex') : null;
 if (!buildHash) blockers.push('Current build is missing');
 const reports = [
-  ['runtime-product-gate.json', (report) => report.buildHash],
-  ['qa-natural-journey-report.json', (report) => report.naturalFlow?.buildHash],
-  ['perceptual-qa-report.json', (report) => report.buildHash],
+  ['runtime-product-gate.json', report => report.buildHash],
+  ['qa-natural-journey-report.json', report => report.naturalFlow?.buildHash],
+  ['perceptual-qa-report.json', report => report.buildHash],
 ];
 for (const [name, reportedHash] of reports) {
-  const file = path.resolve(workspace, gate.qaEvidenceDirectory, name);
+  const file = path.resolve(workspace, evidenceDirectory, name);
   if (!fs.existsSync(file)) {
     blockers.push(`Current-build QA evidence missing: ${name}`);
     continue;
   }
-  const report = JSON.parse(fs.readFileSync(file, 'utf8'));
+  let report;
+  try { report = JSON.parse(fs.readFileSync(file, 'utf8')); }
+  catch { blockers.push(`QA evidence is not valid JSON: ${name}`); continue; }
+  if (!report || typeof report !== 'object') {
+    blockers.push(`QA evidence is not an object: ${name}`); continue;
+  }
   if (!buildHash || reportedHash(report) !== buildHash) blockers.push(`QA build hash mismatch: ${name}`);
   if (report.passed !== true) blockers.push(`QA remains blocked: ${name}`);
 }
 console.log(JSON.stringify({
-  structurePassed: true, passed: blockers.length === 0, productGatePassed: blockers.length === 0, evidenceStatus: gate.evidenceStatus, blockers,
+  structurePassed: true, passed: blockers.length === 0, productGatePassed: blockers.length === 0,
+  evidenceStatus: gate.evidenceStatus, blockers, scope: 'web-lite-playable', commercialReleasePassed: false,
   buildHash, journey: gate.journey.length, wired: gate.runtimeWiredEntrypoints.length,
 }));
+// A release command must fail CI rather than merely printing passed:false.
+if (args.includes('--strict') && blockers.length > 0) process.exitCode = 1;
