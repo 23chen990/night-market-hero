@@ -84,6 +84,8 @@ try {
             if (!touch) await page.locator('[data-action="grapple"]').focus();
             continue;
           }
+          const closeMenu = page.locator('[data-action="close-progression"]');
+          if (await closeMenu.isVisible()) await closeMenu.click();
           if (state.status === 'failed' && reviveCount === 0 && await page.locator('[data-action="revive"]').isVisible()) {
             reviveCount++;
             await page.locator('[data-action="revive"]').click();
@@ -163,6 +165,24 @@ try {
       await page.waitForFunction(() => Boolean((window as unknown as { __GAME_TEST__?: unknown }).__GAME_TEST__));
       lifecycle.reloaded = await readMeta();
       assert.deepEqual(lifecycle.reloaded, lifecycle.claimed, 'refresh must not duplicate settlement or claims');
+      // Complete the actual growth loop instead of checking a shop data table.
+      await page.locator('.result-actions [data-action="progression"]').click();
+      const closeMenu = page.locator('[data-action="close-progression"]');
+      const closeBounds = await closeMenu.boundingBox();
+      assert.ok(closeBounds && closeBounds.y >= 0 && closeBounds.y + closeBounds.height <= viewport.height,
+        'mobile menu must keep Return reachable without scrolling its header/footer');
+      const characterId = '走绳伎';
+      const beforeUnlock = await readMeta();
+      await page.locator(`[data-action="unlock-character"][data-character-id="${characterId}"]`).click();
+      const afterUnlock = await readMeta();
+      assert.equal(Number(beforeUnlock.wishfire) - Number(afterUnlock.wishfire), 600);
+      await page.locator(`[data-action="select-character"][data-character-id="${characterId}"]`).click();
+      await page.screenshot({ path: `${out}/${label}-character-selected.png` });
+      await closeMenu.click();
+      await page.locator('[data-action="restart"]').click();
+      await page.locator('.hub-settings').click();
+      assert.equal((await readState()).characterId, characterId, 'chosen character is actually used next run');
+      lifecycle.character = { id: characterId, coinsBefore: beforeUnlock.wishfire, coinsAfter: afterUnlock.wishfire };
       if (touch) {
         await page.setViewportSize({ width: 390, height: 844 });
         await page.waitForTimeout(100);

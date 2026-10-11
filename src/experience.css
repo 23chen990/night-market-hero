@@ -56,7 +56,13 @@
 .result-card h1 { font-size: 24px; margin: 8px 0; }
 .result-card p { margin: 6px 0; font-size: 13px; }
 .settlement-details { margin: 8px 0; font-size: 13px; }
-.progression-menu { z-index: 45; }
+.progression-menu { z-index: 45; display: flex; flex-direction: column; overflow: hidden; gap: 8px; }
+.progression-menu[hidden] { display: none !important; }
+.progression-menu > h2, .progression-menu > .progression-tabs,
+.progression-menu > [data-ui="progression-note"], .progression-menu > [data-action="close-progression"] { flex-shrink: 0; }
+.progression-menu > h2 { margin: 0; font-size: 22px; }
+.progression-menu > [data-ui="progression-content"] { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.progression-menu > [data-action="close-progression"] { width: 100%; margin: 0; }
 .progression-menu button { min-height: 44px; white-space: normal; }
 button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb; outline-offset: 3px; }
 @media (max-width: 900px) {

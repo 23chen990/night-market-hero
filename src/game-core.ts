@@ -1535,6 +1535,11 @@ export class GrappleGame {
     const vehicle = VEHICLES.find((item) => item.id === this.state.vehicleId);
     if (vehicle?.id === '货运滑索') this.state.vehicleLockY = this.state.player.y;
     else if (vehicle?.id === '灯笼群') this.state.vehicleVirtualAnchor = { x: this.state.player.x, y: this.state.player.y - LANTERN_ROPE };
+    else if (this.options.guidedExperience && vehicle?.id === '青鸾') {
+      // A deliberate flap brakes a dive immediately; holding then supplies
+      // sustained lift. Without input the rider can still fall and fail.
+      this.state.player.vy = Math.min(this.state.player.vy, -160);
+    }
   }
 
   private startVehicle(id: VehicleId): void {

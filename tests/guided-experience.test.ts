@@ -206,3 +206,17 @@ test('lantern release really launches forward and does not erase an earned grapp
   assert.ok(game.getState().player.vx >= 330); assert.ok(game.getState().player.vy <= -220);
   assert.equal(game.getState().combo, 3); assert.equal(game.getState().comboTier, 2);
 });
+
+
+test('a deliberate bird flap immediately brakes a late dive without fake rewards', () => {
+  const game = patrol(); enter(game, 8);
+  game.setPlayerForTest({ y: 760, vy: 720 });
+  game.act('press');
+  assert.ok(game.getState().player.vy <= -160);
+  assert.equal(game.getState().combo, 0);
+  assert.equal(game.advanceTicks(24).status, 'playing');
+  assert.ok(game.getState().player.y < 760);
+  game.act('release');
+  game.setPlayerForTest({ y: 870, vy: 720 });
+  assert.equal(game.advanceTicks(12).status, 'failed', 'releasing without steering must remain fallible');
+});

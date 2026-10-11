@@ -509,11 +509,13 @@ async function useItem(item: 'talisman' | 'firecracker', button: HTMLButtonEleme
       if (!runtimeSession.isCurrent(operation)) return;
       const afterUnlock = core.getState();
       if (unlocked.status !== 'granted' && unlocked.status !== 'already-unlocked') {
-        adNote.textContent = unlocked.status === 'in-flight' ? '道具广告正在处理中。' : '广告未完成，道具未消耗。';
+        adNote.textContent = unlocked.status === 'in-flight' ? '道具广告正在处理中。' : '广告不可用或未完成，道具未消耗。';
+        experience.announce(adNote.textContent);
         return;
       }
       if (afterUnlock.status !== 'playing' || afterUnlock.paused || !itemReady(item, afterUnlock)) {
         adNote.textContent = '道具已准备好，当前状态暂不可使用。';
+        experience.announce(adNote.textContent);
         return;
       }
     }
@@ -790,7 +792,7 @@ function renderProductUi(state: GrappleState): void {
     pulseUiElement(escapeFeedback);
   }
   lastRenderedDistance = state.chase.distance;
-  pauseOverlay.hidden = !state.paused || orientationBlocked || waitingForFirstInput;
+  pauseOverlay.hidden = !state.paused || state.status !== 'playing' || orientationBlocked || waitingForFirstInput || !progressionMenu.hidden;
   persistRun(state, false);
 
   if (state.status === 'playing') {
