@@ -1,0 +1,70 @@
+name: Flight and mobile menu acceptance
+on:
+  push:
+    branches: [feat/playable-experience-20261012]
+    paths: [.github/workflows/flap-menu-validation.yml]
+permissions:
+  contents: write
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/playable-experience-20261012
+      - name: Apply checksum-verified flight and menu fixes
+        run: |
+          python3 - <<'PY'
+          import pathlib, hashlib, base64, lzma
+          patch = lzma.decompress(base64.b64decode(pathlib.Path('.chatgpt/flap-and-menu.txt').read_text().strip(), validate=True))
+          assert hashlib.sha256(patch).hexdigest() == '82d9417f9ba12e86f036f700d7b29958fc9e7fbc3a390e2fff6651518d4ef530'
+          pathlib.Path('/tmp/flight.patch').write_bytes(patch)
+          PY
+          git apply --check /tmp/flight.patch
+          git apply --index /tmp/flight.patch
+          git rm .chatgpt/flap-and-menu.txt .github/workflows/flap-menu-validation.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix: make bird flaps responsive and mobile growth menus safely accessible'
+          git push origin HEAD:feat/playable-experience-20261012
+          mkdir -p delivery
+          git rev-parse HEAD > delivery/commit.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build 2>&1 | tee delivery/build.log
+      - name: Static and complete regression suite
+        run: |
+          npm run lint > delivery/lint.log 2>&1
+          npm run typecheck > delivery/typecheck.log 2>&1
+          node --import tsx --test tests/*.test.ts > delivery/tests.log 2>&1
+          tail -n 15 delivery/tests.log
+      - name: Install browsers
+        if: ${{ !cancelled() }}
+        run: npx playwright install --with-deps chromium webkit
+      - name: Renamed standalone file
+        if: ${{ !cancelled() }}
+        run: npm run test:file
+      - name: Real input, four rides, settlement and character purchase
+        if: ${{ !cancelled() }}
+        run: npm run test:play
+      - name: Natural failure, revival, rotation and restart
+        if: ${{ !cancelled() }}
+        run: npm run test:safety
+      - name: Exact tested source and playable
+        if: ${{ !cancelled() }}
+        run: |
+          sha256sum dist/index.html > delivery/playable.sha256
+          git ls-files src tests scripts docs dev index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js runtime-product-gates.json validate-runtime-product-gates.mjs PLAYABLE_START_HERE.md AGENTS.md .gitignore | tar -czf delivery/runtime-source.tar.gz -T -
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: flight-and-menu-playable
+          path: |
+            delivery/
+            evidence/playable-audit/
+            dist/index.html
+          retention-days: 30
