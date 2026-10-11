@@ -8,13 +8,12 @@ import type { GrappleState } from '../src/game-core.ts';
 
 // State-observing automated play, not blind human usability evidence.
 // No act/step/reset/teleport/scenario APIs. Time is real browser frame time.
-// Screenshots run alongside the driver, so encoding an image cannot hold an
-// input indefinitely and manufacture an otherwise nonexistent gameplay stall.
+// Screenshot work is nonblocking so the driver continues generating input.
 const out = resolve('evidence/playable-audit');
 await mkdir(out, { recursive: true });
 const entry = resolve('dist/index.html');
 const sha256 = createHash('sha256').update(await readFile(entry)).digest('hex');
-const rides = ['\u8d27\u8fd0\u6ed1\u7d22', '\u7eb8\u9e22', '\u706f\u7b3c\u7fa4', '\u9752\u9e3e'];
+const rides = ['货运滑索', '纸鸢', '灯笼群', '青鸾'];
 const browser = await chromium.launch({ headless: true });
 const reports: unknown[] = [];
 const failures: string[] = [];
@@ -68,7 +67,6 @@ try {
       await page.waitForTimeout(300);
       assert.equal((await readState()).tick, beforeStart.tick, 'start card must not spend the run');
       await page.locator('[data-action="start-run"]').click();
-      // Focus the play surface without generating a synthetic gameplay action.
       if (!touch) await page.locator('[data-action="grapple"]').focus();
       for (let sample = 0; Date.now() - started < 115_000; sample++) {
         const state = await readState();
@@ -103,15 +101,11 @@ try {
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
         await edge(wantHold, state.tick);
-        // Reset a physical hold that a collision legitimately cancelled.
         if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
         if (state.vehicleId) {
           const visit = seen.get(state.vehicleId);
           if (visit) visit.lastTick = state.tick;
-          else {
-            seen.set(state.vehicleId, { firstTick: state.tick, lastTick: state.tick, elapsed: state.elapsed });
-
-          }
+          else seen.set(state.vehicleId, { firstTick: state.tick, lastTick: state.tick, elapsed: state.elapsed });
         }
         if (state.vehicleId && !capturedRides.has(state.vehicleId) && shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
         if (state.levelId === 'night-patrol') {
@@ -123,12 +117,18 @@ try {
             }
           }
         }
-        if (rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4 && capturedRides.size === 4) break;
+        const complete = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4 && capturedRides.size === 4;
+        // Keep controlling the flight while moving to pause. Releasing a bird
+        // during its dive and waiting through CDP reads intentionally loses.
+        if (complete && held && state.player.y < 550 && state.player.vy < -80) {
+          await page.locator('[data-action="pause"]').click();
+          break;
+        }
         await page.waitForTimeout(65);
       }
       lifecycle.journey = await readState();
       await edge(false, (await readState()).tick);
-      if ((await readState()).status === 'playing') await page.locator('.hub-settings').click();
+      if ((await readState()).status === 'playing' && !(await readState()).paused) await page.locator('[data-action="pause"]').click();
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
       for (const ride of rides) {
@@ -143,7 +143,6 @@ try {
       assert.equal(paused.inputHeld, false, 'pause cancels held input');
       lifecycle.pausedTick = paused.tick;
       await page.screenshot({ path: `${out}/${label}-pause.png` });
-      // Reload the actual saved run through the browser, not through a test fixture.
       await page.reload();
       await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
       const restored = await readState();
