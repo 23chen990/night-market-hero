@@ -5,7 +5,7 @@ import { createGrappleGame } from '../src/game-core.ts';
 
 test('default browser entrypoint explicitly selects the open-streets journey', () => {
   const source = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8');
-  assert.match(source, /createGrappleGame\([^\n]+\{ marketGates: false, terrainMode: 'panorama' \}/);
+  assert.match(source, /createGrappleGame\([^\n]+\{ marketGates: false, terrainMode: 'panorama', guidedExperience: true \}/);
   assert.doesNotMatch(source, /this\.drawMarketGate\(graphics, state\)/);
 });
 

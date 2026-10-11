@@ -331,6 +331,7 @@ function isValidRunStateRecord(state: RecordValue): boolean {
     && optional(state.activePickups, (value) => Array.isArray(value) && value.every(activePickup))
     && optional(state.vehiclePhase, (value) => oneOf(value, VEHICLE_PHASES))
     && optional(state.vehicleTicksRemaining, nonNegativeInteger)
+    && optional(state.vehicleQueue, value => Array.isArray(value) && value.length <= 4 && value.every(id => oneOf(id, VEHICLE_IDS)))
     && optional(state.vehicleLockY, finite)
     && optional(state.vehicleVirtualAnchor, nullablePoint)
     && optional(state.depthCoefficient, (value) => finite(value) && value > 0)

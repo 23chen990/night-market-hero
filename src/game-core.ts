@@ -1,5 +1,6 @@
+import { directedVehicle, directedMutation, guidedPickups, completedCheckpoints, isStylishRelease, pointSegmentDistance } from './experience-director.ts';
 import { UI_ANIMATION_STANDARD, type UiAnimationStandard } from './ui-animation.ts';
-import { difficultyAtSegment, gateCheckpointXForSegment, metersAtSegment, segmentForIndex, chooseMutation, rollVehicleForSegment, segmentIndexAtX, segmentProgressAtX, segmentStartPx, segmentLengthPx, retentionBoundsAtSegment, pickupPlacementForSegment, depthCoefficient, VEHICLES, type PickupPlacement } from './endless.ts';
+import { difficultyAtSegment, gateCheckpointXForSegment, metersAtSegment, segmentForIndex, chooseMutation, rollVehicleForSegment, segmentIndexAtX, segmentProgressAtX, segmentStartPx, segmentLengthPx, retentionBoundsAtSegment, pickupPlacementForSegment, depthCoefficient, VEHICLES, type PickupPlacement, type VehicleId } from './endless.ts';
 import { cityChunksInView, type DistrictId } from './district-world.ts';
 import { CHARACTERS } from './progression.ts';
 
@@ -323,6 +324,7 @@ export interface GrappleState {
   vehicleTicksRemaining: number;
   /** Locked zipline height captured when 货运滑索 hold begins. */
   vehicleLockY: number;
+  vehicleQueue: VehicleId[];
   /** Fixed virtual pivot (above the player) used by 灯笼群 free-attach swing. */
   vehicleVirtualAnchor: Point | null;
   depthCoefficient: number;
@@ -339,6 +341,7 @@ export interface GrappleState {
 export interface GrappleGameOptions {
   characterId?: string;
   marketGates?: boolean;
+  guidedExperience?: boolean;
   terrainMode?: TerrainMode;
 }
 
@@ -831,6 +834,7 @@ function copyState(state: GrappleState): GrappleState {
   return {
     ...state,
     player: { ...state.player },
+    vehicleQueue: [...(state.vehicleQueue ?? [])],
     playerMotion: { ...state.playerMotion },
     anchors: state.anchors.map((anchor) => ({ ...anchor })),
     chase: { ...state.chase },
@@ -1024,6 +1028,7 @@ export class GrappleGame {
       vehiclePhase: 'idle',
       vehicleTicksRemaining: 0,
       vehicleLockY: 0,
+      vehicleQueue: [],
       vehicleVirtualAnchor: null,
       depthCoefficient: 1,
       bounceCount: 0,
@@ -1042,6 +1047,7 @@ export class GrappleGame {
     this.state.maxSpeed = MAX_SPEED * this.characterStats().speed;
     this.state.attachRadius = this.ordinaryAttachRadius();
     if (this.options.terrainMode === 'panorama') this.state = sanitizePanoramaTerrainState(this.state);
+    if (this.options.guidedExperience) this.state.activePickups = guidedPickups(0).filter(p => p.x < this.state.finishX);
     this.recordEvent('reset', `seed:${normalizedSeed}`);
     return this.getState();
   }
@@ -1071,6 +1077,16 @@ export class GrappleGame {
     return this.getState();
   }
 
+  finishPatrol(): boolean {
+    if (!this.endlessMode || this.state.status !== 'playing' || this.state.distanceMeters < 1) return false;
+    this.state.paused = false;
+    this.state.status = 'won';
+    this.state.inputHeld = false;
+    this.state.attachedAnchorId = null;
+    this.state.ropeLength = null;
+    return true;
+  }
+
   private configureEndlessState(message = ''): void {
     this.state.levelIndex = 1;
     this.state.levelCount = 2;
@@ -1095,7 +1111,9 @@ export class GrappleGame {
     this.state.vehiclePhase = 'idle';
     this.state.vehicleTicksRemaining = 0;
     this.state.vehicleLockY = 0;
+    this.state.vehicleQueue = [];
     this.state.vehicleVirtualAnchor = null;
+    if (this.options.guidedExperience) this.state.activePickups = guidedPickups(0);
     this.state.depthCoefficient = 1;
     this.state.attachRadius = this.ordinaryAttachRadius();
   }
@@ -1173,6 +1191,7 @@ export class GrappleGame {
       vehiclePhase: snapshot.vehiclePhase ?? 'idle',
       vehicleTicksRemaining: snapshot.vehicleTicksRemaining ?? 0,
       vehicleLockY: snapshot.vehicleLockY ?? 0,
+      vehicleQueue: [...(snapshot.vehicleQueue ?? [])],
       vehicleVirtualAnchor: snapshot.vehicleVirtualAnchor ?? null,
       depthCoefficient: snapshot.depthCoefficient ?? 1,
       bounceCount: snapshot.bounceCount ?? 0,
@@ -1229,7 +1248,7 @@ export class GrappleGame {
 
   advanceTicks(ticks: number): GrappleState {
     const count = Math.max(0, Math.floor(ticks));
-    for (let index = 0; index < count && this.state.status === 'playing'; index += 1) this.fixedTick(FIXED_STEP);
+    for (let index = 0; index < count && this.state.status === 'playing' && !this.state.paused; index += 1) this.fixedTick(FIXED_STEP);
     return this.getState();
   }
 
@@ -1414,6 +1433,11 @@ export class GrappleGame {
     if (this.state.vehicleId) {
       this.state.vehiclePhase = 'released';
       this.state.vehicleVirtualAnchor = null;
+      if (this.options.guidedExperience && this.state.vehicleId === '货运滑索') {
+        this.state.player.vx = Math.max(420, this.state.player.vx + 140);
+        this.state.player.vy = Math.min(-300, this.state.player.vy);
+        this.expireVehicle();
+      }
     }
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
@@ -1458,7 +1482,7 @@ export class GrappleGame {
       this.state.player.vx = Math.max(this.state.player.vx, 420);
       this.state.player.vy = verticalCorrection;
     }
-    if (releasedAnchor && releaseSpeed >= 360) {
+    if (releasedAnchor && releaseSpeed >= 360 && (!this.options.guidedExperience || isStylishRelease(this.state.player))) {
       const previousTier = this.state.comboTier;
       this.stylishFlights += 1;
       this.state.combo += 1;
@@ -1485,23 +1509,32 @@ export class GrappleGame {
     else if (vehicle?.id === '灯笼群') this.state.vehicleVirtualAnchor = { x: this.state.player.x, y: this.state.player.y - LANTERN_ROPE };
   }
 
+  private startVehicle(id: VehicleId): void {
+    const def = VEHICLES.find(item => item.id === id)!;
+    this.state.vehicleId = id;
+    this.state.vehiclePhase = this.state.inputHeld ? 'holding' : 'idle';
+    this.state.vehicleTicksRemaining = Math.round(def.durationSeconds / FIXED_STEP);
+    // A mounted vehicle cannot also be constrained by the old world rope.
+    this.state.attachedAnchorId = null;
+    this.state.ropeLength = null;
+    this.state.vehicleLockY = this.state.player.y;
+    this.state.vehicleVirtualAnchor = null;
+    if (this.state.inputHeld) this.beginVehicleHold();
+  }
+
   private grantVehicleForSegment(segment: number, sky: boolean): void {
-    const id = rollVehicleForSegment(this.state.seed, segment, sky);
-    if (id) {
-      const def = VEHICLES.find((item) => item.id === id);
-      this.state.vehicleId = id;
-      this.state.vehiclePhase = this.state.inputHeld ? 'holding' : 'idle';
-      this.state.vehicleTicksRemaining = Math.max(0, Math.round((def?.durationSeconds ?? 0) / FIXED_STEP));
-      this.state.vehicleLockY = 0;
-      this.state.vehicleVirtualAnchor = null;
-      if (this.state.vehiclePhase === 'holding') this.beginVehicleHold();
-    } else {
-      this.state.vehicleId = null;
-      this.state.vehiclePhase = 'idle';
-      this.state.vehicleTicksRemaining = 0;
-      this.state.vehicleLockY = 0;
-      this.state.vehicleVirtualAnchor = null;
+    const id = this.options.guidedExperience
+      ? directedVehicle(this.state.seed, segment)
+      : rollVehicleForSegment(this.state.seed, segment, sky);
+    if (this.options.guidedExperience) {
+      if (!id) return; // Entering an empty segment never erases an active ride.
+      if (this.state.vehicleId && this.state.vehicleTicksRemaining > 0) {
+        if (this.state.vehicleQueue.length < 4) this.state.vehicleQueue.push(id);
+        return;
+      }
     }
+    if (id) this.startVehicle(id);
+    else this.expireVehicle();
   }
 
   private expireVehicle(): void {
@@ -1510,6 +1543,14 @@ export class GrappleGame {
     this.state.vehicleTicksRemaining = 0;
     this.state.vehicleLockY = 0;
     this.state.vehicleVirtualAnchor = null;
+    if (this.options.guidedExperience) {
+      this.grappleReconnectNotBeforeX = 0;
+      this.state.regrappleGraceUntilTick = this.state.tick + 90;
+      this.state.player.vx = Math.max(280, this.state.player.vx);
+      this.state.player.vy = Math.min(-160, this.state.player.vy);
+      const next = this.state.vehicleQueue.shift();
+      if (next) this.startVehicle(next);
+    }
   }
 
   step(frameSeconds = FIXED_STEP): GrappleState {
@@ -2285,6 +2326,7 @@ export class GrappleGame {
     const fx = this.mutationModifiers();
     let gravity = GRAVITY * fx.gravityFactor * (vehicleActive ? 1 : this.characterStats().gravity);
     if (vehicleActive && vehicle!.id === '纸鸢' && this.state.vehiclePhase !== 'holding') gravity = KITE_GLIDE_GRAVITY * fx.gravityFactor;
+    if (this.options.guidedExperience && vehicleActive && this.state.vehiclePhase === 'idle') gravity = KITE_GLIDE_GRAVITY;
     player.vy += gravity * dt;
     player.vx += (this.state.route === 'high' ? 22 : -10) * dt;
     // 载具按住/松手物理
@@ -2292,13 +2334,14 @@ export class GrappleGame {
       if (vehicle!.id === '纸鸢' && this.state.vehiclePhase === 'holding') {
         player.vy -= KITE_LIFT_ACCEL * dt;
         if (player.vy < KITE_MAX_LIFT_VY) player.vy = KITE_MAX_LIFT_VY;
-      } else if (vehicle!.id === '货运滑索' && this.state.vehiclePhase === 'holding') {
+      } else if (vehicle!.id === '货运滑索' && (this.state.vehiclePhase === 'holding' || (this.options.guidedExperience && this.state.vehiclePhase === 'idle'))) {
         player.y = this.state.vehicleLockY;
         player.vy = 0;
         player.vx += ZIPLINE_ACCEL * dt;
       } else if (vehicle!.id === '青鸾') {
         if (this.state.vehiclePhase === 'holding') {
-          if (this.state.tick % BIRD_FLAP_PERIOD === 0) player.vy -= BIRD_FLAP_IMPULSE;
+          if (this.options.guidedExperience) player.vy -= 1550 * dt;
+          else if (this.state.tick % BIRD_FLAP_PERIOD === 0) player.vy -= BIRD_FLAP_IMPULSE;
         } else if (this.state.vehiclePhase === 'released') {
           player.vy += (BIRD_DIVE_GRAVITY - GRAVITY) * dt;
           player.vx += BIRD_DIVE_ACCEL * dt;
@@ -2372,9 +2415,16 @@ export class GrappleGame {
       player.vy -= nx * SWING_DRIVE * fx.swingDriveFactor * dt;
     }
 
+    if (this.options.guidedExperience && player.y < 125) {
+      player.y = 125;
+      player.vy = Math.max(0, player.vy);
+      if (this.state.attachedAnchorId) { this.state.attachedAnchorId = null; this.state.ropeLength = null; }
+    }
+
     // Preserve the actual world-space frontier independently of normalized
     // endless progress, whose denominator is intentionally unbounded.
     this.state.furthestX = Math.max(this.state.furthestX, player.x);
+    if (this.options.guidedExperience && !this.endlessMode) this.state.distanceMeters = Math.floor(this.state.furthestX / 30);
 
     const speed = Math.hypot(player.vx, player.vy);
     const speedCap = (this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED) * (vehicleActive ? 1 : this.characterStats().speed);
@@ -2389,7 +2439,7 @@ export class GrappleGame {
     this.refreshDerived(true);
     this.resolveAuthoredRouteSurface();
     this.updateTerrain(dt, previousPlayer);
-    this.collectPickups();
+    this.collectPickups(previousPlayer);
     this.updateChase(dt);
     this.updateChaseEvents(previousPlayer);
     this.refreshDerived(false);
@@ -2422,7 +2472,8 @@ export class GrappleGame {
       && player.y >= this.state.gate.collisionAperture.y
       && player.y <= this.state.gate.collisionAperture.y + this.state.gate.collisionAperture.height;
     if (gateShelter) player.vx = Math.max(player.vx, 260);
-    const pursuerContact = Math.abs(player.x - this.state.pursuer.x) <= PURSUER_CONTACT_DISTANCE;
+    const pursuerContact = Math.abs(player.x - this.state.pursuer.x) <= PURSUER_CONTACT_DISTANCE
+      && (!this.options.guidedExperience || Math.abs(player.y - this.state.pursuer.y) <= 72);
     // 青鸾期间追兵无法追上（catchImmune）：仅冻结追兵推进，距离自然拉大
     const vehicleCatchImmune = vehicleActive && vehicle!.catchImmune;
     // The first district cycle teaches the endless rhythm while falls still
@@ -2437,7 +2488,8 @@ export class GrappleGame {
     // Falling still fails normally, and the endless patrol keeps its own
     // pressure rules; this only removes a timing-dependent early catch from
     // the first tutorial route.
-    const tutorialOpeningGrace = !this.endlessMode
+    const tutorialOpeningGrace = (!this.options.guidedExperience || this.state.elapsed < 25)
+      && !this.endlessMode
       && this.state.levelIndex === 0
       && this.state.inputTransitions >= 4
       && player.x < this.state.routeGraph.rejoin.x;
@@ -2540,27 +2592,29 @@ export class GrappleGame {
     this.state.depthCoefficient = depthCoefficient(segment);
     this.state.attachRadius = this.ordinaryAttachRadius();
     const descriptor = segmentForIndex(segment);
-    this.state.isSky = descriptor.isSky && this.state.player.y <= 445 && this.state.player.vx >= 360;
+    this.state.isSky = descriptor.isSky && (this.options.guidedExperience || (this.state.player.y <= 445 && this.state.player.vx >= 360));
     if (this.state.isSky && !this.state.visitedSkySegments.includes(segment)) {
       this.state.visitedSkySegments.push(segment);
       this.state.skySegments += 1;
     }
-    this.state.mutation = segment >= 3 ? chooseMutation(segment, Math.floor(this.state.distanceMeters / 300), this.state.seed) : null;
+    this.state.mutation = this.options.guidedExperience ? directedMutation(this.state.seed, segment)
+      : segment >= 3 ? chooseMutation(segment, Math.floor(this.state.distanceMeters / 300), this.state.seed) : null;
     const firstEntry = !this.state.visitedSegments.includes(segment);
     if (firstEntry) {
       this.state.visitedSegments.push(segment);
       // 概率事件：首次进入新段时按设计概率抽取载具（天空段只出青鸾）
       this.grantVehicleForSegment(segment, descriptor.isSky);
       const placements = pickupPlacementForSegment(segment);
-      this.state.activePickups.push(...placements.map((pickup) => ({
+      this.state.activePickups.push(...(this.options.guidedExperience ? guidedPickups(segment) : placements.map((pickup) => ({
         ...pickup,
         x: segmentStartPx(segment) + segmentLengthPx(segment) * 0.5,
         y: pickup.kind === 'high-route' ? 335 : 500,
         collected: false,
-      })));
+      }))));
       this.state.activePickups = this.state.activePickups.filter((pickup) => !pickup.collected && pickup.segment >= segment - 2);
-      if (descriptor.isGate) this.state.gatesPassed += 1;
+      if (descriptor.isGate && !this.options.guidedExperience) this.state.gatesPassed += 1;
     }
+    if (this.options.guidedExperience) this.state.gatesPassed = Math.max(this.state.gatesPassed, completedCheckpoints(this.state.furthestX));
     // 载具有时长限制：确定性 tick 倒计时（非墙钟），到期回到普通物理
     if (this.state.vehicleId && this.state.vehicleTicksRemaining > 0) {
       this.state.vehicleTicksRemaining -= 1;
@@ -2568,14 +2622,16 @@ export class GrappleGame {
     }
   }
 
-  private collectPickups(): void {
+  private collectPickups(previousPlayer = this.state.player): void {
     for (const pickup of this.state.activePickups) {
       if (pickup.collected) continue;
-      const distance = Math.hypot(this.state.player.x - pickup.x, this.state.player.y - pickup.y);
-      if (distance > PLAYER_COLLISION_RADIUS + 18) continue;
+      const distance = this.options.guidedExperience ? pointSegmentDistance(pickup, previousPlayer, this.state.player)
+        : Math.hypot(this.state.player.x - pickup.x, this.state.player.y - pickup.y);
+      if (distance > (this.options.guidedExperience ? 62 : PLAYER_COLLISION_RADIUS + 18)) continue;
       pickup.collected = true;
       this.state.pickups += 1;
       this.state.coins += pickup.value;
+      if (this.options.guidedExperience && pickup.kind === 'low-safety') this.applyPursuitReward('stylish-flight', 0.04);
     }
   }
 }

@@ -20,6 +20,9 @@ const styleName = assets.find((name) => name.endsWith('.css'));
 if (!scriptName) throw new Error('Vite did not emit JavaScript');
 
 let html = await readFile(resolve(dist, 'index.html'), 'utf8');
+// The source checkout's helper redirect must not survive in the standalone
+// file. A downloaded or renamed dist/index.html must run without a sibling.
+html = html.replace(/<script>\s*if \(location\.protocol === 'file:'[\s\S]*?<\/script>/, '');
 let script = (await readFile(resolve(assetDirectory, scriptName), 'utf8'))
   // Keep third-party/runtime template strings from terminating the inline HTML script.
   .replaceAll('</script', '<\\/script')

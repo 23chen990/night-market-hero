@@ -1,3 +1,6 @@
+import { ExperienceHud } from './experience-hud.ts';
+import { drawRide, drawConditions } from './ride-renderer.ts';
+import { nextCheckpointX } from './experience-director.ts';
 import { applyFlightIdentity, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
 import {
@@ -36,10 +39,11 @@ import {
   type RunIdentityStorage,
 } from './runtime-session';
 import { CHARACTERS } from './progression';
-import { speedFeelProfile, settlementCoins, gateCheckpointXForSegment, segmentIndexAtX } from './endless';
+import { speedFeelProfile, settlementCoins } from './endless';
 import { createCameraLayout, projectCamera, LOGICAL_VIEWPORT } from './camera-layout';
 import { createNightCityRenderer, createNightCityRenderPlan, mapWorldAnchorToArchitecturalSocket, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
 import './style.css';
+import './experience.css';
 import grappleAttachedIcon from './assets/approved-ui/grapple-attached-v1.png';
 import destinationArrowIcon from './assets/approved-ui/destination-arrow-v1.png';
 import safeStateIcon from './assets/approved-ui/safe-state-v1.png';
@@ -161,7 +165,7 @@ const snapshotLoadRejected = !freshStart && rawSnapshotBeforeLoad !== null && ca
 const restoredRun = candidateRun && ['lantern-entry', 'night-patrol'].includes(candidateRun.state.levelId)
   ? candidateRun
   : null;
-const core = createGrappleGame(restoredRun?.state.seed ?? querySeed, { marketGates: false, terrainMode: 'panorama' });
+const core = createGrappleGame(restoredRun?.state.seed ?? querySeed, { marketGates: false, terrainMode: 'panorama', guidedExperience: true });
 if (restoredRun) core.restoreSnapshot(restoredRun.state);
 const runtimeSession = new RuntimeSession(runIdentity, restoredRun?.runId ?? querySeed);
 const backgroundPolicy = new BackgroundLifecyclePolicy();
@@ -287,6 +291,48 @@ let lastPersistedTick = -1;
 let lastPersistedStatus: GrappleState['status'] | null = null;
 let lastPersistedPaused: boolean | null = null;
 let tutorialStepIndex = 0;
+let waitingForFirstInput = core.getState().status === 'playing';
+if (waitingForFirstInput) core.setPaused(true);
+app.dataset.awaitingStart = String(waitingForFirstInput);
+const experience = new ExperienceHud(app, {
+  start: () => startFirstInput(),
+  resume: () => {
+    if (orientationBlocked || core.getState().status !== 'playing') return;
+    waitingForFirstInput = false;
+    app.dataset.awaitingStart = 'false';
+    experience.setAwaiting(false);
+    requiredElement<HTMLElement>('[data-ui="progression-menu"]').hidden = true;
+    backgroundPolicy.explicitResume();
+    core.setPaused(false);
+    refreshScene();
+  },
+  finish: () => {
+    if (orientationBlocked) return;
+    cancelOwnedGrapple();
+    if (core.finishPatrol()) refreshScene();
+  },
+  claimMissions: () => {
+    if (core.getState().status === 'playing' || terminalSettlementPending
+      || runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire')) return;
+    for (let pass = 0; pass < 8; pass++) {
+      const mission = economy.getActiveMissions().find(item => item.claimable);
+      if (!mission || economy.claimMission(mission.id).status !== 'claimed') break;
+    }
+    refreshScene();
+  },
+});
+experience.setAwaiting(waitingForFirstInput, Boolean(restoredRun));
+
+function startFirstInput(): void {
+  if (!waitingForFirstInput || orientationBlocked || core.getState().status !== 'playing') return;
+  waitingForFirstInput = false;
+  app.dataset.awaitingStart = 'false';
+  experience.setAwaiting(false);
+  backgroundPolicy.explicitResume();
+  core.setPaused(false);
+  refreshScene();
+}
+
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const uiMotionAssets = [
@@ -421,6 +467,11 @@ function itemReady(item: 'talisman' | 'firecracker', state: GrappleState): boole
 }
 
 function beginNextRun(state: GrappleState): void {
+  waitingForFirstInput = false;
+  app.dataset.awaitingStart = 'false';
+  experience.setAwaiting(false);
+  experience.reset();
+  lastPersistedTick = -1;
   core.setCharacter(economy.getProgressV2().selectedCharacter ?? CHARACTERS[0]!.id);
   backgroundPolicy.explicitResume();
   requiredElement<HTMLElement>('[data-ui="progression-menu"]').hidden = true;
@@ -484,7 +535,11 @@ function readPersistedRunRaw(): string | null {
   return runIdentityStorage.read('night-market-hero.run.v2');
 }
 
-function persistRun(state = core.getState()): boolean {
+function persistRun(state = core.getState(), force = true): boolean {
+  // At most one ordinary snapshot per simulated second. Lifecycle/terminal
+  // changes and explicit save retries bypass this throttle.
+  if (!force && state.status === lastPersistedStatus && state.paused === lastPersistedPaused
+    && state.tick >= lastPersistedTick && state.tick - lastPersistedTick < 120) return true;
   if (state.tick === lastPersistedTick && state.status === lastPersistedStatus && state.paused === lastPersistedPaused) return true;
   if (snapshotLoadRejected) {
     setPersistenceNotice('run-load-rejected');
@@ -588,7 +643,7 @@ function renderProductUi(state: GrappleState): void {
   runCoinsReadout.textContent = String(Math.floor(state.coins ?? 0));
   comboReadout.textContent = String(state.combo ?? 0);
   multiplierReadout.textContent = `${state.gatesPassed ?? 0}`;
-  const checkpointX = endless ? gateCheckpointXForSegment(segmentIndexAtX(state.player.x)) : state.finishX;
+  const checkpointX = endless ? nextCheckpointX(state.player.x) : state.finishX;
   const nextGateDistance = Math.max(0, Math.round((checkpointX - state.player.x) / 30));
   app.dataset.marketGates = 'disabled';
   gatesTotal.textContent = String(state.gatesPassed);
@@ -732,8 +787,8 @@ function renderProductUi(state: GrappleState): void {
     pulseUiElement(escapeFeedback);
   }
   lastRenderedDistance = state.chase.distance;
-  pauseOverlay.hidden = !state.paused || orientationBlocked;
-  persistRun(state);
+  pauseOverlay.hidden = !state.paused || orientationBlocked || waitingForFirstInput;
+  persistRun(state, false);
 
   if (state.status === 'playing') {
     // Endless gate beats are in-run checkpoints, never terminal settlements.
@@ -791,12 +846,12 @@ function renderProductUi(state: GrappleState): void {
     }
     const failedSettlement = failedSettlementResult;
     if (!failedSettlement || isSettlementFailure(failedSettlement)) return;
-    settlementDetails.textContent = `已穿过 ${state.gatesPassed} 个街区 · 获得金币 ${failedSettlementBaseReward}`;
+    settlementDetails.textContent = `里程 ${Math.floor(state.distanceMeters)}m · 拾取 ${state.pickups} 枚 · 最高 ${state.comboPeak} 连飞 · 入账 +${failedSettlementBaseReward}`;
     const canRevive = core.canRewardedRevive();
     const freeRevive = economy.canDailyFreeRevive(Date.now());
     const wasCaught = state.failureReason === 'caught';
     resultKicker.textContent = canRevive ? '惜败 · 铜符尚在' : '护印突围中断';
-    resultTitle.textContent = wasCaught ? '官兵追上了' : '游侠跌入摊棚间';
+    resultTitle.textContent = wasCaught ? '官兵追上了' : '松手太久，坠落了';
     resultCopy.textContent = canRevive
       ? state.levelId === 'night-patrol'
         ? `本次夜巡已行进 ${Math.round(state.distanceMeters)}m。${freeRevive ? '今日首次可免费' : '主动看完一次广告可'}从最近的安全内檐复起。`
@@ -804,7 +859,8 @@ function renderProductUi(state: GrappleState): void {
       : wasCaught
         ? '碰撞、错过挂点和滞空会让官兵追近；连续漂亮飞越和捷径能拉开距离。'
         : '盟契铜符还在怀里，换一条夜市内线重新突围。';
-    reviveButton.hidden = !canRevive;
+    resultCopy.textContent += wasCaught ? ' 下次试试青色金币线，可拉开追兵。' : ' 身体向前时松手，下落时及时按住。';
+    reviveButton.hidden = !canRevive || (!freeRevive && !window.__NIGHT_MARKET_HERO_TAPTAP_AD_CONFIG__);
     reviveButton.textContent = freeRevive ? '今日免费 · 安全复起' : '看完广告 · 安全复起';
     doubleButton.hidden = true;
     restartButton.hidden = false;
@@ -823,15 +879,17 @@ function renderProductUi(state: GrappleState): void {
   terminalSettlementPending = false;
   terminalSettlementRunId = null;
   app.dataset.settlementStatus = 'committed';
-  settlementDetails.textContent = `已穿过 ${state.gatesPassed} 个街区 · 获得金币 ${settlement.baseReward}`;
+  settlementDetails.textContent = `里程 ${Math.floor(state.distanceMeters)}m · ${state.gatesPassed} 个街区 · 最高 ${state.comboPeak} 连飞 · 入账 +${settlement.baseReward}`;
   const campaignComplete = state.levelId === 'night-patrol' || state.levelIndex === state.levelCount - 1;
   resultKicker.textContent = state.levelId === 'night-patrol' ? '夜巡结束' : campaignComplete ? '渡口已达' : `第${state.levelIndex + 1}关通过`;
   resultTitle.textContent = state.levelId === 'night-patrol' ? '本次夜巡记录' : campaignComplete ? '盟契铜符已送达' : `${state.levelTitle} · 突围成功`;
-  resultCopy.textContent = campaignComplete
+  resultCopy.textContent = state.levelId === 'night-patrol'
+    ? `已安全收工。本次记录与 ${settlement.baseReward} 金币已保存，挑战下一次更远的旅程。`
+    : campaignComplete
     ? `顺利抵达渡口。本次夜巡已记录，获得金币：+${settlement.baseReward}。`
     : `铜符仍在手中，准备开始夜巡。结算金币：+${settlement.baseReward}。`;
   reviveButton.hidden = true;
-  doubleButton.hidden = !settlement.canDouble;
+  doubleButton.hidden = !settlement.canDouble || !window.__NIGHT_MARKET_HERO_TAPTAP_AD_CONFIG__;
   doubleButton.textContent = `看完广告 · 再得 ${settlement.baseReward} 金币`;
   restartButton.hidden = true;
   continueButton.hidden = false;
@@ -949,6 +1007,10 @@ class FlightScene extends Phaser.Scene {
     app.dataset.guardOnScreen = String(state.pursuer.x >= this.cameras.main.scrollX
       && state.pursuer.x <= this.cameras.main.scrollX + worldViewportWidth);
     renderProductUi(state);
+    experience.update(state, {
+      claimableReward: terminalSettlementPending ? 0 : economy.getActiveMissions().filter(m => m.claimable).reduce((sum, m) => sum + m.reward, 0),
+      bestDistance: economy.getRecordLedger().bestDistanceMeters,
+    });
 
     const graphics = this.drawing;
     if (!graphics) return;
@@ -957,6 +1019,7 @@ class FlightScene extends Phaser.Scene {
     // rope, anchors, pickup cues, and chase telegraphs look like a second
     // translucent map when the player held jump.
     graphics.setAlpha(1);
+    drawConditions(graphics, state, this.cameras.main.scrollX, worldViewportWidth, reducedMotion);
     this.drawSpeedFeel(graphics, state, this.cameras.main.scrollX, worldViewportWidth, worldViewportHeight);
     // Static route/terrain blockout is intentionally not painted here.  The
     // approved image stream is the only scene owner; this pass is reserved for
@@ -992,6 +1055,7 @@ class FlightScene extends Phaser.Scene {
         graphics.lineStyle(state.comboTier >= 3 ? 3 : 2, ropeColor, 0.94).lineBetween(anchor.x, anchor.y, state.player.x, state.player.y);
       }
     }
+    drawRide(graphics, state);
     this.drawStrictReferenceProtagonist(graphics, state.player.x, state.player.y, Math.atan2(state.player.vy, state.player.vx));
     graphics.lineStyle(2, 0xd76572, 0.18).lineBetween(this.cameras.main.scrollX, state.failY, this.cameras.main.scrollX + worldViewportWidth, state.failY);
   }
@@ -1708,6 +1772,15 @@ requiredElement<HTMLButtonElement>('[data-action="close-progression"]').addEvent
   refreshScene();
 });
 
+requiredElement<HTMLButtonElement>('[data-ui="back"]').addEventListener('click', () => {
+  requiredElement<HTMLButtonElement>('[data-action="progression"]').click();
+});
+for (const item of [talismanButton, firecrackerButton]) {
+  item.setAttribute('role', 'button'); item.tabIndex = 0;
+  item.addEventListener('keydown', event => {
+    if (event.code === 'Space' || event.code === 'Enter') { event.preventDefault(); item.click(); }
+  });
+}
 const inputSurface = requiredElement<HTMLButtonElement>('[data-action="grapple"]');
 function isInteractiveTarget(target: EventTarget | null): boolean {
   return target instanceof Element && Boolean(target.closest('button, a, input, select, textarea, [role="button"], [role="dialog"]'));
@@ -1750,6 +1823,7 @@ function syncOrientationBlock(): void {
 
 inputSurface.addEventListener('pointerdown', (event) => {
   event.preventDefault();
+  startFirstInput();
   if (gameplayInputBlocked()) return;
   const wasHeld = activePointerIds.size > 0 || keyboardGrappleHeld;
   activePointerIds.add(event.pointerId);
@@ -1758,6 +1832,10 @@ inputSurface.addEventListener('pointerdown', (event) => {
 });
 inputSurface.addEventListener('pointerup', (event) => {
   event.preventDefault();
+  activePointerIds.delete(event.pointerId);
+  releaseOwnedGrapple();
+});
+inputSurface.addEventListener('lostpointercapture', (event) => {
   activePointerIds.delete(event.pointerId);
   releaseOwnedGrapple();
 });
@@ -1778,7 +1856,9 @@ pauseButton.addEventListener('click', () => {
   refreshScene();
 });
 window.addEventListener('keydown', (event) => {
-  if (event.code !== 'Space' || event.repeat || isInteractiveTarget(event.target) || gameplayInputBlocked()) return;
+  if (event.code !== 'Space' || event.repeat || (isInteractiveTarget(event.target) && event.target !== inputSurface)) return;
+  startFirstInput();
+  if (gameplayInputBlocked()) return;
   event.preventDefault();
   const wasHeld = activePointerIds.size > 0 || keyboardGrappleHeld;
   keyboardGrappleHeld = true;
@@ -1791,7 +1871,7 @@ window.addEventListener('keyup', (event) => {
   keyboardGrappleHeld = false;
   releaseOwnedGrapple();
 });
-window.addEventListener('blur', cancelOwnedGrapple);
+window.addEventListener('blur', suspendForBackground);
 window.addEventListener('focus', () => {
   if (document.visibilityState === 'visible') {
     backgroundPolicy.focused();
