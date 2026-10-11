@@ -11,6 +11,8 @@
     "test:file": "node --import tsx tests/file-launch-smoke.ts",
     "pretest": "node --import tsx scripts/build.ts",
     "test:play": "node --import tsx tests/playable-browser-audit.ts",
+    "test:safety": "node --import tsx tests/playable-safety-audit.ts",
+    "verify:release": "node validate-runtime-product-gates.mjs --strict",
     "check": "npm run lint && npm run typecheck && npm test"
   },
   "dependencies": {
