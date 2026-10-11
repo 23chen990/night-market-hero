@@ -3,6 +3,10 @@ import { ContextPacketSchema, verifyContextPacketIntegrity } from './context-bud
 import { executionPolicyForStage, type ExecutionPolicy } from './model-policy.js';
 import { StageNameSchema } from '../schemas/index.js';
 import type { AgentExecutionContext } from '../providers/interfaces.js';
+import { AgentPackageSchema, validatePackageToolDeclarations } from '../agents/packages.js';
+import { AgentTaskBundleSchema, AgentTaskKindSchema } from '../agents/work-spec.js';
+import { ProductionLineSchema } from './production-lines.js';
+import { sha256Text } from './files.js';
 
 /** A hard failure at the model/tool boundary. It is intentionally not recoverable by a model. */
 export class ExecutionBoundaryError extends Error {
@@ -78,6 +82,9 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
   if (context.targetGameId !== undefined && (typeof context.targetGameId !== 'string' || context.targetGameId.trim().length === 0)) {
     throw new ExecutionBoundaryError('targetGameId cannot be empty');
   }
+  if (context.productionLine !== undefined && context.productionLine !== null && !ProductionLineSchema.safeParse(context.productionLine).success) throw new ExecutionBoundaryError(`invalid production line ${String(context.productionLine)}`);
+  if (context.taskKind !== undefined && !AgentTaskKindSchema.safeParse(context.taskKind).success) throw new ExecutionBoundaryError(`invalid task kind ${String(context.taskKind)}`);
+  if (context.taskId !== undefined && (typeof context.taskId !== 'string' || context.taskId.trim().length === 0)) throw new ExecutionBoundaryError('taskId cannot be empty');
   if (context.targetWorkspaceRelative !== undefined) assertRelativeArtifact(context.targetWorkspaceRelative, 'targetWorkspaceRelative');
   if (context.requiredArtifacts !== undefined) {
     if (!Array.isArray(context.requiredArtifacts) || context.requiredArtifacts.length === 0) throw new ExecutionBoundaryError('requiredArtifacts must be a non-empty array');
@@ -85,6 +92,36 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
   }
   const policy = policyForStage(context.stage);
   if (context.sandbox !== policy.sandbox) throw new ExecutionBoundaryError(`${policy.role} stage ${context.stage} requires ${policy.sandbox}`);
+  const agentPackage = context.agentPackage === undefined ? undefined : AgentPackageSchema.parse(context.agentPackage);
+  if (agentPackage) {
+    if (agentPackage.stage !== context.stage) throw new ExecutionBoundaryError(`agent package stage does not match execution stage: ${agentPackage.stage} !== ${context.stage}`);
+    if (agentPackage.role !== policy.role) throw new ExecutionBoundaryError(`agent package role does not match execution policy: ${agentPackage.role} !== ${policy.role}`);
+    if (context.productionLine !== undefined && agentPackage.productionLine !== context.productionLine) throw new ExecutionBoundaryError('agent package production line does not match execution context');
+    if (context.taskKind !== undefined && agentPackage.taskKind !== context.taskKind) throw new ExecutionBoundaryError('agent package task kind does not match execution context');
+    if (context.runtime !== undefined && agentPackage.runtime !== context.runtime) throw new ExecutionBoundaryError(`agent package runtime does not match execution runtime: ${agentPackage.runtime} !== ${context.runtime}`);
+    if (agentPackage.sandbox !== policy.sandbox || agentPackage.canModifyWorkspace !== policy.canModifyWorkspace) throw new ExecutionBoundaryError('agent package permission boundary does not match execution policy');
+    agentPackage.protectedPaths.forEach((item, index) => assertRelativeArtifact(item, `agentPackage.protectedPaths[${index}]`));
+    const toolCheck = validatePackageToolDeclarations(agentPackage);
+    if (!toolCheck.passed) throw new ExecutionBoundaryError(`agent package tool policy rejected: ${toolCheck.blockers.join(', ')}`);
+  }
+  const taskBundle = context.taskBundle === undefined ? undefined : AgentTaskBundleSchema.parse(context.taskBundle);
+  if (taskBundle) {
+    if (taskBundle.stage !== context.stage) throw new ExecutionBoundaryError('task bundle stage does not match execution stage');
+    if (context.productionLine !== undefined && taskBundle.productionLine !== context.productionLine) throw new ExecutionBoundaryError('task bundle production line does not match execution context');
+    if (context.taskKind !== undefined && taskBundle.taskKind !== context.taskKind) throw new ExecutionBoundaryError('task bundle task kind does not match execution context');
+    if (context.taskId !== undefined && taskBundle.taskId !== context.taskId) throw new ExecutionBoundaryError('task bundle task id does not match execution context');
+    if (context.runtime !== undefined && taskBundle.runtime !== context.runtime) throw new ExecutionBoundaryError('task bundle runtime does not match execution runtime');
+    taskBundle.inputPaths.forEach((item, index) => assertRelativeArtifact(item, `taskBundle.inputPaths[${index}]`));
+    taskBundle.protectedPaths.forEach((item, index) => assertRelativeArtifact(item, `taskBundle.protectedPaths[${index}]`));
+    if (taskBundle.targetWorkspaceRelative !== undefined) assertRelativeArtifact(taskBundle.targetWorkspaceRelative, 'taskBundle.targetWorkspaceRelative');
+    if (agentPackage && (taskBundle.role !== agentPackage.role || taskBundle.productionLine !== agentPackage.productionLine || taskBundle.runtime !== agentPackage.runtime || taskBundle.taskKind !== agentPackage.taskKind || taskBundle.risk !== agentPackage.risk || taskBundle.recipeRef.sha256 !== agentPackage.recipeRef.sha256 || taskBundle.toolPolicyRef.sha256 !== agentPackage.toolPolicyRef.sha256 || taskBundle.acceptanceRef.sha256 !== agentPackage.acceptanceRef.sha256 || taskBundle.policyRef.sha256 !== sha256Text(agentPackage.commonRules) || taskBundle.roleProfileRef.sha256 !== sha256Text(agentPackage.roleRules) || JSON.stringify(taskBundle.protectedPaths) !== JSON.stringify(agentPackage.protectedPaths))) {
+      throw new ExecutionBoundaryError('task bundle references do not match the agent package');
+    }
+    const executionInputs = new Set(context.inputPaths.map((item) => item.replaceAll('\\', '/')));
+    if (taskBundle.inputPaths.some((item) => !executionInputs.has(item))) throw new ExecutionBoundaryError('task bundle input is not present in execution context');
+    if (taskBundle.targetGameId && context.targetGameId && taskBundle.targetGameId !== context.targetGameId) throw new ExecutionBoundaryError('task bundle target game does not match execution context');
+    if (taskBundle.targetWorkspaceRelative && context.targetWorkspaceRelative && taskBundle.targetWorkspaceRelative !== context.targetWorkspaceRelative) throw new ExecutionBoundaryError('task bundle workspace does not match execution context');
+  }
   if (context.model !== undefined && (typeof context.model !== 'string' || context.model.trim().length === 0)) throw new ExecutionBoundaryError('model override cannot be empty');
   if (context.reasoning !== undefined && !['low', 'medium', 'high', 'max'].includes(context.reasoning)) throw new ExecutionBoundaryError('unsupported reasoning level');
   if (context.contextPacket !== undefined) {
@@ -128,10 +165,16 @@ export function safeExecutionContext(value: AgentExecutionContext): SafeExecutio
     targetWorkspaceRelative: checked.targetWorkspaceRelative,
     requiredArtifacts: checked.requiredArtifacts?.map((item) => item.replaceAll('\\', '/')),
     stage: checked.stage,
+    productionLine: checked.productionLine,
+    taskKind: checked.taskKind,
+    taskId: checked.taskId,
+    runtime: checked.runtime,
     model: checked.model,
     reasoning: checked.reasoning,
     sandbox: checked.sandbox,
     contextPacket: checked.contextPacket,
+    agentPackage: checked.agentPackage,
+    taskBundle: checked.taskBundle,
     enforceBoundary: checked.enforceBoundary,
     role: checked.role,
     policy: checked.policy,

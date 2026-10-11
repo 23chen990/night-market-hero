@@ -6,6 +6,8 @@ import { redactText, redactValue } from '../core/redaction.js';
 import { assertExecutionContext } from '../core/execution-boundary.js';
 import { executionPolicyForStage } from '../core/model-policy.js';
 import { StageNameSchema } from '../schemas/index.js';
+import { buildAgentPackageInstruction, validatePackageToolDeclarations, type AgentPackage } from '../agents/packages.js';
+import type { AgentTaskBundle } from '../agents/work-spec.js';
 import type { TokenUsage } from './interfaces.js';
 
 export type CodexSandbox = 'read-only' | 'workspace-write';
@@ -35,6 +37,10 @@ export type CodexExecRequest = {
   runRoot?: string;
   /** Research must run from a stage-scoped, sanitized filesystem view. */
   researchIsolation?: { mode: 'sanitized-read-only'; root: string; manifestPath?: string };
+  /** Optional compiled work specification. When present the executor validates
+   * it and renders it before the model receives the prompt. */
+  agentPackage?: AgentPackage;
+  taskBundle?: AgentTaskBundle;
 };
 
 export type CodexJsonlResult = {
@@ -229,8 +235,13 @@ export class CodexCliProvider {
     if (request.networkAccessEnabled === true) throw new Error('Codex execution boundary forbids network access');
     if (request.model !== undefined && request.model.trim().length === 0) throw new Error('Codex model override cannot be empty');
     const workingDirectory = assertCodexWorkingDirectory(request);
+    if (request.agentPackage) {
+      const toolCheck = validatePackageToolDeclarations(request.agentPackage);
+      if (!toolCheck.passed) throw new Error(`Codex agent package rejected: ${toolCheck.blockers.join(', ')}`);
+      if (!request.stage || request.agentPackage.stage !== request.stage) throw new Error('Codex agent package requires a matching stage');
+    }
     if (request.stage) {
-      const checked = assertExecutionContext({ runRoot: workingDirectory.runRoot, outputPath: request.outputPath, logDir: request.logDir, inputPaths: [], stage: request.stage, model: request.model, sandbox: request.sandbox, enforceBoundary: true });
+      const checked = assertExecutionContext({ runRoot: workingDirectory.runRoot, outputPath: request.outputPath, logDir: request.logDir, inputPaths: [], stage: request.stage, model: request.model, sandbox: request.sandbox, enforceBoundary: true, agentPackage: request.agentPackage, taskBundle: request.taskBundle });
       if (request.role && request.role !== checked.role) throw new Error(`Codex execution role ${request.role} does not match stage ${request.stage}`);
     }
     let processEnv: NodeJS.ProcessEnv;
@@ -251,7 +262,8 @@ export class CodexCliProvider {
     for (let attempt = 1; attempt <= maxRetries + 1; attempt += 1) {
       const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: request.outputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model, reasoning: request.reasoning });
       try {
-        const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: request.prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv });
+        const prompt = request.agentPackage ? buildAgentPackageInstruction({ stage: request.stage!, base: request.prompt, package: request.agentPackage, taskBundle: request.taskBundle }) : request.prompt;
+        const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv });
         const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);
         const parsed = parseCodexJsonl(stdout);
         await writeFile(path.join(request.logDir, `${request.label}.attempt-${attempt}.stdout.jsonl`), stdout);

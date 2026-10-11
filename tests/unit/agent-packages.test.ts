@@ -17,6 +17,7 @@ describe('agent packages', () => {
     expect(instruction).toContain('workspace-write');
     expect(instruction).toContain('Zod-validated artifact');
     expect(instruction).toContain('never read secrets');
+    expect(instruction).toContain('# Web-lite Game Builder');
   });
 
   it('keeps QA and evidence packages read-only even when a stronger model is selected', () => {

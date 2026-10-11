@@ -19,8 +19,9 @@ import { buildDeterministicReferenceLevelLayout } from '../core/reference-level-
 import { normalizeReferenceBehaviorAnalysis } from '../core/reference-evidence.js';
 import { assertReferenceLevelRuntimeDataWritePath, readReferenceLevelRuntimeData, runtimeForTemplate, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from '../core/reference-level-binding.js';
 import { referenceLevelRuntimeDataPath } from '../core/reference-level-runtime.js';
-export { AgentPackageSchema, buildAgentPackageInstruction, packageForStage, type AgentPackage } from './packages.js';
-export { compileAgentContext } from './context-compiler.js';
+export { AgentPackageSchema, buildAgentPackageInstruction, packageAuditView, packageForExecution, packageForStage, validatePackageToolDeclarations, type AgentPackage } from './packages.js';
+export { AgentContextCompilationError, compileAgentContext, type CompiledAgentContext } from './context-compiler.js';
+export { AgentTaskBundleSchema, type AgentPackageSelection, type AgentTaskBundle } from './work-spec.js';
 
 /** Non-builder roles return validated artifacts and never receive a game workspace. */
 export class ReferenceResearchAgent {
@@ -134,7 +135,16 @@ export class StyleLockAgent {
 }
 export class AssetProducerAgent {
   constructor(private readonly provider: ImageProvider) {}
-  async run(outputDir: string, blueprint: GameBlueprint, styleLock: StyleLock) { return AssetManifestSchema.parse(await this.provider.produce({ outputDir, blueprint, styleLock })); }
+  async run(outputDir: string, blueprint: GameBlueprint, styleLock: StyleLock, context?: AgentExecutionContext) {
+    if (context?.enforceBoundary) {
+      if (context.stage !== 'ASSETS') throw new Error(`Asset output requires ASSETS stage, got ${context.stage ?? 'unknown'}`);
+      if (context.targetWorkspaceRelative !== 'workspace/generated-assets') throw new Error('Asset output must target workspace/generated-assets');
+      const expectedOutput = path.join(path.resolve(context.runRoot), 'workspace/generated-assets');
+      if (path.resolve(outputDir) !== expectedOutput) throw new Error(`Asset output must remain in ${expectedOutput}`);
+      if (!context.agentPackage?.allowedTools.includes('write-generated-assets')) throw new Error('Asset package is missing write-generated-assets capability');
+    }
+    return AssetManifestSchema.parse(await this.provider.produce({ outputDir, blueprint, styleLock, context }));
+  }
 }
 
 /** Builder and Fixer are the only roles whose provider is authorized to edit the game workspace. */
@@ -366,8 +376,8 @@ export class BuilderAgent {
 }
 export class QAAgent {
   constructor(private readonly provider: QAProvider, private readonly runtime: RuntimeAdapter) {}
-  async run(workspace: string, runRoot: string, buildPassed = false): Promise<QaReport> {
-    const raw = await this.provider.playtest({ runtime: this.runtime, workspace, runRoot });
+  async run(workspace: string, runRoot: string, buildPassed = false, context?: AgentExecutionContext): Promise<QaReport> {
+    const raw = await this.provider.playtest({ runtime: this.runtime, workspace, runRoot, context });
     const rawRecord = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw as Record<string, unknown> : undefined;
     const rawEvidence = rawRecord?.evidence;
     const validEvidence: QaEvidence[] = [];
@@ -511,7 +521,10 @@ export class FixerAgent {
   }
 }
 export class ReleaseAgent {
-  async run(runRoot: string, blueprint: GameBlueprint, options?: { enforceAcceptance?: boolean; enforceOperatingGates?: boolean; certificationRequired?: boolean; artQualityRequired?: boolean; requirePresentation?: boolean; requirePlatformSpine?: boolean; requirePlatformPackages?: boolean; requireDependencyAllowlist?: boolean; requireSideEffectJournal?: boolean; requirePortfolioGate?: boolean; requirePlatformPolicy?: boolean; reuseCandidate?: boolean }) { return ReleaseManifestSchema.parse(await packageRelease(runRoot, blueprint, options)); }
+  async run(runRoot: string, blueprint: GameBlueprint, options?: { enforceAcceptance?: boolean; enforceOperatingGates?: boolean; certificationRequired?: boolean; artQualityRequired?: boolean; requirePresentation?: boolean; requirePlatformSpine?: boolean; requirePlatformPackages?: boolean; requireDependencyAllowlist?: boolean; requireSideEffectJournal?: boolean; requirePortfolioGate?: boolean; requirePlatformPolicy?: boolean; reuseCandidate?: boolean }, context?: AgentExecutionContext) {
+    if (context?.targetGameId !== undefined && context.targetGameId !== blueprint.gameId) throw new Error(`Release target game mismatch: ${context.targetGameId} !== ${blueprint.gameId}`);
+    return ReleaseManifestSchema.parse(await packageRelease(runRoot, blueprint, options));
+  }
 }
 
 function hasPlayablePrototypeContract(html: string) {

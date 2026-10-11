@@ -3,6 +3,8 @@ import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament, P
 import type { ActionMechanicExperimentSpec, ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
 import type { FormalPrototypeFollowupConstraints, OpenSourceResearchArtifact } from '../schemas/index.js';
 import type { RuntimeAdapter } from '../adapters/runtime.js';
+import type { AgentPackage } from '../agents/packages.js';
+import type { AgentTaskBundle } from '../agents/work-spec.js';
 
 export type TokenUsage = { inputTokens: number; outputTokens: number; totalTokens: number };
 export type AgentCallMetrics = { provider: string; model: string; calls: number; usage?: TokenUsage };
@@ -21,10 +23,20 @@ export type AgentExecutionContext = {
   requiredArtifacts?: string[];
   /** Stage/model metadata is recorded and enforced at the provider boundary. */
   stage?: string;
+  /** Work-selection identity is checked against the compiled package/task bundle. */
+  productionLine?: string | null;
+  taskKind?: string;
+  taskId?: string;
+  /** Runtime identity selected by the production line and blueprint. */
+  runtime?: RuntimeName;
   model?: string;
   reasoning?: 'low' | 'medium' | 'high' | 'max';
   sandbox?: 'read-only' | 'workspace-write';
   contextPacket?: unknown;
+  /** The compiled, stage/line/task-bound package enforced by the controller. */
+  agentPackage?: AgentPackage;
+  /** The bounded task bundle rendered from the package and current inputs. */
+  taskBundle?: AgentTaskBundle;
   /** The factory sets this for real runs; direct provider unit callers may omit it for legacy compatibility. */
   enforceBoundary?: boolean;
 };
@@ -64,10 +76,10 @@ export interface CodexProvider {
   build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; template: string; gameplayRevision?: GameplayRevisionLock; interactionContinuityContract?: InteractionContinuityContract; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
   fix(input: { workspace: string; threadId?: string; qaReport: QaReport; context?: AgentExecutionContext }): Promise<CodexFixResult>;
 }
-export interface ImageProvider { produce(input: { outputDir: string; blueprint: GameBlueprint; styleLock: StyleLock }): Promise<unknown>; producePreviews?(input: { outputDir: string; directions: ArtDirections }): Promise<ArtPreviewManifest>; }
+export interface ImageProvider { produce(input: { outputDir: string; blueprint: GameBlueprint; styleLock: StyleLock; context?: AgentExecutionContext }): Promise<unknown>; producePreviews?(input: { outputDir: string; directions: ArtDirections }): Promise<ArtPreviewManifest>; }
 export interface RuntimeProvider { runtime(name: RuntimeName): RuntimeAdapter; }
 export interface QAProvider {
-  playtest(input: { runtime: RuntimeAdapter; workspace: string; runRoot: string }): Promise<unknown>;
+  playtest(input: { runtime: RuntimeAdapter; workspace: string; runRoot: string; context?: AgentExecutionContext }): Promise<unknown>;
   playtestTournament(input: { runtime: RuntimeAdapter; report: PrototypeBuildReport; runRoot: string }): Promise<unknown>;
   playtestActionMechanics(input: { runtime: RuntimeAdapter; spec: ActionMechanicExperimentSpec; report: ActionPrototypeBuildReport; runRoot: string }): Promise<unknown>;
   /** Optional contract-driven perceptual pass; legacy providers may omit it. */

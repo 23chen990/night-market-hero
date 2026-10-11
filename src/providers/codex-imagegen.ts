@@ -3,7 +3,8 @@ import path from 'node:path';
 import { ensureDir, sha256File } from '../core/files.js';
 import { deriveAssetDefinitions } from '../core/asset-definitions.js';
 import { ArtPreviewManifestSchema, AssetManifestSchema, type ArtDirections, type GameBlueprint, type StyleLock } from '../schemas/index.js';
-import type { ImageProvider } from './interfaces.js';
+import { buildAgentPackageInstruction } from '../agents/packages.js';
+import type { AgentExecutionContext, ImageProvider } from './interfaces.js';
 
 export type CodexImagegenCapability = {
   available: boolean;
@@ -92,7 +93,7 @@ ${blocks}
 `;
 }
 
-function assetTask(blueprint: GameBlueprint, styleLock: StyleLock, outputDir: string) {
+function assetTask(blueprint: GameBlueprint, styleLock: StyleLock, outputDir: string, workSpec?: string) {
   const assetDefinitions = deriveAssetDefinitions(blueprint);
   const referencePresentation = blueprint.designMode === 'reference_reskin' && blueprint.referenceMechanics
     ? `
@@ -121,7 +122,7 @@ ${referencePresentation}
 - 输出文件名：${id}.png
 - 输出目录：${outputDir}
 `).join('\n');
-  return `# Codex imagegen：正式素材接力任务
+  return `${workSpec ? `${workSpec}\n\n` : ''}# Codex imagegen：正式素材接力任务
 
 请把每段任务粘贴到当前 Codex 对话，使用 \`$imagegen\` 生成原创 PNG，并保存到指定绝对路径。工厂只接受实际存在且通过 PNG 文件检查的结果。
 
@@ -159,12 +160,15 @@ export class CodexImagegenProvider implements ImageProvider {
     });
   }
 
-  async produce({ outputDir, blueprint, styleLock }: { outputDir: string; blueprint: GameBlueprint; styleLock: StyleLock }) {
+  async produce({ outputDir, blueprint, styleLock, context }: { outputDir: string; blueprint: GameBlueprint; styleLock: StyleLock; context?: AgentExecutionContext }) {
     await ensureDir(outputDir);
     const runRoot = runRootFromOutput(outputDir);
     const taskPath = path.join(runRoot, 'art-review/asset-imagegen-task.md');
     await ensureDir(path.dirname(taskPath));
-    await writeFile(taskPath, assetTask(blueprint, styleLock, outputDir));
+    const workSpec = context?.agentPackage
+      ? buildAgentPackageInstruction({ stage: context.stage ?? 'ASSETS', base: 'Follow the compiled art work specification before generating assets.', package: context.agentPackage, taskBundle: context.taskBundle })
+      : undefined;
+    await writeFile(taskPath, assetTask(blueprint, styleLock, outputDir, workSpec));
     const assetDefinitions = deriveAssetDefinitions(blueprint);
     const filenames = assetDefinitions.map(([id]) => `${id}.png`);
     await requireGeneratedPngs({ outputDir, filenames, taskPath });

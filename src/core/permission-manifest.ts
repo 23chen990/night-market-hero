@@ -55,8 +55,11 @@ export function buildPermissionManifest(stageValue: StageName, options: Permissi
       : policy.role === 'research'
         ? ['input/', 'artifacts/', 'human/', 'reference-evidence/']
       // Research and all metadata/QA roles may inspect only run evidence and
-      // approvals.  They never receive workspace source or arbitrary files.
-      : ['input/', 'artifacts/', 'human/'];
+      // approvals. QA may also open the immutable built candidate for a
+      // browser run, while source remains outside its read scope.
+      : policy.role === 'reviewer' || policy.role === 'evidence-helper'
+        ? ['input/', 'artifacts/', 'human/', 'workspace/game/dist/']
+        : ['input/', 'artifacts/', 'human/'];
   // Commands are deliberately descriptive allow-list entries. Providers may
   // still choose not to expose a shell; this manifest is the auditable upper
   // bound and never grants a wildcard command.

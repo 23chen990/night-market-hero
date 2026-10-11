@@ -3,7 +3,7 @@ import { WebLiteRuntimeAdapter } from '../adapters/web-lite.js';
 import { Cocos3dRuntimeAdapter } from '../adapters/cocos-3d.js';
 import { runPlaywrightQa } from '../qa/playwright-qa.js';
 import { runActionPlaywrightQa } from '../qa/action-playwright-qa.js';
-import type { QAProvider, RuntimeProvider } from './interfaces.js';
+import type { AgentExecutionContext, QAProvider, RuntimeProvider } from './interfaces.js';
 import { chromium, type Page } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -232,7 +232,7 @@ export class PlaywrightQAProvider implements QAProvider {
   perceptualQa({ runtime, workspace, runRoot, contract, buildHash }: { runtime: RuntimeAdapter; workspace: string; runRoot: string; contract: ProductExperienceContract; buildHash: string }) {
     return runPerceptualQa(runtime, workspace, runRoot, contract, buildHash);
   }
-  playtest({ runtime, workspace, runRoot }: { runtime: RuntimeAdapter; workspace: string; runRoot: string }) { return runPlaywrightQa(runtime, workspace, runRoot); }
+  playtest({ runtime, workspace, runRoot }: { runtime: RuntimeAdapter; workspace: string; runRoot: string; context?: AgentExecutionContext }) { return runPlaywrightQa(runtime, workspace, runRoot); }
   async playtestTournament({ runtime, report, runRoot }: { runtime: RuntimeAdapter; report: PrototypeBuildReport; runRoot: string }) {
     const browser = await chromium.launch({ headless: true }); const comparisons = [];
     await mkdir(path.join(runRoot, 'screenshots'), { recursive: true }); await mkdir(path.join(runRoot, 'logs'), { recursive: true });

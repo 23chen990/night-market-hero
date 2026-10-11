@@ -3,6 +3,8 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { CodexImagegenPendingError, CodexImagegenProvider, probeCodexImagegen } from '../../src/providers/codex-imagegen.js';
+import { compileAgentContext } from '../../src/agents/context-compiler.js';
+import { AssetProducerAgent } from '../../src/agents/index.js';
 import type { ArtDirections, GameBlueprint, StyleLock } from '../../src/schemas/index.js';
 
 const direction = { id: 'direction_a' as const, name: 'Ink', summary: 'ink direction', visualKeywords: ['ink'], palette: ['#112233'], characterStyle: 'ink figures', environmentStyle: 'ink market', uiStyle: 'paper cards', iconConcept: 'seal', forbiddenElements: ['logos'], productionComplexity: 'low' as const, previewPrompt: 'original ink market' };
@@ -68,6 +70,44 @@ describe('Codex imagegen bridge', () => {
     expect(task).toContain('$imagegen');
     expect(task).toContain('customer.png');
     expect(task).toContain('background.png');
+  });
+
+  it('carries the compiled art work specification into the manual image task', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'codex-assets-work-spec-'));
+    const outputDir = path.join(runRoot, 'workspace/generated-assets');
+    const compiled = compileAgentContext({
+      stage: 'ASSETS', productionLine: 'cut-stack-dodge', runtime: 'web-lite', taskKind: 'art', taskId: 'assets-1',
+      targetRunId: 'run-assets', targetGameId: 'blade', targetWorkspaceRelative: 'workspace/generated-assets',
+      summary: 'Produce the locked asset set.', inputs: [{ path: 'artifacts/game-blueprint.json', content: '{}', priority: 'required' }], requiredPaths: ['artifacts/game-blueprint.json'],
+    });
+    expect(compiled.package.allowedTools).toContain('write-generated-assets');
+    const provider = new CodexImagegenProvider();
+
+    await expect(provider.produce({ outputDir, blueprint: cutBlueprint, styleLock, context: {
+      runRoot, outputPath: path.join(runRoot, 'artifacts/asset-manifest.json'), logDir: path.join(runRoot, 'logs'), inputPaths: ['artifacts/game-blueprint.json'],
+      stage: 'ASSETS', productionLine: 'cut-stack-dodge', taskKind: 'art', taskId: 'assets-1', runtime: 'web-lite', sandbox: 'read-only',
+      contextPacket: compiled.packet, agentPackage: compiled.package, taskBundle: compiled.taskBundle,
+    } })).rejects.toBeInstanceOf(CodexImagegenPendingError);
+
+    const task = await readFile(path.join(runRoot, 'art-review/asset-imagegen-task.md'), 'utf8');
+    expect(task).toContain('Common work rules:');
+    expect(task).toContain('Role work rules:');
+    expect(task).toContain('Task bundle assets-1');
+  });
+
+  it('rejects an asset output directory outside the run-local generated-assets scope', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'codex-assets-boundary-'));
+    const compiled = compileAgentContext({
+      stage: 'ASSETS', productionLine: 'cut-stack-dodge', runtime: 'web-lite', taskKind: 'art', taskId: 'assets-2',
+      targetRunId: 'run-assets', targetGameId: 'blade', targetWorkspaceRelative: 'workspace/generated-assets',
+      summary: 'Produce the locked asset set.', inputs: [{ path: 'artifacts/game-blueprint.json', content: '{}', priority: 'required' }], requiredPaths: ['artifacts/game-blueprint.json'],
+    });
+    const context = {
+      runRoot, outputPath: path.join(runRoot, 'artifacts/asset-manifest.json'), logDir: path.join(runRoot, 'logs'), inputPaths: ['artifacts/game-blueprint.json'],
+      stage: 'ASSETS', productionLine: 'cut-stack-dodge', taskKind: 'art', taskId: 'assets-2', runtime: 'web-lite' as const, sandbox: 'read-only' as const,
+      contextPacket: compiled.packet, agentPackage: compiled.package, taskBundle: compiled.taskBundle, enforceBoundary: true,
+    };
+    await expect(new AssetProducerAgent(new CodexImagegenProvider()).run(path.join(runRoot, 'workspace/game'), cutBlueprint, styleLock, context)).rejects.toThrow(/generated-assets/iu);
   });
 
   it('derives action-game asset slots from the locked template instead of the idle-shop vocabulary', async () => {
