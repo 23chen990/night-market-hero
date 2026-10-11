@@ -1,0 +1,61 @@
+import assert from 'node:assert/strict';
+import { chromium } from '@playwright/test';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import type { GrappleState } from '../src/game-core.ts';
+
+const out = resolve('evidence/playable-audit');
+await mkdir(out, { recursive: true });
+const entry = resolve('dist/index.html');
+const sha256 = createHash('sha256').update(await readFile(entry)).digest('hex');
+const browser = await chromium.launch({ headless: true });
+const context = await browser.newContext({ viewport: { width: 844, height: 390 }, hasTouch: true });
+const page = await context.newPage();
+page.setDefaultTimeout(8000);
+const errors: string[] = [];
+const report: Record<string, unknown> = { sha256, passed: false, method: 'real tap buttons; deliberately stop input to lose; no state mutation APIs' };
+const state = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState());
+const waitStatus = (status: string): Promise<unknown> => page.waitForFunction(expected => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState().status === expected, status, { timeout: 20000 });
+try {
+  page.on('pageerror', error => errors.push(String(error)));
+  await page.goto(pathToFileURL(entry).href);
+  await page.locator('[data-action="start-run"]').tap();
+  // A player who stops interacting must genuinely fail, not run forever.
+  await waitStatus('failed');
+  report.failed = await state();
+  await page.screenshot({ path: `${out}/safety-natural-failure.png` });
+  await page.locator('[data-action="revive"]').tap();
+  await waitStatus('playing');
+  const revived = await state();
+  assert.equal(revived.reviveUsed, true);
+  report.revived = revived;
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(150);
+  assert.equal(await page.locator('#app').getAttribute('data-orientation-blocked'), 'true');
+  const portrait = await state();
+  await page.waitForTimeout(350);
+  assert.equal((await state()).tick, portrait.tick, 'portrait overlay must freeze the live run');
+  report.portraitTick = portrait.tick;
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.waitForTimeout(150);
+  if ((await state()).paused) await page.locator('[data-action="resume-run"]').click();
+  await waitStatus('failed');
+  await page.waitForTimeout(150);
+  assert.equal(await page.locator('[data-action="revive"]').isVisible(), false, 'no second free or fake-ad revival');
+  await page.locator('[data-action="restart"]').tap();
+  await waitStatus('playing');
+  const restarted = await state();
+  assert.equal(restarted.reviveUsed, false);
+  report.restarted = restarted;
+  assert.deepEqual(errors, []);
+  report.passed = true;
+} catch (error) { report.failure = String(error); throw error; }
+finally {
+  report.errors = errors;
+  await page.screenshot({ path: `${out}/safety-final.png` }).catch(() => undefined);
+  await writeFile(`${out}/safety.json`, JSON.stringify(report, null, 2));
+  await browser.close();
+}
+console.log(JSON.stringify({ sha256, passed: true, evidence: out }));
