@@ -55,24 +55,15 @@ test('night-city renderer streams approved district panoramas before visibility'
   assert.doesNotMatch(main, /drawCoveredNightMarketInterior/);
 });
 
-test('the default journey keeps one static scene owner', () => {
+test('the default and longmap query use one approved static scene owner', () => {
   assert.match(main, /sceneOwner/);
   assert.match(main, /night-city-image-stream/);
   assert.match(main, /sceneLayerCount/);
   assert.match(main, /sceneOverlay/);
-  assert.match(main, /componentPreviewEnabled/);
-  assert.match(main, /componentStats\.active\s*\?\s*['"]2['"]\s*:\s*['"]1['"]/);
-});
-
-test('longmap query mounts the code-drawn component preview without changing the default route', () => {
-  assert.match(main, /createComponentRenderer/);
-  assert.match(main, /isLongmapPreviewEnabled/);
-  assert.match(main, /componentPreviewEnabled/);
-  assert.match(main, /componentRenderer\.preload\(this\)/);
-  assert.match(main, /componentRenderer\.render\(this, state\.seed/);
-  assert.match(main, /app\.dataset\.componentRenderer\s*=\s*componentStats\.renderer/);
-  assert.match(main, /sceneOverlay/);
-  assert.match(main, /component-overlay/);
+  assert.match(main, /app\.dataset\.componentRenderer\s*=\s*['"]disabled['"]/);
+  assert.doesNotMatch(main, /componentRenderer\.render\(this, state\.seed/);
+  assert.doesNotMatch(main, /componentRenderer\.preload\(this\)/);
+  assert.doesNotMatch(main, /isLongmapPreviewEnabled/);
 });
 
 test('the FlightScene never paints legacy sceneObjects terrain over the image stream', () => {

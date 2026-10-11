@@ -1,0 +1,21 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "Read-only round2 re-review of updated offline code study. Read-only review of exact newly drawn facade, roof, canopy, lantern mounts and scaffold assembly; alpha quality and isolated-vs-assembled branches.",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5",
+  "ownership": [],
+  "instructions": [
+    "You are Luna reviewer. You are not alone in this repository. Read-only only: do not write or revert any files, do not modify game or shared factory.",
+    "Agents exchange only Zod-validated structured artifacts. Read ReviewSchema from /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/review-contract.mjs and return ONLY a matching JSON object in your final answer (no prose/code fences).",
+    "Use target workspace and exact evidence paths, not nearby recordings. Parent owns acceptance. Do not declare formal FIX complete."
+  ],
+  "acceptance": [
+    "Inspect screen.png, screen-mobile.png, qa/code-parts-on-backgrounds.png and the verified reference in workspace/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png with view_image.",
+    "Identify any unsupported joints or roof/canopy silhouettes by pixel coordinates and object ids. Compare the environment only; hero/HUD are outside this offline scope.",
+    "Assess whether six generated transparent PNGs have baked grid/matte/halo from composites; do not equate alpha format with quality.",
+    "For each check report observed evidence. Report remaining gaps honestly.",
+    "Round1 pixels and summary are preserved in qa/review-round-1. New roofMid has transparent margins and is placed at x350 y60 w530; near timber now has relative luma11.49 versus background20.03; main upper-right lamp lifted and left lamp widened; center cloth sag deepened. Reinspect current exact pixels.",
+    "Do not suggest baking the bright circles around (741,263)/(1103,248): these are dynamic grapple/HUD affordances excluded from environment art. No new game feature or runtime completion should be inferred."
+  ],
+  "output": "Return ReviewSchema JSON; reviewer=\"luna-structure\"; scope=\"Offline art study independent review\"; status PASS only if your stated scope passes. Otherwise NEEDS_WORK or BLOCKED with precise actionable evidence."
+}

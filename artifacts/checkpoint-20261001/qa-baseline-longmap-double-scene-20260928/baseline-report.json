@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-natural-browser-baseline",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "issueId": "experience-complaint-longmap-double-scene-20260928",
+  "route": "formal-fixer",
+  "attemptBaseline": 0,
+  "status": "REPRODUCED",
+  "reproductionCells": [
+    {
+      "id": "default-startup-844x390",
+      "route": "default",
+      "viewport": "844x390",
+      "status": "REPRODUCED",
+      "telemetry": {
+        "cityRenderer": "image-stream",
+        "componentRenderer": "disabled",
+        "componentVisibleCount": 0,
+        "missingAssetCount": 0,
+        "attachedAnchorId": null,
+        "state": "playing",
+        "consoleErrors": 0,
+        "pageErrors": 0
+      }
+    },
+    {
+      "id": "default-hold-attached-844x390",
+      "route": "default",
+      "viewport": "844x390",
+      "status": "REPRODUCED",
+      "input": "natural mouse hold then release",
+      "telemetry": {
+        "cityRenderer": "image-stream",
+        "componentRenderer": "disabled",
+        "attachedAnchorId": "node-2",
+        "legacySceneObjects": [
+          "布棚",
+          "竹架",
+          "窄巷"
+        ],
+        "playerVisibleFinding": "translucent code-drawn rectangle/triangle/diagonal scaffold over panorama",
+        "consoleErrors": 0,
+        "pageErrors": 0
+      }
+    },
+    {
+      "id": "default-hold-attached-1180x720",
+      "route": "default",
+      "viewport": "1180x720",
+      "status": "REPRODUCED",
+      "input": "natural mouse hold then release",
+      "telemetry": {
+        "cityRenderer": "image-stream",
+        "componentRenderer": "disabled",
+        "attachedAnchorId": "node-2",
+        "playerVisibleFinding": "legacy code geometry visible during attached branch",
+        "consoleErrors": 0,
+        "pageErrors": 0
+      }
+    },
+    {
+      "id": "longmap-startup-844x390",
+      "route": "?longmap=1",
+      "viewport": "844x390",
+      "status": "REPRODUCED",
+      "telemetry": {
+        "cityRenderer": "image-stream",
+        "componentRenderer": "component-overlay",
+        "componentVisibleCount": 5,
+        "missingAssetCount": 6,
+        "attachedAnchorId": null,
+        "state": "playing",
+        "consoleErrors": 0,
+        "pageErrors": 0
+      }
+    },
+    {
+      "id": "longmap-hold-attached-844x390",
+      "route": "?longmap=1",
+      "viewport": "844x390",
+      "status": "REPRODUCED",
+      "input": "natural mouse hold then release",
+      "telemetry": {
+        "cityRenderer": "image-stream",
+        "componentRenderer": "component-overlay",
+        "componentVisibleCount": 5,
+        "missingAssetCount": 6,
+        "attachedAnchorId": "node-1",
+        "playerVisibleFinding": "panorama plus component sprites/connectors same frame",
+        "consoleErrors": 0,
+        "pageErrors": 0
+      }
+    },
+    {
+      "id": "longmap-hold-attached-1180x720",
+      "route": "?longmap=1",
+      "viewport": "1180x720",
+      "status": "REPRODUCED",
+      "input": "natural mouse hold then release",
+      "telemetry": {
+        "cityRenderer": "image-stream",
+        "componentRenderer": "component-overlay",
+        "componentVisibleCount": 4,
+        "missingAssetCount": 3,
+        "attachedAnchorId": "node-1",
+        "playerVisibleFinding": "panorama plus component sprites/connectors same frame",
+        "consoleErrors": 0,
+        "pageErrors": 0
+      }
+    }
+  ],
+  "evidencePaths": [
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/default-final-telemetry.json",
+      "sha256": "1d87658999973e8daa6a0f225ff1e3af0be190e44568946f70cbab30e2788c10"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/natural-swing-telemetry.json",
+      "sha256": "39644cf28f2379b1f77b0e2cb64800cfc04ea6ee8f50fc475dcb61f909269708"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/runtime-audit-20260921/http-longmap-telemetry.json",
+      "sha256": "78de2f482d09528035ba56d59730780bbf3960b2bfc5b0503f1e7dd3377193c3"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-844x390-attached.png",
+      "sha256": "cc1eda3f3a10b321dd967a13da7d02072b0a8bf0ba7dfb5f54790e8bc108d1a8"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-1180x720-attached.png",
+      "sha256": "e618644d0b4cb5e8e69f974daa04aea969729edea233abb14b84edc37304e455"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-844x390-attached.png",
+      "sha256": "96a987276473b4dc3b19f9ac44e041d30c7da5c145196207b7aadec2d19d03e5"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-1180x720-attached.png",
+      "sha256": "e2a85fdc057d56abed0fac4ed0ccd3bdbc37876ec04beb3982e97c06d37dfb5b"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-844x390-telemetry.json",
+      "sha256": "0abf326e3a53df054f2cbe2a66f7ad5b46fc654785b79dcd6827b787b686a816"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/default-1180x720-telemetry.json",
+      "sha256": "b45bc2ee87845a6fa2431ea0f3f929601545d54a371be54dc9220a839003bf6a"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-844x390-telemetry.json",
+      "sha256": "de0dcdd23f2770f05454370d95e486f03c2ac1bf53224127e956d01f55c331a9"
+    },
+    {
+      "path": "runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/longmap-1180x720-telemetry.json",
+      "sha256": "a95f6a788843455600d5c9aec756961490382cc441d53760a5541edba76e3bfc"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "check": "默认启动只显示一套静态地图",
+      "status": "PASS_CURRENT_IMPLEMENTATION_ONLY",
+      "evidence": "city-renderer=image-stream; component-renderer=disabled"
+    },
+    {
+      "check": "默认按住/摆荡不显示旧代码场景",
+      "status": "FAIL_REPRODUCED",
+      "evidence": "attachedAnchorId non-null and screenshot shows translucent scaffold/rectangles"
+    },
+    {
+      "check": "?longmap=1 只保留一套地图",
+      "status": "FAIL_REPRODUCED",
+      "evidence": "city-renderer=image-stream + component-renderer=component-overlay"
+    },
+    {
+      "check": "自然输入可达终局/重玩且唯一 owner",
+      "status": "BLOCKED_BASELINE",
+      "evidence": "baseline run captured terminal only; replay/unique-owner post-fix not tested"
+    },
+    {
+      "check": "console/page errors",
+      "status": "PASS",
+      "evidence": "all four fresh cells 0 console errors, 0 page errors, 0 request failures"
+    }
+  ],
+  "remainingGaps": [
+    "No post-fix evidence",
+    "terminal/replay unique-owner behavior needs QA retest",
+    "WeChat/Douyin/TapTap packages not tested",
+    "No ART_APPROVED unified hybrid scene artifact"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna-structure",
+  "scope": "Main condensed record of independent Luna round2; exact current screenshots and measurements are hashed in checkpoint.json",
+  "status": "PASS",
+  "findings": [],
+  "checks": [
+    {
+      "name": "central-roof-repair",
+      "passed": true,
+      "evidence": "roofMid alpha>=128 bbox x50..1199,y64..441; all four borders transparent. At x350 y60 w530 h236 it overlaps the beam without an interior hard crop."
+    },
+    {
+      "name": "facade, canopy, rope, scaffold joints",
+      "passed": true,
+      "evidence": "Actual isolated and assembled desktop/mobile pixels inspected; all tested mounting branches retain connected posts and rails."
+    },
+    {
+      "name": "relative depth guard",
+      "passed": true,
+      "evidence": "foreground luma11.4919; background20.0302. This is a relative guard, not similarity."
+    },
+    {
+      "name": "seven alpha parts and three backgrounds",
+      "passed": true,
+      "evidence": "All seven independent PNGs and light/dark/saturated composites inspected. No baked grids, matte or halos."
+    },
+    {
+      "name": "preview controls and mobile layout",
+      "passed": true,
+      "evidence": "Actual screenshots and browser checks cover normal button input with no page errors or external requests."
+    }
+  ],
+  "limitations": [
+    "Read-only offline art review. Not game runtime, platform or release acceptance.",
+    "This is the main agent condensed record of the matching structured Luna response.",
+    "90% similarity is unmeasured and unapproved."
+  ]
+}

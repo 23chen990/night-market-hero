@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "offline-art-composition-plan",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "status": "PROPOSED_AFTER_USER_CORRECTION",
+  "scope": "art concept only; no runtime implementation or technical design revision",
+  "skyCandidate": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v33-fog-minimal/generated-atmosphere-plate-v33.png",
+    "sha256": "019f554a800caec4270161e97c188849167538f2293b4fc55f9519ca45040664",
+    "kind": "qa-artifact",
+    "provenance": "verified-run-artifact",
+    "sourceReview": {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v33-fog-minimal/review.json",
+      "sha256": "15bf68054242239baa26e9d2485ae1da2b840e96bd3e7165a4d6cc9b77810c8f",
+      "kind": "qa-artifact",
+      "provenance": "verified-run-artifact"
+    },
+    "identityReview": "Target game, workspace and recorded SHA-256 match; candidate identified by atmosphere-only content.",
+    "priorApproval": "PENDING_USER_ART_APPROVAL",
+    "exactUserRecalledVersion": "UNCONFIRMED"
+  },
+  "composition": [
+    {
+      "layer": "sky",
+      "method": "Reuse existing atmosphere-only raster. Sky and haze continuous, with only sparse far silhouettes."
+    },
+    {
+      "layer": "far buildings",
+      "method": "Low-contrast code silhouettes arranged in the same world; no complete panorama input."
+    },
+    {
+      "layer": "playable street",
+      "method": "Code builds solid walls, columns and rails; existing raster eaves, roof crown, support blocks, stalls and lantern sprites give material detail. Every roof and lantern cable has a visible support."
+    },
+    {
+      "layer": "foreground",
+      "method": "Sparse near eaves/rails occlude the same assembled street; never ghost an entire duplicate layer."
+    },
+    {
+      "layer": "light",
+      "method": "Cool grey-blue distance, darker near masses, sparse warm lanterns; light affects the actual supporting walls."
+    }
+  ],
+  "longMap": "Extend one assembled street with varied heights, spacing and density, keeping an open flight path; no chain of full-scene paintings.",
+  "nextPreview": {
+    "scope": "three adjacent screen widths assembled from existing material",
+    "deliverables": [
+      "wide overview",
+      "single-screen detail",
+      "landscape phone view",
+      "horizontal pan demonstration",
+      "sky/code/material layer breakdown"
+    ]
+  },
+  "qualityTarget": {
+    "requested": "80–90% visual resemblance",
+    "dimensions": [
+      "palette",
+      "eave and roof detail",
+      "warm light",
+      "depth",
+      "street density",
+      "clear flight corridor"
+    ],
+    "currentResult": "NOT_ASSESSED"
+  },
+  "runtimeIntegration": "NOT_INTEGRATED"
+}

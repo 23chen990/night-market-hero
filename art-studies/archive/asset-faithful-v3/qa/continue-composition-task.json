@@ -1,0 +1,19 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "对当前 asset-faithful-v3 的 street-start.png、street-center.png、phone-center.png 与已核实的最终风格参考图做整体画面审查。关注大轮廓、上方屋檐框景、中央跨街结构、飞行留白、下方暗棚市场、蓝灰雾层、暖灯密度、前中后景关系。输出具体问题以及可用现有素材实现的坐标/缩放/遮挡调整建议；不要提出新增素材作为本轮实现步骤。即使素材缺口导致无法达到90%，也要明确指出。",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3",
+  "ownership": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/continue-composition-review.json"
+  ],
+  "instructions": [
+    "你不是唯一在仓库中工作的代理，不要撤销其他人的修改。只读检查，不改 scene.js、preview.html 或游戏 workspace。",
+    "读取 qa/review-contract.mjs，并用 ReviewSchema 校验你的 JSON 报告。只返回包含 reportPath 和 status 的 JSON。",
+    "本轮用户选择暂不补图，只能审查现有素材组装；不要生成新图，不要建议把完整夜市全景重新当背景。"
+  ],
+  "acceptance": [
+    "需要检查当前 asset-faithful-v3 的实际导出图片，而不是只看源码。",
+    "不得用局部无错位检查代替整体画面判断；明确说明与定稿图的主要差距。"
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/continue-composition-review.json"
+}

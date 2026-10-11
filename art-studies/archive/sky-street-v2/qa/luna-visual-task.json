@@ -1,0 +1,23 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "Independently assess the sky-based hybrid street visual preview. Inspect street-start.png, street-center.png, street-end.png and phone-center.png with view_image. Compare only as style reference to workspace/src/assets/night-city/market-panorama-v1.png. Find concrete visible defects: roof/wall connection, duplicate/ghost architecture, material edges, excessive repetition, empty or blocked corridor, inappropriate lantern mounts. Do not treat source panorama as allowed composition input.",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2",
+  "ownership": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-visual-review.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-visual-*"
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Do not revert others or modify their files. Implementation may be refined while you review; record evidence time/version.",
+    "Read qa/review-contract.mjs and validate output against ReviewSchema using root node resolution before handing back.",
+    "Only exchange structured artifacts; final reply must be JSON containing reportPath and status.",
+    "No generated game workspace writes; write only assigned QA artifact files.",
+    "Do not spawn further agents."
+  ],
+  "acceptance": [
+    "Sky is atmosphere-only, architecture is constructed from code + small material sprites.",
+    "Describe whether visual similarity to reference is plausibly 80–90%; be candid, do not assign false precision.",
+    "Return at most 5 highest-value actionable findings."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/qa/luna-visual-review.json"
+}

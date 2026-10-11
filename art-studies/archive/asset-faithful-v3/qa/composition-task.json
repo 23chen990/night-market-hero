@@ -1,0 +1,19 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "Whole-frame art audit and concrete layout recommendations only. User says delivered sky-street-v2 is far off and misses confirmed materials. Inspect verified final style authority in target workspace reference-evidence/verified, original sky v33, delivered v2 start/center/phone images and visible approved environment source assets. Focus density, silhouette, foreground framing, perspective, blue-gray/warm palette, texture/flat style, and whether materials are recognizably preserved. Record candid major differences, not a narrow lamp-mount pass. Recommend a concrete 1672x941 one-screen composition with positions/sizes/layers and the existing materials required. Root will extend into continuous longmap only after this one screen looks coherent. Report ReviewSchema to assigned path; recommendations should be actionable. Do not use full scene as draw input or recommend new art generation.",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3",
+  "ownership": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/composition-review.json"
+  ],
+  "instructions": [
+    "You are not alone in the codebase; do not revert others. Read only generated game files and source art. Write only assigned report artifacts.",
+    "Read qa/contracts.mjs and validate output against the specified schema. Return only JSON with reportPath and status.",
+    "Do not modify implementation, generate new art, or spawn agents. Keep context limited to exact target run."
+  ],
+  "acceptance": [
+    "Use exact source files, hashes and approval evidence. No inferred approval from filename alone.",
+    "Do not treat structural correctness or browser no-error as overall art acceptance."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/composition-review.json"
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户已看离线预览并拒绝：底景应使用之前生成的灰蓝天空图。当前要求先重新思考方案，继续保持不接入游戏。",
+  "classification": [
+    "reference-fidelity",
+    "visual-hierarchy"
+  ],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "问题已定位至离线预览的底图选择和组景分工；本轮只记录美术方案修正，不执行运行时修复或正式 FIX。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "经济与存档",
+      "玩法参数",
+      "平台发布",
+      "先前运行时修复结论"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "查看已交付的桌面和手机预览",
+      "核对 build_preview.py 的 base_path 及 code 图层",
+      "查找并核对既有天空素材记录"
+    ],
+    "observed": [
+      "两种预览都以 market-panorama-v1 作为完整底景。",
+      "代码只添加绳线和锚点，没有搭建用户要求的街道建筑。",
+      "v33 是同一目标游戏的天空雾底图候选；历史记录仅含低对比远屋顶，不代表它已获美术批准。"
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/build_preview.py",
+        "sha256": "f737cac45a2d1a099fdbea6b103cae877b34baab7b00a1c11e811ae859d94e28",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-1672x941.png",
+        "sha256": "c1b0c5105e1216f19e69a7eb67aa97291c0c750607dbd41b127713a0559c5774",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-844x390.png",
+        "sha256": "4a3525d4ae7b13dfb12a8187f34ce38e6adcaddcc294a4f23d8f048c55329dcd",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops.hybrid-candidate-v33-fog-minimal/review.json",
+        "sha256": "15bf68054242239baa26e9d2485ae1da2b840e96bd3e7165a4d6cc9b77810c8f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "底图采用天空雾素材；完整夜市全景仅作风格参考，不作为背景或远景绘入。",
+    "代码负责建筑体块、墙柱、栏杆、连线与长距离布局；素材负责屋檐、瓦面、灯笼、摊棚等细节。",
+    "同一建筑只组装一次，墙柱和贴图共用位置；禁止用整体半透明去掩盖错位与重影。",
+    "先给出修正方案；后续效果稿应展示连续三屏全貌、单屏近看和横屏手机视图。",
+    "80–90%是视觉还原目标；不能从素材使用率、单张静帧或无报错推定达成。",
+    "本轮不接入生成游戏 workspace。"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-09-28T07:50:41.126282Z"
+}

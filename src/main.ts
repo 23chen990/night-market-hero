@@ -39,7 +39,6 @@ import { CHARACTERS } from './progression';
 import { speedFeelProfile, settlementCoins, gateCheckpointXForSegment, segmentIndexAtX } from './endless';
 import { createCameraLayout, projectCamera, LOGICAL_VIEWPORT } from './camera-layout';
 import { createNightCityRenderer, createNightCityRenderPlan, mapWorldAnchorToArchitecturalSocket, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
-import { createComponentRenderer, isLongmapPreviewEnabled } from './component-renderer';
 import './style.css';
 import grappleAttachedIcon from './assets/approved-ui/grapple-attached-v1.png';
 import destinationArrowIcon from './assets/approved-ui/destination-arrow-v1.png';
@@ -852,10 +851,6 @@ class FlightScene extends Phaser.Scene {
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
   private readonly nightCityRenderer = createNightCityRenderer({ prefetchChunks: 1, maxRetainedChunks: 8 });
-  // Opt-in preview only. The default formal journey keeps the authored image
-  // stream as its sole static scene owner.
-  private readonly componentPreviewEnabled = isLongmapPreviewEnabled(typeof window !== 'undefined' ? window.location.search : '');
-  private readonly componentRenderer = createComponentRenderer({ enabled: this.componentPreviewEnabled, prefetchChunks: 1, maxRetainedComponents: 64 });
   private cameraLayout = createCameraLayout({ width: REFERENCE_STAGE_WIDTH, height: REFERENCE_STAGE_HEIGHT, lookAhead: 0.32 });
 
   constructor() {
@@ -877,7 +872,6 @@ class FlightScene extends Phaser.Scene {
     // visibility.  The renderer keeps images hidden until Phaser reports the
     // corresponding texture as ready.
     this.nightCityRenderer.preload(this);
-    if (this.componentPreviewEnabled) this.componentRenderer.preload(this);
   }
 
   create(): void {
@@ -939,19 +933,17 @@ class FlightScene extends Phaser.Scene {
     app.dataset.cityDistrict = cityStats.district ?? 'market';
     app.dataset.cityChunkCount = String(cityStats.chunkCount);
     app.dataset.cityRenderer = cityStats.renderer;
-    const componentStats = this.componentRenderer.render(this, state.seed,
-      this.cameras.main.scrollX, this.cameras.main.scrollX + worldViewportWidth);
     app.dataset.sceneOwner = 'night-city-image-stream';
-    app.dataset.sceneLayerCount = componentStats.active ? '2' : '1';
-    app.dataset.sceneOverlay = componentStats.active ? 'component-overlay' : 'none';
-    app.dataset.componentRenderer = componentStats.renderer;
-    app.dataset.componentVisibleCount = String(componentStats.visibleCount);
-    app.dataset.componentRetainedCount = String(componentStats.retainedCount);
-    app.dataset.missingAssetCount = String(componentStats.missingAssetCount);
-    app.dataset.longmapChunkId = componentStats.longmapChunkId ?? 'none';
-    app.dataset.longmapChainIndex = String(componentStats.longmapChainIndex ?? -1);
-    app.dataset.longmapChunkKind = componentStats.longmapChunkKind ?? 'none';
-    app.dataset.longmapSceneFamily = componentStats.longmapSceneFamily ?? 'none';
+    app.dataset.sceneLayerCount = '1';
+    app.dataset.sceneOverlay = 'none';
+    app.dataset.componentRenderer = 'disabled';
+    app.dataset.componentVisibleCount = '0';
+    app.dataset.componentRetainedCount = '0';
+    app.dataset.missingAssetCount = '0';
+    app.dataset.longmapChunkId = 'none';
+    app.dataset.longmapChainIndex = '-1';
+    app.dataset.longmapChunkKind = 'none';
+    app.dataset.longmapSceneFamily = 'none';
     applyFlightIdentity(this.protagonistSprite, this.protagonistRim, state.player, projection.zoom);
     this.pursuerSprite.setPosition(state.pursuer.x, state.pursuer.y).setRotation(0).setVisible(state.pursuer.visible);
     app.dataset.guardOnScreen = String(state.pursuer.x >= this.cameras.main.scrollX

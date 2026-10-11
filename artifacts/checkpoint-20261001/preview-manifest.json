@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "hybrid-longmap-offline-preview",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "status": "REJECTED_BY_USER",
+  "previewOnly": true,
+  "runtimeIntegration": {
+    "status": "NOT_INTEGRATED",
+    "runtimeFilesChanged": [],
+    "catalogChanged": false,
+    "defaultJourneyChanged": false
+  },
+  "sceneModel": {
+    "sceneOwner": "single-flattened-rgb-composite",
+    "canvas": {
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB"
+    },
+    "mobilePreview": {
+      "width": 844,
+      "height": 390,
+      "crop": "center-crop-from-authored-canvas"
+    },
+    "forbiddenInCandidate": [
+      "second opaque panorama",
+      "map stitching",
+      "transition or bridge strip",
+      "runtime-generated terrain"
+    ]
+  },
+  "sources": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/market-panorama-v1.png",
+      "sha256": "9ab9e9e6f01396a2577e03514529983aff9e374d4323c36b4dd40148e8f90af1",
+      "role": "existing-material"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/night-city/foreground-eaves-v1.png",
+      "sha256": "0b90bb177b0882b948f9634fed3f5ccaf99ca4be8d1f46a2cce12538a0f7cdf2",
+      "role": "existing-material"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/assets/approved-runtime/environment/market-lantern-sprite-v1.png",
+      "sha256": "02df189ac86431e77db0983a1570379692ae86cda402ad7401c80414ac237591",
+      "role": "existing-material"
+    }
+  ],
+  "composition": {
+    "sceneOwner": "market-panorama-v1",
+    "foregroundDepthAccent": "foreground-eaves-v1 @ 0.28 opacity",
+    "codeLayer": "one route, four anchors, one player-to-anchor segment",
+    "centralFlightCorridor": {
+      "x": [
+        320,
+        1340
+      ],
+      "y": [
+        245,
+        640
+      ]
+    },
+    "secondOpaquePanorama": false,
+    "mapStitchOrTransitionStrip": false,
+    "runtimeTerrainDrawing": false
+  },
+  "outputs": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-1672x941.png",
+      "sha256": "c1b0c5105e1216f19e69a7eb67aa97291c0c750607dbd41b127713a0559c5774"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/hybrid-longmap-candidate-844x390.png",
+      "sha256": "4a3525d4ae7b13dfb12a8187f34ce38e6adcaddcc294a4f23d8f048c55329dcd"
+    }
+  ],
+  "buildScript": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/build_preview.py",
+    "sha256": "f737cac45a2d1a099fdbea6b103cae877b34baab7b00a1c11e811ae859d94e28"
+  },
+  "reviewNote": "This is a visual candidate only. No runtime or generated-game file was changed.",
+  "rejectedReason": "完整夜市全景被错误用作背景；用户要求灰蓝天空底图，加代码与现有素材搭建长地图。",
+  "supersededBy": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/revised-art-plan.json"
+}

@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "researchId": "night-market-hero-formal-browser-rc-v1",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "researchedAt": "2026-08-31T02:48:49+08:00",
+  "candidates": [
+    {
+      "name": "Phaser 3.90.0",
+      "repositoryUrl": "https://github.com/phaserjs/phaser",
+      "immutableRevision": "v3.90.0",
+      "version": "3.90.0",
+      "directLicenseEvidence": "https://github.com/phaserjs/phaser/blob/v3.90.0/LICENSE.md",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "The repository lock resolves Phaser 3.90.0 and the formal prototype already uses its browser runtime; the tagged upstream source and license were rechecked for this release-candidate pass."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "The upstream Phaser browser runtime does not by itself provide or validate the DOM-less WeChat Mini Game adapter and package required for publication."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "The upstream Phaser browser runtime does not by itself provide or validate a Douyin Mini Game adapter or package."
+        },
+        "tapTapMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "The upstream Phaser browser runtime does not by itself provide or validate a TapTap Mini Game adapter or package."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "Retain the Phaser MIT copyright and permission notice in distributed copies or substantial portions."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Existing pinned Phaser 3.90.0 runtime for the formal prototype's browser-only web-lite rendering and gameplay loop."
+      ],
+      "rationale": "Reuse is limited to the already installed tagged release and generic engine infrastructure; no Phaser example content, third-party game expression, UI, assets, names, or balancing values may be copied."
+    },
+    {
+      "name": "Microsoft Playwright 1.62.1",
+      "repositoryUrl": "https://github.com/microsoft/playwright",
+      "immutableRevision": "v1.62.1",
+      "version": "1.62.1",
+      "directLicenseEvidence": "https://github.com/microsoft/playwright/blob/v1.62.1/LICENSE",
+      "licenseSpdx": "Apache-2.0",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "The repository lock resolves Playwright 1.62.1 and it can drive deterministic Chromium gameplay, mobile viewport, refresh-recovery, screenshot, and console-error QA for the web-lite build."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "Browser automation does not build or prove a WeChat Mini Game package."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "Browser automation does not build or prove a Douyin Mini Game package."
+        },
+        "tapTapMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "Browser automation does not build or prove a TapTap Mini Game package."
+        }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "Preserve the Apache-2.0 license and applicable copyright, patent, trademark, attribution, and NOTICE duties if the work is redistributed."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Development-only deterministic web-lite browser QA and evidence capture; never mini-game platform packaging evidence."
+      ],
+      "rationale": "Reuse is limited to the installed tagged test dependency and remains outside shipped game runtime code."
+    },
+    {
+      "name": "Vite 8.2.2",
+      "repositoryUrl": "https://github.com/vitejs/vite",
+      "immutableRevision": "v8.2.2",
+      "version": "8.2.2",
+      "directLicenseEvidence": "https://github.com/vitejs/vite/blob/v8.2.2/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "The repository lock resolves Vite 8.2.2 and the formal prototype already uses it only to produce the browser development and QA bundle."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "A standard Vite browser bundle is not a verified WeChat Mini Game package or adapter."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "A standard Vite browser bundle is not a verified Douyin Mini Game package or adapter."
+        },
+        "tapTapMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "A standard Vite browser bundle is not a verified TapTap Mini Game package or adapter."
+        }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "Retain the Vite MIT copyright and permission notice in distributed copies or substantial portions, including applicable bundled third-party notices."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Existing pinned Vite 8.2.2 browser build tooling for web-lite development and QA only."
+      ],
+      "rationale": "The tool is already installed and is approved only for the browser evidence build; it is not platform adapter evidence."
+    },
+    {
+      "name": "WeChat minigame-adaptor",
+      "repositoryUrl": "https://github.com/wechat-miniprogram/minigame-adaptor",
+      "immutableRevision": "3ccb9639a46b9b948b18e427351a3287e5b7699c",
+      "version": "archived-2024-10-11",
+      "directLicenseEvidence": "https://github.com/wechat-miniprogram/minigame-adaptor/blob/3ccb9639a46b9b948b18e427351a3287e5b7699c/LICENSE",
+      "licenseSpdx": "BSD-3-Clause AND Apache-2.0",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "REJECTED",
+          "evidence": "The adapter is unrelated to browser QA."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "The official repository is archived and its documented workflow targets Unity asset migration rather than the current Phaser 3 TypeScript runtime."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "The repository targets WeChat and provides no Douyin adapter."
+        },
+        "tapTapMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "The repository targets WeChat and provides no TapTap adapter."
+        }
+      },
+      "maintenanceRisk": "HIGH",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "If reconsidered, retain BSD-3-Clause notices and comply with the listed Apache-2.0 third-party component duties."
+      ],
+      "decision": "REJECT",
+      "approvedScope": [],
+      "rationale": "Archived status, Unity-specific scope, and lack of Phaser 3 fit make it unsuitable for this formal prototype."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": [
+      "Phaser 3.90.0",
+      "Microsoft Playwright 1.62.1",
+      "Vite 8.2.2"
+    ],
+    "rejectedCandidateNames": [
+      "WeChat minigame-adaptor"
+    ],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Keep the formal prototype dependency set unchanged. Reuse the pinned Phaser runtime, Vite browser build tool, and Playwright browser QA only within runs/mobile-chart-adaptation-20260830/workspace/prototype-a. The web-lite output is a browser release candidate and QA artifact, not evidence that WeChat, Douyin, or TapTap packages are publishable; each platform still requires isolated adapter research, build configuration, and device QA."
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "issueId": "runtime-baseline-recovery-r0-rooftops-v36",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0",
+  "report": "R0 要求默认运行恢复到 v36 引入前的渲染行为：不得预加载或绘制 rooftops-transition-v36-fullheight.png；保留原文件及历史记录；暂停中的水面、灯影和前景栈道栏杆不得接入。",
+  "classification": [
+    "runtime-regression",
+    "default-renderer-baseline",
+    "scope-limited-recovery",
+    "user-rejected-follow-up"
+  ],
+  "evidence": [
+    {
+      "path": "artifacts/direct-builder-rooftops-transition-v36-integration-20260923.json",
+      "role": "historical-v36-integration-record",
+      "provenance": "repository-source"
+    },
+    {
+      "path": "artifacts/asset-review-decision-water-effects-20260924.json",
+      "role": "paused-water-lighting-foreground-scope",
+      "provenance": "repository-source"
+    },
+    {
+      "path": "artifacts/rooftops-atomic-resource-contract-v44.json",
+      "role": "pending-atomic-resource-contract",
+      "provenance": "repository-source"
+    },
+    {
+      "path": "git:369baaa^..369baaa:src/night-city-renderer.ts",
+      "role": "exact-v36-source-diff",
+      "provenance": "repository-history"
+    }
+  ],
+  "reproduction": {
+    "command": "npm test -- --test-name-pattern='night-city image renderer|uses the approved single full-height PNG for Rooftops variant seams'",
+    "observed": "The current default renderer preloads night-city-rooftops-transition-v36 and renders it at consecutive Rooftops chunks.",
+    "evidenceClass": "deterministic-renderer-test",
+    "naturalJourneyStatus": "NOT_OBSERVED"
+  },
+  "scope": {
+    "inScope": [
+      "Remove v36 from the default NightCityRenderer preload and desired-image branch.",
+      "Restore the exact pre-v36 mist behavior at every panorama boundary.",
+      "Update only directly affected renderer regression assertions.",
+      "Keep longmap component preview disabled by default and preserve safe missing-asset skips."
+    ],
+    "outOfScope": [
+      "Gameplay input, grapple physics, pursuer parameters, map topology, tutorial, economy, ads, revive, settlement, or save semantics.",
+      "Water surface, lantern reflection, foreground market deck rail, and any new art generation.",
+      "Seam quality claims, asset URL refactors, platform package work, or PR #1 mutation."
+    ]
+  },
+  "acceptance": [
+    "Default preload does not include night-city-rooftops-transition-v36.",
+    "Default render never creates a v36 carrier image.",
+    "Same-district Rooftops joins use night-city-district-transition-mist with the pre-v36 dimensions, depth, and alpha.",
+    "Existing panorama, foreground eaves, other district transitions, component preview default, and missing-asset behavior remain unchanged.",
+    "The v36 PNG and historical approval/rejection/test records remain present."
+  ],
+  "route": {
+    "selected": "direct-builder",
+    "reason": "The regression is localized to one renderer and one directly coupled test; it does not alter gameplay, persistence, schemas, adapters, release configuration, or the default journey.",
+    "contextIntentionallyOmitted": [
+      "Unrelated factory worktree modifications on the parent checkout.",
+      "Historical art candidates and paused water/lighting production details unrelated to runtime removal."
+    ]
+  },
+  "status": "OPEN",
+  "createdAt": "2026-09-24T00:00:00Z"
+}

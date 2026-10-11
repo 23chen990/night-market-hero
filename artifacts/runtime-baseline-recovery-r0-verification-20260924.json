@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "runtime-baseline-recovery-verification",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市-r0",
+  "baseSha": "369baaa4f89772f830741e3f70a37150c5f673ba",
+  "branch": "fix/runtime-baseline-recovery-r0",
+  "route": {
+    "selected": "direct-builder",
+    "reason": "The exact v36 regression is confined to the NightCityRenderer and its direct regression test; no core gameplay, persistence, platform adapter, release configuration, or default journey code is changed.",
+    "contextIntentionallyOmitted": [
+      "Unrelated uncommitted changes on the parent factory checkout.",
+      "Paused water, lantern-reflection, and foreground-rail production work.",
+      "PR #1 mutation or asset URL refactoring."
+    ]
+  },
+  "tdd": {
+    "red": {
+      "command": "npm test -- --test-name-pattern='night-city image renderer'",
+      "exitCode": 1,
+      "tests": {"total": 273, "passed": 260, "failed": 3, "skipped": 10},
+      "failures": [
+        "v36 remained in the asset path key set",
+        "default preload still included the v36 carrier",
+        "Rooftops same-district seam still selected the v36 carrier"
+      ]
+    },
+    "green": {
+      "command": "npx tsx tests/night-city-renderer.test.ts",
+      "exitCode": 0,
+      "tests": {"total": 8, "passed": 8, "failed": 0, "skipped": 0}
+    }
+  },
+  "baseline": {
+    "commands": [
+      {"command": "npm run typecheck", "exitCode": 0, "passed": null, "failed": 0, "skipped": 0},
+      {"command": "npm test", "exitCode": 1, "passed": 259, "failed": 4, "skipped": 10, "note": "Fresh checkout had no dist/index.html or playable alias yet; four build-dependent tests failed before the baseline build."},
+      {"command": "npm run lint", "exitCode": 0, "passed": null, "failed": 0, "skipped": 0},
+      {"command": "npm run build", "exitCode": 0, "passed": null, "failed": 0, "skipped": 0},
+      {"command": "npm test (after baseline build)", "exitCode": 0, "passed": 263, "failed": 0, "skipped": 10}
+    ],
+    "existingFailures": [
+      "The first clean-checkout npm test invocation ran before generated build outputs existed; the failure was limited to tests/build.test.ts, tests/hub-alias-retest.test.ts, and tests/self-contained-build.test.ts."
+    ],
+    "newFailures": []
+  },
+  "postChange": {
+    "commands": [
+      {"command": "npm run typecheck", "exitCode": 0, "passed": null, "failed": 0, "skipped": 0},
+      {"command": "npm test", "exitCode": 0, "passed": 263, "failed": 0, "skipped": 10},
+      {"command": "npm run lint", "exitCode": 0, "passed": null, "failed": 0, "skipped": 0},
+      {"command": "npm run build", "exitCode": 0, "passed": null, "failed": 0, "skipped": 0}
+    ],
+    "newFailures": []
+  },
+  "rendererSpecializedEvidence": {
+    "type": "renderer-specialized-evidence",
+    "naturalJourneyClaim": false,
+    "rendererTest": {"command": "npx tsx tests/night-city-renderer.test.ts", "exitCode": 0, "passed": 8, "failed": 0, "skipped": 0},
+    "componentTest": {"command": "npx tsx tests/component-renderer.test.ts", "exitCode": 0, "passed": 8, "failed": 0, "skipped": 0},
+    "runtimeWiringTest": {"command": "npx tsx tests/runtime-assets-wiring.test.ts", "exitCode": 0, "passed": 5, "failed": 0, "skipped": 0},
+    "runtimeChecks": [
+      "default source/runtime has no v36 path or key reference",
+      "rebuilt dist/index.html and playable alias have no v36 runtime reference",
+      "the v36 PNG remains present and its SHA-256 is f508f5b8f49eb2a24c2acf1a8044ba201e966731bc05473c7bf70fb7c4c66fb4"
+    ]
+  },
+  "naturalBrowserEvidence": {
+    "inputPolicy": "fresh isolated Chromium contexts; normal mouse hold/release only; no state setters, teleports, injected difficulty, or debug scenario loaders",
+    "developmentEntry": {
+      "url": "http://127.0.0.1:4178/",
+      "report": "qa-evidence/r0-dev-20260924-final/qa-report.json",
+      "passed": true,
+      "checks": ["1280x720 startup → tutorial settlement → night patrol → failure settlement → replay", "844x390 same journey", "390x844 orientation prompt and frozen simulation"],
+      "screenshots": "qa-evidence/r0-dev-20260924-final/"
+    },
+    "rebuiltPlayable": {
+      "url": "http://127.0.0.1:4180/夜市飞侠-护印突围-试玩版.html",
+      "report": "qa-evidence/r0-built-20260924/qa-report.json",
+      "passed": true,
+      "checks": ["1280x720 startup → tutorial settlement → night patrol → failure settlement → replay", "844x390 same journey", "390x844 orientation prompt and frozen simulation"],
+      "screenshots": "qa-evidence/r0-built-20260924/"
+    },
+    "retryNote": "One earlier development-entry attempt ended in a normal-input tutorial failure before the final evidence run; the final isolated retry passed at both landscape sizes with zero console/page errors. This is recorded as a timing retry, not hidden as a pass on the first attempt."
+  },
+  "buildOutputs": [
+    {"path": "dist/index.html", "sha256": "a0e17819c594c987ec5bd9b62a7e0cd3c92e2af857ae521a46e4d56dff1c77b7", "bytes": 26214633},
+    {"path": "夜市飞侠-护印突围-试玩版.html", "sha256": "a0e17819c594c987ec5bd9b62a7e0cd3c92e2af857ae521a46e4d56dff1c77b7", "bytes": 26214633}
+  ],
+  "scopeGuards": {
+    "gameplayChanged": false,
+    "defaultJourneyChanged": false,
+    "componentPreviewDefault": "off",
+    "missingAssetBehavior": "safe skip",
+    "waterLightingForegroundRail": "paused and not integrated",
+    "seamRepairClaim": false
+  },
+  "status": "PASS_WITH_RETRY_NOTE",
+  "createdAt": "2026-09-24T00:00:00Z"
+}

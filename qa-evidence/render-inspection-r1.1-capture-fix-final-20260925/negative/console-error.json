@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "render-inspection-negative-timing-test",
+  "faultInjection": "console",
+  "phase": "after telemetry, during bounded capture callback",
+  "caseErrors": [
+    "console errors: 1"
+  ],
+  "consoleErrors": [
+    "injected late console error"
+  ],
+  "pageErrors": [],
+  "status": "FAILED",
+  "processExitCode": 1
+}

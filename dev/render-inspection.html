@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Night Market Hero · Render Inspection</title>
+    <style>
+      :root { color-scheme: dark; font-family: ui-sans-serif, system-ui, sans-serif; background: #090d18; color: #f2e7cc; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #090d18; }
+      header { display: flex; flex-wrap: wrap; gap: .65rem 1rem; align-items: center; padding: .75rem 1rem; background: #111a2a; border-bottom: 1px solid #33405a; }
+      header strong { color: #ffd67b; }
+      header span { color: #b8c3d8; font-size: .85rem; }
+      button, select { border: 1px solid #50627f; border-radius: .35rem; background: #18243a; color: #f2e7cc; padding: .35rem .55rem; }
+      button { cursor: pointer; }
+      button:hover { background: #243552; }
+      main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, 23rem); gap: .75rem; padding: .75rem; }
+      #game { min-width: 0; min-height: 18rem; display: grid; place-items: center; overflow: hidden; background: #060a12; border: 1px solid #33405a; }
+      #game canvas { max-width: 100%; max-height: calc(100vh - 7rem); }
+      aside { min-width: 0; }
+      aside p { margin: .25rem 0 .65rem; color: #b8c3d8; font-size: .82rem; line-height: 1.35; }
+      pre { max-height: calc(100vh - 9rem); overflow: auto; margin: 0; padding: .65rem; border: 1px solid #33405a; background: #0d1422; color: #b9efcf; font-size: .7rem; line-height: 1.35; white-space: pre-wrap; }
+      @media (max-width: 760px) { main { grid-template-columns: 1fr; } #game { min-height: 13rem; } pre { max-height: 18rem; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>开发渲染预览，非自然游玩证据</strong>
+      <span>真实 Phaser NightCityRenderer · 现有 ComponentRenderer legacy overlay 对照 · seed 20260919</span>
+      <label>检查点 <select data-inspection="checkpoint"></select></label>
+      <button type="button" data-inspection="mode-default">默认渲染</button>
+      <button type="button" data-inspection="mode-longmap">现有组件对照（legacy overlay）</button>
+      <button type="button" data-inspection="pan-left">相机左移</button>
+      <button type="button" data-inspection="pan-center">回到边界中心</button>
+      <button type="button" data-inspection="pan-right">相机右移</button>
+    </header>
+    <main>
+      <section id="game" aria-label="定点渲染画布"></section>
+      <aside>
+        <p>仅用于检查固定 RunPlan 检查点的真实图片流。当前 longmap 模式仅用于现有组件叠加诊断，不代表最终组景方案、资源批准或默认启用。不会读取或写入正式进度，不提供正式游戏传送、状态修改或输入快捷键。</p>
+        <pre data-inspection="telemetry">等待纹理加载…</pre>
+      </aside>
+    </main>
+    <script type="module" src="/src/dev-render-inspection.ts"></script>
+  </body>
+</html>

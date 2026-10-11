@@ -1,0 +1,1494 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "facade",
+      "roof",
+      "canopy",
+      "lantern-mount",
+      "scaffold"
+    ],
+    "lifecycleStateBranches": [
+      "isolated-code-part",
+      "assembled-study",
+      "default-game-runtime"
+    ],
+    "rendererPaths": [
+      "offline-canvas",
+      "Phaser-FlightScene"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "facade-isolated-code-part-desktop",
+      "objectType": "facade",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-isolated-code-part-phone-landscape",
+      "objectType": "facade",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-isolated-code-part-phone-portrait",
+      "objectType": "facade",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-assembled-study-desktop",
+      "objectType": "facade",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "1e06a0de10b98e262427bb8db70ad14efefcedc933886c5632799563c13fcac8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-assembled-study-phone-landscape",
+      "objectType": "facade",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen-mobile.png",
+          "sha256": "3d6dbc3b78e4a9980e4d5cfdb7dfb89222cba63d8decb9e55d7d1e769e8bd485",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-assembled-study-phone-portrait",
+      "objectType": "facade",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/page-390x844.png",
+          "sha256": "b7f917d1e7e8d12ea49835150dd8f56922bbe6ab2161ad9727eccd47529735a0",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-default-game-runtime-desktop",
+      "objectType": "facade",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-default-game-runtime-phone-landscape",
+      "objectType": "facade",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "facade-default-game-runtime-phone-portrait",
+      "objectType": "facade",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-isolated-code-part-desktop",
+      "objectType": "roof",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-isolated-code-part-phone-landscape",
+      "objectType": "roof",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-isolated-code-part-phone-portrait",
+      "objectType": "roof",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-assembled-study-desktop",
+      "objectType": "roof",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "1e06a0de10b98e262427bb8db70ad14efefcedc933886c5632799563c13fcac8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-assembled-study-phone-landscape",
+      "objectType": "roof",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen-mobile.png",
+          "sha256": "3d6dbc3b78e4a9980e4d5cfdb7dfb89222cba63d8decb9e55d7d1e769e8bd485",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-assembled-study-phone-portrait",
+      "objectType": "roof",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/page-390x844.png",
+          "sha256": "b7f917d1e7e8d12ea49835150dd8f56922bbe6ab2161ad9727eccd47529735a0",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-default-game-runtime-desktop",
+      "objectType": "roof",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-default-game-runtime-phone-landscape",
+      "objectType": "roof",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "roof-default-game-runtime-phone-portrait",
+      "objectType": "roof",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-isolated-code-part-desktop",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-isolated-code-part-phone-landscape",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-isolated-code-part-phone-portrait",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-assembled-study-desktop",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "1e06a0de10b98e262427bb8db70ad14efefcedc933886c5632799563c13fcac8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-assembled-study-phone-landscape",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen-mobile.png",
+          "sha256": "3d6dbc3b78e4a9980e4d5cfdb7dfb89222cba63d8decb9e55d7d1e769e8bd485",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-assembled-study-phone-portrait",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/page-390x844.png",
+          "sha256": "b7f917d1e7e8d12ea49835150dd8f56922bbe6ab2161ad9727eccd47529735a0",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-default-game-runtime-desktop",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-default-game-runtime-phone-landscape",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "canopy-default-game-runtime-phone-portrait",
+      "objectType": "canopy",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-isolated-code-part-desktop",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-isolated-code-part-phone-landscape",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-isolated-code-part-phone-portrait",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-assembled-study-desktop",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "1e06a0de10b98e262427bb8db70ad14efefcedc933886c5632799563c13fcac8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-assembled-study-phone-landscape",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen-mobile.png",
+          "sha256": "3d6dbc3b78e4a9980e4d5cfdb7dfb89222cba63d8decb9e55d7d1e769e8bd485",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-assembled-study-phone-portrait",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/page-390x844.png",
+          "sha256": "b7f917d1e7e8d12ea49835150dd8f56922bbe6ab2161ad9727eccd47529735a0",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-default-game-runtime-desktop",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-default-game-runtime-phone-landscape",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "lantern-mount-default-game-runtime-phone-portrait",
+      "objectType": "lantern-mount",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-isolated-code-part-desktop",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-isolated-code-part-phone-landscape",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-isolated-code-part-phone-portrait",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "isolated-code-part",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "独立结构审查通过；7部件具有真实alpha，三底色没有烘焙网格、matte或halo。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/code-parts-on-backgrounds.png",
+          "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-assembled-study-desktop",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "1e06a0de10b98e262427bb8db70ad14efefcedc933886c5632799563c13fcac8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-assembled-study-phone-landscape",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen-mobile.png",
+          "sha256": "3d6dbc3b78e4a9980e4d5cfdb7dfb89222cba63d8decb9e55d7d1e769e8bd485",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-assembled-study-phone-portrait",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "assembled-study",
+      "rendererPath": "offline-canvas",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "观察精确对象与分支；几何、比例、连接及视觉层次与已核验定稿对照。",
+      "observed": "结构连接通过，整体定稿保真仍为NEEDS_WORK；用户停止进一步修改。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/page-390x844.png",
+          "sha256": "b7f917d1e7e8d12ea49835150dd8f56922bbe6ab2161ad9727eccd47529735a0",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-structure-review.json",
+          "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/qa/luna-fidelity-review.json",
+          "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-default-game-runtime-desktop",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-default-game-runtime-phone-landscape",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "scaffold-default-game-runtime-phone-portrait",
+      "objectType": "scaffold",
+      "lifecycleStateBranch": "default-game-runtime",
+      "rendererPath": "Phaser-FlightScene",
+      "viewport": {
+        "label": "phone-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "本次仅离线研究，保留游戏运行时审查状态。",
+      "observed": "候选尚未进入默认游戏旅程，不能以候选结果闭合运行时投诉。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/reference-evidence/verified/00_FINAL_STYLE_AUTHORITY_USER-3a97a6703f2c.png",
+          "sha256": "3a97a6703f2c54afb75d4ac05d8e0ab521fd97e035c05189359061cf6f5d7a11",
+          "kind": "reference",
+          "provenance": "verified-reference"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/facade-study-v5/screen.png",
+          "sha256": "6f09006822abb3ecc30585392874dce63a7e618b124249945f7cde08eb9a3b81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "近景仍使用放大的同一屋檐和棚布素材。",
+    "门面上层窗格、右侧拱门比例与目标差异明显。",
+    "surfaces.js 已生成代码大轮廓但未被构建或绘制。"
+  ],
+  "remainingGaps": [
+    "整体90%相似度未确认，独立保真审查NEEDS_WORK。",
+    "候选未接入默认游戏；不据此完成formalFIX或平台发布。",
+    "用户要求停止进一步修改，保存当前检查点供下一Agent规划。"
+  ],
+  "createdAt": "2026-09-30T19:18:08.675Z"
+}

@@ -1,0 +1,3 @@
+import {z} from 'zod';
+export const TaskSchema=z.object({targetGame:z.string(),workspace:z.string(),task:z.string(),previewRoot:z.string(),ownership:z.array(z.string()),instructions:z.array(z.string()),acceptance:z.array(z.string()),output:z.string()}).strict();
+export const ReviewSchema=z.object({targetGame:z.literal('夜市飞侠：护印突围'),workspace:z.string(),reviewer:z.string(),scope:z.string(),status:z.enum(['PASS','NEEDS_WORK','BLOCKED']),findings:z.array(z.object({severity:z.enum(['high','medium','low']),summary:z.string(),evidence:z.array(z.string()),recommendation:z.string()}).strict()),checks:z.array(z.object({name:z.string(),passed:z.boolean(),evidence:z.string()}).strict()),limitations:z.array(z.string())}).strict();

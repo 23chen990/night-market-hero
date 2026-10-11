@@ -1,0 +1,51 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna_worker",
+  "scope": "Final static visual check of the frozen sky-street exports at 2026-09-28T16:48:18+08:00. Inspected street-start.png, street-center.png, street-end.png (1672x941) and phone-center.png (844x390) with view_image. Exact current SHA-256 values: start fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1, center 5e755c35a86394d864670de9017568aefec25d13764f3817def02bb34f860af0, end 23b9c4c7e74da9511eab887ede2d2c1b3b37fceba539f6d2cbdad3f880f3228a, phone 4795a27c8a8a91698bd482598a477202cc93b2aed3586bffd8a5c0a633b0781b. No exact similarity percentage is asserted.",
+  "status": "PASS",
+  "findings": [],
+  "checks": [
+    {
+      "name": "stall and roofed-stall lamp mounts",
+      "passed": true,
+      "evidence": "Across all four current exports, cloth-stall lamps sit below their canopy hem with a visible short support and cord; the roofed-stall lamps also hang below the roof rather than clipping into it."
+    },
+    {
+      "name": "flight study corridor",
+      "passed": true,
+      "evidence": "The raised cable/lantern strings leave a readable open band through the center of the desktop frames. phone-center.png preserves the open middle band between the upper cables and lower roof line at 844x390."
+    },
+    {
+      "name": "support-post consolidation",
+      "passed": true,
+      "evidence": "The adjacent support pairs in the refreshed exports read as single structural posts with shared cable endpoints; no doubled post pair is visibly competing for the same cable junction."
+    },
+    {
+      "name": "roof and wall joins",
+      "passed": true,
+      "evidence": "The visible tower and low-building roofs in street-start.png, street-center.png and street-end.png meet their wall bodies cleanly without detached plates, open gaps or floating eave layers."
+    },
+    {
+      "name": "duplicate or ghost whole scene",
+      "passed": true,
+      "evidence": "The four current exports show one continuous assembled street and no duplicated panorama, ghost facade or second full-scene image layer. Faint distant silhouettes remain depth treatment rather than a duplicate scene."
+    },
+    {
+      "name": "foreground material integration and variation",
+      "passed": true,
+      "evidence": "The fog-tinted roofed stall copies blend with the cool depth treatment, while stall dimensions and cable-lamp spacing vary across the three desktop windows and the phone view. No blocking pasted-material edge or uniform foreground cadence remains visible."
+    },
+    {
+      "name": "art-candidate structural/presentation gate",
+      "passed": true,
+      "evidence": "No blocking structural or presentation defect is visible in the frozen exports for the requested four findings. The current files are suitable for art-candidate delivery within this static-preview scope."
+    }
+  ],
+  "limitations": [
+    "This is a static preview review only. It does not verify runtime collision geometry, player readability during motion, or a live horizontal pan.",
+    "The subdued lower foreground remains a deliberate art treatment; natural runtime contrast should be checked separately.",
+    "This report does not sign off an 80–90% similarity score and does not treat the supplied panorama as reusable composition input.",
+    "The report is bound to the four hashes recorded in scope; later regeneration requires a new final visual check."
+  ]
+}

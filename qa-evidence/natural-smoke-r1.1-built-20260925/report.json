@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-runtime-r1-report",
+  "testedCommit": "9c28311e59497ac12c776075fab3647fcc9f9bdc",
+  "environment": {
+    "browser": "151.0.7922.34",
+    "viewportCases": [
+      "1280x720",
+      "844x390",
+      "390x844"
+    ],
+    "seed": 31,
+    "query": "seed=31&fresh=1"
+  },
+  "entry": {
+    "url": "http://127.0.0.1:4195/",
+    "input": "formal pointer hold/release and visible result actions; no state APIs"
+  },
+  "landscapes": [
+    {
+      "viewport": "1280x720",
+      "startup": {
+        "title": "第1关 · 灯棚初试"
+      },
+      "tutorialSettlement": {
+        "title": "灯棚初试 · 突围成功",
+        "continueVisible": true
+      },
+      "nightPatrol": {
+        "levelTitle": "无限夜巡",
+        "input": "formal pointer hold/release only"
+      },
+      "failureSettlement": {
+        "title": "游侠跌入摊棚间",
+        "kicker": "护印突围中断",
+        "cause": "natural no-input patrol failure"
+      },
+      "replay": {
+        "levelTitle": "无限夜巡",
+        "resultHidden": true
+      },
+      "screenshots": {
+        "startup": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/1280x720-startup.png",
+          "sha256": "746454a574cf96bbf1d70a596fb2aeeb3a93a8f90b14d03591fb3ad2e4ec5c87"
+        },
+        "tutorialSettlement": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/1280x720-tutorial-settlement.png",
+          "sha256": "21eac386435d211f54b09feda68c8f37c8ac92618691a0a5ba8d0ff4adad58eb"
+        },
+        "nightPatrol": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/1280x720-night-patrol.png",
+          "sha256": "80bb5ae2d938506f385cf275fa22d1be7f6eb1478673c5a83f0520e751644d0c"
+        },
+        "failureSettlement": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/1280x720-failure-settlement.png",
+          "sha256": "5db5f715a33050da543b0f9814441f6ffac48ad2598794cb8b335900cf4e05fb"
+        },
+        "replay": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/1280x720-replay.png",
+          "sha256": "46390dd37e67bbec90dd8052ca633a6f89b5291f25a63ef1d95f9f7114d2d34a"
+        }
+      },
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "viewport": "844x390",
+      "startup": {
+        "title": "第1关 · 灯棚初试"
+      },
+      "tutorialSettlement": {
+        "title": "灯棚初试 · 突围成功",
+        "continueVisible": true
+      },
+      "nightPatrol": {
+        "levelTitle": "无限夜巡",
+        "input": "formal pointer hold/release only"
+      },
+      "failureSettlement": {
+        "title": "游侠跌入摊棚间",
+        "kicker": "护印突围中断",
+        "cause": "natural no-input patrol failure"
+      },
+      "replay": {
+        "levelTitle": "无限夜巡",
+        "resultHidden": true
+      },
+      "screenshots": {
+        "startup": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/844x390-startup.png",
+          "sha256": "1a6e95cc942c0f0c31e1e87fdc01f31aa54013a85b0a117c2bfd1992be519bfd"
+        },
+        "tutorialSettlement": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/844x390-tutorial-settlement.png",
+          "sha256": "b231deaaa9db9a95340e288ad42916fd6cb46d8576e6db3443a074afbd2772fc"
+        },
+        "nightPatrol": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/844x390-night-patrol.png",
+          "sha256": "4e8ccaf4b844ce30940bcfc4275c7d77b1666b0ffb9816a2e64730bc312aaf47"
+        },
+        "failureSettlement": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/844x390-failure-settlement.png",
+          "sha256": "f3cb4c72f33cab9af40dafbd247219801e0d0c4dd40369fec5a6c565f734f0c2"
+        },
+        "replay": {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/844x390-replay.png",
+          "sha256": "bf579d7205b59c912609f8e7de104f6eb55fa83d83ca7777b82e30aa0498adaf"
+        }
+      },
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ],
+  "portrait": {
+    "viewport": "390x844",
+    "orientationPromptVisible": true,
+    "orientationBlocked": true,
+    "distanceBefore": "0m",
+    "distanceAfter": "0m",
+    "pausedByStableDistance": true,
+    "screenshot": {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/natural-smoke-r1.1-built-20260925/390x844-orientation-paused.png",
+      "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+    },
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "evidenceGaps": [
+    "This natural journey checks the existing gameplay route; it is separate from the dev render inspection report.",
+    "Rooftops art remains a rendering inspection subject; this run does not claim a seam repair."
+  ]
+}

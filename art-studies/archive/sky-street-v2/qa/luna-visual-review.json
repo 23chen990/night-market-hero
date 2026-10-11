@@ -1,0 +1,87 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "luna_worker",
+  "scope": "Static visual review of the refreshed sky-based hybrid street preview at 2026-09-28T16:19:29+08:00. Inspected street-start.png, street-center.png, street-end.png (1672x941) and phone-center.png (844x390) with view_image. The workspace panorama was used only as a style-language reference, never as composition input. Current export hashes: start b4cb17407291c107ba206d81060a0563521e5c25377e5c6367ae04513ddac74b, center e61b2fe6b032f98b99644d848bc450ecd3a22da226696e1e575935a52233f471, end 2614b337365e80265ed410294c2eeed95edc3a7a4e7db1c82300e59c6b7da33e, phone 9b956ca7b1295452f22000e69ba2a0499b4980adda9b05cc20ca354d4230af36.",
+  "status": "NEEDS_WORK",
+  "findings": [
+    {
+      "severity": "medium",
+      "summary": "Stall lanterns read as clipped into the cloth instead of hung from a visible tie point.",
+      "evidence": [
+        "In street-start.png, street-center.png and street-end.png, the small warm lanterns under the regular cloth stalls place their top rings inside or flush with the canopy silhouette; the same mount is visible after reduction in phone-center.png.",
+        "The overhead cable lamps have a visible drop line, so the inconsistent mount is specific to stall-mounted lamps and is easy to notice against the otherwise supported street construction."
+      ],
+      "recommendation": "Move stall lantern sprites below each canopy edge and draw a short visible cord or bracket tied to a canopy beam or post. Apply the same anchor rule to the roofed special stalls."
+    },
+    {
+      "severity": "medium",
+      "summary": "The intended flight corridor is not visually legible on the phone preview.",
+      "evidence": [
+        "In phone-center.png, the upper sky is a large empty band while the middle band is crossed by cable/lantern strings and roof ridges; the lower band is compressed into near-black stalls, rails and foreground roofs, leaving no continuous route cue.",
+        "Across street-start.png, street-center.png and street-end.png, roof peaks and tall support posts repeatedly intrude into the central travel band. Static art cannot prove collision clearance, but the visual corridor itself is difficult to read at 844x390."
+      ],
+      "recommendation": "Reserve a continuous contrasting band around the declared flight trajectory, keep roof peaks and support posts outside that band, and preserve enough separation from cable strings and lanterns for the route to remain readable on a landscape phone."
+    },
+    {
+      "severity": "low",
+      "summary": "Stall and lantern repetition remains conspicuous across the three screen widths.",
+      "evidence": [
+        "The three desktop exports repeat the same middle-street stall cadence, canopy proportions, warm lamp scale and near-even cable spacing; phone-center.png compresses this into an especially regular left-to-right rhythm.",
+        "The refreshed far buildings are more varied and muted, but the foreground market modules still read as a repeated strip rather than distinct street pockets."
+      ],
+      "recommendation": "Vary stall width and height, canopy sag, lamp count and vertical anchors; vary prop silhouettes and leave occasional gaps so adjacent screens do not share the same visual beat."
+    },
+    {
+      "severity": "low",
+      "summary": "The roofed special-stall material reads as a hard dark cutout against the fogged code-built street.",
+      "evidence": [
+        "The roofed stall in street-start.png near the left-center and its counterparts in street-center.png and street-end.png have a very crisp horizontal roof slab and frame with less atmospheric falloff than adjacent roofs and cloth stalls.",
+        "At phone-center.png the same slab becomes a solid dark bar, making the module look pasted forward rather than integrated into the layered haze."
+      ],
+      "recommendation": "Grade the roofed-stall copy toward its depth layer with a restrained fog/tint pass, soften the top and side alpha edge, and vary its roof value so it reads as a near structure with material detail rather than a repeated cutout."
+    }
+  ],
+  "checks": [
+    {
+      "name": "sky is atmosphere-only",
+      "passed": true,
+      "evidence": "sky-only.png is a continuous fog/cloud atmosphere plate with only a low distant atmospheric silhouette; source-manifest.json identifies the source as generated-atmosphere-plate-v33, and scene.js draws one sky plate before the assembled layers."
+    },
+    {
+      "name": "architecture is code plus small material sprites",
+      "passed": true,
+      "evidence": "source-manifest.json reports completePanoramaInputs=0 and lists eave, support, canopy, lantern, cart, banner and stall as small preview copies. scene.js constructs building/roof/stall/post/cable geometry and uses those atomic materials; browser-check.json records sceneLayers existing-sky, code-architecture and atomic-materials."
+    },
+    {
+      "name": "roof and wall connections",
+      "passed": true,
+      "evidence": "The full-height towers in street-center.png and street-end.png, plus the smaller roofed buildings in all three desktop exports, meet their walls without visible gaps or detached roof plates. The refreshed exports also removed the previous overlapping top foreground roof."
+    },
+    {
+      "name": "duplicate or ghost architecture",
+      "passed": true,
+      "evidence": "No full-scene ghost or duplicated panorama is visible across the three adjacent exports or street-full-5016x941.png. The scene code has one sky draw and opaque assembled foregrounds; the repeated tall towers are separated landmarks rather than a second scene layer."
+    },
+    {
+      "name": "style similarity to the supplied panorama",
+      "passed": true,
+      "evidence": "Using the supplied panorama only for style comparison, the cool blue fog, warm amber lamps, curved tiled roofs, layered depth and market canopy vocabulary plausibly reach the requested 80–90% band toward its lower edge. The sparse upper sky, repeated foreground rhythm and flatter code textures keep it from reading as a confident 90% match."
+    },
+    {
+      "name": "lantern mounting",
+      "passed": false,
+      "evidence": "Overhead cable lamps are supported, but stall lantern rings visually enter or sit flush with the cloth canopy in the named desktop and phone exports; see the first finding."
+    },
+    {
+      "name": "corridor readability on phone",
+      "passed": false,
+      "evidence": "At 844x390, phone-center.png has an empty upper band and a crowded middle/lower band with roofs, posts, cables and near-black foregrounds; the declared flight route is not visually readable without an overlay."
+    }
+  ],
+  "limitations": [
+    "This is a static visual preview review; it does not verify runtime collision geometry, player motion, or a live horizontal pan between camera positions.",
+    "The supplied workspace panorama was consulted only for palette, lighting, roof detail and depth style. Its composition and architecture were not treated as reusable scene input.",
+    "The review is tied to the four export hashes recorded in scope; any later regeneration requires a new visual pass."
+  ]
+}

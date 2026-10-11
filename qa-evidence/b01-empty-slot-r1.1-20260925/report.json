@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "b01-empty-slot-baseline-report",
+  "testedCommit": "9c28311e59497ac12c776075fab3647fcc9f9bdc",
+  "generatedAt": "2026-09-25T10:35:22.400Z",
+  "entry": {
+    "url": "http://127.0.0.1:4194/dev/render-inspection.html",
+    "label": "开发渲染预览，B01 空槽位基线，非资源接入证据"
+  },
+  "seed": 20260919,
+  "expected": {
+    "assetId": "rooftops.foregroundEaveOccluder",
+    "assetStatus": "MISSING",
+    "checkpoint": "market-to-rooftops",
+    "panOffset": 240,
+    "chunkId": "chain-0/rooftops-01/low-tile-ridges",
+    "placementId": "eave-occluder",
+    "world": {
+      "x": 8510,
+      "y": 168,
+      "width": 491.52,
+      "height": 163.84
+    }
+  },
+  "cases": [
+    {
+      "mode": "longmap",
+      "viewport": {
+        "id": "1280x720",
+        "width": 1280,
+        "height": 720
+      },
+      "camera": {
+        "left": 7404,
+        "right": 9076,
+        "panOffset": 240
+      },
+      "logicalViewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "canvas": {
+        "logical": {
+          "width": 1672,
+          "height": 941
+        },
+        "display": {
+          "width": 874,
+          "height": 493
+        },
+        "devicePixelRatio": 1,
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "checkpoint": "market-to-rooftops",
+      "seed": 20260919,
+      "sceneFamily": "rooftops-01/low-tile-ridges",
+      "chunkId": "chain-0/rooftops-01/low-tile-ridges",
+      "placementId": "eave-occluder",
+      "assetId": "rooftops.foregroundEaveOccluder",
+      "assetStatus": "MISSING",
+      "expectedWorldRect": {
+        "x": 8510,
+        "y": 168,
+        "width": 491.52,
+        "height": 163.84
+      },
+      "coverage": {
+        "horizontal": true,
+        "vertical": true
+      },
+      "componentStats": {
+        "renderer": "component-overlay",
+        "active": true,
+        "longmapChunkId": "chain-0/rooftops-01/low-tile-ridges",
+        "longmapChainIndex": 0,
+        "longmapChunkKind": "district",
+        "longmapSceneFamily": "rooftops-01/low-tile-ridges",
+        "visibleCount": 5,
+        "retainedCount": 5,
+        "missingAssetCount": 11
+      },
+      "requestedTextureKeys": [
+        "longmap-component-lighting-lantern-cable",
+        "longmap-component-market-blank-banner",
+        "longmap-component-market-covered-alley-frame",
+        "longmap-component-market-pushcart",
+        "longmap-component-market-stall-canopy",
+        "longmap-component-structure-bamboo-scaffold",
+        "longmap-component-structure-inner-eave",
+        "longmap-component-structure-paifang-beam",
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadedTextureKeys": [
+        "longmap-component-lighting-lantern-cable",
+        "longmap-component-market-blank-banner",
+        "longmap-component-market-covered-alley-frame",
+        "longmap-component-market-pushcart",
+        "longmap-component-market-stall-canopy",
+        "longmap-component-structure-bamboo-scaffold",
+        "longmap-component-structure-inner-eave",
+        "longmap-component-structure-paifang-beam",
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadFailures": [],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/b01-empty-slot-r1.1-20260925/screenshots/longmap/1280x720.png",
+        "sha256": "6b9c8b28baebb410c51985303fd898940c3c7eb0a97473b6420f72f47c5ab05d"
+      }
+    },
+    {
+      "mode": "longmap",
+      "viewport": {
+        "id": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "camera": {
+        "left": 7404,
+        "right": 9076,
+        "panOffset": 240
+      },
+      "logicalViewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "canvas": {
+        "logical": {
+          "width": 1672,
+          "height": 941
+        },
+        "display": {
+          "width": 438,
+          "height": 247.625
+        },
+        "devicePixelRatio": 1,
+        "viewport": {
+          "width": 844,
+          "height": 390
+        }
+      },
+      "checkpoint": "market-to-rooftops",
+      "seed": 20260919,
+      "sceneFamily": "rooftops-01/low-tile-ridges",
+      "chunkId": "chain-0/rooftops-01/low-tile-ridges",
+      "placementId": "eave-occluder",
+      "assetId": "rooftops.foregroundEaveOccluder",
+      "assetStatus": "MISSING",
+      "expectedWorldRect": {
+        "x": 8510,
+        "y": 168,
+        "width": 491.52,
+        "height": 163.84
+      },
+      "coverage": {
+        "horizontal": true,
+        "vertical": true
+      },
+      "componentStats": {
+        "renderer": "component-overlay",
+        "active": true,
+        "longmapChunkId": "chain-0/rooftops-01/low-tile-ridges",
+        "longmapChainIndex": 0,
+        "longmapChunkKind": "district",
+        "longmapSceneFamily": "rooftops-01/low-tile-ridges",
+        "visibleCount": 5,
+        "retainedCount": 5,
+        "missingAssetCount": 11
+      },
+      "requestedTextureKeys": [
+        "longmap-component-lighting-lantern-cable",
+        "longmap-component-market-blank-banner",
+        "longmap-component-market-covered-alley-frame",
+        "longmap-component-market-pushcart",
+        "longmap-component-market-stall-canopy",
+        "longmap-component-structure-bamboo-scaffold",
+        "longmap-component-structure-inner-eave",
+        "longmap-component-structure-paifang-beam",
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadedTextureKeys": [
+        "longmap-component-lighting-lantern-cable",
+        "longmap-component-market-blank-banner",
+        "longmap-component-market-covered-alley-frame",
+        "longmap-component-market-pushcart",
+        "longmap-component-market-stall-canopy",
+        "longmap-component-structure-bamboo-scaffold",
+        "longmap-component-structure-inner-eave",
+        "longmap-component-structure-paifang-beam",
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadFailures": [],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/b01-empty-slot-r1.1-20260925/screenshots/longmap/844x390.png",
+        "sha256": "d00b5597cf961eae644badccae969fc0e8c7e814638a40dfd902a90a781808f6"
+      }
+    },
+    {
+      "mode": "default",
+      "viewport": {
+        "id": "1280x720",
+        "width": 1280,
+        "height": 720
+      },
+      "camera": {
+        "left": 7404,
+        "right": 9076,
+        "panOffset": 240
+      },
+      "logicalViewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "canvas": {
+        "logical": {
+          "width": 1672,
+          "height": 941
+        },
+        "display": {
+          "width": 874,
+          "height": 493
+        },
+        "devicePixelRatio": 1,
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "checkpoint": "market-to-rooftops",
+      "seed": 20260919,
+      "sceneFamily": "rooftops-01/low-tile-ridges",
+      "chunkId": "chain-0/rooftops-01/low-tile-ridges",
+      "placementId": "eave-occluder",
+      "assetId": "rooftops.foregroundEaveOccluder",
+      "assetStatus": "MISSING",
+      "expectedWorldRect": {
+        "x": 8510,
+        "y": 168,
+        "width": 491.52,
+        "height": 163.84
+      },
+      "coverage": {
+        "horizontal": true,
+        "vertical": true
+      },
+      "componentStats": {
+        "renderer": "disabled",
+        "active": false,
+        "longmapChunkId": null,
+        "longmapChainIndex": null,
+        "longmapChunkKind": null,
+        "longmapSceneFamily": null,
+        "visibleCount": 0,
+        "retainedCount": 0,
+        "missingAssetCount": 0
+      },
+      "requestedTextureKeys": [
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadedTextureKeys": [
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadFailures": [],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/b01-empty-slot-r1.1-20260925/screenshots/default/1280x720.png",
+        "sha256": "2cb5c8c9d21ecd15dd652572958e690419a8e51c6191dc617bfd273ea54aecbe"
+      }
+    },
+    {
+      "mode": "default",
+      "viewport": {
+        "id": "844x390",
+        "width": 844,
+        "height": 390
+      },
+      "camera": {
+        "left": 7404,
+        "right": 9076,
+        "panOffset": 240
+      },
+      "logicalViewport": {
+        "width": 1672,
+        "height": 941
+      },
+      "canvas": {
+        "logical": {
+          "width": 1672,
+          "height": 941
+        },
+        "display": {
+          "width": 438,
+          "height": 247.625
+        },
+        "devicePixelRatio": 1,
+        "viewport": {
+          "width": 844,
+          "height": 390
+        }
+      },
+      "checkpoint": "market-to-rooftops",
+      "seed": 20260919,
+      "sceneFamily": "rooftops-01/low-tile-ridges",
+      "chunkId": "chain-0/rooftops-01/low-tile-ridges",
+      "placementId": "eave-occluder",
+      "assetId": "rooftops.foregroundEaveOccluder",
+      "assetStatus": "MISSING",
+      "expectedWorldRect": {
+        "x": 8510,
+        "y": 168,
+        "width": 491.52,
+        "height": 163.84
+      },
+      "coverage": {
+        "horizontal": true,
+        "vertical": true
+      },
+      "componentStats": {
+        "renderer": "disabled",
+        "active": false,
+        "longmapChunkId": null,
+        "longmapChainIndex": null,
+        "longmapChunkKind": null,
+        "longmapSceneFamily": null,
+        "visibleCount": 0,
+        "retainedCount": 0,
+        "missingAssetCount": 0
+      },
+      "requestedTextureKeys": [
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadedTextureKeys": [
+        "night-city-district-transition-mist",
+        "night-city-foreground-eaves",
+        "night-city-market-v1",
+        "night-city-market-v2",
+        "night-city-rooftops-v1",
+        "night-city-rooftops-v2",
+        "night-city-waterfront-v1",
+        "night-city-waterfront-v2"
+      ],
+      "loadFailures": [],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市-r1/qa-evidence/b01-empty-slot-r1.1-20260925/screenshots/default/844x390.png",
+        "sha256": "3665679abcd41cd95e7d97843a3010edbcf8504a7b5dd0d8a829ebb6238e1f9e"
+      }
+    }
+  ],
+  "status": "PASS",
+  "errors": [],
+  "notes": [
+    "只使用现有检查页的 checkpoint 选择和 pan-right 操作；没有加载候选资源。",
+    "B01 仍为 MISSING；longmap 只记录未来单资源对照所需的空槽位。",
+    "missingAssetCount 含预取范围，不代表当前屏幕的缺图数量。"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "status": "DIAGNOSIS_COMPLETE_ART_TARGET_UNMET",
+  "runtimeIntegrated": false,
+  "newArtGenerated": false,
+  "measuredSimilarity": null,
+  "conclusion": "Material set has role and coverage limitations; enlargement/repetition and current assembly also reduce fidelity. Not all approved sources need replacement.",
+  "decisions": [
+    {
+      "part": "屋檐、棚布",
+      "decision": "保留局部用途；大型近景版本需要另行解决",
+      "reason": "近2倍放大；同一曲线反复使用；不足以表现原图的大轮廓与变化。"
+    },
+    {
+      "part": "灯笼、横梁、竹架、推车",
+      "decision": "保留",
+      "reason": "局部形制可用；亮度、比例、支撑连接和位置仍需调整。"
+    },
+    {
+      "part": "近处木楼与中景完整门面",
+      "decision": "缺失",
+      "reason": "它们提供原图最主要的建筑体积、梁柱、门窗与连续暗部。"
+    },
+    {
+      "part": "场景拼装",
+      "decision": "未通过视觉验收",
+      "reason": "部分屋檐、灯串、架体仍缺可信的连接关系。"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/material-audit.jpg",
+      "sha256": "631904fd2519aee3c18060f0b5491dd44ba1a49f3d426d035a7eb2fe2ce39e27"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/qa/material-audit-crops.json",
+      "sha256": "ce9123405e1ebf7371066bb73fa6345e361437ff604d2324576c72a5a7555e9c"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/screen.png",
+      "sha256": "c7a9b2573eb772206e192ddd1348f441184f9f570167353d8667233f7ca0a1e5"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/qa/luna-material-fidelity-review.json",
+      "sha256": "dae5febbae6603497a59b2c93095fbefc457cb33dcb44ae6ec6a8a2edc5c2d6e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-screen-v4/qa/luna-composition-fidelity-review.json",
+      "sha256": "c3deaf54cdd8850195d6b89ebc64f550b017d41382ec7860353b7a4378ea3501"
+    }
+  ],
+  "nextWork": [
+    "Respect user no-new-image decision.",
+    "Use asset roles and gaps to determine the next material plan before claiming visual completion.",
+    "Do not extend or integrate the current candidate as a finished map."
+  ]
+}

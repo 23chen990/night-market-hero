@@ -1,0 +1,2 @@
+import js from '@eslint/js';
+export default [{ files: ['**/scene.js', '**/facades.js', '**/surfaces.js'], languageOptions: { ecmaVersion: 2022, sourceType: 'script', globals: { document: 'readonly', window: 'readonly', Image: 'readonly', console: 'readonly', MATERIAL_DATA: 'readonly' } }, rules: { ...js.configs.recommended.rules, 'no-unused-vars': ['error', { args: 'none', varsIgnorePattern: '^create' }] } }, { files: ['**/scene.js'], languageOptions: { globals: { createFacadeArt: 'readonly', createSceneSurfaces: 'readonly' } } }];

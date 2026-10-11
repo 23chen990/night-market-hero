@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "approved-material-coverage",
+      "whole-scene-fidelity",
+      "single-scene-composition"
+    ],
+    "lifecycleStateBranches": [
+      "delivered-v2",
+      "revised-candidate"
+    ],
+    "rendererPaths": [
+      "offline-canvas-composition"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "approved-material-coverage-desktop",
+      "objectType": "approved-material-coverage",
+      "lifecycleStateBranch": "delivered-v2",
+      "rendererPath": "offline-canvas-composition",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "已确定素材须逐项映射至可见场景位置；排除项必须说明用途不适用理由，不能把审批目录当完整清单。",
+      "observed": "v2仅使用天空和7项环境素材；竹架、牌坊横梁、内檐、灯串、屋顶局部未载入。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json",
+          "sha256": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/street-start.png",
+          "sha256": "fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "approved-material-coverage-phone-landscape",
+      "objectType": "approved-material-coverage",
+      "lifecycleStateBranch": "delivered-v2",
+      "rendererPath": "offline-canvas-composition",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "已确定素材须逐项映射至可见场景位置；排除项必须说明用途不适用理由，不能把审批目录当完整清单。",
+      "observed": "v2仅使用天空和7项环境素材；竹架、牌坊横梁、内檐、灯串、屋顶局部未载入。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json",
+          "sha256": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/street-start.png",
+          "sha256": "fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "whole-scene-fidelity-desktop",
+      "objectType": "whole-scene-fidelity",
+      "lifecycleStateBranch": "delivered-v2",
+      "rendererPath": "offline-canvas-composition",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "整体密度、建筑高差、遮挡、暖灯与蓝灰暗部需对照最终风格图，不能用无错位等局部通过代替整体验收。",
+      "observed": "v2还裁掉完整摊棚的大部分支撑，重复的代码楼体和均匀窗格不符合定稿。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json",
+          "sha256": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/street-start.png",
+          "sha256": "fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "whole-scene-fidelity-phone-landscape",
+      "objectType": "whole-scene-fidelity",
+      "lifecycleStateBranch": "delivered-v2",
+      "rendererPath": "offline-canvas-composition",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "整体密度、建筑高差、遮挡、暖灯与蓝灰暗部需对照最终风格图，不能用无错位等局部通过代替整体验收。",
+      "observed": "v2还裁掉完整摊棚的大部分支撑，重复的代码楼体和均匀窗格不符合定稿。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json",
+          "sha256": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/street-start.png",
+          "sha256": "fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "single-scene-composition-desktop",
+      "objectType": "single-scene-composition",
+      "lifecycleStateBranch": "delivered-v2",
+      "rendererPath": "offline-canvas-composition",
+      "viewport": {
+        "label": "desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "单屏及手机预览、连续地图可正常查看；同一建筑只组装一次。",
+      "observed": "此分支源码仅天空为底，无整幅全景输入；不代表整体美术通过。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json",
+          "sha256": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/street-start.png",
+          "sha256": "fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "single-scene-composition-phone-landscape",
+      "objectType": "single-scene-composition",
+      "lifecycleStateBranch": "delivered-v2",
+      "rendererPath": "offline-canvas-composition",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "单屏及手机预览、连续地图可正常查看；同一建筑只组装一次。",
+      "observed": "此分支源码仅天空为底，无整幅全景输入；不代表整体美术通过。",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/source-manifest.json",
+          "sha256": "8c2ab5a1845e4dc0700d5dc13011d56b8e72a47e09bb1ae1cecdf5d390c7c640",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/sky-street-v2/street-start.png",
+          "sha256": "fdbad3fc17048b02c904815228181fe728fb6835ff1e538aef7c1db31cfd20a1",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "v2仅使用天空和7项环境素材；竹架、牌坊横梁、内檐、灯串、屋顶局部未载入。",
+    "v2还裁掉完整摊棚的大部分支撑，重复的代码楼体和均匀窗格不符合定稿。",
+    "原台账与素材核对表均未发现可代替代码楼体的完整临街外立面/中景门面。",
+    "本轮用户选择暂不补图，先看素材缺口和搭建方案；90%视觉目标仍未达成。"
+  ],
+  "remainingGaps": [
+    "完整外立面与中景门面素材",
+    "补齐后单屏整体美术复核",
+    "达到单屏方向后长图延展"
+  ],
+  "createdAt": "2026-09-28T08:56:35.975Z"
+}

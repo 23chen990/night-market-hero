@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {"name":"single scene owner at 844x390 default and longmap","passed":true,"evidence":"Both fresh cells report sceneOwner=night-city-image-stream, sceneLayerCount=1, sceneOverlay=none, componentRenderer=disabled, componentVisibleCount=0, missingAssetCount=0."},
+    {"name":"single scene owner at 1180x720 default and longmap","passed":true,"evidence":"Both fresh cells report the same single-owner telemetry; longmap query no longer mounts ComponentRenderer."},
+    {"name":"natural attached branch keeps dynamic rope and anchor feedback","passed":true,"evidence":"All four natural hold cells reached a non-null attachedAnchorId and captured attached screenshots with the rope/anchor feedback visible."},
+    {"name":"legacy code terrain is absent from attached branch","passed":true,"evidence":"Attached screenshots at both viewports show the raster market scene and dynamic feedback without the former translucent rectangle/triangle/diagonal scaffold."},
+    {"name":"natural terminal and replay","passed":true,"evidence":"Natural pointer hold/release reached tutorial settlement; Continue opened night-patrol and hid the result card."},
+    {"name":"console, page and request errors","passed":true,"evidence":"All four scene cells and the terminal/replay flow recorded zero console errors, page errors and request failures."}
+  ],
+  "issues": [],
+  "screenshots": [
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-mobile-844x390-attached.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-mobile-844x390-attached.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-desktop-1180x720-attached.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-desktop-1180x720-attached.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-terminal-desktop.png",
+    "runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-replay-desktop.png"
+  ],
+  "consoleLog": "Independent fresh browser run: consoleErrors=0, pageErrors=0, requestFailures=0 in all scene cells and natural terminal/replay flow.",
+  "testedAt": "2026-09-28T05:24:00Z",
+  "evidence": [
+    {"schemaVersion":1,"mode":"NATURAL_E2E","actions":["fresh browser startup","normal pointer hold","normal pointer release","capture attached and release screenshots"],"artifacts":["runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-mobile-844x390-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-mobile-844x390-release.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-mobile-844x390-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-mobile-844x390-release.png"],"forbiddenOperations":[],"buildHash":"8d02e45870c7205ce0f230305bbc71b800d5c58f121030a17959bc28a4f4d400","runtime":"Phaser/Vite web-lite","device":{"width":844,"height":390,"label":"mobile landscape"},"seed":31,"runner":"independent natural-input retest"},
+    {"schemaVersion":1,"mode":"NATURAL_E2E","actions":["fresh browser startup","normal pointer hold","normal pointer release","capture attached and release screenshots"],"artifacts":["runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-desktop-1180x720-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/default-desktop-1180x720-release.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-desktop-1180x720-attached.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/longmap-desktop-1180x720-release.png"],"forbiddenOperations":[],"buildHash":"8d02e45870c7205ce0f230305bbc71b800d5c58f121030a17959bc28a4f4d400","runtime":"Phaser/Vite web-lite","device":{"width":1180,"height":720,"label":"desktop landscape"},"seed":31,"runner":"independent natural-input retest"},
+    {"schemaVersion":1,"mode":"NATURAL_E2E","actions":["fresh browser startup","48 normal hold/release cycles","click natural Continue after settlement","capture terminal and replay screenshots"],"artifacts":["runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-terminal-desktop.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-replay-desktop.png"],"forbiddenOperations":[],"buildHash":"8d02e45870c7205ce0f230305bbc71b800d5c58f121030a17959bc28a4f4d400","runtime":"Phaser/Vite web-lite","device":{"width":1180,"height":720,"label":"desktop landscape"},"seed":31,"runner":"independent natural-input retest"}
+  ],
+  "naturalFlow": {
+    "schemaVersion":1,
+    "startedFromReset":true,
+    "actions":["fresh startup","normal pointer hold/release rhythm","natural settlement","click Continue","observe replay"],
+    "transitions":[{"name":"startup-to-playing","changed":true,"evidence":"fresh telemetry status=playing"},{"name":"pointer-hold-to-attached","changed":true,"evidence":"attachedAnchorId=node-1/node-2 in four natural cells"},{"name":"release-to-playing","changed":true,"evidence":"inputHeld=false after release in four cells"},{"name":"playing-to-settlement","changed":true,"evidence":"natural-terminal-desktop.png and terminal telemetry status=won"},{"name":"settlement-to-replay","changed":true,"evidence":"natural-replay-desktop.png shows night-patrol status=playing and resultHidden=true"}],
+    "completion":"settlement",
+    "replayObserved":true,
+    "forbiddenOperations":[],
+    "screenshots":["runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-terminal-desktop.png","runs/mobile-chart-adaptation-20260830/artifacts/qa-retest-single-scene-20260928/natural-replay-desktop.png"],
+    "passed":true,
+    "blockers":[],
+    "runner":"independent natural-input retest",
+    "buildHash":"8d02e45870c7205ce0f230305bbc71b800d5c58f121030a17959bc28a4f4d400",
+    "runtime":"Phaser/Vite web-lite",
+    "device":{"width":1180,"height":720,"label":"desktop landscape"},
+    "seed":31,
+    "observedAt":"2026-09-28T05:24:00Z"
+  }
+}

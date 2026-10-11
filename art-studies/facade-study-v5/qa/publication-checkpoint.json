@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "game-publication-checkpoint",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "sourceWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "repository": "https://github.com/23chen990/night-market-hero",
+  "branch": "codex/checkpoint-20261001",
+  "userStop": "2026-10-01 用户要求停止继续修改，只收尾上传代码与规划提示词。",
+  "status": "CODE_CHECKPOINT_ART_UNAPPROVED",
+  "route": "formal-fixer",
+  "routeScope": "Inherited issue route; offline study checkpoint, not completed runtime FIX.",
+  "contextIntentionallyOmitted": [
+    "Other games and shared factory implementation",
+    "Private conversation screenshot (kept in local verified evidence)",
+    "Secrets, dependency directories and rebuildable caches"
+  ],
+  "gameSourceModifiedThisTurn": false,
+  "inheritedLocalChangedFiles": [
+    "src/component-renderer.ts",
+    "src/longmap-art-catalog.ts",
+    "src/longmap-scene-recipes.ts",
+    "src/main.ts",
+    "tests/component-renderer.test.ts",
+    "tests/hud-slice.test.ts",
+    "tests/runtime-assets-wiring.test.ts",
+    "tests/user-feedback-revision.test.ts"
+  ],
+  "inheritedLocalUntrackedCodeAndAssets": [
+    "src/assets/approved-runtime/environment/market-lantern-sprite-v1.png",
+    "src/assets/approved-runtime/environment/rooftops-curved-eave-v1.png",
+    "src/assets/approved-runtime/environment/rooftops-roof-crown-v1.png",
+    "src/assets/approved-runtime/environment/rooftops-roof-support-block-v1.png"
+  ],
+  "remoteSourceUpdatesPreserved": [
+    "dev/render-inspection.html",
+    "src/dev-render-inspection-browser.ts",
+    "src/dev-render-inspection.ts",
+    "src/dev-render-observation.ts",
+    "src/night-city-renderer.ts",
+    "tests/b01-empty-slot-browser.ts",
+    "tests/dev-render-observation.test.ts",
+    "tests/natural-journey-r1-browser.ts",
+    "tests/night-city-renderer.test.ts",
+    "tests/render-inspection-browser.ts",
+    "tests/render-inspection-late-error-process.ts",
+    "tests/render-inspection.test.ts"
+  ],
+  "checks": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "tests": {
+      "passed": 284,
+      "skipped": 10,
+      "failed": 0
+    },
+    "build": "PASS",
+    "naturalJourney": "PASS",
+    "artStructure": "PASS",
+    "artFidelity": "NEEDS_WORK",
+    "runtimeIntegrated": false,
+    "freshInstall": "NOT_CERTIFIED"
+  },
+  "runtimeWiredEntrypoints": [
+    "src/main.ts",
+    "src/game-core.ts",
+    "src/night-city-renderer.ts",
+    "src/run-snapshot.ts"
+  ],
+  "evidence": [
+    {
+      "path": "art-studies/facade-study-v5/screen.png",
+      "sha256": "1e06a0de10b98e262427bb8db70ad14efefcedc933886c5632799563c13fcac8"
+    },
+    {
+      "path": "art-studies/facade-study-v5/screen-mobile.png",
+      "sha256": "3d6dbc3b78e4a9980e4d5cfdb7dfb89222cba63d8decb9e55d7d1e769e8bd485"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/code-parts-check.json",
+      "sha256": "cd2160600d1378268bf7b4358dc783208a9a318fd88d9603f87d910db8b7d39f"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/depth-check.json",
+      "sha256": "f0d41262b1fff8d4dd065a312bdfb47415eb9a25f914557b299b8cd5e0a349de"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/browser-check.json",
+      "sha256": "1bc82c69c749de8366aafb50e763003f85559be6fa1e5abbf8c87b3f1629dc50"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/code-parts-on-backgrounds.png",
+      "sha256": "3217dc8de8d52c0e83bd267e3f0f4023407cbd1cacf84773fcaac2161d831f94"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/luna-structure-review.json",
+      "sha256": "ec32f50132babd3323e3ba71839dca3ac6f6c85a8ac2d8619af2a28ba6dda41f"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/luna-fidelity-review.json",
+      "sha256": "8a61d4e7351bd3c52c6ce87d2e7a75773ebd12e7bed130e2137487f72fa78632"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/resume-triage.json",
+      "sha256": "fafc8b10c151450686f763d1686b46ea8e2d7ac45958502ace63ee2398ea0e31"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/resume-matrix.json",
+      "sha256": "32941b2d6f7721fffd7e72b8811f97b737d1732eef732ead88e5f22d03066882"
+    },
+    {
+      "path": "art-studies/facade-study-v5/qa/runtime-natural-20261001/qa-report.json",
+      "sha256": "5357241e0cdcbc15a2150bb3ba908bf043af4558b95a4f09ed8c0d962d80a891"
+    },
+    {
+      "path": "dist/index.html",
+      "sha256": "8503e3bd8a764a9a8ddbd38ca148effc9b23d7e180a9aea009a41b76986c6cc2"
+    }
+  ],
+  "remainingEvidenceGaps": [
+    "Overall90% fidelity is not measured or approved.",
+    "Study is not runtime integrated; no new formalFIX completion.",
+    "WeChat/Douyin/TapTap Mini Game publishability is unverified.",
+    "Fresh standalone dependency install is not certified; package.json omits @eslint/js and @types/node and has no committed lockfile."
+  ],
+  "createdAt": "2026-09-30T20:20:55.575Z"
+}

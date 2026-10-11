@@ -1,0 +1,50 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "reviewer": "Luna worker",
+  "scope": "Current v4 interim full-frame audit; root summary of luna_composition_audit result",
+  "status": "BLOCKED",
+  "findings": [
+    {
+      "severity": "high",
+      "summary": "Small approved parts cannot supply the large continuous architecture and texture of the target.",
+      "evidence": [
+        "material-audit.jpg and screen.png show missing facade and repetitive source parts."
+      ],
+      "recommendation": "Retain small parts as details, identify complete facade/door-side requirements."
+    },
+    {
+      "severity": "high",
+      "summary": "There are additional assembly problems independent of the raw asset quality.",
+      "evidence": [
+        "screen.png: right scaffold at x1120–1350 y330–600 lacks convincing surrounding host; lantern string x680–955 y450–560 reads unanchored; right canopy and roof lack visible full supports."
+      ],
+      "recommendation": "Re-anchor these parts or remove unsupported uses; avoid generic grids as a substitute."
+    },
+    {
+      "severity": "high",
+      "summary": "Large roof cropping and empty dark facade regions do not match target silhouette.",
+      "evidence": [
+        "screen.png and verified final reference."
+      ],
+      "recommendation": "Keep fidelity unapproved; no-new-image scope only allows local cropping, atmosphere and anchoring cleanup."
+    }
+  ],
+  "checks": [
+    {
+      "name": "reference_and_current_view_inspected",
+      "passed": true,
+      "evidence": "screen.png, material-audit.jpg, material-audit-crops.json and verified final reference inspected."
+    },
+    {
+      "name": "overall_fidelity_acceptance",
+      "passed": false,
+      "evidence": "Missing complex facade and visible assembly problems remain."
+    }
+  ],
+  "limitations": [
+    "Read-only review; no new images or game integration.",
+    "No numerical similarity certification.",
+    "This stored record is the main agent summary of the Luna response; the full response is preserved in the conversation."
+  ]
+}

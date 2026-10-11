@@ -1,0 +1,30 @@
+{
+  "route": "direct-builder",
+  "scope": "offline-art-preview",
+  "generatedWorkspaceModified": false,
+  "fixes": [
+    {
+      "finding": "stall lantern mount",
+      "change": "Cloth-stall lanterns hang below hem from a beam and cord; roofed-stall lanterns are below the roof."
+    },
+    {
+      "finding": "phone corridor",
+      "change": "Overhead ropes raised 72px, inner tall towers lowered to roofline, pillars muted, demonstration route at y435 ±17."
+    },
+    {
+      "finding": "repeated modules",
+      "change": "Stall widths/heights and cable lantern count/spacing varied; street gaps retained."
+    },
+    {
+      "finding": "hard roofed-stall cutout",
+      "change": "Source-atop depth tint plus 0.35px local blur; no scene transparency overlay."
+    }
+  ],
+  "validation": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "browserControls": "passed",
+    "independentVisualRetest": "passed"
+  },
+  "remaining": "Final static visual retest PASS; user art approval remains pending. No gameplay integration or 80–90% similarity completion claim."
+}

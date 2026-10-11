@@ -1,0 +1,19 @@
+{
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "Asset/version audit only, independently alongside root implementation. User rejected v2 because already confirmed artwork was not used and visual fidelity is far off. Audit the target run approved-resources-night-market-hero-20260925.zip, runtime environment assets and corresponding approvals/source batches v44–v55 and original style authority. Identify complete approved environment set, source version/hash, role, whether v2 actually used each, missing or wrongly simplified/cropped assets, and specific recommended use in a sky-based hybrid composition. Distinguish approved, pending and rejected versions. Do not audit every UI/gameplay icon. Output InventorySchema. Relevant prior source list is ../sky-street-v2/source-manifest.json. Need definitive source list root can use.",
+  "previewRoot": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3",
+  "ownership": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json"
+  ],
+  "instructions": [
+    "You are not alone in the codebase; do not revert others. Read only generated game files and source art. Write only assigned report artifacts.",
+    "Read qa/contracts.mjs and validate output against the specified schema. Return only JSON with reportPath and status.",
+    "Do not modify implementation, generate new art, or spawn agents. Keep context limited to exact target run."
+  ],
+  "acceptance": [
+    "Use exact source files, hashes and approval evidence. No inferred approval from filename alone.",
+    "Do not treat structural correctness or browser no-error as overall art acceptance."
+  ],
+  "output": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/hybrid-longmap-preview-20260928/asset-faithful-v3/qa/approved-inventory.json"
+}
