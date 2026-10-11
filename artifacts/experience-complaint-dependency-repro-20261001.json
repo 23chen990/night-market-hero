@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "独立游戏工作区的 fresh install/reproducibility contract 不完整：eslint.config.js 直接导入 @eslint/js，tsconfig.json 声明 node 类型，但 package.json 没有对应直接依赖且仓库没有 package-lock.json；当前 npm 脚本由 Codex 运行时提供的外部工具兜底通过，不能证明独立安装可复现。",
+  "classification": ["factory-routing"],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "问题影响构建与发布配置，按仓库规则进入 formal QA → Fixer → QA；修复边界限定为 package manifest、lockfile、自包含构建变换与对应 contract tests，不改变默认玩法、状态机、美术候选接入或平台适配。",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "facade-study-v5 尚未通过的保真审查",
+      "已有 formal FIX 的历史尝试与 QA 证据",
+      "其他 run、共享工厂代码和无关 gameplay/source 改动"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "读取目标 workspace/package.json、eslint.config.js、tsconfig.json。",
+      "在目标 workspace 执行 npm ls @eslint/js @types/node 与 npm ls --all。",
+      "观察 npm test、npm run lint、npm run typecheck、npm run build 虽通过，但 node_modules 只有 Vite 临时目录，工具来自外部 Codex runtime。"
+    ],
+    "observed": [
+      "package.json 未声明 @eslint/js 与 @types/node，分别被 eslint.config.js 和 tsconfig.json 直接使用。",
+      "npm ls 报告 package.json 中的全部运行/开发依赖为 UNMET DEPENDENCY，npm explain 对 @eslint/js 与 @types/node 找不到依赖。",
+      "仓库没有 package-lock.json，无法用 npm ci 固定解析结果。"
+    ],
+    "evidence": [
+      {
+        "path": "package.json",
+        "sha256": "275424e1e2e7aa556534cec28d41382bcfddcf99ecbf592e9be1e6d8f4e4fe06",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "eslint.config.js",
+        "sha256": "51e149a055b7e82f31aaf8af2d747979318482d0ec5ae2015b7a9240451c860a",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "tsconfig.json",
+        "sha256": "ca2e1e969f70259c060df5745047edf0391c87243e6572cb253a497df213394d",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "package.json 直接声明 eslint.config.js 与 tsconfig.json 使用的 @eslint/js 和 @types/node。",
+    "生成并保留 package-lock.json；在隔离副本执行 npm ci 后 npm test、npm run lint、npm run typecheck、npm run build 均使用 workspace 依赖通过。",
+    "自包含构建在解析到 Vite 8.3.x 后仍须移除 data URL 的 import.meta 表达式，且 npm run test:file 必须通过。",
+    "新增 contract test 先在当前 manifest 上失败，再在修复后通过，覆盖直接声明和 lockfile 根 package 元数据。",
+    "本任务不修改默认运行时、核心玩法、状态机、美术候选接入、平台适配或已有 formal FIX/QA 尝试记录。"
+  ],
+  "status": "CLOSED",
+  "createdAt": "2026-10-01T10:42:00.000Z"
+}

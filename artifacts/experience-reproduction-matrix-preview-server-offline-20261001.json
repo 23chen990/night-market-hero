@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": ["Safari local preview page", "Vite development server", "FlightScene static scene owner", "ComponentRenderer"],
+    "lifecycleStateBranches": ["server stopped", "server running before page load", "page loaded with ?longmap=1", "page loaded via file alias"],
+    "rendererPaths": ["Safari network request", "Vite dev server", "NightCityRenderer image stream", "ComponentRenderer longmap preview"],
+    "viewports": [
+      {"label": "attached-screenshot-original", "width": 2594, "height": 2054},
+      {"label": "desktop-browser", "width": 1280, "height": 720}
+    ]
+  },
+  "cells": [
+    {
+      "id": "server-offline-safari",
+      "objectType": "Safari local preview page",
+      "lifecycleStateBranch": "server stopped",
+      "rendererPath": "Safari network request",
+      "viewport": {"label": "attached-screenshot-original", "width": 2594, "height": 2054},
+      "status": "REPRODUCED",
+      "expected": "The target URL reaches a running local preview server and returns the game document.",
+      "observed": "The attached Safari capture reports that 127.0.0.1:4178 cannot be reached; this is the reported failure branch.",
+      "evidence": [
+        {"path": "reference-evidence/manifest.json", "sha256": "e1d90d5b78519e7b4842b86b9138199624f1ef50bdaeda827281e859cd9d754e", "kind": "qa-artifact", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "server-running-vite",
+      "objectType": "Vite development server",
+      "lifecycleStateBranch": "server running before page load",
+      "rendererPath": "Vite dev server",
+      "viewport": {"label": "desktop-browser", "width": 1280, "height": 720},
+      "status": "PASS",
+      "expected": "The same URL returns HTTP 200 and bootstraps the target game from this workspace.",
+      "observed": "After starting Vite 8.3.2 from the target workspace, the same URL returned HTTP 200 and the browser reached playing/lantern-entry with no console or page errors.",
+      "evidence": [
+        {"path": "package.json", "sha256": "335be96648792f3837ebcd1662e9081b1a06a7e086869ff7a6411b64e411bfd6", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "qa-evidence/preview-server-repro-20261001/preview-server-runtime-check.json", "sha256": "a0bff3ad972a6e2b190e51b1e96a40952a092293984d2a0f68f7dfe90c677eb6", "kind": "qa-artifact", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "longmap-default-scene-owner",
+      "objectType": "FlightScene static scene owner",
+      "lifecycleStateBranch": "page loaded with ?longmap=1",
+      "rendererPath": "NightCityRenderer image stream",
+      "viewport": {"label": "desktop-browser", "width": 1280, "height": 720},
+      "status": "REPRODUCED",
+      "expected": "The runtime metadata should identify which renderer owns the visible scene for this query branch.",
+      "observed": "The source branch sets sceneOwner=night-city-image-stream and componentRenderer=disabled even when longmap=1 is present.",
+      "evidence": [
+        {"path": "src/main.ts", "sha256": "e5725a224c34b7da482deab62b54bf83bebccd12bc04110232b15942c6177c58", "kind": "factory-source", "provenance": "repository-source"}
+      ]
+    },
+    {
+      "id": "component-preview-branch",
+      "objectType": "ComponentRenderer",
+      "lifecycleStateBranch": "page loaded with ?longmap=1",
+      "rendererPath": "ComponentRenderer longmap preview",
+      "viewport": {"label": "desktop-browser", "width": 1280, "height": 720},
+      "status": "REPRODUCED",
+      "expected": "An explicit preview route should mount ComponentRenderer and expose visible component counts if code-drawn experience is requested.",
+      "observed": "The live page reports componentRenderer=disabled, componentVisibleCount=0 and longmapChunkId=none. ComponentRenderer documents itself as preview-only, while the current FlightScene does not mount it; no default code-drawn experience is available from this URL.",
+      "evidence": [
+        {"path": "src/component-renderer.ts", "sha256": "e4ea28eaaf7fbe3d3c3801c206bf53f6ae843321ef398791427449883730aedc", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "qa-evidence/preview-server-repro-20261001/preview-server-runtime-check.json", "sha256": "a0bff3ad972a6e2b190e51b1e96a40952a092293984d2a0f68f7dfe90c677eb6", "kind": "qa-artifact", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "file-alias-fallback",
+      "objectType": "Safari local preview page",
+      "lifecycleStateBranch": "page loaded via file alias",
+      "rendererPath": "NightCityRenderer image stream",
+      "viewport": {"label": "desktop-browser", "width": 1280, "height": 720},
+      "status": "PASS",
+      "expected": "The current bundled HTML alias can open without a local HTTP server.",
+      "observed": "The target workspace already has an independently verified file-launch journey; this bypasses the stopped 4178 server but does not enable ComponentRenderer.",
+      "evidence": [
+        {"path": "qa-evidence/dependency-retest-20261001/file-launch/qa-report.json", "sha256": "77fe84feb96f130d61cf92a8be1ca292ffc9dd373d5e7b7a3df9888d9cffca0d", "kind": "qa-artifact", "provenance": "verified-run-artifact"}
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "The reported Safari failure belongs to the server-stopped branch at 127.0.0.1:4178; restarting the target workspace Vite server clears that failure.",
+    "The current default runtime keeps NightCityRenderer as the scene owner; a running server alone will not turn ?longmap=1 into a code-drawn ComponentRenderer preview.",
+    "The file-launch fallback remains available and is separate from the stopped dev-server route."
+  ],
+  "remainingGaps": [
+    "A separate implementation request is required to wire an explicit code-drawn preview route with natural-input evidence."
+  ],
+  "createdAt": "2026-10-01T12:34:27.000Z"
+}

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": ["package manifest direct dependencies", "npm lockfile/install tree", "self-contained file launch", "default browser journey"],
+    "lifecycleStateBranches": ["npm ci", "npm scripts after install", "file:// alias startup", "startup", "tutorial to terminal", "terminal to replay"],
+    "rendererPaths": ["npm dependency resolver", "eslint CLI", "TypeScript compiler", "tsx test/build runner", "classic self-contained script", "Phaser FlightScene + DOM shell"],
+    "viewports": [
+      {"label": "workspace-tooling", "width": 1, "height": 1},
+      {"label": "desktop", "width": 1280, "height": 720},
+      {"label": "phone-landscape", "width": 844, "height": 390},
+      {"label": "phone-portrait", "width": 390, "height": 844}
+    ]
+  },
+  "cells": [
+    {
+      "id": "manifest-direct-deps-retest",
+      "objectType": "package manifest direct dependencies",
+      "lifecycleStateBranch": "npm ci",
+      "rendererPath": "npm dependency resolver",
+      "viewport": {"label": "workspace-tooling", "width": 1, "height": 1},
+      "status": "PASS",
+      "expected": "Configuration imports have direct manifest declarations.",
+      "observed": "@eslint/js and @types/node are present in package.json devDependencies and the lock root.",
+      "evidence": [
+        {"path": "package.json", "sha256": "335be96648792f3837ebcd1662e9081b1a06a7e086869ff7a6411b64e411bfd6", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "package-lock.json", "sha256": "68fdda5162f1d9e37f406f9a9328d448dcff4a6d1a660655201f4a3fd376ff7f", "kind": "factory-source", "provenance": "repository-source"}
+      ]
+    },
+    {
+      "id": "lockfile-ci-retest",
+      "objectType": "npm lockfile/install tree",
+      "lifecycleStateBranch": "npm ci",
+      "rendererPath": "npm dependency resolver",
+      "viewport": {"label": "workspace-tooling", "width": 1, "height": 1},
+      "status": "PASS",
+      "expected": "npm ci reconstructs the workspace dependency tree from a committed lockfile.",
+      "observed": "npm ci completed successfully and npm ls --depth=0 reports all nine direct packages without UNMET DEPENDENCY.",
+      "evidence": [
+        {"path": "package-lock.json", "sha256": "68fdda5162f1d9e37f406f9a9328d448dcff4a6d1a660655201f4a3fd376ff7f", "kind": "factory-source", "provenance": "repository-source"}
+      ]
+    },
+    {
+      "id": "npm-scripts-retest",
+      "objectType": "npm lockfile/install tree",
+      "lifecycleStateBranch": "npm scripts after install",
+      "rendererPath": "tsx test/build runner",
+      "viewport": {"label": "workspace-tooling", "width": 1, "height": 1},
+      "status": "PASS",
+      "expected": "npm test, lint, typecheck and build resolve from the workspace install tree.",
+      "observed": "npm test passed 272 with 10 skipped, lint passed, typecheck passed, and build produced the self-contained alias after npm ci; the Vite 8.3 URL rewrite is covered by the self-contained build contract.",
+      "evidence": [
+        {"path": "tests/dependency-manifest.test.ts", "sha256": "0d03b3dfc41853d0e64301c16b3d98ad78a4152b4e883456c9efa133b51b0db7", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "package-lock.json", "sha256": "68fdda5162f1d9e37f406f9a9328d448dcff4a6d1a660655201f4a3fd376ff7f", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "scripts/build.ts", "sha256": "1f0eb9a081f05f435c1176c648b4851a07d9c0399662348e07529f120c74dc15", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "tests/self-contained-build.test.ts", "sha256": "8d8878a620229cc55b2e2e00940dfcc877c3b95f5e02947c1ebe261be46137b4", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "qa-evidence/dependency-retest-20261001/natural-journey.mjs", "sha256": "defefe3eefa4f9f2a19dafdc96cd9f7ae0bb52faaed76ab0b09816563a8ecbc6", "kind": "qa-artifact", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "self-contained-file-launch-retest",
+      "objectType": "self-contained file launch",
+      "lifecycleStateBranch": "file:// alias startup",
+      "rendererPath": "classic self-contained script",
+      "viewport": {"label": "desktop", "width": 1280, "height": 720},
+      "status": "PASS",
+      "expected": "The double-click/file-protocol alias starts the playable page without a module-only import.meta expression.",
+      "observed": "npm run test:file passed after the build transform rewrote Vite 8.3 data-URL imports; both dist/index.html and the playable alias passed the regression assertion.",
+      "evidence": [
+        {"path": "scripts/build.ts", "sha256": "1f0eb9a081f05f435c1176c648b4851a07d9c0399662348e07529f120c74dc15", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "tests/self-contained-build.test.ts", "sha256": "8d8878a620229cc55b2e2e00940dfcc877c3b95f5e02947c1ebe261be46137b4", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "qa-evidence/dependency-retest-20261001/file-launch/qa-report.json", "sha256": "77fe84feb96f130d61cf92a8be1ca292ffc9dd373d5e7b7a3df9888d9cffca0d", "kind": "runtime-capture", "provenance": "verified-run-artifact"},
+        {"path": "qa-evidence/dependency-retest-20261001/file-launch/desktop-1280x720-startup.png", "sha256": "7a945831c00035f59ca815eddba63f002b55d6fb82d26f4ce3989f1d65a20c2a", "kind": "runtime-capture", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "natural-default-journey-desktop",
+      "objectType": "default browser journey",
+      "lifecycleStateBranch": "startup",
+      "rendererPath": "Phaser FlightScene + DOM shell",
+      "viewport": {"label": "desktop", "width": 1280, "height": 720},
+      "status": "PASS",
+      "expected": "Fresh normal input starts the tutorial without browser or page errors.",
+      "observed": "Startup entered lantern-entry with playing status; console and page errors were empty.",
+      "evidence": [
+        {"path": "qa-evidence/dependency-retest-20261001/qa-report.json", "sha256": "18115a765ebf6fe18d8f745b23c8112af80c1752b3a7d8e2a51b48c4dfeceae8", "kind": "runtime-capture", "provenance": "verified-run-artifact"},
+        {"path": "qa-evidence/dependency-retest-20261001/desktop-1280x720-startup.png", "sha256": "a1935d417f571d590d5c507c3e839bdf82eecdb99240db1c48e6802d42772294", "kind": "runtime-capture", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "natural-default-journey-landscape",
+      "objectType": "default browser journey",
+      "lifecycleStateBranch": "tutorial to terminal",
+      "rendererPath": "Phaser FlightScene + DOM shell",
+      "viewport": {"label": "phone-landscape", "width": 844, "height": 390},
+      "status": "PASS",
+      "expected": "Normal mouse/touch-equivalent hold and release completes the tutorial and reaches night-patrol.",
+      "observed": "The 240ms hold/60ms release rhythm reached tutorial won, continued into night-patrol, and then the no-input branch failed naturally.",
+      "evidence": [
+        {"path": "qa-evidence/dependency-retest-20261001/qa-report.json", "sha256": "18115a765ebf6fe18d8f745b23c8112af80c1752b3a7d8e2a51b48c4dfeceae8", "kind": "runtime-capture", "provenance": "verified-run-artifact"},
+        {"path": "qa-evidence/dependency-retest-20261001/landscape-844x390-tutorial-terminal.png", "sha256": "872da87dc8a4dffb45c1a48b86c28164609912f351f7e795ce94879f96dc0445", "kind": "runtime-capture", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "natural-default-journey-replay",
+      "objectType": "default browser journey",
+      "lifecycleStateBranch": "terminal to replay",
+      "rendererPath": "Phaser FlightScene + DOM shell",
+      "viewport": {"label": "desktop", "width": 1280, "height": 720},
+      "status": "PASS",
+      "expected": "A natural failure exposes settlement and a normal restart returns to playing night-patrol with the result hidden.",
+      "observed": "Failure reason fell was visible; restart returned to night-patrol playing with resultHidden true and no console/page errors.",
+      "evidence": [
+        {"path": "qa-evidence/dependency-retest-20261001/qa-report.json", "sha256": "18115a765ebf6fe18d8f745b23c8112af80c1752b3a7d8e2a51b48c4dfeceae8", "kind": "runtime-capture", "provenance": "verified-run-artifact"},
+        {"path": "qa-evidence/dependency-retest-20261001/desktop-1280x720-night-patrol-replay.png", "sha256": "4939dfe76d57409e4d148703a6434c23a15fb45175ad6cf447ffa98303b3875f", "kind": "runtime-capture", "provenance": "verified-run-artifact"}
+      ]
+    },
+    {
+      "id": "natural-orientation-portrait",
+      "objectType": "default browser journey",
+      "lifecycleStateBranch": "startup",
+      "rendererPath": "Phaser FlightScene + DOM shell",
+      "viewport": {"label": "phone-portrait", "width": 390, "height": 844},
+      "status": "PASS",
+      "expected": "Portrait startup shows the orientation block and freezes gameplay until landscape.",
+      "observed": "orientation-block was visible, paused stayed true, and tick was unchanged across 250ms.",
+      "evidence": [
+        {"path": "qa-evidence/dependency-retest-20261001/qa-report.json", "sha256": "18115a765ebf6fe18d8f745b23c8112af80c1752b3a7d8e2a51b48c4dfeceae8", "kind": "runtime-capture", "provenance": "verified-run-artifact"},
+        {"path": "qa-evidence/dependency-retest-20261001/portrait-390x844.png", "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d", "kind": "runtime-capture", "provenance": "verified-run-artifact"}
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "The manifest and lockfile repair is isolated from gameplay and does not mount the unresolved component/facade candidate.",
+    "The target workspace can be installed with npm ci and its default browser journey remains playable with normal input after installation.",
+    "The Vite 8.3 self-contained URL form is removed from both file-launch outputs and the exact alias path passes the smoke check."
+  ],
+  "remainingGaps": [
+    "Web-lite QA evidence does not establish WeChat, Douyin, or TapTap package publishability.",
+    "facade-study-v5 remains offline-only with fidelity NEEDS_WORK; no default renderer integration is claimed.",
+    "Existing formal FIX/QA artifacts for unrelated historical issues remain preserved and are not closed by this tooling repair."
+  ],
+  "createdAt": "2026-10-01T11:40:21.000Z"
+}

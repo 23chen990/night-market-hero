@@ -11,7 +11,9 @@ const core = readFileSync(join(root, 'src/game-core.ts'), 'utf8');
 test('player-facing settlement copy uses coins, never the legacy currency name', () => {
   assert.doesNotMatch(html, /愿火/);
   assert.doesNotMatch(main, /愿火/);
-  assert.match(html, /再得 30 金币/);
+  assert.match(html, /data-action="double"/);
+  assert.match(main, /doubleButton\.textContent[\s\S]*?settlement\.baseReward/);
+  assert.doesNotMatch(html + main, /再得 30 金币/);
 });
 
 test('first-run tutorial exposes readable staged affordances including coin pickup and canopy rescue', () => {

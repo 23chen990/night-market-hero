@@ -1,0 +1,20 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "artifacts/gate-removal-20261008/product-experience-contract.json",
+    "artifacts/gate-removal-20261008/attempt-2-execution.json",
+    "artifacts/gate-removal-20261008/attempt-2",
+    "artifacts/gate-removal-20261008/attempt-2-desktop-retest",
+    "artifacts/gate-removal-20261008/frame-review-attempt-2"
+  ],
+  "task": "Review ONLY ROOF-NET-PREPARE, ROOF-NET-THROW and ROOF-NET-RESOLVED at desktop and mobile: six contract cells. Current attempt-2 build hash is in attempt-2-execution.json; contract unchanged. Fresh natural frame sequences and extraction bindings are in frame-review-attempt-2/{desktop,mobile-landscape}; trace paths are bound in extraction.json. First inspect current contact sheets and selected full-size frames; preserve prior useful observations. Video timestamps are approximate, so phase claims require actual pixel review. Write PerceptualQaReportSchema-validated six-case report to /tmp/night-market-hero-gate-20261008/net-final.json and return path/SHA256. Do not review UI or full journey: another independent QAAgent owns those seven cells. You are not alone; do not modify the workspace, launch browsers or build. Only your assigned isolated scratch report may be written.",
+  "acceptance": [
+    "Exactly six roof-net cells with current-build screenshots and trace hashes",
+    "Readable thrower/aim, directional throw, resolved/cleared net; block unreadable or missing evidence",
+    "Validate report schema and preserve authorIndependent=true."
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/product-experience.ts#PerceptualQaReportSchema"
+}

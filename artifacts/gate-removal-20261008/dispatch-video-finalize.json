@@ -1,0 +1,17 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "artifacts/gate-removal-20261008/attempt-2",
+    "artifacts/gate-removal-20261008/perceptual-net-attempt-2.json",
+    "artifacts/gate-removal-20261008/frame-review-attempt-2"
+  ],
+  "task": "Finalize your existing video manifest only. Root has already independently Zod-validated and hash-verified /tmp/night-market-hero-gate-20261008/video-extraction/manifest.json (SHA256 d6af8c269c3234e1dbb8d7a6cf7db91649d27d6ea2e245239532bb0ba6036b06), its 6 selected frames and both source videos; ingested frozen copies into verified-net-frames. The independent pixel reviewer is now retesting them. All media hashes match current build. Your later patrol blocker is preserved and separately covered by successful current-build natural journeys. Avoid further image sampling or broader review; return the finalized manifest path and SHA256. Do not run pnpm or install dependencies; the task-local qa-deps.mjs loader resolves Zod.",
+  "acceptance": [
+    "Return finalized existing manifest receipt; preserve any honest evidence blockers",
+    "No generated workspace edits, production changes, browser run or build"
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/index.ts#QaReportSchema"
+}

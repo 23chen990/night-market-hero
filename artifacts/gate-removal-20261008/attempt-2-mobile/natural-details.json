@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "base": "http://127.0.0.1:4185/",
+  "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+  "passed": true,
+  "runs": [
+    {
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "video": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-mobile/page@cf77d51e136a3713ea2e378fc4f963eb.webm",
+        "recordingStartedAt": 1791453901403
+      },
+      "roofNetPhases": [
+        "raise",
+        "aim",
+        "release",
+        "travel",
+        "active",
+        "missed",
+        "land"
+      ],
+      "cleared": true,
+      "patrolCheckpoint": true,
+      "terminal": {
+        "status": "won",
+        "inputTransitions": 66
+      },
+      "failure": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-mobile/mobile-landscape-trace.json",
+        "sha256": "70edd6453ef740aa9a7d9808614a1c6855b2d8ce243371f2dd4d425d172e680a"
+      },
+      "screenshots": [
+        {
+          "branch": "tutorial-terminal",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-mobile/mobile-landscape-tutorial-terminal.png",
+          "sha256": "198c1b210875c27eb3a7643a355fdb2f07b5d5aaa8fbf9b958eb80434bb7b546"
+        },
+        {
+          "branch": "patrol-failure",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-mobile/mobile-landscape-patrol-failure.png",
+          "sha256": "f24d61230563bbb4df380da4a95d0c25bf0180dd697c91b4cc149c471f5421fb"
+        },
+        {
+          "branch": "replay",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-mobile/mobile-landscape-replay.png",
+          "sha256": "3d13ce0c6b6c26a8fe8ab100309182abe4051f51b6572dc850d4a73a190be711"
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "paused": true,
+      "beforeTick": 0,
+      "afterTick": 0,
+      "screenshots": [
+        {
+          "branch": "orientation-pause",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-mobile/portrait.png",
+          "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

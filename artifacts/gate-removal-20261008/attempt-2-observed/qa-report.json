@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "desktop",
+      "passed": true,
+      "evidence": "{\"viewport\":{\"label\":\"desktop\",\"width\":1280,\"height\":720},\"status\":\"PASS\",\"video\":{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/page@f4f3c2a22c505c2e12d167222c7621d2.webm\",\"recordingStartedAt\":1791453659105},\"roofNetPhases\":[\"raise\",\"aim\",\"release\",\"travel\",\"land\",\"active\",\"missed\"],\"cleared\":true,\"patrolCheckpoint\":true,\"terminal\":{\"status\":\"won\",\"inputTransitions\":78},\"failure\":{\"status\":\"failed\",\"failureReason\":\"fell\"},\"replay\":{\"levelId\":\"night-patrol\",\"status\":\"playing\"},\"trace\":{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/desktop-trace.json\",\"sha256\":\"90c86aac4a3a4a03c7dee8c8e7139e19e5120759313483343dac9a00a80351e5\"},\"screenshots\":[{\"branch\":\"tutorial-terminal\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/desktop-tutorial-terminal.png\",\"sha256\":\"87968a3d7531e84a45aee88f27dbf8c69ed7e109a34cecf199d129c9d5377be9\"},{\"branch\":\"patrol-failure\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/desktop-patrol-failure.png\",\"sha256\":\"f209bf767aad34cbdce51ad71347fd86d1e88eef9505121e7b669a866d2ed6ba\"},{\"branch\":\"replay\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/desktop-replay.png\",\"sha256\":\"7a78ab99e6542b8ae995d87f970a2555343ac7422be9d8abd671ebba7db2a8b4\"}]}"
+    },
+    {
+      "name": "mobile-landscape",
+      "passed": false,
+      "evidence": "{\"viewport\":{\"label\":\"mobile-landscape\",\"width\":844,\"height\":390},\"status\":\"BLOCKED\",\"video\":{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/page@171563af5683655edcc450de5858ac29.webm\",\"recordingStartedAt\":1791453748556},\"error\":\"AssertionError [ERR_ASSERTION]: naturally reach the former patrol checkpoint\\n    at file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:129:14\\n    at runNextTicks (node:internal/process/task_queues:65:5)\\n    at process.processImmediate (node:internal/timers:472:9)\",\"screenshots\":[{\"branch\":\"tutorial-terminal\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-tutorial-terminal.png\",\"sha256\":\"da18f4e23bfaff996342bdf2cb50bc480005af45dbc299de6aeff755be732506\"},{\"branch\":\"patrol-failure\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-patrol-failure.png\",\"sha256\":\"8bb24ba4b3258bb52c4ff8e60421cb7cca93af63f5554e649431b662cf4f02b8\"},{\"branch\":\"replay\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-replay.png\",\"sha256\":\"01d66b2bd8085d4992645b57f5ee5b36051ecfeba4ac89b36d995d59fa139fe8\"},{\"branch\":\"blocked\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-blocked.png\",\"sha256\":\"3b60dad4a528c38ebeea378487348d5e5b846f0a4ebdd9d984c33edb1e8fd403\"}],\"trace\":{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-trace.json\",\"sha256\":\"36a0f4df2146e59fd2a90b904cffd7be4e26fdfd84f29775cbddb9e0443d3da5\"}}"
+    },
+    {
+      "name": "mobile-portrait",
+      "passed": true,
+      "evidence": "{\"viewport\":{\"label\":\"mobile-portrait\",\"width\":390,\"height\":844},\"status\":\"PASS\",\"paused\":true,\"beforeTick\":0,\"afterTick\":0,\"screenshots\":[{\"branch\":\"orientation-pause\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/portrait.png\",\"sha256\":\"92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d\"}]}"
+    },
+    {
+      "name": "no-browser-errors",
+      "passed": true,
+      "evidence": "[]"
+    }
+  ],
+  "issues": [
+    {
+      "id": "mobile-landscape",
+      "severity": "error",
+      "message": "Natural runtime check blocked",
+      "evidence": "{\"viewport\":{\"label\":\"mobile-landscape\",\"width\":844,\"height\":390},\"status\":\"BLOCKED\",\"video\":{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/page@171563af5683655edcc450de5858ac29.webm\",\"recordingStartedAt\":1791453748556},\"error\":\"AssertionError [ERR_ASSERTION]: naturally reach the former patrol checkpoint\\n    at file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:129:14\\n    at runNextTicks (node:internal/process/task_queues:65:5)\\n    at process.processImmediate (node:internal/timers:472:9)\",\"screenshots\":[{\"branch\":\"tutorial-terminal\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-tutorial-terminal.png\",\"sha256\":\"da18f4e23bfaff996342bdf2cb50bc480005af45dbc299de6aeff755be732506\"},{\"branch\":\"patrol-failure\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-patrol-failure.png\",\"sha256\":\"8bb24ba4b3258bb52c4ff8e60421cb7cca93af63f5554e649431b662cf4f02b8\"},{\"branch\":\"replay\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-replay.png\",\"sha256\":\"01d66b2bd8085d4992645b57f5ee5b36051ecfeba4ac89b36d995d59fa139fe8\"},{\"branch\":\"blocked\",\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-blocked.png\",\"sha256\":\"3b60dad4a528c38ebeea378487348d5e5b846f0a4ebdd9d984c33edb1e8fd403\"}],\"trace\":{\"path\":\"/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-trace.json\",\"sha256\":\"36a0f4df2146e59fd2a90b904cffd7be4e26fdfd84f29775cbddb9e0443d3da5\"}}"
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/desktop-tutorial-terminal.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/desktop-patrol-failure.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/desktop-replay.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-tutorial-terminal.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-patrol-failure.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-replay.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/mobile-landscape-blocked.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/portrait.png"
+  ],
+  "consoleLog": "[]",
+  "testedAt": "2026-10-08T10:02:58.550Z"
+}

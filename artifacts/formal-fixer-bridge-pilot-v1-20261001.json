@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "formal-fixer-repair-evidence",
+  "route": "formal-fixer",
+  "attempt": 1,
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "issue": {
+    "triage": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/experience-complaint-code-drawn-quality-20261001.json",
+    "reproductionMatrix": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/experience-reproduction-matrix-code-drawn-quality-20261001.json",
+    "priorQaBaseline": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/baseline-report.json",
+    "seamPlan": "artifacts/background-stitch-plan-20260916.json"
+  },
+  "hypothesis": "The market-to-rooftops seam can be made legible by assigning the approved opaque 1672x941 bridge concept to the authored transition chunk and omitting the generic mist owner at that exact boundary. Deterministic RunPlan coordinates and the existing bounded image stream remain unchanged.",
+  "changes": [
+    "Copied the approved bridge concept byte-for-byte as src/assets/night-city/market-rooftops-bridge-v1.png; preserved its opaque RGB format and 1672x941 dimensions.",
+    "Added the pilot asset path and NightCityAssetKey to NightCityRenderer preload and deterministic render-plan selection.",
+    "Used the pilot as the sole static panorama owner for the market-to-rooftops transition boundary; the generic district-transition-mist overlay is skipped only for that boundary.",
+    "Added TDD coverage for preload, deterministic selection, 1672x941 dimensions, and absence of a second static owner at the pilot boundary."
+  ],
+  "filesChanged": [
+    "src/assets/night-city/market-rooftops-bridge-v1.png",
+    "src/night-city-renderer.ts",
+    "tests/night-city-renderer.test.ts",
+    "artifacts/formal-fixer-bridge-pilot-v1-20261001.json"
+  ],
+  "tests": {
+    "red": {
+      "command": "npm run test -- tests/night-city-renderer.test.ts",
+      "outcome": "Expected failure observed before production edits: new pilot test failed because the transition asset was still night-city-rooftops-v1; existing tests otherwise passed."
+    },
+    "targetedGreen": {
+      "command": "npx tsx --test tests/night-city-renderer.test.ts",
+      "outcome": "9 passed, 0 failed, 0 skipped."
+    },
+    "fullTest": {
+      "command": "npm test",
+      "outcome": "274 passed, 10 skipped, 0 failed."
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "outcome": "exit 0"
+    },
+    "lint": {
+      "command": "npm run lint",
+      "outcome": "exit 0"
+    },
+    "build": {
+      "command": "npm run build",
+      "outcome": "exit 0; emitted dist/index.html and 夜市飞侠-护印突围-试玩版.html"
+    }
+  },
+  "runtimeWiredEntrypoints": [
+    {
+      "path": "src/main.ts",
+      "lines": "669-695, 751-760",
+      "role": "FlightScene constructs NightCityRenderer, preloads it before visibility, renders the image stream, and keeps the default static scene owner contract."
+    },
+    {
+      "path": "src/night-city-renderer.ts",
+      "lines": "11-20, 35-43, 125-136, 149-183, 319-327",
+      "role": "Pilot asset URL, typed key, preload registry, deterministic transition selection, and single-owner boundary handling."
+    },
+    {
+      "path": "tests/night-city-renderer.test.ts",
+      "lines": "237-280",
+      "role": "Targeted transition preload, dimension, determinism, and ownership assertions."
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/bridge-concept-market-rooftops-v1-20261001.png",
+      "sha256": "34de5f9e74eaddf8f8dc2c26cf65afb44310c7c3b3abcde642b1fbc373373043",
+      "kind": "approved-direction-pilot-source",
+      "format": "PNG RGB opaque 1672x941"
+    },
+    {
+      "path": "src/assets/night-city/market-rooftops-bridge-v1.png",
+      "sha256": "34de5f9e74eaddf8f8dc2c26cf65afb44310c7c3b3abcde642b1fbc373373043",
+      "kind": "runtime-asset-byte-preserving-copy",
+      "format": "PNG RGB opaque 1672x941"
+    },
+    {
+      "path": "src/night-city-renderer.ts",
+      "sha256": "15cb0a517000e61fac83e347da549918396d7176f446d474941b8c3a62812d41",
+      "kind": "factory-source-after-patch"
+    },
+    {
+      "path": "tests/night-city-renderer.test.ts",
+      "sha256": "a1cf30e2289cc9570fd756ad5a12de5e6a521b0aeb2e8f34e72ddc5a32ba7435",
+      "kind": "targeted-test-after-patch"
+    },
+    {
+      "path": "dist/index.html",
+      "sha256": "58bccdbe6e90eca30aefc517a229c543db5dd53a11c9d48e0327f2b5563e9915",
+      "kind": "built-web-lite-evidence"
+    },
+    {
+      "path": "夜市飞侠-护印突围-试玩版.html",
+      "sha256": "58bccdbe6e90eca30aefc517a229c543db5dd53a11c9d48e0327f2b5563e9915",
+      "kind": "built-playable-alias-evidence"
+    }
+  ],
+  "contextOmitted": [
+    "game-core, physics, economy, persistence, ads, UI shell, and platform adapters",
+    "ComponentRenderer implementation and longmap preview behavior; no second owner was re-enabled",
+    "other runs, prototype-a, shared factory code, and unrelated uncommitted edits",
+    "new bridge families, runtime-generated textures, and any unapproved art candidates"
+  ],
+  "remainingQaGaps": [
+    "Independent QA must exercise the exact market-to-rooftops seam with natural input and player-visible evidence at the required viewports.",
+    "Startup -> core loop -> terminal/settlement -> replay and perceptual seam quality have not been claimed by this FixerAgent patch.",
+    "The existing ?longmap=1 preview and prior two-owner baseline require the independent QA retest contract; this patch does not change preview ownership.",
+    "WeChat Mini Game, Douyin Mini Game, and TapTap Mini Game package builds remain unverified; web-lite build is evidence only."
+  ],
+  "status": "PATCHED_PENDING_QA",
+  "createdAt": "2026-10-01T13:20:00+08:00"
+}

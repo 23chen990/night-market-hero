@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "base": "http://127.0.0.1:4185/",
+  "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+  "passed": false,
+  "runs": [
+    {
+      "viewport": {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "video": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-desktop-retest/page@a3d76e1ebdcf523c2c04290d6ce65747.webm",
+        "recordingStartedAt": 1791452914335
+      },
+      "error": "AssertionError [ERR_ASSERTION]: desktop natural tutorial must settle\n\n'failed' !== 'won'\n\n    at file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:86:14",
+      "screenshots": [
+        {
+          "branch": "startup",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-desktop-retest/desktop-startup.png",
+          "sha256": "ab967505742e7d85ca51b9f5f9a500e8618762359480e8d0cb0bfe60feafe2fb"
+        },
+        {
+          "branch": "tutorial-terminal",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-desktop-retest/desktop-tutorial-terminal.png",
+          "sha256": "f0465b3e72429cda4ecb43574e0beb7efaa3067b7ff20d45880726c70ab187c9"
+        },
+        {
+          "branch": "blocked",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-desktop-retest/desktop-blocked.png",
+          "sha256": "f0465b3e72429cda4ecb43574e0beb7efaa3067b7ff20d45880726c70ab187c9"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-desktop-retest/desktop-trace.json",
+        "sha256": "a60c3154a61ce4e4fe050a2413809ecc0428b1caab9d02550a679385d2939d6b"
+      }
+    },
+    {
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "paused": true,
+      "beforeTick": 0,
+      "afterTick": 0,
+      "screenshots": [
+        {
+          "branch": "orientation-pause",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-desktop-retest/portrait.png",
+          "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

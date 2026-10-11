@@ -1,0 +1,20 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "artifacts/gate-removal-20261008/attempt-1",
+    "artifacts/gate-removal-20261008/attempt-1-retest-1",
+    "qa-evidence/gate-removal-20261008.mjs",
+    "src/game-core.ts",
+    "artifacts/gate-removal-20261008/product-experience-contract.json"
+  ],
+  "task": "Read-only natural evidence audit. Determine whether mobile tutorial failure in attempt-1-retest-1 is introduced by gate removal or ordinary failed input. Compare core legacy/new branches, recorded traces and states; distinguish screenshot-runner delays from product errors. Audit which successful current-build traces cover each contract branch and identify missing coverage. You are not alone in codebase; do not edit, build, or launch a browser. You may run nonmutating core simulations but report approximation honestly.",
+  "acceptance": [
+    "All conclusions use exact trace files and source locations",
+    "No best-run selection may conceal a confirmed product defect",
+    "Validate final JSON via QaReportSchema and return only that JSON"
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/index.ts#QaReportSchema"
+}

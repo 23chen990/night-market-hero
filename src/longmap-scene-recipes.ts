@@ -89,9 +89,9 @@ const RECIPE_LIST: readonly LongmapSceneRecipe[] = [
     sceneFamily: 'rooftops-01/low-tile-ridges', district: 'rooftops', kind: 'district',
     placements: [
       placement('low-building-mass', 'rooftops.lowBuildingMass', 0, 210, 0.94, 'background-architecture', 'background'),
-      placement('eave-occluder', 'rooftops.foregroundEaveOccluder', 510, 168, 0.64, 'foreground-occluder', 'foreground'),
-      placement('high-lantern-support-frame', 'rooftops.highLanternSupportFrame', 880, 122, 0.62, 'foreground-occluder', 'foreground', 'visual-support-candidate'),
-      placement('dark-canopy', 'rooftops.darkCanopy', 1_220, 238, 0.46, 'mid-scenery', 'player-readable'),
+      placement('curved-eave', 'rooftops.curvedEave', 510, 168, 0.64, 'foreground-occluder', 'foreground'),
+      placement('roof-support-block', 'rooftops.roofSupportBlock', 880, 122, 0.62, 'foreground-occluder', 'foreground', 'visual-support-candidate'),
+      placement('roof-crown', 'rooftops.roofCrown', 1_220, 238, 0.46, 'mid-scenery', 'player-readable'),
     ],
   },
   {
@@ -99,8 +99,8 @@ const RECIPE_LIST: readonly LongmapSceneRecipe[] = [
     placements: [
       placement('high-building-mass', 'rooftops.highBuildingMass', 0, 150, 0.84, 'background-architecture', 'background'),
       placement('low-building-mass', 'rooftops.lowBuildingMass', 520, 198, 0.56, 'mid-scenery', 'player-readable'),
-      placement('dark-canopy', 'rooftops.darkCanopy', 1_120, 104, 0.38, 'mid-scenery', 'player-readable', 'none', true),
-      placement('eave-occluder', 'rooftops.foregroundEaveOccluder', 820, 294, 0.54, 'foreground-occluder', 'foreground'),
+      placement('roof-crown', 'rooftops.roofCrown', 1_120, 104, 0.38, 'mid-scenery', 'player-readable', 'none', true),
+      placement('curved-eave', 'rooftops.curvedEave', 820, 294, 0.54, 'foreground-occluder', 'foreground'),
     ],
   },
   {
@@ -108,19 +108,19 @@ const RECIPE_LIST: readonly LongmapSceneRecipe[] = [
     placements: [
       placement('high-building-mass', 'rooftops.highBuildingMass', 0, 70, 0.98, 'background-architecture', 'background'),
       placement('cross-street-negative-space', 'rooftops.crossStreetNegativeSpace', 360, 242, 0.7, 'mid-scenery', 'player-readable', 'visual-support-candidate'),
-      placement('bridge-lantern-support-frame', 'rooftops.highLanternSupportFrame', 1_000, 126, 0.48, 'foreground-occluder', 'foreground', 'visual-support-candidate'),
+      placement('bridge-roof-support-block', 'rooftops.roofSupportBlock', 1_000, 126, 0.48, 'foreground-occluder', 'foreground', 'visual-support-candidate'),
       placement('bridge-cable', 'lighting.lanternCable', 1_220, 168, 0.36, 'foreground-occluder', 'foreground', 'visual-support-candidate', true),
-      placement('dark-canopy', 'rooftops.darkCanopy', 760, 90, 0.4, 'mid-scenery', 'player-readable'),
+      placement('roof-crown', 'rooftops.roofCrown', 760, 90, 0.4, 'mid-scenery', 'player-readable'),
     ],
   },
   {
     sceneFamily: 'rooftops-04/open-high-ridge', district: 'rooftops', kind: 'district',
     placements: [
       placement('high-building-mass', 'rooftops.highBuildingMass', 0, 38, 1, 'background-architecture', 'background'),
-      placement('eave-occluder', 'rooftops.foregroundEaveOccluder', 420, 114, 0.66, 'foreground-occluder', 'foreground', 'visual-support-candidate', true),
+      placement('curved-eave', 'rooftops.curvedEave', 420, 114, 0.66, 'foreground-occluder', 'foreground', 'visual-support-candidate', true),
       placement('cross-street-negative-space', 'rooftops.crossStreetNegativeSpace', 820, 278, 0.58, 'mid-scenery', 'player-readable', 'visual-support-candidate'),
-      placement('high-lantern-support-frame', 'rooftops.highLanternSupportFrame', 1_310, 92, 0.34, 'foreground-occluder', 'foreground', 'visual-support-candidate'),
-      placement('dark-canopy', 'rooftops.darkCanopy', 1_100, 178, 0.38, 'mid-scenery', 'player-readable'),
+      placement('roof-support-block', 'rooftops.roofSupportBlock', 1_310, 92, 0.34, 'foreground-occluder', 'foreground', 'visual-support-candidate'),
+      placement('roof-crown', 'rooftops.roofCrown', 1_100, 178, 0.38, 'mid-scenery', 'player-readable'),
     ],
   },
   {

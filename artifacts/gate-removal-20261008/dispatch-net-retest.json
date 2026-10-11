@@ -1,0 +1,20 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "artifacts/gate-removal-20261008/product-experience-contract.json",
+    "artifacts/gate-removal-20261008/verified-net-frames",
+    "artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape",
+    "artifacts/gate-removal-20261008/attempt-2",
+    "artifacts/gate-removal-20261008/perceptual-net-attempt-2.json"
+  ],
+  "task": "Retest exactly the six ROOF-NET-PREPARE/THROW/RESOLVED contract cells on desktop and mobile for current build e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296. Corrected actual-video-PTS pixels are now in verified-net-frames/manifest.json and its full-size PNGs. Inspect these pixels; phase labels are candidate identifications and not proof. Reuse your previously passing mobile prepare/throw pixel observations, recheck the bound original frames if needed, and resolve the previously missing mobile clear-out and desktop sequence. Use exact current attempt-2 raw traces. The manifest blocker concerns only a later patrol wait; current-build full journeys independently pass in attempt-2-observed desktop and attempt-2-mobile mobile, outside your six-cell scope. Preserve any true missing/unreadable roof-net branch as BLOCKED. You are not alone: generated workspace is read-only, no browser/build/production changes. Write only /tmp/night-market-hero-gate-20261008/net-retest.json as a PerceptualQaReportSchema-validated report, return path and SHA256. Use task-local qa-deps.mjs loader instead of pnpm to resolve Zod if needed.",
+  "acceptance": [
+    "Exactly six independent roof-net cases with current-build workspace-local screenshot and raw natural trace hashes",
+    "Prepare/aim, directional release/travel, active then resolved are actually visible, no forced state",
+    "No new or relaxed product criteria; preserve the prior blocked report"
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/product-experience.ts#PerceptualQaReportSchema"
+}

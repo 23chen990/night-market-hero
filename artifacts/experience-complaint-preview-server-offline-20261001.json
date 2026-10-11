@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "用户附件显示 Safari 打开 http://127.0.0.1:4178/?longmap=1&seed=31&fresh=1 时无法连接服务器。附件已通过 evidence:ingest 绑定到当前运行目录，但仍处于 PENDING/UNKNOWN，故不把它当作已验证的 gameplay 截图；本条记录只用可复核的运行目录源码与证据清单定位启动链路。",
+  "classification": ["factory-routing", "qa-false-positive"],
+  "scope": {
+    "route": "direct-builder",
+    "rationale": "服务停止是直接复现的启动问题；用户此前还要求体验代码绘制，因此在同一个明确的两文件边界内恢复 ?longmap=1 的 opt-in ComponentRenderer 预览。修复不改变默认正式路线、核心玩法、状态机、持久化、平台适配或发布配置。",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "旧 prototype-a 工作区及桌面启动脚本的历史副本",
+      "未通过身份复核的附件截图像素内容",
+      "与本地预览服务无关的美术候选、竞品研究和历史 formal FIX 记录"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "将用户附件中的 URL 解析为 http://127.0.0.1:4178/?longmap=1&seed=31&fresh=1。",
+      "在目标 workspace 检查 127.0.0.1:4178 的监听进程，并用 curl 访问同一 URL。",
+      "读取 src/main.ts 与 src/component-renderer.ts，确认 URL 查询参数和默认场景所有权的实际分支。"
+    ],
+    "observed": [
+      "附件中的 Safari 页面显示无法连接 127.0.0.1，说明截图采集时 4178 端口没有可用预览服务。",
+      "当前目标 workspace 的正式运行入口把 NightCityRenderer image stream 设为 sceneOwner，并把 componentRenderer 设为 disabled；?longmap=1 本身不会把默认运行切换为代码绘制层。",
+      "附件 manifest 条目 user-screenshot-local-preview-server-offline-20261001 仍为 PENDING/UNKNOWN/usableAsEvidence=false；不能用附近截图替代它。"
+      ,"从当前 workspace 启动 Vite 8.3.2 后，同一 URL 返回 HTTP 200；Playwright 真实浏览器检查无 console/page 错误，默认自然流程完成启动、过关、失败和重开。"
+    ],
+    "evidence": [
+      {
+        "path": "src/main.ts",
+        "sha256": "e5725a224c34b7da482deab62b54bf83bebccd12bc04110232b15942c6177c58",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "src/component-renderer.ts",
+        "sha256": "e4ea28eaaf7fbe3d3c3801c206bf53f6ae843321ef398791427449883730aedc",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "reference-evidence/manifest.json",
+        "sha256": "e1d90d5b78519e7b4842b86b9138199624f1ef50bdaeda827281e859cd9d754e",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "qa-evidence/preview-server-repro-20261001/preview-server-runtime-check.json",
+        "sha256": "a0bff3ad972a6e2b190e51b1e96a40952a092293984d2a0f68f7dfe90c677eb6",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "qa-evidence/preview-server-repro-20261001/qa-report.json",
+        "sha256": "e19be7bfd7a9950452f1e0a3c877c5da0c58667f7bef880d6a0fb55460e47d6a",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "从当前 night-market-hero workspace 启动 127.0.0.1:4178 后，http://127.0.0.1:4178/?longmap=1&seed=31&fresh=1 返回可加载的游戏页面，不再出现 Safari 无法连接服务器。",
+    "启动验证记录实际 sceneOwner、cityRenderer、componentRenderer 和 componentVisibleCount，明确区分服务恢复与代码绘制是否启用。",
+    "不修改默认玩法、核心状态机、平台适配或旧 prototype-a 工作区；默认 URL 保持 componentRenderer=disabled，?longmap=1 才显示 component-overlay。"
+  ],
+  "status": "CLOSED",
+  "createdAt": "2026-10-01T12:34:27.000Z"
+}

@@ -65,10 +65,11 @@ test('endless mode has no completion percentage UI or terminal copy', async () =
   assert.match(html, /data-ui="progress"/);
 });
 
-test('terrain rendering prefetches only nearby objects and telegraphs canopies', async () => {
+test('static terrain blockout is not painted over the approved image stream', async () => {
   const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
-  assert.match(main, /terrain\.bounds\.x \+ terrain\.bounds\.width < visibleFrom/);
-  assert.match(main, /terrain\.kind === '布棚'/);
+  assert.doesNotMatch(main, /for \(const terrain of state\.sceneObjects\)/);
+  assert.doesNotMatch(main, /this\.drawActiveTerrain\(graphics, \{ \.\.\.state, activeTerrain: terrain \}\)/);
+  assert.match(main, /sceneOwner/);
   const style = await readFile(new URL('../src/style.css', import.meta.url), 'utf8');
   assert.match(style, /\.guard-presence\s*\{[\s\S]*left:\s*max\(/);
   assert.match(style, /\.left-edge-alert\s*\{[\s\S]*border-radius/);
@@ -78,4 +79,97 @@ test('the thrown net has a distinct danger header instead of an unexplained grid
   const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
   assert.match(main, /This is the官兵抛网/);
   assert.match(main, /0xe55b54/);
+});
+
+test('the thrown net is a transient directional hazard, not a permanent debug grid', async () => {
+  const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
+  assert.match(main, /this\.drawRoofNet\(graphics, state, obstacle\)/);
+  assert.match(main, /private drawRoofNet\(/);
+  assert.match(main, /private drawRoofNetMesh\(/);
+  assert.match(main, /Math\.atan2\(target\.y - source\.y, target\.x - source\.x\)/);
+  assert.match(main, /phase === 'raise' \|\| phase === 'aim'/);
+  assert.match(main, /obstacle\.phase === 'missed' \|\| obstacle\.phase === 'passed'/);
+  assert.doesNotMatch(main, /for \(let column = 0; column <= 5; column \+= 1\)/);
+  assert.doesNotMatch(main, /for \(let row = 0; row <= 4; row \+= 1\)/);
+});
+
+async function roofNetRenderer() {
+  const [{ transpileModule, ModuleKind }, { runInNewContext }] = await Promise.all([
+    import('typescript'), import('node:vm'),
+  ]);
+  const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
+  const helpers = main.slice(main.indexOf('  private drawRoofNet('), main.indexOf('  private drawStrictReferencePursuer('));
+  const script = transpileModule(`class NetRenderer { ${helpers} }\nmodule.exports = NetRenderer;`, {
+    compilerOptions: { module: ModuleKind.CommonJS },
+  }).outputText;
+  const context = { module: { exports: undefined as unknown }, CHARACTER_BLUE_BLACK: 0x061522, VERMILION_HEADBAND: 0xb94f50 };
+  runInNewContext(script, context);
+  return context.module.exports as new () => { drawRoofNet: (graphics: unknown, state: unknown, obstacle: unknown) => void };
+}
+
+function netGraphicsRecorder() {
+  const vertices: { x: number; y: number }[] = [];
+  const rectangles: unknown[][] = [];
+  const strands: { from: { x: number; y: number }; to: { x: number; y: number } }[] = [];
+  let strokeWidth = 0;
+  let strokeColor = 0;
+  const graphics = {
+    vertices, rectangles, strands,
+    lineStyle(width: number, color: number) { strokeWidth = width; strokeColor = color; return this; },
+    fillStyle() { return this; },
+    lineBetween(x1: number, y1: number, x2: number, y2: number) {
+      if (strokeWidth === 3 && strokeColor === 0xe0a15b) strands.push({ from: { x: x1, y: y1 }, to: { x: x2, y: y2 } });
+      vertices.push({ x: x1, y: y1 }, { x: x2, y: y2 });
+      return this;
+    },
+    fillTriangle(...points: number[]) { for (let i = 0; i < points.length; i += 2) vertices.push({ x: points[i], y: points[i + 1] }); return this; },
+    fillRect(...args: unknown[]) { rectangles.push(args); return this; },
+    fillRoundedRect(...args: unknown[]) { rectangles.push(args); return this; },
+    fillCircle() { return this; },
+    strokeCircle() { return this; },
+  };
+  return graphics;
+}
+
+test('an unfolded net stays inside the visible danger bounds and leaves no solid panel', async () => {
+  const Renderer = await roofNetRenderer();
+  const graphics = netGraphicsRecorder();
+  const obstacle = {
+    phase: 'active', animationProgress: 1,
+    source: { x: 100, y: 100 }, predictedTarget: { x: 100, y: 300 },
+    anchorBounds: { x: 80, y: 90, width: 40, height: 10 },
+    bounds: { x: -30, y: 215, width: 260, height: 170 },
+    occupiedBounds: { x: -30, y: 215, width: 260, height: 170 },
+  };
+  new Renderer().drawRoofNet(graphics, { tick: 36 }, obstacle);
+  // Net strands must cover the same area the player can hit, even on a vertical throw.
+  const meshVertices = graphics.vertices.filter((point) => point.y > 170);
+  assert.ok(Math.min(...meshVertices.map((point) => point.x)) <= -25);
+  assert.ok(Math.max(...meshVertices.map((point) => point.x)) >= 225);
+  assert.ok(meshVertices.every((point) => point.y >= 209 && point.y <= 391));
+  assert.equal(graphics.rectangles.length, 0);
+});
+
+test('flying net strands move with the bundle, and resolved nets draw nothing', async () => {
+  const Renderer = await roofNetRenderer();
+  const renderer = new Renderer();
+  const obstacle = {
+    phase: 'travel', animationProgress: 0.5,
+    source: { x: 100, y: 100 }, predictedTarget: { x: 100, y: 500 },
+    anchorBounds: { x: 80, y: 90, width: 40, height: 10 },
+    bounds: { x: -30, y: 415, width: 260, height: 170 },
+    occupiedBounds: { x: 40, y: 240, width: 120, height: 80 },
+  };
+  const early = netGraphicsRecorder();
+  const late = netGraphicsRecorder();
+  renderer.drawRoofNet(early, { tick: 18 }, obstacle);
+  renderer.drawRoofNet(late, { tick: 24 }, { ...obstacle, animationProgress: 0.66 });
+  assert.ok(early.strands.length > 0 && late.strands.length > 0);
+  assert.ok(late.strands[0].to.y > early.strands[0].to.y + 30);
+  for (const phase of ['missed', 'passed']) {
+    const resolved = netGraphicsRecorder();
+    renderer.drawRoofNet(resolved, { tick: 60 }, { ...obstacle, phase });
+    assert.equal(resolved.vertices.length, 0);
+    assert.equal(resolved.rectangles.length, 0);
+  }
 });

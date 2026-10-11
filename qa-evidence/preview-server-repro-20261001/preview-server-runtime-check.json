@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "preview-server-runtime-check",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "server": {
+    "command": "npm exec -- vite --host 127.0.0.1 --port 4178",
+    "version": "VITE v8.3.2",
+    "url": "http://127.0.0.1:4178/?longmap=1&seed=31&fresh=1",
+    "httpStatus": 200
+  },
+  "browserCheck": {
+    "viewport": {"width": 1280, "height": 720},
+    "startupStatus": "playing",
+    "levelId": "lantern-entry",
+    "sceneOwner": "night-city-image-stream",
+    "sceneLayerCount": "2",
+    "sceneOverlay": "component-overlay",
+    "cityRenderer": "image-stream",
+    "componentRenderer": "component-overlay",
+    "componentVisibleCount": "5",
+    "componentRetainedCount": "5",
+    "missingAssetCount": "6",
+    "longmapChunkId": "chain-0/market-01/lantern-main-street",
+    "longmapChainIndex": "0",
+    "longmapChunkKind": "district",
+    "longmapSceneFamily": "market-01/lantern-main-street",
+    "consoleErrors": [],
+    "screenshot": {
+      "path": "qa-evidence/preview-server-repro-20261001/longmap-1280x720.png",
+      "sha256": "af10b09d58ce16564b76b4ff910ffc51e6c758d0f03de9bf57b4b40ba7b042d"
+    }
+  },
+  "defaultRouteCheck": {
+    "url": "http://127.0.0.1:4178/?seed=31&fresh=1",
+    "sceneOwner": "night-city-image-stream",
+    "sceneLayerCount": "1",
+    "sceneOverlay": "none",
+    "componentRenderer": "disabled",
+    "componentVisibleCount": "0",
+    "componentRetainedCount": "0",
+    "startupStatus": "playing",
+    "levelId": "lantern-entry",
+    "consoleErrors": []
+  },
+  "naturalJourney": {
+    "reportPath": "qa-evidence/preview-server-repro-20261001/default-natural/qa-report.json",
+    "passed": true,
+    "navigationUrl": "http://127.0.0.1:4178/?seed=31&fresh=1",
+    "desktop": "1280x720",
+    "landscape": "844x390",
+    "portrait": "390x844",
+    "reportSha256": "e19be7bfd7a9950452f1e0a3c877c5da0c58667f7bef880d6a0fb55460e47d6a"
+  },
+  "route": "direct-builder",
+  "generatedWorkspaceModified": false,
+  "contextIntentionallyOmitted": [
+    "The pending user screenshot pixels as gameplay evidence",
+    "The old prototype-a launcher and its unrelated workspace",
+    "Any request to rewire ComponentRenderer into the default journey"
+  ],
+  "createdAt": "2026-10-01T12:40:51.000Z"
+}

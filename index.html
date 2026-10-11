@@ -14,7 +14,7 @@
       <span class="sr-only" data-ui="game-title">夜市飞侠</span>
       <span class="sr-only" data-ui="game-subtitle">护印突围</span>
       <span class="sr-only" data-ui="level-title">夜市内市</span>
-      <span class="sr-only" data-ui="opening-story">游侠受托护送原创盟契铜符，要在坊门关闭前穿越夜市，交给渡口接应人。</span>
+      <span class="sr-only" data-ui="opening-story">游侠受托护送盟契铜符，穿越夜市并摆脱官兵，抵达渡口。</span>
       <span class="sr-only" data-ui="wishfire">0</span>
       <header class="corner-hud safe-top" data-reference-stage="true" data-reference-layout="top-hud" data-ui-motion="hud-enter">
         <button class="hub-image-button hub-back-key" data-hub="hub-back-key" data-ui="back" data-ui-motion="icon-press" type="button" aria-label="返回"><img data-ui="back-icon" alt="" /></button>
@@ -23,11 +23,11 @@
           <img class="hub-money-value" data-hub="hub-money-value" aria-hidden="true" alt="" hidden />
           <span class="hub-money-number" data-ui="coins-total" aria-live="polite" aria-label="当前金币">0</span>
         </div>
-        <div class="hub-gate" data-hub="hub-gate" aria-label="坊门进度">
+        <div class="hub-gate" data-hub="hub-gate" aria-label="街区进度">
           <img class="hub-gate-strip" data-hub="hub-gate-strip" aria-hidden="true" alt="" hidden />
           <img class="hub-gate-counter-frame" data-hub="hub-gate-counter-frame" data-ui="gate-counter-frame" aria-hidden="true" alt="" />
-          <span class="hub-gate-count" data-ui="gates-total" aria-label="已闯城门">0</span>
-          <span class="hub-destination"><strong data-ui="destination">内市牌楼</strong><span class="hub-gate-distance" data-ui="gate-distance" aria-label="距下座坊门">0m</span></span>
+          <span class="hub-gate-count" data-ui="gates-total" aria-label="已穿过街区">0</span>
+          <span class="hub-destination"><strong data-ui="destination">夜市渡口</strong><span class="hub-gate-distance" data-ui="gate-distance" aria-label="距下一街区">0m</span></span>
         </div>
         <button class="hub-image-button hub-settings" data-hub="hub-settings" data-ui="settings" data-action="pause" data-ui-motion="icon-press" type="button" aria-label="暂停"><img data-ui="settings-icon" data-asset-role="settings-gear" alt="" /></button>
         <button class="pause-button" data-ui-motion="icon-press" data-action="pause" aria-label="暂停" hidden><img data-ui="pause-icon" aria-hidden="true" alt="" /></button>
@@ -35,9 +35,9 @@
           <span class="hud-metric"><small>里程</small><strong data-ui="distance">0m</strong></span>
           <span class="hud-metric hud-metric-coins"><small>金币</small><strong data-ui="run-coins">0</strong></span>
           <span class="hud-metric hud-metric-combo"><small>连击</small><strong data-ui="combo">0</strong></span>
-          <span class="hud-metric"><small>已闯城门</small><strong data-ui="multiplier">0</strong></span>
-          <span class="hud-metric"><small>距下门</small><strong data-ui="depth">0m</strong></span>
-          <span class="hud-metric"><small>最远城门</small><strong data-ui="record">0</strong></span>
+          <span class="hud-metric"><small>已过街区</small><strong data-ui="multiplier">0</strong></span>
+          <span class="hud-metric"><small>距下街区</small><strong data-ui="depth">0m</strong></span>
+          <span class="hud-metric"><small>最远街区</small><strong data-ui="record">0</strong></span>
           <span class="run-state" data-ui="run-state">夜巡</span>
         </div>
       </header>
@@ -55,7 +55,11 @@
       <div class="threat-vignette" data-ui="threat-vignette" data-ui-motion="overlay-feedback" aria-hidden="true"></div>
       <img class="feedback-layer" data-ui="feedback-layer" data-ui-motion="overlay-feedback" aria-hidden="true" alt="" hidden />
       <div class="escape-feedback" data-ui="escape-feedback" data-ui-motion="overlay-feedback" data-active="false" aria-live="polite" hidden><img data-ui="escape-ring-icon" aria-hidden="true" alt="" /><span class="sr-only">与官兵拉开距离！</span></div>
-      <div class="climax-callout" data-ui="climax" data-ui-motion="overlay-feedback" data-active="false" hidden><img data-ui="closing-gate-icon" aria-hidden="true" alt="" /><span class="sr-only" data-ui="climax-copy">夜市内门正在关闭</span></div>
+      <div class="climax-callout" data-ui="climax" data-ui-motion="overlay-feedback" data-active="false" hidden><img data-ui="closing-gate-icon" aria-hidden="true" alt="" /><span class="sr-only" data-ui="climax-copy">前往渡口</span></div>
+      <aside class="persistence-notice" data-ui="persistence-notice" role="alert" hidden>
+        <span aria-hidden="true">⚠</span><strong data-ui="persistence-copy">进度尚未保存</strong>
+        <button class="plain-button" data-action="retry-save" type="button">重试保存</button>
+      </aside>
       <div class="result-scrim" data-ui="result-scrim" hidden>
       <section class="result-card" data-ui="result" data-ui-motion="menu-enter" aria-live="polite" hidden>
         <span class="result-kicker" data-ui="result-kicker"></span>
@@ -64,15 +68,28 @@
         <div class="settlement-details" data-ui="settlement-details" aria-label="本次夜巡结算"></div>
         <div class="result-actions">
           <button class="reward-button" data-ui-motion="icon-press" data-action="revive" hidden>看完广告 · 安全复起</button>
-          <button class="reward-button" data-ui-motion="icon-press" data-action="double" hidden>看完广告 · 再得 30 金币</button>
+          <button class="reward-button" data-ui-motion="icon-press" data-action="double" hidden>看完广告 · 再得金币</button>
           <button class="plain-button" data-ui-motion="icon-press" data-action="restart">不看广告 · 重新启程</button>
           <button class="plain-button" data-ui-motion="icon-press" data-action="continue" hidden>继续下一程</button>
+          <button class="plain-button" data-action="progression">角色 · 任务 · 记录</button>
         </div>
         <small class="ad-note" data-ui="ad-note">广告奖励由你主动选择</small>
       </section>
       </div>
       <section class="pause-overlay" data-ui="pause-overlay" data-ui-motion="menu-enter" aria-live="polite" hidden>
         <img data-ui="pause-overlay-icon" aria-hidden="true" alt="" /><strong class="sr-only">已暂停</strong><span class="sr-only">点击右上角继续</span>
+        <button class="plain-button progression-open" data-action="progression">角色 · 任务 · 记录</button>
+      </section>
+      <section class="result-card progression-menu" data-ui="progression-menu" role="dialog" aria-modal="true" aria-label="角色、任务与记录" hidden>
+        <h2>夜巡准备</h2>
+        <div class="progression-tabs" role="group" aria-label="成长页面">
+          <button class="plain-button" data-progression-tab="characters">角色</button>
+          <button class="plain-button" data-progression-tab="missions">任务</button>
+          <button class="plain-button" data-progression-tab="records">记录</button>
+        </div>
+        <div data-ui="progression-content"></div>
+        <p data-ui="progression-note" aria-live="polite"></p>
+        <button class="plain-button" data-action="close-progression">返回</button>
       </section>
       <section class="orientation-block" data-ui="orientation-block" data-ui-motion="menu-enter" role="dialog" aria-modal="true" aria-label="需要横屏" hidden>
         <strong>请旋转至横屏</strong><span>夜市飞索仅在横屏游戏区域内响应</span>

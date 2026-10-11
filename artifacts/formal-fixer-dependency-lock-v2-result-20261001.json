@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "taskId": "dependency-manifest-lock-repro-20261001-attempt-2",
+  "targetRunId": "mobile-chart-adaptation-20260830",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "role": "FixerAgent",
+  "status": "PASS",
+  "route": "formal-fixer",
+  "routeReason": "The issue affects build and release configuration and its retest exposed an exact self-contained file-launch regression; the repair stayed bounded to the manifest, lockfile, build transform, regression contract, and QA evidence.",
+  "artifacts": [
+    {"path": "artifacts/experience-complaint-dependency-repro-20261001.json", "schema": "ExperienceComplaintTriageSchema", "sha256": "e48897a4c7916170aa6da082f79d4755f91a75f4ac1767ea9db5133f94ba5e57"},
+    {"path": "artifacts/experience-reproduction-matrix-dependency-repro-20261001.json", "schema": "ExperienceReproductionMatrixSchema", "sha256": "b97217d5e4f6977890b2ec9a9009d85242d04b94f9d063efea5db9582b5e9a95"},
+    {"path": "artifacts/experience-reproduction-matrix-dependency-retest-20261001.json", "schema": "ExperienceReproductionMatrixSchema", "sha256": "af5154ca6b25cddc05e4e9d643a3aade4e367162160ca373bd8b0f563f0f6dcb"},
+    {"path": "qa-evidence/dependency-retest-20261001/qa-report.json", "schema": "natural-runtime-qa-report", "sha256": "18115a765ebf6fe18d8f745b23c8112af80c1752b3a7d8e2a51b48c4dfeceae8"},
+    {"path": "qa-evidence/dependency-retest-20261001/file-launch/qa-report.json", "schema": "natural-runtime-qa-report", "sha256": "77fe84feb96f130d61cf92a8be1ca292ffc9dd373d5e7b7a3df9888d9cffca0d"}
+  ],
+  "filesChanged": [
+    "package.json",
+    "package-lock.json",
+    "scripts/build.ts",
+    "tests/dependency-manifest.test.ts",
+    "tests/self-contained-build.test.ts",
+    "qa-evidence/dependency-retest-20261001/natural-journey.mjs"
+  ],
+  "checks": [
+    {"id": "attempt-1-dependency-contract", "passed": true, "evidence": "The manifest contract was red before the direct-dependency/lockfile repair and green after npm ci."},
+    {"id": "attempt-2-vite-self-contained-regression", "passed": true, "evidence": "The exact Vite 8.3.2 import.meta data-URL form was reproduced, rewritten, and covered by tests/self-contained-build.test.ts."},
+    {"id": "fresh-install-and-static-checks", "passed": true, "evidence": "npm ci, npm ls --depth=0, npm test, npm run lint, npm run typecheck, npm run build, and npm run test:file all passed."},
+    {"id": "natural-default-journey", "passed": true, "evidence": "The independent HTTP and file-protocol reports cover startup, tutorial settlement, night patrol, natural failure, replay, and portrait orientation freeze with no console/page errors."}
+  ],
+  "blockers": [
+    "WeChat, Douyin, and TapTap Mini Game package publishability remains unverified.",
+    "facade-study-v5 remains offline-only with fidelity NEEDS_WORK and is not mounted in the default renderer."
+  ],
+  "omittedContext": [
+    "facade-study-v5 fidelity review and unresolved visual backlog",
+    "unrelated historical formal FIX attempts and QA evidence",
+    "other runs, shared factory code, and unrelated gameplay/source edits"
+  ],
+  "nextAction": "Keep the repaired dependency/build path as the accepted attempt-2 result; route any facade fidelity work through its existing visual QA → Fixer → perceptual QA flow before default integration or release claims."
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix-retest",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": "formal-fixer",
+  "attemptUnderTest": 1,
+  "cells": [
+    {
+      "id": "market-to-rooftops-transition-fixture-desktop",
+      "objectType": "opaque generated panorama chunk",
+      "lifecycleStateBranch": "market-to-rooftops transition at worldX≈6550",
+      "rendererPath": "NightCityRenderer image-stream",
+      "viewport": {
+        "label": "logical-desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "REPRODUCED",
+      "expected": "bridge scene carries the boundary without a full-height vertical hard cut",
+      "observed": "bridge asset is visible, but a hard vertical boundary remains at screenshot column 361; adjacent edge is not physically continuous",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-20261001/bridge-1672x941.png",
+          "sha256": "c3e5993577dca456188f6fb9b7db2310ec3589bf4912822ea7fd3b4db911a3ab",
+          "kind": "fixture-player-visible"
+        }
+      ]
+    },
+    {
+      "id": "market-to-rooftops-transition-fixture-mobile",
+      "objectType": "opaque generated panorama chunk",
+      "lifecycleStateBranch": "market-to-rooftops transition at worldX≈6550",
+      "rendererPath": "NightCityRenderer image-stream",
+      "viewport": {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "same single bridge carrier remains readable without a seam",
+      "observed": "bridge carrier renders with no console/page error, but fixture evidence remains implementation-only until natural input reaches the seam",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-20261001/bridge-844x390.png",
+          "sha256": "1bd6889f93fe3b413a76b2c8f70ac9e553c2ec68bb22738fbe7b0d189c6d7569",
+          "kind": "fixture-player-visible"
+        }
+      ]
+    },
+    {
+      "id": "market-to-rooftops-transition-natural",
+      "objectType": "opaque generated panorama chunk",
+      "lifecycleStateBranch": "normal hold-to-grapple natural traversal",
+      "rendererPath": "NightCityRenderer image-stream",
+      "viewport": {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "natural input reaches the exact transition and supplies a perceptual verdict",
+      "observed": "normal pointer hold/release reached playerX≈6689 at the exact transition; player-visible screenshot still shows the full-height hard cut",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-20261001/natural-bridge-attempt.png",
+          "sha256": "bf8d4af6fdd0611e2b0671d02bb8d9c68e5b126c9441dd1c123bc61313b58211",
+          "kind": "natural-player-visible"
+        }
+      ]
+    }
+  ],
+  "newHypothesis": "A bridge plate that begins before the authored boundary, copies the neighboring raster edge bands, crossfades only inside those structural handoff bands, and renders above adjacent panos will remove the observed hard cut without reintroducing a second mist owner.",
+  "createdAt": "2026-10-01T13:38:00+08:00",
+  "naturalInputTrace": {
+    "seed": 31,
+    "tutorialCycles": 16,
+    "patrolCycles": 35,
+    "playerX": 6689.522605169366,
+    "viewport": "1180x720",
+    "forbiddenOperations": []
+  }
+}

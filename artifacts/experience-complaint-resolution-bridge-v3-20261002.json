@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-resolution",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "sourceTriage": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/experience-complaint-code-drawn-quality-20261001.json",
+  "status": "PARTIALLY_RESOLVED",
+  "resolvedScope": "market-to-rooftops transition seam in the default NightCityRenderer image stream",
+  "formalFixAttempt": 3,
+  "fixArtifact": "artifacts/formal-fixer-bridge-pilot-v3-20261002.json",
+  "qaArtifact": "qa-evidence/bridge-pilot-v3-20261002/qa-report.json",
+  "perceptualQaArtifact": "qa-evidence/bridge-pilot-v3-20261002/perceptual-qa-report.json",
+  "reproductionMatrix": "qa-evidence/bridge-pilot-v3-20261002/reproduction-matrix.json",
+  "result": "PASS for the exact reported market-to-rooftops seam: RGBA feathered bridge, one static owner, natural desktop/mobile traces, terminal/replay, and no console/page errors.",
+  "remainingScope": [
+    "Broader infinite-map non-repetition and multi-chain composition still need a separate perceptual design/QA pass.",
+    "The opt-in ?longmap=1 component preview remains a debug path and was not changed by this repair.",
+    "WeChat Mini Game, Douyin Mini Game, and TapTap Mini Game packages remain unverified."
+  ],
+  "createdAt": "2026-10-02T03:05:00+08:00"
+}

@@ -1,0 +1,24 @@
+{
+  "browser": "Playwright Chromium",
+  "viewport": [1180, 720],
+  "url": "http://127.0.0.1:5173/?longmap=1&seed=31&fresh=1",
+  "journey": [
+    "fresh tutorial launch",
+    "__GAME_TEST__.completeForTest()",
+    "continue into night-patrol",
+    "__GAME_TEST__.driveChaseForTest(14, 'surge')"
+  ],
+  "before": {"levelId": "lantern-entry", "finishX": 2760},
+  "endlessStart": {"levelId": "night-patrol", "playerX": 90.7871061111111},
+  "after": {
+    "levelId": "night-patrol",
+    "playerX": 8019.8368305960375,
+    "sceneFamily": "rooftops-01/low-tile-ridges",
+    "chunkId": "chain-0/rooftops-01/low-tile-ridges",
+    "componentVisibleCount": 8,
+    "missingAssetCount": 6
+  },
+  "consoleErrors": 0,
+  "pageErrors": 0,
+  "screenshot": "qa-evidence/rooftops-v55-runtime/longmap-rooftops-v55-connector-runtime-20260926.png"
+}

@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "gate-removal-default-path",
+      "passed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts:137 wires createGrappleGame(..., { marketGates: false }); /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts:1866-1868 clears a derived closing-gate event, :2082 returns before gate collision handling, and :2270-2284 settles at the open finish. All four recorded traces have closingGateBeat=null and no activeChaseEvent=closing-gate. Legacy gate scenarios remain explicit fixtures at /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts:1191-1211 and /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts:1505-1519."
+    },
+    {
+      "name": "REMOVE-MARKET-GATE-desktop-successful-trace",
+      "passed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/desktop-trace.json and natural-details.json: normal desktop input reaches tutorial status=won, tick=849, then Continue enters night-patrol; no gate event/beat is observed. Screenshot: desktop-tutorial-terminal.png."
+    },
+    {
+      "name": "REMOVE-MARKET-GATE-mobile-landscape-successful-trace",
+      "passed": true,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/mobile-landscape-trace.json reaches tutorial status=won with inputTransitions=34 and closingGateBeat=null. The later retest failure is reported separately."
+    },
+    {
+      "name": "OPEN-PATROL-CHECKPOINT-desktop",
+      "passed": true,
+      "evidence": "attempt-1-retest-1 natural-details.json marks desktop PASS with patrolCheckpoint=true, failure and replay observed; desktop-trace.json contains segmentIndex 1 and 2 samples."
+    },
+    {
+      "name": "OPEN-PATROL-CHECKPOINT-mobile-landscape",
+      "passed": true,
+      "evidence": "attempt-1 natural-details.json marks mobile-landscape PASS with patrolCheckpoint=true, failure and replay observed; mobile-landscape-trace.json contains segmentIndex 1 and 2 samples."
+    },
+    {
+      "name": "ROOF-NET-PREPARE-desktop",
+      "passed": true,
+      "evidence": "Retest desktop records aim in roofNetPhases."
+    },
+    {
+      "name": "ROOF-NET-THROW-desktop",
+      "passed": true,
+      "evidence": "Retest desktop records release and travel."
+    },
+    {
+      "name": "ROOF-NET-RESOLVED-desktop",
+      "passed": true,
+      "evidence": "Retest desktop records active and missed."
+    },
+    {
+      "name": "ROOF-NET-PREPARE-mobile-landscape",
+      "passed": true,
+      "evidence": "Attempt-1 mobile records raise and aim."
+    },
+    {
+      "name": "ROOF-NET-THROW-mobile-landscape",
+      "passed": true,
+      "evidence": "Attempt-1 mobile records release and travel."
+    },
+    {
+      "name": "ROOF-NET-RESOLVED-mobile-landscape",
+      "passed": true,
+      "evidence": "Attempt-1 mobile records active and missed."
+    },
+    {
+      "name": "NATURAL-JOURNEY-desktop-current-build",
+      "passed": true,
+      "evidence": "Retest desktop PASS observes startup, tutorial settlement, Continue, patrol checkpoint, failure and replay."
+    },
+    {
+      "name": "NATURAL-JOURNEY-mobile-landscape-attempt-1",
+      "passed": true,
+      "evidence": "Attempt-1 mobile PASS observes startup, tutorial settlement, Continue, patrol checkpoint, failure and replay."
+    },
+    {
+      "name": "NATURAL-JOURNEY-mobile-landscape-retest-1",
+      "passed": false,
+      "evidence": "Retest mobile failed at the QA script assertion on gate-removal-20261008.mjs:75. Last state: tick=954, x=2188.539, y=904.240, status=failed, inputTransitions=46, activeChaseEvent=null, closingGateBeat=null, gatesPassed=0."
+    },
+    {
+      "name": "PORTRAIT-PAUSE",
+      "passed": true,
+      "evidence": "Retest portrait is paused at beforeTick=0/afterTick=0 with orientation blocking visible."
+    },
+    {
+      "name": "mobile-failure-attribution-not-gate-removal",
+      "passed": true,
+      "evidence": "The failed retest sample has no closing-gate event/beat and no gate pass. game-core.ts:2326-2338 applies the generic fall branch when player.y exceeds FAIL_Y=900."
+    },
+    {
+      "name": "runner-cadence-evidence",
+      "passed": true,
+      "evidence": "Retest mobile spans 15,906ms for 945 ticks with a 219ms max sample gap; attempt-1 mobile spans 6,915ms for 725 ticks. main.ts:708-710 feeds RAF delta into core.step, while game-core.ts:1406-1413 clamps each frame to 100ms. Runner sensitivity is supported, not proven as the sole cause."
+    },
+    {
+      "name": "retest-mobile-contract-coverage-gap",
+      "passed": false,
+      "evidence": "Retest mobile contains only lantern-entry segmentIndex=0 and ends before settlement. It has no successful Continue, patrol checkpoint, failure/replay sequence, or complete mobile contract evidence."
+    },
+    {
+      "name": "attempt-1-desktop-patrol-coverage-gap",
+      "passed": false,
+      "evidence": "Attempt-1 desktop reaches tutorial won, then night-patrol fails at tick=131, y=901.408 with inputTransitions=0 and no segmentIndex 1/2 samples. Retest desktop supplies the successful coverage."
+    },
+    {
+      "name": "recorded-browser-errors",
+      "passed": true,
+      "evidence": "Both natural-details.json files report errors=[]; this audit launched no browser."
+    }
+  ],
+  "issues": [
+    {
+      "id": "MOBILE_TUTORIAL_RETEST_GENERIC_FALL",
+      "severity": "error",
+      "message": "The attempt-1-retest-1 mobile-landscape natural tutorial did not settle: it fell before the open finish. The trace disproves a gate collision but does not satisfy the natural journey contract.",
+      "evidence": "Retest mobile terminal samples show tick 948 y=871.241 and tick 954 y=904.240 status=failed, with activeChaseEvent=null and closingGateBeat=null; game-core.ts:2326-2338 applies the generic fall branch."
+    },
+    {
+      "id": "MOBILE_RETEST_CONTRACT_COVERAGE_MISSING",
+      "severity": "warning",
+      "message": "The successful attempt-1 mobile trace and successful retest desktop trace cover the contract branches, but the retest mobile trace has no successful settlement, checkpoint or replay evidence.",
+      "evidence": "Retest mobile natural-details.json and mobile-landscape-trace.json."
+    },
+    {
+      "id": "ATTEMPT_1_DESKTOP_PATROL_BLOCKED",
+      "severity": "warning",
+      "message": "The first desktop recording cannot certify patrol checkpoint/replay because the post-Continue run fails before any accepted input transition; later desktop PASS coverage is retained separately.",
+      "evidence": "Attempt-1 desktop trace shows night-patrol status=failed at tick 131, y=901.408, inputTransitions=0."
+    },
+    {
+      "id": "TRACE_BUILD_IDENTITY_UNAVAILABLE",
+      "severity": "warning",
+      "message": "The supplied natural traces do not include an immutable build hash.",
+      "evidence": "The four trace files contain viewport and recording metadata but no buildHash field."
+    }
+  ],
+  "screenshots": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/mobile-landscape-tutorial-terminal.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/mobile-landscape-patrol-checkpoint.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/mobile-landscape-patrol-failure.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/mobile-landscape-replay.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/portrait.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/desktop-tutorial-terminal.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/desktop-patrol-checkpoint.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/desktop-patrol-failure.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/desktop-replay.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/mobile-landscape-tutorial-terminal.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/mobile-landscape-blocked.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/portrait.png"
+  ],
+  "consoleLog": "{\"mode\":\"read-only\",\"browserLaunchedByAudit\":false,\"buildLaunchedByAudit\":false,\"recordedRunErrors\":[],\"attribution\":\"retest mobile generic fall with no gate event; runner cadence is a supported contributing factor, not sole-proof\",\"contractCoverage\":\"successful attempt-1 mobile and retest desktop retained; retest mobile and attempt-1 desktop gaps retained\"}",
+  "testedAt": "2026-10-08T09:22:09.783Z",
+  "evidence": [
+    {
+      "schemaVersion": 1,
+      "mode": "NATURAL_E2E",
+      "actions": [
+        "fresh startup with seed=31",
+        "normal pointer hold/release",
+        "Continue",
+        "Restart"
+      ],
+      "artifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/mobile-landscape-trace.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/natural-details.json"
+      ],
+      "forbiddenOperations": [],
+      "runtime": "web-lite",
+      "device": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "seed": 31,
+      "runner": "recorded natural QA trace from gate-removal-20261008"
+    },
+    {
+      "schemaVersion": 1,
+      "mode": "NATURAL_E2E",
+      "actions": [
+        "fresh startup with seed=31",
+        "normal pointer hold/release",
+        "Continue",
+        "Restart"
+      ],
+      "artifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/desktop-trace.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/natural-details.json"
+      ],
+      "forbiddenOperations": [],
+      "runtime": "web-lite",
+      "device": {
+        "width": 1280,
+        "height": 720,
+        "label": "desktop"
+      },
+      "seed": 31,
+      "runner": "recorded natural QA trace from gate-removal-20261008"
+    },
+    {
+      "schemaVersion": 1,
+      "mode": "NATURAL_E2E",
+      "actions": [
+        "fresh startup with seed=31",
+        "normal pointer hold/release"
+      ],
+      "artifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/mobile-landscape-trace.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/natural-details.json"
+      ],
+      "forbiddenOperations": [],
+      "runtime": "web-lite",
+      "device": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "seed": 31,
+      "runner": "recorded natural QA trace from gate-removal-20261008"
+    },
+    {
+      "schemaVersion": 1,
+      "mode": "NATURAL_E2E",
+      "actions": [
+        "fresh startup in portrait"
+      ],
+      "artifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/natural-details.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/portrait.png"
+      ],
+      "forbiddenOperations": [],
+      "runtime": "web-lite",
+      "device": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "seed": 31,
+      "runner": "recorded natural QA trace from gate-removal-20261008"
+    }
+  ],
+  "naturalFlow": {
+    "schemaVersion": 1,
+    "startedFromReset": true,
+    "actions": [
+      "fresh startup with seed=31",
+      "normal pointer hold/release only"
+    ],
+    "transitions": [
+      {
+        "name": "startup",
+        "changed": true,
+        "evidence": "Retest mobile starts at tick=9 with lantern-entry/playing."
+      },
+      {
+        "name": "grapple traversal",
+        "changed": true,
+        "evidence": "Retest mobile records inputTransitions=46 and roof-net phases through missed."
+      },
+      {
+        "name": "settlement",
+        "changed": false,
+        "evidence": "Retest mobile ends at tick=954 status=failed before status=won."
+      },
+      {
+        "name": "continue",
+        "changed": false,
+        "evidence": "No Continue action is reached after the failed tutorial."
+      },
+      {
+        "name": "failure",
+        "changed": true,
+        "evidence": "Retest mobile records y=904.240 > FAIL_Y=900 and status=failed."
+      },
+      {
+        "name": "replay",
+        "changed": false,
+        "evidence": "No replay action is reached after the failed tutorial."
+      }
+    ],
+    "completion": "none",
+    "replayObserved": false,
+    "forbiddenOperations": [],
+    "screenshots": [
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/mobile-landscape-startup.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/mobile-landscape-tutorial-terminal.png",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/mobile-landscape-blocked.png"
+    ],
+    "passed": false,
+    "blockers": [
+      "mobile-landscape tutorial failed before settlement in attempt-1-retest-1",
+      "patrol checkpoint and replay are unobserved in that retest trace"
+    ],
+    "runner": "recorded natural QA trace from gate-removal-20261008",
+    "runtime": "web-lite",
+    "device": {
+      "width": 844,
+      "height": 390,
+      "label": "mobile-landscape"
+    },
+    "seed": 31,
+    "observedAt": "2026-10-08T09:22:09.783Z"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "generated-game-repair-handoff",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "triage": {
+    "issue": "接入用户已确认的 v55 source-derived 屋顶原子素材",
+    "evidence": [
+      "用户明确回复：接入吧",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/qa/alpha-report.json",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/longmap-batch-b/rooftops-roof-components-v55-source-derived/qa/rooftops-roof-components-v55-source-derived-board.png"
+    ],
+    "classification": "approved-asset-runtime-wiring",
+    "scope": "素材复制、longmap catalog 入口、rooftops 场景 recipe 绑定和 wiring 测试；保留现有灯笼代码连线逻辑"
+  },
+  "route": {
+    "selected": "direct-builder",
+    "reason": "根因和接入边界清晰，仅涉及三个已批准透明 PNG、catalog、原子 rooftop recipe 与对应测试；不改变核心玩法、状态机、持久化、平台适配、发布配置或默认正式旅程。",
+    "contextIntentionallyOmitted": [
+      "已撤回或未批准的 v53/v54 屋顶候选",
+      "水效果 PAUSED_BY_USER 相关上下文",
+      "与本次屋顶素材无因果关系的灯笼修复细节和其他代理未提交改动"
+    ]
+  },
+  "approval": {
+    "candidateBatch": "rooftops-roof-components-v55-source-derived",
+    "decision": "ART_APPROVED_BY_USER",
+    "basis": "用户先回复‘好吧’，随后明确回复‘接入吧’",
+    "runtimeContract": "longmap component preview only; default formal journey remains unchanged"
+  },
+  "acceptanceCriteria": [
+    "三个 v55 PNG 以原字节复制到 approved-runtime/environment，保留有效 alpha",
+    "catalog 为每个素材提供 AVAILABLE、runtimeKey、透明画布和正确尺寸",
+    "rooftops-01 至 rooftops-04 的 recipe 使用曲面瓦檐、屋顶冠部和承托块",
+    "longmap runtime preload/request/render 新 runtime keys，无旧路径请求或资源错误",
+    "现有 lighting.lanternCable 的 pooled sprites 与代码绘制 connector 保持不变",
+    "pnpm test、pnpm typecheck、pnpm lint、pnpm build 全部通过"
+  ],
+  "filesChangedByThisRoute": [
+    "src/assets/approved-runtime/environment/rooftops-curved-eave-v1.png",
+    "src/assets/approved-runtime/environment/rooftops-roof-crown-v1.png",
+    "src/assets/approved-runtime/environment/rooftops-roof-support-block-v1.png",
+    "src/longmap-art-catalog.ts",
+    "src/longmap-scene-recipes.ts",
+    "tests/component-renderer.test.ts",
+    "tests/runtime-assets-wiring.test.ts"
+  ],
+  "runtimeWiredEntrypointFiles": [
+    "src/component-renderer.ts",
+    "src/longmap-art-catalog.ts",
+    "src/longmap-scene-recipes.ts",
+    "src/main.ts"
+  ],
+  "assetEvidence": [
+    {
+      "file": "src/assets/approved-runtime/environment/rooftops-curved-eave-v1.png",
+      "sha256": "259f9bc9b9dcff605e7d35248a3cce11fad13cacd46788fae65f2c59fbd5836a",
+      "dimensions": [
+        385,
+        284
+      ],
+      "alphaMinMax": [
+        0,
+        255
+      ],
+      "partialAlphaPixels": 1609,
+      "transparentRgbResidue": false
+    },
+    {
+      "file": "src/assets/approved-runtime/environment/rooftops-roof-crown-v1.png",
+      "sha256": "e4eb12336554aec11dcb584c3b10e40e866399c3a5eeeeeb4a81c79e82c1a0a3",
+      "dimensions": [
+        199,
+        205
+      ],
+      "alphaMinMax": [
+        0,
+        255
+      ],
+      "partialAlphaPixels": 519,
+      "transparentRgbResidue": false
+    },
+    {
+      "file": "src/assets/approved-runtime/environment/rooftops-roof-support-block-v1.png",
+      "sha256": "294150c6650e9701fbd7fdacf22dab681609b19ce3b6404222a4cd78392cc002",
+      "dimensions": [
+        220,
+        205
+      ],
+      "alphaMinMax": [
+        0,
+        255
+      ],
+      "partialAlphaPixels": 506,
+      "transparentRgbResidue": false
+    }
+  ],
+  "tests": {
+    "targetedRed": "pnpm test -- --test-name-pattern='v55|rooftops recipes use atomic|approved v55' (failed before catalog/recipe wiring)",
+    "targetedGreen": "pnpm test -- --test-name-pattern='v55|rooftops recipes use atomic|approved v55' (pass)",
+    "full": "pnpm test (268 passed, 10 skipped, 0 failed); pnpm typecheck (pass); pnpm lint (pass); pnpm build (pass)"
+  },
+  "runtime": {
+    "status": "PASS",
+    "defaultJourneyChanged": false,
+    "waterEffects": "PAUSED_BY_USER",
+    "command": "ephemeral Playwright Chromium trace (same workspace Vite server; output captured in this artifact)",
+    "browser": "Playwright Chromium, viewport 1180x720, http://127.0.0.1:5173/?longmap=1&seed=31&fresh=1",
+    "initial": {
+      "componentRenderer": "component-overlay",
+      "visibleCount": 4,
+      "missingAssetCount": 3,
+      "sceneFamily": "market-01/lantern-main-street"
+    },
+    "progressed": {
+      "componentRenderer": "component-overlay",
+      "visibleCount": 7,
+      "missingAssetCount": 7,
+      "sceneFamily": "market-02/canopy-stall-lane",
+      "chainIndex": 0
+    },
+    "assetRequests": [
+      "src/assets/approved-runtime/environment/rooftops-curved-eave-v1.png",
+      "src/assets/approved-runtime/environment/rooftops-roof-crown-v1.png",
+      "src/assets/approved-runtime/environment/rooftops-roof-support-block-v1.png"
+    ],
+    "consoleErrors": [],
+    "pageErrors": [],
+    "screenshot": "qa-evidence/rooftops-v55-runtime/longmap-rooftops-v55.png"
+  },
+  "evidenceGaps": [
+    "web-lite runtime evidence does not prove WeChat, Douyin or TapTap platform package publishability.",
+    "The bounded default browser journey reaches market preview chunks; rooftop recipe rendering is covered by catalog/recipe and renderer tests, while all three rooftop PNGs are confirmed requested by preload in the browser trace."
+  ],
+  "status": "PASS"
+}

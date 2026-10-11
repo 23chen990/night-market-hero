@@ -1,0 +1,21 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "artifacts/gate-removal-20261008/product-experience-contract.json",
+    "artifacts/gate-removal-20261008/repair-attempt-1.json",
+    "artifacts/gate-removal-20261008/frame-review",
+    "artifacts/gate-removal-20261008/attempt-1",
+    "artifacts/gate-removal-20261008/attempt-1-retest-1"
+  ],
+  "task": "Please provide an immediate compact progress artifact before finishing the full report: any confirmed pixel blockers, remaining uninspected cells, and estimated number of tool calls remaining. Validate progress with z.object({blockers:z.array(z.string()),remainingCells:z.array(z.string()),remainingToolCalls:z.number().int().nonnegative()}).strict(), return that JSON, then continue the original review. Do not redo prior inspections.",
+  "acceptance": [
+    "Open default street has no code-drawn market gate or aperture requirement",
+    "Roof-net prepare, throw, resolved signals are visually legible at 844x390 and 1280x720, event order supported by exact natural traces",
+    "Natural startup, finish, continue, failure, replay and portrait pause are visible",
+    "Return only PerceptualQaReportSchema-validated JSON, reviewer QAAgent, authorIndependent true; use BLOCKED if any contract cell missing or unreadable"
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/product-experience.ts#PerceptualQaReportSchema"
+}

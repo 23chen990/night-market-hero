@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "formal-fixer-repair-evidence",
+  "route": "formal-fixer",
+  "attempt": 3,
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "issue": {
+    "triage": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/experience-complaint-code-drawn-quality-20261001.json",
+    "reproductionMatrix": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/experience-reproduction-matrix-code-drawn-quality-20261001.json",
+    "priorQa": "qa-evidence/bridge-pilot-v2-20261001/qa-report.json",
+    "priorPerceptualQa": "qa-evidence/bridge-pilot-v2-20261001/perceptual-qa-report.json",
+    "priorFix": "artifacts/formal-fixer-bridge-pilot-v2-20261001.json",
+    "candidateSource": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/bridge-concept-market-rooftops-v3-feathered-20261002.png"
+  },
+  "routeReason": "The market-to-rooftops transition remained a validated player-visible seam defect after two formal repair attempts. Attempt 3 stays in the formal fixer flow because the exact transition branch requires independent natural-input and perceptual QA on desktop and mobile.",
+  "priorQaFailure": {
+    "attempt": 2,
+    "finding": "The opaque v2 bridge still exposed an isolated dark vertical band at the left edge of the transition plate, approximately x=180 in the v2 fixture, with an adjacent-column mean RGB delta of about 21.83.",
+    "evidence": [
+      "qa-evidence/bridge-pilot-v2-20261001/bridge-fixture-1672x941.png",
+      "qa-evidence/bridge-pilot-v2-20261001/desktop-varied-seam.png",
+      "qa-evidence/bridge-pilot-v2-20261001/mobile-varied-seam.png"
+    ]
+  },
+  "attemptContinuity": {
+    "previousAttempt": 2,
+    "incrementReason": "Attempt 2 used an opaque edge-locked 2080x958 bridge with 204px overlap. Attempt 3 preserves the same composition and ownership model, but introduces a real alpha feather so the neighboring market and rooftops plates remain visible through the bridge edges.",
+    "priorEvidencePreserved": true,
+    "newRepairHypothesis": "The isolated band is caused by the opaque bridge edge being composited above the neighboring panorama. A 256px smoothstep alpha feather on both horizontal edges lets the adjacent opaque plates carry the boundary while the bridge body remains opaque and visually continuous.",
+    "scopeGuard": "No gameplay, save, economy, UI, platform adapter, or longmap topology code was changed."
+  },
+  "assetProvenance": {
+    "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/bridge-concept-market-rooftops-v3-feathered-20261002.png",
+    "sourceSha256": "fe67a218d50e0e41194922b284b8d22dac616b4b2ac7dab70322529163220266",
+    "derivedPath": "src/assets/night-city/market-rooftops-bridge-v3.png",
+    "derivedSha256": "fe67a218d50e0e41194922b284b8d22dac616b4b2ac7dab70322529163220266",
+    "relationship": "Runtime asset is byte-for-byte the registered v3 feathered candidate. Its RGB pixels match the v2 bridge body; only the alpha channel supplies the horizontal feather.",
+    "format": "PNG RGBA 8-bit",
+    "dimensions": {
+      "width": 2080,
+      "height": 958
+    },
+    "alphaContract": {
+      "featherWidthPx": 256,
+      "leftEdge": 0,
+      "leftInteriorSample": 128,
+      "body": 255,
+      "rightInteriorSample": 128,
+      "rightEdge": 0,
+      "uniqueAlphaValues": 207,
+      "leftMonotonic": true,
+      "rightMonotonic": true,
+      "meaningfulAlphaChannel": true
+    },
+    "backgroundCompositeChecks": [
+      {
+        "background": "light",
+        "rgb": [248, 248, 248],
+        "outputSha256": "c500247827a4e0c378b0f830cf9f5761f293c6499f4578158b428b62607d649a",
+        "transparentEdgeMatchesBackground": true,
+        "visualInspection": "No checkerboard, fixed matte, or edge halo observed."
+      },
+      {
+        "background": "dark",
+        "rgb": [10, 15, 25],
+        "outputSha256": "880f4b53d6e76695b84694f92866c8b4ae60fcbe4dcb95f6c6621f5fca010751",
+        "transparentEdgeMatchesBackground": true,
+        "visualInspection": "No checkerboard, fixed matte, or edge halo observed."
+      },
+      {
+        "background": "saturated",
+        "rgb": [240, 20, 160],
+        "outputSha256": "76a5422c41f39394124e59eec4018c51808e3689ecdad8b0d92022d7a9e44973",
+        "transparentEdgeMatchesBackground": true,
+        "visualInspection": "No checkerboard, fixed matte, or edge halo observed."
+      }
+    ]
+  },
+  "changes": [
+    "Registered marketRooftopsBridgeV3 and the typed night-city-market-rooftops-bridge-v3 key in the renderer preload registry.",
+    "Selected v3 only for the market-to-rooftops transition while preserving the 2080x958 dimensions and 204px world overlap.",
+    "Kept the transition as the sole static panorama owner and continued suppressing the generic mist layer at that boundary.",
+    "Kept the feathered bridge at depth -19 above the normal opaque panoramas at depth -20, with Phaser image alpha set to 1 so the PNG alpha remains authoritative.",
+    "Added a targeted PNG decoder assertion for RGBA color type, dimensions, transparent edges, opaque body, monotonic feathering, preload, selection, ownership, dimensions, overlap, and depth.",
+    "Kept foreground eaves on the approved 1672x941 aspect-ratio contract."
+  ],
+  "filesChanged": [
+    "src/night-city-renderer.ts",
+    "src/assets/night-city/market-rooftops-bridge-v3.png",
+    "tests/night-city-renderer.test.ts",
+    "artifacts/formal-fixer-bridge-pilot-v3-20261002.json"
+  ],
+  "runtimeWiredEntrypoints": [
+    {
+      "path": "src/main.ts",
+      "lines": "669-695, 751-760",
+      "role": "FlightScene constructs NightCityRenderer, preloads it before visibility, and renders the image stream on the default journey."
+    },
+    {
+      "path": "src/night-city-renderer.ts",
+      "lines": "11-24, 40-47, 128-139, 155-199, 310-381",
+      "role": "v3 URL, typed key, preload registry, transition selection, dimensions, overlap, depth, alpha ownership, mist suppression, eaves sizing, and bounded image streaming."
+    },
+    {
+      "path": "tests/night-city-renderer.test.ts",
+      "lines": "1-66, 282-389",
+      "role": "PNG alpha contract plus targeted preload, deterministic selection, sole ownership, dimensions, overlap, and depth assertions."
+    }
+  ],
+  "tests": {
+    "red": {
+      "command": "npx tsx --test tests/night-city-renderer.test.ts",
+      "exitCode": 1,
+      "outcome": "Before the v3 renderer and asset changes, 5 passed and 6 failed: v3 was not registered, the transition still selected v2, and the RGBA alpha-feather contract could not be satisfied."
+    },
+    "targetedGreen": {
+      "command": "npx tsx --test tests/night-city-renderer.test.ts",
+      "exitCode": 0,
+      "outcome": "11 passed, 0 failed, 0 skipped."
+    },
+    "fullTest": {
+      "command": "npm test",
+      "exitCode": 0,
+      "outcome": "286 tests: 276 passed, 10 skipped, 0 failed."
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "outcome": "PASS."
+    },
+    "lint": {
+      "command": "npm run lint",
+      "exitCode": 0,
+      "outcome": "PASS."
+    },
+    "build": {
+      "command": "npm run build",
+      "exitCode": 0,
+      "outcome": "Built dist/index.html and 夜市飞侠-护印突围-试玩版.html; both were 30444696 bytes."
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "outcome": "PASS."
+    }
+  },
+  "evidence": [
+    {
+      "path": "src/assets/night-city/market-rooftops-bridge-v3.png",
+      "sha256": "fe67a218d50e0e41194922b284b8d22dac616b4b2ac7dab70322529163220266",
+      "kind": "runtime-alpha-feathered-transition-asset",
+      "format": "PNG RGBA 2080x958"
+    },
+    {
+      "path": "src/night-city-renderer.ts",
+      "sha256": "58e7ac5d4f5530baacde827e84ebeb7dbb50a3b21ed3c82a76d14d16e873b604",
+      "kind": "renderer-source-after-attempt-3"
+    },
+    {
+      "path": "tests/night-city-renderer.test.ts",
+      "sha256": "b9b84a5367c2fe02088481f5a4dc1db10d6e97bbac7c23f09b7458781a7b9ae6",
+      "kind": "targeted-test-after-attempt-3"
+    },
+    {
+      "path": "dist/index.html",
+      "sha256": "943ff771bd76970bc14a191b5ca40d94eed1c8c0f4f4ab3db158d83d734e6be0",
+      "kind": "built-web-lite-evidence"
+    },
+    {
+      "path": "夜市飞侠-护印突围-试玩版.html",
+      "sha256": "943ff771bd76970bc14a191b5ca40d94eed1c8c0f4f4ab3db158d83d734e6be0",
+      "kind": "built-playable-alias-evidence"
+    }
+  ],
+  "platformScope": {
+    "wechatMiniGame": "Not packaged or independently verified in this attempt.",
+    "douyinMiniGame": "Not packaged or independently verified in this attempt.",
+    "taptapMiniGame": "Not packaged or independently verified in this attempt.",
+    "webLite": "Build completed as development and QA evidence only; it is not platform publish proof."
+  },
+  "contextOmitted": [
+    "game-core, physics, economy, persistence, ads, UI shell, and platform adapters",
+    "component renderer implementation and longmap preview behavior",
+    "other runs, shared factory code, and unrelated uncommitted edits",
+    "new bridge families, runtime-generated textures, and unapproved art candidates"
+  ],
+  "remainingQaGaps": [
+    "Independent QA must exercise the exact market-to-rooftops transition with normal player input and capture player-visible evidence at the required desktop viewport.",
+    "Independent QA must repeat the exact transition with normal player input and capture player-visible evidence at the required mobile viewport.",
+    "Perceptual QA must decide whether the v3 feather removes the isolated dark band without introducing a visible ghost or double exposure; this FixerAgent artifact does not claim that result.",
+    "Independent QA must rerun startup -> core loop -> terminal/settlement -> replay for this build.",
+    "WeChat Mini Game, Douyin Mini Game, and TapTap Mini Game package builds remain unverified."
+  ],
+  "status": "PATCHED_PENDING_QA",
+  "createdAt": "2026-10-02T02:18:28+08:00"
+}

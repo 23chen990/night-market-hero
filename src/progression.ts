@@ -9,6 +9,6 @@ export const CHARACTERS:readonly Character[]=[
 export function validateRosterTradeoffs():boolean { const b=CHARACTERS[0]!.stats; return CHARACTERS.slice(1).every(c=>c.stats.speed<b.speed||c.stats.gravity<b.gravity||c.stats.attachRadius<b.attachRadius); }
 export interface Mission { id:string; title:string; reward:number; requires?:'endless'|'sky'; }
 export function missionForProgress(p:{endlessUnlocked:boolean;skyUnlocked:boolean;characters:string[]}):Mission[] { return [
- {id:'gate-1',title:'通过 1 道门',reward:200}, {id:'gate-3',title:'通过 3 道门',reward:400}, {id:'combo-3',title:'连续 3 次华丽飞行',reward:200},
- ...(p.endlessUnlocked?[{id:'gate-5',title:'通过 5 道门',reward:600}]:[]), ...(p.skyUnlocked?[{id:'sky-1',title:'穿越一次天空段',reward:500,requires:'sky' as const}]:[])
+ {id:'gate-1',title:'通过 1 个街区',reward:200}, {id:'gate-3',title:'通过 3 个街区',reward:400}, {id:'combo-3',title:'连续 3 次华丽飞行',reward:200},
+ ...(p.endlessUnlocked?[{id:'gate-5',title:'通过 5 个街区',reward:600}]:[]), ...(p.skyUnlocked?[{id:'sky-1',title:'穿越一次天空段',reward:500,requires:'sky' as const}]:[])
  ]; }

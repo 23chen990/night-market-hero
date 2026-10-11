@@ -9,9 +9,14 @@ test('default journey exposes only tutorial plus endless patrol', () => {
   assert.equal(state.levelId, 'lantern-entry');
 });
 
-test('endless gate checkpoints never become terminal wins', async () => {
-  const source = await readFile('src/game-core.ts', 'utf8');
-  assert.match(source, /gateApertureCrossed[\s\S]*?&& !this\.endlessMode/);
+test('open-street patrol checkpoints never become terminal wins', () => {
+  const game = createGrappleGame(31, { marketGates: false });
+  game.restartEndless(31);
+  game.setPlayerForTest({ x: 4900, y: 350, vx: 420, vy: 0 });
+  const state = game.advanceTicks(1);
+  assert.equal(state.levelId, 'night-patrol');
+  assert.equal(state.status, 'playing');
+  assert.equal(state.activeChaseEvent, null);
 });
 
 test('terminal UI hides result immediately on restart and suppresses endless checkpoints', async () => {

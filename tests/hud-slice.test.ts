@@ -43,7 +43,8 @@ test('static reference baseline removes legacy rails and text placeholder items'
   assert.match(css, /\.scene-layer/);
   assert.match(css, /\.hud-nav-button\[data-ui="back"\][^}]*display:\s*none/s);
   assert.doesNotMatch(main, /fillRect\(this\.cameras\.main\.scrollX, 0, worldViewportWidth, worldViewportHeight\)/);
-  assert.match(main, /graphics\.setAlpha\(state\.attachedAnchorId \|\| state\.activeChaseEvent \|\| state\.levelIndex === 0 \? 0\.38 : 0\)/);
+  assert.match(main, /graphics\.setAlpha\(1\)/);
+  assert.match(main, /sceneOwner/);
   assert.match(main, /this\.drawActivePickups\(graphics, state/);
   assert.match(main, /render:\s*\{[^}]*transparent:\s*true/s);
   assert.doesNotMatch(main, /item-talisman.*copperTokenIcon|item-scroll.*destinationArrowIcon/s);

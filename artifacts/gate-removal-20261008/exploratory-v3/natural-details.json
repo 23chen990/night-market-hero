@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "base": "http://127.0.0.1:4185/",
+  "passed": false,
+  "runs": [
+    {
+      "viewport": {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "error": "AssertionError [ERR_ASSERTION]: desktop natural tutorial must settle\n\n'failed' !== 'won'\n",
+      "screenshots": [
+        {
+          "branch": "startup",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/desktop-startup.png",
+          "sha256": "16ea5fc82dc811aada7a34edd58276dcad80d573dc7ee8a846689d42e6a0f152"
+        },
+        {
+          "branch": "tutorial-terminal",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/desktop-tutorial-terminal.png",
+          "sha256": "0fdaaae16c6244a8cf6dfaa45b709391f06c8b63dd15fc65519232a28cfc5bae"
+        },
+        {
+          "branch": "blocked",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/desktop-blocked.png",
+          "sha256": "0fdaaae16c6244a8cf6dfaa45b709391f06c8b63dd15fc65519232a28cfc5bae"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/desktop-trace.json",
+        "sha256": "1f20d945178a4ef900e413c7f01759542be3f7af7db41836e19f65fb930ab373"
+      }
+    },
+    {
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "error": "AssertionError [ERR_ASSERTION]: mobile-landscape natural tutorial must settle\n\n'failed' !== 'won'\n",
+      "screenshots": [
+        {
+          "branch": "startup",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/mobile-landscape-startup.png",
+          "sha256": "f967cba2fa7682b13d00e42d838d9cfcd7e0df2e80696ba18b2ca4c8aa0f1617"
+        },
+        {
+          "branch": "tutorial-terminal",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/mobile-landscape-tutorial-terminal.png",
+          "sha256": "ca59fd97d1d00d1e3b04f6a4516b87f1193b617885250a4ff02071853aa583c9"
+        },
+        {
+          "branch": "blocked",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/mobile-landscape-blocked.png",
+          "sha256": "ca59fd97d1d00d1e3b04f6a4516b87f1193b617885250a4ff02071853aa583c9"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/mobile-landscape-trace.json",
+        "sha256": "8cbc028661c806b9e6891d503ea18426a4d88e8bd1e355c449e8b99f5c40e599"
+      }
+    },
+    {
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "paused": true,
+      "beforeTick": 0,
+      "afterTick": 0,
+      "screenshots": [
+        {
+          "branch": "orientation-pause",
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/portrait.png",
+          "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

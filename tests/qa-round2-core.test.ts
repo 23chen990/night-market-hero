@@ -281,7 +281,9 @@ describe('QA round 2 authored route, terrain, gate, and pause behavior', () => {
     assert.equal(outside.activeTerrain?.behaviorState, 'ready');
     game.setPlayerForTest({
       x: outside.activeTerrain!.bounds.x + 30,
-      y: outside.activeTerrain!.bounds.y + 40,
+      // The symmetric route rule classifies y=430 as high. Exercise the
+      // alley's actual low-corridor intersection, rather than a sibling route.
+      y: Math.max(outside.activeTerrain!.bounds.y + 40, outside.routeGraph.branches.low.corridor.y + 40),
       vx: 300,
       vy: 0,
     });

@@ -1,0 +1,21 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "artifacts/gate-removal-20261008/product-experience-contract.json",
+    "artifacts/gate-removal-20261008/repair-attempt-1.json",
+    "artifacts/gate-removal-20261008/frame-review",
+    "artifacts/gate-removal-20261008/attempt-1",
+    "artifacts/gate-removal-20261008/attempt-1-retest-1"
+  ],
+  "task": "Independently review actual pixels for every contract feature and viewport. Use view_image: contact sheets then full-size frames as needed. frame-review/mobile-landscape and desktop contain sequential natural roof-net frames (not fixtures); extraction.json binds video and trace, times approximate so classify phases from visible pixels, not filenames. Open-approach, open-destination, patrol-checkpoint are natural video extractions. For complete journeys use attempt-1 mobile and attempt-1-retest-1 desktop screenshots and traces; also read preserved failures. Do not ignore evidence gaps or invent positives. Important: desktop attempt-1 failed because screenshot pauses used no input in patrol; retest desktop completed. Another retest mobile failed before destination; separate trace auditor is investigating. You are not alone: read only, do not modify any file, launch a browser, or build. You may hash evidence via shell. Report each feature at each required viewport using exact screenshot/trace SHA256. Never pass unreadable thrower or missing state evidence.",
+  "acceptance": [
+    "Open default street has no code-drawn market gate or aperture requirement",
+    "Roof-net prepare, throw, resolved signals are visually legible at 844x390 and 1280x720, event order supported by exact natural traces",
+    "Natural startup, finish, continue, failure, replay and portrait pause are visible",
+    "Return only PerceptualQaReportSchema-validated JSON, reviewer QAAgent, authorIndependent true; use BLOCKED if any contract cell missing or unreadable"
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/product-experience.ts#PerceptualQaReportSchema"
+}

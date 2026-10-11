@@ -1,6 +1,7 @@
 import { UI_ANIMATION_STANDARD, type UiAnimationStandard } from './ui-animation.ts';
 import { difficultyAtSegment, gateCheckpointXForSegment, metersAtSegment, segmentForIndex, chooseMutation, rollVehicleForSegment, segmentIndexAtX, segmentProgressAtX, segmentStartPx, segmentLengthPx, retentionBoundsAtSegment, pickupPlacementForSegment, depthCoefficient, VEHICLES, type PickupPlacement } from './endless.ts';
 import { cityChunksInView, type DistrictId } from './district-world.ts';
+import { CHARACTERS } from './progression.ts';
 
 export type GameStatus = 'playing' | 'failed' | 'won';
 export type FailureReason = 'fell' | 'caught' | null;
@@ -11,6 +12,7 @@ export type RouteId = 'high' | 'low';
 export type LevelId = 'lantern-entry' | 'rafter-fork' | 'ferry-seal' | 'night-patrol';
 export type GrappleNodeType = '檐角' | '牌楼横梁' | '灯绳架' | '幌杆';
 export type TerrainKind = '布棚' | '竹架' | '窄巷';
+export type TerrainMode = 'legacy-authored' | 'panorama';
 export type SceneObjectCategory = 'canopy' | 'obstacle' | 'passage';
 export type ChaseEventId = 'barricade' | 'roof-net' | 'closing-gate';
 export type ClosingGateBeat = 1 | 2 | 3;
@@ -296,8 +298,15 @@ export interface GrappleState {
   failY: number;
   finishX: number;
   finishTop: number;
+  /** Furthest world-space position reached in this run (saved for revive). */
+  furthestX: number;
   /** Endless patrol runtime metrics (persisted for replay and settlement). */
   segmentIndex: number;
+  /** Segments that have already fired their first-entry rewards in this run. */
+  visitedSegments: number[];
+  characterId: string;
+  skySegments: number;
+  visitedSkySegments: number[];
   distanceMeters: number;
   coins: number;
   pickups: number;
@@ -325,6 +334,12 @@ export interface GrappleState {
   firecrackerStunUntilTick: number;
   itemUsage: { talisman: number; firecracker: number };
   receiverPaid: boolean;
+}
+
+export interface GrappleGameOptions {
+  characterId?: string;
+  marketGates?: boolean;
+  terrainMode?: TerrainMode;
 }
 
 const FIXED_STEP = 1 / 120;
@@ -663,14 +678,19 @@ function stableTextHash(value: string): number {
   return hash >>> 0;
 }
 
-function endlessAnchorLayout(seed: number, x: number, baseSpacing: number): { y: number; spacing: number } {
+function endlessAnchorLayout(
+  seed: number,
+  x: number,
+  baseSpacing: number,
+  terrainMode: TerrainMode = 'legacy-authored',
+): { y: number; spacing: number } {
   const chunk = cityChunksInView(seed, x, x + 1)[0];
   if (!chunk) return { y: 365, spacing: baseSpacing };
   const layoutHash = stableTextHash(chunk.layoutId);
   const ordinal = Math.max(0, Math.floor(x / Math.max(1, baseSpacing)));
-  const gameplayDistrict = chunk.gameplayDistrict ?? chunk.district;
-  const pattern = ENDLESS_DISTRICT_ANCHOR_Y[gameplayDistrict];
-  const spacingScales = ENDLESS_DISTRICT_SPACING_SCALE[gameplayDistrict];
+  const layoutDistrict = terrainMode === 'panorama' ? chunk.district : chunk.gameplayDistrict ?? chunk.district;
+  const pattern = ENDLESS_DISTRICT_ANCHOR_Y[layoutDistrict];
+  const spacingScales = ENDLESS_DISTRICT_SPACING_SCALE[layoutDistrict];
   const patternIndex = (layoutHash + chunk.variant + ordinal) % pattern.length;
   const variantLift = [-8, 6, -4, 10][chunk.variant]!;
   const segment = segmentForIndex(segmentIndexAtX(x));
@@ -739,6 +759,30 @@ function cloneTerrain(terrain: ActiveTerrain): ActiveTerrain {
     visual: { ...terrain.visual, layers: [...terrain.visual.layers] },
     collapseAtTick: terrain.collapseAtTick ?? null,
     debrisBounds: terrain.debrisBounds ? cloneBounds(terrain.debrisBounds) : null,
+  };
+}
+
+/**
+ * Panorama scenery owns the visible world. Keep the legacy terrain records in
+ * the state shape for snapshots and compatibility fixtures, but remove every
+ * legacy collision/debris trigger before a panorama snapshot can run.
+ */
+function sanitizePanoramaTerrain(terrain: ActiveTerrain): ActiveTerrain {
+  return {
+    ...cloneTerrain(terrain),
+    collision: 'none',
+    impactCooldownUntilTick: 0,
+    pursuerSlowUntilTick: 0,
+    collapseAtTick: null,
+    debrisBounds: null,
+  };
+}
+
+function sanitizePanoramaTerrainState(state: GrappleState): GrappleState {
+  return {
+    ...state,
+    activeTerrain: state.activeTerrain ? sanitizePanoramaTerrain(state.activeTerrain) : null,
+    sceneObjects: state.sceneObjects.map(sanitizePanoramaTerrain),
   };
 }
 
@@ -813,6 +857,8 @@ function copyState(state: GrappleState): GrappleState {
     routeGraph: cloneRouteGraph(state.routeGraph),
     routeTraversal: { ...state.routeTraversal },
     activePickups: state.activePickups?.map((pickup) => ({ ...pickup })) ?? [],
+    visitedSegments: state.visitedSegments?.slice() ?? [],
+    visitedSkySegments: state.visitedSkySegments?.slice() ?? [],
   };
 }
 
@@ -842,9 +888,36 @@ export class GrappleGame {
   private endlessMode = false;
   private endlessAnchorSerial = 0;
   private endlessCourseLastCullSegment = -1;
+  private selectedCharacter = CHARACTERS[0]!.id;
 
-  constructor(seed = 1) {
+  // Gate fixtures retain their historical contract; the shipped entrypoint
+  // selects open streets, including when restoring old snapshots.
+  constructor(seed = 1, private readonly options: GrappleGameOptions = {}) {
+    this.selectedCharacter = CHARACTERS.find(c => c.id === options.characterId)?.id ?? CHARACTERS[0]!.id;
     this.resetGame(seed);
+  }
+
+  private characterStats() {
+    return CHARACTERS.find(c => c.id === (this.state?.characterId ?? this.selectedCharacter))!.stats;
+  }
+
+  private ordinaryAttachRadius(): number {
+    return Math.min(ATTACH_RADIUS, this.endlessMode
+      ? difficultyAtSegment(this.state.segmentIndex).assistAttachRadius
+      : this.levelDefinition().assistAttachRadius) * this.characterStats().attachRadius;
+  }
+
+  setCharacter(id: string): boolean {
+    if (!CHARACTERS.some(c => c.id === id) || (this.state.tick > 0 && this.state.status === 'playing')) return false;
+    this.selectedCharacter = id;
+    if (this.state.tick === 0) {
+      this.state.characterId = id;
+      this.state.player.vx = 245 * this.characterStats().speed;
+      this.state.maxSpeed = MAX_SPEED * this.characterStats().speed;
+      this.state.attachRadius = this.ordinaryAttachRadius();
+      this.refreshDerived(false);
+    }
+    return true;
   }
 
   getManifest(): FormalManifest {
@@ -928,7 +1001,12 @@ export class GrappleGame {
       failY: FAIL_Y,
       finishX: level.finishX,
       finishTop: FINISH_TOP,
+      furthestX: 72,
       segmentIndex: 0,
+      visitedSegments: [0],
+      characterId: this.selectedCharacter,
+      skySegments: 0,
+      visitedSkySegments: [],
       distanceMeters: 0,
       coins: 0,
       pickups: 0,
@@ -958,6 +1036,12 @@ export class GrappleGame {
       receiverPaid: false,
     };
     this.state.activeTerrain = this.state.sceneObjects[0] ?? null;
+    this.state.player.vx = 245 * this.characterStats().speed;
+    this.state.playerMotion.vx = this.state.player.vx;
+    this.state.playerMotion.speed = Math.hypot(this.state.player.vx, this.state.player.vy);
+    this.state.maxSpeed = MAX_SPEED * this.characterStats().speed;
+    this.state.attachRadius = this.ordinaryAttachRadius();
+    if (this.options.terrainMode === 'panorama') this.state = sanitizePanoramaTerrainState(this.state);
     this.recordEvent('reset', `seed:${normalizedSeed}`);
     return this.getState();
   }
@@ -995,7 +1079,9 @@ export class GrappleGame {
     this.state.levelDestination = '夜市深处';
     this.state.finishX = Number.MAX_SAFE_INTEGER;
     this.state.message = message;
+    this.state.furthestX = this.state.player.x;
     this.state.segmentIndex = 0;
+    this.state.visitedSegments = [0];
     this.state.distanceMeters = 0;
     this.state.coins = 0;
     this.state.pickups = 0;
@@ -1011,7 +1097,7 @@ export class GrappleGame {
     this.state.vehicleLockY = 0;
     this.state.vehicleVirtualAnchor = null;
     this.state.depthCoefficient = 1;
-    this.state.attachRadius = difficultyAtSegment(0).assistAttachRadius;
+    this.state.attachRadius = this.ordinaryAttachRadius();
   }
 
   getState(): GrappleState {
@@ -1024,6 +1110,8 @@ export class GrappleGame {
 
   restoreSnapshot(snapshot: GrappleState): boolean {
     if (!snapshot || !Number.isInteger(snapshot.seed) || !snapshot.player || !snapshot.pursuer || !snapshot.gate) return false;
+    if (snapshot.characterId !== undefined && !CHARACTERS.some(c => c.id === snapshot.characterId)) return false;
+    this.selectedCharacter = snapshot.characterId ?? CHARACTERS[0]!.id;
     const levelIndex = Number.isInteger(snapshot.levelIndex) ? snapshot.levelIndex : 0;
     const level = this.levelDefinition(levelIndex);
     const restoredSceneObjects = (snapshot.sceneObjects?.length
@@ -1048,7 +1136,13 @@ export class GrappleGame {
       receiver: restoredGate.receiver ?? { x: restoredGate.x + 82, y: restoredGate.centerY + 8 },
       receiverPaid: restoredGate.receiverPaid ?? false,
     };
-    this.state = copyState({
+    const snapshotSegment = Number.isInteger(snapshot.segmentIndex) ? Math.max(0, snapshot.segmentIndex) : 0;
+    const snapshotPlayerX = Number.isFinite(snapshot.player.x) ? Math.max(0, snapshot.player.x) : 0;
+    const restoredVisitedSegments = Array.isArray(snapshot.visitedSegments)
+      ? [...new Set(snapshot.visitedSegments.filter((segment) => Number.isInteger(segment) && segment >= 0))]
+      : [];
+    if (!restoredVisitedSegments.includes(snapshotSegment)) restoredVisitedSegments.push(snapshotSegment);
+    const restoredState = copyState({
       ...snapshot,
       sceneObjects: restoredSceneObjects,
       gate: normalizedGate,
@@ -1057,7 +1151,14 @@ export class GrappleGame {
       levelId: snapshot.levelId ?? level.id,
       levelTitle: snapshot.levelTitle ?? level.title,
       levelDestination: snapshot.levelDestination ?? level.destination,
-      segmentIndex: snapshot.segmentIndex ?? 0,
+      furthestX: Number.isFinite(snapshot.furthestX)
+        ? Math.max(snapshotPlayerX, snapshot.furthestX)
+        : snapshotPlayerX,
+      segmentIndex: snapshotSegment,
+      visitedSegments: restoredVisitedSegments,
+      characterId: this.selectedCharacter,
+      skySegments: snapshot.skySegments ?? 0,
+      visitedSkySegments: snapshot.visitedSkySegments ?? [],
       distanceMeters: snapshot.distanceMeters ?? 0,
       coins: snapshot.coins ?? 0,
       pickups: snapshot.pickups ?? 0,
@@ -1083,13 +1184,16 @@ export class GrappleGame {
       itemUsage: snapshot.itemUsage ?? { talisman: 0, firecracker: 0 },
       receiverPaid: snapshot.receiverPaid ?? false,
     });
+    this.state = this.options.terrainMode === 'panorama'
+      ? sanitizePanoramaTerrainState(restoredState)
+      : restoredState;
     this.accumulator = 0;
     this.events = [];
     this.nextEventSequence = Math.max(this.nextEventSequence, snapshot.eventSequence + 1);
     this.stalledTicks = 0;
     this.stylishFlights = 0;
-    this.shortcutRewarded = snapshot.activeTerrain?.kind === '窄巷' && snapshot.activeTerrain.behaviorState === 'concealed';
-    this.bambooLoadTicks = snapshot.activeTerrain?.kind === '竹架' && snapshot.activeTerrain.behaviorState === 'broken' ? 6 : 0;
+    this.shortcutRewarded = this.state.activeTerrain?.kind === '窄巷' && this.state.activeTerrain.behaviorState === 'concealed';
+    this.bambooLoadTicks = this.state.activeTerrain?.kind === '竹架' && this.state.activeTerrain.behaviorState === 'broken' ? 6 : 0;
     const restoreGateCloseTicks = level.gateCloseTicks * this.mutationModifiers().gateCloseTicksFactor; // 封灯：关门快约10%
     this.gateClimaxStartedTick = snapshot.activeChaseEvent === 'closing-gate'
       ? snapshot.tick - Math.round(snapshot.gate.animationProgress * restoreGateCloseTicks)
@@ -1110,7 +1214,16 @@ export class GrappleGame {
     // 必须在此同步私有 endlessMode，否则 restore 后 GrappleState 处于无限夜巡、
     // 而下一 tick 却走 campaign 分支（progress / 段位 / 距离 / 航道扩展全部错分支）。
     this.endlessMode = this.state.levelId === 'night-patrol';
+    this.state.attachRadius = this.ordinaryAttachRadius();
+    this.state.maxSpeed = (this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED)
+      * (this.state.vehicleTicksRemaining > 0 ? 1 : this.characterStats().speed);
     this.endlessCourseLastCullSegment = -1;
+    if (this.options.marketGates === false) {
+      if (this.state.activeChaseEvent === 'closing-gate') this.state.activeChaseEvent = null;
+      this.state.closingGateBeat = null;
+      this.gateClimaxStartedTick = null;
+      this.gateBeatThreeStartedTick = null;
+    }
     return true;
   }
 
@@ -1206,6 +1319,7 @@ export class GrappleGame {
 
   setPlayerForTest(patch: Partial<PlayerState>): void {
     Object.assign(this.state.player, patch);
+    if (patch.x !== undefined) this.state.furthestX = Math.max(this.state.furthestX, this.state.player.x);
     if (patch.x !== undefined) this.state.progress = Math.max(this.state.progress, clamp01(patch.x / this.state.finishX));
   }
 
@@ -1224,14 +1338,14 @@ export class GrappleGame {
   }
 
   useTalisman(): boolean {
-    if (this.state.status !== 'playing' || this.state.talismanActiveUntilTick > this.state.tick) return false;
+    if (this.state.status !== 'playing' || this.state.paused || this.state.talismanActiveUntilTick > this.state.tick) return false;
     this.state.talismanActiveUntilTick = this.state.tick + TALISMAN_DURATION_TICKS;
     this.state.itemUsage.talisman += 1;
     return true;
   }
 
   useFirecracker(): boolean {
-    if (this.state.status !== 'playing' || this.state.firecrackerStunUntilTick > this.state.tick) return false;
+    if (this.state.status !== 'playing' || this.state.paused || this.state.firecrackerStunUntilTick > this.state.tick) return false;
     this.state.firecrackerStunUntilTick = this.state.tick + FIRECRACKER_STUN_TICKS;
     this.state.itemUsage.firecracker += 1;
     this.state.chase.pressure = Math.max(0, this.state.chase.pressure - 0.12);
@@ -1245,11 +1359,14 @@ export class GrappleGame {
 
   reviveFromSafeState(): boolean {
     if (!this.canRewardedRevive()) return false;
-    const reachedX = this.state.progress * this.state.finishX;
+    const reachedX = this.endlessMode
+      ? this.state.furthestX
+      : this.state.progress * this.state.finishX;
     const safeAnchor = [...this.state.anchors].reverse().find((anchor) => anchor.x <= reachedX);
     this.state.player = safeAnchor
       ? { x: Math.max(72, safeAnchor.x - 84), y: safeAnchor.y + 175, vx: 245, vy: -185 }
       : { x: 72, y: 575, vx: 245, vy: -185 };
+    this.state.furthestX = Math.max(this.state.furthestX, this.state.player.x);
     this.accumulator = 0;
     this.state.status = 'playing';
     this.state.failureReason = null;
@@ -1447,12 +1564,10 @@ export class GrappleGame {
 
   private nearestEligibleAnchor(): Anchor | null {
     const { player } = this.state;
-    const baseAttachRadius = Math.min(ATTACH_RADIUS, this.endlessMode
-      ? difficultyAtSegment(this.state.segmentIndex).assistAttachRadius
-      : this.levelDefinition().assistAttachRadius);
+    const baseAttachRadius = this.ordinaryAttachRadius();
     const fx = this.mutationModifiers();
     const speed = Math.max(0.0001, Math.hypot(player.vx, player.vy));
-    const branchAnchorIds = this.state.routeTraversal.phase === 'branch' && this.state.routeTraversal.committedRoute
+    const branchAnchorIds = !this.endlessMode && this.state.routeTraversal.phase === 'branch' && this.state.routeTraversal.committedRoute
       ? new Set(this.state.levelIndex === 0
         ? this.state.routeTraversal.committedRoute === 'low'
           ? ['node-low', 'node-7']
@@ -1477,19 +1592,18 @@ export class GrappleGame {
           && player.vx < -80
           && player.y >= lowCorridor.y + 40)
       );
-    // Near the tutorial gate, a player who is still holding the visible
-    // grapple input may be below the final upper anchor after a late release.
-    // Treat that anchor as a bounded falling rescue so one missed swing can be
-    // recovered without granting a passage or changing the gate contract.
-    const tutorialGateRecoveryWindow = !this.endlessMode
+    // Holding near the tutorial destination can recover the final anchor
+    // after a late release. Open streets use the authored finish position;
+    // compatibility fixtures retain their original gate envelope.
+    const tutorialFinalRecoveryWindow = !this.endlessMode
       && this.state.levelIndex === 0
       && this.state.inputTransitions > 0
-      && this.state.activeChaseEvent === 'closing-gate'
-      && player.x >= this.state.gate.x - 520
-      && player.x < this.state.gate.x
+      && (this.options.marketGates === false || this.state.activeChaseEvent === 'closing-gate')
+      && player.x >= (this.options.marketGates === false ? this.state.finishX : this.state.gate.x) - 520
+      && player.x < (this.options.marketGates === false ? this.state.finishX : this.state.gate.x)
       && player.y >= 220
       && player.y <= this.state.failY - PLAYER_COLLISION_RADIUS
-      && (player.y < this.state.gate.collisionAperture.y
+      && (this.options.marketGates === false || player.y < this.state.gate.collisionAperture.y
         || player.y > this.state.gate.collisionAperture.y + this.state.gate.collisionAperture.height);
     // If a browser delivers a long hold/release window while the player is
     // still approaching the fork, the body can lose forward swing and keep
@@ -1503,7 +1617,7 @@ export class GrappleGame {
       && (this.state.routeTraversal.phase === 'approach' || this.state.routeTraversal.phase === 'split')
       && player.x < this.state.routeGraph.split.x + this.state.routeGraph.split.width
       && (player.vx < 140 || speed < 220 || player.y > 600);
-    let selected: { anchor: Anchor; score: number } | null = null;
+    let selected: { anchor: Anchor; score: number; backwardRescue: boolean } | null = null;
     for (const anchor of this.state.anchors) {
       if (!branchAnchorIds && anchor.id === 'node-low' && !lowBranchRecovery) continue;
       const regrappleGrace = this.state.tick > 0 && this.state.tick < this.state.regrappleGraceUntilTick;
@@ -1520,7 +1634,7 @@ export class GrappleGame {
         && anchor.id === 'node-low'
         && dx >= -220
         && dx <= 180;
-      const gateRecoveryEligible = tutorialGateRecoveryWindow
+      const finalRecoveryEligible = tutorialFinalRecoveryWindow
         && anchor.id === 'node-8'
         && dx >= -300
         && dx <= 260;
@@ -1528,7 +1642,7 @@ export class GrappleGame {
         && anchor.id !== this.lastReleasedAnchorId
         && dx >= 60
         && dx <= 560;
-      const recoveryEligible = lowFloorRecoveryEligible || gateRecoveryEligible || tutorialApproachEligible;
+      const recoveryEligible = lowFloorRecoveryEligible || finalRecoveryEligible || tutorialApproachEligible;
       if (this.endlessMode && !rescueEligible && !regrappleGrace && player.x < this.grappleReconnectNotBeforeX) continue;
       if (branchAnchorIds && !branchAnchorIds.has(anchor.id) && !rescueEligible && !recoveryEligible) continue;
       const alignment = (dx * player.vx + dy * player.vy) / (distance * speed);
@@ -1543,8 +1657,14 @@ export class GrappleGame {
       const sameAnchorPenalty = anchor.id === this.lastReleasedAnchorId ? 0.18 : 0;
       const recoveryPriority = recoveryEligible ? -1 : 0;
       const score = recoveryPriority + distanceWeight * (distance / attachRadius) + directionWeight * (angle / Math.PI) + sameAnchorPenalty;
-      if (!selected || score < selected.score - 1e-9 || (Math.abs(score - selected.score) <= 1e-9 && anchor.x > selected.anchor.x)) {
-        selected = { anchor, score };
+      // Falling input should recover toward the live forward course when a
+      // forward support is reachable. Keep a backward support as a fallback,
+      // without letting the previous-anchor penalty create a rescue loop.
+      const backwardRescue = this.endlessMode && rescueEligible && dx < 0;
+      if (!selected || (selected.backwardRescue && !backwardRescue)
+        || (selected.backwardRescue === backwardRescue && (score < selected.score - 1e-9
+          || (Math.abs(score - selected.score) <= 1e-9 && anchor.x > selected.anchor.x)))) {
+        selected = { anchor, score, backwardRescue };
       }
     }
     return selected?.anchor ?? null;
@@ -1590,7 +1710,10 @@ export class GrappleGame {
     chase.pressure = clamp01((MAX_CHASE_DISTANCE - actualDistance) / (MAX_CHASE_DISTANCE - MIN_CHASE_DISTANCE));
     // 封灯：坊门预警距离/提前量 -20%（门更晚被发现）。仅在封灯变异且正处 closing-gate 时收紧告警距离阈值。
     const warn = (this.state.mutation === '封灯' && this.state.activeChaseEvent === 'closing-gate') ? 0.8 : 1;
-    chase.phase = actualDistance < 360 * warn
+    // The final/gate-climax segment owns the late threatening-guard climax.
+    // Outside that segment, keep the existing danger/alert distance thresholds
+    // reachable instead of letting the broad climax threshold shadow them.
+    chase.phase = this.state.segment === 'gate-climax' && actualDistance < 360 * warn
       ? 'climax'
       : actualDistance <= 180 * warn
         ? 'danger'
@@ -1722,6 +1845,10 @@ export class GrappleGame {
         // Previously a high label persisted after a fall into the low lane,
         // which made the pursuit HUD and roof-net branch lie about the route.
         traversal.committedRoute = inLow ? 'low' : null;
+      } else if (traversal.committedRoute === 'low' && !inLow) {
+        // Keep the same invariant when the body leaves the low corridor:
+        // update to high if occupied, otherwise clear stale commitment.
+        traversal.committedRoute = inHigh ? 'high' : null;
       }
       return;
     }
@@ -1856,6 +1983,9 @@ export class GrappleGame {
         : this.state.progress >= 0.28 && this.state.progress < 0.40
           ? 'barricade'
           : null;
+    if (this.options.marketGates === false && this.state.activeChaseEvent === 'closing-gate') {
+      this.state.activeChaseEvent = null;
+    }
     if (this.state.activeChaseEvent === 'closing-gate' && this.gateClimaxStartedTick === null) {
       this.gateClimaxStartedTick = this.state.tick;
     } else if (this.state.activeChaseEvent !== 'closing-gate') {
@@ -1885,6 +2015,7 @@ export class GrappleGame {
   }
 
   private updateTerrain(dt: number, previousPlayer: PlayerState): void {
+    if (this.options.terrainMode === 'panorama') return;
     const player = this.state.player;
     for (const obstacle of this.state.sceneObjects.filter((item) => item.category === 'obstacle')) {
       const touching = player.x + PLAYER_COLLISION_RADIUS >= obstacle.bounds.x
@@ -1971,6 +2102,7 @@ export class GrappleGame {
   }
 
   private resolveAuthoredRouteSurface(): void {
+    if (this.endlessMode || this.options.terrainMode === 'panorama') return;
     if (this.state.routeTraversal.phase !== 'branch' || this.state.routeTraversal.committedRoute !== 'low') return;
     if (this.state.attachedAnchorId !== null) return;
     const corridor = this.state.routeGraph.branches.low.corridor;
@@ -1991,7 +2123,9 @@ export class GrappleGame {
     const routeDistanceIntent = this.state.segment === 'route-alternation'
       ? (this.state.routeProfile.pursuitDistanceEffect - 24) * 0.45
       : 0;
-    const debrisSlow = this.state.sceneObjects.some((item) => item.debrisBounds && item.pursuerSlowUntilTick > this.state.tick) ? 150 : 0;
+    const debrisSlow = this.options.terrainMode === 'panorama'
+      ? 0
+      : this.state.sceneObjects.some((item) => item.debrisBounds && item.pursuerSlowUntilTick > this.state.tick) ? 150 : 0;
     const contactDistance = Math.max(0, this.levelDefinition().pursuitContactDistance);
     const currentTargetX = player.x + Math.max(-180, Math.min(220, player.vx * PURSUER_TARGET_LOOKAHEAD_SECONDS));
     const targetGap = currentTargetX - pursuer.x - contactDistance;
@@ -2149,7 +2283,7 @@ export class GrappleGame {
     const vehicle = this.state.vehicleId ? VEHICLES.find((item) => item.id === this.state.vehicleId) ?? null : null;
     const vehicleActive = !!vehicle && this.state.vehicleTicksRemaining > 0;
     const fx = this.mutationModifiers();
-    let gravity = GRAVITY * fx.gravityFactor;
+    let gravity = GRAVITY * fx.gravityFactor * (vehicleActive ? 1 : this.characterStats().gravity);
     if (vehicleActive && vehicle!.id === '纸鸢' && this.state.vehiclePhase !== 'holding') gravity = KITE_GLIDE_GRAVITY * fx.gravityFactor;
     player.vy += gravity * dt;
     player.vx += (this.state.route === 'high' ? 22 : -10) * dt;
@@ -2171,7 +2305,7 @@ export class GrappleGame {
         }
       }
     }
-    const gatePacingMultiplier = this.state.segment === 'gate-climax' ? 0.84 : 1;
+    const gatePacingMultiplier = this.options.marketGates !== false && this.state.segment === 'gate-climax' ? 0.84 : 1;
     player.x += player.vx * dt * this.state.routeProfile.speedMultiplier * gatePacingMultiplier;
     player.y += player.vy * dt;
     // Give a fresh tutorial run a short, bounded recovery lane. A first-time
@@ -2238,8 +2372,14 @@ export class GrappleGame {
       player.vy -= nx * SWING_DRIVE * fx.swingDriveFactor * dt;
     }
 
+    // Preserve the actual world-space frontier independently of normalized
+    // endless progress, whose denominator is intentionally unbounded.
+    this.state.furthestX = Math.max(this.state.furthestX, player.x);
+
     const speed = Math.hypot(player.vx, player.vy);
-    const speedCap = this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED;
+    const speedCap = (this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED) * (vehicleActive ? 1 : this.characterStats().speed);
+    this.state.maxSpeed = speedCap;
+    this.state.attachRadius = this.ordinaryAttachRadius();
     if (speed > speedCap) {
       const scale = speedCap / speed;
       player.vx *= scale;
@@ -2257,10 +2397,15 @@ export class GrappleGame {
     const gateBeatThreeTicks = this.state.closingGateBeat === 3 && this.gateBeatThreeStartedTick !== null
       ? this.state.tick - this.gateBeatThreeStartedTick
       : 0;
-    if (this.gateApertureCrossed && this.state.closingGateBeat === 3 && gateBeatThreeTicks >= 24 && !this.endlessMode) {
+    const reachedOpenDestination = this.options.marketGates === false
+      && player.x - PLAYER_COLLISION_RADIUS >= this.state.finishX
+      && player.y <= FAIL_Y;
+    const passedLegacyGate = this.options.marketGates !== false
+      && this.gateApertureCrossed && this.state.closingGateBeat === 3 && gateBeatThreeTicks >= 24;
+    if (!this.endlessMode && (reachedOpenDestination || passedLegacyGate)) {
       this.state.status = 'won';
       this.state.failureReason = null;
-      this.state.message = '抵达渡口接应人，收到过门钱';
+      this.state.message = this.options.marketGates === false ? '穿过夜市，抵达渡口' : '抵达渡口接应人，收到过门钱';
       this.state.gatesPassed = Math.max(1, this.state.gatesPassed);
       this.state.receiverPaid = true;
       this.state.gate.receiverPaid = true;
@@ -2355,7 +2500,7 @@ export class GrappleGame {
       const seedSegment = segmentForIndex(segmentIndexAtX(this.state.player.x));
       const spacing = seedSegment.isSky ? seedSegment.anchorSpacing : difficultyAtSegment(segment).anchorSpacing;
       const seedX = Math.max(lowerBound, this.state.player.x - spacing);
-      const layout = endlessAnchorLayout(this.state.seed, seedX, spacing);
+      const layout = endlessAnchorLayout(this.state.seed, seedX, spacing, this.options.terrainMode ?? 'legacy-authored');
       last = {
         id: `endless-node-${Math.round(seedX)}`,
         x: seedX,
@@ -2371,7 +2516,7 @@ export class GrappleGame {
       const baseSpacing = currentSegment.isSky
         ? currentSegment.anchorSpacing
         : difficultyAtSegment(nextSegment).anchorSpacing;
-      const layout = endlessAnchorLayout(this.state.seed, last.x + baseSpacing, baseSpacing);
+      const layout = endlessAnchorLayout(this.state.seed, last.x + baseSpacing, baseSpacing, this.options.terrainMode ?? 'legacy-authored');
       const nextX = last.x + layout.spacing;
       const nextAnchor = {
         id: `endless-node-${Math.round(nextX)}`,
@@ -2390,16 +2535,21 @@ export class GrappleGame {
 
   private updateEndlessMetrics(): void {
     const segment = segmentIndexAtX(this.state.player.x);
-    const previous = this.state.segmentIndex;
     this.state.segmentIndex = segment;
     this.state.distanceMeters = Math.max(this.state.distanceMeters, Math.floor(metersAtSegment(segment) + (this.state.player.x - segmentStartPx(segment)) / 30));
     this.state.depthCoefficient = depthCoefficient(segment);
-    this.state.attachRadius = difficultyAtSegment(segment).assistAttachRadius;
+    this.state.attachRadius = this.ordinaryAttachRadius();
     const descriptor = segmentForIndex(segment);
     this.state.isSky = descriptor.isSky && this.state.player.y <= 445 && this.state.player.vx >= 360;
+    if (this.state.isSky && !this.state.visitedSkySegments.includes(segment)) {
+      this.state.visitedSkySegments.push(segment);
+      this.state.skySegments += 1;
+    }
     this.state.mutation = segment >= 3 ? chooseMutation(segment, Math.floor(this.state.distanceMeters / 300), this.state.seed) : null;
-    if (segment > previous) {
-      // 概率事件：进入新段时按设计概率抽取载具（天空段只出青鸾）
+    const firstEntry = !this.state.visitedSegments.includes(segment);
+    if (firstEntry) {
+      this.state.visitedSegments.push(segment);
+      // 概率事件：首次进入新段时按设计概率抽取载具（天空段只出青鸾）
       this.grantVehicleForSegment(segment, descriptor.isSky);
       const placements = pickupPlacementForSegment(segment);
       this.state.activePickups.push(...placements.map((pickup) => ({
@@ -2430,6 +2580,6 @@ export class GrappleGame {
   }
 }
 
-export function createGrappleGame(seed = 1): GrappleGame {
-  return new GrappleGame(seed);
+export function createGrappleGame(seed = 1, options: GrappleGameOptions = {}): GrappleGame {
+  return new GrappleGame(seed, options);
 }

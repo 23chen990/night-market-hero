@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "roof-net-natural-gate",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "base": "http://127.0.0.1:4179/",
+  "runs": [
+    {
+      "viewport": "desktop-1180x720",
+      "terminal": {
+        "status": "won",
+        "levelId": "lantern-entry",
+        "tick": 1166
+      },
+      "replay": {
+        "action": "continue",
+        "status": "playing",
+        "levelId": "night-patrol",
+        "resultHidden": true
+      },
+      "roofNetPhases": [
+        "warning",
+        "entering",
+        "active",
+        "impact",
+        "raise",
+        "travel",
+        "missed"
+      ],
+      "sceneOwner": "night-city-image-stream",
+      "errors": []
+    },
+    {
+      "viewport": "mobile-844x390",
+      "terminal": {
+        "status": "won",
+        "levelId": "lantern-entry",
+        "tick": 557
+      },
+      "replay": {
+        "action": "continue",
+        "status": "playing",
+        "levelId": "night-patrol",
+        "resultHidden": true
+      },
+      "roofNetPhases": [
+        "warning",
+        "entering",
+        "active",
+        "impact",
+        "raise",
+        "release",
+        "travel",
+        "missed"
+      ],
+      "sceneOwner": "night-city-image-stream",
+      "errors": []
+    }
+  ]
+}\n

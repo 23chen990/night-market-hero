@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "formal-fixer-repair-evidence",
+  "route": "formal-fixer",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "issueIds": [
+    "REMOVE-MARKET-GATE",
+    "ROOF-NET-NATURAL-GAP",
+    "OPEN-STREETS-CLIMAX-GUIDANCE",
+    "OPEN-STREETS-CONTINUE-LABEL"
+  ],
+  "attempt": 2,
+  "previousAttempt": 1,
+  "threadContinuity": {
+    "original": "01a0fd9c-3c6d-78d0-8e1c-849ceafc43ec",
+    "continuedIn": "01a11aaf-5f63-71b2-8916-370968ff1e21",
+    "basis": "User explicitly resumed the interrupted archived task in this workspace-scoped chat. Prior roof-net direct-builder handoff remains preserved; this is the first formal attempt for gate removal."
+  },
+  "build": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/dist/index.html",
+    "sha256": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+    "log": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/build-attempt-2.log",
+    "count": 1
+  },
+  "sourceHashes": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/index.html",
+      "sha256": "f01d546865c721045a524cb83a834549210f0c79452d1e22d9a652299c520db4"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+      "sha256": "e8721e9006fe4807793e9fcd299eba6ae2cc1df0e473e35e088949b6f9ce5611"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+      "sha256": "565783d9eb20c38bca27bdce2a34ca96607f6f9ce8cf3f274d7790580dc7b65e"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts",
+      "sha256": "58e7ac5d4f5530baacde827e84ebeb7dbb50a3b21ed3c82a76d14d16e873b604"
+    }
+  ],
+  "routeReason": "Gate removal changes default collision/settlement and saved-state presentation; prior roof-net exact-branch natural evidence was incomplete.",
+  "contextIntentionallyOmitted": [
+    "Other games and shared factory work",
+    "Unrelated artwork and platform publication",
+    "Chat screenshot authentication error"
+  ],
+  "hypothesis": "Independent source review and a red natural UI assertion proved default-path copy still referred to a gate. Replace climax, settlement, destination and Continue labels with the open-destination/night-patrol journey; preserve mechanics. QA captures normal DOM input events, hashes the served build, and traverses beyond the former patrol gate at x4300.",
+  "compatibilityOnly": [
+    "createGrappleGame without marketGates:false retains legacy gate fixtures for core compatibility tests.",
+    "main.ts explicitly uses marketGates:false. Legacy gate render method and asset import are removed.",
+    "Old tests/browser-smoke.ts gate fixture assertions are not default journey evidence."
+  ],
+  "remainingGaps": [
+    "WeChat, Douyin and TapTap native platform packages were not validated by this web-lite repair."
+  ],
+  "status": "PASS",
+  "previousEvidence": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/repair-attempt-1.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/source-review-attempt-1.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/perceptual-attempt-1.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/trace-review.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-copy-red-retry/qa-report.json"
+  ]
+}

@@ -1,3 +1,4 @@
+import { applyFlightIdentity, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
 import {
   MockAdProvider,
@@ -18,6 +19,7 @@ import {
   NightMarketAdFlow,
   NightMarketMonetization,
   LocalProgressStorage,
+  type CompleteRunResult,
   type MetaProgress,
 } from './monetization';
 import {
@@ -27,10 +29,16 @@ import {
   type UiMotionName,
 } from './ui-animation';
 import { createRunSnapshot, LocalRunSnapshotStorage } from './run-snapshot';
-import { CHARACTERS, missionForProgress } from './progression';
+import {
+  BackgroundLifecyclePolicy,
+  PersistentRunIdentity,
+  RuntimeSession,
+  type RunIdentityStorage,
+} from './runtime-session';
+import { CHARACTERS } from './progression';
 import { speedFeelProfile, settlementCoins, gateCheckpointXForSegment, segmentIndexAtX } from './endless';
 import { createCameraLayout, projectCamera, LOGICAL_VIEWPORT } from './camera-layout';
-import { createNightCityRenderer, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
+import { createNightCityRenderer, createNightCityRenderPlan, mapWorldAnchorToArchitecturalSocket, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
 import { createComponentRenderer, isLongmapPreviewEnabled } from './component-renderer';
 import './style.css';
 import grappleAttachedIcon from './assets/approved-ui/grapple-attached-v1.png';
@@ -39,7 +47,6 @@ import safeStateIcon from './assets/approved-ui/safe-state-v1.png';
 import copperTokenIcon from './assets/level1/copper-token-v1.png';
 import pauseIcon from './assets/level1/pause-v1.png';
 import pursuitWarningIcon from './assets/level1/pursuit-warning-v1.png';
-import closingGateIcon from './assets/level1/closing-gate-v1.png';
 import tutorialHoldIcon from './assets/level1/tutorial-hold-v1.png';
 import tutorialReleaseIcon from './assets/level1/tutorial-release-v1.png';
 import tutorialValidIcon from './assets/level1/tutorial-grapple-valid-v1.png';
@@ -58,7 +65,6 @@ import stallCanopyAsset from './assets/approved-runtime/environment/stall-canopy
 import paifangCrossbeamAsset from './assets/approved-runtime/environment/paifang-crossbeam-v1.png';
 import bambooScaffoldAsset from './assets/approved-runtime/environment/bamboo-scaffold-v1.png';
 import innerEaveAsset from './assets/approved-runtime/environment/inner-eave-v1.png';
-import lanternCableAsset from './assets/approved-runtime/environment/lantern-cable-v1.png';
 import pushcartAsset from './assets/approved-runtime/environment/pushcart-v1.png';
 import blankBannerAsset from './assets/approved-runtime/environment/blank-banner-v1.png';
 import coveredAlleyFrameAsset from './assets/approved-runtime/environment/covered-alley-frame-v1.png';
@@ -128,16 +134,38 @@ async function bootstrap(): Promise<void> {
 const query = new URLSearchParams(window.location.search);
 const querySeed = Number(query.get('seed')) || 31;
 const freshStart = query.get('fresh') === '1';
-const runSnapshotStorage = new LocalRunSnapshotStorage();
+const runSnapshotStorage = new LocalRunSnapshotStorage() as unknown as LocalRunSnapshotStorage & {
+  getPersistenceIssue?: () => string | null;
+  save(snapshot: ReturnType<typeof createRunSnapshot>): boolean;
+};
+const runIdentityStorage: RunIdentityStorage = {
+  read(key: string): string | null {
+    try { return window.localStorage?.getItem(key) ?? null; } catch { return null; }
+  },
+  write(key: string, value: string): boolean {
+    try {
+      if (!window.localStorage) return false;
+      window.localStorage.setItem(key, value);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+};
+const runIdentity = new PersistentRunIdentity(runIdentityStorage);
+const rawSnapshotBeforeLoad = runIdentityStorage.read('night-market-hero.run.v2');
 if (freshStart) runSnapshotStorage.clear();
 const candidateRun = freshStart ? null : runSnapshotStorage.load();
+const snapshotLoadRejected = !freshStart && rawSnapshotBeforeLoad !== null && candidateRun === null;
 // Never resume legacy fixed-level runs into the endless product path. A v2
 // snapshot may only restore the tutorial or the explicitly unlocked patrol.
 const restoredRun = candidateRun && ['lantern-entry', 'night-patrol'].includes(candidateRun.state.levelId)
   ? candidateRun
   : null;
-const core = createGrappleGame(restoredRun?.state.seed ?? querySeed);
+const core = createGrappleGame(restoredRun?.state.seed ?? querySeed, { marketGates: false, terrainMode: 'panorama' });
 if (restoredRun) core.restoreSnapshot(restoredRun.state);
+const runtimeSession = new RuntimeSession(runIdentity, restoredRun?.runId ?? querySeed);
+const backgroundPolicy = new BackgroundLifecyclePolicy();
 const mockAds = new MockAdProvider();
 const ads = window.__NIGHT_MARKET_HERO_TAPTAP_AD_CONFIG__
   ? createTapTapAdProvider(window.__NIGHT_MARKET_HERO_TAPTAP_AD_CONFIG__)
@@ -146,8 +174,8 @@ const sessionStartedAt = performance.now();
 const interstitialPolicy = new InterstitialPolicy(sessionStartedAt);
 const adFlow = new NightMarketAdFlow(ads, interstitialPolicy);
 const economy = new NightMarketMonetization(ads, new LocalProgressStorage());
-let runSerial = 1;
-let currentRunId = restoredRun?.runId ?? `${querySeed}:${runSerial}`;
+if (!restoredRun) core.setCharacter(economy.getProgressV2().selectedCharacter ?? CHARACTERS[0]!.id);
+let currentRunId = runtimeSession.runId;
 let observedStatus: GrappleState['status'] = 'playing';
 let lastRenderedDistance = core.getState().chase.distance;
 let lastReliefFeedbackAt = Number.NEGATIVE_INFINITY;
@@ -161,10 +189,13 @@ let lastUiSegment: GrappleState['segment'] = 'safe-tutorial';
 let terminalNavigationRunId: string | null = null;
 let failedSettlementCommitted = false;
 let failedSettlementBaseReward = 0;
+let failedSettlementResult: CompleteRunResult | null = null;
+let terminalSettlementPending = false;
+let terminalSettlementRunId: string | null = null;
+let terminalCompletionRecorded = false;
 let lastRenderedCombo = 0;
 let lastRenderedSky = false;
 let lastRenderedPickupCount = 0;
-const resultActionFlights = new Set<string>();
 
 function requiredElement<T extends Element>(selector: string): T {
   const element = document.querySelector<T>(selector);
@@ -180,6 +211,9 @@ const resultKicker = requiredElement<HTMLElement>('[data-ui="result-kicker"]');
 const resultTitle = requiredElement<HTMLElement>('[data-ui="result-title"]');
 const resultCopy = requiredElement<HTMLElement>('[data-ui="result-copy"]');
 const adNote = requiredElement<HTMLElement>('[data-ui="ad-note"]');
+const persistenceNotice = requiredElement<HTMLElement>('[data-ui="persistence-notice"]');
+const persistenceCopy = requiredElement<HTMLElement>('[data-ui="persistence-copy"]');
+const retrySaveButton = requiredElement<HTMLButtonElement>('[data-action="retry-save"]');
 const wishfireText = requiredElement<HTMLElement>('[data-ui="wishfire"]');
 const coinsText = requiredElement<HTMLElement>('[data-ui="coins-total"]');
 const levelTitle = requiredElement<HTMLElement>('[data-ui="level-title"]');
@@ -202,7 +236,7 @@ const gateCounterFrame = document.querySelector<HTMLImageElement>('[data-ui="gat
 if (gateCounterFrame) gateCounterFrame.src = NIGHT_CITY_ASSET_PATHS.gateCounterFrame;
 requiredElement<HTMLImageElement>('[data-ui="pause-icon"]').src = pauseIcon;
 requiredElement<HTMLImageElement>('[data-ui="pursuit-icon"]').src = pursuitWarningIcon;
-requiredElement<HTMLImageElement>('[data-ui="closing-gate-icon"]').src = closingGateIcon;
+requiredElement<HTMLImageElement>('[data-ui="closing-gate-icon"]').src = destinationArrowIcon;
 requiredElement<HTMLImageElement>('[data-ui="pause-overlay-icon"]').src = pauseIcon;
 requiredElement<HTMLImageElement>('[data-hub="hub-back-key"] img').src = hubBackKey;
 requiredElement<HTMLImageElement>('[data-hub="hub-money-shell"]').src = hubMoneyShell;
@@ -242,6 +276,8 @@ const pauseButton = requiredElement<HTMLButtonElement>('[data-action="pause"]');
 const clearProgressButton = requiredElement<HTMLButtonElement>('[data-action="clear-progress"]');
 const talismanButton = requiredElement<HTMLButtonElement>('[data-action="talisman"]');
 const firecrackerButton = requiredElement<HTMLButtonElement>('[data-action="firecracker"]');
+const talismanAvailability = document.querySelector<HTMLElement>('[data-slot="talisman"] .item-count');
+const firecrackerAvailability = document.querySelector<HTMLElement>('[data-slot="firecracker"] .item-count');
 const cornerHud = requiredElement<HTMLElement>('.corner-hud');
 const resultButtons = [reviveButton, doubleButton, restartButton, continueButton];
 const activePointerIds = new Set<number>();
@@ -256,11 +292,11 @@ let tutorialStepIndex = 0;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const uiMotionAssets = [
   grappleAttachedIcon, destinationArrowIcon, safeStateIcon, copperTokenIcon, backButtonIcon, pauseIcon,
-  pursuitWarningIcon, closingGateIcon, tutorialHoldIcon, tutorialReleaseIcon, tutorialValidIcon,
+  pursuitWarningIcon, destinationArrowIcon, tutorialHoldIcon, tutorialReleaseIcon, tutorialValidIcon,
   tutorialHighRouteIcon, tutorialLowRouteIcon, grappleAttachBurst, landingDust, nearMissArc,
   speedStreaks, impactShards, escapeRing, protagonistSwingAsset, pursuerRunAsset,
   stallCanopyAsset, paifangCrossbeamAsset, bambooScaffoldAsset, innerEaveAsset,
-  lanternCableAsset, pushcartAsset, blankBannerAsset, coveredAlleyFrameAsset,
+  pushcartAsset, blankBannerAsset, coveredAlleyFrameAsset,
   hubMoneyShell, hubMoneyValue, hubGateStrip, hubBackKey, hubInventoryRing,
   hubInventoryTalisman, hubInventoryScroll, hubInventoryPlay,
   hubAnchorButton,
@@ -350,14 +386,57 @@ for (const element of document.querySelectorAll<HTMLElement>('[data-ui-motion="h
 }
 playUiElement(routeHint.parentElement as HTMLElement, 'overlay-feedback');
 
+function setPersistenceNotice(issue: string | null): void {
+  app.dataset.persistenceStatus = issue ? 'unavailable' : 'saved';
+  persistenceNotice.hidden = !issue;
+  persistenceCopy.textContent = snapshotLoadRejected ? '原存档无法读取，已保留；当前进度未保存' : '进度尚未保存';
+  persistenceNotice.title = issue ? '重试会保留原始存档；若存档损坏，请先备份并修复。' : '';
+  if (issue && !terminalSettlementPending && !runtimeSession.isOperationActive('revive')
+    && !runtimeSession.isOperationActive('double-wishfire')) {
+    adNote.textContent = '运行存档未保存，当前进度不会被静默覆盖；请清除坏档或重试。';
+  }
+}
+
+function renderItemAvailability(meta: MetaProgress): void {
+  const statusFor = (item: 'talisman' | 'firecracker'): string => {
+    if (meta.itemUnlocked?.[item]) return '可用';
+    if (meta.itemFirstUse?.[item]) return '待解锁';
+    return '首用可用';
+  };
+  const talismanStatus = statusFor('talisman');
+  const firecrackerStatus = statusFor('firecracker');
+  if (talismanAvailability) {
+    talismanAvailability.textContent = talismanStatus;
+    talismanAvailability.dataset.availability = talismanStatus;
+  }
+  if (firecrackerAvailability) {
+    firecrackerAvailability.textContent = firecrackerStatus;
+    firecrackerAvailability.dataset.availability = firecrackerStatus;
+  }
+}
+
+function itemReady(item: 'talisman' | 'firecracker', state: GrappleState): boolean {
+  return item === 'talisman'
+    ? state.talismanActiveUntilTick <= state.tick
+    : state.firecrackerStunUntilTick <= state.tick;
+}
+
 function beginNextRun(state: GrappleState): void {
-  runSerial += 1;
-  currentRunId = `${state.seed}:${runSerial}`;
+  core.setCharacter(economy.getProgressV2().selectedCharacter ?? CHARACTERS[0]!.id);
+  backgroundPolicy.explicitResume();
+  requiredElement<HTMLElement>('[data-ui="progression-menu"]').hidden = true;
+  currentRunId = runtimeSession.beginNewRun(state.seed);
   failedSettlementCommitted = false;
   failedSettlementBaseReward = 0;
+  failedSettlementResult = null;
+  terminalSettlementPending = false;
+  terminalSettlementRunId = null;
+  terminalCompletionRecorded = false;
   lastRenderedCombo = 0;
   lastRenderedSky = false;
   adNote.textContent = '广告奖励由你主动选择';
+  restartButton.textContent = '不看广告 · 重新启程';
+  doubleButton.textContent = '看完广告 · 再得金币';
   if (state.levelIndex === 0) tutorialStepIndex = 0;
   // A restart/continue owns the transition synchronously; do not leave a
   // stale terminal card visible while its exit animation is settling.
@@ -367,29 +446,71 @@ function beginNextRun(state: GrappleState): void {
 }
 
 async function useItem(item: 'talisman' | 'firecracker', button: HTMLButtonElement): Promise<void> {
-  if (core.getState().status !== 'playing' || button.disabled) return;
-  const consumed = economy.consumeItem(item);
-  if (consumed.status === 'locked') {
-    button.disabled = true;
-    adNote.textContent = '正在请求道具解锁广告…';
-    const unlocked = await economy.unlockItemWithAd(item);
-    button.disabled = false;
-    if (unlocked.status !== 'granted' && unlocked.status !== 'already-unlocked') {
-      adNote.textContent = '广告未完成，道具未消耗。';
-      return;
+  const initialState = core.getState();
+  if (initialState.status !== 'playing' || initialState.paused || button.disabled || !itemReady(item, initialState)) return;
+  const operation = runtimeSession.beginOperation(`item:${item}`);
+  if (!operation) return;
+  button.disabled = true;
+  try {
+    const consumed = economy.consumeItem(item);
+    if (consumed.status === 'locked') {
+      adNote.textContent = '正在请求道具解锁广告…';
+      const unlocked = await economy.unlockItemWithAd(item);
+      if (!runtimeSession.isCurrent(operation)) return;
+      const afterUnlock = core.getState();
+      if (unlocked.status !== 'granted' && unlocked.status !== 'already-unlocked') {
+        adNote.textContent = unlocked.status === 'in-flight' ? '道具广告正在处理中。' : '广告未完成，道具未消耗。';
+        return;
+      }
+      if (afterUnlock.status !== 'playing' || afterUnlock.paused || !itemReady(item, afterUnlock)) {
+        adNote.textContent = '道具已准备好，当前状态暂不可使用。';
+        return;
+      }
+    }
+    if (!runtimeSession.isCurrent(operation)) return;
+    const latest = core.getState();
+    if (latest.status !== 'playing' || latest.paused || !itemReady(item, latest)) return;
+    const used = item === 'talisman' ? core.useTalisman() : core.useFirecracker();
+    if (used) adNote.textContent = item === 'talisman' ? '护身符生效：暂时免疫危险。' : '鞭炮炸响：追兵暂时停滞。';
+  } finally {
+    runtimeSession.endOperation(operation);
+    if (runtimeSession.isCurrentRun(operation.runId)) {
+      button.disabled = false;
+      renderProductUi(core.getState());
     }
   }
-  const used = item === 'talisman' ? core.useTalisman() : core.useFirecracker();
-  if (used) adNote.textContent = item === 'talisman' ? '护身符生效：暂时免疫危险。' : '鞭炮炸响：追兵暂时停滞。';
 }
 
-function persistRun(state = core.getState()): void {
-  if (state.tick === lastPersistedTick && state.status === lastPersistedStatus && state.paused === lastPersistedPaused) return;
-  runSnapshotStorage.save(createRunSnapshot(currentRunId, state));
+function readPersistedRunRaw(): string | null {
+  return runIdentityStorage.read('night-market-hero.run.v2');
+}
+
+function persistRun(state = core.getState()): boolean {
+  if (state.tick === lastPersistedTick && state.status === lastPersistedStatus && state.paused === lastPersistedPaused) return true;
+  if (snapshotLoadRejected) {
+    setPersistenceNotice('run-load-rejected');
+    return false;
+  }
+  const saved = runSnapshotStorage.save(createRunSnapshot(currentRunId, state));
+  const storageIssue = runSnapshotStorage.getPersistenceIssue?.();
+  const persisted = runSnapshotStorage.load();
+  const savedRunId = persisted?.runId ?? null;
+  const raw = readPersistedRunRaw();
+  if (saved === false || storageIssue || savedRunId !== currentRunId || raw === null) {
+    setPersistenceNotice(storageIssue ?? 'run-save-failed');
+    return false;
+  }
+  setPersistenceNotice(null);
   lastPersistedTick = state.tick;
   lastPersistedStatus = state.status;
   lastPersistedPaused = state.paused;
+  return true;
 }
+
+retrySaveButton.addEventListener('click', () => {
+  lastPersistedTick = -1;
+  persistRun(core.getState());
+});
 
 function setResultCardInteractionLocked(locked: boolean): void {
   resultCard.style.pointerEvents = locked ? 'none' : '';
@@ -409,14 +530,56 @@ function closeResultCard(): void {
 
 function openResultCard(): void {
   resultScrim.hidden = false;
-  setResultCardInteractionLocked(false);
+  setResultCardInteractionLocked(runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire'));
   playUiElement(resultCard, 'menu-enter');
+}
+
+function isSettlementFailure(result: CompleteRunResult): result is Extract<CompleteRunResult, { status: 'not-committed' | 'rejected' }> {
+  return result.status === 'not-committed' || result.status === 'rejected';
+}
+
+function settlementFor(state: GrappleState): CompleteRunResult {
+  const metrics = {
+    distanceMeters: state.distanceMeters,
+    pickups: state.pickups,
+    combo: state.comboPeak ?? state.combo,
+    gatesPassed: state.gatesPassed,
+    pickupCoins: state.coins,
+    skySegments: state.skySegments,
+    tutorialCompleted: state.levelId === 'lantern-entry' && state.status === 'won',
+  };
+  return economy.completeRun(currentRunId, settlementCoins({
+    distanceMeters: state.distanceMeters,
+    pickupCoins: state.coins,
+    combo: state.comboPeak ?? state.combo,
+    gates: state.gatesPassed,
+    depthMultiplier: state.depthCoefficient,
+    character: state.characterId,
+  }), metrics);
+}
+
+function showSettlementPending(state: GrappleState, result: CompleteRunResult): void {
+  terminalSettlementPending = true;
+  terminalSettlementRunId = currentRunId;
+  settlementDetails.textContent = `已穿过 ${state.gatesPassed} 个街区 · 结算暂未保存`;
+  resultKicker.textContent = '结算待保存';
+  resultTitle.textContent = '奖励尚未入账';
+  resultCopy.textContent = result.reason === 'invalid-input'
+    ? '本次结算数据无效，奖励未发放。'
+    : '存档写入失败，奖励未发放。点击“重试保存”后再继续。';
+  adNote.textContent = '存档写入失败，奖励未入账；请重试保存。';
+  app.dataset.settlementStatus = 'pending';
+  reviveButton.hidden = true;
+  doubleButton.hidden = true;
+  continueButton.hidden = true;
+  restartButton.hidden = false;
+  restartButton.textContent = '重试保存';
 }
 
 function renderProductUi(state: GrappleState): void {
   levelTitle.textContent = state.levelId === 'night-patrol' ? `无限夜巡 · ${state.levelTitle}` : `第${state.levelIndex + 1}关 · ${state.levelTitle}`;
-  destination.textContent = state.levelDestination;
   const endless = state.levelId === 'night-patrol';
+  destination.textContent = endless ? state.levelDestination : '夜市渡口';
   const journeyMeter = progressFill.parentElement as HTMLElement | null;
   if (journeyMeter) journeyMeter.hidden = endless;
   if (!endless) progressFill.style.width = `${Math.round(state.progress * 100)}%`;
@@ -426,7 +589,9 @@ function renderProductUi(state: GrappleState): void {
   runCoinsReadout.textContent = String(Math.floor(state.coins ?? 0));
   comboReadout.textContent = String(state.combo ?? 0);
   multiplierReadout.textContent = `${state.gatesPassed ?? 0}`;
-  const nextGateDistance = Math.max(0, Math.round((gateCheckpointXForSegment(segmentIndexAtX(state.player.x)) - state.player.x) / 30));
+  const checkpointX = endless ? gateCheckpointXForSegment(segmentIndexAtX(state.player.x)) : state.finishX;
+  const nextGateDistance = Math.max(0, Math.round((checkpointX - state.player.x) / 30));
+  app.dataset.marketGates = 'disabled';
   gatesTotal.textContent = String(state.gatesPassed);
   gateDistance.textContent = `${nextGateDistance}m`;
   depthReadout.textContent = `${nextGateDistance}m`;
@@ -438,10 +603,12 @@ function renderProductUi(state: GrappleState): void {
   app.dataset.mutation = state.mutation ?? 'none';
   app.dataset.vehicle = state.vehicleId ?? 'none';
   app.dataset.skySegment = String(state.isSky ?? false);
-  const meta = economy.getProgress();
+  const meta = economy.getProgressV2();
+  renderItemAvailability(meta);
   app.dataset.characterRoster = CHARACTERS.map((character) => character.id).join(',');
-  app.dataset.activeCharacter = meta.characters?.[0] ?? CHARACTERS[0]!.id;
-  app.dataset.missions = missionForProgress({ endlessUnlocked: Boolean(meta.endlessUnlocked), skyUnlocked: Boolean(state.isSky), characters: meta.characters ?? [] }).map((mission) => mission.id).join(',');
+  app.dataset.activeCharacter = state.characterId;
+  app.dataset.selectedCharacter = meta.selectedCharacter ?? CHARACTERS[0]!.id;
+  app.dataset.missions = economy.getActiveMissions().map(m => m.id).join(',');
   app.dataset.recordMeters = String(meta.records?.totalMeters ?? 0);
   app.dataset.skyEntry = String(state.isSky);
   if (state.combo !== lastRenderedCombo) {
@@ -463,14 +630,9 @@ function renderProductUi(state: GrappleState): void {
               : '官兵抛网 · 提前松手或走低弧线'
       : state.activeChaseEvent === 'barricade'
         ? '摊棚卷帘封住低线 · 按住飞索转上内梁'
-        : state.activeChaseEvent === 'closing-gate'
-          ? state.closingGateBeat === 3 && state.player.y < state.gate.collisionAperture.y
-            ? '第三拍门洞在下方 · 松手下落穿过门洞'
-            : '夜市内门正在关闭 · 只用按住与松手突围'
-          : '按住飞索挂接 · 松手飞行';
+        : '按住飞索挂接 · 松手飞行';
   routeStateIcon.src = state.attachedAnchorId ? grappleAttachedIcon
-    : state.activeChaseEvent === 'closing-gate' ? closingGateIcon
-      : state.activeChaseEvent !== null ? pursuitWarningIcon
+    : state.activeChaseEvent !== null ? pursuitWarningIcon
         : state.segment === 'route-alternation' ? (state.route === 'high' ? tutorialHighRouteIcon : tutorialLowRouteIcon)
           : safeStateIcon;
   if (state.levelIndex === 0 && state.status === 'playing') {
@@ -538,14 +700,13 @@ function renderProductUi(state: GrappleState): void {
   // owns the presentation whenever it is inside the camera frame.
   pursuerPresence.style.display = '';
   pursuerPresence.style.setProperty('--guard-threat', state.chase.pressure.toFixed(3));
-  const climaxVisible = (state.chase.phase === 'climax' || state.isSky) && state.status === 'playing';
-  climaxCopy.textContent = state.isSky ? '进入天空段 · 追兵暂退 · 坠落即败' : '夜市内门正在关闭';
+  const climaxVisible = state.isSky && state.status === 'playing';
+  climaxCopy.textContent = state.isSky ? '进入天空段 · 追兵暂退 · 坠落即败' : '前往渡口';
   climaxCallout.dataset.active = String(climaxVisible);
   if (climaxVisible !== lastClimaxVisible) {
     playUiElement(climaxCallout, 'overlay-feedback', climaxVisible ? 'enter' : 'exit');
     lastClimaxVisible = climaxVisible;
   }
-  climaxCopy.textContent = `夜市内门正在关闭 · 第${['零', '一', '二', '三'][state.closingGateBeat ?? 1]}拍`;
   threatVignette.style.setProperty('--threat', state.chase.pressure.toFixed(3));
   threatVignette.style.setProperty('--threat-edge-alpha', (state.chase.pressure * 0.3).toFixed(3));
   threatVignette.style.setProperty('--threat-shadow-alpha', (state.chase.pressure * 0.42).toFixed(3));
@@ -560,7 +721,7 @@ function renderProductUi(state: GrappleState): void {
   }
 
   if (state.failureReason === 'caught') chaseLabel.textContent = '官兵已追上';
-  else if (state.chase.phase === 'climax') chaseLabel.textContent = '内门逼近 · 官兵加速';
+  else if (state.chase.phase === 'climax') chaseLabel.textContent = '官兵加速追来';
   else if (state.chase.phase === 'danger') chaseLabel.textContent = '官兵迫近';
   else if (state.chase.phase === 'alert') chaseLabel.textContent = '官兵紧追在后';
   else chaseLabel.textContent = '官兵尚在后方';
@@ -589,14 +750,21 @@ function renderProductUi(state: GrappleState): void {
   }
 
   const statusChanged = observedStatus !== state.status;
-  if (state.status === 'won' && statusChanged) {
-    economy.completeRun(currentRunId, settlementCoins({
-      distanceMeters: state.distanceMeters,
-      pickupCoins: state.coins,
-      combo: state.combo,
-      gates: state.gatesPassed,
-    }), state);
-    interstitialPolicy.recordCompletion();
+  if (state.status === 'won' && (statusChanged || terminalSettlementPending)) {
+    const settlement = settlementFor(state);
+    if (isSettlementFailure(settlement)) {
+      observedStatus = state.status;
+      showSettlementPending(state, settlement);
+      if (statusChanged) openResultCard();
+      return;
+    }
+    terminalSettlementPending = false;
+    terminalSettlementRunId = null;
+    app.dataset.settlementStatus = 'committed';
+    if (!terminalCompletionRecorded) {
+      interstitialPolicy.recordCompletion();
+      terminalCompletionRecorded = true;
+    }
     wishfireText.textContent = String(economy.getProgress().wishfire);
     coinsText.textContent = String(economy.getProgress().coins ?? economy.getProgress().wishfire);
   }
@@ -604,31 +772,41 @@ function renderProductUi(state: GrappleState): void {
 
   // Terminal UI must be actionable immediately, even if a previous menu
   // animation is still settling (the test and real users may tap quickly).
-  setResultCardInteractionLocked(false);
+  setResultCardInteractionLocked(runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire'));
 
   if (state.status === 'failed') {
-    const failedSettlement = failedSettlementCommitted ? { baseReward: 0 } : economy.completeRun(currentRunId, settlementCoins({
-      distanceMeters: state.distanceMeters,
-      pickupCoins: state.coins,
-      combo: state.comboPeak ?? state.combo,
-      gates: state.gatesPassed,
-      depthMultiplier: state.depthCoefficient,
-    }), { distanceMeters: state.distanceMeters, pickups: state.pickups, combo: state.comboPeak ?? state.combo, gatesPassed: state.gatesPassed });
-    failedSettlementCommitted = true;
-    failedSettlementBaseReward = failedSettlement.baseReward || failedSettlementBaseReward;
-    settlementDetails.textContent = `已闯过 ${state.gatesPassed} 道城门 · 获得金币 ${failedSettlementBaseReward}`;
+    if (!failedSettlementCommitted || terminalSettlementPending) {
+      const failedSettlement = settlementFor(state);
+      if (isSettlementFailure(failedSettlement)) {
+        observedStatus = state.status;
+        showSettlementPending(state, failedSettlement);
+        if (statusChanged) openResultCard();
+        return;
+      }
+      failedSettlementResult = failedSettlement;
+      failedSettlementCommitted = true;
+      terminalSettlementPending = false;
+      terminalSettlementRunId = null;
+      app.dataset.settlementStatus = 'committed';
+      failedSettlementBaseReward = failedSettlement.baseReward;
+    }
+    const failedSettlement = failedSettlementResult;
+    if (!failedSettlement || isSettlementFailure(failedSettlement)) return;
+    settlementDetails.textContent = `已穿过 ${state.gatesPassed} 个街区 · 获得金币 ${failedSettlementBaseReward}`;
     const canRevive = core.canRewardedRevive();
+    const freeRevive = economy.canDailyFreeRevive(Date.now());
     const wasCaught = state.failureReason === 'caught';
     resultKicker.textContent = canRevive ? '惜败 · 铜符尚在' : '护印突围中断';
     resultTitle.textContent = wasCaught ? '官兵追上了' : '游侠跌入摊棚间';
     resultCopy.textContent = canRevive
       ? state.levelId === 'night-patrol'
-        ? `本次夜巡已行进 ${Math.round(state.distanceMeters)}m。主动看完一次广告，可从最近的安全内檐复起。`
-        : `已突围 ${Math.round(state.progress * 100)}%。主动看完一次广告，可从最近的安全内檐复起。`
+        ? `本次夜巡已行进 ${Math.round(state.distanceMeters)}m。${freeRevive ? '今日首次可免费' : '主动看完一次广告可'}从最近的安全内檐复起。`
+        : `已突围 ${Math.round(state.progress * 100)}%。${freeRevive ? '今日首次可免费' : '主动看完一次广告可'}从最近的安全内檐复起。`
       : wasCaught
         ? '碰撞、错过挂点和滞空会让官兵追近；连续漂亮飞越和捷径能拉开距离。'
         : '盟契铜符还在怀里，换一条夜市内线重新突围。';
     reviveButton.hidden = !canRevive;
+    reviveButton.textContent = freeRevive ? '今日免费 · 安全复起' : '看完广告 · 安全复起';
     doubleButton.hidden = true;
     restartButton.hidden = false;
     continueButton.hidden = true;
@@ -636,24 +814,29 @@ function renderProductUi(state: GrappleState): void {
     return;
   }
 
-  const settlement = economy.completeRun(currentRunId, settlementCoins({
-    distanceMeters: state.distanceMeters,
-    pickupCoins: state.coins,
-    combo: state.combo,
-    gates: state.gatesPassed,
-  }), state);
-  settlementDetails.textContent = `已闯过 ${state.gatesPassed} 道城门 · 获得金币 ${settlement.baseReward}`;
+  const settlement = settlementFor(state);
+  if (isSettlementFailure(settlement)) {
+    observedStatus = state.status;
+    showSettlementPending(state, settlement);
+    if (statusChanged) openResultCard();
+    return;
+  }
+  terminalSettlementPending = false;
+  terminalSettlementRunId = null;
+  app.dataset.settlementStatus = 'committed';
+  settlementDetails.textContent = `已穿过 ${state.gatesPassed} 个街区 · 获得金币 ${settlement.baseReward}`;
   const campaignComplete = state.levelId === 'night-patrol' || state.levelIndex === state.levelCount - 1;
   resultKicker.textContent = state.levelId === 'night-patrol' ? '夜巡结束' : campaignComplete ? '渡口已达' : `第${state.levelIndex + 1}关通过`;
   resultTitle.textContent = state.levelId === 'night-patrol' ? '本次夜巡记录' : campaignComplete ? '盟契铜符已送达' : `${state.levelTitle} · 突围成功`;
   resultCopy.textContent = campaignComplete
-    ? `接应人递来过门钱。本次夜巡已记录，获得金币：+${settlement.baseReward}。`
-    : `铜符仍在手中，下一程将前往${state.levelIndex === 0 ? '封街内门' : '渡口接应点'}。结算金币：+${settlement.baseReward}。`;
+    ? `顺利抵达渡口。本次夜巡已记录，获得金币：+${settlement.baseReward}。`
+    : `铜符仍在手中，准备开始夜巡。结算金币：+${settlement.baseReward}。`;
   reviveButton.hidden = true;
   doubleButton.hidden = !settlement.canDouble;
+  doubleButton.textContent = `看完广告 · 再得 ${settlement.baseReward} 金币`;
   restartButton.hidden = true;
   continueButton.hidden = false;
-  continueButton.textContent = state.levelId === 'night-patrol' ? '再跑一次' : campaignComplete ? '进入夜巡' : '继续下一关';
+  continueButton.textContent = state.levelId === 'night-patrol' ? '再跑一次' : '进入夜巡';
   if (statusChanged) openResultCard();
 }
 
@@ -661,6 +844,7 @@ class FlightScene extends Phaser.Scene {
   private drawing!: Phaser.GameObjects.Graphics;
   private moduleLayer!: Phaser.GameObjects.Container;
   private protagonistSprite!: Phaser.GameObjects.Image;
+  private protagonistRim!: Phaser.GameObjects.Image;
   private pursuerSprite!: Phaser.GameObjects.Image;
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
   private cameraScrollX = 0;
@@ -668,7 +852,8 @@ class FlightScene extends Phaser.Scene {
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
   private readonly nightCityRenderer = createNightCityRenderer({ prefetchChunks: 1, maxRetainedChunks: 8 });
-  // Preview URL: ?longmap=1. The default formal journey keeps this layer off.
+  // Opt-in preview only. The default formal journey keeps the authored image
+  // stream as its sole static scene owner.
   private readonly componentPreviewEnabled = isLongmapPreviewEnabled(typeof window !== 'undefined' ? window.location.search : '');
   private readonly componentRenderer = createComponentRenderer({ enabled: this.componentPreviewEnabled, prefetchChunks: 1, maxRetainedComponents: 64 });
   private cameraLayout = createCameraLayout({ width: REFERENCE_STAGE_WIDTH, height: REFERENCE_STAGE_HEIGHT, lookAhead: 0.32 });
@@ -684,7 +869,6 @@ class FlightScene extends Phaser.Scene {
     this.load.image('module-paifang-crossbeam', paifangCrossbeamAsset);
     this.load.image('module-bamboo-scaffold', bambooScaffoldAsset);
     this.load.image('module-inner-eave', innerEaveAsset);
-    this.load.image('module-lantern-cable', lanternCableAsset);
     this.load.image('module-pushcart', pushcartAsset);
     this.load.image('module-blank-banner', blankBannerAsset);
     this.load.image('module-covered-alley-frame', coveredAlleyFrameAsset);
@@ -700,6 +884,7 @@ class FlightScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('rgba(0,0,0,0)');
     this.cameras.main.setOrigin(0, 0);
     this.moduleLayer = this.add.container(0, 0).setDepth(-5);
+    this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0x8dc8d8).setDepth(3.9);
     this.protagonistSprite = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setDisplaySize(150, 150).setAlpha(1).setDepth(4);
     this.pursuerSprite = this.add.image(0, 0, 'pursuer-run').setOrigin(0.5, 0.72).setDisplaySize(126, 130).setAlpha(1).setDepth(4);
     // The old fixed decoration pool is intentionally not mounted on the
@@ -712,7 +897,7 @@ class FlightScene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number): void {
-    this.renderState(core.step(delta / 1000));
+    this.renderState(backgroundPolicy.shouldAdvance ? core.step(delta / 1000) : core.getState());
   }
 
   refresh(): void {
@@ -756,6 +941,9 @@ class FlightScene extends Phaser.Scene {
     app.dataset.cityRenderer = cityStats.renderer;
     const componentStats = this.componentRenderer.render(this, state.seed,
       this.cameras.main.scrollX, this.cameras.main.scrollX + worldViewportWidth);
+    app.dataset.sceneOwner = 'night-city-image-stream';
+    app.dataset.sceneLayerCount = componentStats.active ? '2' : '1';
+    app.dataset.sceneOverlay = componentStats.active ? 'component-overlay' : 'none';
     app.dataset.componentRenderer = componentStats.renderer;
     app.dataset.componentVisibleCount = String(componentStats.visibleCount);
     app.dataset.componentRetainedCount = String(componentStats.retainedCount);
@@ -764,7 +952,7 @@ class FlightScene extends Phaser.Scene {
     app.dataset.longmapChainIndex = String(componentStats.longmapChainIndex ?? -1);
     app.dataset.longmapChunkKind = componentStats.longmapChunkKind ?? 'none';
     app.dataset.longmapSceneFamily = componentStats.longmapSceneFamily ?? 'none';
-    this.protagonistSprite.setPosition(state.player.x, state.player.y).setRotation(Math.atan2(state.player.vy, state.player.vx));
+    applyFlightIdentity(this.protagonistSprite, this.protagonistRim, state.player, projection.zoom);
     this.pursuerSprite.setPosition(state.pursuer.x, state.pursuer.y).setRotation(0).setVisible(state.pursuer.visible);
     app.dataset.guardOnScreen = String(state.pursuer.x >= this.cameras.main.scrollX
       && state.pursuer.x <= this.cameras.main.scrollX + worldViewportWidth);
@@ -773,18 +961,14 @@ class FlightScene extends Phaser.Scene {
     const graphics = this.drawing;
     if (!graphics) return;
     graphics.clear();
-    graphics.setAlpha(state.attachedAnchorId || state.activeChaseEvent || state.levelIndex === 0 ? 0.38 : 0);
+    // Dynamic feedback owns its own alpha.  A scene-wide multiplier made the
+    // rope, anchors, pickup cues, and chase telegraphs look like a second
+    // translucent map when the player held jump.
+    graphics.setAlpha(1);
     this.drawSpeedFeel(graphics, state, this.cameras.main.scrollX, worldViewportWidth, worldViewportHeight);
-    // Route bars/flags from the old blockout are compatibility-only.  The
-    // authored world route is communicated by live anchors, rope, terrain and
-    // the streamed district plates, so no static decoration is painted here.
-    const terrainPrefetch = 180;
-    for (const terrain of state.sceneObjects) {
-      const visibleFrom = this.cameras.main.scrollX - terrainPrefetch;
-      const visibleTo = this.cameras.main.scrollX + worldViewportWidth + terrainPrefetch;
-      if (terrain.bounds.x + terrain.bounds.width < visibleFrom || terrain.bounds.x > visibleTo) continue;
-      this.drawActiveTerrain(graphics, { ...state, activeTerrain: terrain });
-    }
+    // Static route/terrain blockout is intentionally not painted here.  The
+    // approved image stream is the only scene owner; this pass is reserved for
+    // live gameplay feedback that must remain visible while jumping.
     this.drawStrictReferencePursuer(graphics, state);
     this.drawChaseObstacle(graphics, state);
     this.drawActivePickups(graphics, state, this.cameras.main.scrollX, worldViewportWidth);
@@ -792,8 +976,21 @@ class FlightScene extends Phaser.Scene {
 
     const eligible = this.findEligible(state);
     this.syncAnchorSprites(state, eligible?.id ?? null);
-    for (const anchor of state.anchors) this.drawMarketAnchor(graphics, anchor, anchor.id === eligible?.id, anchor.id === state.attachedAnchorId, state.levelIndex, state.tick);
-    this.drawMarketGate(graphics, state);
+    const anchorMapPlan = createNightCityRenderPlan(state.seed,
+      this.cameras.main.scrollX, this.cameras.main.scrollX + worldViewportWidth);
+    for (const anchor of state.anchors) {
+      const selected = anchor.id === eligible?.id || anchor.id === state.attachedAnchorId;
+      const socket = mapWorldAnchorToArchitecturalSocket(anchorMapPlan, anchor);
+      if (socket) {
+        // A quiet fixed mount ties the gameplay ring to an authored beam or
+        // cable pixel. It follows the same crop and camera as the city plate.
+        graphics.lineStyle((selected ? 1.25 : 0.75) / projection.zoom, 0xc2a177, selected ? 0.44 : 0.16)
+          .lineBetween(socket.x, socket.y, anchor.x, anchor.y);
+        graphics.fillStyle(0xd7b784, selected ? 0.68 : 0.28)
+          .fillCircle(socket.x, socket.y, 2 / projection.zoom);
+      }
+      this.drawMarketAnchor(graphics, anchor, anchor.id === eligible?.id, anchor.id === state.attachedAnchorId, state.levelIndex, state.tick);
+    }
 
     if (state.attachedAnchorId !== null) {
       const anchor = state.anchors.find((item) => item.id === state.attachedAnchorId);
@@ -844,8 +1041,6 @@ class FlightScene extends Phaser.Scene {
     for (const scaffold of state.sceneObjects.filter((item) => item.kind === '竹架').slice(0, 2)) {
       addModule('module-bamboo-scaffold', scaffold.bounds.x, scaffold.bounds.y, scaffold.bounds.width, scaffold.bounds.height, 0.86);
     }
-    addModule('module-lantern-cable', 250, 218, 280, 104, 0.86);
-    addModule('module-lantern-cable', 1040, 220, 280, 104, 0.82);
     addModule('module-pushcart', 380, 566, 176, 120, 0.86);
     addModule('module-pushcart', 1220, 566, 176, 120, 0.82);
     addModule('module-blank-banner', 648, 208, 86, 148, 0.82);
@@ -889,6 +1084,7 @@ class FlightScene extends Phaser.Scene {
   }
 
   private syncAnchorSprites(state: GrappleState, eligibleId: string | null): void {
+    const presentation = flightPresentation(this.cameraLayout.zoom);
     const active = new Set(state.anchors.map((anchor) => anchor.id));
     for (const [id, sprite] of this.anchorSprites) {
       if (!active.has(id)) { sprite.destroy(); this.anchorSprites.delete(id); }
@@ -900,19 +1096,21 @@ class FlightScene extends Phaser.Scene {
         this.anchorSprites.set(anchor.id, sprite);
       }
       const emphasized = anchor.id === eligibleId || anchor.id === state.attachedAnchorId;
-      sprite.setPosition(anchor.x, anchor.y).setDisplaySize(emphasized ? 54 : 46, emphasized ? 54 : 46).setAlpha(emphasized ? 0.98 : 0.78).setVisible(true);
+      const size = anchor.id === state.attachedAnchorId ? presentation.attachedAnchorSize : emphasized ? presentation.eligibleAnchorSize : presentation.idleAnchorSize;
+      sprite.setPosition(anchor.x, anchor.y).setDisplaySize(size, size)
+        .setAlpha(emphasized ? presentation.eligibleAnchorAlpha : presentation.idleAnchorAlpha).setVisible(true);
     }
   }
 
   private drawMarketAnchor(graphics: Phaser.GameObjects.Graphics, anchor: Anchor, eligible: boolean, attached: boolean, levelIndex: number, tick: number): void {
-    const palette = levelIndex === 2 ? 0x62d2d0 : levelIndex === 1 ? 0xd987c5 : 0xffbc62;
+    const palette = 0xffbc62;
     const glow = attached ? 0xffe59d : eligible ? palette : 0xa85a5e;
-    graphics.fillStyle(glow, attached ? 0.18 : eligible ? 0.12 : 0.035).fillCircle(anchor.x, anchor.y, attached ? 39 : eligible ? 34 : 31);
+    graphics.fillStyle(glow, attached ? 0.18 : eligible ? 0.12 : 0.015).fillCircle(anchor.x, anchor.y, attached ? 39 : eligible ? 34 : 18);
     if (eligible && levelIndex === 0) {
       graphics.lineStyle(2, palette, 0.38).strokeCircle(anchor.x, anchor.y, 24 + Math.sin(tick * 0.12) * 3);
     }
-    graphics.lineStyle(attached ? 3 : 2, glow, attached || eligible ? 0.72 : 0.32);
-    graphics.strokeCircle(anchor.x, anchor.y, attached ? 30 : 25);
+    graphics.lineStyle(attached ? 3 : 2, glow, attached || eligible ? 0.72 : 0.18);
+    graphics.strokeCircle(anchor.x, anchor.y, attached ? 30 : eligible ? 25 : 16);
   }
 
   /** @deprecated Compatibility-only blockout route decoration; not mounted by
@@ -1062,32 +1260,150 @@ class FlightScene extends Phaser.Scene {
       }
       graphics.fillStyle(0xf1b958, 0.95).fillTriangle(bounds.x - 28, bounds.y + bounds.height, bounds.x - 2, bounds.y + bounds.height, bounds.x - 15, bounds.y + bounds.height - 38);
     } else {
-      const beam = obstacle.anchorBounds;
-      // This is the官兵抛网, not a gate: give it a clear overhead launcher and
-      // a vermilion danger header so the grid reads as a thrown net.
-      graphics.fillStyle(0xe55b54, 0.92).fillRect(beam.x - 12, beam.y - 10, beam.width + 24, 10);
-      graphics.fillStyle(0xf1b958, 0.9).fillTriangle(beam.x + beam.width / 2 - 10, beam.y - 10, beam.x + beam.width / 2 + 10, beam.y - 10, beam.x + beam.width / 2, beam.y - 28);
-      graphics.fillStyle(0x594252, 1).fillRect(beam.x, beam.y, beam.width, beam.height);
-      const occupied = obstacle.occupiedBounds;
-      const target = obstacle.predictedTarget;
-      if (obstacle.phase === 'raise' || obstacle.phase === 'aim') {
-        graphics.lineStyle(3, 0xe55b54, obstacle.phase === 'aim' ? 0.95 : 0.55)
-          .lineBetween(obstacle.source.x, obstacle.source.y, target.x, target.y);
-        graphics.lineStyle(2, 0xf1b958, obstacle.phase === 'aim' ? 0.9 : 0.45)
-          .strokeCircle(target.x, target.y, obstacle.phase === 'aim' ? 22 : 14);
+      this.drawRoofNet(graphics, state, obstacle);
+    }
+  }
+
+  private drawRoofNet(
+    graphics: Phaser.GameObjects.Graphics,
+    state: GrappleState,
+    obstacle: NonNullable<GrappleState['chaseObstacle']>,
+  ): void {
+    // This is the官兵抛网, not a gate: it is a short danger action with a
+    // telegraph, a directional throw, an impact, and a quick clear-out.
+    if (obstacle.phase === 'missed' || obstacle.phase === 'passed') return;
+
+    const source = obstacle.source;
+    const target = obstacle.predictedTarget;
+    const flightX = target.x - source.x;
+    const flightY = target.y - source.y;
+    const flightDistance = Math.max(1, Math.hypot(flightX, flightY));
+    const angle = Math.atan2(target.y - source.y, target.x - source.x);
+    const phase = obstacle.phase;
+    const progress = obstacle.animationProgress;
+    if (phase === 'raise' || phase === 'aim' || phase === 'release' || (phase === 'travel' && progress < 0.55)) {
+      this.drawNetThrower(graphics, source.x, source.y, phase, progress);
+    }
+
+    if (phase === 'raise' || phase === 'aim') {
+      const aimAlpha = phase === 'aim' ? 0.92 : 0.55;
+      const targetRadius = phase === 'aim' ? 26 : 17;
+      graphics.lineStyle(2, 0xd76572, aimAlpha * 0.7).lineBetween(source.x, source.y, target.x, target.y);
+      graphics.lineStyle(2, 0xf1b958, aimAlpha)
+        .strokeCircle(target.x, target.y, targetRadius)
+        .lineBetween(target.x - targetRadius - 5, target.y, target.x + targetRadius + 5, target.y)
+        .lineBetween(target.x, target.y - targetRadius - 5, target.x, target.y + targetRadius + 5);
+      graphics.fillStyle(0xd76572, aimAlpha * 0.24).fillCircle(target.x, target.y, targetRadius * 0.62);
+      return;
+    }
+
+    // Use the same unfolding fraction as occupiedBounds, so visible ropes
+    // never imply a safe gap where the simulation can catch the player.
+    const flightProgress = Math.min(1, Math.max(0, (progress - 0.3) / 0.58));
+    const currentX = source.x + flightX * flightProgress;
+    const currentY = source.y + flightY * flightProgress;
+    const releaseAlpha = phase === 'release' ? 0.82 : 0.62;
+    if (phase === 'release' || phase === 'travel') {
+      const bundleLength = Math.min(flightDistance * 0.28, 75);
+      const tailX = currentX - (flightX / flightDistance) * bundleLength;
+      const tailY = currentY - (flightY / flightDistance) * bundleLength;
+      const normalX = -flightY / flightDistance;
+      const normalY = flightX / flightDistance;
+      graphics.lineStyle(3, 0xe0a15b, releaseAlpha);
+      for (let strand = -2; strand <= 2; strand += 1) {
+        const offset = strand * 7 + Math.sin(state.tick * 0.34 + strand) * 2;
+        graphics.lineBetween(
+          tailX + normalX * offset * 0.35,
+          tailY + normalY * offset * 0.35,
+          currentX + normalX * offset,
+          currentY + normalY * offset,
+        );
       }
-      graphics.lineStyle(3, 0xe55b54, 0.86)
-        .lineBetween(obstacle.source.x, obstacle.source.y, obstacle.source.x, occupied.y + occupied.height);
-      graphics.fillStyle(0x6e3850, obstacle.phase === 'caught' ? 0.52 : 0.26)
-        .fillRect(occupied.x, occupied.y, occupied.width, occupied.height);
-      graphics.lineStyle(3, 0xe8c58b, 0.86);
-      for (let column = 0; column <= 5; column += 1) {
-        const x = occupied.x + occupied.width * column / 5;
-        graphics.lineBetween(x, occupied.y, x, occupied.y + occupied.height);
+    }
+
+    const occupied = obstacle.occupiedBounds;
+    const meshCenter = { x: occupied.x + occupied.width / 2, y: occupied.y + occupied.height / 2 };
+    const meshWidth = Math.max(12, occupied.width);
+    const meshHeight = Math.max(10, occupied.height);
+    this.drawRoofNetMesh(graphics, meshCenter, meshWidth, meshHeight, angle, state.tick, phase === 'caught' ? 0.96 : 0.78);
+
+    if (phase === 'land' || phase === 'active' || phase === 'caught') {
+      const impactAlpha = phase === 'caught' ? 0.92 : Math.max(0, 1 - (progress - 0.72) / 0.28) * 0.64;
+      graphics.lineStyle(3, 0xd76572, impactAlpha)
+        .strokeCircle(meshCenter.x, meshCenter.y, 24 + 16 * Math.sin(state.tick * 0.28) ** 2);
+      graphics.lineStyle(2, 0xf1b958, impactAlpha * 0.8)
+        .lineBetween(meshCenter.x - 32, meshCenter.y - 24, meshCenter.x + 28, meshCenter.y + 20)
+        .lineBetween(meshCenter.x + 24, meshCenter.y - 26, meshCenter.x - 28, meshCenter.y + 24);
+    }
+  }
+
+  private drawNetThrower(
+    graphics: Phaser.GameObjects.Graphics, x: number, y: number, phase: string, progress: number,
+  ): void {
+    const preparing = phase === 'raise' || phase === 'aim';
+    const armX = preparing ? x - 16 : x + 22;
+    const armY = preparing ? y - 19 : y + 6;
+    graphics.fillStyle(CHARACTER_BLUE_BLACK, 0.98)
+      .fillCircle(x - 3, y - 24, 7)
+      .fillTriangle(x - 14, y - 28, x + 8, y - 28, x - 3, y - 38)
+      .fillTriangle(x - 13, y - 15, x + 8, y - 12, x + 2, y + 14);
+    graphics.lineStyle(6, CHARACTER_BLUE_BLACK, 0.98)
+      .lineBetween(x - 5, y + 7, x - 15, y + 28)
+      .lineBetween(x, y + 8, x + 13, y + 25)
+      .lineBetween(x + 2, y - 10, armX, armY)
+      .lineBetween(x - 8, y - 8, x - 19, y + 4);
+    graphics.lineStyle(2, VERMILION_HEADBAND, 0.9)
+      .lineBetween(x - 11, y - 26, x + 4, y - 26)
+      .lineBetween(x - 11, y - 26, x - 20, y - 20);
+    if (preparing) {
+      graphics.lineStyle(3, 0xb0775b, 0.9)
+        .lineBetween(armX - 5, armY - 7, armX + 5, armY + 8)
+        .lineBetween(armX + 4, armY - 7, armX - 4, armY + 8);
+      graphics.lineStyle(2, 0xd76572, 0.55 + progress * 0.3).strokeCircle(armX, armY, 13);
+    }
+  }
+
+  private drawRoofNetMesh(
+    graphics: Phaser.GameObjects.Graphics,
+    center: { x: number; y: number },
+    width: number,
+    height: number,
+    angle: number,
+    tick: number,
+    alpha: number,
+  ): void {
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
+    const wave = Math.sin(tick * 0.23 + angle) * Math.min(5, halfHeight * 0.12);
+    const point = (u: number, v: number) => ({
+      x: center.x + halfWidth * u * (0.91 + 0.09 * (1 - v * v)),
+      y: center.y + halfHeight * v + wave * (1 - u * u) * (1 - v * v),
+    });
+    const rope = (u1: number, v1: number, u2: number, v2: number) => {
+      const start = point(u1, v1);
+      const middle = point((u1 + u2) / 2, (v1 + v2) / 2);
+      const end = point(u2, v2);
+      graphics.lineStyle(4, 0x0b1c2a, alpha * 0.85)
+        .lineBetween(start.x, start.y, middle.x, middle.y).lineBetween(middle.x, middle.y, end.x, end.y);
+      graphics.lineStyle(1.7, 0xb0775b, alpha * 0.9)
+        .lineBetween(start.x, start.y, middle.x, middle.y).lineBetween(middle.x, middle.y, end.x, end.y);
+    };
+    // Weighted, slack ropes follow the state-owned occupied rectangle. There
+    // is no opaque panel or rigid rectangular frame over the night-market art.
+    for (const slope of [-1, 1]) {
+      for (let offset = -1.5; offset <= 1.5; offset += 0.5) {
+        const startU = Math.max(-1, slope === 1 ? -1 - offset : offset - 1);
+        const endU = Math.min(1, slope === 1 ? 1 - offset : offset + 1);
+        rope(startU, slope * startU + offset, endU, slope * endU + offset);
       }
-      for (let row = 0; row <= 4; row += 1) {
-        const y = occupied.y + occupied.height * row / 4;
-        graphics.lineBetween(occupied.x, y, occupied.x + occupied.width, y);
+    }
+    rope(-1, -1, 0, -1); rope(0, -1, 1, -1);
+    rope(-1, 1, 0, 1); rope(0, 1, 1, 1);
+    rope(-1, -1, -1, 1); rope(1, -1, 1, 1);
+    for (const u of [-1, 1]) {
+      for (const v of [-1, 1]) {
+        const knot = point(u, v);
+        graphics.fillStyle(0xb0775b, alpha).fillCircle(knot.x, knot.y, 3.3);
       }
     }
   }
@@ -1120,47 +1436,6 @@ class FlightScene extends Phaser.Scene {
   private drawShortLowHeldWeapon(graphics: Phaser.GameObjects.Graphics, x: number, y: number, alpha: number): void {
     graphics.lineStyle(3, CHARACTER_BLUE_BLACK, alpha).lineBetween(x, y, x + 20, y - 7);
     graphics.lineStyle(2, 0x8b623f, alpha).lineBetween(x + 15, y - 5, x + 21, y - 8);
-  }
-
-  private drawMarketGate(graphics: Phaser.GameObjects.Graphics, state: GrappleState): void {
-    // Endless gates are in-run block checkpoints. Do not render a future/idle
-    // checkpoint as a giant static object in every ordinary market segment.
-    if (state.levelId === 'night-patrol' && state.activeChaseEvent !== 'closing-gate') return;
-    const gate = state.gate;
-    const arch = gate.anchorBounds;
-    const x = gate.x;
-    graphics.fillStyle(0x78e1cf, 0.07).fillRect(arch.x, arch.y, arch.width, arch.height);
-    graphics.fillStyle(0x29243f, 1).fillRect(arch.x + 20, arch.y + 56, 10, arch.height - 56);
-    graphics.fillRect(arch.x + arch.width - 30, arch.y + 56, 10, arch.height - 56);
-    graphics.fillStyle(0xb94f50, 1).fillRect(arch.x + 11, arch.y + 33, arch.width - 22, 14);
-    graphics.fillTriangle(arch.x, arch.y + 33, arch.x + arch.width, arch.y + 33, x, arch.y + 4);
-    const emblemY = arch.y + 70;
-    graphics.fillStyle(0xf6d37d, 0.95).fillCircle(x, emblemY, 9);
-    graphics.lineStyle(2, 0x78e1cf, 0.6).strokeCircle(x, emblemY, 17);
-    const topLeaf = gate.renderTopLeafBounds;
-    const bottomLeaf = gate.renderBottomLeafBounds;
-    const aperture = gate.collisionAperture;
-    graphics.fillStyle(0x342a45, 0.98).fillRect(topLeaf.x, topLeaf.y, topLeaf.width, topLeaf.height);
-    graphics.fillRect(bottomLeaf.x, bottomLeaf.y, bottomLeaf.width, bottomLeaf.height);
-    graphics.lineStyle(4, 0xb94f50, 0.92)
-      .lineBetween(topLeaf.x, topLeaf.y + topLeaf.height, topLeaf.x + topLeaf.width, topLeaf.y + topLeaf.height)
-      .lineBetween(bottomLeaf.x, bottomLeaf.y, bottomLeaf.x + bottomLeaf.width, bottomLeaf.y);
-    graphics.fillStyle(0x78e1cf, 0.12).fillRect(aperture.x, aperture.y, aperture.width, aperture.height);
-    // 接应人站在闸门后侧，只有主控完成穿门后才举起钱袋。
-    const receiver = gate.receiver;
-    graphics.fillStyle(0x061522, 1).fillCircle(receiver.x, receiver.y - 20, 9);
-    graphics.fillStyle(0x5e405c, 1).fillRoundedRect(receiver.x - 10, receiver.y - 12, 20, 30, 5);
-    graphics.fillStyle(gate.receiverPaid ? 0xf6d37d : 0xb9793f, 1).fillCircle(receiver.x + 14, receiver.y - 2, 6);
-    if (gate.receiverPaid) graphics.lineStyle(2, 0xf6d37d, 0.9).strokeCircle(receiver.x + 14, receiver.y - 2, 11);
-    if (gate.dustPulse > 0) {
-      graphics.fillStyle(0xe8c58b, gate.dustPulse * 0.45);
-      for (let index = 0; index < 5; index += 1) {
-        const side = index % 2 === 0 ? -1 : 1;
-        const leaf = side < 0 ? topLeaf : bottomLeaf;
-        const innerEdge = side < 0 ? leaf.y + leaf.height : leaf.y;
-        graphics.fillCircle(leaf.x + leaf.width / 2 + side * index * 5, innerEdge, 4 + gate.dustPulse * 4);
-      }
-    }
   }
 
   private drawStrictReferenceProtagonist(graphics: Phaser.GameObjects.Graphics, x: number, y: number, angle: number): void {
@@ -1219,37 +1494,64 @@ function dispatchGrapple(edge: GrappleEdge): boolean {
 }
 
 async function claimRevive(): Promise<'granted' | 'not-granted' | 'not-eligible'> {
-  const actionKey = `${currentRunId}:revive`;
-  if (core.getState().status !== 'failed' || resultActionFlights.has(actionKey)) return 'not-granted';
-  resultActionFlights.add(actionKey);
+  const state = core.getState();
+  if (state.status !== 'failed' || state.paused || !core.canRewardedRevive() || !failedSettlementCommitted) return 'not-eligible';
+  const operation = runtimeSession.beginOperation('revive');
+  if (!operation) return 'not-granted';
+  setResultCardInteractionLocked(true);
   reviveButton.disabled = true;
-  adNote.textContent = '正在请求安全复起广告…';
+  const free = economy.canDailyFreeRevive(Date.now());
+  adNote.textContent = free ? '正在保存今日免费复起…' : '正在请求安全复起广告…';
   try {
-    const result = await adFlow.tryRewardedRevive(core, performance.now());
-    adNote.textContent = result.status === 'granted'
-      ? '安全复起成功，本程已使用复活。'
-      : result.status === 'not-eligible'
-        ? '当前不符合安全复起条件。'
-        : '未看完或广告暂不可用，你仍可直接重新启程。';
-    return result.status;
+    if (!free) {
+      let result: RewardedAdResult;
+      try { result = await ads.showRewarded('revive'); }
+      catch { result = { status: 'failed' }; }
+      if (!runtimeSession.isCurrent(operation)) return 'not-granted';
+      if (result.status === 'completed' || result.status === 'dismissed') interstitialPolicy.recordRewarded(performance.now());
+      if (result.status !== 'completed') {
+        adNote.textContent = '未看完或广告暂不可用，你仍可直接重新启程。';
+        return 'not-granted';
+      }
+    }
+    const latest = core.getState();
+    if (!runtimeSession.isCurrent(operation) || latest.status !== 'failed' || latest.paused || !core.canRewardedRevive()) return 'not-eligible';
+    const continuation = free ? economy.claimDailyFreeRevive(operation.runId, Date.now()) : economy.resumeRun(operation.runId);
+    if (continuation.status !== 'granted' && continuation.status !== 'resumed') {
+      adNote.textContent = '复起尚未保存，本次奖励与免费资格均保留；请重试。';
+      return 'not-granted';
+    }
+    if (!core.reviveFromSafeState()) return 'not-eligible';
+    failedSettlementCommitted = false;
+    failedSettlementResult = null;
+    terminalSettlementPending = false;
+    adNote.textContent = '安全复起成功，本程已使用复活。';
+    persistRun(core.getState());
+    return 'granted';
   } catch {
-    adNote.textContent = '广告请求失败，你仍可直接重新启程。';
+    if (runtimeSession.isCurrent(operation)) adNote.textContent = '广告请求失败，你仍可直接重新启程。';
     return 'not-granted';
   } finally {
-    resultActionFlights.delete(actionKey);
-    reviveButton.disabled = false;
-    refreshScene();
+    runtimeSession.endOperation(operation);
+    if (runtimeSession.isCurrentRun(operation.runId)) {
+      reviveButton.disabled = false;
+      setResultCardInteractionLocked(false);
+      refreshScene();
+    }
   }
 }
 
 async function claimDoubleWishfire(): Promise<'granted' | 'not-granted' | 'already-claimed'> {
-  const actionKey = `${currentRunId}:double-wishfire`;
-  if (core.getState().status !== 'won' || resultActionFlights.has(actionKey)) return 'already-claimed';
-  resultActionFlights.add(actionKey);
+  const state = core.getState();
+  if (state.status !== 'won' || state.paused) return 'already-claimed';
+  const operation = runtimeSession.beginOperation('double-wishfire');
+  if (!operation) return 'already-claimed';
+  setResultCardInteractionLocked(true);
   doubleButton.disabled = true;
   adNote.textContent = '正在请求金币奖励广告…';
   try {
-    const result = await economy.doubleWishfire(currentRunId);
+    const result = await economy.doubleWishfire(operation.runId);
+    if (!runtimeSession.isCurrent(operation)) return 'not-granted';
     if (result.adStatus === 'completed' || result.adStatus === 'dismissed') interstitialPolicy.recordRewarded(performance.now());
     adNote.textContent = result.status === 'granted'
       ? `奖励已发放，当前共 ${economy.getProgress().coins ?? economy.getProgress().wishfire} 金币。`
@@ -1258,18 +1560,26 @@ async function claimDoubleWishfire(): Promise<'granted' | 'not-granted' | 'alrea
         : '未看完或广告暂不可用，基础奖励已保留。';
     return result.status;
   } catch {
-    adNote.textContent = '广告请求失败，基础奖励已保留。';
+    if (runtimeSession.isCurrent(operation)) adNote.textContent = '广告请求失败，基础奖励已保留。';
     return 'not-granted';
   } finally {
-    resultActionFlights.delete(actionKey);
-    doubleButton.disabled = false;
-    refreshScene();
+    runtimeSession.endOperation(operation);
+    if (runtimeSession.isCurrentRun(operation.runId)) {
+      doubleButton.disabled = false;
+      setResultCardInteractionLocked(false);
+      refreshScene();
+    }
   }
 }
 
 async function navigateFromTerminal(showInterstitial: boolean): Promise<void> {
   const terminalState = core.getState();
-  if (terminalState.status === 'playing' || terminalNavigationRunId === currentRunId) return;
+  if (terminalState.status === 'playing' || terminalNavigationRunId === currentRunId
+    || runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire')) return;
+  if (terminalSettlementPending && terminalSettlementRunId === currentRunId) {
+    renderProductUi(terminalState);
+    if (terminalSettlementPending) return;
+  }
   const departingRunId = currentRunId;
   terminalNavigationRunId = departingRunId;
   setResultCardInteractionLocked(true);
@@ -1299,6 +1609,112 @@ async function navigateFromTerminal(showInterstitial: boolean): Promise<void> {
 async function continueJourney(): Promise<void> {
   await navigateFromTerminal(true);
 }
+
+function suspendForBackground(): void {
+  backgroundPolicy.hidden();
+  cancelOwnedGrapple();
+  if (core.getState().status === 'playing' && !core.getState().paused) core.setPaused(true);
+  app.dataset.backgroundState = 'suspended';
+  adNote.textContent = '页面已暂停，返回后点击暂停键继续；不会补算离线时间。';
+  persistRun(core.getState());
+  refreshScene();
+}
+
+function observeBackgroundVisible(): void {
+  backgroundPolicy.visible();
+  app.dataset.backgroundState = backgroundPolicy.resumeRequired ? 'resume-required' : 'visible';
+  if (backgroundPolicy.resumeRequired && core.getState().status === 'playing') {
+    adNote.textContent = '页面已恢复，点击暂停键继续；不会自动补算离线时间。';
+  }
+}
+
+const progressionMenu = requiredElement<HTMLElement>('[data-ui="progression-menu"]');
+const progressionContent = requiredElement<HTMLElement>('[data-ui="progression-content"]');
+const progressionNote = requiredElement<HTMLElement>('[data-ui="progression-note"]');
+let progressionTab = 'characters';
+
+function renderProgressionMenu(): void {
+  const meta = economy.getProgressV2();
+  progressionContent.replaceChildren();
+  for (const button of progressionMenu.querySelectorAll<HTMLButtonElement>('[data-progression-tab]')) {
+    button.setAttribute('aria-pressed', String(button.dataset.progressionTab === progressionTab));
+  }
+  if (progressionTab === 'characters') {
+    for (const character of CHARACTERS) {
+      const owned = meta.characters?.includes(character.id);
+      const selected = meta.selectedCharacter === character.id || (!meta.selectedCharacter && character.id === CHARACTERS[0]!.id);
+      const button = document.createElement('button');
+      button.className = 'plain-button';
+      button.dataset.characterId = character.id;
+      button.dataset.action = owned ? 'select-character' : 'unlock-character';
+      button.setAttribute('aria-pressed', String(selected));
+      button.disabled = selected || (!owned && meta.coins < character.price);
+      button.textContent = `${selected ? '✓ ' : owned ? '○ ' : '🔒 '}${character.id} · ${selected ? '已选择' : owned ? '选择' : character.price + ' 金币'} · 速度 ${character.stats.speed} / 重力 ${character.stats.gravity} / 挂接 ${character.stats.attachRadius}`;
+      button.addEventListener('click', () => {
+        const result = owned ? economy.selectCharacter(character.id) : economy.unlockCharacter(character.id);
+        progressionNote.textContent = result.status === 'selected' ? '已保存，下一程使用所选角色。'
+          : result.status === 'unlocked' ? '角色已解锁，可点击选择。' : '操作未保存，金币与选择保持原状。';
+        renderProgressionMenu();
+      });
+      progressionContent.append(button);
+    }
+  } else if (progressionTab === 'missions') {
+    const missions = economy.getActiveMissions();
+    for (let index = 0; index < 3; index++) {
+      const row = document.createElement('div');
+      row.dataset.missionSlot = String(index);
+      const mission = missions[index];
+      if (!mission) { row.textContent = '✓ 当前可用任务已领取'; progressionContent.append(row); continue; }
+      const progress = document.createElement('progress');
+      progress.max = mission.target;
+      progress.value = Math.min(mission.current, mission.target);
+      progress.setAttribute('aria-label', mission.title);
+      const button = document.createElement('button');
+      button.className = mission.claimable ? 'reward-button' : 'plain-button';
+      button.dataset.action = 'claim-mission';
+      button.dataset.missionId = mission.id;
+      button.disabled = !mission.claimable;
+      button.textContent = `${mission.claimable ? '✓ 领取' : '○ '}${mission.title} · ${Math.min(mission.current, mission.target)}/${mission.target} · +${mission.reward} 金币`;
+      button.addEventListener('click', () => {
+        const result = economy.claimMission(mission.id);
+        progressionNote.textContent = result.status === 'claimed' ? `已保存，获得 ${mission.reward} 金币。` : '奖励未入账，请重试。';
+        renderProgressionMenu();
+        refreshScene();
+      });
+      row.append(progress, button);
+      progressionContent.append(row);
+    }
+  } else {
+    const record = economy.getRecordLedger();
+    const list = document.createElement('dl');
+    const labels = { runs: '夜巡次数', bestDistanceMeters: '最远里程', lifetimeDistanceMeters: '累计里程', coinsCollected: '拾取金币', highestCombo: '最高连击', skySegments: '天空段' };
+    for (const key of Object.keys(labels) as Array<keyof typeof labels>) {
+      const term = document.createElement('dt'); term.textContent = labels[key];
+      const value = document.createElement('dd'); value.dataset.record = key; value.textContent = String(record[key]);
+      list.append(term, value);
+    }
+    progressionContent.append(list);
+  }
+}
+for (const button of document.querySelectorAll<HTMLButtonElement>('[data-action="progression"]')) button.addEventListener('click', () => {
+  if (orientationBlocked || runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire')) return;
+  cancelOwnedGrapple();
+  core.setPaused(true);
+  progressionTab = 'characters';
+  progressionNote.textContent = '角色选择在下一程生效；任务由已保存记录结算。';
+  renderProgressionMenu();
+  progressionMenu.hidden = false;
+  refreshScene();
+});
+for (const button of progressionMenu.querySelectorAll<HTMLButtonElement>('[data-progression-tab]')) button.addEventListener('click', () => {
+  progressionTab = button.dataset.progressionTab!;
+  renderProgressionMenu();
+});
+requiredElement<HTMLButtonElement>('[data-action="close-progression"]').addEventListener('click', () => {
+  progressionMenu.hidden = true;
+  if (core.getState().status !== 'playing') core.setPaused(false);
+  refreshScene();
+});
 
 const inputSurface = requiredElement<HTMLButtonElement>('[data-action="grapple"]');
 function isInteractiveTarget(target: EventTarget | null): boolean {
@@ -1335,7 +1751,7 @@ function syncOrientationBlock(): void {
     cancelOwnedGrapple();
     core.setPaused(true);
   } else {
-    core.setPaused(pausedBeforeOrientation);
+    core.setPaused(backgroundPolicy.resumeRequired ? true : pausedBeforeOrientation);
   }
   refreshScene();
 }
@@ -1360,7 +1776,9 @@ inputSurface.addEventListener('pointercancel', (event) => {
 pauseButton.addEventListener('click', () => {
   if (orientationBlocked || core.getState().status !== 'playing') return;
   const paused = !core.getState().paused;
+  if (!paused) progressionMenu.hidden = true;
   cancelOwnedGrapple();
+  if (!paused) backgroundPolicy.explicitResume();
   core.setPaused(paused);
   // Keep the generated pause icon node intact; state is conveyed by icon + aria-label.
   pauseButton.setAttribute('aria-label', paused ? '继续' : '暂停');
@@ -1382,6 +1800,21 @@ window.addEventListener('keyup', (event) => {
   releaseOwnedGrapple();
 });
 window.addEventListener('blur', cancelOwnedGrapple);
+window.addEventListener('focus', () => {
+  if (document.visibilityState === 'visible') {
+    backgroundPolicy.focused();
+    app.dataset.backgroundState = backgroundPolicy.resumeRequired ? 'resume-required' : 'visible';
+    if (backgroundPolicy.resumeRequired && core.getState().status === 'playing') {
+      adNote.textContent = '页面已恢复，点击暂停键继续；不会自动补算离线时间。';
+    }
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') suspendForBackground();
+  else observeBackgroundVisible();
+});
+window.addEventListener('pagehide', suspendForBackground);
+window.addEventListener('pageshow', observeBackgroundVisible);
 window.addEventListener('resize', syncOrientationBlock);
 resultScrim.addEventListener('pointerdown', (event) => event.stopPropagation());
 resultScrim.addEventListener('pointerup', (event) => event.stopPropagation());
@@ -1412,6 +1845,7 @@ if (orientationBlocked) {
   pausedBeforeOrientation = core.getState().paused;
   core.setPaused(true);
 }
+if (document.visibilityState === 'hidden') suspendForBackground();
 
 const prototypeTestApi: PrototypeTestApi = {
   resetGame: resetJourney,

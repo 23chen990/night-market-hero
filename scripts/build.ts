@@ -51,6 +51,9 @@ for (const asset of assets.filter((name) => /\.(png|webp|jpg|jpeg)$/i.test(name)
   html = html.replaceAll(`assets/${asset}`, data);
 }
 script = script.replace(/new URL\(`(data:image\/(?:png|webp|jpeg);base64,[^`]+)`,import\.meta\.url\)\.href/g, '`$1`');
+// Vite 8.3 can emit the same data URL with only the base argument
+// concatenated (`new URL(`data:...`,``+import.meta.url).href).
+script = script.replace(/new URL\(`(data:image\/(?:png|webp|jpeg);base64,[^`]+)`,``\+import\.meta\.url\)\.href/g, '`$1`');
 // Vite may split a concatenated URL into an empty template plus the inlined
 // data URL (`new URL(``+`data:...`,``+import.meta.url).href).  The final
 // self-contained playable is a classic script, so every such form must become

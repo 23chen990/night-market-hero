@@ -1,0 +1,476 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "natural-runtime-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "navigationUrl": "http://127.0.0.1:4178/?seed=31&fresh=1",
+  "route": "formal-fixer",
+  "passed": true,
+  "checks": [
+    {
+      "viewport": "1280x720",
+      "actions": [
+        {
+          "cycle": 0,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 0,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 1,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 1,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 2,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 2,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 3,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 3,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 4,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 4,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 5,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 5,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 6,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 6,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 7,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 7,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 8,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 8,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 9,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 9,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 10,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 10,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 11,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 11,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 12,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 12,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 13,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 13,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 14,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 14,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 15,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 15,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "type": "click",
+          "target": "[data-action=\"continue\"]"
+        },
+        {
+          "type": "wait-without-input",
+          "expected": "natural terminal failure"
+        },
+        {
+          "type": "click",
+          "target": "[data-action=\"restart\"]"
+        }
+      ],
+      "forbiddenOperations": [],
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "inputTransitions": 32
+      },
+      "patrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "failed": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/desktop-1280x720-startup.png",
+          "sha256": "a1935d417f571d590d5c507c3e839bdf82eecdb99240db1c48e6802d42772294"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/desktop-1280x720-tutorial-terminal.png",
+          "sha256": "38ccef71e7e3e445bbe4bb2119a97de1e14ab08d54901fe20b955b821596e16c"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/desktop-1280x720-night-patrol.png",
+          "sha256": "2014544301679879599d29c8b6ed49263b75c193effd442ad935105a2d846611"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/desktop-1280x720-night-patrol-failed.png",
+          "sha256": "6d02024f85e667e68fb47993be1635451a9fa70fce55fa19162987f10f53ae17"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/desktop-1280x720-night-patrol-replay.png",
+          "sha256": "4939dfe76d57409e4d148703a6434c23a15fb45175ad6cf447ffa98303b3875f"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": "844x390",
+      "actions": [
+        {
+          "cycle": 0,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 0,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 1,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 1,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 2,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 2,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 3,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 3,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 4,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 4,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 5,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 5,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 6,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 6,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 7,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 7,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 8,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 8,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 9,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 9,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 10,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 10,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 11,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 11,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 12,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 12,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 13,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 13,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 14,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 14,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "cycle": 15,
+          "type": "pointerdown",
+          "holdMs": 240
+        },
+        {
+          "cycle": 15,
+          "type": "pointerup",
+          "releaseMs": 60
+        },
+        {
+          "type": "click",
+          "target": "[data-action=\"continue\"]"
+        },
+        {
+          "type": "wait-without-input",
+          "expected": "natural terminal failure"
+        },
+        {
+          "type": "click",
+          "target": "[data-action=\"restart\"]"
+        }
+      ],
+      "forbiddenOperations": [],
+      "startup": {
+        "status": "playing",
+        "levelId": "lantern-entry"
+      },
+      "tutorial": {
+        "status": "won",
+        "progress": 1,
+        "inputTransitions": 32
+      },
+      "patrol": {
+        "levelId": "night-patrol",
+        "status": "playing"
+      },
+      "failed": {
+        "status": "failed",
+        "failureReason": "fell"
+      },
+      "replay": {
+        "levelId": "night-patrol",
+        "status": "playing",
+        "resultHidden": true
+      },
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/landscape-844x390-startup.png",
+          "sha256": "a332afe43ade81cde2c70d7bd2eafc8527a5081293241e4027d821b1b2565740"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/landscape-844x390-tutorial-terminal.png",
+          "sha256": "872da87dc8a4dffb45c1a48b86c28164609912f351f7e795ce94879f96dc0445"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/landscape-844x390-night-patrol.png",
+          "sha256": "0be398a67902fd4998405f46a541b0c20c729c9545da78d28cf5ad7898e22825"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/landscape-844x390-night-patrol-failed.png",
+          "sha256": "c361cabf787fa2c833aab920a6510bcd077d2a73b4e32e6429abc9f3df51f505"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/landscape-844x390-night-patrol-replay.png",
+          "sha256": "635f37998212071d093bc11e9064d5c8c2b79c5e6a57cad385d86bb1888afbc2"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "portrait": {
+    "viewport": "390x844",
+    "orientationVisible": true,
+    "frozen": true,
+    "screenshot": {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/dependency-retest-20261001/portrait-390x844.png",
+      "sha256": "92c88bf90deca33d840310af7d7364e3f00f4c03d01655dfb16014237c92c41d"
+    },
+    "errors": []
+  },
+  "runtimeWiredEntrypointFiles": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/run-snapshot.ts"
+  ],
+  "evidenceGaps": [
+    "This dependency retest proves browser behavior is preserved after npm ci; it does not prove WeChat, Douyin, or TapTap package publishability.",
+    "facade-study-v5 remains an offline candidate with fidelity NEEDS_WORK and is not mounted in the default scene."
+  ]
+}

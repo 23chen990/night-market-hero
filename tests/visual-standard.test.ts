@@ -81,10 +81,10 @@ describe('ui-f-night-market-interior visual standard', () => {
     assert.match(mainSource, /fillRect\(occupied\.x, occupied\.y, occupied\.width, occupied\.height\)/);
   });
 
-  test('draws the inner market gate from vertical top/bottom leaf bounds only', () => {
-    assert.match(mainSource, /gate\.renderTopLeafBounds/);
-    assert.match(mainSource, /gate\.renderBottomLeafBounds/);
-    assert.match(mainSource, /gate\.collisionAperture/);
+  test('open streets remove the code-drawn market gate and gate prompts', () => {
+    assert.doesNotMatch(mainSource, /drawMarketGate/);
+    assert.doesNotMatch(mainSource, /gate\.renderTopLeafBounds|gate\.renderBottomLeafBounds/);
+    assert.doesNotMatch(mainSource, /夜市内门正在关闭|第三拍门洞/);
   });
 
   test('keeps the center clear and makes grapple guidance contextual instead of persistent', () => {

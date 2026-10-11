@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "direct-builder-finalization-evidence",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": "direct-builder",
+  "reason": "Localized opt-in ComponentRenderer catalog integration approved in the handoff; no core gameplay, persistence, platform adapter, release configuration, or default journey changes.",
+  "contextIntentionallyOmitted": [
+    "water-effect candidates and paused water composition",
+    "other v48/v49 candidate assets",
+    "separate render/code worktree window and unrelated changes",
+    "rejected imagegen outputs"
+  ],
+  "filesChanged": [
+    "src/assets/approved-runtime/environment/market-lantern-cable-segment-v2.png",
+    "src/longmap-art-catalog.ts",
+    "tests/component-renderer.test.ts"
+  ],
+  "tests": {
+    "componentRenderer": {"command": "pnpm test -- tests/component-renderer.test.ts", "passed": true, "tests": 264, "failed": 0, "skipped": 10},
+    "typecheck": {"command": "pnpm typecheck", "passed": true},
+    "lint": {"command": "pnpm lint", "passed": true},
+    "build": {"command": "pnpm build", "passed": true},
+    "assetSha256": "068cf6443f6e783f313a156b1377273d0f343eb1966283e2436850839d4bb666",
+    "assetCanvas": [349, 269],
+    "assetAlphaExtrema": [0, 255]
+  },
+  "targetedRuntime": {
+    "url": "http://127.0.0.1:4178/?longmap=1",
+    "passed": true,
+    "renderer": "component-overlay",
+    "visibleCount": 6,
+    "assetRequest": "/src/assets/approved-runtime/environment/market-lantern-cable-segment-v2.png",
+    "assetHttpStatus": 200,
+    "missingReferenceCount": 6,
+    "consoleOrPageErrors": []
+  },
+  "remainingEvidenceGaps": [
+    "Natural gameplay QA does not need to traverse the optional component preview; this bounded browser check verifies opt-in renderer visibility and a successful request for the approved lantern cable asset.",
+    "Web-lite evidence does not establish publishability of WeChat, Douyin, or TapTap platform packages."
+  ],
+  "status": "PASS_WITH_DOCUMENTED_GAPS"
+}

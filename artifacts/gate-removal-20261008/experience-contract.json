@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "contractId": "gate-removal-roof-net-continuation-20261008",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "lockedBy": "human",
+  "pillars": [
+    {
+      "id": "open-streets",
+      "name": "移除代码绘制城门",
+      "observable": "默认路径不显示城门和穿孔要求，终点与街区进度可达。"
+    },
+    {
+      "id": "roof-net",
+      "name": "官兵抛网反馈",
+      "observable": "举网瞄准、抛出飞行、落网消退形成可见的时间顺序。"
+    },
+    {
+      "id": "journey",
+      "name": "可继续试玩",
+      "observable": "自然操作抵达渡口，继续夜巡，失败后重开。"
+    }
+  ],
+  "feedbackTiming": {
+    "impactMs": 500,
+    "settleMs": 5000,
+    "inputNeverBlocked": true
+  },
+  "motionInvariants": [
+    "默认路径不产生隐藏城门碰撞",
+    "抛网形状遵循原有状态机",
+    "只有正常输入触发自然旅程"
+  ],
+  "causalRules": [
+    "飞索按住与松手保持原有操作",
+    "教学结束依据到达终点",
+    "夜巡失败后重开恢复可操作场景"
+  ],
+  "antiPatterns": [
+    "仅隐藏城门图像但保留碰撞",
+    "用静态网格代替抛网投射过程",
+    "用调试注入代替自然过程证明"
+  ],
+  "acceptanceIds": [
+    "REMOVE-MARKET-GATE",
+    "OPEN-PATROL-CHECKPOINT",
+    "ROOF-NET-PREPARE",
+    "ROOF-NET-THROW",
+    "ROOF-NET-RESOLVED",
+    "NATURAL-JOURNEY",
+    "PORTRAIT-PAUSE"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "default-gate-removal",
+      "passed": false,
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts"
+    },
+    {
+      "name": "roof-net-natural-branch-coverage",
+      "passed": false,
+      "evidence": "qa-evidence/natural-gate-results.json"
+    }
+  ],
+  "issues": [
+    {
+      "id": "REMOVE-MARKET-GATE",
+      "severity": "error",
+      "message": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance.",
+      "evidence": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts, /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts"
+    },
+    {
+      "id": "ROOF-NET-NATURAL-GAP",
+      "severity": "error",
+      "message": "Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots.",
+      "evidence": "qa-evidence/natural-gate-results.json"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "Baseline established from owning source branches; runtime retest pending.",
+  "testedAt": "2026-10-08T08:50:54.347Z"
+}

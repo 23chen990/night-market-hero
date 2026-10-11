@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "generated-game-repair-handoff",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "issueId": "dependency-manifest-lock-repro-20261001",
+  "route": "formal-fixer",
+  "attempt": 2,
+  "attemptLedger": {
+    "priorFormalFixEvidencePreserved": true,
+    "priorAttemptCountsReset": false,
+    "scope": "new tooling reproducibility issue only",
+    "previousAttempt": 1,
+    "incrementReason": "Attempt 1 repaired the manifest and lockfile; its QA retest exposed a distinct Vite 8.3 self-contained file-launch regression, so attempt 2 owns only the exact build rewrite and its regression evidence."
+  },
+  "threadContinuity": {
+    "storedBuilderThreadId": null,
+    "replacementThreadId": null,
+    "note": "No stored Builder/Fixer thread was provided for this tooling issue; the repair stayed in the current workspace thread while preserving the existing attempt ledger."
+  },
+  "triagePath": "artifacts/experience-complaint-dependency-repro-20261001.json",
+  "reproductionMatrixPath": "artifacts/experience-reproduction-matrix-dependency-repro-20261001.json",
+  "retestMatrixPath": "artifacts/experience-reproduction-matrix-dependency-retest-20261001.json",
+  "coordinationResultPath": "artifacts/formal-fixer-dependency-lock-v2-result-20261001.json",
+  "implementation": {
+    "summary": "Attempt 2 repaired the exact Vite 8.3 self-contained data-URL form discovered after attempt 1's manifest/lockfile repair; the dependency declarations, lockfile, contract test, and file-launch evidence remain preserved.",
+    "filesChanged": [
+      "package.json",
+      "package-lock.json",
+      "tests/dependency-manifest.test.ts",
+      "scripts/build.ts",
+      "tests/self-contained-build.test.ts",
+      "artifacts/experience-complaint-dependency-repro-20261001.json",
+      "artifacts/experience-reproduction-matrix-dependency-repro-20261001.json",
+      "artifacts/experience-reproduction-matrix-dependency-retest-20261001.json",
+      "artifacts/formal-fixer-dependency-lock-v1-20261001.json",
+      "artifacts/formal-fixer-dependency-lock-v2-result-20261001.json",
+      "qa-evidence/dependency-retest-20261001/natural-journey.mjs",
+      "qa-evidence/dependency-retest-20261001/qa-report.json",
+      "qa-evidence/dependency-retest-20261001/file-launch/qa-report.json"
+    ],
+    "runtimeWiredEntrypointFiles": [
+      "src/main.ts",
+      "src/game-core.ts",
+      "src/run-snapshot.ts"
+    ],
+    "defaultRuntimeChanged": false,
+    "facadeCandidateMounted": false
+  },
+  "tests": {
+    "attemptHistory": [
+      {"attempt": 1, "hypothesis": "The independent install gap is caused by missing direct configuration dependencies and no lockfile.", "result": "Manifest/lock contract passed after the repair, but the resolved Vite 8.3.2 output exposed an import.meta expression in the self-contained alias.", "evidence": ["tests/dependency-manifest.test.ts", "qa-evidence/dependency-retest-20261001/qa-report.json"]},
+      {"attempt": 2, "hypothesis": "The exact Vite 8.3.2 data-URL concatenation form needs a dedicated classic-script rewrite.", "result": "Build regression, file-launch smoke, and natural file-protocol replay passed.", "evidence": ["scripts/build.ts", "tests/self-contained-build.test.ts", "qa-evidence/dependency-retest-20261001/file-launch/qa-report.json"]}
+    ],
+    "red": {"command": "npm exec --yes --offline -- tsx --test tests/dependency-manifest.test.ts", "exitCode": 1, "summary": "2 expected failures: missing direct dependencies and package-lock.json."},
+    "targetedGreen": {"command": "npm exec --yes --offline -- tsx --test tests/dependency-manifest.test.ts", "exitCode": 0, "summary": "2 passed."},
+    "install": {"command": "npm ci --ignore-scripts --no-audit --no-fund", "exitCode": 0, "summary": "131 packages installed from package-lock.json."},
+    "dependencyTree": {"command": "npm ls --depth=0", "exitCode": 0, "summary": "9 direct packages resolved; no UNMET DEPENDENCY."},
+    "fullTest": {"command": "npm test", "exitCode": 0, "summary": "282 tests: 272 passed, 10 skipped, 0 failed."},
+    "lint": {"command": "npm run lint", "exitCode": 0, "summary": "PASS."},
+    "typecheck": {"command": "npm run typecheck", "exitCode": 0, "summary": "PASS."},
+    "buildRegressionRed": {"command": "npm exec --yes --offline -- tsx --test tests/self-contained-build.test.ts", "exitCode": 1, "summary": "The resolved Vite 8.3.2 bundle left a `new URL(`data:...`,``+import.meta.url).href` expression in dist and the alias."},
+    "build": {"command": "npm run build", "exitCode": 0, "summary": "Self-contained dist/index.html and playable alias built after rewriting the Vite 8.3 data-URL form."},
+    "fileLaunchSmoke": {"command": "npm run test:file", "exitCode": 0, "summary": "File-protocol startup smoke passed for the self-contained playable alias."}
+  },
+  "naturalRuntimeQa": {
+    "status": "PASS",
+    "report": "qa-evidence/dependency-retest-20261001/qa-report.json",
+    "fileLaunchReport": "qa-evidence/dependency-retest-20261001/file-launch/qa-report.json",
+    "journey": "Fresh startup → normal hold/release tutorial completion → continue to night-patrol → natural failure → visible settlement → normal restart/replay.",
+    "viewports": ["1280x720", "844x390", "390x844"],
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "evidence": [
+      "qa-evidence/dependency-retest-20261001/desktop-1280x720-startup.png",
+      "qa-evidence/dependency-retest-20261001/landscape-844x390-tutorial-terminal.png",
+      "qa-evidence/dependency-retest-20261001/desktop-1280x720-night-patrol-replay.png",
+      "qa-evidence/dependency-retest-20261001/portrait-390x844.png",
+      "qa-evidence/dependency-retest-20261001/file-launch/desktop-1280x720-startup.png",
+      "qa-evidence/dependency-retest-20261001/file-launch/desktop-1280x720-night-patrol-replay.png"
+    ]
+  },
+  "evidenceGaps": [
+    "This closes only the independent npm install/configuration gap; it does not establish WeChat, Douyin, or TapTap package publishability.",
+    "facade-study-v5 remains offline-only and fidelity NEEDS_WORK; no art candidate was mounted.",
+    "Unrelated historical formal FIX/QA attempt ledgers and evidence remain unchanged."
+  ],
+  "status": "PASS_WITH_DOCUMENTED_GAPS",
+  "createdAt": "2026-10-01T11:40:21.000Z"
+}

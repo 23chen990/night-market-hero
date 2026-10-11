@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": "formal-fixer",
+  "attemptUnderTest": 3,
+  "status": "PASS",
+  "decision": "ALPHA_FEATHERED_BRIDGE_READS_AS_CONTINUOUS",
+  "checks": {
+    "sceneContinuity": "PASS",
+    "singleCarrierRead": "PASS",
+    "openFlightCorridor": "PASS",
+    "duplicateSceneCheck": "PASS",
+    "mobileLandscape": "PASS",
+    "naturalDesktopExactSeam": "PASS",
+    "naturalMobileExactSeam": "PASS",
+    "startupTerminalReplay": "PASS"
+  },
+  "reason": "Both natural traces reached the exact transition branch with no console/page errors. The v3 fixture has no isolated full-height edge spike, and visual inspection of desktop/mobile seam captures shows one continuous bridge carrier without the v1/v2 vertical dark band.",
+  "pixelComparison": {
+    "method": "mean absolute RGB delta between adjacent screenshot columns",
+    "v1": {
+      "maxDelta": 20.247,
+      "isolatedColumn": 360
+    },
+    "v2": {
+      "maxDelta": 21.834,
+      "isolatedColumn": 180
+    },
+    "v3": {
+      "maxDelta": 8.424,
+      "globalMaxColumn": 1621,
+      "transitionColumn180": 2.021,
+      "transitionColumn360": 2.032
+    },
+    "largeViewportV3": {
+      "viewport": "2826x1952",
+      "maxDelta": 5.849,
+      "globalMaxColumn": 2778
+    }
+  },
+  "evidence": [
+    "qa-evidence/bridge-pilot-v3-20261002/bridge-fixture-1672x941.png",
+    "qa-evidence/bridge-pilot-v3-20261002/bridge-fixture-2826x1952.png",
+    "qa-evidence/bridge-pilot-v3-20261002/desktop-natural-seam.png",
+    "qa-evidence/bridge-pilot-v3-20261002/mobile-natural-seam.png",
+    "qa-evidence/bridge-pilot-v3-20261002/desktop-terminal.png",
+    "qa-evidence/bridge-pilot-v3-20261002/desktop-replay.png",
+    "qa-evidence/bridge-pilot-v3-20261002/mobile-terminal.png",
+    "qa-evidence/bridge-pilot-v3-20261002/mobile-replay.png"
+  ],
+  "alphaAssetReview": {
+    "asset": "src/assets/night-city/market-rooftops-bridge-v3.png",
+    "sha256": "fe67a218d50e0e41194922b284b8d22dac616b4b2ac7dab70322529163220266",
+    "format": "PNG RGBA 2080x958",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "uniqueAlphaValues": 207,
+    "backgrounds": [
+      "light",
+      "dark",
+      "saturated"
+    ],
+    "result": "PASS; transparent edges reveal the background without checkerboard, fixed matte, or halo."
+  },
+  "remainingGaps": [
+    "Platform package perceptual checks remain outside this web-lite QA pass.",
+    "Infinite-map non-repetition needs a separate multi-chain perceptual review beyond this exact transition branch."
+  ]
+}

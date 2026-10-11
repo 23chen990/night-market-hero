@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": ["package manifest direct dependencies", "eslint.config.js import", "tsconfig node types", "npm lockfile/install tree"],
+    "lifecycleStateBranches": ["fresh checkout before install", "npm install", "npm ci from committed lock", "npm scripts after install"],
+    "rendererPaths": ["npm dependency resolver", "eslint CLI", "TypeScript compiler", "tsx test/build runner"],
+    "viewports": [{"label": "workspace-tooling", "width": 1, "height": 1}]
+  },
+  "cells": [
+    {
+      "id": "manifest-direct-deps",
+      "objectType": "package manifest direct dependencies",
+      "lifecycleStateBranch": "fresh checkout before install",
+      "rendererPath": "npm dependency resolver",
+      "viewport": {"label": "workspace-tooling", "width": 1, "height": 1},
+      "status": "REPRODUCED",
+      "expected": "Every package imported by lint/typecheck/build configuration is declared directly by the workspace manifest.",
+      "observed": "@eslint/js and @types/node are used directly but absent from package.json; npm explain cannot resolve either.",
+      "evidence": [
+        {"path": "package.json", "sha256": "275424e1e2e7aa556534cec28d41382bcfddcf99ecbf592e9be1e6d8f4e4fe06", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "eslint.config.js", "sha256": "51e149a055b7e82f31aaf8af2d747979318482d0ec5ae2015b7a9240451c860a", "kind": "factory-source", "provenance": "repository-source"},
+        {"path": "tsconfig.json", "sha256": "ca2e1e969f70259c060df5745047edf0391c87243e6572cb253a497df213394d", "kind": "factory-source", "provenance": "repository-source"}
+      ]
+    },
+    {
+      "id": "lockfile-ci",
+      "objectType": "npm lockfile/install tree",
+      "lifecycleStateBranch": "fresh checkout before install",
+      "rendererPath": "npm dependency resolver",
+      "viewport": {"label": "workspace-tooling", "width": 1, "height": 1},
+      "status": "REPRODUCED",
+      "expected": "A committed package-lock.json allows npm ci to reproduce the exact dependency tree.",
+      "observed": "No package-lock.json exists, so npm ci has no committed resolution input; current node_modules contains only Vite temporary directories.",
+      "evidence": [
+        {"path": "package.json", "sha256": "275424e1e2e7aa556534cec28d41382bcfddcf99ecbf592e9be1e6d8f4e4fe06", "kind": "factory-source", "provenance": "repository-source"}
+      ]
+    },
+    {
+      "id": "script-resolution",
+      "objectType": "npm scripts after install",
+      "lifecycleStateBranch": "npm scripts after install",
+      "rendererPath": "tsx test/build runner",
+      "viewport": {"label": "workspace-tooling", "width": 1, "height": 1},
+      "status": "BLOCKED",
+      "expected": "npm test, lint, typecheck and build resolve binaries from the target workspace install tree.",
+      "observed": "All four commands currently pass only through the Codex-provided runtime; no independent workspace install has been verified.",
+      "evidence": [
+        {"path": "package.json", "sha256": "275424e1e2e7aa556534cec28d41382bcfddcf99ecbf592e9be1e6d8f4e4fe06", "kind": "factory-source", "provenance": "repository-source"}
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "The reproducibility gap is present in the target workspace and is independent of the unresolved facade-study fidelity issue.",
+    "The current source/runtime test suite is green but does not establish an isolated npm install gate."
+  ],
+  "remainingGaps": [
+    "Fresh isolated npm ci and all four npm scripts must be rerun after the manifest and lockfile repair.",
+    "The browser natural journey remains a separate runtime gate and must not be inferred from dependency checks."
+  ],
+  "createdAt": "2026-10-01T10:42:00.000Z"
+}

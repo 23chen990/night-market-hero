@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "runId": "mobile-chart-adaptation-20260830",
+  "runKind": "game",
+  "stage": "QA",
+  "status": "completed",
+  "readiness": "IN_PROGRESS",
+  "createdAt": "2026-10-08T09:44:24.510770+00:00",
+  "updatedAt": "2026-10-08T10:32:06.820Z",
+  "fixAttempts": 2,
+  "prototypeBatch": 1,
+  "providerMode": "codex-account",
+  "codexThreadId": "01a11aaf-5f63-71b2-8916-370968ff1e21",
+  "canonicalGameId": "night-market-hero",
+  "stages": {
+    "FIX": {
+      "stage": "FIX",
+      "status": "completed",
+      "startedAt": "2026-10-08T09:44:24.510770+00:00",
+      "finishedAt": "2026-10-08T09:55:31.891Z",
+      "attempts": 2,
+      "inputArtifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/source-review-attempt-1.json"
+      ],
+      "outputArtifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/repair-attempt-1.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/repair-attempt-2.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/build-attempt-1.log",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/build-attempt-2.log"
+      ],
+      "providerCalls": {
+        "agent": 0,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    },
+    "QA": {
+      "stage": "QA",
+      "status": "completed",
+      "startedAt": "2026-10-08T09:44:24.510770+00:00",
+      "finishedAt": "2026-10-08T10:32:06.820Z",
+      "attempts": 2,
+      "inputArtifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/build-report-attempt-2.json"
+      ],
+      "outputArtifacts": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-report.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-natural-journey-report.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/perceptual-qa-report.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/runtime-product-gate.json"
+      ],
+      "errors": [],
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-capture-ledger.json"
+      ],
+      "providerCalls": {
+        "agent": 3,
+        "image": 0
+      },
+      "tokenUsage": {
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0
+      }
+    }
+  },
+  "transitionHistory": []
+}

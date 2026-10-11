@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "report": "Recovered original chat 01a0fd9c-3c6d-78d0-8e1c-849ceafc43ec: user requested removal of the code-drawn city gate; earlier roof-net repair still lacks exact natural branch acceptance. Current attachment is chat-continuity evidence, not gameplay or implementation instructions.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Removing a gate affects collision, tutorial settlement and default journey. Earlier roof-net PASS cannot close its unobserved natural branch.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Other games and shared factory changes",
+      "Unrelated longmap and asset backlog",
+      "Authentication error in the attached chat screenshot"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Inspect default main.ts createGrappleGame wiring.",
+      "Inspect drawMarketGate, refreshDerived closing-gate event, updateChaseEvents and aperture-owned settlement.",
+      "Check earlier natural-gate report for exact roof-net phase coverage."
+    ],
+    "observed": [
+      "Default renderer still draws an arch, roof, leaves and receiver through drawMarketGate.",
+      "Core still requires a closing-gate aperture passage to settle the tutorial.",
+      "Existing natural evidence proves settlement but does not prove all exact roof-net lifecycle branches."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+        "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+        "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance.",
+    "Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work.",
+    "Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts.",
+    "Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime.",
+    "Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots.",
+    "Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-08T08:50:54.347Z"
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "formal-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": "formal-fixer",
+  "attemptUnderTest": 1,
+  "status": "FAIL_REPAIR_REQUIRED",
+  "deterministic": {
+    "rendererOwner": "PASS",
+    "bridgePreloadAndDeterminism": "PASS",
+    "boundaryOwner": "PASS",
+    "hardSeamVisualCheck": "FAIL",
+    "evidence": "bridge-1672x941.png column 361 mean adjacent-column RGB delta 20.25; simulated seam is full-height and player-visible"
+  },
+  "naturalJourney": {
+    "status": "FAIL_REPAIR_REQUIRED",
+    "input": "fresh browser; normal pointerdown/pointerup on [data-action=\"grapple\"]; no state injection or teleport",
+    "viewport": "1180x720",
+    "seed": 31,
+    "tutorialCycles": 16,
+    "patrolCycles": 35,
+    "observedPlayerX": 6689.522605169366,
+    "targetSeamReached": true,
+    "screenshot": {
+      "path": "qa-evidence/bridge-pilot-20261001/natural-bridge-attempt.png",
+      "sha256": "bf8d4af6fdd0611e2b0671d02bb8d9c68e5b126c9441dd1c123bc61313b58211"
+    },
+    "observation": "normal input reached the exact market-to-rooftops branch; the same vertical hard cut remains visible in player-facing output",
+    "startupTerminalReplay": "covered by prior dependency-retest report; this exact seam branch is the new natural trace"
+  },
+  "screenshots": [
+    {
+      "path": "qa-evidence/bridge-pilot-20261001/startup-1672x941.png",
+      "sha256": "18888d000f8f2ff538af1812ede06ef9c7f24a0b646895fb42414bfc9acd44be",
+      "viewport": "1672x941"
+    },
+    {
+      "path": "qa-evidence/bridge-pilot-20261001/market-1672x941.png",
+      "sha256": "2f399a6dbb7ffe5fce6566ecd2af77622d3cd4d0975fbd1e9330f897980db465",
+      "viewport": "1672x941"
+    },
+    {
+      "path": "qa-evidence/bridge-pilot-20261001/bridge-1672x941.png",
+      "sha256": "c3e5993577dca456188f6fb9b7db2310ec3589bf4912822ea7fd3b4db911a3ab",
+      "viewport": "1672x941"
+    },
+    {
+      "path": "qa-evidence/bridge-pilot-20261001/rooftops-1672x941.png",
+      "sha256": "1ad045fc32dcc0e32e07354c3db0ccbc305cde177a9ffa692dbd3ac2c314ab12",
+      "viewport": "1672x941"
+    },
+    {
+      "path": "qa-evidence/bridge-pilot-20261001/bridge-844x390.png",
+      "sha256": "1bd6889f93fe3b413a76b2c8f70ac9e553c2ec68bb22738fbe7b0d189c6d7569",
+      "viewport": "844x390"
+    },
+    {
+      "path": "qa-evidence/bridge-pilot-20261001/natural-bridge-attempt.png",
+      "sha256": "bf8d4af6fdd0611e2b0671d02bb8d9c68e5b126c9441dd1c123bc61313b58211",
+      "viewport": "1180x720",
+      "input": "natural"
+    }
+  ],
+  "errors": [],
+  "nextRoute": "formal-fixer",
+  "nextAttempt": 2,
+  "newHypothesisArtifact": "artifacts/bridge-edge-lock-provenance-20261001.json"
+}

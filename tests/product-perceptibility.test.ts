@@ -12,6 +12,7 @@ test('default page exposes a visible run HUD and detailed terminal settlement', 
   assert.match(html, /data-ui="record"/);
   assert.match(html, /data-ui="settlement-details"/);
   assert.match(main, /drawActivePickups/);
-  assert.match(main, /state\.status === 'failed'[\s\S]*economy\.completeRun/);
+  assert.match(main, /function settlementFor\(state: GrappleState\)[\s\S]*?economy\.completeRun/);
+  assert.match(main, /state\.status === 'failed'[\s\S]*?settlementFor\(state\)/);
   assert.match(main, /const graphics = this\.drawing;[\s\S]*?if \(!graphics\) return/);
 });

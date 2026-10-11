@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "productionFixAttempts": 2,
+  "productionBuildCount": 2,
+  "captureAttempts": [
+    {
+      "capture": "attempt-1",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1/natural-details.json",
+      "sha256": "4e4307a0e3d185dc025146e25ebb5f767a919387da5295f5d2590b11db57e6da",
+      "status": "BLOCKED",
+      "buildHash": null,
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n"
+        },
+        {
+          "label": "mobile-landscape",
+          "status": "PASS",
+          "error": null
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    },
+    {
+      "capture": "attempt-1-copy-red",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-copy-red/natural-details.json",
+      "sha256": null,
+      "status": "INTERRUPTED",
+      "buildHash": null,
+      "viewports": [],
+      "usage": "Capture interrupted before its report; partial files remain diagnostic-only."
+    },
+    {
+      "capture": "attempt-1-copy-red-retry",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-copy-red-retry/natural-details.json",
+      "sha256": "e4ec3422456de6ca74372e3d73104b483e647c07fe27a335b5d131701892555d",
+      "status": "BLOCKED",
+      "buildHash": "304d2b5c237ae0a23665b11aad3c465e5caddf9aa80efe0c367e25ea23267b56",
+      "viewports": [
+        {
+          "label": "mobile-landscape",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: settlement guidance must describe the open patrol journey\n    at file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:77:45"
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    },
+    {
+      "capture": "attempt-1-retest-1",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-1-retest-1/natural-details.json",
+      "sha256": "ea84b36b309512fea1595e390f568911771942ea503130ac46afb656c29f0ce2",
+      "status": "BLOCKED",
+      "buildHash": null,
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "PASS",
+          "error": null
+        },
+        {
+          "label": "mobile-landscape",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: mobile-landscape natural tutorial must settle\n\n'failed' !== 'won'\n\n    at file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:75:14"
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    },
+    {
+      "capture": "attempt-2",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/natural-details.json",
+      "sha256": "8cb977b1eb198d80dde3de9ebe1c38077c4370aac0f404bdedeb62abc66894e9",
+      "status": "BLOCKED",
+      "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "BLOCKED",
+          "error": "page.waitForFunction: Timeout 12000ms exceeded.\n    at /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:105:18"
+        },
+        {
+          "label": "mobile-landscape",
+          "status": "PASS",
+          "error": null
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    },
+    {
+      "capture": "attempt-2-desktop-retest",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-desktop-retest/natural-details.json",
+      "sha256": "580f86fb31a8a836564311ad41c3bae58c62711ab57fe3a197a316c2b49fea8e",
+      "status": "BLOCKED",
+      "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: desktop natural tutorial must settle\n\n'failed' !== 'won'\n\n    at file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:86:14"
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    },
+    {
+      "capture": "attempt-2-final",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-final/natural-details.json",
+      "sha256": "53f4286fc4f0fd7fa4df8f8cb23264a22f0413589f934872891f95490ad60ee6",
+      "status": "BLOCKED",
+      "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "BLOCKED",
+          "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-action=\"grapple\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button data-action=\"grapple\" class=\"grapple-surface\" aria-label=\"按住飞索挂接地形节点并借力，松手保留动量\" data-gameplay-action=\"grapple-hold-release\">grapple</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing click action\u001b[22m\n\u001b[2m    - <div aria-label=\"本次夜巡结算\" class=\"settlement-details\" data-ui=\"settlement-details\">已穿过 0 个街区 · 获得金币 0</div> from <div class=\"result-scrim\" data-ui=\"result-scrim\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div aria-label=\"本次夜巡结算\" class=\"settlement-details\" data-ui=\"settlement-details\">已穿过 0 个街区 · 获得金币 0</div> from <div class=\"result-scrim\" data-ui=\"result-scrim\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div aria-label=\"本次夜巡结算\" class=\"settlement-details\" data-ui=\"settlement-details\">已穿过 0 个街区 · 获得金币 0</div> from <div class=\"result-scrim\" data-ui=\"result-scrim\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    17 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div aria-label=\"本次夜巡结算\" class=\"settlement-details\" data-ui=\"settlement-details\">已穿过 0 个街区 · 获得金币 0</div> from <div class=\"result-scrim\" data-ui=\"result-scrim\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:74:55"
+        },
+        {
+          "label": "mobile-landscape",
+          "status": "BLOCKED",
+          "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-action=\"grapple\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button data-action=\"grapple\" class=\"grapple-surface\" aria-label=\"按住飞索挂接地形节点并借力，松手保留动量\" data-gameplay-action=\"grapple-hold-release\">grapple</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div aria-label=\"本次夜巡结算\" class=\"settlement-details\" data-ui=\"settlement-details\">已穿过 1 个街区 · 获得金币 8</div> from <div class=\"result-scrim\" data-ui=\"result-scrim\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div aria-label=\"本次夜巡结算\" class=\"settlement-details\" data-ui=\"settlement-details\">已穿过 1 个街区 · 获得金币 8</div> from <div class=\"result-scrim\" data-ui=\"result-scrim\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    33 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div aria-label=\"本次夜巡结算\" class=\"settlement-details\" data-ui=\"settlement-details\">已穿过 1 个街区 · 获得金币 8</div> from <div class=\"result-scrim\" data-ui=\"result-scrim\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:74:55"
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    },
+    {
+      "capture": "attempt-2-mobile",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-mobile/natural-details.json",
+      "sha256": "9eeaa5793ee035c4d3b2be188c0c8aac56f7d8e06e749870a4ede345afaeb39f",
+      "status": "PASS",
+      "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+      "viewports": [
+        {
+          "label": "mobile-landscape",
+          "status": "PASS",
+          "error": null
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Latest successful per-viewport natural journey evidence; only PASS viewport cells are selected."
+    },
+    {
+      "capture": "attempt-2-observed",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2-observed/natural-details.json",
+      "sha256": "e45ea8c04c6faf70f334f4f1beb1cec75042c217cf5339187ed90f391598327f",
+      "status": "BLOCKED",
+      "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "PASS",
+          "error": null
+        },
+        {
+          "label": "mobile-landscape",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: naturally reach the former patrol checkpoint\n    at file:///Users/kker/Documents/ChatGPT/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/qa-evidence/gate-removal-20261008.mjs:129:14\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:472:9)"
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Latest successful per-viewport natural journey evidence; only PASS viewport cells are selected."
+    },
+    {
+      "capture": "exploratory",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory/natural-details.json",
+      "sha256": "a4b2f5e7e567078ba164e150ac526ba70b65b0ce1b08bacd5facda1c30b221a2",
+      "status": "BLOCKED",
+      "buildHash": null,
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: desktop natural tutorial must settle\n\n'failed' !== 'won'\n"
+        },
+        {
+          "label": "mobile-landscape",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: mobile-landscape natural tutorial must settle\n\n'failed' !== 'won'\n"
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    },
+    {
+      "capture": "exploratory-v2",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v2/natural-details.json",
+      "sha256": null,
+      "status": "INTERRUPTED",
+      "buildHash": null,
+      "viewports": [],
+      "usage": "Capture interrupted before its report; partial files remain diagnostic-only."
+    },
+    {
+      "capture": "exploratory-v3",
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/exploratory-v3/natural-details.json",
+      "sha256": "b6bd55e609b61ec4dc8d0addfbb34da3f8a94913af7b90a18afa45174633c5f2",
+      "status": "BLOCKED",
+      "buildHash": null,
+      "viewports": [
+        {
+          "label": "desktop",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: desktop natural tutorial must settle\n\n'failed' !== 'won'\n"
+        },
+        {
+          "label": "mobile-landscape",
+          "status": "BLOCKED",
+          "error": "AssertionError [ERR_ASSERTION]: mobile-landscape natural tutorial must settle\n\n'failed' !== 'won'\n"
+        },
+        {
+          "label": "mobile-portrait",
+          "status": "PASS",
+          "error": null
+        }
+      ],
+      "usage": "Preserved diagnostic/capture history; no earlier failure is deleted or promoted to PASS."
+    }
+  ],
+  "resolution": [
+    "Production attempt 1 removed gate behavior and retained final held-input recovery/paused restore.",
+    "Production attempt 2 fixed source-review-confirmed legacy gate wording; the red browser copy check is retained.",
+    "Subsequent unchanged-build runs corrected QA collection timing: no inline startup/checkpoint screenshot waits, no locator stability waits between grapple edges, getter-only asynchronous telemetry and real DOM input logging.",
+    "Desktop attempt-2-observed and mobile attempt-2-mobile both naturally cross x4300, fail, restart and accept grapple input on the same verified served build. Other ordinary failed plays remain in their original reports.",
+    "Video wall-clock offsets were found unsuitable as PTS; independent extraction/review locates phases from the actual recorded pixels."
+  ]
+}

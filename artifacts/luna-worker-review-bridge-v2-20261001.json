@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "luna-worker-review",
+  "route": "luna-review",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "task": "/root/luna_bridge_review_retry",
+  "status": "PASS",
+  "scope": "Independent read-only review of attempt-1 transition bridge wiring before the edge-locked v2 repair.",
+  "checks": [
+    "preload registration",
+    "deterministic transition selection",
+    "generic mist suppression at the pilot boundary",
+    "depth/scroll assumptions",
+    "asset hashes",
+    "targeted/full checks",
+    "git diff --check"
+  ],
+  "result": "No structural blocker found; natural browser and perceptual seam evidence remained explicitly open and were handed back to the root QA pass.",
+  "createdAt": "2026-10-01T13:45:00+08:00"
+}

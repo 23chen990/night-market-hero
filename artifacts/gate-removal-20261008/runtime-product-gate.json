@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "entrypoint": "dist/index.html",
+  "defaultMode": "open-streets grapple tutorial followed by endless night patrol",
+  "journey": [
+    "启动",
+    "startup",
+    "core-loop",
+    "REMOVE-MARKET-GATE",
+    "OPEN-PATROL-CHECKPOINT",
+    "failure",
+    "replay",
+    "settlement",
+    "结算",
+    "replay",
+    "重试"
+  ],
+  "coreLoop": [
+    "startup",
+    "core-loop",
+    "REMOVE-MARKET-GATE",
+    "OPEN-PATROL-CHECKPOINT",
+    "failure",
+    "replay"
+  ],
+  "terminal": [
+    "settlement"
+  ],
+  "replay": [
+    "replay"
+  ],
+  "runtimeWiredFiles": [
+    "index.html",
+    "src/main.ts",
+    "src/game-core.ts",
+    "src/night-city-renderer.ts"
+  ],
+  "legacyBehavior": {
+    "status": "COMPATIBILITY_ONLY",
+    "evidence": [
+      "main.ts explicitly selects marketGates:false; the gate renderer and default collision/finish requirement are removed.",
+      "Legacy gate factory/scenario defaults exist only for compatibility tests and are not the default browser journey."
+    ]
+  },
+  "browserEvidence": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/natural-desktop.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/natural-mobile-landscape.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/perceptual-qa-report.json"
+  ],
+  "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+  "passed": true
+}

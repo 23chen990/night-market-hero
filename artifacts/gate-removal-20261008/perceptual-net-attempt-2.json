@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetRunId": "mobile-chart-adaptation-20260830",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "runtimeEntrypoints": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/index.html",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts"
+  ],
+  "contractHash": "86d89bd2d45680d43872c6902e2f8a4118dbdff5e61dfb85aca1ded7d0a52934",
+  "buildHash": "e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296",
+  "runtime": "web-lite",
+  "reviewer": "QAAgent",
+  "authorIndependent": true,
+  "passed": false,
+  "blockers": [
+    "ROOF-NET-PREPARE@1280x720: fresh attempt-2 desktop pixels do not show a readable thrower/aim branch; frames 001-005 are ordinary grapple approach and frame 017 onward is settlement overlay. Evidence: /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/001.png sha256=cac52900cde6e483d82278cc007f3f5ec60f1dbdb741abe7d94d52a0d24374b5, /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/017.png sha256=b2df7bdda9a9204f855c0e329d22263812eec2aa8275266375a7b44e18901561.",
+    "ROOF-NET-THROW@1280x720: fresh attempt-2 desktop pixels do not show a directional thrown net or travel mesh; the extracted sequence transitions to the settlement overlay before the branch is visible. Evidence: /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/013.png sha256=3ea1cc35e97594c0bc83f9eab2b8d3587daa71aabfedf348493d0f6e74335c64, /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/021.png sha256=359c1e26ec44dee8eb84055fbb8082330f515030b170fa405b7dbe125340e7b6.",
+    "ROOF-NET-RESOLVED@1280x720: fresh attempt-2 desktop pixels contain no active net and no cleared transition; frames 017-044 remain settlement overlay. Trace phase fields cannot replace missing player-visible pixels.",
+    "ROOF-NET-RESOLVED@844x390: fresh attempt-2 mobile frames 033, 041 and 044 still show the expanded mesh, and the attempt-2 mobile patrol-checkpoint screenshot also still shows the mesh; no cleared pixel is present in the assigned sequence. Evidence: /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/044.png sha256=fe053b706607df2c874302c16eee4ddd5b67c6d6a375c4500ed44377b376b544, /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/mobile-landscape-patrol-checkpoint.png sha256=f2304bb10ce90f73ca2d500d27dd825f0e5484a86d5af16229dfde89ba5f4364."
+  ],
+  "cases": [
+    {
+      "featureId": "ROOF-NET-PREPARE",
+      "sourceCheckIds": [
+        "ROOF-NET-PREPARE"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "raise/aim",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Mobile full-size pixels show grapple approach, a circular aim signal and a raised tapered thrower before the rectangular net appears.",
+      "observedEventOrder": [
+        "approach",
+        "raise or aim"
+      ],
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/009.png",
+          "sha256": "867886e4aee2618b23f2af99bdf3c4cc90d637f896b796fdab38b35a076a9357"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/013.png",
+          "sha256": "92f26c1009c305b3582a1ac602bdd8b879cc17cc9611d3bd446b0b29f6e41fc5"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/017.png",
+          "sha256": "341834efae2bad768f5147436c3d19aade1b73f8df6d77e28b83d2e1f3769af8"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/mobile-landscape-trace.json",
+        "sha256": "a79a4309a70e67339d53cc061914cc66c681684ef8b2da567afdb7ba85990c8d"
+      },
+      "evidence": [
+        "Frames 009 and 013 show the aim signal; frame 017 shows the raised tapered thrower with no prefilled rectangular grid.",
+        "Attempt-2 mobile natural trace is current-build bound and contains the roof-net raise/aim phases under normal pointer input."
+      ],
+      "notes": [
+        "Phase identity was taken from actual pixels; extraction timestamps were treated as approximate."
+      ]
+    },
+    {
+      "featureId": "ROOF-NET-PREPARE",
+      "sourceCheckIds": [
+        "ROOF-NET-PREPARE"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "raise/aim",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "label": "desktop"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": false,
+      "negativeAssertionsPassed": false,
+      "perceptualPassed": false,
+      "observedSignal": "Desktop fresh sequence shows ordinary grapple approach, then dark gameplay and settlement overlay; a readable thrower/aim signal is absent.",
+      "observedEventOrder": [
+        "approach"
+      ],
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/001.png",
+          "sha256": "cac52900cde6e483d82278cc007f3f5ec60f1dbdb741abe7d94d52a0d24374b5"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/005.png",
+          "sha256": "13ae3993a7370dd6f9be8b1fabaa753e60cbe7aa9d66d60c43aa32e30597cc5f"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/013.png",
+          "sha256": "3ea1cc35e97594c0bc83f9eab2b8d3587daa71aabfedf348493d0f6e74335c64"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/017.png",
+          "sha256": "b2df7bdda9a9204f855c0e329d22263812eec2aa8275266375a7b44e18901561"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/desktop-trace.json",
+        "sha256": "3cf85266d438fe2aad6c421f5c343e6b87d7d6b39429986816ce048e8affb223"
+      },
+      "evidence": [
+        "Frames 001 and 005 show ordinary grapple traversal; frame 013 has no readable roof-net thrower and frame 017 is a settlement overlay.",
+        "Desktop attempt-2 trace contains phase metadata, but no player-visible prepare pixels are available in the assigned frame sequence."
+      ],
+      "notes": [
+        "The desktop extraction is bound to attempt-2/desktop-trace.json; the separate desktop retest has no assigned roof-net frame sequence."
+      ]
+    },
+    {
+      "featureId": "ROOF-NET-THROW",
+      "sourceCheckIds": [
+        "ROOF-NET-THROW"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "release/travel",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Mobile full-size pixels show the raised tapered thrower transitioning into a directed expanding mesh across the travel interval.",
+      "observedEventOrder": [
+        "raise or aim",
+        "release or travel"
+      ],
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/017.png",
+          "sha256": "341834efae2bad768f5147436c3d19aade1b73f8df6d77e28b83d2e1f3769af8"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/021.png",
+          "sha256": "ec986a87b91f9e58eb52beb9adb0c7b83b4052e57b8d2b50465aa7a0e3f95950"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/025.png",
+          "sha256": "55545f2045fc39373a5e7397308a9a2ad6680c72b7cbb09559f3671a9db389a8"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/mobile-landscape-trace.json",
+        "sha256": "a79a4309a70e67339d53cc061914cc66c681684ef8b2da567afdb7ba85990c8d"
+      },
+      "evidence": [
+        "The 017→021→025 progression visibly changes from raised/tapered thrower to an expanded mesh directed over the target area.",
+        "Attempt-2 mobile natural trace is current-build bound and includes release/travel phases."
+      ],
+      "notes": []
+    },
+    {
+      "featureId": "ROOF-NET-THROW",
+      "sourceCheckIds": [
+        "ROOF-NET-THROW"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "release/travel",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "label": "desktop"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": false,
+      "negativeAssertionsPassed": false,
+      "perceptualPassed": false,
+      "observedSignal": "Desktop fresh sequence contains grapple gameplay followed by settlement overlay; no directional throw or traveling net is visible.",
+      "observedEventOrder": [
+        "approach"
+      ],
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/013.png",
+          "sha256": "3ea1cc35e97594c0bc83f9eab2b8d3587daa71aabfedf348493d0f6e74335c64"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/017.png",
+          "sha256": "b2df7bdda9a9204f855c0e329d22263812eec2aa8275266375a7b44e18901561"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/021.png",
+          "sha256": "359c1e26ec44dee8eb84055fbb8082330f515030b170fa405b7dbe125340e7b6"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/desktop-trace.json",
+        "sha256": "3cf85266d438fe2aad6c421f5c343e6b87d7d6b39429986816ce048e8affb223"
+      },
+      "evidence": [
+        "Frames 013, 017 and 021 contain no readable directional net travel; frames 017 and 021 are settlement overlay pixels.",
+        "Desktop trace phase metadata is insufficient without a player-visible throw sequence."
+      ],
+      "notes": []
+    },
+    {
+      "featureId": "ROOF-NET-RESOLVED",
+      "sourceCheckIds": [
+        "ROOF-NET-RESOLVED"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "resolved",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": false,
+      "negativeAssertionsPassed": false,
+      "perceptualPassed": false,
+      "observedSignal": "Mobile full-size pixels show the expanded mesh through frame 044 and in the patrol-checkpoint screenshot; a cleared/open frame is missing.",
+      "observedEventOrder": [
+        "release or travel",
+        "active or missed"
+      ],
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/033.png",
+          "sha256": "d394a467bf9e4849b6b4195752e77ddb1fe1f304bd702ba5225691ff6aafbd48"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/041.png",
+          "sha256": "0819a1294dfe6e35e05eac07b6cab6d00e975500e29925f6a6e9c2f5fcb0aef9"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/mobile-landscape/044.png",
+          "sha256": "fe053b706607df2c874302c16eee4ddd5b67c6d6a375c4500ed44377b376b544"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/mobile-landscape-patrol-checkpoint.png",
+          "sha256": "f2304bb10ce90f73ca2d500d27dd825f0e5484a86d5af16229dfde89ba5f4364"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/mobile-landscape-trace.json",
+        "sha256": "a79a4309a70e67339d53cc061914cc66c681684ef8b2da567afdb7ba85990c8d"
+      },
+      "evidence": [
+        "Frames 033, 041 and 044 all retain the rectangular mesh; the later attempt-2 patrol-checkpoint pixel also retains it.",
+        "The current mobile trace contains active/missed phase metadata but the assigned pixels do not show the required cleared state."
+      ],
+      "notes": [
+        "The attempt-2 replay screenshot /Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/mobile-landscape-replay.png sha256=ce90aa5d43df8f855d8a763bb58eb0cc17d6e48aa2172e7d4fe87c9792523377 is a separate replay capture and cannot substitute for the same encounter's cleared pixel."
+      ]
+    },
+    {
+      "featureId": "ROOF-NET-RESOLVED",
+      "sourceCheckIds": [
+        "ROOF-NET-RESOLVED"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "resolved",
+      "viewport": {
+        "width": 1280,
+        "height": 720,
+        "label": "desktop"
+      },
+      "playerVisible": false,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": false,
+      "negativeAssertionsPassed": false,
+      "perceptualPassed": false,
+      "observedSignal": "Desktop fresh frame sequence ends in settlement overlay and contains neither the active net nor a visible cleared transition.",
+      "observedEventOrder": [],
+      "screenshots": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/017.png",
+          "sha256": "b2df7bdda9a9204f855c0e329d22263812eec2aa8275266375a7b44e18901561"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/021.png",
+          "sha256": "359c1e26ec44dee8eb84055fbb8082330f515030b170fa405b7dbe125340e7b6"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/frame-review-attempt-2/desktop/044.png",
+          "sha256": "2dfd7b1103be1ccdc8b886a792ec29f39752452ea4838ae49849142a5ca362bf"
+        }
+      ],
+      "trace": {
+        "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/attempt-2/desktop-trace.json",
+        "sha256": "3cf85266d438fe2aad6c421f5c343e6b87d7d6b39429986816ce048e8affb223"
+      },
+      "evidence": [
+        "Frames 017, 021 and 044 are settlement overlay pixels; no active or cleared roof-net state is visible.",
+        "Desktop attempt-2 trace reports phase fields, but the assigned pixel evidence does not expose the resolved branch."
+      ],
+      "notes": []
+    }
+  ],
+  "checkedAt": "2026-10-08T09:55:53.390Z"
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": "formal-fixer",
+  "attemptUnderTest": 1,
+  "status": "FAIL_REPAIR_REQUIRED",
+  "decision": "BRIDGE_CARRIER_NICE_BUT_HARD_SEAM_REMAINS",
+  "checks": {
+    "sceneContinuity": "FAIL",
+    "singleCarrierRead": "PASS",
+    "openFlightCorridor": "PASS",
+    "duplicateSceneCheck": "PASS",
+    "mobileLandscape": "BLOCKED_NATURAL_UNOBSERVED",
+    "naturalDesktopExactSeam": "FAIL"
+  },
+  "reason": "Natural normal input reached playerX≈6689 at the exact transition and captured a visible hard cut; fixture and natural evidence agree that attempt 1 needs repair. Mobile natural perceptual closure remains pending.",
+  "evidence": [
+    "qa-evidence/bridge-pilot-20261001/bridge-1672x941.png",
+    "qa-evidence/bridge-pilot-20261001/bridge-844x390.png",
+    "qa-evidence/bridge-pilot-20261001/natural-bridge-attempt.png"
+  ],
+  "nextHypothesis": "Use edge-locked opaque bridge plate with neighboring raster bands and render above adjacent panorama plates."
+}

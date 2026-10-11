@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "generated-game-repair-handoff",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "triage": {
+    "issue": "官兵抛网被画成常驻矩形方格，缺少抛出动作和危险性",
+    "sourceTriage": "runs/mobile-chart-adaptation-20260830/artifacts/experience-complaint-triage-roof-net-dynamic-night-20261003.json",
+    "reproductionMatrix": "runs/mobile-chart-adaptation-20260830/artifacts/experience-reproduction-matrix-roof-net-dynamic-night-20261003.json",
+    "classification": "dynamic-feedback-visual-fidelity"
+  },
+  "route": {
+    "selected": "direct-builder",
+    "reason": "根因局限在 FlightScene.drawChaseObstacle 的一个 renderer 分支和一个回归测试文件；game-core 状态机、碰撞真值、默认旅程和平台适配均无需修改。",
+    "contextIntentionallyOmitted": [
+      "经济、广告、存档和平台适配",
+      "长地图接缝、屋顶素材和其他场景工作",
+      "incoming/PENDING 参考附件的身份复核过程"
+    ]
+  },
+  "filesChangedByThisRoute": [
+    "src/main.ts",
+    "tests/user-feedback-revision.test.ts",
+    "qa-evidence/roof-net-dynamic-20261003.mjs",
+    "qa-evidence/roof-net-runtime-results.json",
+    "qa-evidence/roof-net-natural-gate-20261003.mjs",
+    "qa-evidence/natural-gate-results.json"
+  ],
+  "runtimeWiredEntrypointFiles": [
+    "src/main.ts",
+    "src/game-core.ts",
+    "src/night-city-renderer.ts",
+    "index.html"
+  ],
+  "implementation": {
+    "status": "PASS",
+    "behavior": [
+      "raise/aim: overhead beam, directional aim line, target reticle; no net rectangle",
+      "release/travel: source-to-target throw streaks and folded bundle",
+      "land/active/caught: rotated dark net with irregular amber diamond weave and short impact ring",
+      "missed/passed: early return clears all net visuals"
+    ],
+    "gameplayTruthPreserved": ["occupiedBounds", "collisionActive", "roof-net phase timing", "predictedTarget"]
+  },
+  "tests": {
+    "red": "pnpm exec tsx --test tests/user-feedback-revision.test.ts (new lifecycle assertion failed before renderer change)",
+    "targetedGreen": "pnpm exec tsx --test tests/user-feedback-revision.test.ts tests/user-feedback-fix.test.ts (11 passed)",
+    "full": "pnpm test (277 passed, 10 skipped, 0 failed); pnpm run typecheck (pass); pnpm run lint (pass); pnpm run build (pass)",
+    "runtime": "node qa-evidence/roof-net-dynamic-20261003.mjs (desktop/mobile raise, aim, travel, land, active; errors=[]); BASE_URL=http://127.0.0.1:4179/ node qa-evidence/roof-net-natural-gate-20261003.mjs (desktop/mobile natural settlement and continue-to-night-patrol; errors=[])"
+  },
+  "build": {
+    "path": "dist/index.html",
+    "sha256": "89a3e150e5b74b65e831b773a2212b079122bc486b886ad31ce54aee6c688852",
+    "bytes": 30446282,
+    "browserOnlyEvidence": true,
+    "platformPublishabilityClaimed": false
+  },
+  "evidence": {
+    "runtimeResults": { "path": "qa-evidence/roof-net-runtime-results.json", "sha256": "f957bb855c29d90b77e2f52b2285e6e8cb6d748a43c0be00ad7363ddd1b486e2" },
+    "naturalGateResults": { "path": "qa-evidence/natural-gate-results.json", "sha256": "e5946fb5eabc015509c2c4dd0281597e7e6b8001f51b77b9b5f13484245523dc" },
+    "desktopTravelCapture": { "path": "qa-evidence/roof-net-dynamic-20261003/desktop-1672x941-travel.png", "sha256": "7e608b5f7fcb91ba5ed30f6b62b8058b2e4c9c45cc1fdf9eb23776dd4efcef82" },
+    "desktopActiveCapture": { "path": "qa-evidence/roof-net-dynamic-20261003/desktop-1672x941-active.png", "sha256": "53b35e8a65ae7433e9c166e56d7cf095fa6f3620f76a3fda9678a21565c88150" },
+    "mobileTravelCapture": { "path": "qa-evidence/roof-net-dynamic-20261003/mobile-844x390-travel.png", "sha256": "2e1ecd9bcd69fba0d19e0692e10edbccde930cf837f764ecbeedcaec9440c916" }
+  },
+  "evidenceGaps": [
+    "当前附件已绑定到 night-market-hero/reference-evidence/incoming，但仍为 PENDING，未作为 verified gameplay evidence 使用。",
+    "web-lite 运行证据不证明 WeChat、Douyin 或 TapTap 平台包可发布性。"
+  ],
+  "status": "PASS",
+  "createdAt": "2026-10-03T02:30:00+08:00"
+}

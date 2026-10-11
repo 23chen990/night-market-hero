@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "generated-game-repair-handoff",
+  "targetGame": "夜市飞侠：护印突围",
+  "runId": "mobile-chart-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "triage": {
+    "issue": "Safari 访问 127.0.0.1:4178 时服务停止；服务恢复后 ?longmap=1 仍未挂载代码绘制 ComponentRenderer，用户无法体验此前约定的预览分支。",
+    "source": "artifacts/experience-complaint-preview-server-offline-20261001.json",
+    "classification": ["factory-routing", "qa-false-positive"],
+    "scope": "预览服务启动、?longmap=1 opt-in ComponentRenderer wiring 与源码契约测试；默认正式旅程保持 image-stream-only。"
+  },
+  "route": {
+    "selected": "direct-builder",
+    "reason": "根因已在当前 workspace 明确复现，修复只涉及 src/main.ts 与对应的 runtime wiring test；不改变核心玩法、状态机、持久化、平台适配、发布配置或默认正式旅程。",
+    "contextIntentionallyOmitted": [
+      "仍处于 PENDING/UNKNOWN 的用户附件截图像素内容",
+      "旧 prototype-a 工作区和桌面旧启动脚本",
+      "与预览入口无因果关系的历史美术候选、竞品研究和 formal FIX 记录"
+    ]
+  },
+  "acceptanceCriteria": [
+    "目标 workspace 的 Vite 4178 URL 返回 HTTP 200，Safari 不再显示无法连接服务器。",
+    "默认 URL 的 sceneLayerCount=1、sceneOverlay=none、componentRenderer=disabled。",
+    "?longmap=1 的 sceneLayerCount=2、sceneOverlay=component-overlay，visibleCount 大于 0，且可读取 chunk 元数据。",
+    "自然输入默认流程仍完成启动→教程过关→夜巡失败→重开，Playwright 无 console/page 错误。"
+  ],
+  "filesChangedByThisRoute": [
+    "src/main.ts",
+    "tests/runtime-assets-wiring.test.ts",
+    "artifacts/experience-complaint-preview-server-offline-20261001.json",
+    "artifacts/experience-reproduction-matrix-preview-server-offline-20261001.json",
+    "qa-evidence/preview-server-repro-20261001/preview-server-runtime-check.json",
+    "qa-evidence/preview-server-repro-20261001/default-natural/qa-report.json"
+  ],
+  "runtimeWiredEntrypointFiles": [
+    "src/main.ts",
+    "src/component-renderer.ts",
+    "src/night-city-renderer.ts",
+    "src/longmap-art-catalog.ts",
+    "src/longmap-scene-recipes.ts"
+  ],
+  "tests": {
+    "targetedRed": "npx tsx --test tests/runtime-assets-wiring.test.ts (1 failure before ComponentRenderer opt-in wiring)",
+    "targetedGreen": "npx tsx --test tests/runtime-assets-wiring.test.ts tests/component-renderer.test.ts (21 passed, 0 failed)",
+    "full": "npm test (273 passed, 10 skipped, 0 failed); npm run typecheck (PASS); npm run lint (PASS); npm run build (PASS); npm run test:file (PASS)"
+  },
+  "runtime": {
+    "status": "PASS",
+    "command": "Playwright Chromium against the live target workspace Vite server",
+    "browser": "Chromium, viewport 1280x720, http://127.0.0.1:4178/?longmap=1&seed=31&fresh=1",
+    "preview": {
+      "sceneOwner": "night-city-image-stream",
+      "sceneLayerCount": "2",
+      "sceneOverlay": "component-overlay",
+      "componentRenderer": "component-overlay",
+      "componentVisibleCount": "5",
+      "componentRetainedCount": "5",
+      "missingAssetCount": "6",
+      "longmapChunkId": "chain-0/market-01/lantern-main-street",
+      "longmapChainIndex": 0,
+      "longmapChunkKind": "district",
+      "longmapSceneFamily": "market-01/lantern-main-street",
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "screenshot": {
+        "path": "qa-evidence/preview-server-repro-20261001/longmap-1280x720.png",
+        "sha256": "af10b09d58ce16564b76b4ff910ffc51e6c758d0f03de9bf57b4b40ba7b042d2"
+      }
+    },
+    "default": {
+      "url": "http://127.0.0.1:4178/?seed=31&fresh=1",
+      "sceneLayerCount": "1",
+      "sceneOverlay": "none",
+      "componentRenderer": "disabled",
+      "componentVisibleCount": "0",
+      "startupStatus": "playing",
+      "levelId": "lantern-entry",
+      "consoleErrors": 0,
+      "pageErrors": 0
+    },
+    "naturalJourney": {
+      "report": "qa-evidence/preview-server-repro-20261001/default-natural/qa-report.json",
+      "sha256": "e19be7bfd7a9950452f1e0a3c877c5da0c58667f7bef880d6a0fb55460e47d6a",
+      "passed": true
+    },
+    "evidence": [
+      "qa-evidence/preview-server-repro-20261001/preview-server-runtime-check.json",
+      "qa-evidence/preview-server-repro-20261001/longmap-1280x720.png",
+      "qa-evidence/preview-server-repro-20261001/default-natural/qa-report.json"
+    ]
+  },
+  "evidenceGaps": [
+    "The PENDING/UNKNOWN user attachment is not treated as verified gameplay evidence.",
+    "web-lite runtime evidence does not prove WeChat, Douyin or TapTap package publishability.",
+    "The ComponentRenderer remains an opt-in visual overlay; the default product route stays image-stream-only."
+  ],
+  "status": "PASS"
+}

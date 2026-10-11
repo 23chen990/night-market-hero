@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix-retest",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "route": "formal-fixer",
+  "attemptUnderTest": 3,
+  "status": "PASS",
+  "cells": [
+    {
+      "id": "market-to-rooftops-transition-fixture-desktop-1672",
+      "objectType": "RGBA transition panorama plate",
+      "lifecycleStateBranch": "market-to-rooftops transition at worldX≈6550 using fixture-only state positioning",
+      "rendererPath": "NightCityRenderer image-stream",
+      "viewport": {
+        "label": "logical-desktop",
+        "width": 1672,
+        "height": 941
+      },
+      "status": "PASS",
+      "expected": "bridge body carries the boundary while neighboring plates remain visible through feathered edges",
+      "observed": "v3 renders without the isolated v2 left-edge band; max adjacent-column RGB delta 8.424",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/bridge-fixture-1672x941.png",
+          "sha256": "ee17fb8ade8b91f0558250678c401e204a3fdf55275b8452852d7a4dead242c9",
+          "kind": "fixture-player-visible"
+        }
+      ],
+      "forbiddenOperations": [
+        "fixture-only state injection; not used as natural-input evidence"
+      ]
+    },
+    {
+      "id": "market-to-rooftops-transition-fixture-large",
+      "objectType": "RGBA transition panorama plate",
+      "lifecycleStateBranch": "same transition at worldX≈6550 using fixture-only state positioning",
+      "rendererPath": "NightCityRenderer image-stream",
+      "viewport": {
+        "label": "user-reference-large",
+        "width": 2826,
+        "height": 1952
+      },
+      "status": "PASS",
+      "expected": "large viewport keeps the same single carrier and no full-height hard seam",
+      "observed": "v3 max adjacent-column RGB delta 5.849; no isolated transition edge spike",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/bridge-fixture-2826x1952.png",
+          "sha256": "bdcefcd41ccaf96abb8e3735a22c7a8247ad0e9821beea90e9a78c20ce245b9d",
+          "kind": "fixture-player-visible"
+        }
+      ],
+      "forbiddenOperations": [
+        "fixture-only state injection; not used as natural-input evidence"
+      ]
+    },
+    {
+      "id": "market-to-rooftops-transition-natural-desktop",
+      "objectType": "RGBA transition panorama plate",
+      "lifecycleStateBranch": "normal hold/release traversal reaches transition",
+      "rendererPath": "NightCityRenderer image-stream on default journey",
+      "viewport": {
+        "label": "landscape-desktop",
+        "width": 1180,
+        "height": 720
+      },
+      "status": "PASS",
+      "expected": "natural input reaches the branch and supplies a player-visible perceptual verdict",
+      "observed": "playerX≈6631, segmentIndex=3; no visible vertical dark band; no console/page errors",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/desktop-natural-seam.png",
+          "sha256": "87db43b56ff66ab461a642e0eb86b021004faa5c869147268c700f0b0869f65b",
+          "kind": "natural-player-visible"
+        }
+      ],
+      "forbiddenOperations": []
+    },
+    {
+      "id": "market-to-rooftops-transition-natural-mobile",
+      "objectType": "RGBA transition panorama plate",
+      "lifecycleStateBranch": "normal hold/release traversal reaches transition",
+      "rendererPath": "NightCityRenderer image-stream on default journey",
+      "viewport": {
+        "label": "landscape-mobile",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "natural input reaches the same branch without a seam or layout failure",
+      "observed": "playerX≈6418, segmentIndex=3; bridge reads as one scene; no console/page errors",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/mobile-natural-seam.png",
+          "sha256": "6b13fe59a289d51c4585a2e88d4ed5b65846ed1bbcdedc0946590cbe6b2ebba3",
+          "kind": "natural-player-visible"
+        }
+      ],
+      "forbiddenOperations": []
+    },
+    {
+      "id": "default-journey-terminal-replay",
+      "objectType": "default runtime journey",
+      "lifecycleStateBranch": "startup → tutorial → patrol → natural failure → replay",
+      "rendererPath": "default FlightScene + NightCityRenderer",
+      "viewport": {
+        "labels": [
+          "landscape-desktop",
+          "landscape-mobile"
+        ],
+        "sizes": [
+          "1180x720",
+          "844x390"
+        ]
+      },
+      "status": "PASS",
+      "expected": "terminal settlement and replay remain reachable after the seam repair",
+      "observed": "both viewports naturally reached failure and returned to night-patrol with result hidden",
+      "evidence": [
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/desktop-terminal.png",
+          "sha256": "91deaf35657e0724530b72d43c4b336dcbf8b1c26b08c7eae39fc61d3f27c06b",
+          "kind": "natural-terminal"
+        },
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/desktop-replay.png",
+          "sha256": "962efbbfafe58fd6692796d815df31d574b0c79b178400089d0ef13cbf6c8a8c",
+          "kind": "natural-replay"
+        },
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/mobile-terminal.png",
+          "sha256": "f334c59a5f40c6bb5ed390a7fc7e7d198d3f08d3d7dd4eeb4bca16571e9cd2e9",
+          "kind": "natural-terminal"
+        },
+        {
+          "path": "qa-evidence/bridge-pilot-v3-20261002/mobile-replay.png",
+          "sha256": "75ed09e9a1ce6d1d77712a2e69bfaf811a25d8c9df99813f1de68ffb1395302e",
+          "kind": "natural-replay"
+        }
+      ],
+      "forbiddenOperations": []
+    }
+  ],
+  "naturalInputTrace": {
+    "seed": 31,
+    "desktop": {
+      "viewport": "1180x720",
+      "tutorialCycles": 23,
+      "patrolCycles": 45,
+      "seamPlayerX": 6631.408766416158,
+      "forbiddenOperations": []
+    },
+    "mobile": {
+      "viewport": "844x390",
+      "tutorialCycles": 21,
+      "patrolCycles": 45,
+      "seamPlayerX": 6418.498393242174,
+      "forbiddenOperations": []
+    }
+  },
+  "newHypothesis": "A real RGBA transition plate with a 256px smoothstep alpha feather on both horizontal edges lets the adjacent opaque market and rooftops plates carry the handoff while the bridge body remains the single visual carrier.",
+  "createdAt": "2026-10-02T03:00:00+08:00"
+}

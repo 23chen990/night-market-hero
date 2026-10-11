@@ -1,0 +1,20 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "artifacts/gate-removal-20261008/product-experience-contract.json",
+    "artifacts/gate-removal-20261008/attempt-2-execution.json",
+    "artifacts/gate-removal-20261008/attempt-2-observed",
+    "artifacts/gate-removal-20261008/attempt-2-mobile",
+    "artifacts/gate-removal-20261008/ui-current"
+  ],
+  "task": "Independent current-build pixel review: only REMOVE-MARKET-GATE, OPEN-PATROL-CHECKPOINT and NATURAL-JOURNEY at desktop/mobile plus PORTRAIT-PAUSE, seven cells total. Desktop successful trace/screenshots: attempt-2-observed; mobile successful trace/screenshots: attempt-2-mobile. Both use build e00957a1c87bf0bb03f53092b9ab8ddb634bbf3e0f55c68d2e3858a142493296. ui-current/{desktop,mobile-landscape}/manifest.json and contact.jpg contain actual video-PTS samples for startup, open destination approach and patrol checkpoint. Inspect contact sheets then full-size frames, plus tutorial-terminal, patrol-failure, replay and portrait PNGs. The exact normal-input traces cross x4300 and then prove failure/replay. Earlier failed runs remain preserved, current branches require the new pixels. If any true product defect remains, block it. You are not alone: no workspace edits or browser/build. Only write PerceptualQaReportSchema-validated seven-case report to /tmp/night-market-hero-gate-20261008/ui-final.json and return path/SHA256. Use task-local qa-deps.mjs if zod resolution fails; no pnpm/install.",
+  "acceptance": [
+    "Exactly seven assigned cells, current-build screenshot/trace SHA256",
+    "Actual pixel review using view_image; no source-only approval",
+    "Validate report schema and preserve authorIndependent=true."
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/product-experience.ts#PerceptualQaReportSchema"
+}

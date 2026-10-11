@@ -49,7 +49,10 @@ export function retentionBoundsAtSegment(index:number):{behindStartPx:number;ahe
   const segment = Math.max(0, Math.floor(index));
   return { behindStartPx: segmentStartPx(Math.max(0, segment - 2)), aheadEndPx: segmentStartPx(segment + 3) };
 }
-export function metersAtSegment(index:number):number { const n=Math.max(0,Math.floor(index)); return BASE_SEGMENT_LENGTH_PX * (n + 0.035 * n*(n+1)/2) * METERS_PER_PIXEL; }
+export function metersAtSegment(index:number):number {
+  const n = Math.max(0, Math.floor(index));
+  return segmentStartPx(n) * METERS_PER_PIXEL;
+}
 export function difficultyAtSegment(index:number):Difficulty { const i=Math.max(0,Math.floor(index)); const block=Math.floor(i/4); return { speedMultiplier:speedMultiplierAtSegment(i), anchorSpacing:Math.min(520,325+18*block), assistAttachRadius:Math.max(560,680-10*block), gateCloseTicks:Math.max(170,240-9*block), pursuitSpeedBonus:Math.min(40,-180+26*block) }; }
 export function skySpacing(index:number):number { return difficultyAtSegment(index).anchorSpacing * 1.3; }
 export function segmentForIndex(index:number):Segment { const i=Math.max(0,Math.floor(index)); const first=i<3; const local=first?i:i-3; const cycle=first&&i===2?3:local%4; const type:SegmentType=first ? (i===0?'swing':i===1?'terrain':'gate') : (cycle===3?'gate':(['terrain','fork','swing'] as SegmentType[])[cycle] ?? 'swing'); const isSky=!first && i>=7 && type!=='gate' && local%4===1; return {index:i,type:isSky?'sky':type,block:Math.floor(i/4),isGate:type==='gate',isSky,anchorSpacing:isSky?skySpacing(i):difficultyAtSegment(i).anchorSpacing,lengthPx:segmentLengthPx(i)}; }
@@ -152,15 +155,28 @@ export function pickupCollisionWindow(segment:number):number[] { const index=Mat
 export function comboMultiplier(combo:number,character?:string):number { return Math.min(character==='提灯童'?3:4,1+Math.floor(Math.max(0,combo)/2)); }
 export function comboTier(combo:number):1|2|3|4 { return Math.min(4,Math.max(1,Math.floor(Math.max(0,combo)/2)+1)) as 1|2|3|4; }
 export function depthCoefficient(segmentOrMeters:number):number { const segment=Math.max(0,segmentOrMeters); return 1+0.10*Math.floor(segment/4); }
+const MAX_SAFE_SETTLEMENT_VALUE = Number.MAX_SAFE_INTEGER;
+function settlementNumber(value: unknown, fallback: number | null): number | null {
+  if (value === undefined) return fallback;
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > MAX_SAFE_SETTLEMENT_VALUE) return null;
+  return value;
+}
 // 金币结算：floor(里程米数*0.12) + 拾取金币*连击倍率*深度系数 + 坊门数*8
 // 连击倍率用 comboMultiplier（含提灯童上限），深度系数由调用方按街区块传入。
 export function settlementCoins(input:{distanceMeters?:number;gates:number;pickups?:number;pickupCoins?:number;combo?:number;depthMultiplier?:number;character?:string}):number {
-  const distanceMeters = Math.max(0, input.distanceMeters ?? 0);
-  const pickupCoins = Math.max(0, input.pickupCoins ?? input.pickups ?? 0);
-  const combo = Math.max(0, input.combo ?? 0);
-  const depthMultiplier = input.depthMultiplier ?? 1;
+  if (!input || typeof input !== 'object') return 0;
+  const distanceMeters = settlementNumber(input.distanceMeters, 0);
+  const gates = settlementNumber(input.gates, null);
+  const pickupValue = input.pickupCoins !== undefined ? input.pickupCoins : input.pickups;
+  const pickupCoins = settlementNumber(pickupValue, 0);
+  const combo = settlementNumber(input.combo, 0);
+  const depthMultiplier = settlementNumber(input.depthMultiplier, 1);
+  if (distanceMeters === null || gates === null || pickupCoins === null || combo === null || depthMultiplier === null) return 0;
   const distanceTerm = Math.floor(distanceMeters * 0.12);
   const pickupTerm = pickupCoins * comboMultiplier(combo, input.character) * depthMultiplier;
-  const gateTerm = Math.max(0, input.gates) * 8;
-  return Math.max(0, Math.floor(distanceTerm + pickupTerm + gateTerm));
+  const gateTerm = gates * 8;
+  const total = distanceTerm + pickupTerm + gateTerm;
+  if (!Number.isFinite(distanceTerm) || !Number.isFinite(pickupTerm) || !Number.isFinite(gateTerm)
+    || !Number.isFinite(total) || total > MAX_SAFE_SETTLEMENT_VALUE) return 0;
+  return Math.max(0, Math.floor(total));
 }

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "formal-fixer-repair-evidence",
+  "route": "formal-fixer",
+  "attempt": 2,
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "issue": {
+    "triage": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/experience-complaint-code-drawn-quality-20261001.json",
+    "reproductionMatrix": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/experience-reproduction-matrix-code-drawn-quality-20261001.json",
+    "priorQaBaseline": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/qa-baseline-longmap-double-scene-20260928/baseline-report.json",
+    "seamPlan": "artifacts/background-stitch-plan-20260916.json",
+    "priorFix": "artifacts/formal-fixer-bridge-pilot-v1-20261001.json",
+    "assetProvenance": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/bridge-edge-lock-provenance-20261001.json"
+  },
+  "routeReason": "The issue remains a validated visual seam defect in the core default scene renderer after one prior formal repair attempt. Attempt 2 stays in the formal fixer flow because independent QA must retest the exact transition branch with natural input and player-visible evidence.",
+  "attemptContinuity": {
+    "previousAttempt": 1,
+    "incrementReason": "Attempt 1 mounted the approved opaque bridge pilot. Attempt 2 preserves that work, upgrades the edge-locked source to the approved 2080x958 v2 bridge, and repairs the foreground eaves sizing regression introduced by the v2 dimensions.",
+    "priorEvidencePreserved": true,
+    "newRepairHypothesis": "The v2 bridge dimensions must remain local to the opaque transition panorama. Reusing those dimensions for the parallax eaves stream breaks the eaves aspect-ratio contract; keeping the eaves at the approved 1672x941 canvas restores the renderer contract while retaining the bridge's 204px overlap and -19 depth."
+  },
+  "changes": [
+    "Copied the approved edge-locked bridge v2 byte-for-byte to src/assets/night-city/market-rooftops-bridge-v2.png.",
+    "Registered the v2 bridge URL and typed key in the renderer preload registry.",
+    "Selected the v2 bridge deterministically for the market-to-rooftops transition with image dimensions 2080x958 and overlap 204.",
+    "Kept the bridge as the sole static panorama owner at that boundary and omitted the generic mist owner there.",
+    "Rendered the v2 bridge at depth -19 above normal panorama plates at depth -20.",
+    "Kept foreground eaves sizing on the approved 1672x941 canvas so the bridge dimensions do not leak into the parallax stream.",
+    "Preserved targeted TDD assertions for v2 preload, deterministic selection, dimensions, overlap, sole ownership, and depth ordering."
+  ],
+  "filesChanged": [
+    "src/night-city-renderer.ts",
+    "src/assets/night-city/market-rooftops-bridge-v2.png",
+    "tests/night-city-renderer.test.ts",
+    "artifacts/formal-fixer-bridge-pilot-v2-20261001.json"
+  ],
+  "runtimeWiredEntrypoints": [
+    {
+      "path": "src/main.ts",
+      "lines": "669-695, 751-760",
+      "role": "FlightScene constructs NightCityRenderer, preloads it before visibility, and renders the image stream on the default journey."
+    },
+    {
+      "path": "src/night-city-renderer.ts",
+      "lines": "11-24, 26-47, 128-139, 155-199, 288-381",
+      "role": "Bridge v2 URL, typed key, preload registry, deterministic transition selection, overlap, depth, mist suppression, eaves sizing, and bounded image streaming."
+    },
+    {
+      "path": "tests/night-city-renderer.test.ts",
+      "lines": "225-316",
+      "role": "Targeted transition metadata, bridge dimensions/overlap/determinism, sole ownership, and depth assertions."
+    }
+  ],
+  "tests": {
+    "red": {
+      "command": "npx tsx --test tests/night-city-renderer.test.ts",
+      "exitCode": 1,
+      "outcome": "Before the attempt-2 renderer repair, 9 passed and 1 failed: the v2 bridge dimensions were reused by the foreground eaves stream, violating the approved 1672:941 aspect-ratio assertion."
+    },
+    "targetedGreen": {
+      "command": "npx tsx --test tests/night-city-renderer.test.ts",
+      "exitCode": 0,
+      "outcome": "10 passed, 0 failed, 0 skipped."
+    },
+    "fullTest": {
+      "command": "npm test",
+      "exitCode": 0,
+      "outcome": "285 tests: 275 passed, 10 skipped, 0 failed."
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "outcome": "PASS."
+    },
+    "lint": {
+      "command": "npm run lint",
+      "exitCode": 0,
+      "outcome": "PASS."
+    },
+    "build": {
+      "command": "npm run build",
+      "exitCode": 0,
+      "outcome": "Built dist/index.html and 夜市飞侠-护印突围-试玩版.html; both were 30005220 bytes."
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "outcome": "PASS."
+    }
+  },
+  "evidence": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/artifacts/bridge-concept-market-rooftops-v2-edge-locked-20261001.png",
+      "sha256": "d4bd7e732c1d078abeb3d90e5d2e1d183c641804d527780957d4dfc560ec7556",
+      "kind": "approved-edge-locked-bridge-v2-source",
+      "format": "PNG RGB opaque 2080x958"
+    },
+    {
+      "path": "src/assets/night-city/market-rooftops-bridge-v2.png",
+      "sha256": "d4bd7e732c1d078abeb3d90e5d2e1d183c641804d527780957d4dfc560ec7556",
+      "kind": "runtime-asset-byte-preserving-copy",
+      "format": "PNG RGB opaque 2080x958"
+    },
+    {
+      "path": "src/night-city-renderer.ts",
+      "sha256": "dd0a70c79140fa249e158cc90bf6e7f65fdc38a598ceaca577c4aba6335c28d9",
+      "kind": "renderer-source-after-attempt-2"
+    },
+    {
+      "path": "tests/night-city-renderer.test.ts",
+      "sha256": "230710d0bca8397b6fbf85e72af5fdb94eb6e3c77a7a81109a0f1fe324142dcb",
+      "kind": "targeted-test-after-attempt-2"
+    },
+    {
+      "path": "dist/index.html",
+      "sha256": "3abb13cf4ec46e0e81b728f160de3fb7778ede8d6d0824f8f4e26508299fcfe1",
+      "kind": "built-web-lite-evidence"
+    },
+    {
+      "path": "夜市飞侠-护印突围-试玩版.html",
+      "sha256": "3abb13cf4ec46e0e81b728f160de3fb7778ede8d6d0824f8f4e26508299fcfe1",
+      "kind": "built-playable-alias-evidence"
+    }
+  ],
+  "contextOmitted": [
+    "game-core, physics, economy, persistence, ads, UI shell, and platform adapters",
+    "ComponentRenderer implementation and longmap preview behavior; no second boundary owner was re-enabled",
+    "other runs, shared factory code, and unrelated uncommitted edits",
+    "new bridge families, runtime-generated textures, and unapproved art candidates"
+  ],
+  "remainingQaGaps": [
+    "Independent QA must exercise the exact market-to-rooftops seam with natural input and player-visible evidence at the required desktop and mobile viewports.",
+    "This FixerAgent patch does not claim natural journey success, perceptual seam quality, or absence of visual artifacts; the exact branch remains pending QA retest.",
+    "Startup -> core loop -> terminal/settlement -> replay evidence must be rerun by QA for this build; deterministic tests and the build do not close that product gate.",
+    "The existing longmap preview and prior two-owner baseline require independent QA retest; this patch only changes the default image-stream bridge branch.",
+    "WeChat Mini Game, Douyin Mini Game, and TapTap Mini Game package builds remain unverified; web-lite build is development and QA evidence only."
+  ],
+  "status": "PATCHED_PENDING_QA",
+  "createdAt": "2026-10-01T14:00:00+08:00"
+}

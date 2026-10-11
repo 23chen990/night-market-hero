@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "product-experience-contract",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetRunId": "mobile-chart-adaptation-20260830",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "runtime": "web-lite",
+  "runtimeEntrypoints": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/index.html",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/night-city-renderer.ts"
+  ],
+  "sourceArtifact": {
+    "kind": "experience-contract",
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/experience-contract.json",
+    "sha256": "bf8b514078eb0321def12f828afffb99e01eb91df28715566c772b7e5350470c"
+  },
+  "features": [
+    {
+      "id": "REMOVE-MARKET-GATE",
+      "sourceCheckIds": [
+        "REMOVE-MARKET-GATE"
+      ],
+      "objectType": "market-gate",
+      "stateBranch": "tutorial-approach",
+      "playerAction": "持续按住和松手飞索，经过原城门位置",
+      "visibleSignal": "街道保持开放，终点后显示结算",
+      "naturalTrigger": "持续按住和松手飞索，经过原城门位置",
+      "expectedEventOrder": [
+        "startup",
+        "grapple traversal",
+        "settlement"
+      ],
+      "requiredViewports": [
+        {
+          "width": 1280,
+          "height": 720,
+          "label": "desktop"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        }
+      ],
+      "negativeAssertions": [
+        "无代码绘制城门或隐藏城门碰撞",
+        "无 debug 状态注入"
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/triage.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json"
+      ],
+      "blockingIf": [
+        "缺少对应对象和状态的自然可见证据",
+        "手机尺寸下反馈不可辨识"
+      ]
+    },
+    {
+      "id": "OPEN-PATROL-CHECKPOINT",
+      "sourceCheckIds": [
+        "OPEN-PATROL-CHECKPOINT"
+      ],
+      "objectType": "market-gate",
+      "stateBranch": "patrol-checkpoint",
+      "playerAction": "点击继续，按住和松手穿过夜巡第二段",
+      "visibleSignal": "开放道路和增加的街区计数",
+      "naturalTrigger": "点击继续，按住和松手穿过夜巡第二段",
+      "expectedEventOrder": [
+        "continue",
+        "patrol",
+        "checkpoint"
+      ],
+      "requiredViewports": [
+        {
+          "width": 1280,
+          "height": 720,
+          "label": "desktop"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        }
+      ],
+      "negativeAssertions": [
+        "无代码绘制城门或隐藏城门碰撞",
+        "无 debug 状态注入"
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/triage.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json"
+      ],
+      "blockingIf": [
+        "缺少对应对象和状态的自然可见证据",
+        "手机尺寸下反馈不可辨识"
+      ]
+    },
+    {
+      "id": "ROOF-NET-PREPARE",
+      "sourceCheckIds": [
+        "ROOF-NET-PREPARE"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "raise/aim",
+      "playerAction": "自然飞行进入屋顶抛网段",
+      "visibleSignal": "官兵投掷者与指向目标的瞄准信号，未提前铺满网格",
+      "naturalTrigger": "自然飞行进入屋顶抛网段",
+      "expectedEventOrder": [
+        "approach",
+        "raise or aim"
+      ],
+      "requiredViewports": [
+        {
+          "width": 1280,
+          "height": 720,
+          "label": "desktop"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        }
+      ],
+      "negativeAssertions": [
+        "无常驻矩形网格替代投掷过程",
+        "阶段不能仅有 fixture 证据"
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/triage.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json"
+      ],
+      "blockingIf": [
+        "缺少对应对象和状态的自然可见证据",
+        "手机尺寸下反馈不可辨识"
+      ]
+    },
+    {
+      "id": "ROOF-NET-THROW",
+      "sourceCheckIds": [
+        "ROOF-NET-THROW"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "release/travel",
+      "playerAction": "自然经过官兵瞄准位置",
+      "visibleSignal": "网包由投掷者位置向目标飞行，存在方向轨迹",
+      "naturalTrigger": "自然经过官兵瞄准位置",
+      "expectedEventOrder": [
+        "raise or aim",
+        "release or travel"
+      ],
+      "requiredViewports": [
+        {
+          "width": 1280,
+          "height": 720,
+          "label": "desktop"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        }
+      ],
+      "negativeAssertions": [
+        "无常驻矩形网格替代投掷过程",
+        "阶段不能仅有 fixture 证据"
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/triage.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json"
+      ],
+      "blockingIf": [
+        "缺少对应对象和状态的自然可见证据",
+        "手机尺寸下反馈不可辨识"
+      ]
+    },
+    {
+      "id": "ROOF-NET-RESOLVED",
+      "sourceCheckIds": [
+        "ROOF-NET-RESOLVED"
+      ],
+      "objectType": "roof-net",
+      "stateBranch": "resolved",
+      "playerAction": "继续摆荡通过抛网区域",
+      "visibleSignal": "展开网或落网反馈，离开后网不再持续遮挡",
+      "naturalTrigger": "继续摆荡通过抛网区域",
+      "expectedEventOrder": [
+        "release or travel",
+        "active or missed",
+        "cleared"
+      ],
+      "requiredViewports": [
+        {
+          "width": 1280,
+          "height": 720,
+          "label": "desktop"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        }
+      ],
+      "negativeAssertions": [
+        "无常驻矩形网格替代投掷过程",
+        "阶段不能仅有 fixture 证据"
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/triage.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json"
+      ],
+      "blockingIf": [
+        "缺少对应对象和状态的自然可见证据",
+        "手机尺寸下反馈不可辨识"
+      ]
+    },
+    {
+      "id": "NATURAL-JOURNEY",
+      "sourceCheckIds": [
+        "NATURAL-JOURNEY"
+      ],
+      "objectType": "player",
+      "stateBranch": "settlement/replay",
+      "playerAction": "抵达渡口、继续夜巡，失败后点击重新启程",
+      "visibleSignal": "结算和重玩按钮清楚，重开进入可操作画面",
+      "naturalTrigger": "抵达渡口、继续夜巡，失败后点击重新启程",
+      "expectedEventOrder": [
+        "startup",
+        "core-loop",
+        "settlement",
+        "continue",
+        "failure",
+        "replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 1280,
+          "height": 720,
+          "label": "desktop"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        }
+      ],
+      "negativeAssertions": [
+        "无代码绘制城门或隐藏城门碰撞",
+        "无 debug 状态注入"
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/triage.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json"
+      ],
+      "blockingIf": [
+        "缺少对应对象和状态的自然可见证据",
+        "手机尺寸下反馈不可辨识"
+      ]
+    },
+    {
+      "id": "PORTRAIT-PAUSE",
+      "sourceCheckIds": [
+        "PORTRAIT-PAUSE"
+      ],
+      "objectType": "orientation",
+      "stateBranch": "orientation-pause",
+      "playerAction": "在竖屏打开页面",
+      "visibleSignal": "可读的横屏图示；游戏暂停",
+      "naturalTrigger": "在竖屏打开页面",
+      "expectedEventOrder": [
+        "startup portrait",
+        "orientation block and paused"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "无代码绘制城门或隐藏城门碰撞",
+        "无 debug 状态注入"
+      ],
+      "sourceEvidence": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/triage.json",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/artifacts/gate-removal-20261008/qa-baseline.json"
+      ],
+      "blockingIf": [
+        "缺少对应对象和状态的自然可见证据",
+        "手机尺寸下反馈不可辨识"
+      ]
+    }
+  ]
+}

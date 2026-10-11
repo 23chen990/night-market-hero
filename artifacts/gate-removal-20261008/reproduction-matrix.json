@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "axes": {
+    "objectTypes": [
+      "market-gate",
+      "roof-net"
+    ],
+    "lifecycleStateBranches": [
+      "tutorial-approach",
+      "patrol-checkpoint",
+      "raise/aim",
+      "release/travel",
+      "resolved",
+      "orientation-pause"
+    ],
+    "rendererPaths": [
+      "default-Phaser-FlightScene"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "desktop-market-gate-tutorial-approach",
+      "objectType": "market-gate",
+      "lifecycleStateBranch": "tutorial-approach",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      "status": "REPRODUCED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "desktop-market-gate-patrol-checkpoint",
+      "objectType": "market-gate",
+      "lifecycleStateBranch": "patrol-checkpoint",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      "status": "REPRODUCED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "desktop-roof-net-raise/aim",
+      "objectType": "roof-net",
+      "lifecycleStateBranch": "raise/aim",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "desktop-roof-net-release/travel",
+      "objectType": "roof-net",
+      "lifecycleStateBranch": "release/travel",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "desktop-roof-net-resolved",
+      "objectType": "roof-net",
+      "lifecycleStateBranch": "resolved",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "desktop",
+        "width": 1280,
+        "height": 720
+      },
+      "status": "BLOCKED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "mobile-landscape-market-gate-tutorial-approach",
+      "objectType": "market-gate",
+      "lifecycleStateBranch": "tutorial-approach",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "mobile-landscape-market-gate-patrol-checkpoint",
+      "objectType": "market-gate",
+      "lifecycleStateBranch": "patrol-checkpoint",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "mobile-landscape-roof-net-raise/aim",
+      "objectType": "roof-net",
+      "lifecycleStateBranch": "raise/aim",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "mobile-landscape-roof-net-release/travel",
+      "objectType": "roof-net",
+      "lifecycleStateBranch": "release/travel",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "mobile-landscape-roof-net-resolved",
+      "objectType": "roof-net",
+      "lifecycleStateBranch": "resolved",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "mobile-portrait-market-gate-orientation-pause",
+      "objectType": "market-gate",
+      "lifecycleStateBranch": "orientation-pause",
+      "rendererPath": "default-Phaser-FlightScene",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Default browser runtime has no rendered market gate, closing-gate collision, aperture requirement, or gate tutorial guidance. Tutorial finishes at its authored destination and normal Continue enters endless patrol; natural failure and replay work. Checkpoint progress and existing reward/snapshot fields retain their numerical contracts; visible labels refer to districts. Legacy gate fixtures are explicitly compatibility-only; restored default saves also use the open-streets runtime. Roof-net raise/aim, release/travel and resolved branches have normal-input evidence and readable mobile screenshots. Lint, typecheck, tests, one production build per repair attempt, natural journey and independent perceptual review pass.",
+      "observed": "Source branch identified; natural and perceptual retest pending.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/main.ts",
+          "sha256": "e10f36d80015b28304e109f2bd6ac190dc7e0c904915d0106d4c781ef4328fea",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero/src/game-core.ts",
+          "sha256": "83118e580b0f68f9c4747e7a25340874a4c6a58c9427584e23982de1b8a360a6",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Market gate renderer and collision are separate owning branches; hiding only pixels would leave invisible collision.",
+    "Legacy gate scenarios cannot verify the default open-streets journey."
+  ],
+  "remainingGaps": [
+    "Current-build natural exact-branch screenshots and independent review pending."
+  ],
+  "createdAt": "2026-10-08T08:50:54.347Z"
+}

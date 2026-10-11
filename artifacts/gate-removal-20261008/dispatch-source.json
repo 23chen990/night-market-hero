@@ -1,0 +1,21 @@
+{
+  "role": "QAAgent",
+  "mode": "read-only",
+  "targetGame": "夜市飞侠：护印突围",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
+  "scope": [
+    "src/game-core.ts",
+    "src/main.ts",
+    "index.html",
+    "tests/open-streets.test.ts",
+    "artifacts/gate-removal-20261008/triage.json",
+    "artifacts/gate-removal-20261008/qa-baseline.json"
+  ],
+  "task": "Independently review the gate-removal patch: explicit default options, gate rendering and collision, tutorial finish and final rescue, paused old snapshot restore, progress and patrol. Existing roof-net and other dirty changes predate this repair. You are not alone; read only, do not modify or revert any files. Do not build or start a browser. Return exact actionable source defects only within this scope.",
+  "acceptance": [
+    "Verify absence of hidden gate collision and default legacy gate path",
+    "Confirm tests cover actual changed branches",
+    "Validate your final JSON using QaReportSchema then return only that JSON, no free chat"
+  ],
+  "outputSchema": "/Users/kker/Documents/ChatGPT/妖怪夜市/src/schemas/index.ts#QaReportSchema"
+}

@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, test } from 'node:test';
+import { inflateSync } from 'node:zlib';
 import {
   NIGHT_CITY_ASSET_PATHS,
   NIGHT_CITY_LAYER_CONFIG,
@@ -8,11 +10,66 @@ import {
   createNightCityRenderer,
 } from '../src/night-city-renderer.ts';
 
+function decodePngAlpha(url: string): { width: number; height: number; alpha: Uint8Array } {
+  const bytes = readFileSync(new URL(url));
+  assert.deepEqual([...bytes.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10], 'transition asset must be a PNG');
+  let offset = 8;
+  let width = 0;
+  let height = 0;
+  let colorType = 0;
+  const idat: Buffer[] = [];
+  while (offset < bytes.length) {
+    const length = bytes.readUInt32BE(offset);
+    const type = bytes.toString('ascii', offset + 4, offset + 8);
+    const data = bytes.subarray(offset + 8, offset + 8 + length);
+    if (type === 'IHDR') {
+      width = data.readUInt32BE(0);
+      height = data.readUInt32BE(4);
+      assert.equal(data[8], 8, 'transition asset must use 8-bit channels');
+      colorType = data[9]!;
+    } else if (type === 'IDAT') {
+      idat.push(data);
+    } else if (type === 'IEND') {
+      break;
+    }
+    offset += 12 + length;
+  }
+  assert.equal(colorType, 6, 'transition asset must carry a real RGBA alpha channel');
+  const raw = inflateSync(Buffer.concat(idat));
+  const stride = width * 4;
+  const alpha = new Uint8Array(width * height);
+  const previous = new Uint8Array(stride);
+  let sourceOffset = 0;
+  for (let y = 0; y < height; y += 1) {
+    const filter = raw[sourceOffset++]!;
+    const row = new Uint8Array(raw.subarray(sourceOffset, sourceOffset + stride));
+    sourceOffset += stride;
+    for (let x = 0; x < stride; x += 1) {
+      const left = x >= 4 ? row[x - 4]! : 0;
+      const up = previous[x]!;
+      const upLeft = x >= 4 ? previous[x - 4]! : 0;
+      if (filter === 1) row[x] = (row[x]! + left) & 0xff;
+      else if (filter === 2) row[x] = (row[x]! + up) & 0xff;
+      else if (filter === 3) row[x] = (row[x]! + Math.floor((left + up) / 2)) & 0xff;
+      else if (filter === 4) {
+        const estimate = left + up - upLeft;
+        const pa = Math.abs(estimate - left);
+        const pb = Math.abs(estimate - up);
+        const pc = Math.abs(estimate - upLeft);
+        row[x] = (row[x]! + (pa <= pb && pa <= pc ? left : pb <= pc ? up : upLeft)) & 0xff;
+      } else assert.equal(filter, 0, `unsupported PNG filter ${filter}`);
+    }
+    for (let x = 0; x < width; x += 1) alpha[y * width + x] = row[x * 4 + 3]!;
+    previous.set(row);
+  }
+  return { width, height, alpha };
+}
+
 describe('night-city image renderer', () => {
   test('plans distinct image-backed market, rooftop, and waterfront chunks', () => {
     const plan = createNightCityRenderPlan(73, 0, 9_600);
     assert.ok(plan.chunks.length > 0);
-    assert.deepEqual(Object.keys(NIGHT_CITY_ASSET_PATHS).sort(), ['districtTransitionMist', 'foregroundEaves', 'gateCounterFrame', 'market', 'marketV2', 'rooftops', 'rooftopsTransitionV36', 'rooftopsV2', 'settingsGear', 'waterfront', 'waterfrontV2']);
+    assert.deepEqual(Object.keys(NIGHT_CITY_ASSET_PATHS).sort(), ['districtTransitionMist', 'foregroundEaves', 'gateCounterFrame', 'market', 'marketRooftopsBridgeV3', 'marketV2', 'rooftops', 'rooftopsTransitionV36', 'rooftopsV2', 'rooftopsWaterfrontBridgeV1', 'settingsGear', 'waterfront', 'waterfrontMarketBridgeV1', 'waterfrontV2']);
     assert.deepEqual(new Set(plan.chunks.map((chunk) => chunk.district)), new Set(['market', 'rooftops']));
     const waterfrontPlan = createNightCityRenderPlan(73, 10 * 1_600, 15 * 1_600);
     assert.ok(waterfrontPlan.chunks.some((chunk) => chunk.district === 'waterfront'));
@@ -55,6 +112,7 @@ describe('night-city image renderer', () => {
     renderer.preload(scene);
     assert.ok(loaded.includes('night-city-market-v1'));
     assert.ok(loaded.includes('night-city-market-v2'));
+    assert.ok(loaded.includes('night-city-market-rooftops-bridge-v3'));
     assert.ok(loaded.includes('night-city-rooftops-v1'));
     assert.ok(loaded.includes('night-city-rooftops-v2'));
     assert.ok(loaded.includes('night-city-waterfront-v1'));
@@ -73,7 +131,7 @@ describe('night-city image renderer', () => {
     assert.ok(images.length <= firstCount + 10);
   });
 
-  test('keeps full-stage eaves coverage, uses depth parallax, and reports the focused district', () => {
+  test('uses baked panorama architecture without a repeated foreground eaves stream', () => {
     const loaded = new Set<string>();
     const rendered: Array<{ key: string; x: number; y: number; width: number; height: number; scrollFactor?: number; verticalScrollFactor?: number; alpha?: number }> = [];
     const scene = {
@@ -97,16 +155,11 @@ describe('night-city image renderer', () => {
     renderer.preload(scene);
     const stats = renderer.render(scene, 1, 5 * 1_600, 6 * 1_600);
     const eaves = rendered.find((item) => item.key === 'night-city-foreground-eaves');
-    assert.ok(eaves, 'foreground eaves must be image-backed');
-    assert.ok(eaves.height >= 941, 'the full-height eaves artwork must cover the 941px logical stage');
-    assert.ok(Math.abs(eaves.width / eaves.height - 1_672 / 941) < 0.02, 'eaves must preserve the approved aspect ratio');
+    assert.equal(eaves, undefined, 'default image stream must not duplicate baked panorama eaves');
     const panorama = rendered.find((item) => item.key.startsWith('night-city-rooftops'));
     assert.equal(panorama?.scrollFactor, 1, 'opaque panorama must stay world-aligned to preserve screen coverage');
     assert.equal(panorama?.verticalScrollFactor, 0, 'jump camera movement must not uncover the panorama vertically');
     assert.equal(panorama?.alpha, 1, 'opaque panorama must fully replace the retired CSS scene background');
-    const eavesScroll = rendered.find((item) => item.key === 'night-city-foreground-eaves');
-    assert.ok(eavesScroll?.scrollFactor !== undefined && eavesScroll.scrollFactor > 1, 'foreground stream provides the depth/parallax motion');
-    assert.equal(eavesScroll?.verticalScrollFactor, 0, 'jump camera movement must not uncover the foreground stream vertically');
     assert.equal(stats.district, 'rooftops', 'district telemetry must use the focused world chunk, not the prefetch edge');
   });
 
@@ -154,7 +207,7 @@ describe('night-city image renderer', () => {
     const renderer = createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 });
     renderer.render(scene, 73, 0, 6_400);
     const plan = createNightCityRenderPlan(73, 0, 6_400);
-    const boundaryCount = Math.max(0, plan.chunks.length - 1);
+    const boundaryCount = plan.chunks.slice(1).filter((chunk) => chunk.kind !== 'transition').length;
     const sameDistrictJoinCount = plan.chunks.slice(1).filter((chunk, index) => chunk.district === plan.chunks[index]!.district).length;
     assert.ok(sameDistrictJoinCount > 0, 'fixture must include a same-district variant join');
     const veils = rendered.filter((item) => item.key === 'night-city-district-transition-mist');
@@ -163,7 +216,7 @@ describe('night-city image renderer', () => {
     assert.ok(veils.every((item) => item.alpha <= 0.1), 'transition mist must stay subtle enough to avoid a repeated vertical pillar');
   });
 
-  test('uses the approved single full-height PNG for Rooftops variant seams', () => {
+  test('keeps ordinary Rooftops variant seams from installing an opaque full-height carrier', () => {
     const loaded = new Set<string>();
     const rendered: Array<{ key: string; width: number; height: number; alpha: number }> = [];
     const scene = {
@@ -192,9 +245,11 @@ describe('night-city image renderer', () => {
     assert.ok(rooftopSeams.length > 0, 'fixture must include a Rooftops variant seam');
     renderer.render(scene, 73, 5 * 1_600, 9 * 1_600);
     const carriers = rendered.filter((item) => item.key === 'night-city-rooftops-transition-v36');
-    assert.equal(carriers.length, rooftopSeams.length, 'each Rooftops variant seam uses one carrier image');
-    assert.ok(carriers.every((item) => item.width === 640 && item.height === 941 && item.alpha === 1),
-      'the carrier keeps the approved full-height dimensions and native alpha');
+    assert.equal(carriers.length, 0, 'ordinary Rooftops variant seams must not place an opaque full-height carrier over continuous architecture');
+    const veils = rendered.filter((item) => item.key === 'night-city-district-transition-mist');
+    assert.equal(veils.length, rooftopSeams.length, 'each Rooftops variant seam uses one subtle veil');
+    assert.ok(veils.every((item) => item.width === 220 && item.height === 941),
+      'the ordinary variant veil must remain narrow and full-height');
     assert.ok(!rendered.some((item) => item.key.includes('bridge-architecture') || item.key.includes('seam-fog')),
       'runtime must not load the bridge or fog layer candidates');
   });
@@ -221,7 +276,23 @@ describe('night-city image renderer', () => {
     }
   });
 
-  test('preserves transition metadata while using the destination panorama fallback', () => {
+  test('uses a real alpha-feathered market-to-rooftops transition plate', () => {
+    const png = decodePngAlpha(NIGHT_CITY_ASSET_PATHS.marketRooftopsBridgeV3);
+    assert.equal(png.width, 2_080);
+    assert.equal(png.height, 958);
+    const leftEdge = png.alpha[0]!;
+    const leftFeather = png.alpha[128]!;
+    const center = png.alpha[Math.floor(png.height / 2) * png.width + Math.floor(png.width / 2)]!;
+    const rightFeather = png.alpha[Math.floor(png.height / 2) * png.width + png.width - 129]!;
+    const rightEdge = png.alpha[Math.floor(png.height / 2) * png.width + png.width - 1]!;
+    assert.equal(leftEdge, 0, 'left edge must reveal the neighboring panorama');
+    assert.ok(leftFeather > 0 && leftFeather < 255, 'left edge must fade continuously into the bridge');
+    assert.equal(center, 255, 'bridge body must remain opaque');
+    assert.ok(rightFeather > 0 && rightFeather < 255, 'right edge must fade continuously into the neighboring panorama');
+    assert.equal(rightEdge, 0, 'right edge must reveal the neighboring panorama');
+  });
+
+  test('preserves transition metadata while using the alpha-feathered market-to-rooftops bridge', () => {
     const plan = createNightCityRenderPlan(73, 4 * 1_600, 6 * 1_600);
     const transition = plan.chunks.find((chunk) => chunk.kind === 'transition');
 
@@ -230,7 +301,87 @@ describe('night-city image renderer', () => {
     assert.equal(transition?.fromDistrict, 'market');
     assert.equal(transition?.toDistrict, 'rooftops');
     assert.equal(transition?.district, 'rooftops');
-    assert.match(transition?.assetKey ?? '', /^night-city-rooftops-/,
-      'fallback rendering should use the transition destination panorama');
+    assert.equal(transition?.assetKey, 'night-city-market-rooftops-bridge-v3',
+      'market-to-rooftops transition rendering should use the alpha-feathered bridge');
+  });
+
+  test('uses the alpha-feathered bridge as the deterministic sole transition panorama owner', () => {
+    const left = 3 * 1_600;
+    const right = 6 * 1_600;
+    const plan = createNightCityRenderPlan(73, left, right);
+    const repeat = createNightCityRenderPlan(73, left, right);
+    const transition = plan.chunks.find((chunk) => chunk.kind === 'transition'
+      && chunk.fromDistrict === 'market' && chunk.toDistrict === 'rooftops');
+
+    assert.ok(transition, 'the market-to-rooftops transition must be present');
+    assert.equal(transition?.assetKey, 'night-city-market-rooftops-bridge-v3');
+    assert.equal(transition?.imageWidth, 2_080);
+    assert.equal(transition?.imageHeight, 958);
+    assert.equal(transition?.overlap, 204);
+    assert.deepEqual(plan.chunks, repeat.chunks, 'transition asset selection must remain deterministic');
+
+    const loaded: string[] = [];
+    const rendered: Array<{ key: string; x: number }> = [];
+    const scene = {
+      load: { image: (key: string) => loaded.push(key) },
+      textures: { exists: (key: string) => loaded.includes(key) },
+      add: { image: (_x: number, _y: number, key: string) => {
+        let positionX = 0;
+        const image = {
+          setOrigin() { return image; },
+          setPosition(x: number) { positionX = x; return image; },
+        setDisplaySize() { rendered.push({ key, x: positionX }); return image; },
+        setDepth() { return image; },
+          setVisible() { return image; },
+          setAlpha() { return image; },
+          setScrollFactor() { return image; },
+          destroy() { return undefined; },
+        };
+        return image;
+      } },
+    };
+    createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 }).render(scene, 73, left, right);
+    assert.ok(loaded.includes('night-city-market-rooftops-bridge-v3'), 'alpha-feathered bridge must preload before rendering');
+    const boundaryOwners = rendered.filter((item) => item.x >= (transition?.startX ?? 0) - 400
+      && item.x < (transition?.startX ?? 0) + 400
+      && (item.key.includes('market-panorama') || item.key.includes('rooftops-panorama')
+        || item.key.includes('market-rooftops-bridge') || item.key.includes('district-transition')));
+    assert.deepEqual(new Set(boundaryOwners.map((item) => item.key)), new Set(['night-city-market-rooftops-bridge-v3']),
+      'the alpha-feathered bridge must remain the sole static panorama or veil owner');
+  });
+
+  test('renders the alpha-feathered bridge above neighboring opaque panoramas', () => {
+    const loaded = new Set<string>();
+    const rendered: Array<{ key: string; x: number; depth: number }> = [];
+    const scene = {
+      load: { image: (key: string) => loaded.add(key) },
+      textures: { exists: (key: string) => loaded.has(key) },
+      add: { image: (_x: number, _y: number, key: string) => {
+        let positionX = 0;
+        let depth = 0;
+        const image = {
+          setOrigin() { return image; },
+          setPosition(x: number) { positionX = x; return image; },
+          setDisplaySize() { return image; },
+          setDepth(value: number) { depth = value; return image; },
+          setVisible(value: boolean) { if (value) rendered.push({ key, x: positionX, depth }); return image; },
+          setAlpha() { return image; },
+          setScrollFactor() { return image; },
+          destroy() { return undefined; },
+        };
+        return image;
+      } },
+    };
+    const left = 3 * 1_600;
+    const right = 6 * 1_600;
+    createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 }).render(scene, 73, left, right);
+    const bridge = rendered.find((item) => item.key === 'night-city-market-rooftops-bridge-v3');
+    const panoramas = rendered.filter((item) => item.key === 'night-city-market-v1'
+      || item.key === 'night-city-market-v2' || item.key === 'night-city-rooftops-v1'
+      || item.key === 'night-city-rooftops-v2');
+    assert.ok(bridge, 'alpha-feathered bridge must be rendered');
+    assert.ok(panoramas.length > 0, 'neighboring opaque panoramas must remain rendered');
+    assert.equal(bridge?.depth, -19, 'bridge plate must render above opaque panoramas');
+    assert.ok(panoramas.every((item) => item.depth === -20), 'opaque panoramas retain depth -20');
   });
 });

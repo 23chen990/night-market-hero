@@ -1,11 +1,51 @@
 {
   "schemaVersion": 1,
-  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/night-market-hero",
   "defaultEntrypoint": "src/main.ts",
   "defaultMode": "lantern-entry",
-  "runtimeWiredEntrypoints": ["src/main.ts", "src/game-core.ts", "src/progression.ts", "src/monetization.ts"],
-  "journey": ["startup", "tutorial", "tutorial-settlement", "night-patrol", "segment-crossing", "checkpoint-gate", "death-settlement", "replay"],
-  "legacyBehavior": { "status": "compatibility-only", "evidence": "level-progression.test.ts is superseded; default continuation enters night-patrol" },
-  "browserEvidence": ["qa-evidence/qa-round2-desktop.png"],
-  "productSystems": { "characters": true, "missions": true, "vehicles": true, "records": true, "economy": true }
+  "runtimeWiredEntrypoints": [
+    "index.html",
+    "src/main.ts",
+    "src/game-core.ts",
+    "src/progression.ts",
+    "src/monetization.ts",
+    "src/run-snapshot.ts",
+    "src/runtime-session.ts",
+    "src/night-city-renderer.ts",
+    "src/flight-presentation.ts"
+  ],
+  "journey": [
+    "startup",
+    "tutorial",
+    "tutorial-settlement",
+    "night-patrol",
+    "segment-crossing",
+    "open-checkpoint",
+    "death-settlement",
+    "replay"
+  ],
+  "legacyBehavior": {
+    "status": "compatibility-only",
+    "evidence": "src/main.ts selects marketGates:false; fixed levels and closing-gate scenarios are fixture compatibility paths only. Historical prototype-a QA is superseded and is not current-build evidence. terrainMode:panorama disables hidden authored surfaces and debris on reset/restore/update; legacy terrain scenarios are compatibility-only."
+  },
+  "browserEvidence": [],
+  "productSystems": {
+    "characters": true,
+    "missions": true,
+    "vehicles": true,
+    "records": true,
+    "economy": true
+  },
+  "evidenceStatus": "PENDING_QA",
+  "checkpointRules": {
+    "collisionEnabled": false,
+    "beats": 0,
+    "counterField": "gatesPassed",
+    "meaning": "open street blocks crossed",
+    "rewardsPerSegmentPerRun": 1,
+    "terminal": false
+  },
+  "activePlan": "../../artifacts/gameplay-execution-20261008/endless-conversion-plan-current.json",
+  "qaEvidenceDirectory": "../../artifacts/gameplay-execution-20261008/attempt-3",
+  "mapQaStatus": "BLOCKED"
 }
