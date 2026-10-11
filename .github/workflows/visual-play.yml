@@ -1,0 +1,35 @@
+name: Browser playable evidence
+on:
+  push:
+    branches: [main, feat/playable-experience-20261012]
+    paths: ['src/**', 'tests/playable-browser-audit.ts', 'index.html', 'scripts/**', '.github/workflows/visual-play.yml']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: browser-evidence-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  play:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node --import tsx scripts/build.ts
+      - run: npx playwright install --with-deps chromium
+      - run: node --import tsx tests/playable-browser-audit.ts
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: browser-evidence-${{ github.sha }}
+          path: |
+            evidence/playable-audit/
+            dist/index.html
+          retention-days: 7
