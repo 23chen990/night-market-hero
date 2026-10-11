@@ -3,7 +3,7 @@ import { sha256Text } from '../core/files.js';
 import { AgentPackageSchema, buildAgentPackageInstruction, packageAuditView, packageForExecution, type AgentPackage } from './packages.js';
 import { AgentTaskBundleSchema, buildTaskBundle, type AgentPackageSelection, type AgentTaskBundle } from './work-spec.js';
 
-export type CompilerInput = { path: string; content: string; priority?: 'required' | 'important' | 'optional' };
+export type CompilerInput = { path: string; content: string; priority?: 'required' | 'important' | 'optional'; /** Hash of the complete source bytes before prompt sanitization. */ sourceHash?: string };
 
 export type AgentContextCompilerInput = AgentPackageSelection & {
   summary: string;
@@ -57,6 +57,8 @@ function requiredToolsForSelection(packageDefinition: AgentPackage): string[] {
 export function compileAgentContext(input: AgentContextCompilerInput): CompiledAgentContext {
   const packageDefinition = packageForExecution(input);
   const normalizedInputs = input.inputs.map((item) => ({ ...item, path: normalizePath(item.path) }));
+  const invalidSourceHashes = normalizedInputs.filter((item) => item.sourceHash !== undefined && !/^[a-f0-9]{64}$/u.test(item.sourceHash));
+  if (invalidSourceHashes.length > 0) throw new AgentContextCompilationError(invalidSourceHashes.map((item) => `invalid-input-source-hash:${item.path}`));
   const required = new Set((input.requiredPaths ?? []).map(normalizePath));
   const optional = new Set((input.includeOptionalPaths ?? []).map(normalizePath));
   const available = new Set(normalizedInputs.map((item) => item.path));
@@ -80,7 +82,14 @@ export function compileAgentContext(input: AgentContextCompilerInput): CompiledA
     ],
     maxChars: Math.min(input.maxChars ?? packageDefinition.contextBudget, packageDefinition.contextBudget),
   });
-  const inputHashes = Object.fromEntries(packet.inputs.map((item) => [item.path, sha256Text(item.excerpt)]));
+  // Keep packet excerpts bounded, but bind the work spec to the complete
+  // supplied source strings as well. A truncated excerpt is useful for prompt
+  // budgeting and must never stand in for source identity.
+  const sourceByPath = new Map(normalizedInputs.map((item) => [item.path, item.content]));
+  const inputSourceHashes = Object.fromEntries(packet.inputs.map((item) => {
+    const source = normalizedInputs.find((candidate) => candidate.path === item.path);
+    return [item.path, source?.sourceHash ?? sha256Text(sourceByPath.get(item.path) ?? '')];
+  }));
   let taskBundle = buildTaskBundle({
     package: packageDefinition,
     objective: input.objective ?? input.summary,
@@ -93,7 +102,7 @@ export function compileAgentContext(input: AgentContextCompilerInput): CompiledA
     targetGameId: input.targetGameId,
     targetWorkspaceRelative: input.targetWorkspaceRelative,
     inputPaths: packet.inputs.map((item) => item.path),
-    inputHashes,
+    inputSourceHashes,
   });
   const instruction = buildAgentPackageInstruction({ stage: packageDefinition.stage, base: input.summary, package: packageDefinition, taskBundle });
   taskBundle = AgentTaskBundleSchema.parse({ ...taskBundle, promptProvenance: { ...taskBundle.promptProvenance, promptBundleHash: sha256Text(instruction) } });

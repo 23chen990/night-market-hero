@@ -3,10 +3,33 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { QAAgent } from '../../src/agents/index.js';
+import { compileAgentContext } from '../../src/agents/context-compiler.js';
+import { sha256Text } from '../../src/core/files.js';
 import type { QAProvider } from '../../src/providers/interfaces.js';
 import type { RuntimeAdapter } from '../../src/adapters/runtime.js';
 
 describe('QAAgent evidence normalization', () => {
+  it('fails closed when a production QA call omits its compiled work specification', async () => {
+    const runRoot = await mkdtemp(path.join(os.tmpdir(), 'factory-qa-agent-boundary-'));
+    const provider: QAProvider = {
+      playtest: async () => { throw new Error('provider must not be called'); },
+      playtestTournament: async () => ({}),
+      playtestActionMechanics: async () => ({}),
+    };
+    const compiled = compileAgentContext({
+      stage: 'QA', productionLine: 'idle-management', runtime: 'web-lite', taskKind: 'qa', taskId: 'qa-boundary',
+      targetRunId: path.basename(runRoot), targetGameId: 'game', targetWorkspaceRelative: 'workspace/game',
+      summary: 'Run independent QA.', inputs: [{ path: 'artifacts/build-report.json', content: '{}' }], requiredPaths: ['artifacts/build-report.json'],
+    });
+    try {
+      await expect(new QAAgent(provider, {} as RuntimeAdapter).run(path.join(runRoot, 'workspace', 'game'), runRoot, true, {
+        runRoot, outputPath: path.join(runRoot, 'artifacts/qa-report.json'), logDir: path.join(runRoot, 'logs'), inputPaths: ['artifacts/build-report.json'],
+        stage: 'QA', productionLine: 'idle-management', runtime: 'web-lite', taskKind: 'qa', taskId: 'qa-boundary', sandbox: 'read-only',
+        enforceBoundary: true, workSpecRequired: true, agentPackage: compiled.package,
+      })).rejects.toThrow(/both agent package and task bundle|work specification/iu);
+    } finally { await rm(runRoot, { recursive: true, force: true }); }
+  });
+
   it('creates usable fallback evidence when a provider returns an empty evidence list', async () => {
     const runRoot = await mkdtemp(path.join(os.tmpdir(), 'factory-qa-agent-'));
     await mkdir(path.join(runRoot, 'artifacts'), { recursive: true });
@@ -166,5 +189,34 @@ describe('QAAgent evidence normalization', () => {
     } finally {
       await rm(runRoot, { recursive: true, force: true });
     }
+  });
+
+  it('blocks a strict provider PASS when QA binding or required evidence is absent', async () => {
+    const runRoot = await mkdtemp(path.join(os.tmpdir(), 'factory-qa-agent-strict-'));
+    await mkdir(path.join(runRoot, 'artifacts'), { recursive: true });
+    await mkdir(path.join(runRoot, 'workspace', 'game', 'dist'), { recursive: true });
+    const buildReport = JSON.stringify({ webBuild: 'workspace/game/dist', runtime: 'web-lite' });
+    await writeFile(path.join(runRoot, 'artifacts/build-report.json'), buildReport);
+    await writeFile(path.join(runRoot, 'workspace', 'game', 'dist', 'index.html'), '<!doctype html>');
+    const compiled = compileAgentContext({
+      stage: 'QA', productionLine: 'idle-management', runtime: 'web-lite', taskKind: 'qa', taskId: 'strict-qa-pass',
+      targetRunId: path.basename(runRoot), targetGameId: 'game', targetWorkspaceRelative: 'workspace/game',
+      summary: 'Run strict independent QA.', inputs: [{ path: 'artifacts/build-report.json', content: buildReport, sourceHash: sha256Text(buildReport) }], requiredPaths: ['artifacts/build-report.json'],
+    });
+    const provider: QAProvider = {
+      playtest: async () => ({ schemaVersion: 1, passed: true, checks: [{ name: 'fake-pass', passed: true, evidence: 'fake' }], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date(0).toISOString() }),
+      playtestTournament: async () => ({}), playtestActionMechanics: async () => ({}),
+    };
+    const context = {
+      runRoot, inputSourceRoot: runRoot, outputPath: path.join(runRoot, 'artifacts/qa-report.json'), logDir: path.join(runRoot, 'logs'), inputPaths: ['artifacts/build-report.json'],
+      stage: 'QA' as const, productionLine: 'idle-management' as const, taskKind: 'qa' as const, taskId: 'strict-qa-pass', runtime: 'web-lite' as const, sandbox: 'read-only' as const,
+      enforceBoundary: true, workSpecRequired: true, contextPacket: compiled.packet, agentPackage: compiled.package, taskBundle: compiled.taskBundle,
+    };
+    try {
+      const report = await new QAAgent(provider, {} as RuntimeAdapter).run(path.join(runRoot, 'workspace', 'game'), runRoot, true, context);
+      expect(report.passed).toBe(false);
+      expect(report.issues.map((issue) => issue.id)).toEqual(expect.arrayContaining(['qa-binding-missing', 'qa-natural-evidence-missing', 'qa-perceptual-evidence-missing']));
+      await expect(new QAAgent(provider, {} as RuntimeAdapter).run(path.join(runRoot, 'workspace', 'game'), `${runRoot}-other`, true, context)).rejects.toThrow(/run root/iu);
+    } finally { await rm(runRoot, { recursive: true, force: true }); }
   });
 });

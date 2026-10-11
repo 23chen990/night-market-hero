@@ -5,12 +5,16 @@ import { runPlaywrightQa } from '../qa/playwright-qa.js';
 import { runActionPlaywrightQa } from '../qa/action-playwright-qa.js';
 import type { AgentExecutionContext, QAProvider, RuntimeProvider } from './interfaces.js';
 import { chromium, type Page } from '@playwright/test';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { PrototypeBuildReport } from '../schemas/gameplay-experiment.js';
 import type { ActionMechanicExperimentSpec, ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
 import { PerceptualQaReportSchema, ProductExperienceContractSchema, type PerceptualQaReport, type ProductExperienceContract } from '../schemas/product-experience.js';
+import { QaReportSchema } from '../schemas/index.js';
 import { sha256File, sha256Text } from '../core/files.js';
+import { safeExecutionContext } from '../core/execution-boundary.js';
+import { hashRunBuild } from '../core/release.js';
 
 export type PrototypeControl = { kind: 'choice' | 'action' | 'lantern'; value: string; label: string };
 const META_ACTIONS = new Set(['reset', 'restart', 'next', 'new', 'new-night']);
@@ -232,7 +236,49 @@ export class PlaywrightQAProvider implements QAProvider {
   perceptualQa({ runtime, workspace, runRoot, contract, buildHash }: { runtime: RuntimeAdapter; workspace: string; runRoot: string; contract: ProductExperienceContract; buildHash: string }) {
     return runPerceptualQa(runtime, workspace, runRoot, contract, buildHash);
   }
-  playtest({ runtime, workspace, runRoot }: { runtime: RuntimeAdapter; workspace: string; runRoot: string; context?: AgentExecutionContext }) { return runPlaywrightQa(runtime, workspace, runRoot); }
+  async playtest({ runtime, workspace, runRoot, context }: { runtime: RuntimeAdapter; workspace: string; runRoot: string; context?: AgentExecutionContext }) {
+    if (!context?.enforceBoundary) return runPlaywrightQa(runtime, workspace, runRoot);
+    const checked = safeExecutionContext({ ...context, stage: context.stage ?? 'QA', sandbox: context.sandbox ?? 'read-only' });
+    if (checked.role !== 'reviewer' && checked.role !== 'evidence-helper') throw new Error(`QA provider requires a reviewer role, got ${checked.role}`);
+    if (!checked.agentPackage || !checked.taskBundle || !checked.workSpecRequired) throw new Error('QA provider requires the compiled package and task bundle');
+    if (!checked.targetWorkspaceRelative) throw new Error('QA provider requires targetWorkspaceRelative');
+    const expectedWorkspace = path.resolve(checked.runRoot, checked.targetWorkspaceRelative);
+    if (path.resolve(workspace) !== expectedWorkspace) throw new Error(`QA workspace does not match the bound workspace: ${workspace}`);
+    const expectedRunId = path.basename(path.resolve(checked.runRoot));
+    if (checked.taskBundle.targetRunId !== expectedRunId) throw new Error('QA task bundle target run does not match run root');
+    const targetWorkspaceRelative = checked.taskBundle.targetWorkspaceRelative;
+    if (!targetWorkspaceRelative || targetWorkspaceRelative !== checked.targetWorkspaceRelative) throw new Error('QA task bundle workspace does not match context');
+    const lineContractPath = path.join(checked.runRoot, 'artifacts/production-line-contract.json');
+    const lineContract = JSON.parse(await readFile(lineContractPath, 'utf8')) as { line?: unknown };
+    if (lineContract.line !== checked.taskBundle.productionLine) throw new Error('QA production line contract does not match the task bundle');
+    const candidateHash = await hashRunBuild(checked.runRoot);
+    const report = await runPlaywrightQa(runtime, workspace, runRoot);
+    const afterHash = await hashRunBuild(checked.runRoot);
+    const runnerSourceHash = await sha256File(fileURLToPath(import.meta.url));
+    const testConfigHash = sha256Text(JSON.stringify({ stage: checked.taskBundle.stage, taskId: checked.taskBundle.taskId, productionLine: checked.taskBundle.productionLine, runtime: checked.taskBundle.runtime, taskKind: checked.taskBundle.taskKind, recipeHash: checked.taskBundle.recipeRef.sha256, acceptanceHash: checked.taskBundle.acceptanceRef.sha256 }));
+    const candidateStable = candidateHash === afterHash;
+    return QaReportSchema.parse({
+      ...report,
+      passed: report.passed && candidateStable,
+      issues: candidateStable ? report.issues : [...report.issues, { id: 'qa-candidate-mutated', severity: 'error' as const, message: 'candidate bytes changed during independent QA; rerun against the new candidate', evidence: 'artifacts/qa-report.json' }],
+      qaBinding: {
+        taskId: checked.taskBundle.taskId,
+        targetRunId: checked.taskBundle.targetRunId ?? expectedRunId,
+        ...(checked.taskBundle.targetGameId ? { targetGameId: checked.taskBundle.targetGameId } : {}),
+        targetWorkspaceRelative,
+        productionLine: checked.taskBundle.productionLine,
+        runtime: checked.taskBundle.runtime,
+        taskKind: checked.taskBundle.taskKind,
+        candidateHash,
+        recipeHash: checked.taskBundle.recipeRef.sha256,
+        toolPolicyHash: checked.taskBundle.toolPolicyRef.sha256,
+        acceptanceHash: checked.taskBundle.acceptanceRef.sha256,
+        promptBundleHash: checked.taskBundle.promptProvenance.promptBundleHash,
+        qaRunnerSourceHash: runnerSourceHash,
+        testConfigHash,
+      },
+    });
+  }
   async playtestTournament({ runtime, report, runRoot }: { runtime: RuntimeAdapter; report: PrototypeBuildReport; runRoot: string }) {
     const browser = await chromium.launch({ headless: true }); const comparisons = [];
     await mkdir(path.join(runRoot, 'screenshots'), { recursive: true }); await mkdir(path.join(runRoot, 'logs'), { recursive: true });

@@ -11,6 +11,8 @@ export type AgentCallMetrics = { provider: string; model: string; calls: number;
 export type AgentProviderResult = { value: unknown; metrics: AgentCallMetrics };
 export type AgentExecutionContext = {
   runRoot: string;
+  /** Repository root used to re-read hash-bound shared inputs at the boundary. */
+  inputSourceRoot?: string;
   outputPath: string;
   logDir: string;
   inputPaths: string[];
@@ -39,6 +41,8 @@ export type AgentExecutionContext = {
   taskBundle?: AgentTaskBundle;
   /** The factory sets this for real runs; direct provider unit callers may omit it for legacy compatibility. */
   enforceBoundary?: boolean;
+  /** Real factory calls must carry both sides of the compiled work spec. */
+  workSpecRequired?: boolean;
 };
 export interface AgentProvider {
   analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext): Promise<AgentProviderResult>;

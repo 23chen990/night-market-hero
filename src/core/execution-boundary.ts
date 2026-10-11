@@ -1,10 +1,12 @@
+import { createHash } from 'node:crypto';
+import { lstatSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { ContextPacketSchema, verifyContextPacketIntegrity } from './context-budget.js';
 import { executionPolicyForStage, type ExecutionPolicy } from './model-policy.js';
 import { StageNameSchema } from '../schemas/index.js';
 import type { AgentExecutionContext } from '../providers/interfaces.js';
 import { AgentPackageSchema, validatePackageToolDeclarations } from '../agents/packages.js';
-import { AgentTaskBundleSchema, AgentTaskKindSchema } from '../agents/work-spec.js';
+import { AgentTaskBundleSchema, AgentTaskKindSchema, acceptanceContentHash, probeAvailableToolIds, recipeContentHash, skillContentHash, toolPolicyContentHash, validateWorkSpecProvenance } from '../agents/work-spec.js';
 import { ProductionLineSchema } from './production-lines.js';
 import { sha256Text } from './files.js';
 
@@ -37,6 +39,26 @@ function assertRelativeArtifact(value: unknown, name: string): string {
     throw new ExecutionBoundaryError(`${name} contains a path traversal`);
   }
   return normalized;
+}
+
+/** Hash a directory using the same byte-level tree identity as contextFor.
+ * This is synchronous because the execution boundary is deliberately called
+ * immediately before a provider dispatch. */
+function sha256DirectorySync(directory: string): string {
+  const entries: string[] = [];
+  const walk = (current: string, relative = ''): void => {
+    for (const entry of readdirSync(current, { withFileTypes: true })) {
+      const child = path.join(current, entry.name);
+      const childRelative = relative ? `${relative}/${entry.name}` : entry.name;
+      const info = lstatSync(child);
+      if (info.isSymbolicLink()) throw new ExecutionBoundaryError(`task bundle input source contains a symlink: ${childRelative}`);
+      if (info.isDirectory()) walk(child, childRelative);
+      else if (info.isFile()) entries.push(`${childRelative}:${createHash('sha256').update(readFileSync(child)).digest('hex')}`);
+      else throw new ExecutionBoundaryError(`task bundle input source contains a non-regular entry: ${childRelative}`);
+    }
+  };
+  walk(directory);
+  return sha256Text(entries.sort().join('\n'));
 }
 
 /** Public lexical guard for callers that need to validate a pointer before
@@ -82,6 +104,7 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
   if (context.targetGameId !== undefined && (typeof context.targetGameId !== 'string' || context.targetGameId.trim().length === 0)) {
     throw new ExecutionBoundaryError('targetGameId cannot be empty');
   }
+  if (context.inputSourceRoot !== undefined) assertAbsolute(context.inputSourceRoot, 'inputSourceRoot');
   if (context.productionLine !== undefined && context.productionLine !== null && !ProductionLineSchema.safeParse(context.productionLine).success) throw new ExecutionBoundaryError(`invalid production line ${String(context.productionLine)}`);
   if (context.taskKind !== undefined && !AgentTaskKindSchema.safeParse(context.taskKind).success) throw new ExecutionBoundaryError(`invalid task kind ${String(context.taskKind)}`);
   if (context.taskId !== undefined && (typeof context.taskId !== 'string' || context.taskId.trim().length === 0)) throw new ExecutionBoundaryError('taskId cannot be empty');
@@ -92,6 +115,9 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
   }
   const policy = policyForStage(context.stage);
   if (context.sandbox !== policy.sandbox) throw new ExecutionBoundaryError(`${policy.role} stage ${context.stage} requires ${policy.sandbox}`);
+  if (context.workSpecRequired === true && (!context.agentPackage || !context.taskBundle)) {
+    throw new ExecutionBoundaryError('work specification requires both agent package and task bundle');
+  }
   const agentPackage = context.agentPackage === undefined ? undefined : AgentPackageSchema.parse(context.agentPackage);
   if (agentPackage) {
     if (agentPackage.stage !== context.stage) throw new ExecutionBoundaryError(`agent package stage does not match execution stage: ${agentPackage.stage} !== ${context.stage}`);
@@ -103,10 +129,20 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
     agentPackage.protectedPaths.forEach((item, index) => assertRelativeArtifact(item, `agentPackage.protectedPaths[${index}]`));
     const toolCheck = validatePackageToolDeclarations(agentPackage);
     if (!toolCheck.passed) throw new ExecutionBoundaryError(`agent package tool policy rejected: ${toolCheck.blockers.join(', ')}`);
+    const provenance = validateWorkSpecProvenance(agentPackage);
+    if (!provenance.passed) throw new ExecutionBoundaryError(`agent package provenance rejected: ${provenance.blockers.join(', ')}`);
+    if (context.workSpecRequired === true) {
+      const actualTools = new Set(probeAvailableToolIds());
+      const missing = agentPackage.allowedTools.filter((tool) => !actualTools.has(tool));
+      const stale = agentPackage.availableTools.filter((tool) => !actualTools.has(tool));
+      if (missing.length > 0) throw new ExecutionBoundaryError(`agent package requires tools unavailable in the current checkout: ${missing.join(', ')}`);
+      if (stale.length > 0) throw new ExecutionBoundaryError(`agent package declares stale tools unavailable in the current checkout: ${stale.join(', ')}`);
+    }
   }
   const taskBundle = context.taskBundle === undefined ? undefined : AgentTaskBundleSchema.parse(context.taskBundle);
   if (taskBundle) {
     if (taskBundle.stage !== context.stage) throw new ExecutionBoundaryError('task bundle stage does not match execution stage');
+    if (taskBundle.role !== policy.role) throw new ExecutionBoundaryError(`task bundle role does not match execution policy: ${taskBundle.role} !== ${policy.role}`);
     if (context.productionLine !== undefined && taskBundle.productionLine !== context.productionLine) throw new ExecutionBoundaryError('task bundle production line does not match execution context');
     if (context.taskKind !== undefined && taskBundle.taskKind !== context.taskKind) throw new ExecutionBoundaryError('task bundle task kind does not match execution context');
     if (context.taskId !== undefined && taskBundle.taskId !== context.taskId) throw new ExecutionBoundaryError('task bundle task id does not match execution context');
@@ -121,6 +157,54 @@ export function assertExecutionContext(value: AgentExecutionContext, options: { 
     if (taskBundle.inputPaths.some((item) => !executionInputs.has(item))) throw new ExecutionBoundaryError('task bundle input is not present in execution context');
     if (taskBundle.targetGameId && context.targetGameId && taskBundle.targetGameId !== context.targetGameId) throw new ExecutionBoundaryError('task bundle target game does not match execution context');
     if (taskBundle.targetWorkspaceRelative && context.targetWorkspaceRelative && taskBundle.targetWorkspaceRelative !== context.targetWorkspaceRelative) throw new ExecutionBoundaryError('task bundle workspace does not match execution context');
+    const expectedRecipeHash = recipeContentHash(taskBundle.recipeRef);
+    if (taskBundle.recipeRef.sha256 !== expectedRecipeHash || taskBundle.promptProvenance.recipeHash !== expectedRecipeHash) throw new ExecutionBoundaryError('task bundle recipe provenance hash mismatch');
+    const expectedToolPolicyHash = toolPolicyContentHash(taskBundle.toolPolicyRef, taskBundle.role);
+    if (taskBundle.toolPolicyRef.sha256 !== expectedToolPolicyHash || taskBundle.promptProvenance.toolPolicyHash !== expectedToolPolicyHash) throw new ExecutionBoundaryError('task bundle tool policy provenance hash mismatch');
+    const expectedAcceptanceHash = acceptanceContentHash(taskBundle.acceptanceRef);
+    if (taskBundle.acceptanceRef.sha256 !== expectedAcceptanceHash || taskBundle.promptProvenance.acceptanceHash !== expectedAcceptanceHash) throw new ExecutionBoundaryError('task bundle acceptance provenance hash mismatch');
+    for (const skill of agentPackage?.skillRefs ?? []) {
+      const expectedSkillHash = skillContentHash(skill);
+      if (skill.sha256 !== expectedSkillHash) throw new ExecutionBoundaryError(`agent skill provenance hash mismatch: ${skill.id}`);
+    }
+    const inputHashes = taskBundle.promptProvenance.inputSourceHashes;
+    const inputPaths = taskBundle.inputPaths;
+    if (Object.keys(inputHashes).length !== inputPaths.length || inputPaths.some((item) => inputHashes[item] === undefined)) {
+      throw new ExecutionBoundaryError('task bundle input source hash manifest does not match declared inputs');
+    }
+    if (context.workSpecRequired === true && context.inputSourceRoot !== undefined) {
+      for (const inputPath of inputPaths) {
+        const candidates = [path.join(context.runRoot, inputPath), path.join(context.inputSourceRoot, inputPath)];
+        let foundCandidate = false;
+        let availableCandidate = false;
+        for (const candidate of candidates) {
+          try {
+            const stat = lstatSync(candidate);
+            if (stat.isSymbolicLink()) continue;
+            if (!stat.isFile() && !stat.isDirectory()) continue;
+            availableCandidate = true;
+            const actual = stat.isFile()
+              ? createHash('sha256').update(readFileSync(candidate)).digest('hex')
+              : sha256DirectorySync(candidate);
+            if (actual === inputHashes[inputPath]) {
+              foundCandidate = true;
+              break;
+            }
+          } catch {
+            // Try the next explicitly allowed source root.  The final error
+            // below distinguishes an absent input from a changed one.
+          }
+        }
+        if (!foundCandidate) {
+          if (!availableCandidate) throw new ExecutionBoundaryError(`task bundle input source is unavailable: ${inputPath}`);
+          throw new ExecutionBoundaryError(`task bundle input source hash mismatch: ${inputPath}`);
+        }
+      }
+    }
+    const expectedInputManifestHash = sha256Text(JSON.stringify({ paths: inputPaths, hashes: inputHashes }));
+    if (taskBundle.inputManifestRef.sha256 !== expectedInputManifestHash || taskBundle.promptProvenance.inputManifestHash !== expectedInputManifestHash) {
+      throw new ExecutionBoundaryError('task bundle input manifest provenance hash mismatch');
+    }
   }
   if (context.model !== undefined && (typeof context.model !== 'string' || context.model.trim().length === 0)) throw new ExecutionBoundaryError('model override cannot be empty');
   if (context.reasoning !== undefined && !['low', 'medium', 'high', 'max'].includes(context.reasoning)) throw new ExecutionBoundaryError('unsupported reasoning level');
@@ -157,6 +241,7 @@ export function safeExecutionContext(value: AgentExecutionContext): SafeExecutio
   const checked = assertExecutionContext(value, { strictPaths: value.enforceBoundary === true });
   return {
     runRoot: checked.runRoot,
+    inputSourceRoot: checked.inputSourceRoot,
     outputPath: checked.outputPath,
     logDir: checked.logDir,
     inputPaths: checked.inputPaths.map((item) => item.replaceAll('\\', '/')),
@@ -176,6 +261,7 @@ export function safeExecutionContext(value: AgentExecutionContext): SafeExecutio
     agentPackage: checked.agentPackage,
     taskBundle: checked.taskBundle,
     enforceBoundary: checked.enforceBoundary,
+    workSpecRequired: checked.workSpecRequired,
     role: checked.role,
     policy: checked.policy,
   };

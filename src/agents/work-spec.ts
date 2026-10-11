@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { accessSync, constants, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
@@ -82,6 +82,8 @@ export const PromptProvenanceSchema = z.object({
   toolPolicyHash: Hash,
   acceptanceHash: Hash,
   inputManifestHash: Hash,
+  /** Full supplied input bytes, separate from bounded packet excerpts. */
+  inputSourceHashes: z.record(z.string().min(1), Hash),
   promptBundleHash: Hash,
   loadedRefs: z.array(Text).min(1),
 }).strict();
@@ -154,6 +156,51 @@ const toolDefinitions: Record<string, ToolDefinition> = {
   'hash-build': { id: 'hash-build', version: '1', source: 'src/core/files.ts', available: true, implementation: 'deterministic build hash', permission: 'readScope' },
 };
 
+function executableOnPath(name: string): boolean {
+  const pathValue = process.env.PATH ?? '';
+  return pathValue.split(path.delimiter).some((entry) => {
+    if (!entry) return false;
+    try { accessSync(path.join(entry, name), constants.X_OK); return true; } catch { return false; }
+  });
+}
+
+/**
+ * Probe the capabilities the current repository can actually dispatch. The
+ * static tool registry describes the implementation and permission contract;
+ * this probe closes the gap between that declaration and the current checkout.
+ * It is intentionally read-only and never invokes a command or installs a
+ * dependency.
+ */
+export function probeAvailableToolIds(repositoryRoot = sourceRoot): string[] {
+  const packageFile = path.join(repositoryRoot, 'package.json');
+  let packageScripts: Record<string, unknown> = {};
+  try {
+    const parsed = JSON.parse(readFileSync(packageFile, 'utf8')) as { scripts?: unknown };
+    packageScripts = parsed.scripts && typeof parsed.scripts === 'object' ? parsed.scripts as Record<string, unknown> : {};
+  } catch { /* a missing package manifest means command tools stay unavailable */ }
+  const sourceAvailable = (source: string) => {
+    try { accessSync(path.join(repositoryRoot, source), constants.R_OK); return true; } catch { return false; }
+  };
+  const packageAvailable = (name: string) => sourceAvailable(`node_modules/${name}`) || sourceAvailable(`node_modules/${name}/package.json`);
+  const executableAvailable = (name: string) => sourceAvailable(`node_modules/.bin/${name}`) || executableOnPath(name);
+  const checks: Record<string, boolean> = {
+    'read-artifacts': sourceAvailable('src/core/permission-manifest.ts'),
+    'read-qa-report': sourceAvailable('src/agents/index.ts'),
+    'read-runtime-evidence': sourceAvailable('src/qa/playwright-qa.ts'),
+    'write-game-workspace': sourceAvailable('src/core/execution-boundary.ts'),
+    'write-generated-assets': sourceAvailable('src/agents/index.ts'),
+    'write-design-artifacts': sourceAvailable('src/factory.ts'),
+    'write-qa-artifacts': sourceAvailable('src/agents/index.ts'),
+    'write-release-artifacts': sourceAvailable('src/core/release.ts'),
+    'run-tests': typeof packageScripts.test === 'string' && executableAvailable('pnpm'),
+    'run-build': sourceAvailable('src/adapters/runtime.ts') && executableAvailable('vite'),
+    'run-playwright': sourceAvailable('src/providers/runtime-qa.ts') && packageAvailable('@playwright/test') && executableAvailable('playwright'),
+    'research-allowlist': sourceAvailable('src/core/permission-manifest.ts'),
+    'hash-build': sourceAvailable('src/core/files.ts'),
+  };
+  return Object.entries(checks).filter(([, available]) => available).map(([id]) => id).sort();
+}
+
 export function availableToolDefinitions(): ToolDefinition[] {
   return Object.values(toolDefinitions).map((item) => ({ ...item }));
 }
@@ -215,30 +262,53 @@ export function skillRefsFor(input: { role: AgentRole; runtime: z.infer<typeof R
           : input.role === 'release' && (input.stage === 'RELEASE' || input.stage === 'RELEASE_CANDIDATE')
             ? 'release-packager'
             : undefined;
-  const required = stageSkill
-    ? [stageSkill]
-    : input.role === 'builder' && input.runtime === 'web-lite'
+  const roleRequired = input.role === 'research'
+    ? [input.stage === 'OPEN_SOURCE_RESEARCH' ? 'open-source-research' : 'competitor-research']
+    : input.role === 'producer'
+      ? ['game-ui-ux', 'critique']
+      : input.role === 'builder'
+        ? ['game-feel', 'game-ui-ux']
+        : input.role === 'fixer'
+          ? ['codex-game-repair', 'critique']
+          : input.role === 'reviewer'
+            ? ['critique', ...(input.taskKind.startsWith('qa') ? ['game-playtest'] : [])]
+            : input.role === 'release'
+              ? ['critique']
+              : input.role === 'evidence-helper' && input.taskKind.startsWith('qa')
+                ? ['game-playtest']
+                : [];
+  const runtimeRequired = input.runtime === 'cocos-3d' && (input.role === 'builder' || input.role === 'fixer')
+    ? ['cocos-creator-v3']
+    : input.runtime === 'web-lite' && input.role === 'builder'
       ? ['web-lite-game-builder']
-      : input.role === 'fixer'
-        ? ['codex-game-repair']
-        : input.role === 'reviewer' || input.role === 'evidence-helper'
-          ? ['game-playtest']
-          : [];
-  const optional = input.role === 'builder' ? ['game-feel', 'game-ui-ux'] : input.role === 'fixer' ? ['critique'] : [];
+      : [];
+  const required = [...new Set([...(stageSkill ? [stageSkill] : []), ...runtimeRequired, ...roleRequired])];
+  const roleSupport = input.role === 'fixer' ? ['game-playtest'] : input.role === 'evidence-helper' ? ['game-playtest'] : input.role === 'release' ? ['release-packager'] : [];
+  const optional = [...new Set(roleSupport.filter((id) => !required.includes(id)))];
   return [...required.map((id) => loadSkill(id, true)), ...optional.map((id) => loadSkill(id, false))];
 }
 
 function lineMethod(productionLine: ProductionLine | null): string {
   if (!productionLine) return 'The production line is unresolved; preserve the task boundary and return a typed scope request before making line-specific changes.';
   const contract = getProductionLineContract(productionLine);
-  return `Use the ${contract.line} contract. Representative flow: ${contract.representativeFlow.join(' → ')}. Check: ${contract.acceptanceDimensions.join(', ')}.`;
+  const recipe = {
+    'single-finger-action': 'Exercise the primary touch hold/release or tap action, verify continuous motion and contact/miss feedback, then observe a legible failure and immediate retry.',
+    'cut-stack-dodge': 'Exercise varied cut or flip contacts. Verify each cuttable object moves through ready → contact/cut → falling/settled, supports and hazards use distinct collision branches, and finish/failure each expose one-tap retry.',
+    'idle-management': 'Exercise produce → deliver/settle → one upgrade trade-off → refresh recovery. Verify waiting pressure, reward attribution, a visible next goal and saved progress across reload.',
+    'choice-life': 'Exercise one meaningful choice, an attributable immediate consequence, a delayed consequence and an alternate replay branch; do not collapse both choices into the same state.',
+    'rule-puzzle': 'Exercise visible rule discovery, one illegal move with fair feedback, a solvable completion and a reset that exposes a valid variant.',
+  }[contract.line];
+  return `Use the ${contract.line} contract. Representative flow: ${contract.representativeFlow.join(' → ')}. Check: ${contract.acceptanceDimensions.join(', ')}. Line recipe: ${recipe}`;
 }
 
 export function workRecipeFor(input: { role: AgentRole; stage: StageName; productionLine: ProductionLine | null; runtime: z.infer<typeof RuntimeNameSchema>; taskKind: AgentTaskKind }): WorkRecipeRef {
-  const { role, stage, productionLine, taskKind } = input;
+  const { role, stage, productionLine, runtime, taskKind } = input;
   const line = productionLine ? productionLine : 'unresolved';
   const id = `${role === 'reviewer' || role === 'evidence-helper' ? 'qa' : role}.${line}.${taskKind}`;
-  const method = lineMethod(productionLine);
+  const runtimeMethod = runtime === 'cocos-3d'
+    ? 'Use the Cocos Creator 3.8 runtime adapter, real 3D geometry, engine delta time, preloaded resources and isolated mobile target outputs.'
+    : 'Use the web-lite runtime adapter, the run-local browser entrypoint, a self-contained dist build and mobile-safe responsive input.';
+  const method = `${lineMethod(productionLine)} ${runtimeMethod}`;
   let body: string;
   let requiredTools: string[];
   if (role === 'builder' && (taskKind === 'build' || taskKind === 'prototype' || taskKind === 'art')) {
@@ -341,18 +411,47 @@ export function packageToolPolicy(input: { allowedTools: string[]; availableTool
   const known = input.availableTools ?? Object.keys(toolDefinitions);
   const unavailableTools = input.allowedTools.filter((tool) => !known.includes(tool) || !toolDefinitions[tool]?.available);
   if (unavailableTools.length > 0) throw new Error(`required agent tool(s) unavailable or not exposed: ${unavailableTools.join(', ')}`);
-  const body = JSON.stringify({ allowedTools: input.allowedTools, availableTools: known, protectedPaths: input.protectedPaths, role: input.role });
+  const exposedTools = known.filter((tool) => Boolean(toolDefinitions[tool]?.available));
+  const body = JSON.stringify({ allowedTools: input.allowedTools, availableTools: exposedTools, protectedPaths: input.protectedPaths, role: input.role });
   return ToolPolicyRefSchema.parse({
     id: `tool-policy.${input.role}`,
     version: '1',
     source: 'src/agents/work-spec.ts',
     sha256: sha256Text(body),
     allowedTools: [...input.allowedTools],
-    availableTools: known.filter((tool) => Boolean(toolDefinitions[tool]?.available)),
+    availableTools: exposedTools,
     unavailableTools,
     protectedPaths: [...input.protectedPaths],
     deniedCapabilities: ['shell-arbitrary', 'secrets', 'cross-run-write', 'production-publish', 'external-upload'],
   });
+}
+
+/** Canonical hashes are recomputed at every provider boundary. */
+export function recipeContentHash(recipe: Pick<WorkRecipeRef, 'body'>): string {
+  return sha256Text(recipe.body);
+}
+
+export function toolPolicyContentHash(policy: Pick<ToolPolicyRef, 'allowedTools' | 'availableTools' | 'protectedPaths'>, role: AgentRole): string {
+  return sha256Text(JSON.stringify({ allowedTools: policy.allowedTools, availableTools: policy.availableTools, protectedPaths: policy.protectedPaths, role }));
+}
+
+export function acceptanceContentHash(acceptance: Pick<AcceptanceRef, 'id' | 'version' | 'source' | 'outputSchema' | 'successOracle' | 'validators' | 'evidenceModes'>): string {
+  return sha256Text(JSON.stringify({ id: acceptance.id, version: acceptance.version, source: acceptance.source, outputSchema: acceptance.outputSchema, successOracle: acceptance.successOracle, validators: acceptance.validators, evidenceModes: acceptance.evidenceModes }));
+}
+
+export function skillContentHash(skill: Pick<WorkSkillRef, 'source' | 'available' | 'body'>): string {
+  return skill.available && skill.body !== undefined ? sha256Text(skill.body) : sha256Text(`${skill.source}:unavailable`);
+}
+
+export function validateWorkSpecProvenance(packageDefinition: AgentPackage): { passed: boolean; blockers: string[] } {
+  const blockers: string[] = [];
+  if (packageDefinition.recipeRef.sha256 !== recipeContentHash(packageDefinition.recipeRef)) blockers.push('recipe-hash-mismatch');
+  if (packageDefinition.toolPolicyRef.sha256 !== toolPolicyContentHash(packageDefinition.toolPolicyRef, packageDefinition.role)) blockers.push('tool-policy-hash-mismatch');
+  if (packageDefinition.acceptanceRef.sha256 !== acceptanceContentHash(packageDefinition.acceptanceRef)) blockers.push('acceptance-hash-mismatch');
+  for (const skill of packageDefinition.skillRefs) {
+    if (skill.sha256 !== skillContentHash(skill)) blockers.push(`skill-hash-mismatch:${skill.id}`);
+  }
+  return { passed: blockers.length === 0, blockers };
 }
 
 export function buildTaskBundle(input: {
@@ -368,11 +467,13 @@ export function buildTaskBundle(input: {
   targetWorkspaceRelative?: string;
   inputPaths?: string[];
   inputHashes?: Record<string, string>;
+  inputSourceHashes?: Record<string, string>;
   renderedInstruction?: string;
 }): AgentTaskBundle {
   const pkg = input.package;
   const taskId = input.taskId?.trim() || `${pkg.stage.toLowerCase()}:unbound`;
-  const inputManifestPayload = { paths: input.inputPaths ?? [], hashes: input.inputHashes ?? {} };
+  const inputSourceHashes = input.inputSourceHashes ?? input.inputHashes ?? {};
+  const inputManifestPayload = { paths: input.inputPaths ?? [], hashes: inputSourceHashes };
   const refs = {
     policyRef: { id: 'factory-policy', version: '1', source: 'src/agents/work-spec.ts#COMMON_WORK_RULES', sha256: sha256Text(COMMON_WORK_RULES) },
     roleProfileRef: { id: `role.${pkg.role}`, version: '1', source: 'src/agents/packages.ts', sha256: sha256Text(pkg.roleRules) },
@@ -386,6 +487,7 @@ export function buildTaskBundle(input: {
     toolPolicyHash: pkg.toolPolicyRef.sha256,
     acceptanceHash: pkg.acceptanceRef.sha256,
     inputManifestHash: refs.inputManifestRef.sha256,
+    inputSourceHashes,
     loadedRefs: [refs.policyRef.id, refs.roleProfileRef.id, ...pkg.skillRefs.filter((skill) => skill.available).map((skill) => skill.id), pkg.recipeRef.id, pkg.toolPolicyRef.id, pkg.acceptanceRef.id, refs.inputManifestRef.id],
   };
   const rendered = input.renderedInstruction ?? [COMMON_WORK_RULES, pkg.roleRules, pkg.recipeRef.body].join('\n');

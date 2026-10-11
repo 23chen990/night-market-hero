@@ -35,12 +35,16 @@ export type CodexExecRequest = {
   networkAccessEnabled?: boolean;
   /** Parent run root when cwd is a nested generated workspace. */
   runRoot?: string;
+  /** Repository root used to re-read hash-bound shared inputs. */
+  inputSourceRoot?: string;
   /** Research must run from a stage-scoped, sanitized filesystem view. */
   researchIsolation?: { mode: 'sanitized-read-only'; root: string; manifestPath?: string };
   /** Optional compiled work specification. When present the executor validates
    * it and renders it before the model receives the prompt. */
   agentPackage?: AgentPackage;
   taskBundle?: AgentTaskBundle;
+  /** Set by the factory path; direct legacy executor tests may omit it. */
+  workSpecRequired?: boolean;
 };
 
 export type CodexJsonlResult = {
@@ -130,6 +134,54 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
 }
 
 type ProcessResult = { code: number | null; signal: NodeJS.Signals | null; stdout: string; stderr: string };
+
+function commandFields(value: unknown, fields: string[] = []): string[] {
+  if (Array.isArray(value)) return value.flatMap((item) => commandFields(item, fields));
+  if (!value || typeof value !== 'object') return fields;
+  for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
+    if (/^(?:command|command_line|commandLine|argv)$/u.test(key)) {
+      if (typeof item === 'string') fields.push(item);
+      else if (Array.isArray(item) && item.every((part) => typeof part === 'string')) fields.push(item.join(' '));
+    }
+    commandFields(item, fields);
+  }
+  return fields;
+}
+
+/**
+ * Validate the command operations exposed by a Codex turn against the
+ * compiled closed-world tool policy. The Codex sandbox remains the final OS
+ * boundary; this audit rejects undeclared command classes and denied side
+ * effects before accepting the turn.
+ */
+export function validateToolDispatchEvents(events: Record<string, unknown>[], request: Pick<CodexExecRequest, 'agentPackage'>): { passed: boolean; blockers: string[]; commands: Array<{ command: string; tool: string }> } {
+  if (!request.agentPackage) return { passed: true, blockers: [], commands: [] };
+  const packageDefinition = request.agentPackage;
+  const allowed = new Set(packageDefinition.allowedTools);
+  const commands = commandFields(events).map((command) => command.trim()).filter(Boolean);
+  const observed: Array<{ command: string; tool: string }> = [];
+  const blockers: string[] = [];
+  const classify = (command: string): string | undefined => {
+    if (/(?:curl|wget|nc\s|ssh\s|scp\s|git\s+push|npm\s+publish|pnpm\s+publish|butler\s+push|steamcmd|upload)/iu.test(command)) return undefined;
+    if (/(?:pnpm\s+(?:test|typecheck)|vitest|jest|pytest|npm\s+test)/iu.test(command)) return 'run-tests';
+    if (/(?:pnpm\s+(?:build|run\s+build)|vite\s+build)/iu.test(command)) return 'run-build';
+    if (/(?:playwright|chromium|webkit)/iu.test(command)) return 'run-playwright';
+    if (/^(?:\s*(?:cat|head|tail|sed|awk|rg|grep|find|ls|pwd|stat|git\s+(?:status|diff|show)|which)\b)/iu.test(command)) return 'read-artifacts';
+    if (/(?:apply_patch|mkdir|touch|cp\s|mv\s|rm\s|python\s|node\s)/iu.test(command)) {
+      return packageDefinition.role === 'release' ? 'write-release-artifacts'
+        : packageDefinition.role === 'reviewer' || packageDefinition.role === 'evidence-helper' ? 'write-qa-artifacts'
+          : packageDefinition.role === 'producer' ? 'write-design-artifacts'
+            : packageDefinition.role === 'research' ? undefined : 'write-game-workspace';
+    }
+    return undefined;
+  };
+  for (const command of commands) {
+    const tool = classify(command);
+    if (!tool || !allowed.has(tool)) blockers.push(`undeclared-tool-operation:${command.slice(0, 180)}`);
+    else observed.push({ command, tool });
+  }
+  return { passed: blockers.length === 0, blockers: [...new Set(blockers)], commands: observed };
+}
 
 function isWithin(parent: string, candidate: string): boolean {
   const relative = path.relative(path.resolve(parent), path.resolve(candidate));
@@ -241,7 +293,26 @@ export class CodexCliProvider {
       if (!request.stage || request.agentPackage.stage !== request.stage) throw new Error('Codex agent package requires a matching stage');
     }
     if (request.stage) {
-      const checked = assertExecutionContext({ runRoot: workingDirectory.runRoot, outputPath: request.outputPath, logDir: request.logDir, inputPaths: [], stage: request.stage, model: request.model, sandbox: request.sandbox, enforceBoundary: true, agentPackage: request.agentPackage, taskBundle: request.taskBundle });
+      const checked = assertExecutionContext({
+        runRoot: workingDirectory.runRoot,
+        inputSourceRoot: request.inputSourceRoot,
+        outputPath: request.outputPath,
+        logDir: request.logDir,
+        inputPaths: request.taskBundle?.inputPaths ?? [],
+        stage: request.stage,
+        productionLine: request.taskBundle?.productionLine,
+        taskKind: request.taskBundle?.taskKind,
+        taskId: request.taskBundle?.taskId,
+        runtime: request.taskBundle?.runtime,
+        targetGameId: request.taskBundle?.targetGameId,
+        targetWorkspaceRelative: request.taskBundle?.targetWorkspaceRelative,
+        model: request.model,
+        sandbox: request.sandbox,
+        enforceBoundary: true,
+        workSpecRequired: request.workSpecRequired === true,
+        agentPackage: request.agentPackage,
+        taskBundle: request.taskBundle,
+      });
       if (request.role && request.role !== checked.role) throw new Error(`Codex execution role ${request.role} does not match stage ${request.stage}`);
     }
     let processEnv: NodeJS.ProcessEnv;
@@ -266,9 +337,12 @@ export class CodexCliProvider {
         const processResult = await this.runProcess(args, { cwd: workingDirectory.cwd, stdin: prompt, signal: request.signal, timeoutMs: request.timeoutMs, env: processEnv });
         const stdout = redactText(processResult.stdout); const stderr = redactText(processResult.stderr);
         const parsed = parseCodexJsonl(stdout);
+        const dispatch = validateToolDispatchEvents(parsed.events, request);
+        await writeJsonAtomic(path.join(request.logDir, `${request.label}.attempt-${attempt}.tool-dispatch.json`), redactValue(dispatch));
         await writeFile(path.join(request.logDir, `${request.label}.attempt-${attempt}.stdout.jsonl`), stdout);
         await writeFile(path.join(request.logDir, `${request.label}.attempt-${attempt}.stderr.log`), stderr);
         await writeJsonAtomic(path.join(request.logDir, `${request.label}.attempt-${attempt}.events.json`), redactValue(parsed.events));
+        if (!dispatch.passed) throw new Error(`Codex tool policy rejected turn: ${dispatch.blockers.join(', ')}`);
         if (processResult.code !== 0 || parsed.failed || !parsed.completed) throw new Error(parsed.errors.at(-1) ?? (stderr.trim() || `codex exec exited with code ${processResult.code}`));
         const rawOutputText = await readFile(request.outputPath, 'utf8');
         const outputText = redactText(rawOutputText);

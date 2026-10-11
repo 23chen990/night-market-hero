@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { describe, expect, it } from 'vitest';
-import { CodexCliProvider, buildCodexExecArgs, parseCodexJsonl, type SpawnFunction } from '../../src/providers/codex-cli.js';
+import { CodexCliProvider, buildCodexExecArgs, parseCodexJsonl, validateToolDispatchEvents, type SpawnFunction } from '../../src/providers/codex-cli.js';
 
 type FakeResult = { code?: number; stdout?: string; stderr?: string; output?: string; hang?: boolean; delayMs?: number };
 
@@ -32,6 +32,12 @@ function fakeSpawn(results: FakeResult[], calls: Array<{ command: string; args: 
 }
 
 describe('CodexCliProvider', () => {
+  it('closes the command dispatch world at the executor boundary', () => {
+    const packageDefinition = { allowedTools: ['read-artifacts', 'run-tests'] } as never;
+    expect(validateToolDispatchEvents([{ type: 'item.completed', item: { type: 'command_execution', command: 'pnpm test' } }], { agentPackage: packageDefinition })).toMatchObject({ passed: true });
+    expect(validateToolDispatchEvents([{ type: 'item.completed', item: { type: 'command_execution', command: 'curl https://example.com' } }], { agentPackage: packageDefinition })).toMatchObject({ passed: false, blockers: expect.arrayContaining([expect.stringContaining('undeclared-tool-operation')]) });
+  });
+
   it('passes only a safe environment to trusted Codex stages and strips credentials', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-env-'));
     const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string; env?: NodeJS.ProcessEnv }> = [];

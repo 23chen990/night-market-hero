@@ -29,6 +29,7 @@ import {
   workRecipeFor,
   availableToolDefinitions,
   toolDefinition,
+  validateWorkSpecProvenance,
 } from './work-spec.js';
 
 export {
@@ -91,6 +92,7 @@ export const AgentPackageSchema = z.object({
   const writer = value.role === 'builder' || value.role === 'fixer';
   if (value.canModifyWorkspace !== writer) context.addIssue({ code: 'custom', message: 'workspace permission must match the role' });
   if (value.sandbox !== (writer ? 'workspace-write' : 'read-only')) context.addIssue({ code: 'custom', message: 'sandbox must match the role' });
+  if (JSON.stringify(value.availableTools) !== JSON.stringify(value.toolPolicyRef.availableTools)) context.addIssue({ code: 'custom', path: ['availableTools'], message: 'available tools must match the tool policy' });
   if (value.stage === 'FIX' && value.role !== 'fixer') context.addIssue({ code: 'custom', path: ['role'], message: 'FIX must use the fixer role' });
   if ((value.stage === 'FULL_BUILD' || value.stage === 'BUILD') && value.role !== 'builder') context.addIssue({ code: 'custom', path: ['role'], message: 'build stages must use the builder role' });
   const recipeCheck = verifyWorkRecipeTools(value.recipeRef, value.allowedTools);
@@ -157,7 +159,15 @@ function acceptanceReference(input: { role: AgentRole; taskKind: AgentTaskKind; 
       : input.role === 'reviewer' || input.role === 'evidence-helper'
         ? ['QaReportSchema', 'NaturalFlowEvidenceSchema', 'runtime-product-gates']
         : ['declared-output-Zod-schema'];
-  const evidenceModes = input.taskKind === 'qa-natural' ? ['natural'] : input.taskKind === 'qa-perceptual' ? ['perceptual'] : input.taskKind === 'qa-engineering' ? ['engineering'] : ['artifact'];
+  const evidenceModes = input.taskKind === 'qa-natural'
+    ? ['natural']
+    : input.taskKind === 'qa-perceptual'
+      ? ['perceptual']
+      : input.taskKind === 'qa-engineering'
+        ? ['engineering']
+        : input.role === 'reviewer' || input.role === 'evidence-helper'
+          ? ['engineering', 'natural', 'perceptual']
+          : ['artifact'];
   const payload = { id: `acceptance.${input.role}.${input.taskKind}`, version: '1', source: 'src/agents/packages.ts', outputSchema: input.outputSchema, successOracle: input.successOracle, validators, evidenceModes };
   return AcceptanceRefSchema.parse({ ...payload, sha256: sha256Text(JSON.stringify(payload)) });
 }
@@ -244,17 +254,19 @@ export function packageAuditView(packageDefinition: AgentPackage, taskBundle: Ag
     productionLine: packageDefinition.productionLine,
     runtime: packageDefinition.runtime,
     taskKind: packageDefinition.taskKind,
-    skills: packageDefinition.skillRefs.map((skill) => ({ id: skill.id, version: skill.version, source: skill.source, sha256: skill.sha256, available: skill.available, required: skill.required, ...(skill.reason ? { reason: skill.reason } : {}) })),
-    recipe: { id: packageDefinition.recipeRef.id, version: packageDefinition.recipeRef.version, source: packageDefinition.recipeRef.source, sha256: packageDefinition.recipeRef.sha256 },
+    rules: { common: packageDefinition.commonRules, role: packageDefinition.roleRules },
+    skills: packageDefinition.skillRefs.map((skill) => ({ id: skill.id, version: skill.version, source: skill.source, sha256: skill.sha256, available: skill.available, required: skill.required, ...(skill.body ? { body: skill.body } : {}), ...(skill.reason ? { reason: skill.reason } : {}) })),
+    recipe: { id: packageDefinition.recipeRef.id, version: packageDefinition.recipeRef.version, source: packageDefinition.recipeRef.source, sha256: packageDefinition.recipeRef.sha256, body: packageDefinition.recipeRef.body, requiredTools: packageDefinition.recipeRef.requiredTools, examples: packageDefinition.recipeRef.examples },
     tools: {
       allowed: packageDefinition.allowedTools,
       available: packageDefinition.availableTools,
       definitions: packageDefinition.allowedTools.map((tool) => toolDefinition(tool)).filter((item): item is NonNullable<ReturnType<typeof toolDefinition>> => item !== undefined),
       denied: packageDefinition.toolPolicyRef.deniedCapabilities,
     },
+    executionLimits: { contextBudget: packageDefinition.contextBudget, maxTurns: packageDefinition.maxTurns, planBeforeWrite: packageDefinition.planBeforeWrite },
     inputs: taskBundle.inputPaths,
     discretion: { locked: taskBundle.lockedDecisions, allowed: taskBundle.allowedDiscretion, approvalRequired: taskBundle.requiresApproval },
-    acceptance: { outputSchema: packageDefinition.outputSchema, successOracle: packageDefinition.successOracle, validators: packageDefinition.acceptanceRef.validators },
+    acceptance: { outputSchema: packageDefinition.outputSchema, successOracle: packageDefinition.successOracle, validators: packageDefinition.acceptanceRef.validators, evidenceModes: packageDefinition.acceptanceRef.evidenceModes, sha256: packageDefinition.acceptanceRef.sha256 },
     promptProvenance: taskBundle.promptProvenance,
     renderedInstructionHash: sha256Text(instruction),
   };
@@ -265,5 +277,6 @@ export function validatePackageToolDeclarations(packageDefinition: AgentPackage)
   if (!parsed.success) return { passed: false, blockers: ['package-schema-invalid'] };
   const recipe = verifyWorkRecipeTools(parsed.data.recipeRef, parsed.data.allowedTools);
   const missing = parsed.data.allowedTools.filter((tool) => !availableToolDefinitions().some((candidate) => candidate.id === tool));
-  return { passed: recipe.passed && missing.length === 0, blockers: [...recipe.blockers, ...missing.map((tool) => `unknown-tool:${tool}`)] };
+  const provenance = validateWorkSpecProvenance(parsed.data);
+  return { passed: recipe.passed && missing.length === 0 && provenance.passed, blockers: [...recipe.blockers, ...missing.map((tool) => `unknown-tool:${tool}`), ...provenance.blockers] };
 }

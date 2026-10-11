@@ -86,6 +86,20 @@ async function main() {
     case 'new': { const runId = await factory.newRun(path.resolve(requireArg(args[0], 'seed-file')), rigorOption()); console.log(runId); break; }
     case 'new-action': { const runId = await factory.newActionExperiment(path.resolve(requireArg(args[0], 'action-experiment-file'))); console.log(runId); break; }
     case 'run': console.log(JSON.stringify(await factory.run(requireArg(args[0], 'run-id')), null, 2)); break;
+    case 'delivery': {
+      const runId = requireArg(args[0], 'run-id');
+      const result = await factory.delivery(runId, requireArg(option('--candidate'), '--candidate'), requireArg(option('--kind'), '--kind'));
+      console.log(JSON.stringify({ ok: result.status === 'READY', ...result, taskId: runId }, null, 2));
+      if (result.status === 'BLOCKED') process.exitCode = 2;
+      break;
+    }
+    case 'export': {
+      const runId = requireArg(args[0], 'run-id');
+      const result = await factory.exportDelivery(runId, requireArg(option('--candidate'), '--candidate'), requireArg(option('--audience'), '--audience'));
+      console.log(JSON.stringify({ ok: result.status === 'READY', ...result, taskId: runId }, null, 2));
+      if (result.status === 'BLOCKED') process.exitCode = 2;
+      break;
+    }
     case 'status': { const state = await factory.status(requireArg(args[0], 'run-id')); console.log(JSON.stringify({ ...state, operator: buildOperatorRunSummary(state) }, null, 2)); break; }
     case 'audit-reference': console.log(JSON.stringify(await factory.auditReference(requireArg(args[0], 'run-id'), { targetGame: option('--target-game'), targetWorkspace: option('--workspace') }), null, 2)); break;
     case 'extract-reference-frames': console.log(JSON.stringify(await factory.extractReferenceFrames(requireArg(args[0], 'run-id'), { evidenceId: option('--evidence-id'), ...(option('--fps') ? { fps: Number(option('--fps')) } : {}), ...(option('--max-frames') ? { maxFrames: Number(option('--max-frames')) } : {}) }), null, 2)); break;
@@ -166,7 +180,7 @@ async function main() {
     case 'retry': console.log(JSON.stringify(await factory.retry(requireArg(args[0], 'run-id'), StageNameSchema.parse(requireArg(args[1], 'stage').toUpperCase())), null, 2)); break;
     case 'inspect': console.log(JSON.stringify(await factory.inspect(requireArg(args[0], 'run-id')), null, 2)); break;
     case 'demo': { const runId = await factory.demo(args[0] ? path.resolve(args[0]) : undefined); console.log(JSON.stringify({ runId, state: await factory.status(runId) }, null, 2)); break; }
-    default: throw new Error('Usage: factory <doctor|route|runs|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|status|audit-reference|extract-reference-frames|capture-reference-url|promote-reference-capture|discard-reference-capture|capture-reference-code|promote-reference-code|discard-reference-code|record-reference-code-analysis|capture-session-start|capture-session-step|capture-session-status|capture-session-finish|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
+    default: throw new Error('Usage: factory <doctor|route|runs|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|delivery|export|status|audit-reference|extract-reference-frames|capture-reference-url|promote-reference-capture|discard-reference-capture|capture-reference-code|promote-reference-code|discard-reference-code|record-reference-code-analysis|capture-session-start|capture-session-step|capture-session-status|capture-session-finish|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
   }
 }
 main().catch((error) => { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; });

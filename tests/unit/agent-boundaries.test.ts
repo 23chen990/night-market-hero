@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { expect, it } from 'vitest';
-import { builderVerificationPassed, FixerAgent } from '../../src/agents/index.js';
+import { builderVerificationPassed, BuilderAgent, FixerAgent } from '../../src/agents/index.js';
+import { compileAgentContext } from '../../src/agents/context-compiler.js';
 import type { CodexProvider } from '../../src/providers/interfaces.js';
 import type { RuntimeAdapter } from '../../src/adapters/runtime.js';
 import type { QaReport } from '../../src/schemas/index.js';
@@ -18,6 +19,32 @@ it('keeps generated game workspace mutations inside BuilderAgent and FixerAgent'
 it('does not label a Builder report successful when a verification check is explicitly failed', () => {
   expect(builderVerificationPassed(['contract:test-api-7', 'typecheck:passed'])).toBe(true);
   expect(builderVerificationPassed(['contract:test-api-7', 'typecheck:failed'])).toBe(false);
+});
+
+it('requires the compiled work specification before Builder or Fixer can call a provider', async () => {
+  const builderPackage = compileAgentContext({
+    stage: 'FULL_BUILD', productionLine: 'cut-stack-dodge', runtime: 'web-lite', taskKind: 'build', taskId: 'builder-boundary',
+    targetRunId: 'strict-run', targetGameId: 'strict-game', targetWorkspaceRelative: 'workspace/game',
+    summary: 'Build the frozen candidate.', inputs: [{ path: 'artifacts/game-blueprint.json', content: '{}' }], requiredPaths: ['artifacts/game-blueprint.json'],
+  }).package;
+  const fixerPackage = compileAgentContext({
+    stage: 'FIX', productionLine: 'cut-stack-dodge', runtime: 'web-lite', taskKind: 'fix', taskId: 'fixer-boundary',
+    targetRunId: 'strict-run', targetGameId: 'strict-game', targetWorkspaceRelative: 'workspace/game',
+    summary: 'Repair the validated issue.', inputs: [{ path: 'artifacts/qa-report.json', content: '{}' }], requiredPaths: ['artifacts/qa-report.json'],
+  }).package;
+  let providerCalls = 0;
+  const provider: CodexProvider = {
+    build: async () => { providerCalls += 1; return { verificationMode: 'contract' as const, metrics: { provider: 'test', model: 'test', calls: 1 } }; },
+    fix: async () => { providerCalls += 1; return { verificationMode: 'contract' as const, summary: 'fixed', metrics: { provider: 'test', model: 'test', calls: 1 } }; },
+  };
+  const context = (stage: 'FULL_BUILD' | 'FIX', agentPackage: typeof builderPackage | typeof fixerPackage) => ({
+    runRoot: '/tmp/strict-run', outputPath: `/tmp/strict-run/logs/${stage}.json`, logDir: '/tmp/strict-run/logs', inputPaths: [],
+    stage, productionLine: 'cut-stack-dodge' as const, taskKind: stage === 'FIX' ? 'fix' as const : 'build' as const, taskId: stage === 'FIX' ? 'fixer-boundary' : 'builder-boundary',
+    runtime: 'web-lite' as const, sandbox: 'workspace-write' as const, enforceBoundary: true, workSpecRequired: true, agentPackage,
+  });
+  await expect(new BuilderAgent(provider, {} as RuntimeAdapter).run('/tmp/strict-run/workspace/game', {} as never, {} as never, {} as never, 'cut-stack-dodge-v1', '/tmp/strict-run/workspace/generated-assets', undefined, undefined, context('FULL_BUILD', builderPackage))).rejects.toThrow(/work specification/iu);
+  await expect(new FixerAgent(provider, {} as RuntimeAdapter).run('/tmp/strict-run/workspace/game', undefined, {} as never, context('FIX', fixerPackage))).rejects.toThrow(/work specification/iu);
+  expect(providerCalls).toBe(0);
 });
 
 it('mirrors the builder verification mode after a fixer turn', async () => {

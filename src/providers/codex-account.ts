@@ -111,14 +111,18 @@ export class CodexAccountProvider implements AgentProvider, CodexProvider {
   }
 
   private execute(request: CodexExecRequest) {
-    return this.client.execute({ ...request, prompt: request.stage ? buildAgentPackageInstruction({ stage: request.stage, base: request.prompt, package: request.agentPackage, taskBundle: request.taskBundle }) : request.prompt });
+    return this.client.execute({
+      ...request,
+      workSpecRequired: request.workSpecRequired ?? Boolean(request.agentPackage && request.taskBundle),
+      prompt: request.stage ? buildAgentPackageInstruction({ stage: request.stage, base: request.prompt, package: request.agentPackage, taskBundle: request.taskBundle }) : request.prompt,
+    });
   }
 
   private async structured(stage: string, prompt: string, schema: z.ZodType, contextValue: AgentExecutionContext | undefined, outputSchema = codexOutputSchema(schema)): Promise<AgentProviderResult> {
     const context = safeExecutionContext({ ...contextRequired(contextValue, stage), sandbox: 'read-only' });
     const model = context.model?.trim() || process.env.CODEX_MODEL || 'account-default';
     const isolation = context.role === 'research' ? await prepareResearchSandbox(context) : undefined;
-    const result = await this.execute({ label: stage, prompt: `${prompt}\n\nValidated context packet:\n${JSON.stringify(safeContextPacket(context, stage))}`, cwd: isolation?.root ?? context.runRoot, runRoot: context.runRoot, sandbox: 'read-only', model, reasoning: context.reasoning, stage, role: context.role, agentPackage: context.agentPackage, taskBundle: context.taskBundle, ...(isolation ? { researchIsolation: isolation } : {}), outputSchema, outputPath: context.outputPath, logDir: context.logDir });
+    const result = await this.execute({ label: stage, prompt: `${prompt}\n\nValidated context packet:\n${JSON.stringify(safeContextPacket(context, stage))}`, cwd: isolation?.root ?? context.runRoot, runRoot: context.runRoot, inputSourceRoot: context.inputSourceRoot, sandbox: 'read-only', model, reasoning: context.reasoning, stage, role: context.role, agentPackage: context.agentPackage, taskBundle: context.taskBundle, ...(isolation ? { researchIsolation: isolation } : {}), outputSchema, outputPath: context.outputPath, logDir: context.logDir });
     return { value: result.output, metrics: { provider: 'codex-cli', model, calls: result.attempts, usage: result.usage } };
   }
 

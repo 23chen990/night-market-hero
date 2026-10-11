@@ -23,7 +23,7 @@ function required(value: string | undefined, name: string) {
   return value;
 }
 
-export type StructuredAgentRequest = { name: string; instructions: string; input: unknown; outputSchema: z.ZodType; model: string; timeoutMs: number };
+export type StructuredAgentRequest = { name: string; instructions: string; input: unknown; outputSchema: z.ZodType; model: string; timeoutMs: number; maxTurns?: number };
 export interface StructuredAgentRunner {
   run(request: StructuredAgentRequest): Promise<{ output: unknown; rawResponse?: unknown; usage?: TokenUsage }>;
 }
@@ -42,7 +42,7 @@ class AgentsSdkRunner implements StructuredAgentRunner {
       modelSettings: { timeoutMs: request.timeoutMs, store: false, preserveRawUsage: true },
       outputType: envelopeSchema,
     });
-    const result = await run(agent, JSON.stringify(request.input), { maxTurns: 1 });
+    const result = await run(agent, JSON.stringify(request.input), { maxTurns: Math.max(1, Math.min(8, request.maxTurns ?? 1)) });
     const usage = result.runContext.usage;
     return {
       output: parseAgentPayload(result.finalOutput?.payload ?? ''),
@@ -95,10 +95,11 @@ export class OpenAIAgentProvider implements AgentProvider {
         : { payload: input, contextPacket: safeContext.contextPacket, taskBundle: safeContext.taskBundle, execution: { stage: safeContext.stage, model, sandbox: safeContext.sandbox } })
       : input;
     let nextInput = contextualInput;
-    for (let call = 1; call <= MAX_AGENT_CALLS; call += 1) {
+    const maxCalls = Math.max(1, Math.min(8, safeContext?.agentPackage?.maxTurns ?? MAX_AGENT_CALLS));
+    for (let call = 1; call <= maxCalls; call += 1) {
       let response: Awaited<ReturnType<StructuredAgentRunner['run']>>;
       try {
-        response = await this.runner.run({ name, instructions: safeContext ? buildAgentPackageInstruction({ stage: safeContext.stage ?? 'QA', base: instructions, package: safeContext.agentPackage, taskBundle: safeContext.taskBundle }) : instructions, input: nextInput, outputSchema: schema, model, timeoutMs: this.timeoutMs });
+        response = await this.runner.run({ name, instructions: safeContext ? buildAgentPackageInstruction({ stage: safeContext.stage ?? 'QA', base: instructions, package: safeContext.agentPackage, taskBundle: safeContext.taskBundle }) : instructions, input: nextInput, outputSchema: schema, model, timeoutMs: this.timeoutMs, maxTurns: maxCalls });
       } catch (error) {
         throw new ProviderOutputError(redactText(`${name} model call failed: ${error instanceof Error ? error.message : String(error)}`), { provider: 'openai-agents', model, calls: call, usage }, rawResponses, validationErrors);
       }
@@ -107,9 +108,9 @@ export class OpenAIAgentProvider implements AgentProvider {
       const parsed = schema.safeParse(response.output);
       if (parsed.success) return { value: parsed.data, metrics: { provider: 'openai-agents', model, calls: call, usage } };
       validationErrors.push(z.prettifyError(parsed.error));
-      if (call < MAX_AGENT_CALLS) nextInput = { repair: true, originalInput: contextualInput, invalidOutput: response.rawResponse ?? response.output, validationError: validationErrors.at(-1) };
+      if (call < maxCalls) nextInput = { repair: true, originalInput: contextualInput, invalidOutput: response.rawResponse ?? response.output, validationError: validationErrors.at(-1) };
     }
-    throw new ProviderOutputError(`${name} returned invalid structured output after ${MAX_AGENT_CALLS} calls`, { provider: 'openai-agents', model, calls: MAX_AGENT_CALLS, usage }, rawResponses, validationErrors);
+    throw new ProviderOutputError(`${name} returned invalid structured output after ${maxCalls} calls`, { provider: 'openai-agents', model, calls: maxCalls, usage }, rawResponses, validationErrors);
   }
 
   analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext) {

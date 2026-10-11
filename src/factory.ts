@@ -3,8 +3,9 @@ import path from 'node:path';
 import { parse, stringify } from 'yaml';
 import { ArtDirectorAgent, AssetProducerAgent, BuilderAgent, CompetitorResearchAgent, FixerAgent, GreenlightAgent, IaaMonetizationReviewerAgent, OpenSourceResearchAgent, ProducerAgent, ProductionCostReviewerAgent, QAAgent, ReferenceResearchAgent, ReleaseAgent, StyleLockAgent } from './agents/index.js';
 import { compileAgentContext } from './agents/context-compiler.js';
+import { probeAvailableToolIds } from './agents/work-spec.js';
 import { createArtReview } from './core/art-review.js';
-import { exists, listFiles, sha256File, sha256Text, writeJsonAtomic } from './core/files.js';
+import { exists, listFiles, sha256Directory, sha256File, sha256Text, writeJsonAtomic } from './core/files.js';
 import { redactText, redactValue } from './core/redaction.js';
 import { capturePrototypeApprovalEvidence, verifyPrototypeApprovalEvidence } from './core/prototype-approval-evidence.js';
 import { RequestRouter } from './core/request-router.js';
@@ -124,6 +125,7 @@ import { mergeReferenceLevelQaReport, runReferenceLevelQa, type ReferenceLevelQa
 import { buildActionFeelExperienceReview, buildActionFeelRepairTriage, buildActionFeelStageSpec, buildProfileStageEvidence, isActionFeelProfileStageSupported } from './core/action-feel-stage.js';
 import { GAME_RUN_IDENTITY_ARTIFACT, canonicalGameIdFromTitle, validateGameRunIdentityBinding } from './core/game-identity.js';
 import { GameRunIdentityManifestSchema } from './schemas/game-identity.js';
+import { createDeliveryManifest, exportDelivery } from './core/delivery.js';
 
 export type FactoryMode = 'mock' | 'live-art' | 'codex-account';
 export type FactoryValidationMode = 'fast' | 'production';
@@ -244,7 +246,7 @@ export function createFactory(options: FactoryOptions = {}) {
   let selectedRuntimeName: 'web-lite' | 'cocos-3d' = 'web-lite';
   const qaProvider = qaMode === 'playwright' ? new PlaywrightQAProvider() : new MockQAProvider();
   const referenceLevelQaRunner = options.referenceLevelQaRunner ?? runReferenceLevelQa;
-  const referenceResearchAgent = new ReferenceResearchAgent(agents); const competitorResearchAgent = new CompetitorResearchAgent(agents); const openSourceResearchAgent = new OpenSourceResearchAgent(agents); const productionCostReviewerAgent = new ProductionCostReviewerAgent(agents); const iaaMonetizationReviewerAgent = new IaaMonetizationReviewerAgent(agents); const greenlightAgent = new GreenlightAgent(agents); const producerAgent = new ProducerAgent(agents); const artDirectorAgent = new ArtDirectorAgent(agents); const styleLockAgent = new StyleLockAgent(agents); const assetProducerAgent = new AssetProducerAgent(assetImages); let builderAgent = new BuilderAgent(codex, runtime); let qaAgent = new QAAgent(qaProvider, runtime); let fixerAgent = new FixerAgent(codex, runtime); const releaseAgent = new ReleaseAgent();
+  const referenceResearchAgent = new ReferenceResearchAgent(agents); const competitorResearchAgent = new CompetitorResearchAgent(agents); const openSourceResearchAgent = new OpenSourceResearchAgent(agents); const productionCostReviewerAgent = new ProductionCostReviewerAgent(agents); const iaaMonetizationReviewerAgent = new IaaMonetizationReviewerAgent(agents); const greenlightAgent = new GreenlightAgent(agents); const producerAgent = new ProducerAgent(agents); const artDirectorAgent = new ArtDirectorAgent(agents); const styleLockAgent = new StyleLockAgent(agents); const assetProducerAgent = new AssetProducerAgent(assetImages); let builderAgent = new BuilderAgent(codex, runtime); let qaAgent = new QAAgent(qaProvider, runtime, qaMode === 'playwright'); let fixerAgent = new FixerAgent(codex, runtime); const releaseAgent = new ReleaseAgent();
 
   /** Select the runtime declared by the seed before touching a generated game. */
   function selectRuntime(name: 'web-lite' | 'cocos-3d') {
@@ -252,7 +254,7 @@ export function createFactory(options: FactoryOptions = {}) {
     runtime = name === 'cocos-3d' ? runtimeProvider.runtime('cocos-3d') : webRuntime;
     selectedRuntimeName = name;
     builderAgent = new BuilderAgent(codex, runtime);
-    qaAgent = new QAAgent(qaProvider, runtime);
+    qaAgent = new QAAgent(qaProvider, runtime, qaMode === 'playwright');
     fixerAgent = new FixerAgent(codex, runtime);
   }
 
@@ -311,20 +313,35 @@ export function createFactory(options: FactoryOptions = {}) {
     for (const inputPath of safeInputPaths) assertPermissionOperation(checkedManifest, { kind: 'read', path: inputPath });
     for (const media of boundary?.mediaInputs ?? []) assertPermissionOperation(checkedManifest, { kind: 'read', path: assertSafeContextInputPath(media.path) });
     const repositorySharedPath = (inputPath: string) => /^(?:src|templates|\.agents|examples)\//u.test(inputPath) || /^(?:package\.json|pnpm-lock\.yaml|tsconfig\.json|vitest\.config\.[cm]?[jt]s|eslint\.config\.[cm]?[jt]s|\.env\.example)$/u.test(inputPath);
+    // Action experiments may intentionally inspect a previously generated
+    // prototype under `runs/`.  Keep this cross-run read explicit and still
+    // subject to the stage permission manifest; it must never become a broad
+    // host-path fallback.
+    const repositoryRunInput = (inputPath: string) => /^runs\//u.test(inputPath);
+    const requiredInputPaths = new Set([
+      ...(boundary?.requiredContextPaths ?? []),
+      ...safeInputPaths.filter((inputPath) => inputPath.includes('qa-report') || inputPath.includes('blueprint') || inputPath.includes('style-lock')),
+    ]);
     const inputs = await Promise.all(safeInputPaths.map(async (inputPath) => {
       // Run-local artifacts always win.  Repository fallback is restricted to
       // an explicit shared-factory allow-list; a missing run artifact must not
       // accidentally pull a same-named file from the host repository.
-      const candidates = [path.resolve(runRoot, inputPath), ...(repositorySharedPath(inputPath) ? [path.resolve(repositoryRoot, inputPath)] : [])];
+      const candidates = [path.resolve(runRoot, inputPath), ...((repositorySharedPath(inputPath) || repositoryRunInput(inputPath)) ? [path.resolve(repositoryRoot, inputPath)] : [])];
       for (const candidate of candidates) {
         try {
           const stat = await lstat(candidate);
-          if (!stat.isFile() || stat.isSymbolicLink()) continue;
-          const content = await readFile(candidate, 'utf8');
-          return { path: inputPath, content: sanitizeUntrustedText(content, policy.handoffMaxChars), priority: inputPath.includes('qa-report') || inputPath.includes('blueprint') || inputPath.includes('style-lock') ? 'required' as const : 'important' as const };
+          if (stat.isSymbolicLink()) continue;
+          if (stat.isDirectory()) {
+            const sourceHash = await sha256Directory(candidate);
+            return { path: inputPath, content: `[directory input: ${inputPath}]`, sourceHash, priority: requiredInputPaths.has(inputPath) ? 'required' as const : 'important' as const };
+          }
+          if (!stat.isFile()) continue;
+          const bytes = await readFile(candidate);
+          const content = bytes.toString('utf8');
+          return { path: inputPath, content: sanitizeUntrustedText(content, policy.handoffMaxChars), sourceHash: sha256Text(bytes), priority: requiredInputPaths.has(inputPath) ? 'required' as const : 'important' as const };
         } catch { /* try the repository-relative candidate, then retain a pointer */ }
       }
-      return { path: inputPath, content: `[artifact pointer only: ${inputPath}]`, priority: 'required' as const };
+      return { path: inputPath, content: `[artifact pointer only: ${inputPath}]`, priority: requiredInputPaths.has(inputPath) ? 'required' as const : 'optional' as const };
     }));
     const sanitizedSummary = sanitizeUntrustedText(summary, 2_000);
     const requiredContextPaths = new Set([
@@ -368,6 +385,7 @@ export function createFactory(options: FactoryOptions = {}) {
       targetGameId: boundary?.targetGameId,
       targetWorkspaceRelative: boundary?.targetWorkspaceRelative,
       inputPaths: safeInputPaths,
+      availableTools: probeAvailableToolIds(repositoryRoot),
       requireWorkMatch: boundary?.requireWorkMatch ?? ['FULL_BUILD', 'FIX', 'QA', 'NORMAL_FLOW_QA', 'NATURAL_PLAY_QA', 'PERCEPTUAL_QA'].includes(stage),
     });
     const contextPacket = compiledContext.packet;
@@ -391,7 +409,7 @@ export function createFactory(options: FactoryOptions = {}) {
     await writeJsonAtomic(path.join(runRoot, packageAuditRelative), compiledContext.audit);
     await store.log(path.basename(runRoot), 'context.handoff.persisted', { stage, attempt, path: handoffRelative, estimatedChars: handoff.estimatedChars, estimatedTokens: handoff.estimatedTokens });
     await store.log(path.basename(runRoot), 'agent.package.compiled', { stage, attempt, path: packageAuditRelative, role: compiledContext.package.role, agentClass: compiledContext.package.agentClass, productionLine: compiledContext.package.productionLine, taskKind: compiledContext.package.taskKind, recipe: compiledContext.package.recipeRef.id, recipeHash: compiledContext.package.recipeRef.sha256, toolPolicyHash: compiledContext.package.toolPolicyRef.sha256, promptBundleHash: compiledContext.taskBundle.promptProvenance.promptBundleHash });
-    return assertExecutionContext({ runRoot, outputPath, logDir: path.join(runRoot, 'logs/codex'), inputPaths: safeInputPaths, stage, runtime: compiledContext.package.runtime, model: policy.model, reasoning: policy.reasoning, sandbox: policy.sandbox, contextPacket, agentPackage: compiledContext.package, taskBundle: compiledContext.taskBundle, enforceBoundary: true, ...boundary, productionLine: compiledContext.package.productionLine, taskKind: compiledContext.package.taskKind, taskId: compiledContext.taskBundle.taskId });
+    return assertExecutionContext({ runRoot, inputSourceRoot: repositoryRoot, outputPath, logDir: path.join(runRoot, 'logs/codex'), inputPaths: safeInputPaths, stage, runtime: compiledContext.package.runtime, model: policy.model, reasoning: policy.reasoning, sandbox: policy.sandbox, contextPacket, agentPackage: compiledContext.package, taskBundle: compiledContext.taskBundle, enforceBoundary: true, workSpecRequired: true, ...boundary, productionLine: compiledContext.package.productionLine, taskKind: compiledContext.package.taskKind, taskId: compiledContext.taskBundle.taskId });
   }
 
   async function setWaiting(state: RunState, stage: StageName, inputArtifacts: string[], outputArtifacts: string[], evidence: string[]) {
@@ -4755,6 +4773,14 @@ export function createFactory(options: FactoryOptions = {}) {
     authorizeCostContinuation,
     abandon,
     recordReleaseStatus,
+    async delivery(runId: string, candidateId: string, kind: string) {
+      await store.load(runId);
+      return createDeliveryManifest(store.runRoot(runId), runId, candidateId, kind);
+    },
+    async exportDelivery(runId: string, candidateId: string, audience: string) {
+      await store.load(runId);
+      return exportDelivery(store.runRoot(runId), runId, candidateId, audience);
+    },
     recordFeedback: feedbackLessons.record.bind(feedbackLessons),
     async recordStructuredFeedback(runId: string, value: unknown) { return feedbackLessons.recordStructured(runId, StructuredFeedbackSchema.parse(value)); },
     operatingProfile,

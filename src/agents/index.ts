@@ -3,7 +3,7 @@ import { cp, lstat, mkdir, readFile, readdir, realpath, rm, writeFile } from 'no
 import path from 'node:path';
 import { listFiles, sha256File, sha256Text, writeJsonAtomic } from '../core/files.js';
 import { archiveRunPaths } from '../core/run-preservation.js';
-import { packageRelease } from '../core/release.js';
+import { packageRelease, hashRunBuild } from '../core/release.js';
 import { z } from 'zod';
 import type { AgentExecutionContext, AgentProvider, BuilderVerificationMode, CodexProvider, FormalPrototypeBuildInput, ImageProvider, QAProvider } from '../providers/interfaces.js';
 import { ArtApprovalSchema, ArtDirectionsSchema, AssetManifestSchema, BuildReportSchema, CompetitorResearchSchema, FormalPrototypeBuildReportSchema, FormalPrototypeFollowupConstraintsSchema, GameBlueprintSchema, GameplayRevisionLockSchema, GreenlightDecisionSchema, IaaMonetizationReviewSchema, OpenSourceResearchArtifactSchema, OpenSourceResearchSchema, ProductionCostReviewSchema, QaEvidenceSchema, QaReportSchema, ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema, ReferenceMechanicSpecSchema, ReleaseManifestSchema, StyleLockSchema, type ArtApproval, type ArtDirections, type AssetManifest, type CompetitorResearch, type GameBlueprint, type GameplayRevisionLock, type IaaMonetizationReview, type OpenSourceResearch, type ProductionCostReview, type QaEvidence, type QaReport, type ReferenceEvidencePack, type ReferenceMechanicSpec, type Seed, type StyleLock } from '../schemas/index.js';
@@ -15,6 +15,7 @@ import { discoverRuntimeWiredFiles, resolveRuntimeProductGate, RuntimeProductGat
 import { evaluateInteractionContinuity } from '../qa/interaction-continuity.js';
 import { InteractionContinuityContractSchema, InteractionContinuityObservationSchema, InteractionContinuityReportSchema, type InteractionContinuityReport, type InteractionContinuityContract } from '../schemas/interaction-continuity.js';
 import { verifyBuilderPreflight } from '../core/builder-preflight.js';
+import { safeExecutionContext } from '../core/execution-boundary.js';
 import { buildDeterministicReferenceLevelLayout } from '../core/reference-level-layout.js';
 import { normalizeReferenceBehaviorAnalysis } from '../core/reference-evidence.js';
 import { assertReferenceLevelRuntimeDataWritePath, readReferenceLevelRuntimeData, runtimeForTemplate, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from '../core/reference-level-binding.js';
@@ -166,6 +167,10 @@ export class BuilderAgent {
   }
   private async assertPreflight(workspace: string, blueprint: GameBlueprint, context?: AgentExecutionContext) {
     if (!context?.enforceBoundary) return;
+    const checked = safeExecutionContext({ ...context, stage: context.stage ?? 'FULL_BUILD', sandbox: context.sandbox ?? 'workspace-write' });
+    if (checked.role !== 'builder') throw new Error(`BuilderAgent requires a builder work specification, got ${checked.role}`);
+    if (!checked.workSpecRequired || !checked.agentPackage || !checked.taskBundle) throw new Error('BuilderAgent requires a compiled work specification');
+    if (checked.targetWorkspaceRelative && path.resolve(workspace) !== path.resolve(checked.runRoot, checked.targetWorkspaceRelative)) throw new Error('BuilderAgent workspace does not match the compiled work specification');
     if (context.targetGameId !== undefined && context.targetGameId !== blueprint.gameId) throw new Error(`Builder target game mismatch: ${context.targetGameId} !== ${blueprint.gameId}`);
     const result = await verifyBuilderPreflight({
       runRoot: context.runRoot,
@@ -375,9 +380,19 @@ export class BuilderAgent {
   }
 }
 export class QAAgent {
-  constructor(private readonly provider: QAProvider, private readonly runtime: RuntimeAdapter) {}
+  constructor(private readonly provider: QAProvider, private readonly runtime: RuntimeAdapter, private readonly requireIndependentEvidence = true) {}
   async run(workspace: string, runRoot: string, buildPassed = false, context?: AgentExecutionContext): Promise<QaReport> {
-    const raw = await this.provider.playtest({ runtime: this.runtime, workspace, runRoot, context });
+    let checkedContext: ReturnType<typeof safeExecutionContext> | undefined;
+    if (context?.enforceBoundary) {
+      const checked = safeExecutionContext({ ...context, stage: context.stage ?? 'QA', sandbox: context.sandbox ?? 'read-only' });
+      if (checked.role !== 'reviewer' && checked.role !== 'evidence-helper') throw new Error(`QAAgent requires a reviewer role, got ${checked.role}`);
+      if (!checked.workSpecRequired || !checked.agentPackage || !checked.taskBundle) throw new Error('QAAgent requires a compiled work specification');
+      if (path.resolve(runRoot) !== path.resolve(checked.runRoot)) throw new Error('QAAgent run root does not match the compiled work specification');
+      if (checked.targetWorkspaceRelative && path.resolve(workspace) !== path.resolve(checked.runRoot, checked.targetWorkspaceRelative)) throw new Error('QAAgent workspace does not match the compiled work specification');
+      checkedContext = checked;
+    }
+    const executionRunRoot = checkedContext?.runRoot ?? runRoot;
+    const raw = await this.provider.playtest({ runtime: this.runtime, workspace, runRoot: executionRunRoot, context: checkedContext ?? context });
     const rawRecord = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw as Record<string, unknown> : undefined;
     const rawEvidence = rawRecord?.evidence;
     const validEvidence: QaEvidence[] = [];
@@ -425,7 +440,7 @@ export class QAAgent {
         interactionContinuity = InteractionContinuityReportSchema.parse({ schemaVersion: 1, contractId: 'invalid-interaction-continuity', passed: false, blockers: [`contract:invalid:${message.slice(0, 240)}`], evidence: ['artifacts/interaction-continuity-report.json'], checkedNodes: 0, checkedScenarios: 0, checkedRepetitions: 0, evaluatedAt: new Date().toISOString() });
       }
     }
-    const report = QaReportSchema.parse({
+    let report = QaReportSchema.parse({
       ...parsed,
       evidence: validEvidence.length > 0 ? validEvidence : fallbackEvidence,
       ...(interactionContinuity ? { interactionContinuity } : {}),
@@ -438,19 +453,52 @@ export class QAAgent {
         }],
       } : {}),
     });
+    if (this.requireIndependentEvidence && checkedContext?.agentPackage && checkedContext.taskBundle) {
+      const requiredModes = new Set(checkedContext.agentPackage.acceptanceRef.evidenceModes);
+      const observedModes = new Set(report.evidence?.map((item) => item.mode) ?? []);
+      const strictIssues = [...report.issues];
+      const strictBlockers: string[] = [];
+      const binding = report.qaBinding;
+      const bundle = checkedContext.taskBundle;
+      if (!binding) strictBlockers.push('qa-binding-missing');
+      else {
+        const identityChecks: Array<[string, unknown, unknown]> = [
+          ['taskId', binding.taskId, bundle.taskId],
+          ['targetRunId', binding.targetRunId, bundle.targetRunId ?? path.basename(checkedContext.runRoot)],
+          ['targetWorkspaceRelative', binding.targetWorkspaceRelative, bundle.targetWorkspaceRelative ?? checkedContext.targetWorkspaceRelative],
+          ['productionLine', binding.productionLine, bundle.productionLine],
+          ['runtime', binding.runtime, bundle.runtime],
+          ['taskKind', binding.taskKind, bundle.taskKind],
+          ['recipeHash', binding.recipeHash, bundle.recipeRef.sha256],
+          ['toolPolicyHash', binding.toolPolicyHash, bundle.toolPolicyRef.sha256],
+          ['acceptanceHash', binding.acceptanceHash, bundle.acceptanceRef.sha256],
+          ['promptBundleHash', binding.promptBundleHash, bundle.promptProvenance.promptBundleHash],
+        ];
+        for (const [field, actual, expected] of identityChecks) if (actual !== expected) strictBlockers.push(`qa-binding-${field}-mismatch`);
+        try {
+          const currentBuildHash = await hashRunBuild(checkedContext.runRoot);
+          if (binding.candidateHash !== currentBuildHash) strictBlockers.push('qa-binding-candidate-hash-mismatch');
+        } catch { strictBlockers.push('qa-binding-candidate-hash-unavailable'); }
+      }
+      if (requiredModes.has('engineering') && !([...observedModes].some((mode) => mode === 'STATE_COVERAGE' || mode === 'SIMULATION_FUZZ'))) strictBlockers.push('qa-engineering-evidence-missing');
+      if (requiredModes.has('natural') && (!observedModes.has('NATURAL_E2E') || report.naturalFlow?.passed !== true)) strictBlockers.push('qa-natural-evidence-missing');
+      if (requiredModes.has('perceptual') && report.screenshots.length === 0) strictBlockers.push('qa-perceptual-evidence-missing');
+      for (const blocker of strictBlockers) strictIssues.push({ id: blocker, severity: 'error', message: `strict QA acceptance failed: ${blocker}`, evidence: 'artifacts/qa-report.json' });
+      if (strictBlockers.length > 0) report = QaReportSchema.parse({ ...report, passed: false, issues: strictIssues });
+    }
     const continuityFailed = interactionContinuity !== undefined && !interactionContinuity.passed;
     const finalReport = continuityFailed
       ? QaReportSchema.parse({ ...report, passed: false, issues: [...report.issues, { id: 'interaction-continuity', severity: 'error' as const, message: 'interaction continuity contract failed', evidence: 'artifacts/interaction-continuity-report.json' }] })
       : report;
-    await writeFile(path.join(runRoot, 'artifacts/qa-evidence.json'), `${JSON.stringify(report.evidence, null, 2)}\n`);
-    if (interactionContinuity) await writeFile(path.join(runRoot, 'artifacts/interaction-continuity-report.json'), `${JSON.stringify(interactionContinuity, null, 2)}\n`);
-    const runtimeWiredFiles = await discoverRuntimeWiredFiles(runRoot);
+    await writeFile(path.join(executionRunRoot, 'artifacts/qa-evidence.json'), `${JSON.stringify(finalReport.evidence, null, 2)}\n`);
+    if (interactionContinuity) await writeFile(path.join(executionRunRoot, 'artifacts/interaction-continuity-report.json'), `${JSON.stringify(interactionContinuity, null, 2)}\n`);
+    const runtimeWiredFiles = await discoverRuntimeWiredFiles(executionRunRoot);
     const journeyEvidence = [...new Set([
       ...(finalReport.naturalFlow?.screenshots ?? []),
       ...finalReport.screenshots,
       'artifacts/runtime-product-journey.json',
     ])];
-    await writeFile(path.join(runRoot, 'artifacts/runtime-product-journey.json'), `${JSON.stringify({
+    await writeFile(path.join(executionRunRoot, 'artifacts/runtime-product-journey.json'), `${JSON.stringify({
       schemaVersion: 1,
       screenshots: journeyEvidence.filter((item) => item !== 'artifacts/runtime-product-journey.json'),
       observedAt: new Date().toISOString(),
@@ -460,8 +508,8 @@ export class QAAgent {
       runtimeWiredFiles,
       browserEvidence: journeyEvidence,
     });
-    await writeFile(path.join(runRoot, 'artifacts/runtime-product-gates.json'), `${JSON.stringify(RuntimeProductGateSchema.parse(runtimeProduct), null, 2)}\n`);
-    await writeFile(path.join(runRoot, 'artifacts/completion-gates.json'), JSON.stringify(await buildCompletionGateReport({ runRoot, corePassed: buildPassed, normalFlowPassed: finalReport.passed, screenshots: finalReport.screenshots }), null, 2) + '\n');
+    await writeFile(path.join(executionRunRoot, 'artifacts/runtime-product-gates.json'), `${JSON.stringify(RuntimeProductGateSchema.parse(runtimeProduct), null, 2)}\n`);
+    await writeFile(path.join(executionRunRoot, 'artifacts/completion-gates.json'), JSON.stringify(await buildCompletionGateReport({ runRoot: executionRunRoot, corePassed: buildPassed, normalFlowPassed: finalReport.passed, screenshots: finalReport.screenshots }), null, 2) + '\n');
     return finalReport;
   }
   async tournament(report: PrototypeBuildReport, runRoot: string): Promise<PlaytestTournament> { return PlaytestTournamentSchema.parse(await this.provider.playtestTournament({ runtime: this.runtime, report: PrototypeBuildReportSchema.parse(report), runRoot })); }
@@ -477,6 +525,12 @@ export class QAAgent {
 export class FixerAgent {
   constructor(private readonly provider: CodexProvider, private readonly runtime: RuntimeAdapter) {}
   async run(workspace: string, threadId: string | undefined, qaReport: QaReport, context?: AgentExecutionContext) {
+    if (context?.enforceBoundary) {
+      const checked = safeExecutionContext({ ...context, stage: context.stage ?? 'FIX', sandbox: context.sandbox ?? 'workspace-write' });
+      if (checked.role !== 'fixer') throw new Error(`FixerAgent requires a fixer work specification, got ${checked.role}`);
+      if (!checked.workSpecRequired || !checked.agentPackage || !checked.taskBundle) throw new Error('FixerAgent requires a compiled work specification');
+      if (checked.targetWorkspaceRelative && path.resolve(workspace) !== path.resolve(checked.runRoot, checked.targetWorkspaceRelative)) throw new Error('FixerAgent workspace does not match the compiled work specification');
+    }
     if (context && !isChildPath(path.join(path.resolve(context.runRoot), 'workspace'), path.resolve(workspace))) throw new Error('Fixer workspace must remain inside the current run workspace');
     const runRoot = context?.runRoot ?? path.resolve(workspace, '../..');
     const identityBlueprint = context?.targetGameId === undefined ? undefined : await requireRunBlueprint(runRoot, context.targetGameId);
