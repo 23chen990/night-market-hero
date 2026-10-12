@@ -1564,8 +1564,8 @@ export class GrappleGame {
   private startVehicle(id: VehicleId): void {
     const def = VEHICLES.find(item => item.id === id)!;
     if (this.options.guidedExperience) {
-      // A new mount catches the rider instead of inheriting a fatal dive.
-      this.state.player.y = Math.min(620, Math.max(320, this.state.player.y));
+      // Contact with a world ring must not teleport the player vertically.
+      // Preserve the collision position; just redirect a dangerous dive.
       this.state.player.vy = Math.min(-160, this.state.player.vy);
       this.state.player.vx = Math.max(280, this.state.player.vx);
     }
