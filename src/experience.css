@@ -92,3 +92,17 @@ button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb
   .pause-actions small { font-size: 10px; }
   .result-card { padding: 12px 20px; }
 }
+
+/* A pursuit that exists only in sr-only text is not a game threat. */
+.pursuit-readout { position:absolute; left:max(18px,env(safe-area-inset-left)); top:max(95px,calc(env(safe-area-inset-top) + 84px));
+ width:185px; padding:7px 10px; background:#11272ddf; border-left:3px solid #edaf6a;
+ border-radius:4px 10px 10px 4px; box-sizing:border-box; display:grid; grid-template-columns:1fr auto;
+ gap:3px 8px; align-items:center; font-size:11px; }
+.pursuit-readout strong { font-weight:800; white-space:nowrap; }
+.pursuit-readout span { color:#ffe5a9; font-size:10px; font-variant-numeric:tabular-nums; }
+.pursuit-readout i { grid-column:1/-1; display:block; height:4px; border-radius:4px;
+ background:linear-gradient(90deg,#f3b477 var(--chase-fill,0%),#315159 var(--chase-fill,0%)); }
+.pursuit-readout[data-phase="danger"],.pursuit-readout[data-phase="climax"] { border-color:#f47772; background:#542831ec; animation:chase-alert 1s ease-in-out infinite alternate; }
+@keyframes chase-alert { to { box-shadow:0 0 18px #ee615066; } }
+@media (max-width:720px) { .pursuit-readout { top:max(90px,calc(env(safe-area-inset-top) + 77px)); width:166px; font-size:10px; padding:5px 8px; } }
+@media (prefers-reduced-motion:reduce) { .pursuit-readout { animation:none !important; } }
