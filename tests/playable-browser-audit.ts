@@ -24,6 +24,9 @@ try {
     const page = await context.newPage();
     page.setDefaultTimeout(6000);
     const cdp = touch ? await context.newCDPSession(page) : null;
+    // A press already in flight must not hit a newly appearing settlement CTA.
+    // Use the left gameplay area; navigate every modal via its visible button.
+    const touchPoint = { x: Math.round(viewport.width * .12), y: Math.round(viewport.height * .72), id: 1 };
     const errors: string[] = [];
     const input: unknown[] = [];
     const samples: unknown[] = [];
@@ -45,11 +48,11 @@ try {
     const readMeta = (): Promise<Record<string, unknown>> => page.evaluate(() => (window as unknown as { __GAME_TEST__: { getMetaProgress(): Record<string, unknown> } }).__GAME_TEST__.getMetaProgress());
     const edge = async (down: boolean, tick: number): Promise<void> => {
       if (down === held) return;
-      if (cdp) await cdp.send('Input.dispatchTouchEvent', { type: down ? 'touchStart' : 'touchEnd', touchPoints: down ? [{ x: Math.round(viewport.width * .42), y: Math.round(viewport.height * .68), id: 1 }] : [] });
+      if (cdp) await cdp.send('Input.dispatchTouchEvent', { type: down ? 'touchStart' : 'touchEnd', touchPoints: down ? [touchPoint] : [] });
       else if (down) await page.keyboard.down('Space'); else await page.keyboard.up('Space');
       held = down;
       if (down) holdAt = tick; else lastRelease = tick;
-      input.push({ tick, ms: Date.now() - started, edge: down ? 'press' : 'release', device: touch ? 'touch' : 'keyboard' });
+      input.push({ tick, ms: Date.now() - started, edge: down ? 'press' : 'release', device: touch ? 'touch' : 'keyboard', point: touch ? touchPoint : null });
     };
     const shot = (name: string, state: GrappleState): boolean => {
       if (captureBusy) return false;
@@ -145,6 +148,7 @@ try {
         assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120, `${ride} must remain observable for at least one simulated second`);
       }
       assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
+      assert.equal(capturedRides.size, 4, 'all four rides must also have actual screenshots');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
       const paused = await readState();
       await page.waitForTimeout(350);
