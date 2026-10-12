@@ -28,8 +28,10 @@ jobs:
           git rev-parse HEAD > delivery/commit.txt
           npm run lint > delivery/lint.log 2>&1; lint=$?
           npm run typecheck > delivery/typecheck.log 2>&1; types=$?
-          node --import tsx --test tests/*.test.ts > delivery/tests.log 2>&1; tests=$?
+          # Several existing tests inspect the emitted HTML. Build first
+          # so a clean GitHub runner tests the same artifact the user will play.
           npm run build > delivery/build.log 2>&1; build=$?
+          node --import tsx --test tests/*.test.ts > delivery/tests.log 2>&1; tests=$?
           test -f dist/index.html && sha256sum dist/index.html > delivery/playable.sha256
           printf '{"lint":%s,"typecheck":%s,"unitTests":%s,"build":%s}\n' "$lint" "$types" "$tests" "$build" > delivery/static-result.json
           cat delivery/static-result.json
