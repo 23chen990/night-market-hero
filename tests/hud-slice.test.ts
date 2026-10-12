@@ -50,8 +50,8 @@ test('static reference baseline removes legacy rails and text placeholder items'
   assert.doesNotMatch(main, /item-talisman.*copperTokenIcon|item-scroll.*destinationArrowIcon/s);
 });
 
-test('chase HUD remains hidden until the single visible pursuer state', () => {
+test('pursuer HUD is visible through the full default night patrol, not only at last-second danger', () => {
   assert.match(css, /\.guard-presence\[data-visible="false"\]\s*\{\s*display:\s*none;/s);
   assert.match(html, /data-ui="pursuer"[^>]*data-visible="true"/);
-  assert.match(main, /chaseVisible = state\.chase\.phase === 'danger' \|\| state\.chase\.phase === 'climax'/);
+  assert.match(main, /chaseVisible = state\.levelId === 'night-patrol' \|\| state\.chase\.phase !== 'safe'/);
 });
