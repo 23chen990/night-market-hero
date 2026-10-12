@@ -2271,12 +2271,18 @@ export class GrappleGame {
     const debrisLimitedTarget = debrisSlow > 0 ? Math.min(targetSpeed, Math.max(0, pursuer.vx - 1)) : targetSpeed;
     pursuer.ax = Math.max(-PURSUER_MAX_ACCELERATION, Math.min(PURSUER_MAX_ACCELERATION, (debrisLimitedTarget - pursuer.vx) * 8));
     pursuer.vx = Math.max(0, Math.min(maxPursuerSpeed, pursuer.vx + pursuer.ax * dt));
-    const maxAdvance = Math.max(0, player.x - pursuer.x - contactDistance);
-    // 青鸾 catchImmune：冻结追兵推进，距离不减即可
+    // Catch immunity protects the rider from capture, not from the feeling of
+    // being pursued. In guided play, patrols must keep running while the bird
+    // flies; otherwise a single ride opens a multi-kilometre permanent gap.
+    // Hold a readable distance behind the rider until the vehicle expires,
+    // giving a real warning window instead of an instant post-ride catch.
+    // Preserve old compatibility-mode freeze semantics for existing saves.
     const vehicleCatchImmune = !!this.state.vehicleId
       && this.state.vehicleTicksRemaining > 0
       && VEHICLES.find((item) => item.id === this.state.vehicleId)?.catchImmune === true;
-    const advance = vehicleCatchImmune ? 0 : Math.min(pursuer.vx * dt, maxAdvance);
+    const safeMountedGap = vehicleCatchImmune && guidedPatrol ? Math.max(320, contactDistance) : contactDistance;
+    const maxAdvance = Math.max(0, player.x - pursuer.x - safeMountedGap);
+    const advance = vehicleCatchImmune && !guidedPatrol ? 0 : Math.min(pursuer.vx * dt, maxAdvance);
     if (advance < pursuer.vx * dt && dt > 0) {
       const limitedVelocity = advance / dt;
       pursuer.ax = (limitedVelocity - (pursuer.vx - pursuer.ax * dt)) / dt;
