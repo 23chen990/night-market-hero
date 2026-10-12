@@ -256,6 +256,7 @@ const chaseDistance = requiredElement<HTMLElement>('[data-ui="chase-distance"]')
 const chaseMeter = requiredElement<HTMLElement>('[data-ui="chase-meter"]');
 const pursuerPresence = requiredElement<HTMLElement>('[data-ui="pursuer"]');
 const pursuerDistance = requiredElement<HTMLElement>('[data-ui="pursuer-distance"]');
+const pursuerLabel = requiredElement<HTMLElement>('[data-ui="pursuer-label"]');
 const threatVignette = requiredElement<HTMLElement>('[data-ui="threat-vignette"]');
 const feedbackLayer = requiredElement<HTMLImageElement>('[data-ui="feedback-layer"]');
 const escapeFeedback = requiredElement<HTMLElement>('[data-ui="escape-feedback"]');
@@ -747,6 +748,7 @@ function renderProductUi(state: GrappleState): void {
   chaseMeter.style.width = `${Math.round(state.chase.pressure * 100)}%`;
   chaseDistance.textContent = `${Math.round(state.chase.distance)} 步`;
   pursuerDistance.textContent = `${Math.round(state.pursuer.distance)} 步`;
+  pursuerLabel.textContent = state.chase.pressure >= 0.55 ? '官兵逼近！' : '官兵追来';
   const guardOnScreen = app.dataset.guardOnScreen === 'true';
   const chaseVisible = state.levelId === 'night-patrol' || state.chase.phase !== 'safe';
   const edgeVisible = state.pursuer.visible && chaseVisible && !guardOnScreen;
