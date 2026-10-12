@@ -4,48 +4,35 @@
   "defaultEntrypoint": "src/main.ts",
   "defaultMode": "lantern-entry",
   "runtimeWiredEntrypoints": [
-    "index.html",
-    "src/main.ts",
-    "src/game-core.ts",
-    "src/progression.ts",
-    "src/monetization.ts",
-    "src/run-snapshot.ts",
-    "src/runtime-session.ts",
-    "src/night-city-renderer.ts",
-    "src/flight-presentation.ts"
+    "index.html", "src/main.ts", "src/game-core.ts", "src/progression.ts",
+    "src/monetization.ts", "src/run-snapshot.ts", "src/runtime-session.ts",
+    "src/night-city-renderer.ts", "src/flight-presentation.ts",
+    "src/experience-director.ts", "src/experience-hud.ts", "src/experience.css", "src/ride-renderer.ts"
   ],
   "journey": [
-    "startup",
-    "tutorial",
-    "tutorial-settlement",
-    "night-patrol",
-    "segment-crossing",
-    "open-checkpoint",
-    "death-settlement",
-    "replay"
+    "startup", "tutorial", "tutorial-settlement", "night-patrol",
+    "segment-crossing", "open-checkpoint", "death-settlement", "replay"
   ],
+  "extendedJourney": ["four-visible-rides", "voluntary-cashout", "mission-claim", "character-purchase", "character-next-run", "reload-without-duplicate-rewards"],
   "legacyBehavior": {
     "status": "compatibility-only",
-    "evidence": "src/main.ts selects marketGates:false; fixed levels and closing-gate scenarios are fixture compatibility paths only. Historical prototype-a QA is superseded and is not current-build evidence. terrainMode:panorama disables hidden authored surfaces and debris on reset/restore/update; legacy terrain scenarios are compatibility-only."
+    "evidence": "Default main.ts uses marketGates:false, terrainMode:panorama, guidedExperience:true. Fixed levels, hidden terrain and closing gates remain compatibility fixtures, not the default player journey. Historical reports are not current-build acceptance."
   },
-  "browserEvidence": [],
-  "productSystems": {
-    "characters": true,
-    "missions": true,
-    "vehicles": true,
-    "records": true,
-    "economy": true
-  },
-  "evidenceStatus": "PENDING_QA",
+  "browserEvidence": [
+    "evidence/playable-upgrade-20261012/journeys.json",
+    "evidence/playable-upgrade-20261012/safety.json",
+    "evidence/playable-upgrade-20261012/menus.json",
+    "evidence/playable-upgrade-20261012/perceptual-qa-report.json"
+  ],
+  "productSystems": {"characters": true, "missions": true, "vehicles": true, "records": true, "economy": true},
+  "evidenceStatus": "SCOPED_WEB_PASS",
   "checkpointRules": {
-    "collisionEnabled": false,
-    "beats": 0,
-    "counterField": "gatesPassed",
-    "meaning": "open street blocks crossed",
-    "rewardsPerSegmentPerRun": 1,
-    "terminal": false
+    "collisionEnabled": false, "beats": 0, "counterField": "gatesPassed",
+    "meaning": "open street blocks crossed", "rewardsPerSegmentPerRun": 1, "terminal": false
   },
-  "activePlan": "../../artifacts/gameplay-execution-20261008/endless-conversion-plan-current.json",
-  "qaEvidenceDirectory": "../../artifacts/gameplay-execution-20261008/attempt-3",
-  "mapQaStatus": "BLOCKED"
+  "activePlan": "docs/PLAYABLE_ACCEPTANCE.md",
+  "qaEvidenceDirectory": "evidence/playable-upgrade-20261012",
+  "mapQaStatus": "SCOPED_PASS",
+  "mapQaScope": "Reviewed exact-build natural screenshots at joins 8000/9600/11200/12800 in 844x390 and 1280x720; not all seeds or all long runs.",
+  "commercialReleasePassed": false
 }
