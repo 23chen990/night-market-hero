@@ -66,6 +66,13 @@ export function isStylishRelease(player: Pick<GrappleState['player'], 'vx' | 'vy
 
 export interface ControlCue { title: string; detail: string; tone: 'neutral' | 'ready' | 'danger'; }
 export function controlCue(state: GrappleState): ControlCue {
+  const nextOffer = state.vehicleOffers?.find(offer => offer.status === 'available'
+    && offer.x >= state.player.x - 130 && offer.x <= state.player.x + 920);
+  if (!state.vehicleId && nextOffer) return {
+    title: `前方${nextOffer.id}：碰到发光光环获取`,
+    detail: '靠近光环所在高度飞过；也可以选择错过',
+    tone: 'ready',
+  };
   if (state.vehicleId === '货运滑索') return { title: '按住加速 · 松手弹射', detail: '滑索带你穿街，松手后可继续接飞索', tone: 'ready' };
   if (state.vehicleId === '纸鸢') return { title: '按住拉升 · 松手滑翔', detail: '顺着金币调整高度', tone: 'neutral' };
   if (state.vehicleId === '青鸾') return { title: '按住振翅 · 松手俯冲', detail: '追兵暂退，不要俯冲太久', tone: state.player.y > 700 ? 'danger' : 'ready' };
