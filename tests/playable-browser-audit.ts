@@ -109,16 +109,23 @@ try {
           if (visit) visit.lastTick = state.tick;
           else seen.set(state.vehicleId, { firstTick: state.tick, lastTick: state.tick, elapsed: state.elapsed });
         }
-        if (state.vehicleId && !capturedRides.has(state.vehicleId) && shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
+        // A join is in view briefly; a ride lasts several seconds. Reserve the
+        // screenshot slot for approaching joins rather than losing one while
+        // a lower-priority ride screenshot is encoding. Input never stops.
+        let reserveForSeam = false;
         if (state.levelId === 'night-patrol') {
           const view = await page.locator('#app').evaluate(element => ({ left: Number((element as HTMLElement).dataset.cameraX), width: Number((element as HTMLElement).dataset.worldViewportWidth) }));
           for (const seam of [8000, 9600, 11200, 12800]) {
-            if (!seams.has(seam) && seam > view.left + view.width * .2 && seam < view.left + view.width * .8) {
+            if (seams.has(seam)) continue;
+            if (seam > view.left && seam < view.left + view.width * 1.2) reserveForSeam = true;
+            if (seam > view.left + view.width * .2 && seam < view.left + view.width * .8) {
               if (shot(`seam-${seam}`, state)) seams.add(seam);
               break;
             }
           }
         }
+        if (!reserveForSeam && state.vehicleId && !capturedRides.has(state.vehicleId)
+          && shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
         const complete = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4 && capturedRides.size === 4;
         // Keep controlling the flight while moving to pause. Releasing a bird
         // during its dive and waiting through CDP reads intentionally loses.
