@@ -44,7 +44,7 @@ test('a released short-rope anchor remains regrappleable while it stays within r
 
 test('camera keeps a forward-only deadzone and runtime exposes bounce feedback', async () => {
   const source = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
-  assert.match(source, /Math\.abs\(cameraTargetX - this\.cameraScrollX\)/);
+  assert.match(source, /comfortCameraStep\(this\.cameraScrollX, cameraTargetX, elapsedCameraSeconds\)/);
   assert.match(source, /terrain\.kind === '布棚'/);
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /data-action="clear-progress"/);
