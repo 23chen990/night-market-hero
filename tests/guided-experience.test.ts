@@ -12,6 +12,18 @@ function enter(game: ReturnType<typeof patrol>, segment: number) {
   game.setPlayerForTest({ x: segmentStartPx(segment) + 1, y: 460, vx: 440, vy: 0 });
   return game.advanceTicks(1);
 }
+function collectOffer(game: ReturnType<typeof patrol>, segment: number) {
+  const state = enter(game, segment);
+  const offer = state.vehicleOffers.find(item => item.segment === segment);
+  assert.ok(offer, `segment ${segment} must spawn a visible world pickup`);
+  // Deterministic test setup positions the body near the world-space ring;
+  // the actual pickup is obtained by stepping the collision simulation.
+  game.setPlayerForTest({ x: offer.x - 97, y: offer.y, vx: 485, vy: 0 });
+  const before = game.advanceTicks(1);
+  assert.equal(before.vehicleId, state.vehicleId, 'approach alone cannot mount a new ride');
+  game.setPlayerForTest({ x: offer.x - 28, y: offer.y, vx: 485, vy: 0 });
+  return game.advanceTicks(1);
+}
 
 test('all opening rides are authored for every seed; later rolls stay deterministic', () => {
   for (const seed of [1, 2, 31, 99, 157]) {
@@ -46,23 +58,25 @@ test('a checkpoint is earned at its visible midpoint, never just at segment entr
 });
 test('mounted vehicles release the old physical grapple immediately', () => {
   const game = patrol(); game.act('press'); assert.ok(game.getState().attachedAnchorId);
-  const state = enter(game, 2);
+  const entry = enter(game, 2);
+  assert.equal(entry.vehicleId, null, 'entering a segment must not give a free ride');
+  const state = collectOffer(game, 2);
   assert.equal(state.vehicleId, rideNames[0]); assert.equal(state.attachedAnchorId, null); assert.equal(state.ropeLength, null);
 });
 test('an empty segment preserves the remaining ride duration', () => {
-  const game = patrol(); const mounted = enter(game, 2); const next = enter(game, 3);
+  const game = patrol(); const mounted = collectOffer(game, 2); const next = enter(game, 3);
   assert.equal(next.vehicleId, mounted.vehicleId);
   assert.equal(next.vehicleTicksRemaining, mounted.vehicleTicksRemaining - 1);
 });
 test('fast travel queues the next authored ride instead of overwriting or losing it', () => {
-  const game = patrol(); enter(game, 2); const next = enter(game, 4);
+  const game = patrol(); collectOffer(game, 2); const next = collectOffer(game, 4);
   assert.equal(next.vehicleId, rideNames[0]); assert.deepEqual(next.vehicleQueue, [rideNames[1]]);
   const snapshot = game.getState(); snapshot.vehicleTicksRemaining = 1;
   assert.equal(game.restoreSnapshot(snapshot), true);
   const switched = game.advanceTicks(1); assert.equal(switched.vehicleId, rideNames[1]); assert.deepEqual(switched.vehicleQueue, []);
 });
 test('ride queue snapshots round trip and returned state cannot mutate the live queue', () => {
-  const game = patrol(); enter(game, 2); enter(game, 4);
+  const game = patrol(); collectOffer(game, 2); collectOffer(game, 4);
   const snapshot = createRunSnapshot('queued', game.getState());
   const parsed = parseRunSnapshot(JSON.stringify(snapshot)); assert.ok(parsed);
   const restored = patrol(); assert.equal(restored.restoreSnapshot(parsed!.state), true);
@@ -76,19 +90,39 @@ test('corrupt ride queues are rejected without rejecting old saves', () => {
   assert.equal(isValidRunState({ ...state, vehicleQueue: ['unknown'] }), false);
   assert.equal(isValidRunState({ ...state, vehicleQueue: Array(5).fill(rideNames[0]) }), false);
 });
+test('a missed pickup is not granted automatically and cannot be collected from far above its lane', () => {
+  const game = patrol(); const first = enter(game, 2); const offer = first.vehicleOffers[0]!;
+  assert.equal(first.vehicleId, null);
+  game.setPlayerForTest({ x: offer.x - 100, y: offer.y - 400, vx: 490, vy: 0 }); game.advanceTicks(1);
+  game.setPlayerForTest({ x: offer.x + 160, y: offer.y - 400, vx: 490, vy: 0 }); game.advanceTicks(1);
+  const missed = game.getState();
+  assert.equal(missed.vehicleId, null);
+  assert.equal(missed.vehicleOffers[0]?.status, 'missed');
+  assert.equal(missed.lastVehicleOffer?.kind, 'missed');
+  game.setPlayerForTest({ x: offer.x - 1, y: offer.y }); game.advanceTicks(1);
+  assert.equal(game.getState().vehicleId, null, 'a missed one-time offer must not reactivate');
+});
+test('visible pickup offers persist through snapshots and reject malformed records', () => {
+  const game = patrol(); enter(game, 2);
+  const snapshot = createRunSnapshot('offers', game.getState());
+  const parsed = parseRunSnapshot(JSON.stringify(snapshot)); assert.ok(parsed);
+  const restored = patrol(); assert.equal(restored.restoreSnapshot(parsed!.state), true);
+  assert.deepEqual(restored.getState().vehicleOffers, game.getState().vehicleOffers);
+  assert.equal(isValidRunState({ ...game.getState(), vehicleOffers: [{ id: 'broken', x: 1, y: 2, segment: 2, status: 'available' }] }), false);
+});
 test('zipline release really ejects upward and returns to ordinary grapple control', () => {
-  const game = patrol(); enter(game, 2); game.act('press'); game.advanceTicks(80); game.act('release');
+  const game = patrol(); collectOffer(game, 2); game.act('press'); game.advanceTicks(80); game.act('release');
   const state = game.getState(); assert.equal(state.vehicleId, null); assert.ok(state.player.vy <= -300); assert.ok(state.player.vx >= 420);
   assert.ok(state.regrappleGraceUntilTick > state.tick);
 });
 test('bird lift remains visible and its countdown is frozen while paused', () => {
-  const game = patrol(); enter(game, 8); game.act('press');
+  const game = patrol(); collectOffer(game, 8); game.act('press');
   for (let i = 0; i < 360; i++) { const s = game.advanceTicks(1); assert.ok(s.player.y >= 125); assert.ok(Number.isFinite(s.player.vx)); }
   const before = game.getState(); game.setPaused(true); game.advanceTicks(1000);
   assert.equal(game.getState().tick, before.tick); assert.equal(game.getState().vehicleTicksRemaining, before.vehicleTicksRemaining);
 });
 test('ride expiry supplies a finite, forward recovery window', () => {
-  const game = patrol(); const state = enter(game, 4); state.vehicleTicksRemaining = 1;
+  const game = patrol(); const state = collectOffer(game, 4); state.vehicleTicksRemaining = 1;
   assert.equal(game.restoreSnapshot(state), true);
   const expired = game.advanceTicks(1);
   assert.equal(expired.vehicleId, null); assert.ok(expired.player.vy < 0); assert.ok(expired.player.vx >= 280);
@@ -158,7 +192,7 @@ for (const seed of [1, 31, 99]) test(`default guided journey exposes all four ri
 });
 
 test('a release already in flight at ride entry cannot immediately erase the zipline', () => {
-  const game = patrol(); enter(game, 2); game.act('press'); game.advanceTicks(12); game.act('release');
+  const game = patrol(); collectOffer(game, 2); game.act('press'); game.advanceTicks(12); game.act('release');
   assert.equal(game.getState().vehicleId, rideNames[0]);
   game.advanceTicks(70); game.act('press'); game.act('release');
   assert.equal(game.getState().vehicleId, null);
@@ -170,20 +204,20 @@ test('late backward release remains recoverable without awarding a fake combo', 
   assert.equal(state.combo, 0); assert.ok(state.regrappleGraceUntilTick > state.tick);
 });
 test('pausing a held lantern cancels the virtual rope without losing the mount', () => {
-  const game = patrol(); enter(game, 6); game.act('press'); assert.ok(game.getState().vehicleVirtualAnchor);
+  const game = patrol(); collectOffer(game, 6); game.act('press'); assert.ok(game.getState().vehicleVirtualAnchor);
   game.setPaused(true); const state = game.getState();
   assert.equal(state.vehiclePhase, 'idle'); assert.equal(state.vehicleVirtualAnchor, null); assert.equal(state.vehicleId, rideNames[2]);
 });
 
 
-test('a guided mount catches a low falling player before inheriting a fatal dive', () => {
+test('a claimed pickup stabilizes the first frame instead of teleporting an already falling stranger', () => {
   for (const beat of OPENING_ENCOUNTERS) {
     const game = createGrappleGame(31, options); game.restartEndless(31);
-    game.setPlayerForTest({ x: segmentStartPx(beat.segment) + 2, y: 870, vx: 50, vy: 800 }); game.advanceTicks(1);
-    assert.equal(game.getState().vehicleId, beat.vehicle);
-    assert.ok(game.getState().player.y <= 621);
-    assert.ok(game.getState().player.vy < 0);
-    assert.equal(game.getState().status, 'playing');
+    const mounted = collectOffer(game, beat.segment);
+    assert.equal(mounted.vehicleId, beat.vehicle);
+    assert.equal(mounted.status, 'playing');
+    assert.ok(mounted.player.y < 750, 'pickup can only be claimed within a reachable aerial lane');
+    assert.ok(mounted.player.vx > 0);
   }
 });
 
@@ -200,7 +234,7 @@ test('guided revival eligibility does not depend on repeating segment progress',
 
 test('lantern release really launches forward and does not erase an earned grapple combo', () => {
   const game = createGrappleGame(31, options); game.restartEndless(31);
-  game.setPlayerForTest({ x: segmentStartPx(6) + 2, y: 550, vx: 350, vy: 100 }); game.advanceTicks(1); game.act('press');
+  collectOffer(game, 6); game.act('press');
   const snapshot = game.getState(); snapshot.combo = 3; snapshot.comboPeak = 3; snapshot.comboTier = 2; game.restoreSnapshot(snapshot);
   game.setPlayerForTest({ vx: -90, vy: 330 }); game.act('release');
   assert.ok(game.getState().player.vx >= 330); assert.ok(game.getState().player.vy <= -220);
@@ -209,7 +243,7 @@ test('lantern release really launches forward and does not erase an earned grapp
 
 
 test('a deliberate bird flap immediately brakes a late dive without fake rewards', () => {
-  const game = patrol(); enter(game, 8);
+  const game = patrol(); collectOffer(game, 8);
   game.setPlayerForTest({ y: 760, vy: 720 });
   game.act('press');
   assert.ok(game.getState().player.vy <= -160);
