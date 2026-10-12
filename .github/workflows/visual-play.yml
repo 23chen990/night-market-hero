@@ -34,6 +34,9 @@ jobs:
       - name: Natural failure and safe recovery
         if: ${{ !cancelled() }}
         run: node --import tsx tests/playable-safety-audit.ts
+      - name: Narrow mobile menus and rotation guard
+        if: ${{ !cancelled() }}
+        run: node --import tsx tests/playable-menu-audit.ts
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
