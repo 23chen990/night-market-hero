@@ -25,6 +25,7 @@ interface RenderCall {
   width: number;
   height: number;
   crop?: [number, number, number, number];
+  flipX?: boolean;
   scrollFactor?: number;
   verticalScrollFactor?: number;
 }
@@ -51,6 +52,7 @@ function makeScene() {
             call.verticalScrollFactor = verticalFactor;
             return image;
           },
+          setFlipX(flip: boolean) { call.flipX = flip; return image; },
           setCrop(x?: number, y?: number, width?: number, height?: number) {
             if (x !== undefined && y !== undefined && width !== undefined && height !== undefined) {
               call.crop = [x, y, width, height];
@@ -90,25 +92,26 @@ test('every seam veil remains world-aligned at near and far camera positions', (
   const veils = images
     .filter(({ key }) => key === 'night-city-district-transition-mist' || key === 'night-city-rooftops-transition-v36')
     .map(({ call }) => call);
-  assert.ok(veils.length > 0, 'fixture must include raster seam veils');
+  assert.equal(images.filter(({ key }) => key === 'night-city-rooftops-transition-v36').length, 0, 'old full-frame seam mask must not return');
   assert.ok(veils.every(({ scrollFactor, verticalScrollFactor }) => (
     scrollFactor === NIGHT_CITY_LAYER_CONFIG.panoramaScrollFactor
       && verticalScrollFactor === 0
   )), 'seam veils must use the world-aligned panorama scroll factor');
 });
 
-test('deterministic crop variation is submitted to Phaser while retaining complete chunk coverage', () => {
+test('seam-matched mirrored panels replace the old random crop variation and keep full coverage', () => {
   const plan = createNightCityRenderPlan(73, 0, 6_400);
   const repeat = createNightCityRenderPlan(73, 0, 6_400);
   assert.deepEqual(plan.chunks, repeat.chunks, 'crop selection must be deterministic');
-  assert.ok(plan.chunks.some((chunk) => chunk.cropRect.width < chunk.imageWidth), 'fixture must include a cropped panorama');
+  assert.ok(plan.chunks.filter(c => c.kind === 'district').every(c => c.cropRect.width === c.imageWidth && c.overlap === 0));
   assert.ok(plan.chunks.every((chunk) => chunk.drawWidth > 0 && chunk.drawHeight > 0));
 
   const { scene, calls } = makeScene();
   createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 }).render(scene, 73, 0, 6_400);
   const panoramaCalls = calls.filter(({ key }) => key.startsWith('night-city-')
     && !key.includes('transition') && !key.includes('foreground'));
-  assert.ok(panoramaCalls.some((call) => call.crop !== undefined), 'the renderer must submit source crop rectangles');
+  assert.ok(panoramaCalls.every((call) => call.crop === undefined), 'ordinary panorama panels must not randomly crop their silhouettes');
+  assert.ok(panoramaCalls.some((call) => call.flipX === true), 'alternate tiles must reflect the same source edge');
 
   for (const cameraX of [0, 10_000, 100_000]) {
     const viewportWidth = 1_672;
@@ -119,6 +122,20 @@ test('deterministic crop variation is submitted to Phaser while retaining comple
   }
 });
 
+test('adjacent ordinary districts have exactly matching edge pixels by construction', () => {
+  for (const first of [0, 1, 2, 5, 6, 7, 10, 11, 12, 15, 16, 17]) {
+    const plan = createNightCityRenderPlan(31, first * 1600, (first + 2) * 1600);
+    const a = plan.chunks.find(chunk => chunk.index === first)!;
+    const b = plan.chunks.find(chunk => chunk.index === first + 1)!;
+    if (a.kind !== 'district' || b.kind !== 'district' || a.district !== b.district) continue;
+    assert.equal(a.assetKey, b.assetKey, 'ordinary joins must use the same texture source');
+    assert.notEqual(a.mirrored, b.mirrored, 'the common source image edge must reflect');
+    assert.equal(a.startX + a.drawWidth, b.startX, 'no overlap can reintroduce mismatched pixels');
+    assert.equal(a.drawHeight, b.drawHeight, 'rooftops must not jump in vertical scale');
+    assert.equal(a.cropRect.x, b.cropRect.x);
+    assert.equal(a.cropRect.y, b.cropRect.y);
+  }
+});
 test('maps a world anchor to a support socket on the same transformed panorama image', () => {
     const mapWorldAnchorToArchitecturalSocket = (rendererModule as typeof rendererModule & {
     mapWorldAnchorToArchitecturalSocket?: (plan: ReturnType<typeof createNightCityRenderPlan>, anchor: { x: number; y: number }) => {
@@ -215,9 +232,8 @@ test('returns an authored support point inside the selected crop and preserves i
     assert.ok(socket!.sourceX >= chunk.cropRect.x && socket!.sourceX <= chunk.cropRect.x + chunk.cropRect.width);
     assert.ok(socket!.sourceY >= chunk.cropRect.y && socket!.sourceY <= chunk.cropRect.y + chunk.cropRect.height);
     const expectedWorldX = chunk.startX - chunk.overlap
-      + (socket!.sourceX - chunk.cropRect.x) * chunk.sourceScale;
-    const expectedWorldY = -chunk.variant * 2
-      + (socket!.sourceY - chunk.cropRect.y) * chunk.sourceScale;
+      + (chunk.mirrored ? chunk.cropRect.width - (socket!.sourceX - chunk.cropRect.x) : socket!.sourceX - chunk.cropRect.x) * chunk.sourceScale;
+    const expectedWorldY = (socket!.sourceY - chunk.cropRect.y) * chunk.sourceScaleY;
     assert.ok(Math.abs(socket!.x - expectedWorldX) < 1e-9);
     assert.ok(Math.abs(socket!.y - expectedWorldY) < 1e-9);
     assert.ok(support!.x1 !== support!.x2 || support!.y1 !== support!.y2);
@@ -225,13 +241,10 @@ test('returns an authored support point inside the selected crop and preserves i
   assert.deepEqual([...seen].sort(), [
     'night-city-market-rooftops-bridge-v3',
     'night-city-market-v1',
-    'night-city-market-v2',
     'night-city-rooftops-v1',
-    'night-city-rooftops-v2',
     'night-city-rooftops-waterfront-bridge-v1',
     'night-city-waterfront-market-bridge-v1',
     'night-city-waterfront-v1',
-    'night-city-waterfront-v2',
   ].sort());
 });
 

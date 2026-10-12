@@ -20,7 +20,10 @@ const failures: string[] = [];
 try {
   for (const viewport of [{ width: 844, height: 390 }, { width: 1280, height: 720 }]) {
     const touch = viewport.width < 900;
-    const context = await browser.newContext({ viewport, hasTouch: touch, deviceScaleFactor: 1 });
+    // Still screenshots at one scroll position cannot approve moving seams.
+    // Record the entire natural-input traversal for independent review.
+    const context = await browser.newContext({ viewport, hasTouch: touch, deviceScaleFactor: 1,
+      recordVideo: { dir: out, size: viewport } });
     const page = await context.newPage();
     page.setDefaultTimeout(6000);
     const cdp = touch ? await context.newCDPSession(page) : null;
@@ -227,10 +230,18 @@ try {
     } finally {
       await screenshotJob;
       await page.screenshot({ path: `${out}/${label}-final.png` }).catch(() => undefined);
-      reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
-        seen: Object.fromEntries(seen), seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final: await readState().catch(() => null) });
-      await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; no state mutation APIs', failures, reports }, null, 2));
+      const report: Record<string, unknown> = { viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
+        seen: Object.fromEntries(seen), seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final: await readState().catch(() => null) };
+      reports.push(report);
       await context.close();
+      const video = page.video();
+      if (video) {
+        const file = `${out}/${label}-natural-journey.webm`;
+        await video.saveAs(file);
+        report.motionEvidence = { file, sha256: createHash('sha256').update(await readFile(file)).digest('hex'),
+          note: 'Motion across every roof/tower seam; requires independent visual review' };
+      }
+      await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; no state mutation APIs', failures, reports }, null, 2));
     }
   }
 } finally { await browser.close(); }

@@ -1,7 +1,7 @@
 name: Playable audit
 on:
   push:
-    branches: [main, feat/playable-experience-20261012]
+    branches: [main, feat/playable-experience-20261012, repair/factory-qa-night-patrol-20261012]
     paths: ['src/**', 'tests/**', 'scripts/**', 'index.html', 'package*.json', '*.config.*', 'runtime-product-gates.json', '.github/workflows/playable-audit.yml']
   pull_request:
     branches: [main]

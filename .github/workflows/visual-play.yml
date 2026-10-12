@@ -1,7 +1,7 @@
 name: Browser playable evidence
 on:
   push:
-    branches: [main, feat/playable-experience-20261012]
+    branches: [main, feat/playable-experience-20261012, repair/factory-qa-night-patrol-20261012]
     paths: ['src/**', 'tests/playable-*.ts', 'index.html', 'scripts/**', '.github/workflows/visual-play.yml']
   pull_request:
     branches: [main]

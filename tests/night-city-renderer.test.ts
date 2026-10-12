@@ -76,13 +76,17 @@ describe('night-city image renderer', () => {
     assert.ok(plan.chunks.every((chunk) => chunk.assetKey.startsWith('night-city-')));
     assert.ok(plan.chunks.every((chunk) => chunk.width > 0 && chunk.height > 0));
     for (let index = 1; index < plan.chunks.length; index += 1) {
-      const previous = `${plan.chunks[index - 1]!.assetKey}:${plan.chunks[index - 1]!.cropX}:${plan.chunks[index - 1]!.layoutId}`;
-      const next = `${plan.chunks[index]!.assetKey}:${plan.chunks[index]!.cropX}:${plan.chunks[index]!.layoutId}`;
+      const previous = `${plan.chunks[index - 1]!.assetKey}:${plan.chunks[index - 1]!.mirrored}:${plan.chunks[index - 1]!.layoutId}`;
+      const next = `${plan.chunks[index]!.assetKey}:${plan.chunks[index]!.mirrored}:${plan.chunks[index]!.layoutId}`;
       assert.notEqual(next, previous, 'adjacent chunks must not duplicate a recognizable panorama composition');
     }
-    for (let index = 0; index + 1 < plan.chunks.length; index += 2) {
-      if (plan.chunks[index]!.district !== plan.chunks[index + 1]!.district) continue;
-      assert.notEqual(plan.chunks[index]!.assetKey, plan.chunks[index + 1]!.assetKey, 'each two-chunk district visit must use both approved compositions');
+    for (let index = 0; index + 1 < plan.chunks.length; index += 1) {
+      const first = plan.chunks[index]!;
+      const next = plan.chunks[index + 1]!;
+      if (first.district !== next.district || first.kind !== 'district' || next.kind !== 'district') continue;
+      assert.equal(first.assetKey, next.assetKey, 'ordinary images must share exact source edge pixels');
+      assert.notEqual(first.mirrored, next.mirrored, 'alternating reflection must match those edges');
+      assert.equal(first.drawHeight, next.drawHeight, 'no sudden roof-height discontinuity');
     }
   });
 
@@ -207,13 +211,11 @@ describe('night-city image renderer', () => {
     const renderer = createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 });
     renderer.render(scene, 73, 0, 6_400);
     const plan = createNightCityRenderPlan(73, 0, 6_400);
-    const boundaryCount = plan.chunks.slice(1).filter((chunk) => chunk.kind !== 'transition').length;
     const sameDistrictJoinCount = plan.chunks.slice(1).filter((chunk, index) => chunk.district === plan.chunks[index]!.district).length;
-    assert.ok(sameDistrictJoinCount > 0, 'fixture must include a same-district variant join');
+    assert.ok(sameDistrictJoinCount > 0, 'fixture must include an ordinary same-district join');
     const veils = rendered.filter((item) => item.key === 'night-city-district-transition-mist');
-    assert.ok(veils.length >= boundaryCount,
-      'every panorama join, including same-district variants, needs a raster veil');
-    assert.ok(veils.every((item) => item.alpha <= 0.1), 'transition mist must stay subtle enough to avoid a repeated vertical pillar');
+    assert.ok(veils.every((item) => item.alpha <= 0.1), 'district transition mist must remain subtle');
+    assert.ok(veils.length < sameDistrictJoinCount, 'ordinary mirrored joins must not be concealed by repeat fog');
   });
 
   test('keeps ordinary Rooftops variant seams from installing an opaque full-height carrier', () => {
@@ -247,9 +249,7 @@ describe('night-city image renderer', () => {
     const carriers = rendered.filter((item) => item.key === 'night-city-rooftops-transition-v36');
     assert.equal(carriers.length, 0, 'ordinary Rooftops variant seams must not place an opaque full-height carrier over continuous architecture');
     const veils = rendered.filter((item) => item.key === 'night-city-district-transition-mist');
-    assert.equal(veils.length, rooftopSeams.length, 'each Rooftops variant seam uses one subtle veil');
-    assert.ok(veils.every((item) => item.width === 220 && item.height === 941),
-      'the ordinary variant veil must remain narrow and full-height');
+    assert.equal(veils.length, 0, 'rooftop ordinary joins need exact matching pixels, not fog');
     assert.ok(!rendered.some((item) => item.key.includes('bridge-architecture') || item.key.includes('seam-fog')),
       'runtime must not load the bridge or fog layer candidates');
   });

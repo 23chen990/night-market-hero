@@ -129,3 +129,18 @@ export function projectCamera(
       && playerScreenY >= -1 && playerScreenY <= layout.height + 1,
   };
 }
+
+/**
+ * Damped, frame-time-based follow. The gameplay world is never moved or
+ * slowed here; only its visual camera is interpolated. A bounded catch-up
+ * prevents sudden panorama sweeps when the swing changes velocity.
+ */
+export function comfortCameraStep(previous: number, target: number, dt: number, maxTravelPerSecond = 920): number {
+  if (!Number.isFinite(previous) || !Number.isFinite(target)) return Math.max(0, Number.isFinite(target) ? target : 0);
+  if (!Number.isFinite(dt) || dt <= 0) return previous;
+  const seconds = Math.min(0.07, dt);
+  const blend = 1 - Math.exp(-seconds / 0.23);
+  const desired = (target - previous) * blend;
+  const maxDistance = maxTravelPerSecond * seconds;
+  return previous + Math.max(-maxDistance, Math.min(maxDistance, desired));
+}
