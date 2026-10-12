@@ -1,0 +1,969 @@
+diff --git a/src/camera-layout.ts b/src/camera-layout.ts
+index 3cc60b9..2f23e10 100644
+--- a/src/camera-layout.ts
++++ b/src/camera-layout.ts
+@@ -129,3 +129,18 @@ export function projectCamera(
+       && playerScreenY >= -1 && playerScreenY <= layout.height + 1,
+   };
+ }
++
++/**
++ * Damped, frame-time-based follow. The gameplay world is never moved or
++ * slowed here; only its visual camera is interpolated. A bounded catch-up
++ * prevents sudden panorama sweeps when the swing changes velocity.
++ */
++export function comfortCameraStep(previous: number, target: number, dt: number, maxTravelPerSecond = 920): number {
++  if (!Number.isFinite(previous) || !Number.isFinite(target)) return Math.max(0, Number.isFinite(target) ? target : 0);
++  if (!Number.isFinite(dt) || dt <= 0) return previous;
++  const seconds = Math.min(0.07, dt);
++  const blend = 1 - Math.exp(-seconds / 0.23);
++  const desired = (target - previous) * blend;
++  const maxDistance = maxTravelPerSecond * seconds;
++  return previous + Math.max(-maxDistance, Math.min(maxDistance, desired));
++}
+diff --git a/src/experience-director.ts b/src/experience-director.ts
+index 01dc494..5ef676e 100644
+--- a/src/experience-director.ts
++++ b/src/experience-director.ts
+@@ -66,6 +66,13 @@ export function isStylishRelease(player: Pick<GrappleState['player'], 'vx' | 'vy
+ 
+ export interface ControlCue { title: string; detail: string; tone: 'neutral' | 'ready' | 'danger'; }
+ export function controlCue(state: GrappleState): ControlCue {
++  const nextOffer = state.vehicleOffers?.find(offer => offer.status === 'available'
++    && offer.x >= state.player.x - 130 && offer.x <= state.player.x + 920);
++  if (!state.vehicleId && nextOffer) return {
++    title: `前方${nextOffer.id}：碰到发光光环获取`,
++    detail: '靠近光环所在高度飞过；也可以选择错过',
++    tone: 'ready',
++  };
+   if (state.vehicleId === '货运滑索') return { title: '按住加速 · 松手弹射', detail: '滑索带你穿街，松手后可继续接飞索', tone: 'ready' };
+   if (state.vehicleId === '纸鸢') return { title: '按住拉升 · 松手滑翔', detail: '顺着金币调整高度', tone: 'neutral' };
+   if (state.vehicleId === '青鸾') return { title: '按住振翅 · 松手俯冲', detail: '追兵暂退，不要俯冲太久', tone: state.player.y > 700 ? 'danger' : 'ready' };
+diff --git a/src/experience-hud.ts b/src/experience-hud.ts
+index 29bdec8..622d2f9 100644
+--- a/src/experience-hud.ts
++++ b/src/experience-hud.ts
+@@ -46,6 +46,7 @@ export class ExperienceHud {
+   private readonly launch: HTMLElement;
+   private readonly metric: HTMLElement;
+   private readonly goal: HTMLElement;
++  private readonly pursuit: HTMLElement;
+   private readonly cue: HTMLElement;
+   private readonly cueTitle: HTMLElement;
+   private readonly cueDetail: HTMLElement;
+@@ -56,7 +57,7 @@ export class ExperienceHud {
+   private readonly claimButton: HTMLButtonElement;
+   private readonly finishButton: HTMLButtonElement;
+   private readonly soundButton: HTMLButtonElement;
+-  private previous: { tick: number; level: string; vehicle: string | null; pickups: number; combo: number; gates: number; mutation: string | null; status: string } | null = null;
++  private previous: { offerTick: number; tick: number; level: string; vehicle: string | null; pickups: number; combo: number; gates: number; mutation: string | null; status: string } | null = null;
+   private toastUntil = 0;
+   private awaiting = false;
+ 
+@@ -67,6 +68,9 @@ export class ExperienceHud {
+     this.layer.innerHTML = `
+       <div class="flight-metrics" data-experience="metrics"></div>
+       <div class="flight-goal" data-experience="goal"></div>
++      <div class="pursuit-readout" data-experience="pursuit" role="status" aria-live="off">
++        <strong>官兵正在追</strong><span>还有 0 步</span><i aria-hidden="true"></i>
++      </div>
+       <div class="ride-badge" data-experience="ride" hidden><strong></strong><span></span></div>
+       <div class="flight-toast" data-experience="toast" role="status" hidden></div>
+       <div class="control-coach" data-experience="cue"><strong></strong><span></span></div>
+@@ -78,7 +82,7 @@ export class ExperienceHud {
+       </div>`;
+     root.append(this.layer);
+     const get = (name: string): HTMLElement => this.layer.querySelector(`[data-experience="${name}"]`)!;
+-    this.launch = get('launch'); this.metric = get('metrics'); this.goal = get('goal'); this.cue = get('cue');
++    this.launch = get('launch'); this.metric = get('metrics'); this.goal = get('goal'); this.pursuit = get('pursuit'); this.cue = get('cue');
+     this.cueTitle = this.cue.querySelector('strong')!; this.cueDetail = this.cue.querySelector('span')!;
+     this.ride = get('ride'); this.rideName = this.ride.querySelector('strong')!; this.rideTime = this.ride.querySelector('span')!;
+     this.toast = get('toast');
+@@ -118,11 +122,19 @@ export class ExperienceHud {
+     this.metric.hidden = this.awaiting;
+     text(this.metric, `${Math.floor(state.distanceMeters)} m  ·  拾取 ${state.coins}  ·  连飞 ${state.combo} ×${Math.min(state.characterId === '提灯童' ? 3 : 4, 1 + Math.floor(state.combo / 2))}`);
+     this.goal.hidden = this.awaiting || state.status !== 'playing';
++    this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
++    this.pursuit.dataset.phase = state.chase.phase;
++    const closeness = Math.min(1, Math.max(0, state.chase.pressure));
++    text(this.pursuit.querySelector('strong')!, closeness >= 0.75 ? '危险！官兵撒网' : closeness >= 0.35 ? '官兵逼近！快摆荡' : '后方官兵持续追赶');
++    text(this.pursuit.querySelector('span')!, `${Math.round(state.chase.distance / 30)}m`);
++    (this.pursuit.querySelector('i')! as HTMLElement).style.setProperty('--chase-fill', `${Math.round(closeness * 100)}%`);
+     if (state.levelId === 'lantern-entry') text(this.goal, `护送铜符 ${Math.round(state.progress * 100)}% · 前方是渡口`);
+     else {
++      const offer = state.vehicleOffers?.find(item => item.status === 'available' && item.x >= state.player.x - 140);
+       const next = OPENING_ENCOUNTERS.find(beat => beat.segment > state.segmentIndex);
+-      text(this.goal, next ? `前方 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：${next.vehicle}`
+-        : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m · 可在暂停菜单收工`);
++      text(this.goal, offer ? `前方 ${Math.max(0, Math.ceil((offer.x - state.player.x) / 30))}m 光环：${offer.id}（碰到获得）`
++        : next ? `下一处 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：${next.vehicle} 光环`
++          : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m · 可在暂停菜单收工`);
+     }
+     const cue = controlCue(state);
+     this.cue.hidden = !active; this.cue.dataset.tone = cue.tone;
+@@ -139,7 +151,10 @@ export class ExperienceHud {
+     if (p && (state.tick < p.tick || state.levelId !== p.level)) this.previous = null;
+     const previous = this.previous;
+     if (previous && active) {
+-      if (state.vehicleId && state.vehicleId !== previous.vehicle) { this.announce(`${state.vehicleId} 到了！`); this.audio.play('ride'); }
++      if (state.vehicleId && state.vehicleId !== previous.vehicle) { this.announce(`获得 ${state.vehicleId}！按住/松手试试`); this.audio.play('ride'); }
++      else if (state.lastVehicleOffer && state.lastVehicleOffer.tick > previous.offerTick && state.lastVehicleOffer.kind === 'missed') {
++        this.announce(`错过 ${state.lastVehicleOffer.id}，下一段还有机会`);
++      }
+       else if (state.gatesPassed > previous.gates) { this.announce(`穿过第 ${state.gatesPassed} 个街区！`); this.audio.play('combo'); }
+       else if (state.combo > previous.combo) { if (state.combo >= 2) this.announce(`漂亮！${state.combo} 连飞`); this.audio.play('combo'); }
+       else if (state.pickups > previous.pickups) this.audio.play('coin');
+@@ -148,7 +163,7 @@ export class ExperienceHud {
+       }
+     }
+     if (previous && state.status !== 'playing' && previous.status === 'playing') this.audio.play('finish');
+-    this.previous = { tick: state.tick, level: state.levelId, vehicle: state.vehicleId, pickups: state.pickups, combo: state.combo, gates: state.gatesPassed, mutation: state.mutation, status: state.status };
++    this.previous = { offerTick: state.lastVehicleOffer?.tick ?? 0, tick: state.tick, level: state.levelId, vehicle: state.vehicleId, pickups: state.pickups, combo: state.combo, gates: state.gatesPassed, mutation: state.mutation, status: state.status };
+     this.toast.hidden = !active || performance.now() > this.toastUntil;
+   }
+ }
+diff --git a/src/experience.css b/src/experience.css
+index 7ed8fd1..b6316ec 100644
+--- a/src/experience.css
++++ b/src/experience.css
+@@ -92,3 +92,17 @@ button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb
+   .pause-actions small { font-size: 10px; }
+   .result-card { padding: 12px 20px; }
+ }
++
++/* A pursuit that exists only in sr-only text is not a game threat. */
++.pursuit-readout { position:absolute; left:max(18px,env(safe-area-inset-left)); top:max(95px,calc(env(safe-area-inset-top) + 84px));
++ width:185px; padding:7px 10px; background:#11272ddf; border-left:3px solid #edaf6a;
++ border-radius:4px 10px 10px 4px; box-sizing:border-box; display:grid; grid-template-columns:1fr auto;
++ gap:3px 8px; align-items:center; font-size:11px; }
++.pursuit-readout strong { font-weight:800; white-space:nowrap; }
++.pursuit-readout span { color:#ffe5a9; font-size:10px; font-variant-numeric:tabular-nums; }
++.pursuit-readout i { grid-column:1/-1; display:block; height:4px; border-radius:4px;
++ background:linear-gradient(90deg,#f3b477 var(--chase-fill,0%),#315159 var(--chase-fill,0%)); }
++.pursuit-readout[data-phase="danger"],.pursuit-readout[data-phase="climax"] { border-color:#f47772; background:#542831ec; animation:chase-alert 1s ease-in-out infinite alternate; }
++@keyframes chase-alert { to { box-shadow:0 0 18px #ee615066; } }
++@media (max-width:720px) { .pursuit-readout { top:max(90px,calc(env(safe-area-inset-top) + 77px)); width:166px; font-size:10px; padding:5px 8px; } }
++@media (prefers-reduced-motion:reduce) { .pursuit-readout { animation:none !important; } }
+diff --git a/src/game-core.ts b/src/game-core.ts
+index 4a75b0e..443b33f 100644
+--- a/src/game-core.ts
++++ b/src/game-core.ts
+@@ -253,6 +253,14 @@ export interface FormalManifest {
+   scenarios: Array<{ id: string; proves: string[] }>;
+ };
+ 
++export interface VehicleOffer {
++  id: VehicleId;
++  segment: number;
++  x: number;
++  y: number;
++  status: 'available' | 'claimed' | 'missed';
++}
++
+ export interface GrappleState {
+   levelIndex: number;
+   levelCount: number;
+@@ -325,6 +333,9 @@ export interface GrappleState {
+   /** Locked zipline height captured when 货运滑索 hold begins. */
+   vehicleLockY: number;
+   vehicleQueue: VehicleId[];
++  /** Authored world-space pickup rings. Crossing a segment never mounts a ride. */
++  vehicleOffers: VehicleOffer[];
++  lastVehicleOffer: { id: VehicleId; kind: 'claimed' | 'missed'; tick: number } | null;
+   /** Fixed virtual pivot (above the player) used by 灯笼群 free-attach swing. */
+   vehicleVirtualAnchor: Point | null;
+   depthCoefficient: number;
+@@ -373,8 +384,9 @@ const TALISMAN_DURATION_TICKS = 360;
+ const TALISMAN_END_GRACE_TICKS = 30;
+ const FIRECRACKER_STUN_TICKS = 180;
+ const PURSUER_RUN_LANE_Y = 647;
+-const PURSUER_MAX_SPEED = 520;
+-const PURSUER_MAX_ACCELERATION = 1_200;
++// The patrol can catch up to a fast player over time without teleporting.
++const PURSUER_MAX_SPEED = 850;
++const PURSUER_MAX_ACCELERATION = 1_080;
+ const PURSUER_CONTACT_DISTANCE = PLAYER_COLLISION_RADIUS * 2;
+ // Deferred feature: keep the authored canopy data for future art work, but do
+ // not expose or simulate the bounce mechanic in the current release.
+@@ -835,6 +847,8 @@ function copyState(state: GrappleState): GrappleState {
+     ...state,
+     player: { ...state.player },
+     vehicleQueue: [...(state.vehicleQueue ?? [])],
++    vehicleOffers: (state.vehicleOffers ?? []).map(offer => ({ ...offer })),
++    lastVehicleOffer: state.lastVehicleOffer ? { ...state.lastVehicleOffer } : null,
+     playerMotion: { ...state.playerMotion },
+     anchors: state.anchors.map((anchor) => ({ ...anchor })),
+     chase: { ...state.chase },
+@@ -1029,6 +1043,8 @@ export class GrappleGame {
+       vehicleTicksRemaining: 0,
+       vehicleLockY: 0,
+       vehicleQueue: [],
++      vehicleOffers: [],
++      lastVehicleOffer: null,
+       vehicleVirtualAnchor: null,
+       depthCoefficient: 1,
+       bounceCount: 0,
+@@ -1112,6 +1128,8 @@ export class GrappleGame {
+     this.state.vehicleTicksRemaining = 0;
+     this.state.vehicleLockY = 0;
+     this.state.vehicleQueue = [];
++    this.state.vehicleOffers = [];
++    this.state.lastVehicleOffer = null;
+     this.state.vehicleVirtualAnchor = null;
+     if (this.options.guidedExperience) this.state.activePickups = guidedPickups(0);
+     this.state.depthCoefficient = 1;
+@@ -1192,6 +1210,8 @@ export class GrappleGame {
+       vehicleTicksRemaining: snapshot.vehicleTicksRemaining ?? 0,
+       vehicleLockY: snapshot.vehicleLockY ?? 0,
+       vehicleQueue: [...(snapshot.vehicleQueue ?? [])],
++      vehicleOffers: (snapshot.vehicleOffers ?? []).map(offer => ({ ...offer })),
++      lastVehicleOffer: snapshot.lastVehicleOffer ? { ...snapshot.lastVehicleOffer } : null,
+       vehicleVirtualAnchor: snapshot.vehicleVirtualAnchor ?? null,
+       depthCoefficient: snapshot.depthCoefficient ?? 1,
+       bounceCount: snapshot.bounceCount ?? 0,
+@@ -1565,15 +1585,44 @@ export class GrappleGame {
+     const id = this.options.guidedExperience
+       ? directedVehicle(this.state.seed, segment)
+       : rollVehicleForSegment(this.state.seed, segment, sky);
+-    if (this.options.guidedExperience) {
+-      if (!id) return; // Entering an empty segment never erases an active ride.
+-      if (this.state.vehicleId && this.state.vehicleTicksRemaining > 0) {
+-        if (this.state.vehicleQueue.length < 4) this.state.vehicleQueue.push(id);
+-        return;
++    if (!this.options.guidedExperience) {
++      // Compatibility mode keeps its existing stochastic progression.
++      if (id) this.startVehicle(id); else this.expireVehicle();
++      return;
++    }
++    if (!id || this.state.vehicleOffers.some(offer => offer.segment === segment)) return;
++    const x = segmentStartPx(segment) + Math.min(740, segmentLengthPx(segment) * 0.4);
++    this.state.vehicleOffers.push({
++      id, segment, x,
++      y: id === '青鸾' ? 535 : id === '灯笼群' ? 485 : id === '纸鸢' ? 440 : 490,
++      status: 'available',
++    });
++    this.state.vehicleOffers = this.state.vehicleOffers.filter(offer => offer.segment >= segment - 2).slice(-4);
++  }
++
++  private collectVehicleOffers(previousPlayer: PlayerState): void {
++    if (!this.options.guidedExperience) return;
++    const player = this.state.player;
++    for (const offer of this.state.vehicleOffers) {
++      if (offer.status !== 'available') continue;
++      // Vertical reach is generous for the introductory encounter, but not
++      // automatic: a player who flies outside the illuminated pickup lane
++      // can genuinely miss it. Swept horizontal contact handles fast passes.
++      const intersectsX = Math.max(previousPlayer.x, player.x) >= offer.x - 85
++        && Math.min(previousPlayer.x, player.x) <= offer.x + 85;
++      const intersectsY = Math.min(Math.abs(previousPlayer.y - offer.y), Math.abs(player.y - offer.y)) <= 235
++        || (Math.min(previousPlayer.y, player.y) <= offer.y && Math.max(previousPlayer.y, player.y) >= offer.y);
++      if (intersectsX && intersectsY) {
++        offer.status = 'claimed';
++        this.state.lastVehicleOffer = { id: offer.id, kind: 'claimed', tick: this.state.tick };
++        if (this.state.vehicleId && this.state.vehicleTicksRemaining > 0) {
++          if (this.state.vehicleQueue.length < 4) this.state.vehicleQueue.push(offer.id);
++        } else this.startVehicle(offer.id);
++      } else if (player.x > offer.x + 140) {
++        offer.status = 'missed';
++        this.state.lastVehicleOffer = { id: offer.id, kind: 'missed', tick: this.state.tick };
+       }
+     }
+-    if (id) this.startVehicle(id);
+-    else this.expireVehicle();
+   }
+ 
+   private expireVehicle(): void {
+@@ -2209,10 +2258,17 @@ export class GrappleGame {
+     const contactDistance = Math.max(0, this.levelDefinition().pursuitContactDistance);
+     const currentTargetX = player.x + Math.max(-180, Math.min(220, player.vx * PURSUER_TARGET_LOOKAHEAD_SECONDS));
+     const targetGap = currentTargetX - pursuer.x - contactDistance;
+-    const targetSpeed = Math.max(0, Math.min(PURSUER_MAX_SPEED,
+-      (targetGap / PURSUER_TARGET_RESPONSE_SECONDS
+-        + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow)
+-        * this.mutationModifiers().pursuitSpeedFactor)); // 宵禁加派：追兵净逼近 +25%
++    // Catch-up pacing has a stable distance target and bounded acceleration.
++    // A good fast swing buys space for seconds; standing still lets the patrol
++    // close in. The old fixed 520 cap made high-speed players uncatchable.
++    const targetSpeed = this.options.guidedExperience && this.endlessMode
++      ? Math.max(240, Math.min(PURSUER_MAX_SPEED,
++          Math.max(0, player.vx) * 0.95 + 24 + (targetGap - 410) * 0.20
++          + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow))
++      : Math.max(0, Math.min(PURSUER_MAX_SPEED,
++          (targetGap / PURSUER_TARGET_RESPONSE_SECONDS
++            + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow)
++          * this.mutationModifiers().pursuitSpeedFactor));
+     // Debris is a real temporary obstruction for the guard, not just a lower
+     // desired speed. Prevent its inertia from masking the slowdown when the
+     // player crosses into a later authored segment in the same tick.
+@@ -2388,7 +2444,13 @@ export class GrappleGame {
+       }
+     }
+     const gatePacingMultiplier = this.options.marketGates !== false && this.state.segment === 'gate-climax' ? 0.84 : 1;
+-    player.x += player.vx * dt * this.state.routeProfile.speedMultiplier * gatePacingMultiplier;
++    if (this.options.guidedExperience) {
++      // Prevent accelerating endless segments/zipline from turning the street
++      // into a strobing background. Preserve momentum direction and falling.
++      const maxX = Math.min(700, 590 + this.state.segmentIndex * 9);
++      player.vx = Math.max(-maxX * 0.5, Math.min(maxX, player.vx));
++    }
++    player.x += player.vx * dt * (this.options.guidedExperience ? 1 : this.state.routeProfile.speedMultiplier) * gatePacingMultiplier;
+     player.y += player.vy * dt;
+     // Give a fresh tutorial run a short, bounded recovery lane. A first-time
+     // hold/release can swing behind the camera before the player has learned
+@@ -2467,7 +2529,9 @@ export class GrappleGame {
+     if (this.options.guidedExperience && !this.endlessMode) this.state.distanceMeters = Math.floor(this.state.furthestX / 30);
+ 
+     const speed = Math.hypot(player.vx, player.vy);
+-    const speedCap = (this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED) * (vehicleActive ? 1 : this.characterStats().speed);
++    const speedCap = this.options.guidedExperience
++      ? Math.min(750, 625 + Math.max(0, this.state.segmentIndex) * 9)
++      : (this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED) * (vehicleActive ? 1 : this.characterStats().speed);
+     this.state.maxSpeed = speedCap;
+     this.state.attachRadius = this.ordinaryAttachRadius();
+     if (speed > speedCap) {
+@@ -2480,6 +2544,7 @@ export class GrappleGame {
+     this.resolveAuthoredRouteSurface();
+     this.updateTerrain(dt, previousPlayer);
+     this.collectPickups(previousPlayer);
++    this.collectVehicleOffers(previousPlayer);
+     this.updateChase(dt);
+     this.updateChaseEvents(previousPlayer);
+     this.refreshDerived(false);
+@@ -2512,15 +2577,18 @@ export class GrappleGame {
+       && player.y >= this.state.gate.collisionAperture.y
+       && player.y <= this.state.gate.collisionAperture.y + this.state.gate.collisionAperture.height;
+     if (gateShelter) player.vx = Math.max(player.vx, 260);
++    // In guided patrol guards cast an overhead net when horizontally close;
++    // y distance no longer makes high-route players permanently immune.
+     const pursuerContact = Math.abs(player.x - this.state.pursuer.x) <= PURSUER_CONTACT_DISTANCE
+-      && (!this.options.guidedExperience || Math.abs(player.y - this.state.pursuer.y) <= 72);
++      && (!this.options.guidedExperience || player.y <= this.state.failY);
+     // 青鸾期间追兵无法追上（catchImmune）：仅冻结追兵推进，距离自然拉大
+     const vehicleCatchImmune = vehicleActive && vehicle!.catchImmune;
+     // The first district cycle teaches the endless rhythm while falls still
+     // fail normally. Guard contact becomes lethal from the next segment so
+     // small browser-frame variations cannot end a run before every district
+     // theme has appeared once.
+-    const endlessOpeningGrace = this.endlessMode && this.state.segmentIndex <= 3;
++    const endlessOpeningGrace = this.endlessMode && this.state.segmentIndex === 0
++      && this.state.elapsed < 7;
+     // The tutorial's first chase is also an input lesson. A real pointer hold
+     // can span a different number of fixed ticks on desktop and mobile, so a
+     // player who has made several genuine hold/release transitions gets to
+diff --git a/src/main.ts b/src/main.ts
+index b8f72ac..d1ce38a 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -1,5 +1,5 @@
+ import { ExperienceHud } from './experience-hud.ts';
+-import { drawRide, drawConditions } from './ride-renderer.ts';
++import { drawRide, drawVehicleOffers, drawConditions } from './ride-renderer.ts';
+ import { nextCheckpointX } from './experience-director.ts';
+ import { applyFlightIdentity, flightPresentation } from './flight-presentation';
+ import Phaser from 'phaser';
+@@ -40,7 +40,7 @@ import {
+ } from './runtime-session';
+ import { CHARACTERS } from './progression';
+ import { speedFeelProfile, settlementCoins } from './endless';
+-import { createCameraLayout, projectCamera, LOGICAL_VIEWPORT } from './camera-layout';
++import { createCameraLayout, projectCamera, comfortCameraStep, LOGICAL_VIEWPORT } from './camera-layout';
+ import { createNightCityRenderer, createNightCityRenderPlan, mapWorldAnchorToArchitecturalSocket, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
+ import './style.css';
+ import './experience.css';
+@@ -748,7 +748,7 @@ function renderProductUi(state: GrappleState): void {
+   chaseDistance.textContent = `${Math.round(state.chase.distance)} 步`;
+   pursuerDistance.textContent = `${Math.round(state.pursuer.distance)} 步`;
+   const guardOnScreen = app.dataset.guardOnScreen === 'true';
+-  const chaseVisible = state.chase.phase === 'danger' || state.chase.phase === 'climax';
++  const chaseVisible = state.levelId === 'night-patrol' || state.chase.phase !== 'safe';
+   const edgeVisible = state.pursuer.visible && chaseVisible && !guardOnScreen;
+   pursuerPresence.dataset.visible = String(state.pursuer.visible && chaseVisible && !guardOnScreen);
+   // `hidden` is the authoritative DOM visibility switch. Keep the data
+@@ -910,6 +910,7 @@ class FlightScene extends Phaser.Scene {
+   private pursuerSprite!: Phaser.GameObjects.Image;
+   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
+   private cameraScrollX = 0;
++  private cameraHasInitialized = false;
+   private lastRenderedTick = 0;
+   private lastRenderedPlayerX = 0;
+   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+@@ -979,14 +980,19 @@ class FlightScene extends Phaser.Scene {
+     const worldViewportHeight = projection.worldViewportHeight;
+     this.cameras.main.setZoom(projection.zoom);
+     const cameraTargetX = projection.scrollX;
+-    if (state.tick < this.lastRenderedTick
+-      || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 0.7
+-      || Math.abs(cameraTargetX - this.cameraScrollX) > worldViewportWidth * 0.7) this.cameraScrollX = projection.scrollX;
++    const elapsedCameraSeconds = Math.max(0, (state.tick - this.lastRenderedTick) / 120);
++    const genuineRestart = state.tick < this.lastRenderedTick
++      || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 1.25;
++    if (!this.cameraHasInitialized || genuineRestart) {
++      this.cameraScrollX = cameraTargetX;
++      this.cameraHasInitialized = true;
++    } else if (elapsedCameraSeconds > 0) {
++      this.cameraScrollX = comfortCameraStep(this.cameraScrollX, cameraTargetX, elapsedCameraSeconds);
++    }
+     this.lastRenderedTick = state.tick;
+     this.lastRenderedPlayerX = state.player.x;
+-    // A short reverse swing must not pull the market backward.  Reset only on
+-    // an actual run restart/teleport; normal camera movement is forward-only.
+-    this.cameraScrollX = Math.max(this.cameraScrollX, projection.scrollX);
++    // Camera may ease backwards a little during a real backswing; this avoids
++    // a sudden jump forward on the next hook. Never rewind the game state.
+     const maxScrollX = Math.max(0, worldRight - worldViewportWidth);
+     this.cameraScrollX = Math.min(this.cameraScrollX, maxScrollX);
+     this.cameras.main.scrollX = this.cameraScrollX;
+@@ -1033,6 +1039,17 @@ class FlightScene extends Phaser.Scene {
+     // approved image stream is the only scene owner; this pass is reserved for
+     // live gameplay feedback that must remain visible while jumping.
+     this.drawStrictReferencePursuer(graphics, state);
++    if (state.levelId === 'night-patrol' && state.chase.pressure >= 0.55) {
++      // Officers throw a visible roof-reaching net rather than magically
++      // catching a high-line player from an invisible ground collision.
++      const guardX = state.pursuer.x;
++      const guardY = state.pursuer.y - 26;
++      const warnX = guardX + Math.min(190, Math.max(50, state.chase.distance * 0.65));
++      const warnY = Math.max(220, state.player.y - 45);
++      graphics.lineStyle(5, 0xe89a78, state.chase.pressure * 0.22).lineBetween(guardX, guardY, warnX, warnY);
++      graphics.lineStyle(2, 0xffd2a3, 0.70).lineBetween(guardX, guardY, warnX, warnY);
++      graphics.lineStyle(3, 0xefaa79, 0.7).strokeEllipse(warnX, warnY, 76, 76);
++    }
+     this.drawChaseObstacle(graphics, state);
+     this.drawActivePickups(graphics, state, this.cameras.main.scrollX, worldViewportWidth);
+     this.drawTutorialAffordance(graphics, state);
+@@ -1063,6 +1080,7 @@ class FlightScene extends Phaser.Scene {
+         graphics.lineStyle(state.comboTier >= 3 ? 3 : 2, ropeColor, 0.94).lineBetween(anchor.x, anchor.y, state.player.x, state.player.y);
+       }
+     }
++    drawVehicleOffers(graphics, state);
+     drawRide(graphics, state);
+     this.drawStrictReferenceProtagonist(graphics, state.player.x, state.player.y, Math.atan2(state.player.vy, state.player.vx));
+     graphics.lineStyle(2, 0xd76572, 0.18).lineBetween(this.cameras.main.scrollX, state.failY, this.cameras.main.scrollX + worldViewportWidth, state.failY);
+diff --git a/src/night-city-renderer.ts b/src/night-city-renderer.ts
+index de154a5..5837f48 100644
+--- a/src/night-city-renderer.ts
++++ b/src/night-city-renderer.ts
+@@ -108,6 +108,9 @@ export interface NightCityChunkRender {
+   sourceScale: number;
+   renderScale: number;
+   overlap: number;
++  /** Seam-matched alternating reflection; neighboring panorama edge pixels match. */
++  mirrored: boolean;
++  sourceScaleY: number;
+ }
+ 
+ export interface NightCityRenderPlan {
+@@ -142,6 +145,7 @@ export interface RenderImage {
+   setAlpha(alpha: number): RenderImage;
+   setScrollFactor?(factorX: number, factorY?: number): RenderImage;
+   setCrop?(x?: number, y?: number, width?: number, height?: number): RenderImage;
++  setFlipX?(flip: boolean): RenderImage;
+   destroy(): void;
+ }
+ 
+@@ -267,7 +271,7 @@ function finite(value: number, fallback: number): number {
+   return Number.isFinite(value) ? value : fallback;
+ }
+ 
+-function cropFor(
++export function cropFor(
+   chunk: CityChunk,
+   imageWidth: number,
+   imageHeight: number,
+@@ -330,14 +334,21 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
+   const safeLeft = Math.min(finite(left, 0), finite(right, 0));
+   const safeRight = Math.max(finite(left, 0), finite(right, safeLeft + CITY_CHUNK_WIDTH));
+   const chunks = cityChunksInView(seed, safeLeft, safeRight).map((chunk) => {
+-    const renderScale = 1.01 + (chunk.variant % 3) * 0.004;
+     const transitionImage = transitionImageFor(chunk);
++    const ordinary = transitionImage === null;
++    // Same-district panels use one authored panorama reflected on every other
++    // local slot. At a normal join A.right === mirror(A).left pixel-for-pixel.
++    // Old random crops/scale/vertical offsets made the geometry discontinuous;
++    // they are retained only in the compatibility helpers, not the default.
++    const mirrored = ordinary && chunk.slotIndex % 2 === 1;
+     const imageWidth = transitionImage?.imageWidth ?? PANORAMA_CANVAS_WIDTH;
+     const imageHeight = transitionImage?.imageHeight ?? PANORAMA_CANVAS_HEIGHT;
+-    const cropRect = cropFor(chunk, imageWidth, imageHeight, transitionImage === null);
+-    const drawWidth = imageWidth * renderScale;
++    const cropRect = { x: 0, y: 0, width: imageWidth, height: imageHeight };
++    const drawWidth = ordinary ? CITY_CHUNK_WIDTH : imageWidth * 1.01;
++    const drawHeight = ordinary ? PANORAMA_CANVAS_HEIGHT : imageHeight * 1.01;
+     const sourceScale = drawWidth / cropRect.width;
+-    const drawHeight = cropRect.height * sourceScale;
++    const sourceScaleY = drawHeight / cropRect.height;
++    const renderScale = ordinary ? 1 : 1.01;
+     return {
+       index: chunk.index,
+       startX: chunk.startX,
+@@ -353,7 +364,7 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
+       name: chunk.name,
+       variant: chunk.variant,
+       layoutId: chunk.layoutId,
+-      assetKey: transitionImage?.assetKey ?? PANORAMA_KEYS[chunk.district][chunk.index % 2],
++      assetKey: transitionImage?.assetKey ?? PANORAMA_KEYS[chunk.district][0],
+       width: CITY_CHUNK_WIDTH,
+       height: chunkHeight,
+       imageWidth,
+@@ -365,8 +376,9 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
+       drawHeight,
+       sourceScale,
+       renderScale,
+-      overlap: transitionImage?.overlap
+-        ?? Math.ceil(CITY_CHUNK_WIDTH * (renderScale - 1) * 0.75) + 2,
++      mirrored,
++      sourceScaleY,
++      overlap: transitionImage?.overlap ?? 0,
+     } satisfies NightCityChunkRender;
+   });
+   return { chunks, left: safeLeft, right: safeRight };
+@@ -471,10 +483,11 @@ export function mapWorldAnchorToArchitecturalSocket(
+   const authoredSupports = NIGHT_CITY_SUPPORT_CATALOG[chunk.assetKey];
+   if (!authoredSupports || authoredSupports.length === 0) return null;
+   const worldLeft = chunk.startX - chunk.overlap;
+-  const worldTop = -chunk.variant * 2;
++  const worldTop = 0;
+   const sourceTarget = {
+-    x: chunk.cropRect.x + (anchor.x - worldLeft) / chunk.sourceScale,
+-    y: chunk.cropRect.y + (anchor.y - worldTop) / chunk.sourceScale,
++    x: chunk.mirrored ? chunk.cropRect.x + chunk.cropRect.width - (anchor.x - worldLeft) / chunk.sourceScale
++      : chunk.cropRect.x + (anchor.x - worldLeft) / chunk.sourceScale,
++    y: chunk.cropRect.y + (anchor.y - worldTop) / chunk.sourceScaleY,
+   };
+   const best = authoredSupports.reduce<{ support: NightCitySupportSegment; point: SourcePoint; distance: number } | null>(
+     (closest, authoredSupport) => {
+@@ -494,8 +507,8 @@ export function mapWorldAnchorToArchitecturalSocket(
+   if (!best || best.distance > MAX_SUPPORT_LINK_DISTANCE) return null;
+   const { support, point } = best;
+   return {
+-    x: worldLeft + (point.x - chunk.cropRect.x) * chunk.sourceScale,
+-    y: worldTop + (point.y - chunk.cropRect.y) * chunk.sourceScale,
++    x: worldLeft + (chunk.mirrored ? chunk.cropRect.width - (point.x - chunk.cropRect.x) : point.x - chunk.cropRect.x) * chunk.sourceScale,
++    y: worldTop + (point.y - chunk.cropRect.y) * chunk.sourceScaleY,
+     sourceX: point.x,
+     sourceY: point.y,
+     supportId: support.supportId,
+@@ -521,6 +534,8 @@ interface DesiredRender {
+   baseX?: number;
+   baseY?: number;
+   cropRect?: NightCityCropRect;
++  mirrored?: boolean;
++  ordinary?: boolean;
+   sourceWidth?: number;
+   sourceHeight?: number;
+ }
+@@ -603,7 +618,7 @@ export class NightCityRenderer {
+     const desired = new Map<string, DesiredRender>();
+     for (const chunk of plan.chunks) {
+       const baseX = chunk.startX - chunk.overlap;
+-      const baseY = -chunk.variant * 2;
++      const baseY = 0;
+       desired.set(`panorama:${chunk.index}`, {
+         key: chunk.assetKey,
+         // Phaser crops in source pixels and scales the cropped quad.  Offset
+@@ -617,6 +632,8 @@ export class NightCityRenderer {
+         baseX,
+         baseY,
+         cropRect: chunk.cropRect,
++        mirrored: chunk.mirrored,
++        ordinary: chunk.kind === 'district',
+         sourceWidth: chunk.imageWidth,
+         sourceHeight: chunk.imageHeight,
+       });
+@@ -628,6 +645,7 @@ export class NightCityRenderer {
+       // plate. A second veil would double the architecture at the join.
+       if (transitionImageFor(chunk)) continue;
+       const districtChange = previous.district !== chunk.district;
++      if (!districtChange && previous.kind === 'district' && chunk.kind === 'district') continue;
+       desired.set(`transition:${chunk.index}`, {
+         // The full-height Rooftops V36 plate is a compatibility asset only.
+         // It contains opaque architecture at its side edges, so placing it at
+@@ -669,7 +687,10 @@ export class NightCityRenderer {
+       const displayHeight = cropSupported && spec.cropRect ? spec.height : spec.cropRect
+         ? spec.cropRect.height * (spec.height / (spec.sourceHeight ?? spec.cropRect.height))
+         : spec.height;
+-      item.image.setOrigin(0, 0).setPosition(positionX, positionY).setDisplaySize(displayWidth, displayHeight)
++      // A flipped image with a top-left pivot can render on the wrong side
++      // of its position in Phaser. Use the center pivot for mirrored tiles.
++      const centeredX = spec.ordinary ? positionX + displayWidth / 2 : positionX;
++      item.image.setOrigin(spec.ordinary ? 0.5 : 0, 0).setPosition(centeredX, positionY).setDisplaySize(displayWidth, displayHeight)
+         .setDepth(spec.depth).setAlpha(spec.depth === -19
+           || spec.depth === -20 || spec.key === 'night-city-rooftops-transition-v36' ? 1 : spec.depth === -9 || spec.depth === -8 ? 0.08 : 0.9);
+       if (item.image.setCrop) {
+@@ -686,6 +707,7 @@ export class NightCityRenderer {
+       // Every remaining image layer is part of the baked world map.  The
+       // retired compatibility parallax factor is intentionally unused here;
+       // seams must stay on the same world coordinate at every camera depth.
++      item.image.setFlipX?.(spec.mirrored ?? false);
+       item.image.setScrollFactor?.(NIGHT_CITY_LAYER_CONFIG.panoramaScrollFactor, 0);
+       item.image.setVisible(true);
+     }
+diff --git a/src/ride-renderer.ts b/src/ride-renderer.ts
+index c8a82b8..a99af9f 100644
+--- a/src/ride-renderer.ts
++++ b/src/ride-renderer.ts
+@@ -61,3 +61,23 @@ export function drawConditions(g: Phaser.GameObjects.Graphics, state: GrappleSta
+     for (let i = 0; i < 16; i++) g.fillCircle(left + (i * 173) % width, 95 + i % 4 * 36, i % 3 === 0 ? 3 : 2);
+   }
+ }
++
++/** Player must physically fly through this world-space lane to collect a ride. */
++export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: GrappleState): void {
++  for (const offer of state.vehicleOffers ?? []) {
++    if (offer.status !== 'available') continue;
++    const pulse = 0.5 + 0.5 * Math.sin(state.tick / 16);
++    const x = offer.x, y = offer.y;
++    const theme = offer.id === '青鸾' ? 0x79e6ce : offer.id === '纸鸢' ? 0xf5d27e
++      : offer.id === '灯笼群' ? 0xffaa7c : 0xf1cf91;
++    g.fillStyle(theme, 0.04 + pulse * 0.04).fillEllipse(x, y, 170, 460);
++    g.lineStyle(12, theme, 0.12).strokeEllipse(x, y, 160, 455);
++    g.lineStyle(5, theme, 0.65 + pulse * 0.30).strokeEllipse(x, y, 132, 432);
++    g.lineStyle(2, 0xfff4ce, 0.85).strokeEllipse(x, y, 100, 380);
++    // A grounded pickup pole makes the ring part of the landscape rather
++    // than a HUD notification or invisible segment-transition reward.
++    g.lineStyle(4, 0x9a8065, 0.70).lineBetween(x, y + 230, x, 772);
++    g.fillStyle(theme, 0.90).fillCircle(x, y, 15 + pulse * 4);
++    g.fillStyle(0xfff6dc, 0.85).fillCircle(x, y, 7);
++  }
++}
+diff --git a/src/run-snapshot.ts b/src/run-snapshot.ts
+index 01112cf..8658ae1 100644
+--- a/src/run-snapshot.ts
++++ b/src/run-snapshot.ts
+@@ -332,6 +332,11 @@ function isValidRunStateRecord(state: RecordValue): boolean {
+     && optional(state.vehiclePhase, (value) => oneOf(value, VEHICLE_PHASES))
+     && optional(state.vehicleTicksRemaining, nonNegativeInteger)
+     && optional(state.vehicleQueue, value => Array.isArray(value) && value.length <= 4 && value.every(id => oneOf(id, VEHICLE_IDS)))
++    && optional(state.vehicleOffers, value => Array.isArray(value) && value.length <= 4 && value.every(offer => isRecord(offer)
++      && oneOf(offer.id, VEHICLE_IDS) && nonNegativeInteger(offer.segment) && finite(offer.x) && finite(offer.y)
++      && oneOf(offer.status, ['available', 'claimed', 'missed'] as const)))
++    && optional(state.lastVehicleOffer, value => value === null || (isRecord(value)
++      && oneOf(value.id, VEHICLE_IDS) && oneOf(value.kind, ['claimed', 'missed'] as const) && nonNegativeInteger(value.tick)))
+     && optional(state.vehicleLockY, finite)
+     && optional(state.vehicleVirtualAnchor, nullablePoint)
+     && optional(state.depthCoefficient, (value) => finite(value) && value > 0)
+diff --git a/tests/camera-layout.test.ts b/tests/camera-layout.test.ts
+index a168cdd..3d622bd 100644
+--- a/tests/camera-layout.test.ts
++++ b/tests/camera-layout.test.ts
+@@ -5,6 +5,7 @@ import {
+   LOGICAL_VIEWPORT,
+   createCameraLayout,
+   projectCamera,
++  comfortCameraStep,
+ } from '../src/camera-layout.ts';
+ 
+ describe('night-city camera layout', () => {
+@@ -45,6 +46,17 @@ describe('night-city camera layout', () => {
+     assert.equal(grounded.worldViewportHeight, airborne.worldViewportHeight);
+   });
+ 
++  test('camera follows with a capped frame-time step instead of teleporting on every swing', () => {
++    let scroll = 0;
++    for (let frame = 0; frame < 180; frame++) {
++      const next = comfortCameraStep(scroll, 700, 1 / 60);
++      assert.ok(next - scroll >= 0 && next - scroll <= 920 / 60 + 0.01);
++      scroll = next;
++    }
++    assert.ok(scroll > 690 && scroll <= 700);
++    const reverse = comfortCameraStep(scroll, 480, 1 / 60);
++    assert.ok(reverse < scroll && scroll - reverse < 920 / 60 + 0.01);
++  });
+   test('FlightScene pins the Phaser camera origin to the same logical projection', async () => {
+     const source = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
+     assert.match(source, /cameras\.main\.setOrigin\(0,\s*0\)/);
+diff --git a/tests/comfort-pursuit.test.ts b/tests/comfort-pursuit.test.ts
+new file mode 100644
+index 0000000..e01f3bb
+--- /dev/null
++++ b/tests/comfort-pursuit.test.ts
+@@ -0,0 +1,40 @@
++import assert from 'node:assert/strict';
++import { test } from 'node:test';
++import { createGrappleGame } from '../src/game-core.ts';
++import { segmentStartPx } from '../src/endless.ts';
++
++const options = { marketGates: false, terrainMode: 'panorama', guidedExperience: true } as const;
++
++test('guided high-speed players cannot create an unlimited uncatchable guard gap', () => {
++  const game = createGrappleGame(31, options); game.restartEndless(31);
++  // Engineering fixture: keep the player at a constant cruising speed/altitude
++  // while the real fixed-step pursuer controller runs, without teleporting the guard.
++  game.setPlayerForTest({ x: segmentStartPx(5) + 120, y: 590, vx: 540, vy: 0 });
++  game.advanceTicks(1);
++  const setup = game.getState();
++  // Normalize only the initial engineer-fixture separation. No guard state
++  // injection occurs during the measurement window itself.
++  setup.pursuer.x = setup.player.x - 700;
++  setup.pursuer.vx = 540;
++  assert.equal(game.restoreSnapshot(setup), true);
++  let furthestGap = setup.player.x - setup.pursuer.x;
++  for (let sample = 0; sample < 16; sample++) {
++    const current = game.getState();
++    if (current.status !== 'playing') break;
++    game.setPlayerForTest({ y: 590, vy: 0, vx: 540 });
++    game.advanceTicks(60);
++    furthestGap = Math.max(furthestGap, game.getState().chase.distance);
++  }
++  assert.ok(furthestGap < 1200, `pursuer drifted out of the game: ${furthestGap}`);
++  assert.ok(game.getState().chase.distance < 1000 || game.getState().failureReason === 'caught',
++    'patrol must exert sustainable pressure without snapping to the player');
++});
++
++test('guided run limits real travel speed even after deep endless segments', () => {
++  const game = createGrappleGame(31, options); game.restartEndless(31);
++  game.setPlayerForTest({ x: segmentStartPx(16) + 20, y: 475, vx: 1600, vy: 0 });
++  const state = game.advanceTicks(1);
++  assert.equal(state.status, 'playing');
++  assert.ok(state.player.vx <= 700, `uncapped late speed: ${state.player.vx}`);
++  assert.ok(state.maxSpeed <= 750, `late speed cap should not ramp indefinitely: ${state.maxSpeed}`);
++});
+diff --git a/tests/guided-experience.test.ts b/tests/guided-experience.test.ts
+index 4b1e8ed..201c210 100644
+--- a/tests/guided-experience.test.ts
++++ b/tests/guided-experience.test.ts
+@@ -12,6 +12,18 @@ function enter(game: ReturnType<typeof patrol>, segment: number) {
+   game.setPlayerForTest({ x: segmentStartPx(segment) + 1, y: 460, vx: 440, vy: 0 });
+   return game.advanceTicks(1);
+ }
++function collectOffer(game: ReturnType<typeof patrol>, segment: number) {
++  const state = enter(game, segment);
++  const offer = state.vehicleOffers.find(item => item.segment === segment);
++  assert.ok(offer, `segment ${segment} must spawn a visible world pickup`);
++  // Deterministic test setup positions the body near the world-space ring;
++  // the actual pickup is obtained by stepping the collision simulation.
++  game.setPlayerForTest({ x: offer.x - 97, y: offer.y, vx: 485, vy: 0 });
++  const before = game.advanceTicks(1);
++  assert.equal(before.vehicleId, state.vehicleId, 'approach alone cannot mount a new ride');
++  game.setPlayerForTest({ x: offer.x - 28, y: offer.y, vx: 485, vy: 0 });
++  return game.advanceTicks(1);
++}
+ 
+ test('all opening rides are authored for every seed; later rolls stay deterministic', () => {
+   for (const seed of [1, 2, 31, 99, 157]) {
+@@ -46,23 +58,25 @@ test('a checkpoint is earned at its visible midpoint, never just at segment entr
+ });
+ test('mounted vehicles release the old physical grapple immediately', () => {
+   const game = patrol(); game.act('press'); assert.ok(game.getState().attachedAnchorId);
+-  const state = enter(game, 2);
++  const entry = enter(game, 2);
++  assert.equal(entry.vehicleId, null, 'entering a segment must not give a free ride');
++  const state = collectOffer(game, 2);
+   assert.equal(state.vehicleId, rideNames[0]); assert.equal(state.attachedAnchorId, null); assert.equal(state.ropeLength, null);
+ });
+ test('an empty segment preserves the remaining ride duration', () => {
+-  const game = patrol(); const mounted = enter(game, 2); const next = enter(game, 3);
++  const game = patrol(); const mounted = collectOffer(game, 2); const next = enter(game, 3);
+   assert.equal(next.vehicleId, mounted.vehicleId);
+   assert.equal(next.vehicleTicksRemaining, mounted.vehicleTicksRemaining - 1);
+ });
+ test('fast travel queues the next authored ride instead of overwriting or losing it', () => {
+-  const game = patrol(); enter(game, 2); const next = enter(game, 4);
++  const game = patrol(); collectOffer(game, 2); const next = collectOffer(game, 4);
+   assert.equal(next.vehicleId, rideNames[0]); assert.deepEqual(next.vehicleQueue, [rideNames[1]]);
+   const snapshot = game.getState(); snapshot.vehicleTicksRemaining = 1;
+   assert.equal(game.restoreSnapshot(snapshot), true);
+   const switched = game.advanceTicks(1); assert.equal(switched.vehicleId, rideNames[1]); assert.deepEqual(switched.vehicleQueue, []);
+ });
+ test('ride queue snapshots round trip and returned state cannot mutate the live queue', () => {
+-  const game = patrol(); enter(game, 2); enter(game, 4);
++  const game = patrol(); collectOffer(game, 2); collectOffer(game, 4);
+   const snapshot = createRunSnapshot('queued', game.getState());
+   const parsed = parseRunSnapshot(JSON.stringify(snapshot)); assert.ok(parsed);
+   const restored = patrol(); assert.equal(restored.restoreSnapshot(parsed!.state), true);
+@@ -76,19 +90,39 @@ test('corrupt ride queues are rejected without rejecting old saves', () => {
+   assert.equal(isValidRunState({ ...state, vehicleQueue: ['unknown'] }), false);
+   assert.equal(isValidRunState({ ...state, vehicleQueue: Array(5).fill(rideNames[0]) }), false);
+ });
++test('a missed pickup is not granted automatically and cannot be collected from far above its lane', () => {
++  const game = patrol(); const first = enter(game, 2); const offer = first.vehicleOffers[0]!;
++  assert.equal(first.vehicleId, null);
++  game.setPlayerForTest({ x: offer.x - 100, y: offer.y - 400, vx: 490, vy: 0 }); game.advanceTicks(1);
++  game.setPlayerForTest({ x: offer.x + 160, y: offer.y - 400, vx: 490, vy: 0 }); game.advanceTicks(1);
++  const missed = game.getState();
++  assert.equal(missed.vehicleId, null);
++  assert.equal(missed.vehicleOffers[0]?.status, 'missed');
++  assert.equal(missed.lastVehicleOffer?.kind, 'missed');
++  game.setPlayerForTest({ x: offer.x - 1, y: offer.y }); game.advanceTicks(1);
++  assert.equal(game.getState().vehicleId, null, 'a missed one-time offer must not reactivate');
++});
++test('visible pickup offers persist through snapshots and reject malformed records', () => {
++  const game = patrol(); enter(game, 2);
++  const snapshot = createRunSnapshot('offers', game.getState());
++  const parsed = parseRunSnapshot(JSON.stringify(snapshot)); assert.ok(parsed);
++  const restored = patrol(); assert.equal(restored.restoreSnapshot(parsed!.state), true);
++  assert.deepEqual(restored.getState().vehicleOffers, game.getState().vehicleOffers);
++  assert.equal(isValidRunState({ ...game.getState(), vehicleOffers: [{ id: 'broken', x: 1, y: 2, segment: 2, status: 'available' }] }), false);
++});
+ test('zipline release really ejects upward and returns to ordinary grapple control', () => {
+-  const game = patrol(); enter(game, 2); game.act('press'); game.advanceTicks(80); game.act('release');
++  const game = patrol(); collectOffer(game, 2); game.act('press'); game.advanceTicks(80); game.act('release');
+   const state = game.getState(); assert.equal(state.vehicleId, null); assert.ok(state.player.vy <= -300); assert.ok(state.player.vx >= 420);
+   assert.ok(state.regrappleGraceUntilTick > state.tick);
+ });
+ test('bird lift remains visible and its countdown is frozen while paused', () => {
+-  const game = patrol(); enter(game, 8); game.act('press');
++  const game = patrol(); collectOffer(game, 8); game.act('press');
+   for (let i = 0; i < 360; i++) { const s = game.advanceTicks(1); assert.ok(s.player.y >= 125); assert.ok(Number.isFinite(s.player.vx)); }
+   const before = game.getState(); game.setPaused(true); game.advanceTicks(1000);
+   assert.equal(game.getState().tick, before.tick); assert.equal(game.getState().vehicleTicksRemaining, before.vehicleTicksRemaining);
+ });
+ test('ride expiry supplies a finite, forward recovery window', () => {
+-  const game = patrol(); const state = enter(game, 4); state.vehicleTicksRemaining = 1;
++  const game = patrol(); const state = collectOffer(game, 4); state.vehicleTicksRemaining = 1;
+   assert.equal(game.restoreSnapshot(state), true);
+   const expired = game.advanceTicks(1);
+   assert.equal(expired.vehicleId, null); assert.ok(expired.player.vy < 0); assert.ok(expired.player.vx >= 280);
+@@ -158,7 +192,7 @@ for (const seed of [1, 31, 99]) test(`default guided journey exposes all four ri
+ });
+ 
+ test('a release already in flight at ride entry cannot immediately erase the zipline', () => {
+-  const game = patrol(); enter(game, 2); game.act('press'); game.advanceTicks(12); game.act('release');
++  const game = patrol(); collectOffer(game, 2); game.act('press'); game.advanceTicks(12); game.act('release');
+   assert.equal(game.getState().vehicleId, rideNames[0]);
+   game.advanceTicks(70); game.act('press'); game.act('release');
+   assert.equal(game.getState().vehicleId, null);
+@@ -170,20 +204,20 @@ test('late backward release remains recoverable without awarding a fake combo',
+   assert.equal(state.combo, 0); assert.ok(state.regrappleGraceUntilTick > state.tick);
+ });
+ test('pausing a held lantern cancels the virtual rope without losing the mount', () => {
+-  const game = patrol(); enter(game, 6); game.act('press'); assert.ok(game.getState().vehicleVirtualAnchor);
++  const game = patrol(); collectOffer(game, 6); game.act('press'); assert.ok(game.getState().vehicleVirtualAnchor);
+   game.setPaused(true); const state = game.getState();
+   assert.equal(state.vehiclePhase, 'idle'); assert.equal(state.vehicleVirtualAnchor, null); assert.equal(state.vehicleId, rideNames[2]);
+ });
+ 
+ 
+-test('a guided mount catches a low falling player before inheriting a fatal dive', () => {
++test('a claimed pickup stabilizes the first frame instead of teleporting an already falling stranger', () => {
+   for (const beat of OPENING_ENCOUNTERS) {
+     const game = createGrappleGame(31, options); game.restartEndless(31);
+-    game.setPlayerForTest({ x: segmentStartPx(beat.segment) + 2, y: 870, vx: 50, vy: 800 }); game.advanceTicks(1);
+-    assert.equal(game.getState().vehicleId, beat.vehicle);
+-    assert.ok(game.getState().player.y <= 621);
+-    assert.ok(game.getState().player.vy < 0);
+-    assert.equal(game.getState().status, 'playing');
++    const mounted = collectOffer(game, beat.segment);
++    assert.equal(mounted.vehicleId, beat.vehicle);
++    assert.equal(mounted.status, 'playing');
++    assert.ok(mounted.player.y < 750, 'pickup can only be claimed within a reachable aerial lane');
++    assert.ok(mounted.player.vx > 0);
+   }
+ });
+ 
+@@ -200,7 +234,7 @@ test('guided revival eligibility does not depend on repeating segment progress',
+ 
+ test('lantern release really launches forward and does not erase an earned grapple combo', () => {
+   const game = createGrappleGame(31, options); game.restartEndless(31);
+-  game.setPlayerForTest({ x: segmentStartPx(6) + 2, y: 550, vx: 350, vy: 100 }); game.advanceTicks(1); game.act('press');
++  collectOffer(game, 6); game.act('press');
+   const snapshot = game.getState(); snapshot.combo = 3; snapshot.comboPeak = 3; snapshot.comboTier = 2; game.restoreSnapshot(snapshot);
+   game.setPlayerForTest({ vx: -90, vy: 330 }); game.act('release');
+   assert.ok(game.getState().player.vx >= 330); assert.ok(game.getState().player.vy <= -220);
+@@ -209,7 +243,7 @@ test('lantern release really launches forward and does not erase an earned grapp
+ 
+ 
+ test('a deliberate bird flap immediately brakes a late dive without fake rewards', () => {
+-  const game = patrol(); enter(game, 8);
++  const game = patrol(); collectOffer(game, 8);
+   game.setPlayerForTest({ y: 760, vy: 720 });
+   game.act('press');
+   assert.ok(game.getState().player.vy <= -160);
+diff --git a/tests/map-rendering-repair.test.ts b/tests/map-rendering-repair.test.ts
+index fb1eabf..8c9a875 100644
+--- a/tests/map-rendering-repair.test.ts
++++ b/tests/map-rendering-repair.test.ts
+@@ -25,6 +25,7 @@ interface RenderCall {
+   width: number;
+   height: number;
+   crop?: [number, number, number, number];
++  flipX?: boolean;
+   scrollFactor?: number;
+   verticalScrollFactor?: number;
+ }
+@@ -51,6 +52,7 @@ function makeScene() {
+             call.verticalScrollFactor = verticalFactor;
+             return image;
+           },
++          setFlipX(flip: boolean) { call.flipX = flip; return image; },
+           setCrop(x?: number, y?: number, width?: number, height?: number) {
+             if (x !== undefined && y !== undefined && width !== undefined && height !== undefined) {
+               call.crop = [x, y, width, height];
+@@ -90,25 +92,26 @@ test('every seam veil remains world-aligned at near and far camera positions', (
+   const veils = images
+     .filter(({ key }) => key === 'night-city-district-transition-mist' || key === 'night-city-rooftops-transition-v36')
+     .map(({ call }) => call);
+-  assert.ok(veils.length > 0, 'fixture must include raster seam veils');
++  assert.equal(images.filter(({ key }) => key === 'night-city-rooftops-transition-v36').length, 0, 'old full-frame seam mask must not return');
+   assert.ok(veils.every(({ scrollFactor, verticalScrollFactor }) => (
+     scrollFactor === NIGHT_CITY_LAYER_CONFIG.panoramaScrollFactor
+       && verticalScrollFactor === 0
+   )), 'seam veils must use the world-aligned panorama scroll factor');
+ });
+ 
+-test('deterministic crop variation is submitted to Phaser while retaining complete chunk coverage', () => {
++test('seam-matched mirrored panels replace the old random crop variation and keep full coverage', () => {
+   const plan = createNightCityRenderPlan(73, 0, 6_400);
+   const repeat = createNightCityRenderPlan(73, 0, 6_400);
+   assert.deepEqual(plan.chunks, repeat.chunks, 'crop selection must be deterministic');
+-  assert.ok(plan.chunks.some((chunk) => chunk.cropRect.width < chunk.imageWidth), 'fixture must include a cropped panorama');
++  assert.ok(plan.chunks.filter(c => c.kind === 'district').every(c => c.cropRect.width === c.imageWidth && c.overlap === 0));
+   assert.ok(plan.chunks.every((chunk) => chunk.drawWidth > 0 && chunk.drawHeight > 0));
+ 
+   const { scene, calls } = makeScene();
+   createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 }).render(scene, 73, 0, 6_400);
+   const panoramaCalls = calls.filter(({ key }) => key.startsWith('night-city-')
+     && !key.includes('transition') && !key.includes('foreground'));
+-  assert.ok(panoramaCalls.some((call) => call.crop !== undefined), 'the renderer must submit source crop rectangles');
++  assert.ok(panoramaCalls.every((call) => call.crop === undefined), 'ordinary panorama panels must not randomly crop their silhouettes');
++  assert.ok(panoramaCalls.some((call) => call.flipX === true), 'alternate tiles must reflect the same source edge');
+ 
+   for (const cameraX of [0, 10_000, 100_000]) {
+     const viewportWidth = 1_672;
+@@ -119,6 +122,20 @@ test('deterministic crop variation is submitted to Phaser while retaining comple
+   }
+ });
+ 
++test('adjacent ordinary districts have exactly matching edge pixels by construction', () => {
++  for (const first of [0, 1, 2, 5, 6, 7, 10, 11, 12, 15, 16, 17]) {
++    const plan = createNightCityRenderPlan(31, first * 1600, (first + 2) * 1600);
++    const a = plan.chunks.find(chunk => chunk.index === first)!;
++    const b = plan.chunks.find(chunk => chunk.index === first + 1)!;
++    if (a.kind !== 'district' || b.kind !== 'district' || a.district !== b.district) continue;
++    assert.equal(a.assetKey, b.assetKey, 'ordinary joins must use the same texture source');
++    assert.notEqual(a.mirrored, b.mirrored, 'the common source image edge must reflect');
++    assert.equal(a.startX + a.drawWidth, b.startX, 'no overlap can reintroduce mismatched pixels');
++    assert.equal(a.drawHeight, b.drawHeight, 'rooftops must not jump in vertical scale');
++    assert.equal(a.cropRect.x, b.cropRect.x);
++    assert.equal(a.cropRect.y, b.cropRect.y);
++  }
++});
+ test('maps a world anchor to a support socket on the same transformed panorama image', () => {
+     const mapWorldAnchorToArchitecturalSocket = (rendererModule as typeof rendererModule & {
+     mapWorldAnchorToArchitecturalSocket?: (plan: ReturnType<typeof createNightCityRenderPlan>, anchor: { x: number; y: number }) => {
+@@ -215,9 +232,8 @@ test('returns an authored support point inside the selected crop and preserves i
+     assert.ok(socket!.sourceX >= chunk.cropRect.x && socket!.sourceX <= chunk.cropRect.x + chunk.cropRect.width);
+     assert.ok(socket!.sourceY >= chunk.cropRect.y && socket!.sourceY <= chunk.cropRect.y + chunk.cropRect.height);
+     const expectedWorldX = chunk.startX - chunk.overlap
+-      + (socket!.sourceX - chunk.cropRect.x) * chunk.sourceScale;
+-    const expectedWorldY = -chunk.variant * 2
+-      + (socket!.sourceY - chunk.cropRect.y) * chunk.sourceScale;
++      + (chunk.mirrored ? chunk.cropRect.width - (socket!.sourceX - chunk.cropRect.x) : socket!.sourceX - chunk.cropRect.x) * chunk.sourceScale;
++    const expectedWorldY = (socket!.sourceY - chunk.cropRect.y) * chunk.sourceScaleY;
+     assert.ok(Math.abs(socket!.x - expectedWorldX) < 1e-9);
+     assert.ok(Math.abs(socket!.y - expectedWorldY) < 1e-9);
+     assert.ok(support!.x1 !== support!.x2 || support!.y1 !== support!.y2);
+@@ -225,13 +241,10 @@ test('returns an authored support point inside the selected crop and preserves i
+   assert.deepEqual([...seen].sort(), [
+     'night-city-market-rooftops-bridge-v3',
+     'night-city-market-v1',
+-    'night-city-market-v2',
+     'night-city-rooftops-v1',
+-    'night-city-rooftops-v2',
+     'night-city-rooftops-waterfront-bridge-v1',
+     'night-city-waterfront-market-bridge-v1',
+     'night-city-waterfront-v1',
+-    'night-city-waterfront-v2',
+   ].sort());
+ });
+ 
