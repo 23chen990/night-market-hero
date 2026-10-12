@@ -76,7 +76,9 @@ export function controlCue(state: GrappleState): ControlCue {
   if (state.vehicleId === '货运滑索') return { title: '按住加速 · 松手弹射', detail: '滑索带你穿街，松手后可继续接飞索', tone: 'ready' };
   if (state.vehicleId === '纸鸢') return { title: '按住拉升 · 松手滑翔', detail: '顺着金币调整高度', tone: 'neutral' };
   if (state.vehicleId === '青鸾') return { title: '按住振翅 · 松手俯冲', detail: '追兵暂退，不要俯冲太久', tone: state.player.y > 700 ? 'danger' : 'ready' };
-  if (state.vehicleId === '灯笼群') return { title: '按住造挂点 · 松手向前飞', detail: '再按住，就能在新位置挂接', tone: isStylishRelease(state.player) ? 'ready' : 'neutral' };
+  if (state.vehicleId === '灯笼群') return state.vehiclePhase === 'holding' && state.player.vx < 240
+    ? { title: '马上松手！官兵要追上了', detail: '吊灯连接太久会减速；松手可向前冲', tone: 'danger' }
+    : { title: '按住连接 · 松手前飞', detail: '慢下来了就松手，再按住可重新挂接', tone: 'ready' };
   if (state.player.y > 730 && !state.attachedAnchorId) return { title: '快按住！接住前方挂点', detail: '松手太久会坠落', tone: 'danger' };
   if (state.attachedAnchorId) {
     const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
