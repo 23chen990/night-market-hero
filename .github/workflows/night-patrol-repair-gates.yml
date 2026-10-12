@@ -1,0 +1,70 @@
+name: Night Patrol Repair Gates
+on:
+  push:
+    branches: [fix/feel-pursuit-seam-20261012]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: night-patrol-repair-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install isolated dependencies
+        run: npm ci
+      - name: Static tests and build (preserve all logs)
+        shell: bash
+        run: |
+          set +e
+          mkdir -p delivery
+          git rev-parse HEAD > delivery/commit.txt
+          npm run lint > delivery/lint.log 2>&1; lint=$?
+          npm run typecheck > delivery/typecheck.log 2>&1; types=$?
+          node --import tsx --test tests/*.test.ts > delivery/tests.log 2>&1; tests=$?
+          npm run build > delivery/build.log 2>&1; build=$?
+          test -f dist/index.html && sha256sum dist/index.html > delivery/playable.sha256
+          printf '{"lint":%s,"typecheck":%s,"unitTests":%s,"build":%s}\n' "$lint" "$types" "$tests" "$build" > delivery/static-result.json
+          cat delivery/static-result.json
+          tail -n 35 delivery/tests.log
+          test "$lint$types$tests$build" = "0000"
+      - name: Install browser engines
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        run: npx playwright install --with-deps chromium webkit
+      - name: Natural browser journey
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        shell: bash
+        run: |
+          set +e
+          node --import tsx tests/playable-browser-audit.ts > delivery/browser.log 2>&1; code=$?
+          printf '{"naturalJourneyExit":%s}\n' "$code" > delivery/browser-result.json
+          tail -n 35 delivery/browser.log
+          exit "$code"
+      - name: Failure, revival, menu and orientation
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        shell: bash
+        run: |
+          set +e
+          node --import tsx tests/playable-safety-audit.ts > delivery/safety.log 2>&1; safety=$?
+          node --import tsx tests/playable-menu-audit.ts > delivery/menu.log 2>&1; menu=$?
+          printf '{"safety":%s,"mobileMenu":%s}\n' "$safety" "$menu" > delivery/safety-menu-result.json
+          cat delivery/safety-menu-result.json
+          test "$safety$menu" = "00"
+      - name: Export exact-build QA evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: night-patrol-repair-${{ github.sha }}
+          path: |
+            delivery/
+            evidence/playable-audit/
+            dist/index.html
+          retention-days: 14
+          if-no-files-found: warn
