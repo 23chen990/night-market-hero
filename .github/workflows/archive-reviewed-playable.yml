@@ -58,7 +58,23 @@ jobs:
             git push origin HEAD:feat/playable-experience-20261012
           fi
           git rev-parse HEAD > delivery/commit.txt
-          git archive --format=tar.gz -o delivery/runtime-source.tar.gz HEAD src tests scripts dev tools/archive-reviewed-qa.py index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js .gitignore .github/workflows AGENTS.md PLAYABLE_START_HERE.md README.md docs/PLAYABLE_ACCEPTANCE.md docs/DELIVERY_20261012_ZH.md runtime-product-gates.json validate-runtime-product-gates.mjs
+          git archive --format=tar.gz -o delivery/runtime-source.tar.gz HEAD src tests scripts dev tools/archive-reviewed-qa.py index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js .gitignore .github/workflows AGENTS.md PLAYABLE_START_HERE.md README.md docs/ART_ASSET_MANIFEST_V1.md docs/PLAYABLE_ACCEPTANCE.md docs/DELIVERY_20261012_ZH.md runtime-product-gates.json validate-runtime-product-gates.mjs
+      - name: Validate exported developer workspace without the full checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          portable="$RUNNER_TEMP/portable-workspace"
+          mkdir -p "$portable/evidence"
+          tar -xzf delivery/runtime-source.tar.gz -C "$portable"
+          cp -R evidence/playable-upgrade-20261012 "$portable/evidence/"
+          (
+            cd "$portable"
+            npm ci
+            npm run check
+            npm run verify:release
+          ) > delivery/portable-workspace.log 2>&1
+          cmp dist/index.html "$portable/dist/index.html"
+          tail -n 28 delivery/portable-workspace.log
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
