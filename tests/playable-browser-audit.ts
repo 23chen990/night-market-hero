@@ -158,7 +158,7 @@ try {
       assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
       assert.equal(capturedRides.size, 4, 'all four rides must also have actual screenshots');
       assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'every ride must be collected from a world pickup, never segment entry');
-      assert.ok(pursuitPhases.has('warning') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
+      assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
       const paused = await readState();
       await page.waitForTimeout(350);
