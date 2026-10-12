@@ -13,6 +13,7 @@ test('default composition keeps only sparse status and one pursuit signal', () =
   assert.match(html, /class="journey-meter"[^>]*hidden/);
   assert.match(html, /class="tutorial-rail"[^>]*hidden/);
   assert.match(html, /class="chase-readout sr-only"/);
+  assert.match(html, /class="guard-copy"/, 'the screen-edge guard warning must be visible, not screenreader-only');
   assert.match(html, /data-ui="pursuer"/);
   assert.match(html, /data-ui="left-edge-alert"/);
 });
