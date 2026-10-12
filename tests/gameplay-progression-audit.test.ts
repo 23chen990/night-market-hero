@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { AdProvider } from '../src/ads';
+import { CHARACTERS } from '../src/progression';
 import {
   MemoryProgressStorage,
   NightMarketMonetization,
@@ -26,16 +27,19 @@ test('character unlock and selection validate roster ids, affordability, ownersh
   assert.equal(economy.unlockCharacter('走绳伎').status, 'insufficient-coins');
   assert.deepEqual(economy.selectCharacter('走绳伎'), { status: 'not-owned', characterId: '走绳伎' });
 
+  const price = CHARACTERS.find(character => character.id === '走绳伎')!.price;
+  assert.equal(price, 600, 'first alternative is reachable in early sessions');
+  const remaining = 2_000 - price;
   economy.completeRun('character-funds', 2_000);
-  assert.deepEqual(economy.unlockCharacter('走绳伎'), { status: 'unlocked', characterId: '走绳伎', coins: 200 });
-  assert.deepEqual(economy.unlockCharacter('走绳伎'), { status: 'already-owned', characterId: '走绳伎', coins: 200 });
+  assert.deepEqual(economy.unlockCharacter('走绳伎'), { status: 'unlocked', characterId: '走绳伎', coins: remaining });
+  assert.deepEqual(economy.unlockCharacter('走绳伎'), { status: 'already-owned', characterId: '走绳伎', coins: remaining });
   assert.deepEqual(economy.selectCharacter('走绳伎'), { status: 'selected', characterId: '走绳伎' });
   assert.equal(economy.getProgressV2().selectedCharacter, '走绳伎');
 
   const restored = new NightMarketMonetization(quietAds, storage);
   assert.equal(restored.getProgressV2().selectedCharacter, '走绳伎');
   assert.ok(restored.getProgressV2().characters?.includes('走绳伎'));
-  assert.equal(restored.getProgressV2().coins, 200);
+  assert.equal(restored.getProgressV2().coins, remaining);
 });
 
 test('missions expose exactly three active slots and atomically claim historical record eligibility once', () => {

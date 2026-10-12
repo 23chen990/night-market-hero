@@ -1,0 +1,56 @@
+name: Playable audit
+on:
+  push:
+    branches: [main, feat/playable-experience-20261012]
+    paths: ['src/**', 'tests/**', 'scripts/**', 'index.html', 'package*.json', '*.config.*', 'runtime-product-gates.json', '.github/workflows/playable-audit.yml']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: playable-audit-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  web-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build exact standalone deliverable
+        run: |
+          mkdir -p delivery
+          git rev-parse HEAD > delivery/commit.txt
+          npm run build 2>&1 | tee delivery/build.log
+          sha256sum dist/index.html > delivery/playable.sha256
+      - name: Static checks and complete regression suite
+        shell: bash
+        run: |
+          set +e
+          npm run lint > delivery/lint.log 2>&1; lint=$?
+          npm run typecheck > delivery/typecheck.log 2>&1; types=$?
+          node --import tsx --test tests/*.test.ts > delivery/tests.log 2>&1; tests=$?
+          printf '{"lint":%s,"typecheck":%s,"tests":%s}\n' "$lint" "$types" "$tests" > delivery/checks.json
+          cat delivery/checks.json
+          tail -n 18 delivery/tests.log
+          grep -A 20 'not ok' delivery/tests.log || true
+          cat delivery/lint.log delivery/typecheck.log
+          test "$lint$types$tests" = '000'
+      - name: Install WebKit
+        run: npx playwright install --with-deps webkit
+      - name: Standalone file launch
+        run: npm run test:file
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playable-audit-${{ github.sha }}
+          path: |
+            delivery/
+            dist/index.html
+          retention-days: 30
+          if-no-files-found: error

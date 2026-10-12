@@ -1,0 +1,1960 @@
+{
+  "sha256": "e4949cc9088fa087de47520d907b5279fdd330a1c354d48c0f7328a563251070",
+  "passed": true,
+  "method": "real tap buttons; deliberately stop input to lose; no state mutation APIs",
+  "failed": {
+    "levelIndex": 0,
+    "levelCount": 2,
+    "levelId": "lantern-entry",
+    "levelTitle": "灯棚初试",
+    "levelDestination": "内市牌楼",
+    "seed": 31,
+    "elapsed": 1.0916666666666652,
+    "tick": 131,
+    "status": "failed",
+    "paused": false,
+    "failureReason": "fell",
+    "message": "坠落夜市",
+    "inputHeld": false,
+    "inputTransitions": 0,
+    "progress": 0.10755455917874376,
+    "reviveUsed": false,
+    "segment": "safe-tutorial",
+    "route": "low",
+    "routeProfile": {
+      "id": "low",
+      "surfaces": [
+        "摊柜夹道",
+        "有顶窄巷",
+        "柜台通道"
+      ],
+      "speedMultiplier": 0.86,
+      "grappleWindowTicks": 92,
+      "obstacles": [
+        "摊柜",
+        "低横梁",
+        "立柱",
+        "垂挂布幌"
+      ],
+      "pursuitDistanceEffect": 78
+    },
+    "playerMotion": {
+      "x": 296.8505833333328,
+      "y": 901.4083333333333,
+      "vx": 234.0833333333321,
+      "vy": 775.6666666666675,
+      "speed": 810.2183561992551,
+      "airborne": false,
+      "grappleWindowRisk": "forgiving"
+    },
+    "pursuer": {
+      "visible": true,
+      "kind": "guard-silhouette",
+      "screenEdge": "left",
+      "x": -165.38674962731298,
+      "y": 644.9240496365392,
+      "distance": 462.23733296064574,
+      "vx": 185.7651669600718,
+      "ax": 4.8124750931986,
+      "maxSpeed": 520,
+      "maxAcceleration": 1200,
+      "runLaneY": 647
+    },
+    "activeTerrain": {
+      "kind": "布棚",
+      "category": "canopy",
+      "collision": "none",
+      "lesson": "safe-teaching",
+      "behavior": "承接角色后允许滑落",
+      "behaviorState": "ready",
+      "bounds": {
+        "x": 35,
+        "y": 515,
+        "width": 220,
+        "height": 92
+      },
+      "visual": {
+        "silhouette": "sagging-fabric-canopy",
+        "material": "striped-cloth",
+        "layers": [
+          "horizontal-cloth-panel",
+          "support-frame",
+          "sagging-edge",
+          "broken-cloth"
+        ],
+        "reactionDirection": "down-right"
+      },
+      "impactCount": 0,
+      "impactCooldownUntilTick": 0,
+      "pursuerSlowUntilTick": 0,
+      "collapseAtTick": null,
+      "debrisBounds": null
+    },
+    "sceneObjects": [
+      {
+        "kind": "布棚",
+        "category": "canopy",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "承接角色后允许滑落",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 35,
+          "y": 515,
+          "width": 220,
+          "height": 92
+        },
+        "visual": {
+          "silhouette": "sagging-fabric-canopy",
+          "material": "striped-cloth",
+          "layers": [
+            "horizontal-cloth-panel",
+            "support-frame",
+            "sagging-edge",
+            "broken-cloth"
+          ],
+          "reactionDirection": "down-right"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      },
+      {
+        "kind": "竹架",
+        "category": "obstacle",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "受力后可暂时折断",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 340,
+          "y": 460,
+          "width": 200,
+          "height": 200
+        },
+        "visual": {
+          "silhouette": "lashed-bamboo-scaffold",
+          "material": "lashed-bamboo",
+          "layers": [
+            "upright-poles",
+            "crossbars",
+            "diagonal-brace",
+            "lashings"
+          ],
+          "reactionDirection": "downward"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      },
+      {
+        "kind": "窄巷",
+        "category": "passage",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "短暂降低追捕压力",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 700,
+          "y": 400,
+          "width": 150,
+          "height": 260
+        },
+        "visual": {
+          "silhouette": "compressed-alley-walls",
+          "material": "flat-plaster-and-shadow",
+          "layers": [
+            "near-wall",
+            "far-wall",
+            "occlusion-band"
+          ],
+          "reactionDirection": "inward"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      }
+    ],
+    "chaseObstacle": null,
+    "gate": {
+      "expression": "inner-market-gate",
+      "anchoredTo": "market-exit-arch",
+      "closureMotion": "VERTICAL_DOUBLE_LEAVES_INWARD",
+      "anchorBounds": {
+        "x": 2590,
+        "y": 300,
+        "width": 340,
+        "height": 300
+      },
+      "x": 2760,
+      "centerY": 487,
+      "beat": null,
+      "aperture": 154,
+      "animationProgress": 0,
+      "topLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "bottomLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "leftLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "rightLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "renderTopLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "renderBottomLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "collisionAperture": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 154
+      },
+      "dustPulse": 0,
+      "receiver": {
+        "x": 2842,
+        "y": 495
+      },
+      "receiverPaid": false
+    },
+    "environmentGeometry": {
+      "worldBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 2940,
+        "height": 900
+      },
+      "continuousCanopies": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 2940,
+          "height": 170
+        }
+      ],
+      "overheadCrossbeams": [
+        {
+          "x": 0,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 350,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 700,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1050,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1400,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1750,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2100,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2450,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2800,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1668,
+          "y": 218,
+          "width": 324,
+          "height": 32
+        }
+      ],
+      "stallWalls": [
+        {
+          "x": 0,
+          "y": 640,
+          "width": 2940,
+          "height": 260
+        },
+        {
+          "x": 0,
+          "y": 186,
+          "width": 34,
+          "height": 454
+        },
+        {
+          "x": 2906,
+          "y": 186,
+          "width": 34,
+          "height": 454
+        }
+      ],
+      "interiorColumns": [
+        {
+          "x": 120,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 430,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 740,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1050,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1360,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1670,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1980,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2290,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2600,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2910,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        }
+      ]
+    },
+    "routeGraph": {
+      "id": "night-market-fork-v1",
+      "approach": {
+        "x": 1320,
+        "y": 250,
+        "width": 115,
+        "height": 420
+      },
+      "split": {
+        "x": 1435,
+        "y": 250,
+        "width": 80,
+        "height": 420
+      },
+      "branches": {
+        "high": {
+          "corridor": {
+            "x": 1515,
+            "y": 300,
+            "width": 570,
+            "height": 210
+          },
+          "anchorIds": [
+            "node-5",
+            "node-6"
+          ],
+          "obstacles": [
+            "roof-net"
+          ]
+        },
+        "low": {
+          "corridor": {
+            "x": 1515,
+            "y": 535,
+            "width": 570,
+            "height": 225
+          },
+          "anchorIds": [
+            "node-low"
+          ],
+          "obstacles": [
+            "stall-counter",
+            "low-crossbeam",
+            "interior-column",
+            "hanging-banner",
+            "concealment-shortcut"
+          ]
+        }
+      },
+      "rejoin": {
+        "x": 2085,
+        "y": 250,
+        "width": 110,
+        "height": 420
+      }
+    },
+    "routeTraversal": {
+      "phase": "approach",
+      "committedRoute": null
+    },
+    "activeChaseEvent": null,
+    "closingGateBeat": null,
+    "eventSequence": 1,
+    "chase": {
+      "pressure": 0.13753015961751014,
+      "distance": 462.23733296064574,
+      "phase": "safe"
+    },
+    "player": {
+      "x": 296.8505833333328,
+      "y": 901.4083333333333,
+      "vx": 234.0833333333321,
+      "vy": 775.6666666666675
+    },
+    "anchors": [
+      {
+        "id": "node-1",
+        "type": "檐角",
+        "x": 275,
+        "y": 365
+      },
+      {
+        "id": "node-2",
+        "type": "牌楼横梁",
+        "x": 600,
+        "y": 335
+      },
+      {
+        "id": "node-3",
+        "type": "灯绳架",
+        "x": 925,
+        "y": 375
+      },
+      {
+        "id": "node-4",
+        "type": "幌杆",
+        "x": 1250,
+        "y": 330
+      },
+      {
+        "id": "node-5",
+        "type": "檐角",
+        "x": 1575,
+        "y": 370
+      },
+      {
+        "id": "node-6",
+        "type": "牌楼横梁",
+        "x": 1900,
+        "y": 340
+      },
+      {
+        "id": "node-7",
+        "type": "灯绳架",
+        "x": 2225,
+        "y": 365
+      },
+      {
+        "id": "node-8",
+        "type": "幌杆",
+        "x": 2550,
+        "y": 335
+      },
+      {
+        "id": "node-low",
+        "type": "幌杆",
+        "x": 1575,
+        "y": 560
+      }
+    ],
+    "attachedAnchorId": null,
+    "ropeLength": null,
+    "attachRadius": 600,
+    "maxSpeed": 840,
+    "failY": 900,
+    "finishX": 2760,
+    "finishTop": 215,
+    "furthestX": 296.8505833333328,
+    "segmentIndex": 0,
+    "visitedSegments": [
+      0
+    ],
+    "characterId": "街灯客",
+    "skySegments": 0,
+    "visitedSkySegments": [],
+    "distanceMeters": 9,
+    "coins": 0,
+    "pickups": 0,
+    "gatesPassed": 0,
+    "combo": 0,
+    "comboPeak": 0,
+    "comboTier": 1,
+    "mutation": null,
+    "isSky": false,
+    "vehicleId": null,
+    "activePickups": [
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 240,
+        "y": 520,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 448.00000000000006,
+        "y": 460,
+        "collected": false
+      },
+      {
+        "kind": "high-route",
+        "segment": 0,
+        "value": 3,
+        "x": 656,
+        "y": 390,
+        "collected": false
+      },
+      {
+        "kind": "high-route",
+        "segment": 0,
+        "value": 3,
+        "x": 864,
+        "y": 370,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 1072,
+        "y": 420,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 1280,
+        "y": 500,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 480,
+        "y": 655,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 800,
+        "y": 635,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 1120,
+        "y": 615,
+        "collected": false
+      }
+    ],
+    "vehiclePhase": "idle",
+    "vehicleTicksRemaining": 0,
+    "vehicleLockY": 0,
+    "vehicleQueue": [],
+    "vehicleVirtualAnchor": null,
+    "depthCoefficient": 1,
+    "bounceCount": 0,
+    "lastBounceTick": null,
+    "regrappleGraceUntilTick": 0,
+    "talismanActiveUntilTick": 0,
+    "talismanGraceUntilTick": 0,
+    "firecrackerStunUntilTick": 0,
+    "itemUsage": {
+      "talisman": 0,
+      "firecracker": 0
+    },
+    "receiverPaid": false
+  },
+  "revived": {
+    "levelIndex": 0,
+    "levelCount": 2,
+    "levelId": "lantern-entry",
+    "levelTitle": "灯棚初试",
+    "levelDestination": "内市牌楼",
+    "seed": 31,
+    "elapsed": 1.1499999999999984,
+    "tick": 138,
+    "status": "playing",
+    "paused": false,
+    "failureReason": null,
+    "message": "",
+    "inputHeld": false,
+    "inputTransitions": 0,
+    "progress": 0.10755455917874376,
+    "reviveUsed": true,
+    "segment": "safe-tutorial",
+    "route": "low",
+    "routeProfile": {
+      "id": "low",
+      "surfaces": [
+        "摊柜夹道",
+        "有顶窄巷",
+        "柜台通道"
+      ],
+      "speedMultiplier": 0.86,
+      "grappleWindowTicks": 92,
+      "obstacles": [
+        "摊柜",
+        "低横梁",
+        "立柱",
+        "垂挂布幌"
+      ],
+      "pursuitDistanceEffect": 78
+    },
+    "playerMotion": {
+      "x": 205.02994444444445,
+      "y": 530.9194444444444,
+      "vx": 279.4166666666668,
+      "vy": -133.6666666666666,
+      "speed": 309.7425566319374,
+      "airborne": true,
+      "grappleWindowRisk": "forgiving"
+    },
+    "pursuer": {
+      "visible": true,
+      "kind": "guard-silhouette",
+      "screenEdge": "left",
+      "x": -142.24898163407673,
+      "y": 643.5185726102354,
+      "distance": 347.2789260785212,
+      "vx": 172.22158918218994,
+      "ax": -182.7872766992623,
+      "maxSpeed": 520,
+      "maxAcceleration": 1200,
+      "runLaneY": 647
+    },
+    "activeTerrain": {
+      "kind": "布棚",
+      "category": "canopy",
+      "collision": "none",
+      "lesson": "safe-teaching",
+      "behavior": "承接角色后允许滑落",
+      "behaviorState": "ready",
+      "bounds": {
+        "x": 35,
+        "y": 515,
+        "width": 220,
+        "height": 92
+      },
+      "visual": {
+        "silhouette": "sagging-fabric-canopy",
+        "material": "striped-cloth",
+        "layers": [
+          "horizontal-cloth-panel",
+          "support-frame",
+          "sagging-edge",
+          "broken-cloth"
+        ],
+        "reactionDirection": "down-right"
+      },
+      "impactCount": 0,
+      "impactCooldownUntilTick": 0,
+      "pursuerSlowUntilTick": 0,
+      "collapseAtTick": null,
+      "debrisBounds": null
+    },
+    "sceneObjects": [
+      {
+        "kind": "布棚",
+        "category": "canopy",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "承接角色后允许滑落",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 35,
+          "y": 515,
+          "width": 220,
+          "height": 92
+        },
+        "visual": {
+          "silhouette": "sagging-fabric-canopy",
+          "material": "striped-cloth",
+          "layers": [
+            "horizontal-cloth-panel",
+            "support-frame",
+            "sagging-edge",
+            "broken-cloth"
+          ],
+          "reactionDirection": "down-right"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      },
+      {
+        "kind": "竹架",
+        "category": "obstacle",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "受力后可暂时折断",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 340,
+          "y": 460,
+          "width": 200,
+          "height": 200
+        },
+        "visual": {
+          "silhouette": "lashed-bamboo-scaffold",
+          "material": "lashed-bamboo",
+          "layers": [
+            "upright-poles",
+            "crossbars",
+            "diagonal-brace",
+            "lashings"
+          ],
+          "reactionDirection": "downward"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      },
+      {
+        "kind": "窄巷",
+        "category": "passage",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "短暂降低追捕压力",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 700,
+          "y": 400,
+          "width": 150,
+          "height": 260
+        },
+        "visual": {
+          "silhouette": "compressed-alley-walls",
+          "material": "flat-plaster-and-shadow",
+          "layers": [
+            "near-wall",
+            "far-wall",
+            "occlusion-band"
+          ],
+          "reactionDirection": "inward"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      }
+    ],
+    "chaseObstacle": null,
+    "gate": {
+      "expression": "inner-market-gate",
+      "anchoredTo": "market-exit-arch",
+      "closureMotion": "VERTICAL_DOUBLE_LEAVES_INWARD",
+      "anchorBounds": {
+        "x": 2590,
+        "y": 300,
+        "width": 340,
+        "height": 300
+      },
+      "x": 2760,
+      "centerY": 487,
+      "beat": null,
+      "aperture": 154,
+      "animationProgress": 0,
+      "topLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "bottomLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "leftLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "rightLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "renderTopLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "renderBottomLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "collisionAperture": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 154
+      },
+      "dustPulse": 0,
+      "receiver": {
+        "x": 2842,
+        "y": 495
+      },
+      "receiverPaid": false
+    },
+    "environmentGeometry": {
+      "worldBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 2940,
+        "height": 900
+      },
+      "continuousCanopies": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 2940,
+          "height": 170
+        }
+      ],
+      "overheadCrossbeams": [
+        {
+          "x": 0,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 350,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 700,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1050,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1400,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1750,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2100,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2450,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2800,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1668,
+          "y": 218,
+          "width": 324,
+          "height": 32
+        }
+      ],
+      "stallWalls": [
+        {
+          "x": 0,
+          "y": 640,
+          "width": 2940,
+          "height": 260
+        },
+        {
+          "x": 0,
+          "y": 186,
+          "width": 34,
+          "height": 454
+        },
+        {
+          "x": 2906,
+          "y": 186,
+          "width": 34,
+          "height": 454
+        }
+      ],
+      "interiorColumns": [
+        {
+          "x": 120,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 430,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 740,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1050,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1360,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1670,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1980,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2290,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2600,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2910,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        }
+      ]
+    },
+    "routeGraph": {
+      "id": "night-market-fork-v1",
+      "approach": {
+        "x": 1320,
+        "y": 250,
+        "width": 115,
+        "height": 420
+      },
+      "split": {
+        "x": 1435,
+        "y": 250,
+        "width": 80,
+        "height": 420
+      },
+      "branches": {
+        "high": {
+          "corridor": {
+            "x": 1515,
+            "y": 300,
+            "width": 570,
+            "height": 210
+          },
+          "anchorIds": [
+            "node-5",
+            "node-6"
+          ],
+          "obstacles": [
+            "roof-net"
+          ]
+        },
+        "low": {
+          "corridor": {
+            "x": 1515,
+            "y": 535,
+            "width": 570,
+            "height": 225
+          },
+          "anchorIds": [
+            "node-low"
+          ],
+          "obstacles": [
+            "stall-counter",
+            "low-crossbeam",
+            "interior-column",
+            "hanging-banner",
+            "concealment-shortcut"
+          ]
+        }
+      },
+      "rejoin": {
+        "x": 2085,
+        "y": 250,
+        "width": 110,
+        "height": 420
+      }
+    },
+    "routeTraversal": {
+      "phase": "approach",
+      "committedRoute": null
+    },
+    "activeChaseEvent": null,
+    "closingGateBeat": null,
+    "eventSequence": 1,
+    "chase": {
+      "pressure": 0.4112406521939972,
+      "distance": 347.2789260785212,
+      "phase": "safe"
+    },
+    "player": {
+      "x": 205.02994444444445,
+      "y": 530.9194444444444,
+      "vx": 279.4166666666668,
+      "vy": -133.6666666666666
+    },
+    "anchors": [
+      {
+        "id": "node-1",
+        "type": "檐角",
+        "x": 275,
+        "y": 365
+      },
+      {
+        "id": "node-2",
+        "type": "牌楼横梁",
+        "x": 600,
+        "y": 335
+      },
+      {
+        "id": "node-3",
+        "type": "灯绳架",
+        "x": 925,
+        "y": 375
+      },
+      {
+        "id": "node-4",
+        "type": "幌杆",
+        "x": 1250,
+        "y": 330
+      },
+      {
+        "id": "node-5",
+        "type": "檐角",
+        "x": 1575,
+        "y": 370
+      },
+      {
+        "id": "node-6",
+        "type": "牌楼横梁",
+        "x": 1900,
+        "y": 340
+      },
+      {
+        "id": "node-7",
+        "type": "灯绳架",
+        "x": 2225,
+        "y": 365
+      },
+      {
+        "id": "node-8",
+        "type": "幌杆",
+        "x": 2550,
+        "y": 335
+      },
+      {
+        "id": "node-low",
+        "type": "幌杆",
+        "x": 1575,
+        "y": 560
+      }
+    ],
+    "attachedAnchorId": null,
+    "ropeLength": null,
+    "attachRadius": 600,
+    "maxSpeed": 840,
+    "failY": 900,
+    "finishX": 2760,
+    "finishTop": 215,
+    "furthestX": 296.8505833333328,
+    "segmentIndex": 0,
+    "visitedSegments": [
+      0
+    ],
+    "characterId": "街灯客",
+    "skySegments": 0,
+    "visitedSkySegments": [],
+    "distanceMeters": 9,
+    "coins": 2,
+    "pickups": 1,
+    "gatesPassed": 0,
+    "combo": 0,
+    "comboPeak": 0,
+    "comboTier": 1,
+    "mutation": null,
+    "isSky": false,
+    "vehicleId": null,
+    "activePickups": [
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 240,
+        "y": 520,
+        "collected": true
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 448.00000000000006,
+        "y": 460,
+        "collected": false
+      },
+      {
+        "kind": "high-route",
+        "segment": 0,
+        "value": 3,
+        "x": 656,
+        "y": 390,
+        "collected": false
+      },
+      {
+        "kind": "high-route",
+        "segment": 0,
+        "value": 3,
+        "x": 864,
+        "y": 370,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 1072,
+        "y": 420,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 1280,
+        "y": 500,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 480,
+        "y": 655,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 800,
+        "y": 635,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 1120,
+        "y": 615,
+        "collected": false
+      }
+    ],
+    "vehiclePhase": "idle",
+    "vehicleTicksRemaining": 0,
+    "vehicleLockY": 0,
+    "vehicleQueue": [],
+    "vehicleVirtualAnchor": null,
+    "depthCoefficient": 1,
+    "bounceCount": 0,
+    "lastBounceTick": null,
+    "regrappleGraceUntilTick": 221,
+    "talismanActiveUntilTick": 0,
+    "talismanGraceUntilTick": 0,
+    "firecrackerStunUntilTick": 0,
+    "itemUsage": {
+      "talisman": 0,
+      "firecracker": 0
+    },
+    "receiverPaid": false
+  },
+  "portraitTick": 140,
+  "restarted": {
+    "levelIndex": 0,
+    "levelCount": 2,
+    "levelId": "lantern-entry",
+    "levelTitle": "灯棚初试",
+    "levelDestination": "内市牌楼",
+    "seed": 32,
+    "elapsed": 0.10833333333333332,
+    "tick": 13,
+    "status": "playing",
+    "paused": false,
+    "failureReason": null,
+    "message": "",
+    "inputHeld": false,
+    "inputTransitions": 0,
+    "progress": 0.034337494967793876,
+    "reviveUsed": false,
+    "segment": "safe-tutorial",
+    "route": "low",
+    "routeProfile": {
+      "id": "low",
+      "surfaces": [
+        "摊柜夹道",
+        "有顶窄巷",
+        "柜台通道"
+      ],
+      "speedMultiplier": 0.86,
+      "grappleWindowTicks": 92,
+      "obstacles": [
+        "摊柜",
+        "低横梁",
+        "立柱",
+        "垂挂布幌"
+      ],
+      "pursuitDistanceEffect": 78
+    },
+    "playerMotion": {
+      "x": 94.7714861111111,
+      "y": 560.5194444444444,
+      "vx": 243.91666666666654,
+      "vy": -89.66666666666663,
+      "speed": 259.87583840920803,
+      "airborne": true,
+      "grappleWindowRisk": "forgiving"
+    },
+    "pursuer": {
+      "visible": true,
+      "kind": "guard-silhouette",
+      "screenEdge": "left",
+      "x": -348.36709602870184,
+      "y": 648.1115437032663,
+      "distance": 443.1385821398129,
+      "vx": 207.07471784838808,
+      "ax": -225.22705669470565,
+      "maxSpeed": 520,
+      "maxAcceleration": 1200,
+      "runLaneY": 647
+    },
+    "activeTerrain": {
+      "kind": "布棚",
+      "category": "canopy",
+      "collision": "none",
+      "lesson": "safe-teaching",
+      "behavior": "承接角色后允许滑落",
+      "behaviorState": "ready",
+      "bounds": {
+        "x": 35,
+        "y": 515,
+        "width": 220,
+        "height": 92
+      },
+      "visual": {
+        "silhouette": "sagging-fabric-canopy",
+        "material": "striped-cloth",
+        "layers": [
+          "horizontal-cloth-panel",
+          "support-frame",
+          "sagging-edge",
+          "broken-cloth"
+        ],
+        "reactionDirection": "down-right"
+      },
+      "impactCount": 0,
+      "impactCooldownUntilTick": 0,
+      "pursuerSlowUntilTick": 0,
+      "collapseAtTick": null,
+      "debrisBounds": null
+    },
+    "sceneObjects": [
+      {
+        "kind": "布棚",
+        "category": "canopy",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "承接角色后允许滑落",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 35,
+          "y": 515,
+          "width": 220,
+          "height": 92
+        },
+        "visual": {
+          "silhouette": "sagging-fabric-canopy",
+          "material": "striped-cloth",
+          "layers": [
+            "horizontal-cloth-panel",
+            "support-frame",
+            "sagging-edge",
+            "broken-cloth"
+          ],
+          "reactionDirection": "down-right"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      },
+      {
+        "kind": "竹架",
+        "category": "obstacle",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "受力后可暂时折断",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 340,
+          "y": 460,
+          "width": 200,
+          "height": 200
+        },
+        "visual": {
+          "silhouette": "lashed-bamboo-scaffold",
+          "material": "lashed-bamboo",
+          "layers": [
+            "upright-poles",
+            "crossbars",
+            "diagonal-brace",
+            "lashings"
+          ],
+          "reactionDirection": "downward"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      },
+      {
+        "kind": "窄巷",
+        "category": "passage",
+        "collision": "none",
+        "lesson": "safe-teaching",
+        "behavior": "短暂降低追捕压力",
+        "behaviorState": "ready",
+        "bounds": {
+          "x": 700,
+          "y": 400,
+          "width": 150,
+          "height": 260
+        },
+        "visual": {
+          "silhouette": "compressed-alley-walls",
+          "material": "flat-plaster-and-shadow",
+          "layers": [
+            "near-wall",
+            "far-wall",
+            "occlusion-band"
+          ],
+          "reactionDirection": "inward"
+        },
+        "impactCount": 0,
+        "impactCooldownUntilTick": 0,
+        "pursuerSlowUntilTick": 0,
+        "collapseAtTick": null,
+        "debrisBounds": null
+      }
+    ],
+    "chaseObstacle": null,
+    "gate": {
+      "expression": "inner-market-gate",
+      "anchoredTo": "market-exit-arch",
+      "closureMotion": "VERTICAL_DOUBLE_LEAVES_INWARD",
+      "anchorBounds": {
+        "x": 2590,
+        "y": 300,
+        "width": 340,
+        "height": 300
+      },
+      "x": 2760,
+      "centerY": 487,
+      "beat": null,
+      "aperture": 154,
+      "animationProgress": 0,
+      "topLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "bottomLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "leftLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "rightLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "renderTopLeafBounds": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 0
+      },
+      "renderBottomLeafBounds": {
+        "x": 2650,
+        "y": 564,
+        "width": 220,
+        "height": 0
+      },
+      "collisionAperture": {
+        "x": 2650,
+        "y": 410,
+        "width": 220,
+        "height": 154
+      },
+      "dustPulse": 0,
+      "receiver": {
+        "x": 2842,
+        "y": 495
+      },
+      "receiverPaid": false
+    },
+    "environmentGeometry": {
+      "worldBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 2940,
+        "height": 900
+      },
+      "continuousCanopies": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 2940,
+          "height": 170
+        }
+      ],
+      "overheadCrossbeams": [
+        {
+          "x": 0,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 350,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 700,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1050,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1400,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1750,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2100,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2450,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 2800,
+          "y": 164,
+          "width": 300,
+          "height": 22
+        },
+        {
+          "x": 1668,
+          "y": 218,
+          "width": 324,
+          "height": 32
+        }
+      ],
+      "stallWalls": [
+        {
+          "x": 0,
+          "y": 640,
+          "width": 2940,
+          "height": 260
+        },
+        {
+          "x": 0,
+          "y": 186,
+          "width": 34,
+          "height": 454
+        },
+        {
+          "x": 2906,
+          "y": 186,
+          "width": 34,
+          "height": 454
+        }
+      ],
+      "interiorColumns": [
+        {
+          "x": 120,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 430,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 740,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1050,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1360,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1670,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 1980,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2290,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2600,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        },
+        {
+          "x": 2910,
+          "y": 174,
+          "width": 28,
+          "height": 220
+        }
+      ]
+    },
+    "routeGraph": {
+      "id": "night-market-fork-v1",
+      "approach": {
+        "x": 1320,
+        "y": 250,
+        "width": 115,
+        "height": 420
+      },
+      "split": {
+        "x": 1435,
+        "y": 250,
+        "width": 80,
+        "height": 420
+      },
+      "branches": {
+        "high": {
+          "corridor": {
+            "x": 1515,
+            "y": 300,
+            "width": 570,
+            "height": 210
+          },
+          "anchorIds": [
+            "node-5",
+            "node-6"
+          ],
+          "obstacles": [
+            "roof-net"
+          ]
+        },
+        "low": {
+          "corridor": {
+            "x": 1515,
+            "y": 535,
+            "width": 570,
+            "height": 225
+          },
+          "anchorIds": [
+            "node-low"
+          ],
+          "obstacles": [
+            "stall-counter",
+            "low-crossbeam",
+            "interior-column",
+            "hanging-banner",
+            "concealment-shortcut"
+          ]
+        }
+      },
+      "rejoin": {
+        "x": 2085,
+        "y": 250,
+        "width": 110,
+        "height": 420
+      }
+    },
+    "routeTraversal": {
+      "phase": "approach",
+      "committedRoute": null
+    },
+    "activeChaseEvent": null,
+    "closingGateBeat": null,
+    "eventSequence": 2,
+    "chase": {
+      "pressure": 0.1830033758575883,
+      "distance": 443.1385821398129,
+      "phase": "safe"
+    },
+    "player": {
+      "x": 94.7714861111111,
+      "y": 560.5194444444444,
+      "vx": 243.91666666666654,
+      "vy": -89.66666666666663
+    },
+    "anchors": [
+      {
+        "id": "node-1",
+        "type": "檐角",
+        "x": 275,
+        "y": 365
+      },
+      {
+        "id": "node-2",
+        "type": "牌楼横梁",
+        "x": 600,
+        "y": 335
+      },
+      {
+        "id": "node-3",
+        "type": "灯绳架",
+        "x": 925,
+        "y": 375
+      },
+      {
+        "id": "node-4",
+        "type": "幌杆",
+        "x": 1250,
+        "y": 330
+      },
+      {
+        "id": "node-5",
+        "type": "檐角",
+        "x": 1575,
+        "y": 370
+      },
+      {
+        "id": "node-6",
+        "type": "牌楼横梁",
+        "x": 1900,
+        "y": 340
+      },
+      {
+        "id": "node-7",
+        "type": "灯绳架",
+        "x": 2225,
+        "y": 365
+      },
+      {
+        "id": "node-8",
+        "type": "幌杆",
+        "x": 2550,
+        "y": 335
+      },
+      {
+        "id": "node-low",
+        "type": "幌杆",
+        "x": 1575,
+        "y": 560
+      }
+    ],
+    "attachedAnchorId": null,
+    "ropeLength": null,
+    "attachRadius": 600,
+    "maxSpeed": 840,
+    "failY": 900,
+    "finishX": 2760,
+    "finishTop": 215,
+    "furthestX": 94.7714861111111,
+    "segmentIndex": 0,
+    "visitedSegments": [
+      0
+    ],
+    "characterId": "街灯客",
+    "skySegments": 0,
+    "visitedSkySegments": [],
+    "distanceMeters": 3,
+    "coins": 0,
+    "pickups": 0,
+    "gatesPassed": 0,
+    "combo": 0,
+    "comboPeak": 0,
+    "comboTier": 1,
+    "mutation": null,
+    "isSky": false,
+    "vehicleId": null,
+    "activePickups": [
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 240,
+        "y": 520,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 448.00000000000006,
+        "y": 460,
+        "collected": false
+      },
+      {
+        "kind": "high-route",
+        "segment": 0,
+        "value": 3,
+        "x": 656,
+        "y": 390,
+        "collected": false
+      },
+      {
+        "kind": "high-route",
+        "segment": 0,
+        "value": 3,
+        "x": 864,
+        "y": 370,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 1072,
+        "y": 420,
+        "collected": false
+      },
+      {
+        "kind": "swing-apex",
+        "segment": 0,
+        "value": 2,
+        "x": 1280,
+        "y": 500,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 480,
+        "y": 655,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 800,
+        "y": 635,
+        "collected": false
+      },
+      {
+        "kind": "low-safety",
+        "segment": 0,
+        "value": 2,
+        "x": 1120,
+        "y": 615,
+        "collected": false
+      }
+    ],
+    "vehiclePhase": "idle",
+    "vehicleTicksRemaining": 0,
+    "vehicleLockY": 0,
+    "vehicleQueue": [],
+    "vehicleVirtualAnchor": null,
+    "depthCoefficient": 1,
+    "bounceCount": 0,
+    "lastBounceTick": null,
+    "regrappleGraceUntilTick": 0,
+    "talismanActiveUntilTick": 0,
+    "talismanGraceUntilTick": 0,
+    "firecrackerStunUntilTick": 0,
+    "itemUsage": {
+      "talisman": 0,
+      "firecracker": 0
+    },
+    "receiverPaid": false
+  },
+  "errors": []
+}

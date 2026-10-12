@@ -1,0 +1,92 @@
+name: Archive reviewed playable
+on:
+  push:
+    branches: [feat/playable-experience-20261012]
+    paths: ['.github/workflows/archive-reviewed-playable.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: archive-reviewed-playable
+  cancel-in-progress: false
+jobs:
+  archive:
+    if: github.ref == 'refs/heads/feat/playable-experience-20261012'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TESTED_COMMIT: 807df744733bd20d5e14392c831824bf52d9b8e5
+      BROWSER_RUN: '38216705031'
+      STATIC_RUN: '38216705090'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Fetch only the pinned executed evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p delivery
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$BROWSER_RUN" > delivery/browser-run.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$STATIC_RUN" > delivery/static-run.json
+          gh run download "$BROWSER_RUN" --repo "$GITHUB_REPOSITORY" --name "browser-evidence-$TESTED_COMMIT" --dir "$RUNNER_TEMP/reviewed-browser"
+          gh run download "$STATIC_RUN" --repo "$GITHUB_REPOSITORY" --name "playable-audit-$TESTED_COMMIT" --dir "$RUNNER_TEMP/reviewed-static"
+      - name: Rebuild and validate the reviewed image and report identities
+        run: |
+          npm run build
+          python3 tools/archive-reviewed-qa.py --browser-dir "$RUNNER_TEMP/reviewed-browser" --static-dir "$RUNNER_TEMP/reviewed-static" --output evidence/playable-upgrade-20261012
+      - name: Strict current-build playable acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run verify:release 2>&1 | tee delivery/release-verification.log
+          sha256sum dist/index.html > delivery/playable.sha256
+      - name: Preserve raw evidence in the feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f -- evidence/playable-upgrade-20261012
+          if ! git diff --cached --quiet; then
+            git commit -m 'qa: archive successful exact-build journeys, reviewed screenshots and static logs'
+            git push origin HEAD:feat/playable-experience-20261012
+          fi
+          git rev-parse HEAD > delivery/commit.txt
+          git archive --format=tar.gz -o delivery/runtime-source.tar.gz HEAD src tests scripts dev tools/archive-reviewed-qa.py index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js .gitignore .github/workflows AGENTS.md PLAYABLE_START_HERE.md README.md docs/ART_ASSET_MANIFEST_V1.md docs/PLAYABLE_ACCEPTANCE.md docs/DELIVERY_20261012_ZH.md runtime-product-gates.json validate-runtime-product-gates.mjs
+      - name: Validate exported developer workspace without the full checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          portable="$RUNNER_TEMP/portable-workspace"
+          mkdir -p "$portable/evidence"
+          tar -xzf delivery/runtime-source.tar.gz -C "$portable"
+          cp -R evidence/playable-upgrade-20261012 "$portable/evidence/"
+          (
+            cd "$portable"
+            npm ci
+            npm run check
+            npm run verify:release
+          ) > delivery/portable-workspace.log 2>&1
+          cmp dist/index.html "$portable/dist/index.html"
+          tail -n 28 delivery/portable-workspace.log
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: reviewed-playable-delivery
+          path: |
+            dist/index.html
+            delivery/
+            evidence/playable-upgrade-20261012/
+            README.md
+            AGENTS.md
+            PLAYABLE_START_HERE.md
+            docs/PLAYABLE_ACCEPTANCE.md
+            docs/DELIVERY_20261012_ZH.md
+          retention-days: 30
+          if-no-files-found: error

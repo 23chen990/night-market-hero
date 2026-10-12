@@ -4,11 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "tsx --test tests/*.test.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests scripts vite.config.ts --config eslint.config.js",
-    "build": "tsx scripts/build.ts",
-    "test:file": "tsx tests/file-launch-smoke.ts"
+    "build": "node --import tsx scripts/build.ts",
+    "test:file": "node --import tsx tests/file-launch-smoke.ts",
+    "pretest": "node --import tsx scripts/build.ts",
+    "test:play": "node --import tsx tests/playable-browser-audit.ts",
+    "test:safety": "node --import tsx tests/playable-safety-audit.ts",
+    "preverify:release": "node --import tsx scripts/build.ts",
+    "verify:release": "node validate-runtime-product-gates.mjs --strict",
+    "check": "npm run lint && npm run typecheck && npm test"
   },
   "dependencies": {
     "phaser": "^3.90.0"

@@ -3,7 +3,8 @@ export type Mutation = '起雾'|'下雨'|'封灯'|'宵禁加派';
 export interface Segment { index:number; type:SegmentType; block:number; isGate:boolean; isSky:boolean; anchorSpacing:number; lengthPx:number; }
 export interface Difficulty { speedMultiplier:number; anchorSpacing:number; assistAttachRadius:number; gateCloseTicks:number; pursuitSpeedBonus:number; }
 export interface SpeedFeelProfile { trailAlpha:number; speedLineAlpha:number; parallaxFactor:number; }
-export interface VehicleDefinition { id:string; startSegment:number; probability:number; skyProbability?:number; durationSeconds:number; hold:string; release:string; fallImmune:boolean; catchImmune:boolean; }
+export type VehicleId = '纸鸢' | '货运滑索' | '灯笼群' | '青鸾';
+export interface VehicleDefinition { id:VehicleId; startSegment:number; probability:number; skyProbability?:number; durationSeconds:number; hold:string; release:string; fallImmune:boolean; catchImmune:boolean; }
 export type PickupKind = 'high-route'|'swing-apex'|'gate-brush'|'low-safety'|'backswing';
 export interface PickupPlacement { kind:PickupKind; segment:number; value:number; }
 
@@ -126,7 +127,7 @@ export function vehicleRoll(seed:number, segment:number, salt:number):number {
  * yield 青鸾. Returns null for an ordinary segment. Pure function of
  * (seed, segment, sky) — identical replays stay identical.
  */
-export function rollVehicleForSegment(seed:number, segment:number, sky:boolean):string|null {
+export function rollVehicleForSegment(seed:number, segment:number, sky:boolean):VehicleId|null {
   if (sky) {
     const bird = VEHICLES.find((item) => item.id === '青鸾');
     if (bird && segment >= bird.startSegment

@@ -1,0 +1,94 @@
+/* Readable mobile gameplay, independent of the authored art's reference scale. */
+.experience-layer { position: absolute; inset: 0; z-index: 24; pointer-events: none; color: #fff1ce; font-family: system-ui, sans-serif; }
+.experience-layer [hidden], .pause-actions [hidden], .mission-claim[hidden] { display: none !important; }
+.flight-metrics { position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(68px, calc(env(safe-area-inset-left) + 60px)); padding: 7px 11px; border-radius: 12px; background: #15282ddd; font-size: 14px; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.flight-goal { position: absolute; top: max(53px, calc(env(safe-area-inset-top) + 42px)); left: max(18px, env(safe-area-inset-left)); background: #11272dcc; border-left: 3px solid #e4be7b; border-radius: 4px 9px 9px 4px; padding: 6px 9px; font-size: 12px; max-width: 50vw; }
+.control-coach { position: absolute; bottom: max(14px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); padding: 9px 18px; min-width: 240px; max-width: 70vw; border: 1px solid #e5c58655; border-radius: 14px; background: #13282ceb; text-align: center; box-shadow: 0 4px 16px #0004; }
+.control-coach strong, .control-coach span { display: block; }
+.control-coach strong { font-size: 16px; line-height: 1.4; letter-spacing: .05em; }
+.control-coach span { margin-top: 3px; font-size: 11px; color: #d4dace; }
+.control-coach[data-tone="ready"] { border-color: #a3ead5; background: #1c5448eb; color: #f2ffe8; }
+.control-coach[data-tone="danger"] { border-color: #f5ae80; background: #754131ed; }
+.ride-badge { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; border: 1px solid #ebca83; border-radius: 12px; padding: 8px 13px; background: #183c40e8; font-size: 14px; }
+.ride-badge span { font-variant-numeric: tabular-nums; color: #b9e4d0; }
+.flight-toast { position: absolute; top: 21%; left: 50%; transform: translateX(-50%); font-size: 18px; font-weight: 800; white-space: nowrap; text-shadow: 0 2px 6px #001714; background: #1b3639ca; padding: 8px 14px; border-radius: 99px; }
+.launch-card { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(430px, calc(100vw - 60px)); box-sizing: border-box; padding: 23px 28px; border: 1px solid #ebce9199; border-radius: 22px; background: #142b2eef; text-align: center; box-shadow: 0 15px 60px #071b2099; }
+.launch-card small { color: #d2c6a5; letter-spacing: .1em; font-size: 12px; }
+.launch-card h1 { font-size: 36px; line-height: 1.15; letter-spacing: .12em; margin: 8px 0 14px; }
+.launch-card p { font-size: 13px; line-height: 1.6; margin: 0 0 16px; }
+.launch-card button { pointer-events: auto; min-width: 184px; min-height: 48px; border: 1px solid #ffe0a1; background: #e5ba70; color: #1e3837; border-radius: 12px; font: inherit; font-size: 17px; font-weight: 800; }
+.launch-card > span { display: block; font-size: 11px; color: #b9c8be; margin-top: 11px; }
+#app[data-awaiting-start="true"] .item-actions, #app[data-awaiting-start="true"] .hub-gate { visibility: hidden; }
+#app[data-orientation-blocked="true"] .experience-layer { visibility: hidden; }
+/* Retain approved image assets, but move secondary wallet/checkpoint away from the play readout. */
+.corner-hud[data-reference-stage="true"] { transform: none; }
+.hub-money { left: auto !important; right: max(240px, calc(env(safe-area-inset-right) + 240px)); top: 12px !important; width: 92px !important; height: 30px !important; }
+.hub-money-number { left: 36px !important; top: 4px !important; width: 48px !important; font-size: 14px !important; }
+.hub-gate { left: auto !important; right: max(68px, calc(env(safe-area-inset-right) + 58px)); top: 12px !important; width: 155px !important; height: 32px !important; }
+.hub-gate-counter-frame { width: 59px !important; height: 30px !important; }
+.hub-gate-count { left: 26px !important; top: 2px !important; width: 28px !important; font-size: 16px !important; }
+.hub-destination { left: 62px !important; top: 0 !important; width: 93px !important; font-size: 10px !important; }
+.hub-destination strong { font-size: 11px !important; }
+.hub-gate-distance { font-size: 12px !important; }
+.hub-settings { left: auto !important; right: max(9px, env(safe-area-inset-right)); top: max(4px, env(safe-area-inset-top)) !important; width: 46px !important; height: 46px !important; }
+.hub-settings img { width: 32px !important; height: 32px !important; margin: auto; }
+.hub-back-key { left: max(6px, env(safe-area-inset-left)) !important; top: max(5px, env(safe-area-inset-top)) !important; width: 46px !important; height: 44px !important; }
+.hub-back-key img { width: 38px !important; height: 38px !important; }
+/* Old image-only coaching is superseded by the live control cue. */
+.tutorial-rail, .route-hint, .climax-callout, .feedback-layer, .escape-feedback { display: none !important; }
+.item-actions[data-reference-stage="true"] { transform: none; }
+.item-actions[data-reference-stage="true"] .item-button { left: auto !important; right: max(12px, env(safe-area-inset-right)); width: 48px !important; height: 48px !important; }
+.item-actions[data-reference-stage="true"] .item-button[data-slot="talisman"] { top: 31%; }
+.item-actions[data-reference-stage="true"] .item-button[data-slot="firecracker"] { top: calc(31% + 80px); }
+.item-actions .ad-play-button { display: none !important; }
+.item-actions .item-count { bottom: -16px !important; top: auto !important; left: 50% !important; transform: translateX(-50%); min-width: 58px; background: #172c30df; padding: 3px; font-size: 10px !important; text-align: center; }
+.item-actions .talisman-art, .item-actions .scroll-art { left: 9px !important; top: 6px !important; width: 31px !important; height: 39px !important; }
+.pause-overlay { box-sizing: border-box; z-index: 42; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 18px; background: #0b2025ed; }
+.pause-overlay > img { display: none; }
+.pause-actions { display: grid; gap: 9px; width: min(400px, 90vw); }
+.pause-actions h2 { margin: 0; font-size: 22px; }
+.pause-actions p { font-size: 13px; margin: 0 0 4px; }
+.pause-actions button, .pause-overlay .progression-open { min-height: 44px; border-radius: 10px; font: inherit; pointer-events: auto; }
+.pause-actions small { font-size: 11px; color: #c7d1c7; line-height: 1.5; }
+.result-card { max-height: calc(100dvh - 24px); overflow-y: auto; box-sizing: border-box; padding: 18px 24px; }
+.result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.result-actions button { min-height: 44px; font-size: 12px; }
+.result-card h1 { font-size: 24px; margin: 8px 0; }
+.result-card p { margin: 6px 0; font-size: 13px; }
+.settlement-details { margin: 8px 0; font-size: 13px; }
+.progression-menu { z-index: 45; display: flex; flex-direction: column; overflow: hidden; gap: 8px; }
+/* A modal is not a translucent HUD: settlement text must not bleed through. */
+.result-card.progression-menu { background: #142b2e; }
+.progression-menu[hidden] { display: none !important; }
+.progression-menu > h2, .progression-menu > .progression-tabs,
+.progression-menu > [data-ui="progression-note"], .progression-menu > [data-action="close-progression"] { flex-shrink: 0; }
+.progression-menu > h2 { margin: 0; font-size: 22px; }
+.progression-menu > [data-ui="progression-content"] { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.progression-menu > [data-action="close-progression"] { width: 100%; margin: 0; }
+.progression-menu button { min-height: 44px; white-space: normal; }
+/* Rotation blocks every menu as well as flight; returning preserves the menu. */
+.orientation-block { z-index: 60; }
+#app[data-orientation-blocked="true"] .progression-menu { visibility: hidden; pointer-events: none; }
+button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb; outline-offset: 3px; }
+@media (max-width: 900px) {
+  .hub-money { right: 229px; width: 81px !important; }
+  .flight-metrics { font-size: 12px; left: 57px; padding: 7px 9px; }
+  .ride-badge { top: 53px; left: auto; right: 72px; transform: none; font-size: 12px; padding: 6px 10px; }
+  .flight-toast { top: 29%; font-size: 15px; }
+}
+@media (max-width: 720px) {
+  .hub-money { display: none; }
+  .flight-goal { font-size: 11px; max-width: 51vw; }
+  .control-coach { bottom: 8px; padding: 7px 12px; }
+  .control-coach strong { font-size: 14px; }
+  .control-coach span { font-size: 10px; }
+  .launch-card { padding: 16px 22px; }
+  .launch-card h1 { font-size: 30px; }
+}
+@media (max-height: 430px) {
+  .pause-overlay { justify-content: flex-start; gap: 6px; padding: 12px; }
+  .pause-actions { gap: 5px; }
+  .pause-actions h2 { font-size: 18px; }
+  .pause-actions small { font-size: 10px; }
+  .result-card { padding: 12px 20px; }
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "scope": "web-lite-playable; scoped visual regression and readability, not premium-art approval",
+  "commercialReleasePassed": false,
+  "buildHash": "e4949cc9088fa087de47520d907b5279fdd330a1c354d48c0f7328a563251070",
+  "testedCommit": "807df744733bd20d5e14392c831824bf52d9b8e5",
+  "browserRunId": 38216705031,
+  "staticRunId": 38216705090,
+  "reviewer": "ChatGPT visual inspection of downloaded original PNGs and lossless-layout contact sheets; not an external human tester",
+  "reviewDate": "2026-10-12",
+  "observations": [
+    "Reviewed four natural roof/tower joins at both gameplay viewport sizes. No obvious full opaque transition panel, empty vertical strip or displaced full-image seam mask was observed in these eight captures.",
+    "All four rides have distinguishable in-world silhouettes and matching visible control prompts/timers in both gameplay viewports. They are code-rendered shapes, not a finished illustration set.",
+    "Phone startup, cashout, selected character and restored next-run screens remain legible. The opaque growth panel no longer shows underlying settlement text.",
+    "At 568x320, the three tabs and Return remain inside the panel; only the content scrolls. Not every content row is simultaneously visible.",
+    "Portrait guard covers the menu and displays the rotation instruction without underlying menu controls leaking through."
+  ],
+  "limitations": [
+    "Only bound captures were visually reviewed; no claim covers every seed, every pixel in motion, every device or all long runs.",
+    "State-observing automated input is not blind human playtesting and does not prove retention or revenue.",
+    "Vehicle/obstacle geometric art still differs from the illustrated backgrounds; character ability wording and art unification remain polish work.",
+    "Physical phone performance, platform packages, real ads and commercial release remain unverified."
+  ],
+  "reviewedImages": {
+    "844x390-seam-8000.png": "e10b8b48109da32e29954856410d4abae35b6b47db4b6b8346fd0b2f81799fb4",
+    "844x390-seam-9600.png": "4e18d877083cb97ce9e044a6427dfd0633cfb7e51909b69c8a97e31959014793",
+    "844x390-seam-11200.png": "24a09358fd34514e1b18569e352ef1a6199e900abc7e8bbc8ef1494598c80c05",
+    "844x390-seam-12800.png": "134c48a24fe024a27b2aeb955e29bd10a4de54f415a2f13951fee6418b07343e",
+    "1280x720-seam-8000.png": "52f02fe242aa7d6a7fe5bdebf53b0156f42f91c110fe3b671e37ffb92ea155e6",
+    "1280x720-seam-9600.png": "f393bc41fc88ec02a66ce7dfb4d3dadae7072b1d0336dbab22c32e1b17e4959b",
+    "1280x720-seam-11200.png": "4a49dd57f1eab0b443223385e3efa8815e182656ef6baa7fefc4b14a5b4e3158",
+    "1280x720-seam-12800.png": "3c92ea384fa68ed99ae19c2d06d87bad1040a2df61a8ce0926fbdc60e9efacf2",
+    "844x390-ride-1.png": "c47a1f326944f548e8dbf812bff6de1ae57dd953a6a18fc40b4d2c1f886ac51c",
+    "844x390-ride-2.png": "756cddafae689bbd88c598b4a9ad50329ea71e032b7755e58d4f376c5826fd12",
+    "844x390-ride-3.png": "e20451475523eeb64bfc5e3ba6ea18588ea11c4ce1c0bdbf1f0fa1fa7ff39889",
+    "844x390-ride-4.png": "7a46bbd06e15b717638c6eb43636b8b85d4fded3344e86ee905d6989daf31310",
+    "1280x720-ride-1.png": "f487dcfc33424bcd15b63c8a7ee2b07ff3acfe162ca966c3505a71c728d9e27b",
+    "1280x720-ride-2.png": "9cc235ae372a5b1a66e4d812236eeae5e7480980bfde5ba780b235ad664f3da3",
+    "1280x720-ride-3.png": "56c2789b0fcc8f6cb16459b4c2e310a8506f8f2fec1489fdaa9eff402f71e88d",
+    "1280x720-ride-4.png": "b26e36c54b3246f12e96fd27f16a72e7925a34e2ca59fb514056b71d7c65857f",
+    "844x390-startup.png": "1f5578a19e01f460118d9facb5d633eabf6f18e3acc12284e27271cf1124c665",
+    "844x390-cashout.png": "5b40ebcc0670191f154dbd1f5c1825f1d3eb0ce006729ef59374b4ab6cb49bbb",
+    "844x390-character-selected.png": "167c5fe4968bd0bbe23b913141c3ee829ff1d8ec7137c899c680765e96cda00c",
+    "844x390-final.png": "297044c39630c6942c14e7cddf546c910ee7de7a89b2cf706f0bba5f710d0716",
+    "568x320-menu-characters.png": "06d398d1b52318dbee20353550eef91da56496396ab7cdafc683e40d9413e672",
+    "568x320-menu-missions.png": "8132828bfd0685bd812b54575a111d04dd90115d54ba6c175e836ff2f2fe25a3",
+    "568x320-menu-records.png": "d903c6fe3b7309fa539b1ce5dfa0f7f23e1e32e6af273ae56e0742e0a4a27a4e",
+    "667x375-menu-characters.png": "35e5c85b021f32b3aa68cc28ed26ac4b88fa2fa7d68b77d023d5a2723c2bcb5d",
+    "menu-portrait-guard.png": "db53e11e6baa371e17d6d395a03ac33ebcbddfc6df6141006ed574487975c593",
+    "1280x720-character-selected.png": "15af3a698642bda3376595267024da035d4b7a04e5b77deb3996470d653ee850"
+  }
+}
