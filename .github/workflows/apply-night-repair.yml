@@ -15,6 +15,7 @@ jobs:
         with:
           persist-credentials: true
       - name: Apply reviewed patch exactly once
+        # Retry: normalized the last line of the transported patch
         shell: bash
         run: |
           set -euo pipefail
