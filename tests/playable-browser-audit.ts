@@ -179,10 +179,30 @@ try {
       await page.locator(`[data-action="select-character"][data-character-id="${characterId}"]`).click();
       await page.screenshot({ path: `${out}/${label}-character-selected.png` });
       await closeMenu.click();
-      await page.locator('[data-action="restart"]').click();
+      // Successful cashout uses the visible continue CTA. The failed-run
+      // restart button deliberately remains hidden; never force-click it.
+      assert.equal((await readState()).status, 'won');
+      assert.equal(await page.locator('[data-action="restart"]').isVisible(), false);
+      await page.getByRole('button', { name: '再跑一次', exact: true }).click();
+      await page.waitForFunction(() => {
+        const state = (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState();
+        return state.status === 'playing' && state.levelId === 'night-patrol';
+      });
       await page.locator('.hub-settings').click();
-      assert.equal((await readState()).characterId, characterId, 'chosen character is actually used next run');
-      lifecycle.character = { id: characterId, coinsBefore: beforeUnlock.wishfire, coinsAfter: afterUnlock.wishfire };
+      const nextRun = await readState();
+      assert.equal(nextRun.characterId, characterId, 'chosen character is actually used next run');
+      assert.equal(nextRun.paused, true);
+      assert.equal(nextRun.inputHeld, false);
+      assert.ok(nextRun.distanceMeters < paused.distanceMeters, 'replay must start a new patrol, not resume the settled one');
+      lifecycle.character = { id: characterId, coinsBefore: beforeUnlock.wishfire, coinsAfter: afterUnlock.wishfire,
+        nextLevel: nextRun.levelId, nextRunTick: nextRun.tick, nextRunMeters: nextRun.distanceMeters };
+      await page.reload();
+      await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
+      const persistedCharacterRun = await readState();
+      assert.equal(persistedCharacterRun.characterId, characterId, 'selected character survives refresh');
+      assert.equal(persistedCharacterRun.tick, nextRun.tick, 'new run checkpoint survives refresh');
+      assert.equal(Number((await readMeta()).wishfire), Number(afterUnlock.wishfire), 'replay and refresh must not refund or charge the character again');
+      lifecycle.characterPersisted = true;
       if (touch) {
         await page.setViewportSize({ width: 390, height: 844 });
         await page.waitForTimeout(100);
