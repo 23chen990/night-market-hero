@@ -101,7 +101,7 @@ try {
         const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
         const wantHold = state.vehicleId
           ? state.vehicleId === rides[0] ? state.vehicleTicksRemaining > 100
-            : state.vehicleId === rides[2] ? state.vehiclePhase !== 'holding' ? state.tick - lastRelease > 26 : state.player.vy > 0 || state.player.vx < 240
+            : state.vehicleId === rides[2] ? state.vehiclePhase !== 'holding' ? state.tick - lastRelease > 26 : state.player.vy > 0 && state.player.vx >= 240
               : state.player.y > 390
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
