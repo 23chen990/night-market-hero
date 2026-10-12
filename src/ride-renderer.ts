@@ -61,3 +61,21 @@ export function drawConditions(g: Phaser.GameObjects.Graphics, state: GrappleSta
     for (let i = 0; i < 16; i++) g.fillCircle(left + (i * 173) % width, 95 + i % 4 * 36, i % 3 === 0 ? 3 : 2);
   }
 }
+
+/** Player must physically fly through this world-space lane to collect a ride. */
+export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: GrappleState): void {
+  for (const offer of state.vehicleOffers ?? []) {
+    if (offer.status !== 'available') continue;
+    const pulse = 0.5 + 0.5 * Math.sin(state.tick / 16);
+    const x = offer.x, y = offer.y;
+    const theme = offer.id === '青鸾' ? 0x79e6ce : offer.id === '纸鸢' ? 0xf5d27e
+      : offer.id === '灯笼群' ? 0xffaa7c : 0xf1cf91;
+    g.fillStyle(theme, 0.04 + pulse * 0.04).fillEllipse(x, y, 170, 460);
+    g.lineStyle(12, theme, 0.12).strokeEllipse(x, y, 160, 455);
+    g.lineStyle(5, theme, 0.65 + pulse * 0.30).strokeEllipse(x, y, 132, 432);
+    g.lineStyle(2, 0xfff4ce, 0.85).strokeEllipse(x, y, 100, 380);
+    g.lineStyle(4, 0x9a8065, 0.70).lineBetween(x, y + 230, x, 772);
+    g.fillStyle(theme, 0.90).fillCircle(x, y, 15 + pulse * 4);
+    g.fillStyle(0xfff6dc, 0.85).fillCircle(x, y, 7);
+  }
+}
