@@ -1,0 +1,26 @@
+name: Restore local QA toolchain
+on:
+  push:
+    branches: [fix/feel-pursuit-seam-20261012]
+    paths: ['.github/workflows/qa-toolchain.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  toolchain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Package exact locked node modules for detached audit
+        run: tar -czf /tmp/qa-node-modules.tar.gz node_modules
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qa-node-modules
+          path: /tmp/qa-node-modules.tar.gz
+          retention-days: 2
