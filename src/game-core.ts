@@ -2261,11 +2261,12 @@ export class GrappleGame {
     // Catch-up pacing has a stable distance target and bounded acceleration.
     // A good fast swing buys space for seconds; standing still lets the patrol
     // close in. The old fixed 520 cap made high-speed players uncatchable.
+    const speedLimit = this.options.guidedExperience && this.endlessMode ? PURSUER_MAX_SPEED : 520;
     const targetSpeed = this.options.guidedExperience && this.endlessMode
-      ? Math.max(240, Math.min(PURSUER_MAX_SPEED,
+      ? Math.max(240, Math.min(speedLimit,
           Math.max(0, player.vx) * 0.95 + 24 + (targetGap - 410) * 0.20
           + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow))
-      : Math.max(0, Math.min(PURSUER_MAX_SPEED,
+      : Math.max(0, Math.min(speedLimit,
           (targetGap / PURSUER_TARGET_RESPONSE_SECONDS
             + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow)
           * this.mutationModifiers().pursuitSpeedFactor));
@@ -2274,7 +2275,7 @@ export class GrappleGame {
     // player crosses into a later authored segment in the same tick.
     const debrisLimitedTarget = debrisSlow > 0 ? Math.min(targetSpeed, Math.max(0, pursuer.vx - 1)) : targetSpeed;
     pursuer.ax = Math.max(-PURSUER_MAX_ACCELERATION, Math.min(PURSUER_MAX_ACCELERATION, (debrisLimitedTarget - pursuer.vx) * 8));
-    pursuer.vx = Math.max(0, Math.min(PURSUER_MAX_SPEED, pursuer.vx + pursuer.ax * dt));
+    pursuer.vx = Math.max(0, Math.min(speedLimit, pursuer.vx + pursuer.ax * dt));
     const maxAdvance = Math.max(0, player.x - pursuer.x - contactDistance);
     // 青鸾 catchImmune：冻结追兵推进，距离不减即可
     const vehicleCatchImmune = !!this.state.vehicleId
@@ -2587,8 +2588,9 @@ export class GrappleGame {
     // fail normally. Guard contact becomes lethal from the next segment so
     // small browser-frame variations cannot end a run before every district
     // theme has appeared once.
-    const endlessOpeningGrace = this.endlessMode && this.state.segmentIndex === 0
-      && this.state.elapsed < 7;
+    const endlessOpeningGrace = this.endlessMode && (this.options.guidedExperience
+      ? this.state.segmentIndex === 0 && this.state.elapsed < 7
+      : this.state.segmentIndex <= 3);
     // The tutorial's first chase is also an input lesson. A real pointer hold
     // can span a different number of fixed ticks on desktop and mobile, so a
     // player who has made several genuine hold/release transitions gets to
