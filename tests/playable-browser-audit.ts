@@ -20,7 +20,7 @@ const failures: string[] = [];
 try {
   for (const viewport of [{ width: 844, height: 390 }, { width: 1280, height: 720 }]) {
     const touch = viewport.width < 900;
-    const context = await browser.newContext({ viewport, hasTouch: touch, deviceScaleFactor: 1 });
+    const context = await browser.newContext({ viewport, hasTouch: touch, deviceScaleFactor: 1, recordVideo: { dir: out, size: viewport } });
     const page = await context.newPage();
     page.setDefaultTimeout(6000);
     const cdp = touch ? await context.newCDPSession(page) : null;
@@ -33,6 +33,9 @@ try {
     const screenshots: unknown[] = [];
     const lifecycle: Record<string, unknown> = {};
     const seen = new Map<string, { firstTick: number; lastTick: number; elapsed: number }>();
+    const naturalClaims = new Set<string>();
+    const naturalMisses = new Set<string>();
+    const pursuitPhases = new Set<string>();
     const seams = new Set<number>();
     let screenshotJob: Promise<unknown> | null = null;
     let captureBusy = false;
@@ -76,6 +79,11 @@ try {
         if (sample % 5 === 0) samples.push({ ms: Date.now() - started, tick: state.tick, level: state.levelId,
           player: state.player, segment: state.segmentIndex, status: state.status, coins: state.coins,
           pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky });
+        if (state.levelId === 'night-patrol') {
+          pursuitPhases.add(state.chase.phase);
+          if (state.lastVehicleOffer?.kind === 'claimed') naturalClaims.add(state.lastVehicleOffer.id);
+          if (state.lastVehicleOffer?.kind === 'missed') naturalMisses.add(state.lastVehicleOffer.id);
+        }
         if (state.status !== 'playing') {
           await edge(false, state.tick);
           await screenshotJob;
@@ -149,6 +157,8 @@ try {
       }
       assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
       assert.equal(capturedRides.size, 4, 'all four rides must also have actual screenshots');
+      assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'every ride must be collected from a world pickup, never segment entry');
+      assert.ok(pursuitPhases.has('warning') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
       const paused = await readState();
       await page.waitForTimeout(350);
@@ -227,10 +237,18 @@ try {
     } finally {
       await screenshotJob;
       await page.screenshot({ path: `${out}/${label}-final.png` }).catch(() => undefined);
-      reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
-        seen: Object.fromEntries(seen), seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final: await readState().catch(() => null) });
-      await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; no state mutation APIs', failures, reports }, null, 2));
+      const final = await readState().catch(() => null);
       await context.close();
+      const videoPath = `${out}/${label}-journey.webm`;
+      await page.video()?.saveAs(videoPath);
+      const videoBytes = await readFile(videoPath);
+      assert.ok(videoBytes.length > 65_536, `natural journey video empty for ${label}`);
+      const videoHash = createHash('sha256').update(videoBytes).digest('hex');
+      reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
+        seen: Object.fromEntries(seen), naturalClaims: [...naturalClaims], naturalMisses: [...naturalMisses], pursuitPhases: [...pursuitPhases],
+        seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final,
+        continuousVideo: { path: `${label}-journey.webm`, sha256: videoHash, bytes: videoBytes.length } });
+      await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; continuous video; no state mutation APIs', failures, reports }, null, 2));
     }
   }
 } finally { await browser.close(); }
