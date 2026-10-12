@@ -34,3 +34,23 @@ test('guided run must limit travel speed in later endless segments', () => {
   assert.ok(state.player.vx <= 700, 'horizontal speed exceeds mobile comfort cap');
   assert.ok(state.maxSpeed <= 750, 'endless speed ceiling should not grow without bound');
 });
+
+test('guided catch-immune bird cannot permanently freeze officers', () => {
+  const game = createGrappleGame(31, options); game.restartEndless(31);
+  // Build a visible authored pickup in a fixture; never treat fixture as
+  // evidence that the natural browser route can reach this encounter.
+  game.setPlayerForTest({ x: segmentStartPx(8) + 1, y: 535, vx: 480, vy: 0 });
+  const entered = game.advanceTicks(1);
+  const offer = entered.vehicleOffers.find(item => item.id === '青鸾' && item.status === 'available');
+  assert.ok(offer);
+  game.setPlayerForTest({ x: offer.x - 20, y: offer.y, vx: 480, vy: 0 });
+  const mounted = game.advanceTicks(1);
+  assert.equal(mounted.vehicleId, '青鸾');
+  const guardX = mounted.pursuer.x;
+  game.act('press');
+  game.advanceTicks(60);
+  const flying = game.getState();
+  assert.equal(flying.vehicleId, '青鸾');
+  assert.ok(flying.pursuer.x > guardX + 5, 'catch immunity must not stop a guided patrol');
+  assert.ok(flying.chase.distance >= 260, 'immune flight should not drop officers directly into unavoidable contact');
+});
