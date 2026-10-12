@@ -77,7 +77,33 @@ export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: Grapple
     // A grounded pickup pole makes the ring part of the landscape rather
     // than a HUD notification or invisible segment-transition reward.
     g.lineStyle(4, 0x9a8065, 0.70).lineBetween(x, y + 230, x, 772);
-    g.fillStyle(theme, 0.90).fillCircle(x, y, 15 + pulse * 4);
-    g.fillStyle(0xfff6dc, 0.85).fillCircle(x, y, 7);
+    // Preview the actual vehicle in the collision lane. An anonymous ring
+    // cannot explain why touching it suddenly changes the rider's controls.
+    g.fillStyle(0x16252b, 0.82).fillCircle(x, y, 44);
+    g.lineStyle(3, theme, 0.94).strokeCircle(x, y, 43);
+    if (offer.id === '纸鸢') {
+      g.fillStyle(theme, 1).fillTriangle(x, y - 31, x - 34, y + 1, x, y + 19);
+      g.fillStyle(0xe78757, 1).fillTriangle(x, y - 31, x + 34, y + 1, x, y + 19);
+      g.lineStyle(3, 0xffedc6, 0.94).lineBetween(x, y - 31, x, y + 32);
+    } else if (offer.id === '货运滑索') {
+      g.lineStyle(5, 0xffebbd, 1).lineBetween(x - 33, y - 23, x + 33, y - 29);
+      g.fillStyle(theme, 1).fillCircle(x, y - 24, 8);
+      g.lineStyle(3, theme, 1).lineBetween(x, y - 17, x, y + 5);
+      g.fillStyle(0xc98f58, 1).fillRoundedRect(x - 25, y + 5, 50, 25, 5);
+      g.lineStyle(2, 0xffebbd, 1).strokeRect(x - 24, y + 6, 48, 23);
+    } else if (offer.id === '灯笼群') {
+      g.lineStyle(2, 0xffefce, 1).lineBetween(x - 35, y - 22, x + 35, y - 22);
+      for (let n = -1; n <= 1; n++) {
+        const lx = x + n * 25;
+        g.lineStyle(2, theme, 1).lineBetween(lx, y - 22, lx, y - 12);
+        g.fillStyle(n === 0 ? 0xffcf74 : 0xe99959, 1).fillRoundedRect(lx - 10, y - 12, 20, 34, 7);
+        g.lineStyle(2, 0xffedbe, 1).lineBetween(lx - 7, y + 10, lx + 7, y + 10);
+      }
+    } else {
+      g.fillStyle(theme, 1).fillTriangle(x, y - 7, x - 38, y - 20, x - 17, y + 27);
+      g.fillTriangle(x, y - 7, x + 38, y - 20, x + 17, y + 27);
+      g.fillStyle(0xffefc0, 1).fillEllipse(x, y + 9, 25, 39);
+      g.fillTriangle(x, y + 24, x - 13, y + 36, x + 13, y + 36);
+    }
   }
 }
