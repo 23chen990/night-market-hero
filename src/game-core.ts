@@ -1554,7 +1554,7 @@ export class GrappleGame {
   private beginVehicleHold(): void {
     const vehicle = VEHICLES.find((item) => item.id === this.state.vehicleId);
     if (vehicle?.id === '货运滑索') this.state.vehicleLockY = this.state.player.y;
-    else if (vehicle?.id === '灯笼群') this.state.vehicleVirtualAnchor = { x: this.state.player.x, y: this.state.player.y - LANTERN_ROPE };
+    else if (vehicle?.id === '灯笼群') this.state.vehicleVirtualAnchor = { x: this.state.player.x + (this.options.guidedExperience ? 90 : 0), y: this.state.player.y - LANTERN_ROPE };
     else if (this.options.guidedExperience && vehicle?.id === '青鸾') {
       // A deliberate flap brakes a dive immediately; holding then supplies
       // sustained lift. Without input the rider can still fall and fail.
@@ -2503,6 +2503,10 @@ export class GrappleGame {
     // 灯笼群：凭空挂接，复用摆荡物理（固定虚拟挂点，绳长恒定）
     if (vehicleActive && vehicle!.id === '灯笼群' && this.state.vehiclePhase === 'holding' && this.state.vehicleVirtualAnchor) {
       const pivot = this.state.vehicleVirtualAnchor;
+      // Lantern chains drift steadily above the roofs. Holding remains a
+      // physical swing, but no longer pins the player in place while guards
+      // close from behind during the first half-second of boarding.
+      if (this.options.guidedExperience) pivot.x += 300 * dt;
       const dx = player.x - pivot.x;
       const dy = player.y - pivot.y;
       const distance = Math.max(0.0001, Math.hypot(dx, dy));
@@ -2515,6 +2519,7 @@ export class GrappleGame {
       player.vy -= radialVelocity * ny;
       player.vx += ny * SWING_DRIVE * fx.swingDriveFactor * dt;
       player.vy -= nx * SWING_DRIVE * fx.swingDriveFactor * dt;
+      if (this.options.guidedExperience) player.vx = Math.max(220, player.vx);
     }
 
     const visibleCeiling = this.state.vehicleId === '纸鸢' ? 290 : this.state.vehicleId === '灯笼群' ? 320 : 125;
