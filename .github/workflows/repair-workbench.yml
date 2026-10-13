@@ -39,6 +39,26 @@ jobs:
           tar -czf delivery/factory-dependencies.tar.gz -C factory node_modules
           git -C game rev-parse HEAD > delivery/game-commit.txt
           git -C factory rev-parse HEAD > delivery/factory-commit.txt
+      - name: Verify portable handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar -tzf delivery/game-source.tar.gz | grep -q '^src/game-core.ts
+        with:
+          name: repair-workbench
+          path: delivery/
+          retention-days: 7
+
+          tar -tzf delivery/game-source.tar.gz | grep -q '^src/night-city-renderer.ts
+        with:
+          name: repair-workbench
+          path: delivery/
+          retention-days: 7
+
+          tar -tzf delivery/game-dependencies.tar.gz | grep -q '^node_modules/'
+          sha256sum delivery/*.tar.gz > delivery/handoff.sha256
+          sha256sum -c delivery/handoff.sha256
+          echo "Exact game: $(cat delivery/game-commit.txt)"
       - uses: actions/upload-artifact@v4
         with:
           name: repair-workbench
