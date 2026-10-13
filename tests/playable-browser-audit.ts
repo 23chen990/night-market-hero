@@ -139,8 +139,10 @@ try {
         const lanternOffer = !touch && state.levelId === 'night-patrol'
           ? state.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available')
           : null;
-        if (lanternOffer && state.player.x > lanternOffer.x - 350
-          && state.player.x < lanternOffer.x - 110) wantHold = true;
+        // Enter the alternate route while the ring is still approaching:
+        // a 240-world-unit late switch can be skipped by a real browser poll.
+        if (lanternOffer && state.player.x > lanternOffer.x - 900
+          && state.player.x < lanternOffer.x - 250) wantHold = true;
         await edge(wantHold, state.tick);
         if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
         if (state.vehicleId) {
