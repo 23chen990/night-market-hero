@@ -132,8 +132,8 @@ export class ExperienceHud {
     else {
       const offer = state.vehicleOffers?.find(item => item.status === 'available' && item.x >= state.player.x - 140);
       const next = OPENING_ENCOUNTERS.find(beat => beat.segment > state.segmentIndex);
-      text(this.goal, offer ? `前方 ${Math.max(0, Math.ceil((offer.x - state.player.x) / 30))}m 光环：${offer.id}（碰到获得）`
-        : next ? `下一处 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：${next.vehicle} 光环`
+      text(this.goal, offer ? `前方 ${Math.max(0, Math.ceil((offer.x - state.player.x) / 30))}m 挑战：${offer.id}（抓准挂环）`
+        : next ? `下一处 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：${next.vehicle} 获取机会`
           : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m · 可在暂停菜单收工`);
     }
     const cue = controlCue(state);
@@ -151,9 +151,13 @@ export class ExperienceHud {
     if (p && (state.tick < p.tick || state.levelId !== p.level)) this.previous = null;
     const previous = this.previous;
     if (previous && active) {
-      if (state.vehicleId && state.vehicleId !== previous.vehicle) { this.announce(`获得 ${state.vehicleId}！按住/松手试试`); this.audio.play('ride'); }
+      if (state.vehicleId && state.vehicleId !== previous.vehicle) {
+        const quality = state.lastVehicleOffer?.kind === 'claimed' && state.lastVehicleOffer.quality === 'stylish';
+        this.announce(quality ? `漂亮抢到${state.vehicleId}！额外 +8 金币` : `抢到 ${state.vehicleId}！试试按住/松手`);
+        this.audio.play('ride');
+      }
       else if (state.lastVehicleOffer && state.lastVehicleOffer.tick > previous.offerTick && state.lastVehicleOffer.kind === 'missed') {
-        this.announce(`错过 ${state.lastVehicleOffer.id}，下一段还有机会`);
+        this.announce(`错过${state.lastVehicleOffer.id}：${state.lastVehicleOffer.reason ?? '下一次提早调整路线'}`);
       }
       else if (state.gatesPassed > previous.gates) { this.announce(`穿过第 ${state.gatesPassed} 个街区！`); this.audio.play('combo'); }
       else if (state.combo > previous.combo) { if (state.combo >= 2) this.announce(`漂亮！${state.combo} 连飞`); this.audio.play('combo'); }

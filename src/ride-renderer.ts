@@ -66,18 +66,44 @@ export function drawConditions(g: Phaser.GameObjects.Graphics, state: GrappleSta
 export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: GrappleState): void {
   for (const offer of state.vehicleOffers ?? []) {
     if (offer.status !== 'available') continue;
-    const pulse = 0.5 + 0.5 * Math.sin(state.tick / 16);
     const x = offer.x, y = offer.y;
-    const theme = offer.id === '青鸾' ? 0x79e6ce : offer.id === '纸鸢' ? 0xf5d27e
-      : offer.id === '灯笼群' ? 0xffaa7c : 0xf1cf91;
-    // Draw the actual collision footprint: 200 wide by 360 high in world
-    // space, with a solid focal point and clear outline on dark scenery.
-    g.fillStyle(theme, 0.11 + pulse * 0.07).fillEllipse(x, y, 200, 360);
-    g.lineStyle(12, theme, 0.20).strokeEllipse(x, y, 200, 360);
-    g.lineStyle(5, theme, 0.76 + pulse * 0.20).strokeEllipse(x, y, 195, 355);
-    g.lineStyle(2, 0xfff4ce, 0.94).strokeEllipse(x, y, 174, 330);
-    g.lineStyle(3, 0x9a8065, 0.65).lineBetween(x, y + 180, x, 772);
-    g.fillStyle(theme, 0.90).fillCircle(x, y, 15 + pulse * 4);
-    g.fillStyle(0xfff6dc, 0.85).fillCircle(x, y, 7);
+    const rx = offer.radiusX ?? 100, ry = offer.radiusY ?? 180;
+    const pulse = 0.5 + 0.5 * Math.sin(state.tick / 16);
+    const color = offer.id === '青鸾' ? 0x7ce9d9 : offer.id === '纸鸢' ? 0xf1d883
+      : offer.id === '灯笼群' ? 0xfa9f75 : 0xf3ce89;
+    if (offer.supportX !== undefined && offer.supportY !== undefined) {
+      g.lineStyle(4, 0xc9aa7b, 0.76).lineBetween(offer.supportX, offer.supportY, x, y - ry * 0.6);
+      g.fillStyle(0xffe9aa, 0.92).fillCircle(offer.supportX, offer.supportY, 8);
+    }
+    // Inner glow is the ONLY collidable surface; no invisible rectangular box.
+    g.fillStyle(color, 0.13 + pulse * 0.05).fillEllipse(x, y, rx * 2, ry * 2);
+    g.lineStyle(4, color, 0.7 + pulse * 0.2).strokeEllipse(x, y, rx * 2, ry * 2);
+    g.lineStyle(2, 0xfff4d9, 0.95).strokeEllipse(x, y, rx * 1.73, ry * 1.73);
+    if (offer.id === '货运滑索') {
+      g.lineStyle(6, 0x725744, 1).lineBetween(x - 26, y - 23, x + 26, y - 23);
+      g.fillStyle(0xf5cc7e, 1).fillCircle(x, y - 19, 20);
+      g.fillStyle(0x4c3940, 1).fillCircle(x, y - 19, 8);
+      g.lineStyle(6, 0xffe9a8, 1).lineBetween(x, y - 1, x, y + 30);
+      g.lineStyle(6, 0xffe9a8, 1).strokeCircle(x + 11, y + 32, 11);
+    } else if (offer.id === '纸鸢') {
+      g.fillStyle(0xecc277, 0.94).fillTriangle(x, y - 52, x - 45, y - 6, x, y + 4);
+      g.fillStyle(0xe08d64, 0.96).fillTriangle(x, y - 52, x + 45, y - 6, x, y + 4);
+      g.lineStyle(3, 0xfff4c7, 1).lineBetween(x, y - 45, x, y + 24);
+      g.lineStyle(6, 0xfff4c7, 1).lineBetween(x - 17, y + 26, x + 17, y + 26);
+    } else if (offer.id === '灯笼群') {
+      g.lineStyle(4, 0xf5be91, 1).lineBetween(x - 46, y - 24, x + 46, y - 24);
+      for (const ox of [-32, 32]) {
+        g.fillStyle(0xe77c51, 0.98).fillEllipse(x + ox, y + 4, 28, 38);
+        g.lineStyle(2, 0xffe2ab, 1).strokeEllipse(x + ox, y + 4, 28, 38);
+        g.lineStyle(2, 0xffc58f, 0.85).lineBetween(x + ox, y - 24, x + ox, y - 16);
+      }
+      g.fillStyle(0xfff3cf, 1).fillCircle(x, y - 24, 11);
+    } else {
+      g.fillStyle(0x92efdc, 0.95).fillTriangle(x, y - 22, x - 65, y - 12, x - 12, y + 9);
+      g.fillTriangle(x, y - 22, x + 65, y - 12, x + 12, y + 9);
+      g.fillStyle(0xffebad, 0.98).fillCircle(x, y - 22, 14);
+      g.lineStyle(3, 0x81dec8, 0.91).lineBetween(x, y - 5, x - 29, y + 46);
+      g.lineBetween(x, y - 5, x + 29, y + 46);
+    }
   }
 }

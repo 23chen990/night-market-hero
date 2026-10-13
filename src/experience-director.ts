@@ -1,5 +1,6 @@
 import { rollVehicleForSegment, segmentForIndex, segmentIndexAtX, segmentStartPx, segmentLengthPx, type VehicleId } from './endless.ts';
 import type { GrappleState } from './game-core.ts';
+import { encounterInstructions } from './vehicle-encounters.ts';
 
 /** The first lap is authored, not a lottery. Later laps keep seeded variety. */
 export const OPENING_ENCOUNTERS = Object.freeze([
@@ -68,11 +69,32 @@ export interface ControlCue { title: string; detail: string; tone: 'neutral' | '
 export function controlCue(state: GrappleState): ControlCue {
   const nextOffer = state.vehicleOffers?.find(offer => offer.status === 'available'
     && offer.x >= state.player.x - 130 && offer.x <= state.player.x + 920);
-  if (!state.vehicleId && nextOffer) return {
-    title: `前方${nextOffer.id}：碰到发光光环获取`,
-    detail: '靠近光环所在高度飞过；也可以选择错过',
-    tone: 'ready',
-  };
+  if (!state.vehicleId && nextOffer) {
+    const birdTicks = (state.stylishReleaseTicks ?? []).filter(t => state.tick - t <= 1200).length;
+    const distance = nextOffer.x - state.player.x;
+    const margin = nextOffer.radiusY ?? 90;
+    const tooLow = state.player.y > nextOffer.y + margin;
+    const tooHigh = state.player.y < nextOffer.y - margin;
+    const adjustHeight = tooLow ? '先接高处飞索，向上荡' : tooHigh ? '向下调整飞行高度' : '';
+    if (nextOffer.id === '青鸾' && birdTicks < 2)
+      return { title: `青鸾机会 · 漂亮松手 ${birdTicks}/2`,
+        detail: '连续两次成功接钩与松手，再飞向高空青鸾', tone: 'ready' };
+    if (distance <= 320 && adjustHeight) return {
+      title: `前方 ${nextOffer.id} · ${adjustHeight}`,
+      detail: encounterInstructions(nextOffer.id), tone: 'ready',
+    };
+    const imminent = distance < 250 && distance > -65;
+    if (nextOffer.id === '货运滑索' && imminent && state.attachedAnchorId)
+      return { title: '现在松手！飞向货运滑索', detail: '只有飞进挂环才算接住', tone: 'ready' };
+    if (nextOffer.id === '灯笼群' && imminent && !state.inputHeld)
+      return { title: '灯绳在前！按住接索', detail: '经过实体绳结时按住，过早按住会错过', tone: 'ready' };
+    if (nextOffer.id === '纸鸢' && imminent)
+      return { title: '松手接鸢绳！', detail: '先荡到屋檐高度，再飞入纸鸢下方挂柄', tone: 'ready' };
+    if (nextOffer.id === '青鸾' && imminent)
+      return { title: '青鸾在前！把握松手时机', detail: '飞到高线并完成两次漂亮松手', tone: 'ready' };
+    return { title: `前方 ${nextOffer.id} · ${Math.max(0, Math.round(distance / 30))}m`,
+      detail: adjustHeight || encounterInstructions(nextOffer.id), tone: 'ready' };
+  }
   if (state.vehicleId === '货运滑索') return { title: '按住加速 · 松手弹射', detail: '滑索带你穿街，松手后可继续接飞索', tone: 'ready' };
   if (state.vehicleId === '纸鸢') return { title: '按住拉升 · 松手滑翔', detail: '顺着金币调整高度', tone: 'neutral' };
   if (state.vehicleId === '青鸾') return { title: '按住振翅 · 松手俯冲', detail: '追兵暂退，不要俯冲太久', tone: state.player.y > 700 ? 'danger' : 'ready' };
