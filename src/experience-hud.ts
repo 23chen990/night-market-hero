@@ -125,7 +125,7 @@ export class ExperienceHud {
     this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
     this.pursuit.dataset.phase = state.chase.phase;
     const closeness = Math.min(1, Math.max(0, state.chase.pressure));
-    text(this.pursuit.querySelector('strong')!, closeness >= 0.75 ? '危险！官兵撒网' : closeness >= 0.35 ? '官兵逼近！快摆荡' : '后方官兵持续追赶');
+    text(this.pursuit.querySelector('strong')!, closeness >= 0.75 ? '危险！向高处接钩躲网' : closeness >= 0.35 ? '官兵架网！加速或升高' : '后方官兵持续追赶');
     text(this.pursuit.querySelector('span')!, `${Math.round(state.chase.distance / 30)}m`);
     (this.pursuit.querySelector('i')! as HTMLElement).style.setProperty('--chase-fill', `${Math.round(closeness * 100)}%`);
     if (state.levelId === 'lantern-entry') text(this.goal, `护送铜符 ${Math.round(state.progress * 100)}% · 前方是渡口`);
