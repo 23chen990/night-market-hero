@@ -2590,8 +2590,13 @@ export class GrappleGame {
       && player.y >= this.state.gate.collisionAperture.y
       && player.y <= this.state.gate.collisionAperture.y + this.state.gate.collisionAperture.height;
     if (gateShelter) player.vx = Math.max(player.vx, 260);
+    // The drawn officer's net has a finite vertical reach. A high grapple
+    // genuinely avoids capture while a low stalled swing can be intercepted;
+    // raw horizontal proximity must not catch someone far above the net.
+    const withinNetHeight = !this.options.guidedExperience
+      || (player.y >= this.state.pursuer.runLaneY - 310 && player.y <= this.state.failY);
     const pursuerContact = Math.abs(player.x - this.state.pursuer.x) <= PURSUER_CONTACT_DISTANCE
-      && (!this.options.guidedExperience || player.y <= this.state.failY);
+      && withinNetHeight;
     // 青鸾期间追兵无法追上（catchImmune）：仅冻结追兵推进，距离自然拉大
     const vehicleCatchImmune = vehicleActive && vehicle!.catchImmune;
     // The first district cycle teaches the endless rhythm while falls still
