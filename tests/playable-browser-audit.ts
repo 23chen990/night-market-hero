@@ -147,10 +147,18 @@ try {
         // Requiring every path to auto-grant all pickups would be an invalid
         // test that pressures Builder to reintroduce invisible grab boxes.
         const playedAll = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; });
+        const claimedRidesStayedPlayable = [...naturalClaims].every(name => {
+          const visit = seen.get(name);
+          return visit && visit.lastTick - visit.firstTick >= 120;
+        });
         const resolvedAll = rides.every(name => naturalClaims.has(name) || naturalMisses.has(name));
+        // A desktop journey that collects the final ride must continue to
+        // operate it for one simulated second before pause. Otherwise the
+        // runner itself shortens the ride, then falsely blames the game.
         const complete = seams.size === 4 && (touch
           ? playedAll && capturedRides.size === 4
-          : resolvedAll && [...naturalClaims].every(name => capturedRides.has(name))
+          : resolvedAll && claimedRidesStayedPlayable
+            && [...naturalClaims].every(name => capturedRides.has(name))
             && [...naturalMisses].every(name => capturedMisses.has(name)));
         // Keep controlling the flight while moving to pause. Releasing a bird
         // during its dive and waiting through CDP reads intentionally loses.
