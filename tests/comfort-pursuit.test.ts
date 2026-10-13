@@ -43,7 +43,8 @@ test('guided catch-immune bird cannot permanently freeze officers', () => {
   const entered = game.advanceTicks(1);
   const offer = entered.vehicleOffers.find(item => item.id === '青鸾' && item.status === 'available');
   assert.ok(offer);
-  // Scoped chase immunity fixture, never used to prove acquisition.
+  // Scoped pursuer/vehicle physics fixture; qualifying for the rare bird is
+  // separately validated by the input-and-stylish contract.
   const forced = game.getState();
   forced.vehicleId = '青鸾';
   forced.vehicleTicksRemaining = 600;

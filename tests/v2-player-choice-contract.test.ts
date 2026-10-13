@@ -18,14 +18,15 @@ function atOpportunity(segment: number) {
   return { game, offer };
 }
 
-test('each of four rides needs its own real press/release action at an anchored encounter', () => {
+test('each of the four rides requires a distinct real press/release action at a visible anchored encounter', () => {
   for (const [segment, ride] of opportunities) {
     const { game, offer } = atOpportunity(segment);
     const y = ride === '纸鸢' ? Math.min(offer.y + 8, 530)
       : ride === '青鸾' ? Math.min(offer.y + 8, 450) : offer.y;
     game.setPlayerForTest({ x: offer.x - 55, y, vx: 460, vy: 0 });
     if (ride === '青鸾') {
-      // Preparation fixture, not evidence of blind or natural play.
+      // An isolated prepared state proves this power is *gated* by two
+      // independently-earned stylish releases; this is not a natural QA run.
       const prepared = game.getState();
       prepared.tick = 250;
       prepared.elapsed = prepared.tick / 120;
@@ -35,33 +36,41 @@ test('each of four rides needs its own real press/release action at an anchored 
     assert.equal(game.getState().vehicleId, null);
     assert.equal(game.act('press'), true);
     const afterPress = game.getState();
-    if (ride === '灯笼群') assert.equal(afterPress.vehicleId, ride);
-    else {
-      assert.equal(afterPress.vehicleId, null);
-      assert.ok(afterPress.attachedAnchorId, 'release challenge requires a real rope');
+    if (ride === '灯笼群') {
+      assert.equal(afterPress.vehicleId, ride, 'lantern must mount on a timed real press');
+    } else {
+      assert.equal(afterPress.vehicleId, null, `${ride} must not mount from the wrong press`);
+      assert.ok(afterPress.attachedAnchorId, 'release challenge starts with a real rope on a supported anchor');
     }
     assert.equal(game.act('release'), true);
     const state = game.advanceTicks(2);
     assert.equal(state.vehicleId, ride);
     assert.equal(state.vehicleQueue.length, 0);
-    assert.equal(state.encounterEvents.filter(e => e.instanceId === offer.instanceId).length, 1);
-    assert.equal(state.encounterEvents.find(e => e.instanceId === offer.instanceId)?.outcome, 'claimed');
+    const matching = state.encounterEvents.filter(e => e.instanceId === offer.instanceId);
+    assert.equal(matching.length, 1, 'claim can only resolve once');
+    assert.equal(matching[0]?.outcome, 'claimed');
+    assert.equal(state.vehicleOffers.find(item => item.instanceId === offer.instanceId)?.status, 'claimed');
     assert.ok(isValidRunState(state));
   }
 });
 
-test('bird cannot be claimed without two actual stylish-release records', () => {
+test('the bird cannot be claimed without two real stylish-release records', () => {
   const { game, offer } = atOpportunity(8);
   game.setPlayerForTest({ x: offer.x - 55, y: offer.y, vx: 460, vy: 0 });
-  game.act('press'); game.act('release');
-  const after = game.advanceTicks(2);
-  assert.equal(after.vehicleId, null);
-  assert.equal(after.vehicleOffers.find(o => o.instanceId === offer.instanceId)?.status, 'available');
-  game.setPlayerForTest({ x: offer.x + (offer.radiusX ?? 88) + 95, y: offer.y + 240, vx: 460, vy: 0 });
-  assert.equal(game.advanceTicks(2).encounterEvents.find(e => e.instanceId === offer.instanceId)?.outcome, 'missed');
+  game.act('press');
+  game.act('release');
+  const wrongAction = game.advanceTicks(2);
+  assert.equal(wrongAction.vehicleId, null);
+  assert.equal(wrongAction.vehicleOffers.find(item => item.instanceId === offer.instanceId)?.status, 'available',
+    'an incorrect attempt must not silently grant or consume the optional bird');
+  game.setPlayerForTest({ x: offer.x + (offer.radiusX ?? 88) + 95,
+    y: offer.y + 240, vx: 460, vy: 0 });
+  const missed = game.advanceTicks(2);
+  assert.equal(missed.vehicleId, null);
+  assert.equal(missed.encounterEvents.find(e => e.instanceId === offer.instanceId)?.outcome, 'missed');
 });
 
-test('deliberately ignored offer never becomes hidden inventory after another segment', () => {
+test('visible opportunity may be deliberately ignored; later segment never gives an unseen deferred ride', () => {
   const { game, offer } = atOpportunity(2);
   game.setPlayerForTest({ x: offer.x - 25, y: offer.y + 250, vx: 520, vy: 0 });
   game.advanceTicks(1);
@@ -70,19 +79,23 @@ test('deliberately ignored offer never becomes hidden inventory after another se
   game.advanceTicks(2);
   const ignored = game.getState();
   assert.equal(ignored.vehicleId, null);
-  assert.deepEqual(ignored.vehicleQueue, []);
+  assert.equal(ignored.vehicleQueue.length, 0);
   assert.equal(ignored.encounterEvents.filter(e => e.instanceId === offer.instanceId).length, 1);
   assert.equal(ignored.lastVehicleOffer?.kind, 'missed');
   game.setPlayerForTest({ x: segmentStartPx(3) + 50, y: 535, vx: 510, vy: -30 });
-  assert.equal(game.advanceTicks(2).vehicleId, null);
+  const future = game.advanceTicks(2);
+  assert.equal(future.vehicleId, null, 'segment entry must not secretly restore a missed reward');
+  assert.equal(future.vehicleQueue.length, 0);
 });
 
-test('legacy saved invisible queue is safely discarded, not equipped', () => {
+test('restoring a legacy save drains deferred awards rather than awarding them after dismount', () => {
   const { game } = atOpportunity(4);
   const old = game.getState();
   old.vehicleQueue = ['青鸾', '灯笼群'];
-  for (const key of ['encounterEvents', 'stylishReleaseTicks', 'lastGrapplePressTick', 'lastGrappleReleaseTick'])
-    delete (old as unknown as Record<string, unknown>)[key];
+  delete (old as unknown as Record<string, unknown>).encounterEvents;
+  delete (old as unknown as Record<string, unknown>).stylishReleaseTicks;
+  delete (old as unknown as Record<string, unknown>).lastGrapplePressTick;
+  delete (old as unknown as Record<string, unknown>).lastGrappleReleaseTick;
   assert.ok(game.restoreSnapshot(old));
   const restored = game.getState();
   assert.deepEqual(restored.vehicleQueue, []);

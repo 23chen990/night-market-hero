@@ -20,6 +20,7 @@ export interface AuthoredEncounter {
   requiredAction: EncounterAction;
   announceX: number;
 }
+
 const RECIPES: Record<VehicleId, {
   supportPattern: RegExp; heightOffset: number; radiusX: number; radiusY: number;
   requiredAction: EncounterAction; description: string;
@@ -33,7 +34,10 @@ const RECIPES: Record<VehicleId, {
   '青鸾': { supportPattern: /left-eave-beam|right-eave-beam/, heightOffset: 190,
     radiusX: 88, radiusY: 92, requiredAction: 'stylish-release', description: '连续两次漂亮松手，腾空接青鸾' },
 };
+
 export function encounterInstructions(id: VehicleId): string { return RECIPES[id].description; }
+
+/** Sweep in the *visible* world-space target ellipse, no invisible magnet. */
 export function sweptEncounterContact(
   before: { x: number; y: number }, after: { x: number; y: number },
   circle: { x: number; y: number; radiusX: number; radiusY: number },
@@ -46,6 +50,12 @@ export function sweptEncounterContact(
   const t = length > 1e-8 ? Math.max(0, Math.min(1, -(sx * dx + sy * dy) / length)) : 0;
   return (sx + dx * t) ** 2 + (sy + dy * t) ** 2 <= 1;
 }
+
+/**
+ * Socket choice is deterministic per seed / segment / vehicle. A support is
+ * only eligible if it lies IN the real segment, beyond its opening entry.
+ * This prevents spawning a late-offer behind the rider.
+ */
 export function planVehicleEncounter(seed: number, segment: number, id: VehicleId): AuthoredEncounter | null {
   const start = segmentStartPx(segment);
   const end = start + segmentLengthPx(segment);
@@ -78,6 +88,7 @@ export function planVehicleEncounter(seed: number, segment: number, id: VehicleI
     announceX: Math.max(start - 600, chosen.x - 850),
   };
 }
+
 export function encounterActionEligible(
   action: EncounterAction,
   state: { tick: number; playerY: number; playerVx: number; inputHeld: boolean;
@@ -94,6 +105,7 @@ export function encounterActionEligible(
   return !state.inputHeld && releaseAge >= 0 && releaseAge < 80 && state.playerY <= 455
     && state.stylishTicks.filter(t => state.tick - t <= 1200).length >= 2;
 }
+
 export function missedEncounterReason(action: EncounterAction, playerY: number, touchedButIneligible: boolean): string {
   if (touchedButIneligible) {
     if (action === 'high-release' && playerY > 540) return '高度不够，借高处挂点再试';

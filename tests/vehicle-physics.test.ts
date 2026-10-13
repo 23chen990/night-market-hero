@@ -7,7 +7,10 @@ import { rollVehicleForSegment, VEHICLES, segmentStartPx } from '../src/endless.
 // map to a deterministic tick budget of 120 ticks per second (no wall clock).
 const TICKS_PER_SECOND = 120;
 
-/** Scoped physics fixture: actual pickup remains under real-input tests. */
+/** Scoped physics fixture. All default modes now require physical player
+ * interaction to earn a vehicle. Inject an already-earned active vehicle to
+ * test the physics only; this is NOT acquisition or browser-play evidence.
+ */
 function grantVehicleAt(seed: number, segment: number, forced?: '纸鸢' | '货运滑索' | '灯笼群' | '青鸾'): ReturnType<typeof createGrappleGame> {
   const game = createGrappleGame(seed);
   game.restartEndless(seed);
@@ -15,7 +18,7 @@ function grantVehicleAt(seed: number, segment: number, forced?: '纸鸢' | '货�
   game.setPlayerForTest({ x, y: 400, vx: 360, vy: 0 });
   game.advanceTicks(1);
   const id = forced ?? rollVehicleForSegment(seed, segment, segment === 8);
-  assert.ok(id, 'fixture requires a vehicle');
+  assert.ok(id, 'test must request a known vehicle');
   const definition = VEHICLES.find(v => v.id === id)!;
   const mounted = game.getState();
   mounted.vehicleId = id;

@@ -76,6 +76,8 @@ export function controlCue(state: GrappleState): ControlCue {
     const tooLow = state.player.y > nextOffer.y + margin;
     const tooHigh = state.player.y < nextOffer.y - margin;
     const adjustHeight = tooLow ? '先接高处飞索，向上荡' : tooHigh ? '向下调整飞行高度' : '';
+    // Physical position stays on an authored building support; this hint only
+    // tells the player how to *reach* the real target, not its secret hitbox.
     if (nextOffer.id === '青鸾' && birdTicks < 2)
       return { title: `青鸾机会 · 漂亮松手 ${birdTicks}/2`,
         detail: '连续两次成功接钩与松手，再飞向高空青鸾', tone: 'ready' };

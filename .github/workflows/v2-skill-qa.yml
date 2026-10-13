@@ -2,8 +2,14 @@ name: V2 Skill Encounters — Draft QA
 on:
   pull_request:
     branches: [feat/playable-experience-20261012]
-    paths: ['src/**', 'tests/**', 'AGENTS.md', 'PLAYABLE_START_HERE.md',
-      'runtime-product-gates.json', 'docs/V2_*', '.github/workflows/v2-skill-qa.yml']
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'AGENTS.md'
+      - 'PLAYABLE_START_HERE.md'
+      - 'runtime-product-gates.json'
+      - 'docs/V2_*'
+      - '.github/workflows/v2-skill-qa.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,6 +36,7 @@ jobs:
           npm run build
           node --import tsx --test tests/*.test.ts
           sha256sum dist/index.html
+
   browser:
     name: Natural input and lifecycle (not a human approval)
     needs: engineering
@@ -47,7 +54,7 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Offline single-file launch
         run: npm run test:file
-      - name: Normal phone and desktop journey
+      - name: Real phone and desktop journey with per-encounter evidence
         run: npm run test:play
       - name: Failure, revive, viewport and menu checks
         run: npm run test:safety
@@ -58,5 +65,48 @@ jobs:
           path: |
             evidence/playable-audit/
             dist/index.html
+          retention-days: 14
+          if-no-files-found: warn
+
+  player-choice:
+    name: Same-build casual vs skilled natural input
+    needs: engineering
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Install real Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Ordinary player misses visible optional pulley
+        run: |
+          mkdir -p delivery/v2
+          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=0 V2_DURATION_SECONDS=23 \
+            V2_EVIDENCE_DIR=delivery/v2/casual node --import tsx tests/v2-natural-input-browser.ts \
+            2>&1 | tee delivery/v2/casual-console.log
+      - name: Skilled real-input rope release wins SAME visible pulley
+        run: |
+          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=1 V2_DURATION_SECONDS=23 \
+            V2_EVIDENCE_DIR=delivery/v2/skilled node --import tsx tests/v2-natural-input-browser.ts \
+            2>&1 | tee delivery/v2/skilled-console.log
+      - name: Independent no-entitlement comparison
+        run: |
+          set -euo pipefail
+          node tests/v2-compare-gate.mjs delivery/v2/casual/report.json \
+            delivery/v2/skilled/report.json | tee delivery/v2/player-choice-result.json
+          echo '### Optional ride is earned, not automatically gifted' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Two real touch-input paths on the same exact build/viewport show an attributable missed pulley versus a successful skilled rope release.' >> "$GITHUB_STEP_SUMMARY"
+          echo '**This does not certify remaining rides, human playability, visual seams or native platforms.**' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v2-choice-evidence-${{ github.sha }}
+          path:
+            delivery/v2/
           retention-days: 14
           if-no-files-found: warn

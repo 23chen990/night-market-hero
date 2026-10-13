@@ -260,6 +260,7 @@ export interface VehicleOffer {
   x: number;
   y: number;
   status: 'available' | 'claimed' | 'missed';
+  /** Persistent identity: two different lantern opportunities can resolve differently. */
   instanceId?: string;
   chunkId?: string;
   supportId?: string;
@@ -356,7 +357,7 @@ export interface GrappleState {
   vehicleTicksRemaining: number;
   /** Locked zipline height captured when 货运滑索 hold begins. */
   vehicleLockY: number;
-  vehicleQueue: VehicleId[]; // legacy compatibility; do not auto-grant
+  vehicleQueue: VehicleId[]; // compatibility only, never newly awarded or auto-dequeued
   vehicleOffers: VehicleOffer[];
   encounterEvents: EncounterEvent[];
   lastGrappleReleaseTick: number;
@@ -1246,6 +1247,8 @@ export class GrappleGame {
       vehiclePhase: snapshot.vehiclePhase ?? 'idle',
       vehicleTicksRemaining: snapshot.vehicleTicksRemaining ?? 0,
       vehicleLockY: snapshot.vehicleLockY ?? 0,
+      // Legacy queued awards were never visible to the player. Drain without
+      // secretly auto-equipping items when resuming a V2 run.
       vehicleQueue: [],
       vehicleOffers: (snapshot.vehicleOffers ?? []).map(offer => ({ ...offer })),
       encounterEvents: (snapshot.encounterEvents ?? []).map(event => ({ ...event })).slice(-32),
@@ -1486,6 +1489,8 @@ export class GrappleGame {
       this.state.inputHeld = true;
       this.state.inputTransitions += 1;
       this.state.lastGrapplePressTick = this.state.tick;
+      // A visible lantern knot can be grabbed with the SAME press used for
+      // ordinary grappling. No hidden second button or automatic pickup.
       if (!this.state.vehicleId) this.collectVehicleOffers(this.state.player);
       if (this.state.vehicleId) {
         this.state.vehiclePhase = 'holding';
@@ -1590,6 +1595,8 @@ export class GrappleGame {
     } else {
       if (this.state.combo > 0) this.recordEvent('combo-break', 'slow-release');
       this.stylishFlights = 0;
+      // 青鸾's two stylish releases must be CONSECUTIVE real grapple actions.
+      // An ordinary/mistimed release breaks preparation as well as combo.
       this.state.stylishReleaseTicks = [];
       this.state.combo = 0;
       this.state.comboTier = 1;
@@ -1627,16 +1634,18 @@ export class GrappleGame {
     if (this.state.inputHeld) this.beginVehicleHold();
   }
 
-
   private grantVehicleForSegment(segment: number, sky: boolean): void {
     const id = this.options.guidedExperience
       ? directedVehicle(this.state.seed, segment)
       : rollVehicleForSegment(this.state.seed, segment, sky);
     if (!id || this.state.vehicleOffers.some(offer => offer.segment === segment)) return;
     const encounter = planVehicleEncounter(this.state.seed, segment, id);
+    // No image-backed support means no pickup. A floating unanchored reward is
+    // not a legal fallback; the ordinary grapple route remains usable.
     if (!encounter) return;
     this.state.vehicleOffers.push({
-      id, segment, x: encounter.x, y: encounter.y, status: 'available',
+      id, segment, x: encounter.x, y: encounter.y,
+      status: 'available',
       instanceId: encounter.instanceId, chunkId: encounter.chunkId,
       supportId: encounter.supportId, supportX: encounter.supportX,
       supportY: encounter.supportY, radiusX: encounter.radiusX,
@@ -1651,15 +1660,18 @@ export class GrappleGame {
     if (offer.status !== 'available') return;
     offer.status = outcome;
     const instanceId = offer.instanceId ?? `${this.state.seed}:${offer.segment}:${offer.id}`;
+    // A single encounter instance can only ever resolve once. A later new
+    // instance of the SAME type is allowed a different terminal outcome.
     if (this.state.encounterEvents.some(event => event.instanceId === instanceId)) return;
     this.state.encounterEvents.push({ instanceId, id: offer.id, segment: offer.segment,
       tick: this.state.tick, outcome, reason, quality,
       playerX: this.state.player.x, playerY: this.state.player.y });
     this.state.encounterEvents = this.state.encounterEvents.slice(-32);
-    this.state.lastVehicleOffer = { id: offer.id, instanceId, kind: outcome, reason, quality, tick: this.state.tick };
+    this.state.lastVehicleOffer = { id: offer.id, instanceId, kind: outcome,
+      reason, quality, tick: this.state.tick };
     if (outcome === 'claimed') {
       this.startVehicle(offer.id);
-      if (quality === 'stylish') this.state.coins += 8;
+      if (quality === 'stylish') this.state.coins += 8; // real run reward, settled once
     }
   }
 
@@ -1667,7 +1679,7 @@ export class GrappleGame {
     const player = this.state.player;
     for (const offer of this.state.vehicleOffers) {
       if (offer.status !== 'available') continue;
-      const radiusX = offer.radiusX ?? 100;
+      const radiusX = offer.radiusX ?? 100; // older saves keep their visible halo
       const radiusY = offer.radiusY ?? 180;
       const touching = sweptEncounterContact(previousPlayer, player, {
         x: offer.x, y: offer.y, radiusX, radiusY,
@@ -1706,6 +1718,8 @@ export class GrappleGame {
       this.state.regrappleGraceUntilTick = this.state.tick + 90;
       this.state.player.vx = Math.max(280, this.state.player.vx);
       this.state.player.vy = Math.min(-160, this.state.player.vy);
+      // No deferred/hidden ride grants. Only a visible world encounter can
+      // equip another vehicle in a subsequent input-driven attempt.
       this.state.vehicleQueue = [];
     }
   }
@@ -2787,6 +2801,8 @@ export class GrappleGame {
     if (firstEntry) {
       this.state.visitedSegments.push(segment);
       // 概率事件：首次进入新段时按设计概率抽取载具（天空段只出青鸾）
+      // Announce the next world encounter BEFORE entering its segment. The
+      // location itself comes from architecture, not current player height.
       this.grantVehicleForSegment(segment, descriptor.isSky);
       this.grantVehicleForSegment(segment + 1, segmentForIndex(segment + 1).isSky);
       const placements = pickupPlacementForSegment(segment);
