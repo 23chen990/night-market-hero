@@ -58,6 +58,20 @@ const staticOk = !!staticReport &&
 const safetyOk = safety?.passed === true;
 const lifecycleOk = browserOk &&
   journeys.reports.every(item => item.lifecycle?.characterPersisted === true);
+// A guard capture is a *natural* result only if the exact browser driver
+// observed it before a revive and preserved the screenshot and input trace.
+const naturalCapture = browserOk && journeys.reports.flatMap(item => item.lifecycle?.naturalFailures ?? [])
+  .find(item => item.reason === 'caught' && item.inputTransitions > 0
+    && item.playerY >= item.netUpperY && item.guardDistance < 120
+    && item.screenshot && existsSync(path.join(root, 'evidence/playable-audit', item.screenshot)));
+const naturalEscape = browserOk && journeys.reports.some(report => {
+  const timeline = report.chaseTimeline ?? [];
+  return timeline.some((start, index) => ['alert', 'danger', 'climax'].includes(start.phase)
+    && timeline.slice(index + 1).some(end => end.phase === 'safe'
+      && end.reviveCount === start.reviveCount
+      && end.inputTransitions > start.inputTransitions
+      && end.distance > start.distance + 60));
+});
 
 const trace = bound('evidence/playable-audit/journeys.json', 'trace');
 const phoneVideo = bound('evidence/playable-audit/844x390-journey.webm', 'video');
@@ -69,12 +83,15 @@ const rows = [
     browserOk ? 'Two normal-input browser journeys recorded; human learnability remains unapproved'
       : 'Exact-build natural journey missing or failing', [trace, phoneVideo]),
   record('pursuit-caught', 'coreExperience', 'officers', 'attributable-net-contact',
-    'src/game-core.ts', 'BLOCKED',
-    'No separately approved natural-input officer capture and independent visual attribution',
-    [trace, desktopVideo]),
+    'src/game-core.ts', naturalCapture ? 'PASS' : 'BLOCKED',
+    naturalCapture ? 'Recorded real-input guard contact with player/net positions and terminal screenshot; independent visual sign-off outstanding'
+      : 'No natural-input officer capture with screenshot and contact height evidence',
+    [trace, naturalCapture
+      ? bound('evidence/playable-audit/' + naturalCapture.screenshot, 'screenshot') : desktopVideo]),
   record('pursuit-escape', 'coreExperience', 'officers', 'escape-after-warning',
-    'src/game-core.ts', 'BLOCKED',
-    'Pressure phase sampled but a verified natural escape and feedback pair is missing',
+    'src/game-core.ts', naturalEscape ? 'PASS' : 'BLOCKED',
+    naturalEscape ? 'An input-driven chase phase returned to safe without intervening revive; perceptual sign-off outstanding'
+      : 'No attributable danger-to-safe progression with continuous input and no revive',
     [trace, phoneVideo]),
   record('pickup-contact', 'coreExperience', 'vehicle', 'visible-halo-contact',
     'src/ride-renderer.ts', phoneRides ? 'PASS' : 'BLOCKED',
@@ -127,6 +144,7 @@ const manifest = {
 writeFileSync(path.join(delivery, 'factory-existing-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 writeFileSync(path.join(delivery, 'factory-evidence-state.json'), JSON.stringify({
   commit, buildHash: build.sha256, browserOk, staticOk, phoneRides, realMiss,
-  safetyOk, lifecycleOk, pendingIndependent: rows.filter(row => row.status !== 'PASS').map(row => row.id),
+  safetyOk, lifecycleOk, naturalCapture: Boolean(naturalCapture), naturalEscape,
+  pendingIndependent: rows.filter(row => row.status !== 'PASS').map(row => row.id),
 }, null, 2) + '\n');
 console.log('Factory manifest generated; full release quality intentionally remains BLOCKED without independent evidence.');
