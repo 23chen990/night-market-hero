@@ -82,7 +82,11 @@ describe('night-city image renderer', () => {
     }
     for (let index = 0; index + 1 < plan.chunks.length; index += 2) {
       if (plan.chunks[index]!.district !== plan.chunks[index + 1]!.district) continue;
-      assert.notEqual(plan.chunks[index]!.assetKey, plan.chunks[index + 1]!.assetKey, 'each two-chunk district visit must use both approved compositions');
+      const a = plan.chunks[index]!, b = plan.chunks[index + 1]!;
+      if (a.kind === 'district' && b.kind === 'district') {
+        assert.equal(a.assetKey, b.assetKey, 'same-source edge pixels are required for physical continuity');
+        assert.notEqual(a.mirrored, b.mirrored, 'mirror alternation must preserve recognizable geometry without breaking the seam');
+      }
     }
   });
 
@@ -189,7 +193,7 @@ describe('night-city image renderer', () => {
     assert.ok(renderer.getStats().retainedCount <= 4, 'free and visible pools must stay bounded after a long run');
   });
 
-  test('veils every panorama boundary, including same-district variant joins', () => {
+  test('leaves no artificial veil on pixel-matched same-district joins', () => {
     const loaded = new Set<string>();
     const rendered: Array<{ key: string; alpha: number }> = [];
     const scene = {
@@ -211,8 +215,8 @@ describe('night-city image renderer', () => {
     const sameDistrictJoinCount = plan.chunks.slice(1).filter((chunk, index) => chunk.district === plan.chunks[index]!.district).length;
     assert.ok(sameDistrictJoinCount > 0, 'fixture must include a same-district variant join');
     const veils = rendered.filter((item) => item.key === 'night-city-district-transition-mist');
-    assert.ok(veils.length >= boundaryCount,
-      'every panorama join, including same-district variants, needs a raster veil');
+    assert.equal(veils.length, 0, 'mirrored same-district joins must not hide mismatched architecture under mist');
+    assert.ok(boundaryCount > 0);
     assert.ok(veils.every((item) => item.alpha <= 0.1), 'transition mist must stay subtle enough to avoid a repeated vertical pillar');
   });
 
@@ -247,9 +251,7 @@ describe('night-city image renderer', () => {
     const carriers = rendered.filter((item) => item.key === 'night-city-rooftops-transition-v36');
     assert.equal(carriers.length, 0, 'ordinary Rooftops variant seams must not place an opaque full-height carrier over continuous architecture');
     const veils = rendered.filter((item) => item.key === 'night-city-district-transition-mist');
-    assert.equal(veils.length, rooftopSeams.length, 'each Rooftops variant seam uses one subtle veil');
-    assert.ok(veils.every((item) => item.width === 220 && item.height === 941),
-      'the ordinary variant veil must remain narrow and full-height');
+    assert.equal(veils.length, 0, 'Rooftops mirrored join must be contiguous without mist/opaque seam carrier');
     assert.ok(!rendered.some((item) => item.key.includes('bridge-architecture') || item.key.includes('seam-fog')),
       'runtime must not load the bridge or fog layer candidates');
   });

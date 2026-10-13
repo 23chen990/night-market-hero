@@ -5,6 +5,7 @@ import {
   LOGICAL_VIEWPORT,
   createCameraLayout,
   projectCamera,
+  comfortCameraStep,
 } from '../src/camera-layout.ts';
 
 describe('night-city camera layout', () => {
@@ -45,6 +46,17 @@ describe('night-city camera layout', () => {
     assert.equal(grounded.worldViewportHeight, airborne.worldViewportHeight);
   });
 
+  test('camera follows with a capped frame-time step instead of teleporting on every swing', () => {
+    let scroll = 0;
+    for (let frame = 0; frame < 180; frame++) {
+      const next = comfortCameraStep(scroll, 700, 1 / 60);
+      assert.ok(next - scroll >= 0 && next - scroll <= 920 / 60 + 0.01);
+      scroll = next;
+    }
+    assert.ok(scroll > 690 && scroll <= 700);
+    const reverse = comfortCameraStep(scroll, 480, 1 / 60);
+    assert.ok(reverse < scroll && scroll - reverse < 920 / 60 + 0.01);
+  });
   test('FlightScene pins the Phaser camera origin to the same logical projection', async () => {
     const source = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
     assert.match(source, /cameras\.main\.setOrigin\(0,\s*0\)/);

@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const css = await readFile(new URL('../src/style.css', import.meta.url), 'utf8');
+const experienceCss = await readFile(new URL('../src/experience.css', import.meta.url), 'utf8');
 const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
 
 test('confirmed return-button source is copied byte-for-byte and wired as an independent asset', async () => {
@@ -50,8 +51,9 @@ test('static reference baseline removes legacy rails and text placeholder items'
   assert.doesNotMatch(main, /item-talisman.*copperTokenIcon|item-scroll.*destinationArrowIcon/s);
 });
 
-test('chase HUD remains hidden until the single visible pursuer state', () => {
+test('chase HUD exposes the persistent patrol and escalates to danger', () => {
   assert.match(css, /\.guard-presence\[data-visible="false"\]\s*\{\s*display:\s*none;/s);
   assert.match(html, /data-ui="pursuer"[^>]*data-visible="true"/);
-  assert.match(main, /chaseVisible = state\.chase\.phase === 'danger' \|\| state\.chase\.phase === 'climax'/);
+  assert.match(main, /chaseVisible = state\.levelId === 'night-patrol'/);
+  assert.match(experienceCss, /\.pursuit-readout/);
 });

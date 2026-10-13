@@ -20,7 +20,7 @@ const failures: string[] = [];
 try {
   for (const viewport of [{ width: 844, height: 390 }, { width: 1280, height: 720 }]) {
     const touch = viewport.width < 900;
-    const context = await browser.newContext({ viewport, hasTouch: touch, deviceScaleFactor: 1 });
+    const context = await browser.newContext({ viewport, hasTouch: touch, deviceScaleFactor: 1, recordVideo: { dir: out, size: viewport } });
     const page = await context.newPage();
     page.setDefaultTimeout(6000);
     const cdp = touch ? await context.newCDPSession(page) : null;
@@ -33,10 +33,16 @@ try {
     const screenshots: unknown[] = [];
     const lifecycle: Record<string, unknown> = {};
     const seen = new Map<string, { firstTick: number; lastTick: number; elapsed: number }>();
+    const naturalClaims = new Set<string>();
+    const naturalMisses = new Set<string>();
+    const pursuitPhases = new Set<string>();
+    const chaseTimeline: Array<{ tick: number; phase: string; pressure: number; distance: number; inputTransitions: number; reviveCount: number; playerY: number }> = [];
+    let lastChasePhase: string | null = null;
     const seams = new Set<number>();
     let screenshotJob: Promise<unknown> | null = null;
     let captureBusy = false;
     const capturedRides = new Set<string>();
+    const capturedMisses = new Set<string>();
     let held = false;
     let lastRelease = -999;
     let holdAt = -999;
@@ -71,15 +77,37 @@ try {
       assert.equal((await readState()).tick, beforeStart.tick, 'start card must not spend the run');
       await page.locator('[data-action="start-run"]').click();
       if (!touch) await page.locator('[data-action="grapple"]').focus();
-      for (let sample = 0; Date.now() - started < 115_000; sample++) {
+      for (let sample = 0; Date.now() - started < 140_000; sample++) {
         const state = await readState();
         if (sample % 5 === 0) samples.push({ ms: Date.now() - started, tick: state.tick, level: state.levelId,
           player: state.player, segment: state.segmentIndex, status: state.status, coins: state.coins,
           pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky });
+        if (state.levelId === 'night-patrol') {
+          pursuitPhases.add(state.chase.phase);
+          if (state.chase.phase !== lastChasePhase) {
+            chaseTimeline.push({ tick: state.tick, phase: state.chase.phase,
+              pressure: state.chase.pressure, distance: state.chase.distance,
+              inputTransitions: state.inputTransitions, reviveCount, playerY: state.player.y });
+            lastChasePhase = state.chase.phase;
+          }
+          if (state.lastVehicleOffer?.kind === 'claimed') naturalClaims.add(state.lastVehicleOffer.id);
+          if (state.lastVehicleOffer?.kind === 'missed') naturalMisses.add(state.lastVehicleOffer.id);
+        }
         if (state.status !== 'playing') {
           await edge(false, state.tick);
           await screenshotJob;
           await page.screenshot({ path: `${out}/${label}-terminal-${reviveCount}.png` });
+          if (state.levelId === 'night-patrol' && state.status === 'failed') {
+            const actualFailures = lifecycle.naturalFailures as Array<Record<string, unknown>> | undefined;
+            const recorded = { tick: state.tick, reason: state.failureReason,
+              guardDistance: state.chase.distance, guardPhase: state.chase.phase,
+              playerX: state.player.x, playerY: state.player.y,
+              guardX: state.pursuer.x, netUpperY: state.pursuer.runLaneY - 310,
+              inputTransitions: state.inputTransitions, reviveCount,
+              screenshot: `${label}-terminal-${reviveCount}.png` };
+            if (actualFailures) actualFailures.push(recorded);
+            else lifecycle.naturalFailures = [recorded];
+          }
           if (state.status === 'won' && state.levelId !== 'night-patrol') {
             tutorialCompleted = true;
             await page.locator('[data-action="continue"]').click();
@@ -99,12 +127,22 @@ try {
           break;
         }
         const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
-        const wantHold = state.vehicleId
+        let wantHold = state.vehicleId
           ? state.vehicleId === rides[0] ? state.vehicleTicksRemaining > 100
-            : state.vehicleId === rides[2] ? state.vehiclePhase !== 'holding' ? state.tick - lastRelease > 26 : state.player.vy > 0 || state.player.vx < 240
+            : state.vehicleId === rides[2] ? state.vehiclePhase !== 'holding' ? state.tick - lastRelease > 26 : state.player.vy > 0 && state.player.vx >= 240
               : state.player.y > 390
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
+        // Use normal player input to intentionally bypass the optional
+        // lantern halo on desktop. The simulation still owns all collisions,
+        // chase events and actual claim/miss outcomes.
+        const lanternOffer = !touch && state.levelId === 'night-patrol'
+          ? state.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available')
+          : null;
+        // Enter the alternate route while the ring is still approaching:
+        // a 240-world-unit late switch can be skipped by a real browser poll.
+        if (lanternOffer && state.player.x > lanternOffer.x - 900
+          && state.player.x < lanternOffer.x - 250) wantHold = true;
         await edge(wantHold, state.tick);
         if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
         if (state.vehicleId) {
@@ -129,7 +167,28 @@ try {
         }
         if (!reserveForSeam && state.vehicleId && !capturedRides.has(state.vehicleId)
           && shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
-        const complete = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4 && capturedRides.size === 4;
+        if (!reserveForSeam && state.lastVehicleOffer?.kind === 'missed'
+          && !capturedMisses.has(state.lastVehicleOffer.id)
+          && shot(`missed-${rides.indexOf(state.lastVehicleOffer.id) + 1}`, state)) capturedMisses.add(state.lastVehicleOffer.id);
+        // Two *different* real-input journeys are intentional: phone proves
+        // all four rides are obtainable and playable; desktop must also show
+        // that visibly dodging the halo has a genuine missed outcome.
+        // Requiring every path to auto-grant all pickups would be an invalid
+        // test that pressures Builder to reintroduce invisible grab boxes.
+        const playedAll = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; });
+        const claimedRidesStayedPlayable = [...naturalClaims].every(name => {
+          const visit = seen.get(name);
+          return visit && visit.lastTick - visit.firstTick >= 120;
+        });
+        const resolvedAll = rides.every(name => naturalClaims.has(name) || naturalMisses.has(name));
+        // A desktop journey that collects the final ride must continue to
+        // operate it for one simulated second before pause. Otherwise the
+        // runner itself shortens the ride, then falsely blames the game.
+        const complete = seams.size === 4 && (touch
+          ? playedAll && capturedRides.size === 4
+          : resolvedAll && claimedRidesStayedPlayable
+            && [...naturalClaims].every(name => capturedRides.has(name))
+            && [...naturalMisses].every(name => capturedMisses.has(name)));
         // Keep controlling the flight while moving to pause. Releasing a bird
         // during its dive and waiting through CDP reads intentionally loses.
         if (complete && held && state.player.y < 550 && state.player.vy < -80) {
@@ -140,15 +199,51 @@ try {
       }
       lifecycle.journey = await readState();
       await edge(false, (await readState()).tick);
+      // A *real* officer capture in a separate desktop path is valuable QA,
+      // not an unexpected interruption to be force-clicked through. The phone
+      // journey still must experience all four rides and the complete economy
+      // loop; desktop may instead prove an attributable caught/restart path.
+      if (!touch && (await readState()).status === 'failed') {
+        const captured = await readState();
+        assert.equal(captured.failureReason, 'caught', 'unexpected physical fall cannot stand in for an officer capture');
+        assert.ok(tutorialCompleted, 'caught journey must have naturally passed tutorial');
+        assert.ok(seams.size === 4, 'caught journey must still traverse all four test joins');
+        assert.ok(naturalClaims.size >= 2, 'caught journey must demonstrate genuine ride pickup before capture');
+        assert.ok(naturalMisses.has('灯笼群'), 'desktop route must actually bypass the lantern through ordinary input');
+        assert.equal(seen.has('灯笼群'), false, 'bypassed lantern must not be equipped');
+        assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'guard attack must give warning');
+        await screenshotJob;
+        await page.screenshot({ path: `${out}/${label}-natural-officer-capture.png` });
+        await page.locator('[data-action="restart"]').click();
+        await page.waitForFunction(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState().status === 'playing');
+        const restarted = await readState();
+        assert.equal(restarted.reviveUsed, false);
+        lifecycle.officerCatch = { status: captured.status, reason: captured.failureReason, caughtAtTick: captured.tick, restartedAtTick: restarted.tick };
+        assert.deepEqual(errors, []);
+        continue;
+      }
       if ((await readState()).status === 'playing' && !(await readState()).paused) await page.locator('.hub-settings').click();
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
       for (const ride of rides) {
-        assert.ok(seen.has(ride), `ordinary journey never reached ${ride}`);
-        assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120, `${ride} must remain observable for at least one simulated second`);
+        assert.ok(naturalClaims.has(ride) || naturalMisses.has(ride), `ordinary journey never resolved world pickup ${ride}`);
+        assert.equal(naturalClaims.has(ride) && naturalMisses.has(ride), false, `ride ${ride} cannot be both claimed and missed`);
+        if (naturalClaims.has(ride)) {
+          assert.ok(seen.has(ride), `claimed ride ${ride} did not activate`);
+          assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120, `${ride} must be controllable for at least a simulated second`);
+          assert.ok(capturedRides.has(ride), `claimed ${ride} has no natural screenshot`);
+        } else assert.equal(seen.has(ride), false, `missed ride ${ride} must never become inventory`);
       }
       assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
-      assert.equal(capturedRides.size, 4, 'all four rides must also have actual screenshots');
+      if (touch) {
+        assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'mobile route must actually acquire all four rides by natural contact');
+        assert.equal(capturedRides.size, 4, 'every mobile ride requires actual screenshots');
+      } else {
+        assert.ok(naturalMisses.has('灯笼群'), 'desktop player should be able to deliberately miss the optional lantern halo');
+        assert.equal(seen.has('灯笼群'), false, 'missed lantern must not secretly equip a vehicle');
+        for (const missed of naturalMisses) assert.ok(capturedMisses.has(missed), `missed ${missed} needs natural screenshot`);
+      }
+      assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
       const paused = await readState();
       await page.waitForTimeout(350);
@@ -227,10 +322,18 @@ try {
     } finally {
       await screenshotJob;
       await page.screenshot({ path: `${out}/${label}-final.png` }).catch(() => undefined);
-      reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
-        seen: Object.fromEntries(seen), seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final: await readState().catch(() => null) });
-      await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; no state mutation APIs', failures, reports }, null, 2));
+      const final = await readState().catch(() => null);
       await context.close();
+      const videoPath = `${out}/${label}-journey.webm`;
+      await page.video()?.saveAs(videoPath);
+      const videoBytes = await readFile(videoPath);
+      assert.ok(videoBytes.length > 65_536, `natural journey video empty for ${label}`);
+      const videoHash = createHash('sha256').update(videoBytes).digest('hex');
+      reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
+        seen: Object.fromEntries(seen), naturalClaims: [...naturalClaims], naturalMisses: [...naturalMisses], pursuitPhases: [...pursuitPhases], chaseTimeline,
+        seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final,
+        continuousVideo: { path: `${label}-journey.webm`, sha256: videoHash, bytes: videoBytes.length } });
+      await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; continuous video; no state mutation APIs', failures, reports }, null, 2));
     }
   }
 } finally { await browser.close(); }

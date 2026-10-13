@@ -1,5 +1,5 @@
 import { ExperienceHud } from './experience-hud.ts';
-import { drawRide, drawConditions } from './ride-renderer.ts';
+import { drawRide, drawVehicleOffers, drawConditions } from './ride-renderer.ts';
 import { nextCheckpointX } from './experience-director.ts';
 import { applyFlightIdentity, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
@@ -40,7 +40,7 @@ import {
 } from './runtime-session';
 import { CHARACTERS } from './progression';
 import { speedFeelProfile, settlementCoins } from './endless';
-import { createCameraLayout, projectCamera, LOGICAL_VIEWPORT } from './camera-layout';
+import { createCameraLayout, projectCamera, comfortCameraStep, LOGICAL_VIEWPORT } from './camera-layout';
 import { createNightCityRenderer, createNightCityRenderPlan, mapWorldAnchorToArchitecturalSocket, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
 import './style.css';
 import './experience.css';
@@ -748,7 +748,7 @@ function renderProductUi(state: GrappleState): void {
   chaseDistance.textContent = `${Math.round(state.chase.distance)} 步`;
   pursuerDistance.textContent = `${Math.round(state.pursuer.distance)} 步`;
   const guardOnScreen = app.dataset.guardOnScreen === 'true';
-  const chaseVisible = state.chase.phase === 'danger' || state.chase.phase === 'climax';
+  const chaseVisible = state.levelId === 'night-patrol' || state.chase.phase !== 'safe';
   const edgeVisible = state.pursuer.visible && chaseVisible && !guardOnScreen;
   pursuerPresence.dataset.visible = String(state.pursuer.visible && chaseVisible && !guardOnScreen);
   // `hidden` is the authoritative DOM visibility switch. Keep the data
@@ -910,6 +910,7 @@ class FlightScene extends Phaser.Scene {
   private pursuerSprite!: Phaser.GameObjects.Image;
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
   private cameraScrollX = 0;
+  private cameraHasInitialized = false;
   private lastRenderedTick = 0;
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
@@ -979,14 +980,18 @@ class FlightScene extends Phaser.Scene {
     const worldViewportHeight = projection.worldViewportHeight;
     this.cameras.main.setZoom(projection.zoom);
     const cameraTargetX = projection.scrollX;
-    if (state.tick < this.lastRenderedTick
-      || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 0.7
-      || Math.abs(cameraTargetX - this.cameraScrollX) > worldViewportWidth * 0.7) this.cameraScrollX = projection.scrollX;
+    const elapsedCameraSeconds = Math.max(0, (state.tick - this.lastRenderedTick) / 120);
+    const genuineRestart = state.tick < this.lastRenderedTick
+      || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 1.25;
+    if (!this.cameraHasInitialized || genuineRestart) {
+      this.cameraScrollX = cameraTargetX;
+      this.cameraHasInitialized = true;
+    } else if (elapsedCameraSeconds > 0) {
+      this.cameraScrollX = comfortCameraStep(this.cameraScrollX, cameraTargetX, elapsedCameraSeconds);
+    }
     this.lastRenderedTick = state.tick;
     this.lastRenderedPlayerX = state.player.x;
-    // A short reverse swing must not pull the market backward.  Reset only on
-    // an actual run restart/teleport; normal camera movement is forward-only.
-    this.cameraScrollX = Math.max(this.cameraScrollX, projection.scrollX);
+    // Ease backward during a real backswing; never rewind physical state.
     const maxScrollX = Math.max(0, worldRight - worldViewportWidth);
     this.cameraScrollX = Math.min(this.cameraScrollX, maxScrollX);
     this.cameras.main.scrollX = this.cameraScrollX;
@@ -1033,6 +1038,23 @@ class FlightScene extends Phaser.Scene {
     // approved image stream is the only scene owner; this pass is reserved for
     // live gameplay feedback that must remain visible while jumping.
     this.drawStrictReferencePursuer(graphics, state);
+    if (state.levelId === 'night-patrol' && state.chase.phase !== 'safe') {
+      // A visible, fixed-reach capture net. Its upper limit corresponds to
+      // the simulation's 310-world-unit vertical guard reach; it does not
+      // magically stretch to whichever altitude the player happens to fly.
+      const guardX = state.pursuer.x;
+      const guardY = state.pursuer.y - 26;
+      const upperY = state.pursuer.runLaneY - 310;
+      const warnX = guardX + Math.min(190, Math.max(60, state.chase.distance - 20));
+      graphics.lineStyle(4, 0xe89a78, 0.18 + state.chase.pressure * 0.26)
+        .lineBetween(guardX, guardY, warnX, upperY);
+      graphics.lineStyle(2, 0xffd2a3, 0.72).lineBetween(guardX, guardY, warnX, upperY);
+      graphics.lineStyle(3, 0xefaa79, 0.70).strokeEllipse(warnX, upperY + 24, 94, 64);
+      graphics.lineStyle(1, 0xffd2a3, 0.36)
+        .lineBetween(warnX - 33, upperY + 4, warnX + 35, upperY + 43);
+      graphics.lineStyle(1, 0xffd2a3, 0.36)
+        .lineBetween(warnX - 33, upperY + 43, warnX + 35, upperY + 4);
+    }
     this.drawChaseObstacle(graphics, state);
     this.drawActivePickups(graphics, state, this.cameras.main.scrollX, worldViewportWidth);
     this.drawTutorialAffordance(graphics, state);
@@ -1063,6 +1085,7 @@ class FlightScene extends Phaser.Scene {
         graphics.lineStyle(state.comboTier >= 3 ? 3 : 2, ropeColor, 0.94).lineBetween(anchor.x, anchor.y, state.player.x, state.player.y);
       }
     }
+    drawVehicleOffers(graphics, state);
     drawRide(graphics, state);
     this.drawStrictReferenceProtagonist(graphics, state.player.x, state.player.y, Math.atan2(state.player.vy, state.player.vx));
     graphics.lineStyle(2, 0xd76572, 0.18).lineBetween(this.cameras.main.scrollX, state.failY, this.cameras.main.scrollX + worldViewportWidth, state.failY);
