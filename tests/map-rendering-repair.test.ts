@@ -122,6 +122,27 @@ test('seam-matched mirrored panels replace the old random crop variation and kee
   }
 });
 
+test('renderer world height and anchor socket Y match the actual plate display transform', () => {
+  for (const cameraX of [0, 6_400, 8_000, 14_400]) {
+    const plan = createNightCityRenderPlan(32, cameraX, cameraX + 1_600);
+    const { scene, calls } = makeScene();
+    createNightCityRenderer({ prefetchChunks: 0, maxRetainedChunks: 8 })
+      .render(scene, 32, cameraX, cameraX + 1_600);
+    for (const chunk of plan.chunks) {
+      const expectedHeight = chunk.cropRect.height * chunk.sourceScaleY;
+      assert.ok(Math.abs(chunk.drawHeight - expectedHeight) < 0.001,
+        `world-height/anchor mismatch for ${chunk.assetKey}`);
+      assert.ok(Math.abs(chunk.sourceScaleY - chunk.sourceScale) < 0.0001,
+        `PNG must be rendered with isotropic source pixels: ${chunk.assetKey}`);
+      const display = calls.find(call => call.key === chunk.assetKey
+        && Math.abs(call.width - chunk.drawWidth) < 0.001);
+      assert.ok(display, `no rendered plate for ${chunk.assetKey}`);
+      assert.ok(Math.abs(display.height - chunk.drawHeight) < 0.001,
+        `source pixel socket Y must agree with actual displayed height: ${chunk.assetKey}`);
+    }
+  }
+});
+
 test('adjacent ordinary districts have exactly matching edge pixels by construction', () => {
   for (const first of [0, 1, 2, 5, 6, 7, 10, 11, 12, 15, 16, 17]) {
     const plan = createNightCityRenderPlan(31, first * 1600, (first + 2) * 1600);
