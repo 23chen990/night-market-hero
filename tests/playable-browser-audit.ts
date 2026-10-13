@@ -36,6 +36,8 @@ try {
     const naturalClaims = new Set<string>();
     const naturalMisses = new Set<string>();
     const pursuitPhases = new Set<string>();
+    const chaseTimeline: Array<{ tick: number; phase: string; pressure: number; distance: number; inputTransitions: number; reviveCount: number; playerY: number }> = [];
+    let lastChasePhase: string | null = null;
     const seams = new Set<number>();
     let screenshotJob: Promise<unknown> | null = null;
     let captureBusy = false;
@@ -82,6 +84,12 @@ try {
           pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky });
         if (state.levelId === 'night-patrol') {
           pursuitPhases.add(state.chase.phase);
+          if (state.chase.phase !== lastChasePhase) {
+            chaseTimeline.push({ tick: state.tick, phase: state.chase.phase,
+              pressure: state.chase.pressure, distance: state.chase.distance,
+              inputTransitions: state.inputTransitions, reviveCount, playerY: state.player.y });
+            lastChasePhase = state.chase.phase;
+          }
           if (state.lastVehicleOffer?.kind === 'claimed') naturalClaims.add(state.lastVehicleOffer.id);
           if (state.lastVehicleOffer?.kind === 'missed') naturalMisses.add(state.lastVehicleOffer.id);
         }
@@ -89,6 +97,17 @@ try {
           await edge(false, state.tick);
           await screenshotJob;
           await page.screenshot({ path: `${out}/${label}-terminal-${reviveCount}.png` });
+          if (state.levelId === 'night-patrol' && state.status === 'failed') {
+            const actualFailures = lifecycle.naturalFailures as Array<Record<string, unknown>> | undefined;
+            const recorded = { tick: state.tick, reason: state.failureReason,
+              guardDistance: state.chase.distance, guardPhase: state.chase.phase,
+              playerX: state.player.x, playerY: state.player.y,
+              guardX: state.pursuer.x, netUpperY: state.pursuer.runLaneY - 310,
+              inputTransitions: state.inputTransitions, reviveCount,
+              screenshot: `${label}-terminal-${reviveCount}.png` };
+            if (actualFailures) actualFailures.push(recorded);
+            else lifecycle.naturalFailures = [recorded];
+          }
           if (state.status === 'won' && state.levelId !== 'night-patrol') {
             tutorialCompleted = true;
             await page.locator('[data-action="continue"]').click();
@@ -300,7 +319,7 @@ try {
       assert.ok(videoBytes.length > 65_536, `natural journey video empty for ${label}`);
       const videoHash = createHash('sha256').update(videoBytes).digest('hex');
       reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
-        seen: Object.fromEntries(seen), naturalClaims: [...naturalClaims], naturalMisses: [...naturalMisses], pursuitPhases: [...pursuitPhases],
+        seen: Object.fromEntries(seen), naturalClaims: [...naturalClaims], naturalMisses: [...naturalMisses], pursuitPhases: [...pursuitPhases], chaseTimeline,
         seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final,
         continuousVideo: { path: `${label}-journey.webm`, sha256: videoHash, bytes: videoBytes.length } });
       await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; continuous video; no state mutation APIs', failures, reports }, null, 2));
