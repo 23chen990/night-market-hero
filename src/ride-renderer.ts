@@ -70,11 +70,13 @@ export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: Grapple
     const x = offer.x, y = offer.y;
     const theme = offer.id === '青鸾' ? 0x79e6ce : offer.id === '纸鸢' ? 0xf5d27e
       : offer.id === '灯笼群' ? 0xffaa7c : 0xf1cf91;
-    g.fillStyle(theme, 0.04 + pulse * 0.04).fillEllipse(x, y, 170, 460);
-    g.lineStyle(12, theme, 0.12).strokeEllipse(x, y, 160, 455);
-    g.lineStyle(5, theme, 0.65 + pulse * 0.30).strokeEllipse(x, y, 132, 432);
-    g.lineStyle(2, 0xfff4ce, 0.85).strokeEllipse(x, y, 100, 380);
-    g.lineStyle(4, 0x9a8065, 0.70).lineBetween(x, y + 230, x, 772);
+    // Draw the actual collision footprint: 200 wide by 360 high in world
+    // space, with a solid focal point and clear outline on dark scenery.
+    g.fillStyle(theme, 0.11 + pulse * 0.07).fillEllipse(x, y, 200, 360);
+    g.lineStyle(12, theme, 0.20).strokeEllipse(x, y, 200, 360);
+    g.lineStyle(5, theme, 0.76 + pulse * 0.20).strokeEllipse(x, y, 195, 355);
+    g.lineStyle(2, 0xfff4ce, 0.94).strokeEllipse(x, y, 174, 330);
+    g.lineStyle(3, 0x9a8065, 0.65).lineBetween(x, y + 180, x, 772);
     g.fillStyle(theme, 0.90).fillCircle(x, y, 15 + pulse * 4);
     g.fillStyle(0xfff6dc, 0.85).fillCircle(x, y, 7);
   }
