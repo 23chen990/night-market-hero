@@ -150,8 +150,8 @@ try {
         const resolvedAll = rides.every(name => naturalClaims.has(name) || naturalMisses.has(name));
         const complete = seams.size === 4 && (touch
           ? playedAll && capturedRides.size === 4
-          : resolvedAll && naturalMisses.size > 0 && capturedMisses.size > 0
-            && [...naturalClaims].every(name => capturedRides.has(name)));
+          : resolvedAll && [...naturalClaims].every(name => capturedRides.has(name))
+            && [...naturalMisses].every(name => capturedMisses.has(name)));
         // Keep controlling the flight while moving to pause. Releasing a bird
         // during its dive and waiting through CDP reads intentionally loses.
         if (complete && held && state.player.y < 550 && state.player.vy < -80) {
@@ -179,7 +179,10 @@ try {
         assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'mobile route must actually acquire all four rides by natural contact');
         assert.equal(capturedRides.size, 4, 'every mobile ride requires actual screenshots');
       } else {
-        assert.ok(naturalMisses.size > 0 && capturedMisses.size > 0, 'desktop route must naturally miss an optional pickup and screenshot that fact');
+        // The player is free to collect everything; do not force a miss.
+        // If a natural miss occurs, however, it must be documented by a
+        // screenshot and must never become an unseen inventory grant.
+        for (const missed of naturalMisses) assert.ok(capturedMisses.has(missed), `missed ${missed} needs natural screenshot`);
       }
       assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
