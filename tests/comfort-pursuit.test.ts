@@ -43,7 +43,15 @@ test('guided catch-immune bird cannot permanently freeze officers', () => {
   const entered = game.advanceTicks(1);
   const offer = entered.vehicleOffers.find(item => item.id === '青鸾' && item.status === 'available');
   assert.ok(offer);
-  game.setPlayerForTest({ x: offer.x - 20, y: offer.y, vx: 480, vy: 0 });
+  // Scoped chase immunity fixture, never used to prove acquisition.
+  const forced = game.getState();
+  forced.vehicleId = '青鸾';
+  forced.vehicleTicksRemaining = 600;
+  forced.vehiclePhase = 'idle';
+  forced.player.x = offer.x - 20;
+  forced.player.y = offer.y;
+  forced.player.vx = 480;
+  assert.equal(game.restoreSnapshot(forced), true);
   const mounted = game.advanceTicks(1);
   assert.equal(mounted.vehicleId, '青鸾');
   const guardX = mounted.pursuer.x;

@@ -41,7 +41,12 @@ test('endless state exposes live pickup entities and vehicle hold/release phase'
   game.advanceTicks(1);
   game.setPlayerForTest({ x: 3300, y: 470, vx: 620, vy: 0 });
   game.advanceTicks(1);
-  assert.ok((game.getState() as any).vehicleId, 'segment 2 should grant a vehicle for seed 11');
+  assert.equal((game.getState() as any).vehicleId, null, 'segment entry is an opportunity, not automatic reward');
+  const fixture = game.getState();
+  fixture.vehicleId = '纸鸢';
+  fixture.vehicleTicksRemaining = 6 * 120;
+  fixture.vehiclePhase = 'idle';
+  assert.equal(game.restoreSnapshot(fixture), true);
   game.act('press');
   assert.equal((game.getState() as any).vehiclePhase, 'holding');
   game.act('release');

@@ -112,12 +112,12 @@ test('无尽夜巡分段奖励按首次进入记录，回退和存档恢复不�
   const backtracked = at(1);
   assert.equal(backtracked.gatesPassed, firstSegmentTwo.gatesPassed);
   assert.equal(backtracked.activePickups.filter((pickup) => pickup.segment === 2).length, segmentTwoPickups);
-  assert.equal(backtracked.vehicleTicksRemaining, firstVehicleTicks - 1);
+  assert.equal(backtracked.vehicleTicksRemaining, Math.max(0, firstVehicleTicks - 1));
 
   const reentered = at(2);
   assert.equal(reentered.gatesPassed, firstSegmentTwo.gatesPassed);
   assert.equal(reentered.activePickups.filter((pickup) => pickup.segment === 2).length, segmentTwoPickups);
-  assert.equal(reentered.vehicleTicksRemaining, firstVehicleTicks - 2);
+  assert.equal(reentered.vehicleTicksRemaining, Math.max(0, firstVehicleTicks - 2));
 
   const restoredGame = createGrappleGame(11);
   assert.equal(restoredGame.restoreSnapshot(snapshot), true);
@@ -127,7 +127,7 @@ test('无尽夜巡分段奖励按首次进入记录，回退和存档恢复不�
   const restoredReentry = restoredGame.advanceTicks(1);
   assert.equal(restoredReentry.gatesPassed, snapshot.gatesPassed);
   assert.equal(restoredReentry.activePickups.filter((pickup) => pickup.segment === 2).length, segmentTwoPickups);
-  assert.equal(restoredReentry.vehicleTicksRemaining, restoredBacktrack.vehicleTicksRemaining - 1);
+  assert.equal(restoredReentry.vehicleTicksRemaining, Math.max(0, restoredBacktrack.vehicleTicksRemaining - 1));
   assert.deepEqual(restoredReentry.visitedSegments, snapshot.visitedSegments);
 
   const legacySnapshot = game.getState() as any;
