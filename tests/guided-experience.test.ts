@@ -16,7 +16,7 @@ function collectOffer(game: ReturnType<typeof patrol>, segment: number) {
   const state = enter(game, segment);
   const offer = state.vehicleOffers.find(item => item.segment === segment);
   assert.ok(offer, `segment ${segment} must spawn a visible world pickup`);
-  game.setPlayerForTest({ x: offer.x - 97, y: offer.y, vx: 485, vy: 0 });
+  game.setPlayerForTest({ x: offer.x - 125, y: offer.y, vx: 485, vy: 0 });
   const before = game.advanceTicks(1);
   assert.equal(before.vehicleId, state.vehicleId, 'approach alone cannot mount a new ride');
   game.setPlayerForTest({ x: offer.x - 28, y: offer.y, vx: 485, vy: 0 });
@@ -54,6 +54,30 @@ test('a checkpoint is earned at its visible midpoint, never just at segment entr
     assert.ok(nextCheckpointX(x) > x);
   }
 });
+test('visible ride halo does not collect from the rectangular corner or outside its vertical reach', () => {
+  const game = patrol();
+  const state = enter(game, 2);
+  const halo = state.vehicleOffers.find(item => item.segment === 2)!;
+  // At x+75, y+170 we are inside the old axis-aligned trigger but outside
+  // the drawn ellipse. No ride is awarded until the trajectory meets it.
+  game.setPlayerForTest({ x: halo.x - 76, y: halo.y + 170, vx: 0, vy: 0 });
+  let snapshot = game.advanceTicks(1);
+  assert.equal(snapshot.vehicleId, null);
+  assert.equal(snapshot.vehicleOffers.find(item => item.segment === 2)?.status, 'available');
+  game.setPlayerForTest({ x: halo.x - 48, y: halo.y + 32, vx: 260, vy: 0 });
+  snapshot = game.advanceTicks(1);
+  assert.equal(snapshot.vehicleId, '货运滑索');
+  assert.equal(snapshot.lastVehicleOffer?.kind, 'claimed');
+});
+
+test('ride offer is fixed in world space after segment entry and cannot follow the rider', () => {
+  const game = patrol();
+  const first = enter(game, 2).vehicleOffers.find(item => item.segment === 2)!;
+  game.setPlayerForTest({ x: first.x - 400, y: 240, vx: 180, vy: 0 });
+  const second = game.advanceTicks(1).vehicleOffers.find(item => item.segment === 2)!;
+  assert.deepEqual({ x: second.x, y: second.y }, { x: first.x, y: first.y });
+});
+
 test('mounted vehicles release the old physical grapple immediately', () => {
   const game = patrol(); game.act('press'); assert.ok(game.getState().attachedAnchorId);
   const entry = enter(game, 2);
