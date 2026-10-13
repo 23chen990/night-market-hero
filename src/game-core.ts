@@ -1590,9 +1590,13 @@ export class GrappleGame {
     }
     if (!id || this.state.vehicleOffers.some(offer => offer.segment === segment)) return;
     const x = segmentStartPx(segment) + Math.min(740, segmentLengthPx(segment) * 0.4);
+    // Place the encounter in the approach lane seen at segment entry, not at
+    // an unrelated fixed altitude. The ring then remains a stable world object
+    // for the entire approach; it never follows or teleports to the rider.
+    const approachY = Math.max(225, Math.min(700,
+      this.state.player.y + Math.max(-90, Math.min(90, this.state.player.vy * 0.12))));
     this.state.vehicleOffers.push({
-      id, segment, x,
-      y: id === '青鸾' ? 535 : id === '灯笼群' ? 485 : id === '纸鸢' ? 440 : 490,
+      id, segment, x, y: id === '青鸾' ? Math.max(590, Math.min(690, approachY + 180)) : approachY,
       status: 'available',
     });
     this.state.vehicleOffers = this.state.vehicleOffers.filter(offer => offer.segment >= segment - 2).slice(-4);
@@ -1603,12 +1607,21 @@ export class GrappleGame {
     const player = this.state.player;
     for (const offer of this.state.vehicleOffers) {
       if (offer.status !== 'available') continue;
-      // Swept contact: fast travel must never tunnel through a visible ring.
-      const intersectsX = Math.max(previousPlayer.x, player.x) >= offer.x - 85
-        && Math.min(previousPlayer.x, player.x) <= offer.x + 85;
-      const intersectsY = Math.min(Math.abs(previousPlayer.y - offer.y), Math.abs(player.y - offer.y)) <= 235
-        || (Math.min(previousPlayer.y, player.y) <= offer.y && Math.max(previousPlayer.y, player.y) >= offer.y);
-      if (intersectsX && intersectsY) {
+      // Swept *elliptical* collision matches the visible luminous halo. The
+      // former 170x470 rectangle granted rides outside the drawn outline.
+      // Project the movement segment into unit-ellipse space, then check its
+      // nearest point; this also prevents high-speed tunnel-through.
+      const sx = (previousPlayer.x - offer.x) / 100;
+      const sy = (previousPlayer.y - offer.y) / 180;
+      const dx = (player.x - previousPlayer.x) / 100;
+      const dy = (player.y - previousPlayer.y) / 180;
+      const lengthSquared = dx * dx + dy * dy;
+      const fraction = lengthSquared > 1e-8
+        ? Math.max(0, Math.min(1, -(sx * dx + sy * dy) / lengthSquared)) : 0;
+      const px = sx + dx * fraction;
+      const py = sy + dy * fraction;
+      const touchesHalo = px * px + py * py <= 1;
+      if (touchesHalo) {
         offer.status = 'claimed';
         this.state.lastVehicleOffer = { id: offer.id, kind: 'claimed', tick: this.state.tick };
         if (this.state.vehicleId && this.state.vehicleTicksRemaining > 0) {
