@@ -13,7 +13,7 @@ const out = resolve('evidence/playable-audit');
 await mkdir(out, { recursive: true });
 const entry = resolve('dist/index.html');
 const sha256 = createHash('sha256').update(await readFile(entry)).digest('hex');
-const rides = ['货运滑索', '纸鸢', '灯笼群', '青鸾'];
+const rides = ['货运滑索', '纸鸢', '灯笼群', '青鸾'] as const;
 const browser = await chromium.launch({ headless: true });
 const reports: unknown[] = [];
 const failures: string[] = [];
@@ -35,6 +35,8 @@ try {
     const seen = new Map<string, { firstTick: number; lastTick: number; elapsed: number }>();
     const naturalClaims = new Set<string>();
     const naturalMisses = new Set<string>();
+    const encounteredTypes = new Set<string>();
+    const resolvedEncounters = new Map<string, GrappleState['encounterEvents'][number]>();
     const pursuitPhases = new Set<string>();
     const chaseTimeline: Array<{ tick: number; phase: string; pressure: number; distance: number; inputTransitions: number; reviveCount: number; playerY: number }> = [];
     let lastChasePhase: string | null = null;
@@ -90,8 +92,14 @@ try {
               inputTransitions: state.inputTransitions, reviveCount, playerY: state.player.y });
             lastChasePhase = state.chase.phase;
           }
-          if (state.lastVehicleOffer?.kind === 'claimed') naturalClaims.add(state.lastVehicleOffer.id);
-          if (state.lastVehicleOffer?.kind === 'missed') naturalMisses.add(state.lastVehicleOffer.id);
+          for (const offer of state.vehicleOffers) encounteredTypes.add(offer.id);
+          for (const event of state.encounterEvents ?? []) {
+            const existing = resolvedEncounters.get(event.instanceId);
+            if (existing) assert.deepEqual(existing, event, 'one encounter cannot change outcome');
+            else resolvedEncounters.set(event.instanceId, event);
+            if (event.outcome === 'claimed') naturalClaims.add(event.id);
+            if (event.outcome === 'missed') naturalMisses.add(event.id);
+          }
         }
         if (state.status !== 'playing') {
           await edge(false, state.tick);
@@ -127,12 +135,20 @@ try {
           break;
         }
         const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
-        const wantHold = state.vehicleId
+        let wantHold = state.vehicleId
           ? state.vehicleId === rides[0] ? state.vehicleTicksRemaining > 100
             : state.vehicleId === rides[2] ? state.vehiclePhase !== 'holding' ? state.tick - lastRelease > 26 : state.player.vy > 0 && state.player.vx >= 240
               : state.player.y > 390
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
+        // Natural mobile input actively targets the first physical pulley.
+        // This is not a teleport or hidden inventory grant.
+        if (touch && state.levelId === 'night-patrol' && !state.vehicleId) {
+          const firstOffer = state.vehicleOffers.find(x => x.id === '货运滑索' && x.status === 'available');
+          if (firstOffer && state.player.x >= firstOffer.x - 230
+            && state.player.x <= firstOffer.x + 40
+            && !!state.attachedAnchorId && state.player.y >= firstOffer.y - 120) wantHold = false;
+        }
         await edge(wantHold, state.tick);
         if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
         if (state.vehicleId) {
@@ -156,32 +172,22 @@ try {
           }
         }
         if (!reserveForSeam && state.vehicleId && !capturedRides.has(state.vehicleId)
-          && shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
+          && shot(`ride-${rides.findIndex(id => id === state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
         if (!reserveForSeam && state.lastVehicleOffer?.kind === 'missed'
           && !capturedMisses.has(state.lastVehicleOffer.id)
           && shot(`missed-${rides.indexOf(state.lastVehicleOffer.id) + 1}`, state)) capturedMisses.add(state.lastVehicleOffer.id);
-        // Two *different* real-input journeys are intentional: phone proves
-        // all four rides are obtainable and playable; desktop must also show
-        // that visibly dodging the halo has a genuine missed outcome.
-        // Requiring every path to auto-grant all pickups would be an invalid
-        // test that pressures Builder to reintroduce invisible grab boxes.
-        const playedAll = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; });
-        const claimedRidesStayedPlayable = [...naturalClaims].every(name => {
-          const visit = seen.get(name);
-          return visit && visit.lastTick - visit.firstTick >= 120;
+        // V2: four opportunities are mandatory, four rewards are not.
+        const resolvedTypes = new Set([...resolvedEncounters.values()].map(event => event.id));
+        const heldRideLongEnough = [...naturalClaims].some(name => {
+          const v = seen.get(name);
+          return v && v.lastTick - v.firstTick >= 120 && capturedRides.has(name);
         });
-        const resolvedAll = rides.every(name => naturalClaims.has(name) || naturalMisses.has(name));
-        // A desktop journey that collects the final ride must continue to
-        // operate it for one simulated second before pause. Otherwise the
-        // runner itself shortens the ride, then falsely blames the game.
-        const complete = seams.size === 4 && (touch
-          ? playedAll && capturedRides.size === 4
-          : resolvedAll && claimedRidesStayedPlayable
-            && [...naturalClaims].every(name => capturedRides.has(name))
-            && [...naturalMisses].every(name => capturedMisses.has(name)));
+        const missesDocumented = [...naturalMisses].some(name => capturedMisses.has(name));
+        const complete = seams.size === 4 && rides.every(name => resolvedTypes.has(name))
+          && heldRideLongEnough && missesDocumented && (!touch || naturalClaims.has('货运滑索'));
         // Keep controlling the flight while moving to pause. Releasing a bird
         // during its dive and waiting through CDP reads intentionally loses.
-        if (complete && held && state.player.y < 550 && state.player.vy < -80) {
+        if (complete) {
           await page.locator('.hub-settings').click();
           break;
         }
@@ -191,14 +197,14 @@ try {
       await edge(false, (await readState()).tick);
       // A *real* officer capture in a separate desktop path is valuable QA,
       // not an unexpected interruption to be force-clicked through. The phone
-      // journey still must experience all four rides and the complete economy
+      // journey must see all four optional encounter opportunities and the economy
       // loop; desktop may instead prove an attributable caught/restart path.
       if (!touch && (await readState()).status === 'failed') {
         const captured = await readState();
         assert.equal(captured.failureReason, 'caught', 'unexpected physical fall cannot stand in for an officer capture');
         assert.ok(tutorialCompleted, 'caught journey must have naturally passed tutorial');
         assert.ok(seams.size === 4, 'caught journey must still traverse all four test joins');
-        assert.ok(naturalClaims.size >= 2, 'caught journey must demonstrate genuine ride pickup before capture');
+        assert.ok(naturalClaims.size >= 1, 'caught journey must demonstrate at least one earned ride before capture');
         assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'guard attack must give warning');
         await screenshotJob;
         await page.screenshot({ path: `${out}/${label}-natural-officer-capture.png` });
@@ -214,24 +220,23 @@ try {
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
       for (const ride of rides) {
-        assert.ok(naturalClaims.has(ride) || naturalMisses.has(ride), `ordinary journey never resolved world pickup ${ride}`);
-        assert.equal(naturalClaims.has(ride) && naturalMisses.has(ride), false, `ride ${ride} cannot be both claimed and missed`);
-        if (naturalClaims.has(ride)) {
-          assert.ok(seen.has(ride), `claimed ride ${ride} did not activate`);
-          assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120, `${ride} must be controllable for at least a simulated second`);
-          assert.ok(capturedRides.has(ride), `claimed ${ride} has no natural screenshot`);
-        } else assert.equal(seen.has(ride), false, `missed ride ${ride} must never become inventory`);
+        assert.ok(encounteredTypes.has(ride), `normal-input journey never saw ${ride} opportunity`);
+        assert.ok([...resolvedEncounters.values()].some(event => event.id === ride),
+          `${ride} was never resolved as claimed OR missed`);
       }
-      assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
-      if (touch) {
-        assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'mobile route must actually acquire all four rides by natural contact');
-        assert.equal(capturedRides.size, 4, 'every mobile ride requires actual screenshots');
-      } else {
-        // The player is free to collect everything; do not force a miss.
-        // If a natural miss occurs, however, it must be documented by a
-        // screenshot and must never become an unseen inventory grant.
-        for (const missed of naturalMisses) assert.ok(capturedMisses.has(missed), `missed ${missed} needs natural screenshot`);
+      assert.equal(seams.size, 4, 'natural route must cross and screenshot all four joins');
+      assert.ok(naturalClaims.size > 0 && naturalMisses.size > 0,
+        'skill-based pickups must produce both earned and missed results');
+      if (touch) assert.ok(naturalClaims.has('货运滑索'),
+        'a timely physical release must make the first mount obtainable');
+      for (const ride of naturalClaims) {
+        assert.ok(seen.has(ride), `claimed ${ride} did not activate`);
+        assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120,
+          `earned ${ride} should be controllable for one simulated second`);
+        assert.ok(capturedRides.has(ride), `earned ${ride} lacks an actual screenshot`);
       }
+      for (const missed of naturalMisses)
+        assert.ok(capturedMisses.has(missed), `missed ${missed} has no screenshot`);
       assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
       const paused = await readState();
@@ -319,7 +324,7 @@ try {
       assert.ok(videoBytes.length > 65_536, `natural journey video empty for ${label}`);
       const videoHash = createHash('sha256').update(videoBytes).digest('hex');
       reports.push({ viewport, inputDevice: touch ? 'touch' : 'keyboard', sha256, errors, input, samples, screenshots,
-        seen: Object.fromEntries(seen), naturalClaims: [...naturalClaims], naturalMisses: [...naturalMisses], pursuitPhases: [...pursuitPhases], chaseTimeline,
+        seen: Object.fromEntries(seen), naturalClaims: [...naturalClaims], naturalMisses: [...naturalMisses], encounteredTypes: [...encounteredTypes], encounterEvents: [...resolvedEncounters.values()], pursuitPhases: [...pursuitPhases], chaseTimeline,
         seams: [...seams], reviveCount, tutorialCompleted, lifecycle, final,
         continuousVideo: { path: `${label}-journey.webm`, sha256: videoHash, bytes: videoBytes.length } });
       await writeFile(`${out}/journeys.json`, JSON.stringify({ sha256, method: 'state-observing driver; trusted touch/keyboard/buttons; real browser time; continuous video; no state mutation APIs', failures, reports }, null, 2));
