@@ -40,6 +40,7 @@ try {
     let screenshotJob: Promise<unknown> | null = null;
     let captureBusy = false;
     const capturedRides = new Set<string>();
+    const capturedMisses = new Set<string>();
     let held = false;
     let lastRelease = -999;
     let holdAt = -999;
@@ -137,7 +138,20 @@ try {
         }
         if (!reserveForSeam && state.vehicleId && !capturedRides.has(state.vehicleId)
           && shot(`ride-${rides.indexOf(state.vehicleId) + 1}`, state)) capturedRides.add(state.vehicleId);
-        const complete = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; }) && seams.size === 4 && capturedRides.size === 4;
+        if (!reserveForSeam && state.lastVehicleOffer?.kind === 'missed'
+          && !capturedMisses.has(state.lastVehicleOffer.id)
+          && shot(`missed-${rides.indexOf(state.lastVehicleOffer.id) + 1}`, state)) capturedMisses.add(state.lastVehicleOffer.id);
+        // Two *different* real-input journeys are intentional: phone proves
+        // all four rides are obtainable and playable; desktop must also show
+        // that visibly dodging the halo has a genuine missed outcome.
+        // Requiring every path to auto-grant all pickups would be an invalid
+        // test that pressures Builder to reintroduce invisible grab boxes.
+        const playedAll = rides.every(name => { const v = seen.get(name); return v && v.lastTick - v.firstTick >= 120; });
+        const resolvedAll = rides.every(name => naturalClaims.has(name) || naturalMisses.has(name));
+        const complete = seams.size === 4 && (touch
+          ? playedAll && capturedRides.size === 4
+          : resolvedAll && naturalMisses.size > 0 && capturedMisses.size > 0
+            && [...naturalClaims].every(name => capturedRides.has(name)));
         // Keep controlling the flight while moving to pause. Releasing a bird
         // during its dive and waiting through CDP reads intentionally loses.
         if (complete && held && state.player.y < 550 && state.player.vy < -80) {
@@ -152,12 +166,21 @@ try {
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
       for (const ride of rides) {
-        assert.ok(seen.has(ride), `ordinary journey never reached ${ride}`);
-        assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120, `${ride} must remain observable for at least one simulated second`);
+        assert.ok(naturalClaims.has(ride) || naturalMisses.has(ride), `ordinary journey never resolved world pickup ${ride}`);
+        assert.equal(naturalClaims.has(ride) && naturalMisses.has(ride), false, `ride ${ride} cannot be both claimed and missed`);
+        if (naturalClaims.has(ride)) {
+          assert.ok(seen.has(ride), `claimed ride ${ride} did not activate`);
+          assert.ok(seen.get(ride)!.lastTick - seen.get(ride)!.firstTick >= 120, `${ride} must be controllable for at least a simulated second`);
+          assert.ok(capturedRides.has(ride), `claimed ${ride} has no natural screenshot`);
+        } else assert.equal(seen.has(ride), false, `missed ride ${ride} must never become inventory`);
       }
       assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
-      assert.equal(capturedRides.size, 4, 'all four rides must also have actual screenshots');
-      assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'every ride must be collected from a world pickup, never segment entry');
+      if (touch) {
+        assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'mobile route must actually acquire all four rides by natural contact');
+        assert.equal(capturedRides.size, 4, 'every mobile ride requires actual screenshots');
+      } else {
+        assert.ok(naturalMisses.size > 0 && capturedMisses.size > 0, 'desktop route must naturally miss an optional pickup and screenshot that fact');
+      }
       assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
       assert.equal((await readState()).status, 'playing', 'journey must remain controllable');
       const paused = await readState();
