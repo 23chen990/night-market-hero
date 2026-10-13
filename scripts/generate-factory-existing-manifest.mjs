@@ -1,3 +1,4 @@
+/* global process, console */
 /* Read-only, hash-bound inputs for the separate factory review.
  * Never fabricate independent perceptual or human approvals from CI logs. */
 import { createHash } from 'node:crypto';
