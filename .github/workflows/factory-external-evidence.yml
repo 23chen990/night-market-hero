@@ -1,0 +1,85 @@
+name: Factory External Audit Evidence
+on:
+  workflow_run:
+    workflows: ["Night Patrol Repair Gates"]
+    types: [completed]
+    branches: [fix/feel-pursuit-seam-20261012]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-gate:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact reviewed game commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          path: game
+          persist-credentials: false
+      - name: Checkout pinned external-audit factory
+        uses: actions/checkout@v4
+        with:
+          repository: 23chen990/ai-mini-game-factory
+          ref: acb3a6ca80971052f1048c7248bd68c29631d990
+          path: factory
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare factory dependencies
+        working-directory: factory
+        run: |
+          npm install -g pnpm@11.19.0
+          pnpm install --frozen-lockfile
+      - name: Verify external audit checker itself
+        working-directory: factory
+        run: pnpm exec vitest run tests/unit/existing-game-audit.test.ts
+      - name: Download exact browser-built evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: night-patrol-repair-${{ github.event.workflow_run.head_sha }}
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: game
+      - name: Bind evidence hashes and source commit
+        working-directory: game
+        run: node scripts/generate-factory-existing-manifest.mjs
+      - name: Run read-only seven-dimension factory audit
+        working-directory: factory
+        shell: bash
+        run: |
+          set +e
+          pnpm exec tsx src/cli/factory.ts audit-existing ../game/delivery/factory-existing-manifest.json > ../game/delivery/factory-existing-report.json 2> ../game/delivery/factory-existing-stderr.log
+          code=$?
+          echo "$code" > ../game/delivery/factory-exit-code.txt
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            const report=JSON.parse(fs.readFileSync('../game/delivery/factory-existing-report.json','utf8'));
+            if (report.passed !== false || report.humanPassed !== false
+                || report.buildValid !== true || report.commitValid !== true
+                || report.matrix.passed !== false) process.exit(1);
+            console.log('Evidence hashes/commit verified; factory release remains BLOCKED pending human and perceptual QA');
+            console.log(JSON.stringify({blockers:report.matrix.blockers, problems:report.problems},null,2));
+          "
+          test "$code" -eq 2
+          {
+            echo '### Existing-game factory QA'
+            echo 'Engineering evidence verified; **release gate is BLOCKED**, not PASS.'
+            echo 'Human, camera, seam, optional-miss and real-device gates require additional evidence.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload factory report with precise identity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: factory-evidence-${{ github.event.workflow_run.head_sha }}
+          path: |
+            game/delivery/factory-existing-manifest.json
+            game/delivery/factory-existing-report.json
+            game/delivery/factory-existing-stderr.log
+            game/delivery/factory-evidence-state.json
+            game/delivery/factory-exit-code.txt
+          retention-days: 14
+          if-no-files-found: warn
