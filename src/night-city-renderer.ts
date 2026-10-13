@@ -342,8 +342,12 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
     const imageHeight = transitionImage?.imageHeight ?? PANORAMA_CANVAS_HEIGHT;
     const cropRect = { x: 0, y: 0, width: imageWidth, height: imageHeight };
     const drawWidth = ordinary ? CITY_CHUNK_WIDTH : imageWidth * 1.01;
-    const drawHeight = ordinary ? PANORAMA_CANVAS_HEIGHT : imageHeight * 1.01;
     const sourceScale = drawWidth / cropRect.width;
+    // The raster is rendered with uniform scale; socket projection, coverage
+    // and the plan must use the *actual* displayed height, not intrinsic PNG
+    // height. Previously ordinary panoramas claimed 941 world units but were
+    // drawn at 901, creating a 40-unit mismatch with beam/socket locations.
+    const drawHeight = imageHeight * sourceScale;
     const sourceScaleY = drawHeight / cropRect.height;
     const renderScale = ordinary ? 1 : 1.01;
     return {
