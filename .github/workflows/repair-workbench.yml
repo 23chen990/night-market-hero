@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: 23chen990/ai-mini-game-factory
-          ref: 032fe85b8ba340d3d21ab4c7923a9844a6f3355b
+          ref: acb3a6ca80971052f1048c7248bd68c29631d990
           path: factory
       - uses: actions/setup-node@v4
         with:
@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir delivery
           tar -czf delivery/game-dependencies.tar.gz -C game node_modules
-          git -C game archive --format=tar.gz HEAD src tests scripts dev index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js .github AGENTS.md PLAYABLE_START_HERE.md runtime-product-gates.json validate-runtime-product-gates.mjs > delivery/game-source.tar.gz
+          git -C game archive --format=tar.gz HEAD src tests scripts dev index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js .github AGENTS.md PLAYABLE_START_HERE.md docs/ART_ASSET_MANIFEST_V1.md runtime-product-gates.json validate-runtime-product-gates.mjs > delivery/game-source.tar.gz
           git -C factory archive --format=tar.gz HEAD > delivery/factory-source.tar.gz
           tar -czf delivery/factory-dependencies.tar.gz -C factory node_modules
           git -C game rev-parse HEAD > delivery/game-commit.txt
