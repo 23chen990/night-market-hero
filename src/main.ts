@@ -1038,16 +1038,22 @@ class FlightScene extends Phaser.Scene {
     // approved image stream is the only scene owner; this pass is reserved for
     // live gameplay feedback that must remain visible while jumping.
     this.drawStrictReferencePursuer(graphics, state);
-    if (state.levelId === 'night-patrol' && state.chase.pressure >= 0.55) {
-      // Officers throw a visible roof-reaching net rather than magically
-      // catching a high-line player from an invisible ground collision.
+    if (state.levelId === 'night-patrol' && state.chase.phase !== 'safe') {
+      // A visible, fixed-reach capture net. Its upper limit corresponds to
+      // the simulation's 310-world-unit vertical guard reach; it does not
+      // magically stretch to whichever altitude the player happens to fly.
       const guardX = state.pursuer.x;
       const guardY = state.pursuer.y - 26;
-      const warnX = guardX + Math.min(190, Math.max(50, state.chase.distance * 0.65));
-      const warnY = Math.max(220, state.player.y - 45);
-      graphics.lineStyle(5, 0xe89a78, state.chase.pressure * 0.22).lineBetween(guardX, guardY, warnX, warnY);
-      graphics.lineStyle(2, 0xffd2a3, 0.70).lineBetween(guardX, guardY, warnX, warnY);
-      graphics.lineStyle(3, 0xefaa79, 0.7).strokeEllipse(warnX, warnY, 76, 76);
+      const upperY = state.pursuer.runLaneY - 310;
+      const warnX = guardX + Math.min(190, Math.max(60, state.chase.distance - 20));
+      graphics.lineStyle(4, 0xe89a78, 0.18 + state.chase.pressure * 0.26)
+        .lineBetween(guardX, guardY, warnX, upperY);
+      graphics.lineStyle(2, 0xffd2a3, 0.72).lineBetween(guardX, guardY, warnX, upperY);
+      graphics.lineStyle(3, 0xefaa79, 0.70).strokeEllipse(warnX, upperY + 24, 94, 64);
+      graphics.lineStyle(1, 0xffd2a3, 0.36)
+        .lineBetween(warnX - 33, upperY + 4, warnX + 35, upperY + 43);
+      graphics.lineStyle(1, 0xffd2a3, 0.36)
+        .lineBetween(warnX - 33, upperY + 43, warnX + 35, upperY + 4);
     }
     this.drawChaseObstacle(graphics, state);
     this.drawActivePickups(graphics, state, this.cameras.main.scrollX, worldViewportWidth);
