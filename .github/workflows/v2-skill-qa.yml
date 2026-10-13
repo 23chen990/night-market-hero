@@ -23,11 +23,15 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - run: git rev-parse HEAD # archive and test the exact PR source SHA
       - name: Static and unit checks, do not lower contracts
         run: |
           set -euo pipefail
@@ -44,6 +48,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -61,7 +68,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v2-natural-evidence-${{ github.sha }}
+          name: v2-natural-evidence-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             evidence/playable-audit/
             dist/index.html
@@ -75,6 +82,9 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -83,15 +93,15 @@ jobs:
       - run: npm run build
       - name: Install real Chromium
         run: npx playwright install --with-deps chromium
-      - name: Ordinary player misses visible optional pulley
+      - name: Ordinary player misses pulley and roof kite
         run: |
           mkdir -p delivery/v2
-          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=0 V2_DURATION_SECONDS=23 \
+          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=0 V2_DURATION_SECONDS=31 \
             V2_EVIDENCE_DIR=delivery/v2/casual node --import tsx tests/v2-natural-input-browser.ts \
             2>&1 | tee delivery/v2/casual-console.log
-      - name: Skilled real-input rope release wins SAME visible pulley
+      - name: Skilled releases win both pulley and fixed high-roof kite
         run: |
-          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=1 V2_DURATION_SECONDS=23 \
+          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=1 V2_DURATION_SECONDS=31 \
             V2_EVIDENCE_DIR=delivery/v2/skilled node --import tsx tests/v2-natural-input-browser.ts \
             2>&1 | tee delivery/v2/skilled-console.log
       - name: Independent no-entitlement comparison
@@ -100,12 +110,12 @@ jobs:
           node tests/v2-compare-gate.mjs delivery/v2/casual/report.json \
             delivery/v2/skilled/report.json | tee delivery/v2/player-choice-result.json
           echo '### Optional ride is earned, not automatically gifted' >> "$GITHUB_STEP_SUMMARY"
-          echo 'Two real touch-input paths on the same exact build/viewport show an attributable missed pulley versus a successful skilled rope release.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Two real touch-input paths on the same exact build/viewport show an attributable missed pulley/kite versus skilled pulley and high-roof kite releases.' >> "$GITHUB_STEP_SUMMARY"
           echo '**This does not certify remaining rides, human playability, visual seams or native platforms.**' >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v2-choice-evidence-${{ github.sha }}
+          name: v2-choice-evidence-${{ github.event.pull_request.head.sha || github.sha }}
           path:
             delivery/v2/
           retention-days: 14

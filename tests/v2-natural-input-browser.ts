@@ -57,9 +57,16 @@ try {
       held = down;
       if (down) holdAt = tick; else releaseAt = tick;
     };
-    const shot = async (name: string): Promise<void> => {
-      await page.screenshot({ path: `${root}/${id}-${name}.png` });
-      screenshots.push(name);
+    // Capture asynchronously: blocking on a PNG encode can consume the
+    // entire 200-ms real-input release window while the world keeps moving.
+    // Screenshot work is serialized for reliable ordering, but never stalls
+    // a press/release decision. Drain it before closing the browser page.
+    let screenshotChain: Promise<void> = Promise.resolve();
+    const shot = (name: string): void => {
+      screenshotChain = screenshotChain.then(async () => {
+        await page.screenshot({ path: `${root}/${id}-${name}.png` });
+        screenshots.push(name);
+      }).catch(error => { errors.push(`screenshot ${name}: ${String(error)}`); });
     };
     try {
       if (embedded) {
@@ -80,7 +87,8 @@ try {
         await page.setContent(targetHtml, { waitUntil: 'domcontentloaded', timeout: 30000 });
       } else await page.goto(pathToFileURL(target).href, { waitUntil: 'domcontentloaded' });
       await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
-      await shot('start-card');
+      shot('start-card');
+      await screenshotChain; // launch card is paused: exact startup frame is safe to await
       await page.locator('[data-action="start-run"]').click();
       if (!touch) await page.locator('[data-action="grapple"]').focus();
       const began = Date.now();
@@ -92,7 +100,7 @@ try {
           attachedAnchorId: s.attachedAnchorId, distance: s.chase.distance, inputTransitions: s.inputTransitions });
         if (s.status !== 'playing') {
           await edge(false, s.tick);
-          await shot(`terminal-${revives}`);
+          shot(`terminal-${revives}`);
           if (s.levelId !== 'night-patrol' && s.status === 'won') {
             await page.locator('[data-action="continue"]').click();
             releaseAt = -10000;
@@ -123,16 +131,16 @@ try {
             if (offer.status === 'available' && s.player.x >= offer.x - 850
               && s.player.x <= offer.x - 350 && !seenOffers.has(key)) {
               seenOffers.add(key);
-              await shot(`approach-${offer.segment}-${offer.id}`);
+              shot(`approach-${offer.segment}-${offer.id}`);
             }
           }
           for (const event of s.encounterEvents ?? []) {
             if (encounters.has(event.instanceId)) continue;
             encounters.set(event.instanceId, { type: event.id, result: event.outcome, reason: event.reason });
-            await shot(`encounter-${event.segment}-${event.outcome}`);
+            shot(`encounter-${event.segment}-${event.outcome}`);
           }
-          if (s.vehicleId && !seenRides.has(s.vehicleId)) { seenRides.add(s.vehicleId); await shot(`ride-${s.vehicleId}`); }
-          if (!seenSegments.has(s.segmentIndex)) { seenSegments.add(s.segmentIndex); if (s.segmentIndex % 2 === 0) await shot(`segment-${s.segmentIndex}`); }
+          if (s.vehicleId && !seenRides.has(s.vehicleId)) { seenRides.add(s.vehicleId); shot(`ride-${s.vehicleId}`); }
+          if (!seenSegments.has(s.segmentIndex)) { seenSegments.add(s.segmentIndex); if (s.segmentIndex % 2 === 0) shot(`segment-${s.segmentIndex}`); }
         }
         const anchor = s.anchors.find(item => item.id === s.attachedAnchorId);
         let wantHold = s.vehicleId
@@ -146,6 +154,13 @@ try {
           if (first && s.player.x >= first.x - 230 && s.player.x <= first.x + 40
             && !!s.attachedAnchorId && s.player.y >= first.y - 120)
             wantHold = false; // a deliberate player release at the visible ring
+          const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
+          // Keep the next high roof beam grappled an extra 88 world units so
+          // the natural swing generates upward lift, then release at the apex.
+          // The target stays fixed at its authored world support; no magnet.
+          if (kite && s.player.x >= kite.x - 1550 && s.player.x <= kite.x + 100 && anchor)
+            wantHold = !(s.player.x > anchor.x + 100 && s.player.vx > 0 && s.player.vy < 150)
+              && s.player.vx >= 0 && s.tick - holdAt < 160;
         }
         await edge(wantHold, s.tick);
         if (held && !s.inputHeld && s.inputTransitions > 0 && s.tick - holdAt > 30) await edge(false, s.tick);
@@ -153,7 +168,8 @@ try {
       }
       await edge(false, (await getState()).tick);
       const state = await getState();
-      await shot('end');
+      shot('end');
+      await screenshotChain;
       results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', embedded, skilledRoute, duration: maxSeconds,
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
@@ -162,6 +178,7 @@ try {
       errors.push(`runner:${String(error)}`);
       results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', errors, screenshotNames: screenshots, samples: traces });
     } finally {
+      await screenshotChain;
       await context.close();
       try { await page.video()?.saveAs(`${root}/${id}-journey.webm`); } catch { /* evidence failure surfaced in report */ }
     }

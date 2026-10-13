@@ -44,6 +44,17 @@ assert.ok(c.screenshotNames.some(n => n === 'encounter-2-missed'), 'need a scree
 const a=c.nearest?.[identity], b=s.nearest?.[identity];
 assert.ok(a && b && a.distancePx < 120 && b.distancePx < 120,
   'both players must physically approach the same world object');
+// The second route is not a larger hidden magnet: holding the actual
+// high-roof swing longer generates a physical upward launch into the kite.
+const kiteIdentity = [...sm.keys()].find(k => k.endsWith(':纸鸢'));
+assert.ok(kiteIdentity && cm.has(kiteIdentity), 'both players must face the SAME authored kite');
+assert.equal(cm.get(kiteIdentity)?.result, 'missed', 'ordinary low flight may miss the kite');
+assert.equal(sm.get(kiteIdentity)?.result, 'claimed', 'deliberate high swing and release must earn the kite');
+assert.ok(s.seenRides.includes('纸鸢'), 'the actual kite ride must become controllable');
+assert.ok(s.screenshotNames.includes('encounter-4-claimed'), 'earned kite requires a visual encounter frame');
+const kiteA=c.nearest?.[kiteIdentity], kiteB=s.nearest?.[kiteIdentity];
+assert.ok(kiteA && kiteB && kiteA.distancePx < 120 && kiteB.distancePx < 120,
+  'both players need a real input-driven approach to the SAME fixed kite socket');
 console.log(JSON.stringify({ status: 'ENGINEERING_CONTRAST_PASS', sha256: casual.buildSha256,
   viewport: c.viewport, casual: Object.fromEntries(cm), skilled: Object.fromEntries(sm),
   limits: 'Not a blind human study, full game experience review, performance certification or platform release.' }, null, 2));

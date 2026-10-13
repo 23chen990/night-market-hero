@@ -81,6 +81,9 @@ export function controlCue(state: GrappleState): ControlCue {
     if (nextOffer.id === '青鸾' && birdTicks < 2)
       return { title: `青鸾机会 · 漂亮松手 ${birdTicks}/2`,
         detail: '连续两次成功接钩与松手，再飞向高空青鸾', tone: 'ready' };
+    if (nextOffer.id === '纸鸢' && distance > 320 && distance <= 920 && state.attachedAnchorId)
+      return { title: '纸鸢高线：过挂点后多荡半拍',
+        detail: '在屋檐飞索上升时松手，再飞进鸢绳柄', tone: 'ready' };
     if (distance <= 320 && adjustHeight) return {
       title: `前方 ${nextOffer.id} · ${adjustHeight}`,
       detail: encounterInstructions(nextOffer.id), tone: 'ready',

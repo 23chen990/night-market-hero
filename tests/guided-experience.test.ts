@@ -83,6 +83,17 @@ test('a checkpoint is earned at its visible midpoint, never just at segment entr
     assert.ok(nextCheckpointX(x) > x);
   }
 });
+test('kite pre-approach teaches an upward rope swing before the actual release window', () => {
+  const game = patrol(32);
+  const state = game.getState();
+  const offer = { id: '纸鸢' as const, segment: 4, status: 'available' as const,
+    x: state.player.x + 650, y: 510 };
+  const instruction = controlCue({ ...state, vehicleId: null,
+    attachedAnchorId: state.anchors[0]?.id ?? 'grapple-anchor', vehicleOffers: [offer] });
+  assert.match(instruction.title, /过挂点后多荡半拍/);
+  assert.match(instruction.detail, /上升时松手/);
+});
+
 test('visible ride halo does not collect from the rectangular corner or outside its vertical reach', () => {
   const game = patrol();
   const state = enter(game, 2);

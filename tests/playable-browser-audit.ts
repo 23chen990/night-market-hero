@@ -71,6 +71,31 @@ try {
       screenshotJob = page.screenshot({ path: `${out}/${label}-${name}.png` }).catch(error => errors.push(`screenshot: ${error}`)).finally(() => { captureBusy = false; });
       return true;
     };
+    const acceptRealDesktopCapture = async (): Promise<boolean> => {
+      const captured = await readState();
+      if (touch || captured.status !== 'failed') return false;
+      assert.equal(captured.failureReason, 'caught',
+        'an unexpected physical fall cannot stand in for an officer capture');
+      assert.ok(tutorialCompleted, 'caught journey must naturally pass the tutorial');
+      assert.equal(seams.size, 4, 'captured route must cross and record all four joins');
+      assert.ok(naturalClaims.size >= 1, 'captured route must physically acquire a ride');
+      assert.ok([...pursuitPhases].some(phase => phase !== 'safe'),
+        'real capture must follow an observable escalating guard warning');
+      await screenshotJob;
+      const screenshot = `${label}-natural-officer-capture.png`;
+      await page.screenshot({ path: `${out}/${screenshot}` });
+      await page.locator('[data-action="restart"]').click();
+      await page.waitForFunction(() =>
+        (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } })
+          .__PROTOTYPE_TEST__.getState().status === 'playing');
+      const restarted = await readState();
+      assert.equal(restarted.reviveUsed, false);
+      lifecycle.journey = captured;
+      lifecycle.officerCatch = { status: captured.status, reason: captured.failureReason,
+        caughtAtTick: captured.tick, restartedAtTick: restarted.tick, screenshot };
+      assert.deepEqual(errors, []);
+      return true;
+    };
     try {
       page.on('pageerror', error => errors.push(String(error)));
       await page.goto(pathToFileURL(entry).href);
@@ -212,28 +237,17 @@ try {
       }
       lifecycle.journey = await readState();
       await edge(false, (await readState()).tick);
-      // A *real* officer capture in a separate desktop path is valuable QA,
-      // not an unexpected interruption to be force-clicked through. The phone
-      // journey still must SEE all four ride opportunities and complete economy
-      // loop; desktop may instead prove an attributable caught/restart path.
-      if (!touch && (await readState()).status === 'failed') {
-        const captured = await readState();
-        assert.equal(captured.failureReason, 'caught', 'unexpected physical fall cannot stand in for an officer capture');
-        assert.ok(tutorialCompleted, 'caught journey must have naturally passed tutorial');
-        assert.ok(seams.size === 4, 'caught journey must still traverse all four test joins');
-        assert.ok(naturalClaims.size >= 1, 'caught journey must demonstrate a real acquired ride before capture');
-        assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'guard attack must give warning');
-        await screenshotJob;
-        await page.screenshot({ path: `${out}/${label}-natural-officer-capture.png` });
-        await page.locator('[data-action="restart"]').click();
-        await page.waitForFunction(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState().status === 'playing');
-        const restarted = await readState();
-        assert.equal(restarted.reviveUsed, false);
-        lifecycle.officerCatch = { status: captured.status, reason: captured.failureReason, caughtAtTick: captured.tick, restartedAtTick: restarted.tick };
-        assert.deepEqual(errors, []);
-        continue;
+      // Normal chase pressure is real time. The guard may physically catch the
+      // desktop rider BETWEEN the final state read and the pause click. That
+      // is a valid attributable capture, not a hidden pause button defect.
+      if (await acceptRealDesktopCapture()) continue;
+      if ((await readState()).status === 'playing' && !(await readState()).paused) {
+        try { await page.locator('.hub-settings').click({ timeout: 1400 }); }
+        catch (error) {
+          if (await acceptRealDesktopCapture()) continue;
+          throw error; // a different click obstruction remains a real QA bug
+        }
       }
-      if ((await readState()).status === 'playing' && !(await readState()).paused) await page.locator('.hub-settings').click();
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
       for (const ride of rides) {
