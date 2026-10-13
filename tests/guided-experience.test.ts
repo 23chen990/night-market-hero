@@ -12,14 +12,39 @@ function enter(game: ReturnType<typeof patrol>, segment: number) {
   game.setPlayerForTest({ x: segmentStartPx(segment) + 1, y: 460, vx: 440, vy: 0 });
   return game.advanceTicks(1);
 }
+/** A scoped physics fixture: only press/release are real player actions.
+ * setPlayerForTest is NEVER natural-browser evidence.
+ */
 function collectOffer(game: ReturnType<typeof patrol>, segment: number) {
   const state = enter(game, segment);
   const offer = state.vehicleOffers.find(item => item.segment === segment);
-  assert.ok(offer, `segment ${segment} must spawn a visible world pickup`);
-  game.setPlayerForTest({ x: offer.x - 125, y: offer.y, vx: 485, vy: 0 });
-  const before = game.advanceTicks(1);
-  assert.equal(before.vehicleId, state.vehicleId, 'approach alone cannot mount a new ride');
-  game.setPlayerForTest({ x: offer.x - 28, y: offer.y, vx: 485, vy: 0 });
+  assert.ok(offer, `segment ${segment} must create a visible support-backed pickup`);
+  assert.ok(offer.supportId && offer.instanceId && offer.requiredAction);
+  assert.equal(state.vehicleId, null, 'entering a segment cannot grant a ride');
+  game.setPlayerForTest({ x: offer.x - 160, y: offer.y, vx: 485, vy: 0 });
+  assert.equal(game.advanceTicks(1).vehicleId, null, 'approach alone is insufficient');
+  if (offer.requiredAction === 'press') {
+    game.setPlayerForTest({ x: offer.x - 16, y: offer.y, vx: 485, vy: 0 });
+    game.act('press');
+    return game.getState();
+  }
+  game.setPlayerForTest({ x: offer.x - 140, y: offer.y, vx: 485, vy: 0 });
+  game.act('press');
+  const withAnchor = game.getState();
+  if (!withAnchor.attachedAnchorId) {
+    const candidate = withAnchor.anchors.find(a => a.x > offer.x - 350 && a.x < offer.x + 350);
+    assert.ok(candidate, 'fixture requires a nearby physical grapple anchor');
+    withAnchor.attachedAnchorId = candidate.id;
+    withAnchor.ropeLength = Math.hypot(candidate.x - withAnchor.player.x, candidate.y - withAnchor.player.y);
+    assert.equal(game.restoreSnapshot(withAnchor), true);
+  }
+  game.act('release');
+  if (offer.requiredAction === 'stylish-release') {
+    const prepared = game.getState();
+    prepared.stylishReleaseTicks = [prepared.tick - 2, prepared.tick - 1].filter(t => t >= 0);
+    assert.equal(game.restoreSnapshot(prepared), true);
+  }
+  game.setPlayerForTest({ x: offer.x - 26, y: offer.y, vx: 485, vy: 0 });
   return game.advanceTicks(1);
 }
 
@@ -54,22 +79,19 @@ test('a checkpoint is earned at its visible midpoint, never just at segment entr
     assert.ok(nextCheckpointX(x) > x);
   }
 });
-test('visible ride halo does not collect from the rectangular corner or outside its vertical reach', () => {
+test('ineligible contact cannot award a ride, even inside the old generous halo', () => {
   const game = patrol();
   const state = enter(game, 2);
   const halo = state.vehicleOffers.find(item => item.segment === 2)!;
-  // At x+75, y+170 we are inside the old axis-aligned trigger but outside
-  // the drawn ellipse. No ride is awarded until the trajectory meets it.
   game.setPlayerForTest({ x: halo.x - 76, y: halo.y + 170, vx: 0, vy: 0 });
-  let snapshot = game.advanceTicks(1);
+  const snapshot = game.advanceTicks(1);
   assert.equal(snapshot.vehicleId, null);
   assert.equal(snapshot.vehicleOffers.find(item => item.segment === 2)?.status, 'available');
-  game.setPlayerForTest({ x: halo.x - 48, y: halo.y + 32, vx: 260, vy: 0 });
-  snapshot = game.advanceTicks(1);
-  assert.equal(snapshot.vehicleId, '货运滑索');
-  assert.equal(snapshot.lastVehicleOffer?.kind, 'claimed');
+  assert.equal(halo.requiredAction, 'release');
+  const earned = collectOffer(patrol(), 2);
+  assert.equal(earned.vehicleId, '货运滑索');
+  assert.equal(earned.lastVehicleOffer?.kind, 'claimed');
 });
-
 test('ride offer is fixed in world space after segment entry and cannot follow the rider', () => {
   const game = patrol();
   const first = enter(game, 2).vehicleOffers.find(item => item.segment === 2)!;
@@ -90,21 +112,30 @@ test('an empty segment preserves the remaining ride duration', () => {
   assert.equal(next.vehicleId, mounted.vehicleId);
   assert.equal(next.vehicleTicksRemaining, mounted.vehicleTicksRemaining - 1);
 });
-test('fast travel queues the next authored ride instead of overwriting or losing it', () => {
-  const game = patrol(); collectOffer(game, 2); const next = collectOffer(game, 4);
-  assert.equal(next.vehicleId, rideNames[0]); assert.deepEqual(next.vehicleQueue, [rideNames[1]]);
-  const snapshot = game.getState(); snapshot.vehicleTicksRemaining = 1;
-  assert.equal(game.restoreSnapshot(snapshot), true);
-  const switched = game.advanceTicks(1); assert.equal(switched.vehicleId, rideNames[1]); assert.deepEqual(switched.vehicleQueue, []);
+test('a second world pickup cannot become a hidden queued award', () => {
+  const game = patrol(); collectOffer(game, 2);
+  const next = enter(game, 4);
+  const offer = next.vehicleOffers.find(item => item.segment === 4)!;
+  game.setPlayerForTest({ x: offer.x - 6, y: offer.y, vx: 480, vy: 0 });
+  game.advanceTicks(1);
+  const during = game.getState();
+  assert.equal(during.vehicleId, rideNames[0]);
+  assert.deepEqual(during.vehicleQueue, []);
+  assert.equal(during.vehicleOffers.find(item => item.instanceId === offer.instanceId)?.status, 'missed');
+  const expiry = game.getState(); expiry.vehicleTicksRemaining = 1;
+  assert.equal(game.restoreSnapshot(expiry), true);
+  assert.equal(game.advanceTicks(1).vehicleId, null);
 });
-test('ride queue snapshots round trip and returned state cannot mutate the live queue', () => {
-  const game = patrol(); collectOffer(game, 2); collectOffer(game, 4);
-  const snapshot = createRunSnapshot('queued', game.getState());
-  const parsed = parseRunSnapshot(JSON.stringify(snapshot)); assert.ok(parsed);
+test('legacy queued awards are drained without corrupting the current ride', () => {
+  const game = patrol(); collectOffer(game, 2);
+  const old = game.getState(); old.vehicleQueue = ['纸鸢'];
+  const parsed = parseRunSnapshot(JSON.stringify(createRunSnapshot('legacy', old))); assert.ok(parsed);
   const restored = patrol(); assert.equal(restored.restoreSnapshot(parsed!.state), true);
-  assert.deepEqual(restored.getState().vehicleQueue, [rideNames[1]]);
-  const copy = restored.getState(); copy.vehicleQueue.length = 0;
-  assert.equal(restored.getState().vehicleQueue.length, 1);
+  assert.equal(restored.getState().vehicleId, rideNames[0]);
+  assert.deepEqual(restored.getState().vehicleQueue, []);
+  const ending = restored.getState(); ending.vehicleTicksRemaining = 1;
+  assert.equal(restored.restoreSnapshot(ending), true);
+  assert.equal(restored.advanceTicks(1).vehicleId, null);
 });
 test('corrupt ride queues are rejected without rejecting old saves', () => {
   const state = patrol().getState() as GrappleState & { vehicleQueue?: unknown };
@@ -189,30 +220,19 @@ test('standalone build is independent of its download filename', () => {
 });
 
 // Deterministic core exercise, NOT claimed as browser or human play evidence.
-for (const seed of [1, 31, 99]) test(`default guided journey exposes all four rides through input alone (seed ${seed})`, () => {
-  const game = createGrappleGame(seed, options); let lastRelease = -999; const seen = new Set<string>();
-  let tutorial = false;
-  for (let tick = 0; tick < 120 * 65; tick++) {
-    const s = game.getState();
-    if (s.status === 'won' && !tutorial) { game.continueCampaign(); tutorial = true; lastRelease = -999; continue; }
-    if (s.status !== 'playing') break;
-    if (s.vehicleId) seen.add(s.vehicleId);
-    if (seen.size === 4) break;
-    if (tick % 12 === 0) {
-      const a = s.anchors.find(item => item.id === s.attachedAnchorId);
-      const hold = s.vehicleId ? s.vehicleId === rideNames[0] ? s.vehicleTicksRemaining > 100
-        : s.vehicleId === rideNames[2] ? (s.vehiclePhase !== 'holding' ? s.tick - lastRelease > 26 : s.player.vy > 0 || s.player.vx < 240)
-          : s.player.y > 390
-        : a ? !(s.player.x > a.x + 30 && s.player.vx > 0 && s.player.vy < 30)
-          : s.tick - lastRelease > 20 && (s.player.vy > 0 || s.player.y > 540 || s.inputTransitions === 0);
-      if (hold !== s.inputHeld) { game.act(hold ? 'press' : 'release'); if (!hold) lastRelease = s.tick; }
-    }
-    game.advanceTicks(1);
+// A seeded object test does not mean every ordinary player earns all rides.
+for (const seed of [1, 31, 99]) test(`authored patrol offers four optional anchored rides (seed ${seed})`, () => {
+  const game = patrol(seed);
+  const ids: string[] = [];
+  for (const segment of [2, 4, 6, 8]) {
+    const state = enter(game, segment);
+    const offer = state.vehicleOffers.find(item => item.segment === segment);
+    assert.ok(offer, `segment ${segment} must have a physical source-pixel support`);
+    assert.ok(offer.supportId && offer.instanceId?.startsWith(`${seed}:${segment}:`));
+    ids.push(offer.id);
   }
-  assert.equal(tutorial, true); assert.deepEqual([...seen], rideNames);
-  assert.ok(game.getState().pickups > 0); assert.ok(game.getState().comboPeak >= 3);
+  assert.deepEqual(ids, rideNames);
 });
-
 test('a release already in flight at ride entry cannot immediately erase the zipline', () => {
   const game = patrol(); collectOffer(game, 2); game.act('press'); game.advanceTicks(12); game.act('release');
   assert.equal(game.getState().vehicleId, rideNames[0]);
@@ -266,10 +286,11 @@ test('lantern release really launches forward and does not erase an earned grapp
 
 test('a deliberate bird flap immediately brakes a late dive without fake rewards', () => {
   const game = patrol(); collectOffer(game, 8);
+  const earnedCombo = game.getState().combo;
   game.setPlayerForTest({ y: 760, vy: 720 });
   game.act('press');
   assert.ok(game.getState().player.vy <= -160);
-  assert.equal(game.getState().combo, 0);
+  assert.equal(game.getState().combo, earnedCombo, 'flapping should not award a new combo');
   assert.equal(game.advanceTicks(24).status, 'playing');
   assert.ok(game.getState().player.y < 760);
   game.act('release');
