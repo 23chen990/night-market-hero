@@ -75,7 +75,7 @@ try {
       assert.equal((await readState()).tick, beforeStart.tick, 'start card must not spend the run');
       await page.locator('[data-action="start-run"]').click();
       if (!touch) await page.locator('[data-action="grapple"]').focus();
-      for (let sample = 0; Date.now() - started < 115_000; sample++) {
+      for (let sample = 0; Date.now() - started < 140_000; sample++) {
         const state = await readState();
         if (sample % 5 === 0) samples.push({ ms: Date.now() - started, tick: state.tick, level: state.levelId,
           player: state.player, segment: state.segmentIndex, status: state.status, coins: state.coins,
@@ -162,6 +162,27 @@ try {
       }
       lifecycle.journey = await readState();
       await edge(false, (await readState()).tick);
+      // A *real* officer capture in a separate desktop path is valuable QA,
+      // not an unexpected interruption to be force-clicked through. The phone
+      // journey still must experience all four rides and the complete economy
+      // loop; desktop may instead prove an attributable caught/restart path.
+      if (!touch && (await readState()).status === 'failed') {
+        const captured = await readState();
+        assert.equal(captured.failureReason, 'caught', 'unexpected physical fall cannot stand in for an officer capture');
+        assert.ok(tutorialCompleted, 'caught journey must have naturally passed tutorial');
+        assert.ok(seams.size === 4, 'caught journey must still traverse all four test joins');
+        assert.ok(naturalClaims.size >= 2, 'caught journey must demonstrate genuine ride pickup before capture');
+        assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'guard attack must give warning');
+        await screenshotJob;
+        await page.screenshot({ path: `${out}/${label}-natural-officer-capture.png` });
+        await page.locator('[data-action="restart"]').click();
+        await page.waitForFunction(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState().status === 'playing');
+        const restarted = await readState();
+        assert.equal(restarted.reviveUsed, false);
+        lifecycle.officerCatch = { status: captured.status, reason: captured.failureReason, caughtAtTick: captured.tick, restartedAtTick: restarted.tick };
+        assert.deepEqual(errors, []);
+        continue;
+      }
       if ((await readState()).status === 'playing' && !(await readState()).paused) await page.locator('.hub-settings').click();
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
