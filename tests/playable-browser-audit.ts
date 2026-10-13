@@ -127,12 +127,20 @@ try {
           break;
         }
         const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
-        const wantHold = state.vehicleId
+        let wantHold = state.vehicleId
           ? state.vehicleId === rides[0] ? state.vehicleTicksRemaining > 100
             : state.vehicleId === rides[2] ? state.vehiclePhase !== 'holding' ? state.tick - lastRelease > 26 : state.player.vy > 0 && state.player.vx >= 240
               : state.player.y > 390
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
+        // Use normal player input to intentionally bypass the optional
+        // lantern halo on desktop. The simulation still owns all collisions,
+        // chase events and actual claim/miss outcomes.
+        const lanternOffer = !touch && state.levelId === 'night-patrol'
+          ? state.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available')
+          : null;
+        if (lanternOffer && state.player.x > lanternOffer.x - 350
+          && state.player.x < lanternOffer.x - 110) wantHold = true;
         await edge(wantHold, state.tick);
         if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
         if (state.vehicleId) {
@@ -199,6 +207,8 @@ try {
         assert.ok(tutorialCompleted, 'caught journey must have naturally passed tutorial');
         assert.ok(seams.size === 4, 'caught journey must still traverse all four test joins');
         assert.ok(naturalClaims.size >= 2, 'caught journey must demonstrate genuine ride pickup before capture');
+        assert.ok(naturalMisses.has('灯笼群'), 'desktop route must actually bypass the lantern through ordinary input');
+        assert.equal(seen.has('灯笼群'), false, 'bypassed lantern must not be equipped');
         assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'guard attack must give warning');
         await screenshotJob;
         await page.screenshot({ path: `${out}/${label}-natural-officer-capture.png` });
@@ -227,9 +237,8 @@ try {
         assert.deepEqual([...naturalClaims].sort(), [...rides].sort(), 'mobile route must actually acquire all four rides by natural contact');
         assert.equal(capturedRides.size, 4, 'every mobile ride requires actual screenshots');
       } else {
-        // The player is free to collect everything; do not force a miss.
-        // If a natural miss occurs, however, it must be documented by a
-        // screenshot and must never become an unseen inventory grant.
+        assert.ok(naturalMisses.has('灯笼群'), 'desktop player should be able to deliberately miss the optional lantern halo');
+        assert.equal(seen.has('灯笼群'), false, 'missed lantern must not secretly equip a vehicle');
         for (const missed of naturalMisses) assert.ok(capturedMisses.has(missed), `missed ${missed} needs natural screenshot`);
       }
       assert.ok(pursuitPhases.has('alert') || pursuitPhases.has('danger') || pursuitPhases.has('climax'), 'officers must produce visible escalating pursuit');
