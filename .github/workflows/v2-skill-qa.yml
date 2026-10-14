@@ -127,6 +127,11 @@ jobs:
           V2_VIEWPORT=mobile V2_SKILLED_ROUTE=1 V2_DURATION_SECONDS=31 \
             V2_EVIDENCE_DIR=delivery/v2/skilled node --import tsx tests/v2-natural-input-browser.ts \
             2>&1 | tee delivery/v2/skilled-console.log
+      - name: Skilled low-route release and fresh press earn the fixed lantern knot
+        run: |
+          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=1 V2_LANTERN_ROUTE=1 V2_DURATION_SECONDS=45 \
+            V2_EVIDENCE_DIR=delivery/v2/lantern node --import tsx tests/v2-natural-input-browser.ts \
+            2>&1 | tee delivery/v2/lantern-console.log
       - name: Independent no-entitlement comparison
         run: |
           set -euo pipefail
@@ -135,6 +140,11 @@ jobs:
           echo '### Optional ride is earned, not automatically gifted' >> "$GITHUB_STEP_SUMMARY"
           echo 'Two real touch-input paths on the same exact build/viewport show an attributable missed pulley/kite versus skilled pulley and high-roof kite releases.' >> "$GITHUB_STEP_SUMMARY"
           echo '**This does not certify remaining rides, human playability, visual seams or native platforms.**' >> "$GITHUB_STEP_SUMMARY"
+      - name: Independent real-press lantern check
+        run: |
+          set -euo pipefail
+          node tests/v2-lantern-gate.mjs delivery/v2/skilled/report.json \
+            delivery/v2/lantern/report.json | tee delivery/v2/lantern-result.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

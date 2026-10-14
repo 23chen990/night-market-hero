@@ -31,6 +31,14 @@ test('all four initial challenges are source-anchored, deterministic, visible an
     assert.ok(planned.x < segmentStartPx(segment) + segmentLengthPx(segment));
     assert.ok(planned.y > 125 && planned.y < 720);
     assert.ok(planned.radiusX <= 100 && planned.radiusY <= (id === '纸鸢' ? 120 : 100));
+    if (id === '灯笼群') {
+      assert.equal(planned.radiusY, 100, 'the visible lantern knot may not have an invisible pickup halo');
+      assert.ok(planned.y >= planned.supportY, 'lantern knot must be suspended below its real world support');
+      assert.equal(sweptEncounterContact(
+        { x: planned.x - 95, y: planned.y + 75 },
+        { x: planned.x + 95, y: planned.y + 75 }, planned,
+      ), true, 'the low route must physically cross the visible lantern knot');
+    }
     if (id === '纸鸢') {
       assert.equal(planned.radiusY, 120, 'the visible and physical kite radius must agree');
       assert.equal(sweptEncounterContact(

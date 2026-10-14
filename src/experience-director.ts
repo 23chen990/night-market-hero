@@ -91,8 +91,10 @@ export function controlCue(state: GrappleState): ControlCue {
     const imminent = distance < 170 && distance > -65;
     if (nextOffer.id === '货运滑索' && imminent && state.attachedAnchorId)
       return { title: '现在松手！飞向货运滑索', detail: '只有飞进挂环才算接住', tone: 'ready' };
+    if (nextOffer.id === '灯笼群' && distance > 90 && distance <= 290 && state.inputHeld)
+      return { title: '灯绳在前！先松开旧飞索', detail: '接近绳结后重新按住，才能主动抓到灯笼群', tone: 'ready' };
     if (nextOffer.id === '灯笼群' && imminent && !state.inputHeld)
-      return { title: '灯绳在前！按住接索', detail: '经过实体绳结时按住，过早按住会错过', tone: 'ready' };
+      return { title: '现在按住！抓住灯绳结', detail: '必须在发光绳圈内真正重新按住', tone: 'ready' };
     if (nextOffer.id === '纸鸢' && imminent)
       return state.attachedAnchorId || state.inputHeld
         ? { title: '松手飞进鸢绳圈！', detail: '借屋檐摆荡向上，离开飞索后穿过发光圈', tone: 'ready' }

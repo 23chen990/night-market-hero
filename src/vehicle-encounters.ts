@@ -31,8 +31,10 @@ const RECIPES: Record<VehicleId, {
   // post-pulley high-roof flight without granting the kite automatically.
   '纸鸢': { supportPattern: /eave-beam|walkway-beam|roof-rail/, heightOffset: 286,
     radiusX: 76, radiusY: 120, requiredAction: 'high-release', description: '借高挂点起飞，松手接住鸢绳' },
-  '灯笼群': { supportPattern: /lantern|rope/, heightOffset: 166,
-    radiusX: 84, radiusY: 90, requiredAction: 'press', description: '飞近灯绳结，按住接索' },
+  // A low street-level knot is still hung from the SAME real source support.
+  // Pressing during true physical contact remains mandatory: never auto-award.
+  '灯笼群': { supportPattern: /lantern|rope/, heightOffset: 236,
+    radiusX: 84, radiusY: 100, requiredAction: 'press', description: '飞近灯绳结，按住接索' },
   '青鸾': { supportPattern: /left-eave-beam|right-eave-beam/, heightOffset: 190,
     radiusX: 88, radiusY: 92, requiredAction: 'stylish-release', description: '连续两次漂亮松手，腾空接青鸾' },
 };

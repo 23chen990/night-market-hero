@@ -19,6 +19,8 @@ const embedded = process.env.V2_BROWSER_EMBED === '1';
 const executablePath = process.env.V2_CHROMIUM_PATH || undefined;
 const maxSeconds = Number(process.env.V2_DURATION_SECONDS ?? 45);
 const skilledRoute = process.env.V2_SKILLED_ROUTE === '1';
+const lanternRoute = process.env.V2_LANTERN_ROUTE === '1';
+if (lanternRoute && !skilledRoute) throw new Error('lantern technique route requires skilled real input');
 const viewportFilter = process.env.V2_VIEWPORT ?? 'both';
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath, args: ['--no-sandbox'] } : {}) });
 const results: unknown[] = [];
@@ -179,7 +181,11 @@ try {
           //    the pictured kite handle. Regrappling a later ordinary beam
           //    would pull the hero away before the handle can be touched.
           // This uses genuine input edges; never moves or enlarges the target.
-          if (kite && s.player.x >= kite.x - 530 && s.player.x <= kite.x + 140) {
+          if (kite && lanternRoute && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) {
+            // Choose the familiar rope instead of earning the optional kite.
+            // This preserves the lower route for a separate lantern attempt.
+            wantHold = true;
+          } else if (kite && s.player.x >= kite.x - 530 && s.player.x <= kite.x + 140) {
             const ahead = kite.x - s.player.x;
             if (anchor) {
               if (ahead >= 148 && ahead <= 245 &&
@@ -194,6 +200,12 @@ try {
               wantHold = false;
             }
           }
+          const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 190 && s.player.x <= lantern.x + 95) {
+            // Release the old roof rope; the NEXT real press, inside the
+            // visible physical lantern knot, is the only legal claim.
+            wantHold = s.player.x >= lantern.x - 48 && s.player.x <= lantern.x + 70;
+          }
         }
         await edge(wantHold, s.tick);
         if (held && !s.inputHeld && s.inputTransitions > 0 && s.tick - holdAt > 30) await edge(false, s.tick);
@@ -203,7 +215,7 @@ try {
       const state = await getState();
       shot('end');
       await screenshotChain;
-      results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', embedded, skilledRoute, duration: maxSeconds,
+      results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', embedded, skilledRoute, lanternRoute, duration: maxSeconds,
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
         encounters: [...encounters.entries()], nearest, inputEdges,

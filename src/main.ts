@@ -908,6 +908,7 @@ class FlightScene extends Phaser.Scene {
   private protagonistSprite!: Phaser.GameObjects.Image;
   private protagonistRim!: Phaser.GameObjects.Image;
   private pursuerSprite!: Phaser.GameObjects.Image;
+  private barricadeSprite!: Phaser.GameObjects.Image;
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
   private cameraScrollX = 0;
   private cameraHasInitialized = false;
@@ -945,6 +946,11 @@ class FlightScene extends Phaser.Scene {
     this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0x8dc8d8).setDepth(3.9);
     this.protagonistSprite = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setDisplaySize(150, 150).setAlpha(1).setDepth(4);
     this.pursuerSprite = this.add.image(0, 0, 'pursuer-run').setOrigin(0.5, 0.72).setDisplaySize(126, 130).setAlpha(1).setDepth(4);
+    // Reuse the repository's existing approved hanging-cloth art instead of
+    // painting an opaque magenta debug rectangle over the night-city image.
+    // Its bounds are driven only by the actual physical occupiedBounds.
+    this.barricadeSprite = this.add.image(0, 0, 'module-blank-banner')
+      .setOrigin(0.5, 0.5).setDepth(-0.25).setVisible(false);
     // The old fixed decoration pool is intentionally not mounted on the
     // default journey: it stretched a canopy over the HUD and left floating
     // fragments at the top of the playfield.  NightCityRenderer owns the
@@ -1055,6 +1061,7 @@ class FlightScene extends Phaser.Scene {
       graphics.lineStyle(1, 0xffd2a3, 0.36)
         .lineBetween(warnX - 33, upperY + 43, warnX + 35, upperY + 4);
     }
+    this.syncBarricadeSprite(state);
     this.drawChaseObstacle(graphics, state);
     this.drawActivePickups(graphics, state, this.cameras.main.scrollX, worldViewportWidth);
     this.drawTutorialAffordance(graphics, state);
@@ -1327,6 +1334,27 @@ class FlightScene extends Phaser.Scene {
     }
   }
 
+  private syncBarricadeSprite(state: GrappleState): void {
+    const obstacle = state.chaseObstacle;
+    if (!obstacle || obstacle.kind !== 'barricade'
+      || obstacle.phase === 'missed' || obstacle.phase === 'passed'
+      || obstacle.occupiedBounds.height <= 8 || obstacle.occupiedBounds.width <= 8) {
+      this.barricadeSprite.setVisible(false);
+      app.dataset.barricadeVisual = 'none';
+      return;
+    }
+    const occupied = obstacle.occupiedBounds;
+    // Source image includes transparent margins; scale the real opaque cloth
+    // to the actual blocker envelope, with no new physics or phantom area.
+    this.barricadeSprite
+      .setPosition(occupied.x + occupied.width / 2, occupied.y + occupied.height / 2)
+      .setDisplaySize(Math.max(80, occupied.width * 3.3),
+        Math.max(45, occupied.height * 1.5))
+      .setAlpha(obstacle.phase === 'aim' ? 0.48 : 0.96)
+      .setVisible(true);
+    app.dataset.barricadeVisual = 'approved-cloth-banner';
+  }
+
   private drawChaseObstacle(graphics: Phaser.GameObjects.Graphics, state: GrappleState): void {
     const obstacle = state.chaseObstacle;
     if (!obstacle) return;
@@ -1334,18 +1362,21 @@ class FlightScene extends Phaser.Scene {
     if (obstacle.kind === 'barricade') {
       const occupied = obstacle.occupiedBounds;
       const frame = obstacle.anchorBounds;
-      graphics.fillStyle(0xe55b54, 0.18 + 0.18 * Math.sin(obstacle.animationProgress * Math.PI * 6))
-        .fillRect(bounds.x - 20, bounds.y, bounds.width + 40, bounds.height);
-      graphics.fillStyle(0x33283a, 1).fillRect(frame.x, frame.y, 12, frame.height);
-      graphics.fillRect(frame.x + frame.width - 12, frame.y, 12, frame.height);
-      graphics.fillStyle(0xb0775b, 1).fillRect(frame.x, frame.y, frame.width, 18);
-      graphics.fillStyle(0x5b3140, 1).fillRect(occupied.x, occupied.y, occupied.width, occupied.height);
-      graphics.lineStyle(5, 0xe0a15b, 0.82);
-      for (let row = 0; row < 4; row += 1) {
-        const y = bounds.y + 22 + row * 44;
-        if (y <= occupied.y + occupied.height) graphics.lineBetween(occupied.x, y, occupied.x + occupied.width, y);
+      // Wood suspension poles and a subtle lit physical footprint. The cloth
+      // mass is rendered by an EXISTING approved transparent PNG above.
+      graphics.lineStyle(3, 0x80634f, 0.84)
+        .lineBetween(frame.x, frame.y, frame.x, frame.y + frame.height)
+        .lineBetween(frame.x + frame.width, frame.y, frame.x + frame.width, frame.y + frame.height);
+      graphics.lineStyle(3, 0xd2ad75, 0.85)
+        .lineBetween(frame.x, frame.y, frame.x + frame.width, frame.y);
+      if (occupied.height > 8) {
+        graphics.lineStyle(2, 0xe0ad73, 0.38)
+          .strokeRect(occupied.x, occupied.y, occupied.width, occupied.height);
       }
-      graphics.fillStyle(0xf1b958, 0.95).fillTriangle(bounds.x - 28, bounds.y + bounds.height, bounds.x - 2, bounds.y + bounds.height, bounds.x - 15, bounds.y + bounds.height - 38);
+      graphics.fillStyle(0xf1b958, 0.83)
+        .fillTriangle(bounds.x - 25, bounds.y + bounds.height,
+          bounds.x - 5, bounds.y + bounds.height,
+          bounds.x - 15, bounds.y + bounds.height - 26);
     } else {
       this.drawRoofNet(graphics, state, obstacle);
     }
