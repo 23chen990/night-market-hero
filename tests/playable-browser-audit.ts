@@ -172,12 +172,34 @@ try {
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
         if (state.levelId === 'night-patrol' && !state.vehicleId) {
-          // A concrete, input-driven skilled choice in the first challenge.
-          // The game state stays untouched; the player releases a real rope
-          // near a visible fixed world target. No free or automatic ride.
           const firstOffer = state.vehicleOffers.find(item => item.id === '货运滑索' && item.status === 'available');
-          if (firstOffer && state.player.x >= firstOffer.x - 155 && state.player.x <= firstOffer.x + 25
-            && !!state.attachedAnchorId && state.player.y >= firstOffer.y - 120) wantHold = false;
+          if (touch) {
+            // Same real forward-support preparation and airborne pulley
+            // release as the independent exact-build skill contrast.
+            // The previous natural driver re-grappled through the visible
+            // ring on slow frames, leaving a valid player skill unproven.
+            if (firstOffer && state.player.x >= firstOffer.x - 340 && state.player.x < firstOffer.x - 200)
+              wantHold = true;
+            if (firstOffer && state.player.x >= firstOffer.x - 185 && state.player.x <= firstOffer.x + 60
+              && state.player.y >= firstOffer.y - 150 && state.player.y <= firstOffer.y + 125)
+              wantHold = false;
+          } else {
+            // An ordinary keyboard player is NOT required to earn a ride:
+            // maintaining a real grapple through optional world encounters
+            // documents their missed consequences while preserving the route.
+            // The touch journey independently proves actual vehicle earning.
+            if (firstOffer && state.player.x >= firstOffer.x - 310 && state.player.x <= firstOffer.x + 165)
+              wantHold = true;
+            const kite = state.vehicleOffers.find(item => item.id === '纸鸢' && item.status === 'available');
+            if (kite && state.player.x >= kite.x - 350 && state.player.x <= kite.x + 140)
+              wantHold = true;
+          }
+          // A default journey may choose the safe roof rope over the
+          // difficult lantern's explicit release-THEN-new-press sequence.
+          // That skill is checked by the dedicated same-HTML lantern gate.
+          const lantern = state.vehicleOffers.find(item => item.id === '灯笼群' && item.status === 'available');
+          if (lantern && state.player.x >= lantern.x - 200 && state.player.x <= lantern.x + 105)
+            wantHold = true;
         }
         await edge(wantHold, state.tick);
         if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
