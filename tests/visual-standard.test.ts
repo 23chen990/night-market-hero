@@ -72,13 +72,22 @@ describe('ui-f-night-market-interior visual standard', () => {
     assert.match(mainSource, /VERMILION_HEADBAND/);
   });
 
-  test('renders the restored lashed bamboo states and keeps shutter drawing on collision geometry', () => {
+  test('restored bamboo and approved cloth shutter remain tied to physical occupied bounds', () => {
     assert.match(mainSource, /lashed-bamboo-scaffold/);
     assert.match(mainSource, /behaviorState === 'strained'/);
     assert.match(mainSource, /behaviorState === 'broken'/);
     assert.doesNotMatch(mainSource, /impactShift/);
     assert.match(mainSource, /const occupied = obstacle\.occupiedBounds/);
-    assert.match(mainSource, /fillRect\(occupied\.x, occupied\.y, occupied\.width, occupied\.height\)/);
+    assert.match(mainSource, /this\.barricadeSprite[\s\S]*?setPosition\(occupied\.x \+ occupied\.width \/ 2, occupied\.y \+ occupied\.height \/ 2\)/,
+      'the visible cloth must be centered on the actual blocker, not the player');
+    assert.match(mainSource, /\.setDisplaySize\(Math\.max\(80, occupied\.width \* 3\.3\)/,
+      'the approved transparent art scales according to the physical blocker envelope');
+    assert.match(mainSource, /\.strokeRect\(occupied\.x, occupied\.y, occupied\.width, occupied\.height\)/,
+      'the actual hazard footprint must remain identifiable to players');
+    assert.match(mainSource, /this\.barricadeSprite\.setVisible\(false\)/,
+      'no phantom cloth should persist when the real hazard is absent');
+    assert.doesNotMatch(mainSource, /fillRect\(occupied\.x, occupied\.y, occupied\.width, occupied\.height\)/,
+      'old opaque debug collision rectangle must not obscure the panoramic street');
   });
 
   test('open streets remove the code-drawn market gate and gate prompts', () => {
