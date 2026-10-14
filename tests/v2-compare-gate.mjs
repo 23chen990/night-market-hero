@@ -61,6 +61,9 @@ assert.ok(s.screenshotNames.includes('encounter-4-claimed'), 'earned kite requir
 const kiteA=c.nearest?.[kiteIdentity], kiteB=s.nearest?.[kiteIdentity];
 assert.ok(kiteA && kiteB && kiteA.distancePx < 120 && kiteB.distancePx < 120,
   'both players need a real input-driven approach to the SAME fixed kite socket');
+assert.equal(kiteA.inputHeld, true, 'conservative player must visibly keep holding near the kite');
+assert.equal(kiteB.inputHeld, false, 'earned kite requires a real released input state');
+assert.equal(kiteB.attached, false, 'earned kite must be approached in true free flight');
 console.log(JSON.stringify({ status: 'ENGINEERING_CONTRAST_PASS', sha256: casual.buildSha256,
   viewport: c.viewport, casual: Object.fromEntries(cm), skilled: Object.fromEntries(sm),
   limits: 'Not a blind human study, full game experience review, performance certification or platform release.' }, null, 2));

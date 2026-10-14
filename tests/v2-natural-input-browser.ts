@@ -162,6 +162,10 @@ try {
         if (!skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
           const pulley = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
           if (pulley && s.player.x >= pulley.x - 310 && s.player.x < pulley.x + 165) wantHold = true;
+          // Conservative input chooses to KEEP the rope near the optional kite.
+          // It must still approach the identical visible fixed world target.
+          const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
+          if (kite && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) wantHold = true;
         }
         if (skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
           const first = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');

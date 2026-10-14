@@ -94,7 +94,9 @@ export function controlCue(state: GrappleState): ControlCue {
     if (nextOffer.id === '灯笼群' && imminent && !state.inputHeld)
       return { title: '灯绳在前！按住接索', detail: '经过实体绳结时按住，过早按住会错过', tone: 'ready' };
     if (nextOffer.id === '纸鸢' && imminent)
-      return { title: '松手接鸢绳！', detail: '先荡到屋檐高度，再飞入纸鸢下方挂柄', tone: 'ready' };
+      return state.attachedAnchorId || state.inputHeld
+        ? { title: '松手飞进鸢绳圈！', detail: '借屋檐摆荡向上，离开飞索后穿过发光圈', tone: 'ready' }
+        : { title: '保持松手！鸢绳就在前方', detail: '先接住纸鸢，再按住拉升；现在接钩会错过', tone: 'ready' };
     if (nextOffer.id === '青鸾' && imminent)
       return { title: '青鸾在前！把握松手时机', detail: '飞到高线并完成两次漂亮松手', tone: 'ready' };
     return { title: `前方 ${nextOffer.id} · ${Math.max(0, Math.round(distance / 30))}m`,

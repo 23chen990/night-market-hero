@@ -97,11 +97,13 @@ export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: Grapple
       g.lineStyle(6, 0xffe9a8, 1).lineBetween(x, y - 1, x, y + 30);
       g.lineStyle(6, 0xffe9a8, 1).strokeCircle(x + 11, y + 32, 11);
     } else if (offer.id === '纸鸢') {
-      // Traditional sail with a reachable handle underneath.
+      // The visible long tether and handle justify the full collision ellipse.
+      const handleY = y + Math.min(ry - 16, 100);
       g.fillStyle(0xecc277, 0.94).fillTriangle(x, y - 52, x - 45, y - 6, x, y + 4);
       g.fillStyle(0xe08d64, 0.96).fillTriangle(x, y - 52, x + 45, y - 6, x, y + 4);
-      g.lineStyle(3, 0xfff4c7, 1).lineBetween(x, y - 45, x, y + 24);
-      g.lineStyle(6, 0xfff4c7, 1).lineBetween(x - 17, y + 26, x + 17, y + 26);
+      g.lineStyle(3, 0xfff4c7, 0.98).lineBetween(x, y - 45, x, handleY);
+      g.lineStyle(6, 0xfff4c7, 1).lineBetween(x - 17, handleY, x + 17, handleY);
+      g.fillStyle(0xfff2bf, 0.92).fillCircle(x, handleY, 8);
     } else if (offer.id === '灯笼群') {
       // A physical cross-cable knot with lanterns on either side.
       g.lineStyle(4, 0xf5be91, 1).lineBetween(x - 46, y - 24, x + 46, y - 24);

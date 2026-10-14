@@ -264,9 +264,16 @@ try {
         filter(sample => sample.level === 'night-patrol');
       assert.ok(guardSamples.length > 3 && guardSamples.at(-1)!.guardX > guardSamples[0]!.guardX + 2500,
         'the physical officer must advance thousands of world units during this run');
-      assert.ok(naturalClaims.size > 0 && naturalMisses.size > 0, 'a skill test must demonstrate both real earning and real missed opportunities');
-      if (touch) assert.ok(naturalClaims.has('货运滑索'),
-        'a timely actual rope release must make the entry ride attainable');
+      // All four world encounters remain mandatory; their rewards do not.
+      // The conservative desktop journey is allowed to miss every optional
+      // vehicle; the separate actual touch route must prove a real earned ride.
+      assert.ok(naturalMisses.size > 0,
+        'the natural route must demonstrate real, visible missed opportunities');
+      if (touch) {
+        assert.ok(naturalClaims.size > 0, 'skilled touch input must earn a real ride');
+        assert.ok(naturalClaims.has('货运滑索'),
+          'a timely actual rope release must make the entry ride attainable');
+      }
       for (const event of resolvedEncounters.values()) {
         if (event.outcome !== 'claimed') continue;
         assert.ok(observedClaims.has(event.instanceId),

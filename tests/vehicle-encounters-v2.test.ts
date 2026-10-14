@@ -30,7 +30,18 @@ test('all four initial challenges are source-anchored, deterministic, visible an
     assert.ok(planned.x > segmentStartPx(segment));
     assert.ok(planned.x < segmentStartPx(segment) + segmentLengthPx(segment));
     assert.ok(planned.y > 125 && planned.y < 720);
-    assert.ok(planned.radiusX <= 100 && planned.radiusY <= 100);
+    assert.ok(planned.radiusX <= 100 && planned.radiusY <= (id === '纸鸢' ? 120 : 100));
+    if (id === '纸鸢') {
+      assert.equal(planned.radiusY, 120, 'the visible and physical kite radius must agree');
+      assert.equal(sweptEncounterContact(
+        { x: planned.x - 90, y: planned.y + 70 },
+        { x: planned.x + 90, y: planned.y + 70 }, planned,
+      ), true, 'crossing the visible kite tether is a genuine contact');
+      assert.equal(sweptEncounterContact(
+        { x: planned.x - 90, y: planned.y + 126 },
+        { x: planned.x + 90, y: planned.y + 126 }, planned,
+      ), false, 'no invisible pickup outside the visible kite ellipse');
+    }
     assert.ok(planned.announceX < planned.x - 600, 'warn early enough to change swing trajectory');
     assert.ok(encounterInstructions(id).length >= 8, 'each challenge has a usable short cue');
     const g = game(seed);
@@ -71,6 +82,10 @@ test('distinct qualifying actions require a real recent press/release, speed, an
   assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), true);
   s.playerY = 610;
   assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), false);
+  assert.equal(missedEncounterReason('high-release', 630, true, 554, 120),
+    '松手时机不对', 'the drawn lower part of the kite is not insufficient height');
+  assert.equal(missedEncounterReason('high-release', 665, true, 554, 120),
+    '高度不够，借高处挂点再试');
   // An actual release can fly for ~1s before entering the illustrated handle:
   // a rigid 65-tick clock must not invalidate that physically valid crossing.
   s.playerY = 500;

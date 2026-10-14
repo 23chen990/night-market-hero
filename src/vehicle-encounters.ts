@@ -27,8 +27,10 @@ const RECIPES: Record<VehicleId, {
 }> = {
   '货运滑索': { supportPattern: /crossbeam|bridge-rail|eave-beam/, heightOffset: 350,
     radiusX: 90, radiusY: 98, requiredAction: 'release', description: '松开旧飞索，飞进吊轮挂环' },
-  '纸鸢': { supportPattern: /eave-beam|walkway-beam|roof-rail/, heightOffset: 242,
-    radiusX: 76, radiusY: 88, requiredAction: 'high-release', description: '借高挂点起飞，松手接住鸢绳' },
+  // Same fixed authored support. Its longer visible tether matches the real
+  // post-pulley high-roof flight without granting the kite automatically.
+  '纸鸢': { supportPattern: /eave-beam|walkway-beam|roof-rail/, heightOffset: 286,
+    radiusX: 76, radiusY: 120, requiredAction: 'high-release', description: '借高挂点起飞，松手接住鸢绳' },
   '灯笼群': { supportPattern: /lantern|rope/, heightOffset: 166,
     radiusX: 84, radiusY: 90, requiredAction: 'press', description: '飞近灯绳结，按住接索' },
   '青鸾': { supportPattern: /left-eave-beam|right-eave-beam/, heightOffset: 190,
@@ -113,9 +115,15 @@ export function encounterActionEligible(
     && state.stylishTicks.filter(t => state.tick - t <= 1200).length >= 2;
 }
 
-export function missedEncounterReason(action: EncounterAction, playerY: number, touchedButIneligible: boolean): string {
+export function missedEncounterReason(
+  action: EncounterAction, playerY: number, touchedButIneligible: boolean,
+  contactCenterY?: number, contactRadiusY?: number,
+): string {
   if (touchedButIneligible) {
-    if (action === 'high-release' && playerY > 590) return '高度不够，借高处挂点再试';
+    const visibleLowerBand = contactCenterY !== undefined && contactRadiusY !== undefined
+      ? contactCenterY + contactRadiusY * .9 : 590;
+    if (action === 'high-release' && playerY > visibleLowerBand)
+      return '高度不够，借高处挂点再试';
     if (action === 'stylish-release') return '需要连续两次漂亮松手';
     return action === 'press' ? '飞到灯绳旁时按住才接得上' : '松手时机不对';
   }

@@ -1733,7 +1733,8 @@ export class GrappleGame {
       } else if (touching && !eligible) {
         offer.touchedWrongAction = true;
       } else if (player.x > offer.x + radiusX + 70) {
-        const reason = missedEncounterReason(requiredAction, player.y, !!offer.touchedWrongAction);
+        const reason = missedEncounterReason(
+          requiredAction, player.y, !!offer.touchedWrongAction, offer.y, radiusY);
         this.resolveVehicleOffer(offer, 'missed', reason);
       }
     }
