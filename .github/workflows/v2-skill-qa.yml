@@ -63,6 +63,10 @@ jobs:
         run: npm run test:file
       - name: Real phone and desktop journey with per-encounter evidence
         run: npm run test:play
+      - name: Deliberate error in actual touch flight must result in guard contact
+        run: npm run test:pursuit
+      - name: Same-build independent escape-versus-caught verification
+        run: npm run verify:chase-matrix
       - name: Failure, revive, viewport and menu checks
         run: npm run test:safety
       - uses: actions/upload-artifact@v4
@@ -71,6 +75,7 @@ jobs:
           name: v2-natural-evidence-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             evidence/playable-audit/
+            evidence/v2-pursuit/
             dist/index.html
           retention-days: 14
           if-no-files-found: warn

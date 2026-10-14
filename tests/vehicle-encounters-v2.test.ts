@@ -57,6 +57,14 @@ test('distinct qualifying actions require a real recent press/release, speed, an
   assert.equal(encounterActionEligible('release', s), true);
   assert.equal(encounterActionEligible('high-release', s), true);
   assert.equal(encounterActionEligible('stylish-release', s), false);
+  // A stale release is not a valid interaction with a later ring.
+  s.lastReleaseTick = 159;
+  assert.equal(encounterActionEligible('release', s), false);
+  s.lastReleaseTick = 180;
+  s.playerY = 535;
+  assert.equal(encounterActionEligible('high-release', s), false);
+  s.playerY = 420;
+  assert.equal(encounterActionEligible('high-release', s), true);
   s.playerY = 580;
   assert.equal(encounterActionEligible('high-release', s), false);
   s.playerY = 420;

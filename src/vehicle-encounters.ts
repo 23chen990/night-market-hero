@@ -96,10 +96,11 @@ export function encounterActionEligible(
 ): boolean {
   if (state.playerVx < 165 || state.attached) return false;
   const releaseAge = state.tick - state.lastReleaseTick;
-  const recentlyReleased = releaseAge >= 0 && releaseAge < 130;
+  // Player release must be deliberate and near the actual ring: 40 fixed steps = 1/3 s.
+  const recentlyReleased = releaseAge >= 0 && releaseAge <= 40;
   if (action === 'release') return !state.inputHeld && recentlyReleased;
   if (action === 'high-release') return !state.inputHeld && releaseAge >= 0
-    && releaseAge < 96 && state.playerY <= 540;
+    && releaseAge <= 65 && state.playerY <= 520;
   if (action === 'press') return state.inputHeld && state.tick - state.lastPressTick >= 0
     && state.tick - state.lastPressTick <= 26;
   return !state.inputHeld && releaseAge >= 0 && releaseAge < 80 && state.playerY <= 455

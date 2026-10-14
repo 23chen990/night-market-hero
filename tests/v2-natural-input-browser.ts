@@ -151,7 +151,7 @@ try {
             : s.tick - releaseAt > 20 && (s.player.vy > 0 || s.player.y > 540 || s.inputTransitions === 0);
         if (skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
           const first = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
-          if (first && s.player.x >= first.x - 230 && s.player.x <= first.x + 40
+          if (first && s.player.x >= first.x - 155 && s.player.x <= first.x + 25
             && !!s.attachedAnchorId && s.player.y >= first.y - 120)
             wantHold = false; // a deliberate player release at the visible ring
           const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');

@@ -88,7 +88,7 @@ export function controlCue(state: GrappleState): ControlCue {
       title: `前方 ${nextOffer.id} · ${adjustHeight}`,
       detail: encounterInstructions(nextOffer.id), tone: 'ready',
     };
-    const imminent = distance < 250 && distance > -65;
+    const imminent = distance < 170 && distance > -65;
     if (nextOffer.id === '货运滑索' && imminent && state.attachedAnchorId)
       return { title: '现在松手！飞向货运滑索', detail: '只有飞进挂环才算接住', tone: 'ready' };
     if (nextOffer.id === '灯笼群' && imminent && !state.inputHeld)
