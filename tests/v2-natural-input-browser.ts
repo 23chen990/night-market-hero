@@ -119,7 +119,9 @@ try {
         if (s.levelId === 'night-patrol') {
           for (const offer of s.vehicleOffers) {
             const key = offer.instanceId ?? `${offer.segment}-${offer.id}`;
-            if (offer.status === 'available' && Math.abs(s.player.x - offer.x) < 1300) {
+            // The next observation may already say claimed, so record the
+            // nearest ACTUAL approached point across the resolution frame.
+            if (Math.abs(s.player.x - offer.x) < 1300) {
               const distancePx = Math.abs(s.player.x - offer.x);
               if (!nearest[key] || distancePx < nearest[key]!.distancePx) {
                 nearest[key] = { distancePx, heightDifferencePx: s.player.y - offer.y,
@@ -149,6 +151,13 @@ try {
               : s.player.y > 390
           : anchor ? !(s.player.x > anchor.x + 12 && s.player.vx > 0 && s.player.vy < 60) && s.player.vx >= 0 && s.tick - holdAt < 160
             : s.tick - releaseAt > 20 && (s.player.vy > 0 || s.player.y > 540 || s.inputTransitions === 0);
+        // Intentional conservative choice: keep holding the actual rope
+        // while the optional pulley passes; no simulation state manipulation.
+        // Not a blind-player success-rate estimate.
+        if (!skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
+          const pulley = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
+          if (pulley && s.player.x >= pulley.x - 310 && s.player.x < pulley.x + 165) wantHold = true;
+        }
         if (skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
           const first = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
           if (first && s.player.x >= first.x - 155 && s.player.x <= first.x + 25

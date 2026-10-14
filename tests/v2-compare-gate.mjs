@@ -37,13 +37,15 @@ for (const [key, value] of [...cm, ...sm]) {
 const identity = [...sm.keys()].find(k => k.endsWith(':货运滑索'));
 assert.ok(identity, 'first world encounter missing from skilled path');
 assert.equal(sm.get(identity)?.result, 'claimed', 'skilled player must earn the pulley using a real release');
-assert.equal(cm.get(identity)?.result, 'missed', 'casual player must be able to miss without secretly getting the pulley');
+assert.equal(cm.get(identity)?.result, 'missed', 'conservative player must physically pass the optional pulley without an automatic grant');
 assert.ok(s.seenRides.includes('货运滑索'), 'actual mount and ride must appear in the browser');
 assert.ok(s.screenshotNames.some(n => n === 'encounter-2-claimed'), 'need a screenshot of earned ride');
 assert.ok(c.screenshotNames.some(n => n === 'encounter-2-missed'), 'need a screenshot of the missed ride');
 const a=c.nearest?.[identity], b=s.nearest?.[identity];
 assert.ok(a && b && a.distancePx < 120 && b.distancePx < 120,
-  'both players must physically approach the same world object');
+  'both paths must physically approach the same authored pickup');
+assert.equal(a.inputHeld, true, 'conservative touch path must keep the rope held at the pickup');
+assert.equal(a.attached, true, 'conservative path must pass with an actual grapple, not a skip or teleport');
 // The second route is not a larger hidden magnet: holding the actual
 // high-roof swing longer generates a physical upward launch into the kite.
 const kiteIdentity = [...sm.keys()].find(k => k.endsWith(':纸鸢'));
