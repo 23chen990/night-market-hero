@@ -121,13 +121,28 @@ export function controlCue(state: GrappleState): ControlCue {
     // rider to swing higher, which is the opposite of reaching its low knot.
     if (nextOffer.id === '灯笼群' && distance > -80 && distance <= 350) {
       const inVisibleHeightBand = Math.abs(state.player.y - nextOffer.y) <= margin * 0.90;
-      if (state.inputHeld) return {
-        title: distance > 120 ? '先松开旧飞索，下降到灯绳旁' : '灯绳就在前！松开后重新按住',
-        detail: '不能一直按住穿过；需要在实体绳结附近再次接索', tone: 'ready',
-      };
+      if (state.inputHeld) {
+        // "Release now" at 350px previously pulled natural players UP onto
+        // a prior roof rope until it stalled far above the lower lantern.
+        // Give the player a real approach phase, followed by an actionable
+        // near-knot release-then-FRESH-press rather than a magic catch.
+        if (distance > 150 && state.player.y < nextOffer.y - margin - 30
+          && !!state.attachedAnchorId && state.player.vx < 260)
+          return { title: '挂得太高，要倒摆了！先松手',
+            detail: '离开旧索，下一根选择低屋檐靠近灯绳', tone: 'danger' };
+        if (distance > 150) return {
+          title: '灯绳在前 · 先沿低屋檐前进',
+          detail: '靠近发光灯绳再松旧索，接着重新按住', tone: 'ready',
+        };
+        if (state.player.y >= nextOffer.y - margin - 30 && state.player.vx > 165)
+          return { title: '现在松开旧索！马上重新按住',
+            detail: '身体飞进发光灯绳圈时，再按一次才接住', tone: 'ready' };
+        return { title: '灯绳在下方，先调整到低路线',
+          detail: '不要挂旧索倒摆；错过也能继续逃跑', tone: 'ready' };
+      }
       if (distance <= 180 && inVisibleHeightBand) return {
         title: '现在按住！接住灯绳结',
-        detail: '正在飞过发光绳圈，立刻重新按住接索', tone: 'ready',
+        detail: '正在飞过发光绳圈，必须新按下才能接住', tone: 'ready',
       };
       if (state.player.y < nextOffer.y - margin * 0.90) return {
         title: '灯绳在下方，保持松手下降',
@@ -135,7 +150,7 @@ export function controlCue(state: GrappleState): ControlCue {
       };
       if (state.player.y > nextOffer.y + margin * 0.90) return {
         title: '灯绳在上方，这次可能赶不上',
-        detail: '下一个灯绳机会，提早从高处松手', tone: 'neutral',
+        detail: '下一个灯绳机会，提早从低屋檐飞近', tone: 'neutral',
       };
     }
     // A conservative rider can be high ABOVE the first pulley and lose

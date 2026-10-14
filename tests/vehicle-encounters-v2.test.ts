@@ -3,7 +3,8 @@ import test from 'node:test';
 import { createGrappleGame } from '../src/game-core.ts';
 import { segmentLengthPx, segmentStartPx, type VehicleId } from '../src/endless.ts';
 import { encounterActionEligible, planVehicleEncounter, sweptEncounterContact,
-  encounterInstructions, missedEncounterReason } from '../src/vehicle-encounters.ts';
+  encounterInstructions, missedEncounterReason,
+  preserveBirdPreparationForFinalBoarding } from '../src/vehicle-encounters.ts';
 import { createRunSnapshot, isValidRunState, parseRunSnapshot } from '../src/run-snapshot.ts';
 import { controlCue } from '../src/experience-director.ts';
 
@@ -72,7 +73,14 @@ test('lantern guidance prioritizes a real release then new press at the low visi
   state.player.x = offer.x - 220;
   state.player.y = offer.y - 150;
   state.inputHeld = true;
-  assert.match(controlCue(state).title, /先松开旧飞索/);
+  assert.match(controlCue(state).title, /先沿低屋檐前进/,
+    'warn to approach the actual low knot rather than releasing 220px too early');
+  state.player.x = offer.x - 112;
+  state.player.y = offer.y - 35;
+  state.player.vx = 385;
+  state.attachedAnchorId = state.anchors[0]?.id ?? null;
+  assert.match(controlCue(state).title, /现在松开旧索/,
+    'within the drawn knot approach, request a real release THEN a new press');
   state.inputHeld = false;
   state.player.x = offer.x - 105;
   state.player.y = offer.y - 126;
@@ -82,6 +90,35 @@ test('lantern guidance prioritizes a real release then new press at the low visi
   state.player.y = offer.y + 143;
   assert.match(controlCue(state).title, /在上方/);
   assert.match(missedEncounterReason('press', offer.y, true), /重新按住/);
+});
+
+test('two earned stylish releases survive only a REAL final Qingluan boarding dismount', () => {
+  const actual = planVehicleEncounter(32, 8, '青鸾');
+  assert.ok(actual);
+  const offers = [{ id: '青鸾' as const, status: 'available',
+    x: actual.x, y: actual.y, radiusX: actual.radiusX, radiusY: actual.radiusY }];
+  const real = {
+    player: { x: actual.x - 43, y: actual.y + 65 },
+    tick: 390, releasedRealAnchor: true, stylishTicks: [265, 346],
+    offers,
+  };
+  assert.equal(preserveBirdPreparationForFinalBoarding(real), true,
+    'two consecutive stylish flights already earned before the final ordinary boarding release');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real, releasedRealAnchor: false }), false,
+    'merely entering the area with no real rope release is never a qualification');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real, stylishTicks: [346] }), false,
+    'one good release cannot be upgraded into two');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real,
+    player: { x: actual.x - 280, y: actual.y + 65 } }), false,
+    'an ordinary release in a different street still breaks preparation');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real,
+    player: { x: actual.x - 43, y: actual.y + 220 } }), false,
+    'a release far BELOW the painted ring cannot bank the boarding qualification');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real, tick: 2000 }), false,
+    'past stylish results expire and cannot grant stale qualification');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real,
+    offers: [{ ...offers[0]!, status: 'missed' }] }), false,
+    'a resolved instance may never be retroactively collected');
 });
 
 test('qingluan remains tied to a physical high support and earns no larger invisible catch radius', () => {

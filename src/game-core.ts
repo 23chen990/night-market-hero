@@ -1,5 +1,7 @@
 import { directedVehicle, directedMutation, guidedPickups, completedCheckpoints, isStylishRelease, pointSegmentDistance } from './experience-director.ts';
-import { planVehicleEncounter, sweptEncounterContact, encounterActionEligible, missedEncounterReason, type EncounterAction } from './vehicle-encounters.ts';
+import { planVehicleEncounter, sweptEncounterContact, encounterActionEligible,
+  missedEncounterReason, preserveBirdPreparationForFinalBoarding, type EncounterAction
+} from './vehicle-encounters.ts';
 import { UI_ANIMATION_STANDARD, type UiAnimationStandard } from './ui-animation.ts';
 import { difficultyAtSegment, gateCheckpointXForSegment, metersAtSegment, segmentForIndex, chooseMutation, rollVehicleForSegment, segmentIndexAtX, segmentProgressAtX, segmentStartPx, segmentLengthPx, retentionBoundsAtSegment, pickupPlacementForSegment, depthCoefficient, VEHICLES, type PickupPlacement, type VehicleId } from './endless.ts';
 import { cityChunksInView, type DistrictId } from './district-world.ts';
@@ -1595,9 +1597,19 @@ export class GrappleGame {
     } else {
       if (this.state.combo > 0) this.recordEvent('combo-break', 'slow-release');
       this.stylishFlights = 0;
-      // 青鸾's two stylish releases must be CONSECUTIVE real grapple actions.
-      // An ordinary/mistimed release breaks preparation as well as combo.
-      this.state.stylishReleaseTicks = [];
+      // Two previous stylish releases must still be CONSECUTIVE. Once earned,
+      // a FINAL ordinary boarding release near the actual visible Qingluan
+      // ring may spend that qualification, instead of erasing it at the apex.
+      // It never grants a vehicle: the same real contact + age + input gate
+      // still runs in collectVehicleOffers(). An ordinary release elsewhere
+      // (or without two qualifying releases) still breaks preparation.
+      if (!this.options.guidedExperience || !preserveBirdPreparationForFinalBoarding({
+        player: this.state.player,
+        tick: this.state.tick,
+        releasedRealAnchor: !!releasedAnchor,
+        stylishTicks: this.state.stylishReleaseTicks,
+        offers: this.state.vehicleOffers,
+      })) this.state.stylishReleaseTicks = [];
       this.state.combo = 0;
       this.state.comboTier = 1;
     }

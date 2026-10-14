@@ -101,6 +101,37 @@ export function planVehicleEncounter(seed: number, segment: number, id: VehicleI
   };
 }
 
+/**
+ * A player who already earned TWO consecutive real stylish rope releases may
+ * use an ordinary *final boarding* release beside the visible Qingluan ring.
+ * That last release is not a third stylish action and does NOT award a ride:
+ * the original swept-ellipse contact, fresh release, speed and two-release
+ * checks still decide the outcome. Everywhere else an ordinary release
+ * breaks the consecutive streak as before.
+ *
+ * This corrects the high-roof edge case where the player slows at the apex
+ * while entering the ring and loses previously earned preparation.
+ */
+export function preserveBirdPreparationForFinalBoarding(args: {
+  player: { x: number; y: number };
+  tick: number;
+  releasedRealAnchor: boolean;
+  stylishTicks: readonly number[];
+  offers: readonly {
+    id: VehicleId; status: string;
+    x: number; y: number; radiusX?: number; radiusY?: number;
+  }[];
+}): boolean {
+  if (!args.releasedRealAnchor) return false;
+  if (args.stylishTicks.filter(t => t <= args.tick && args.tick - t <= 1200).length < 2)
+    return false;
+  return args.offers.some(offer =>
+    offer.id === '青鸾' && offer.status === 'available'
+    && Math.abs(args.player.x - offer.x) <= (offer.radiusX ?? 88) + 80
+    && Math.abs(args.player.y - offer.y) <= (offer.radiusY ?? 92) + 85,
+  );
+}
+
 export function encounterActionEligible(
   action: EncounterAction,
   state: { tick: number; playerY: number; playerVx: number; inputHeld: boolean;

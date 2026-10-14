@@ -250,37 +250,31 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if (lanternRoute && lantern && s.player.x >= lantern.x - 680
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 180
             && s.player.x <= lantern.x + 95) {
-            // Releasing a rope at one fixed X is NOT a timing skill: the
-            // pre-lantern swing's vy changes dramatically with frame timing.
-            // While still attached to an actual rooftop support, project the
-            // body's unassisted gravity arc to the visible knot's X. Release
-            // only when that trajectory passes the DRAWN vertical grab band.
-            // This is a real input choice, not a physics override or magnet.
+            // Repeated real Chromium input experiments (55ms and 75ms)
+            // demonstrate that the old "gravity forecast" at -680px let
+            // a HIGH roof rope reverse around -350px, losing the real lantern.
+            // Preserve ordinary LOW roof swings until the drawn knot is
+            // immediately ahead. Release the actual rope only while flying
+            // toward the knot, then make a FRESH browser press in its SAME
+            // visible ellipse. No fixture movement or altered pickup gate.
             const rx = lantern.radiusX ?? 84;
             const ry = lantern.radiusY ?? 100;
-            const towardSeconds = Math.max(0.05, Math.min(1.25,
-              (lantern.x - s.player.x) / Math.max(230, s.player.vx)));
-            const naturalLandingY = s.player.y + s.player.vy * towardSeconds
-              + 0.5 * 880 * towardSeconds * towardSeconds;
+            const distance = lantern.x - s.player.x;
             if (anchor) {
-              const aimedAtVisibleKnot = naturalLandingY >= lantern.y - ry * 0.45
-                && naturalLandingY <= lantern.y + ry * 0.38;
-              wantHold = !aimedAtVisibleKnot
-                && s.player.x < lantern.x - rx - 15;
+              const atReachableLowKnot = distance <= 145
+                && s.player.y >= lantern.y - 130 && s.player.vx > 165;
+              wantHold = !atReachableLowKnot;
             } else {
-              // A NEW real press is still required in the SAME physical
-              // ellipse, with its untouched 26-tick input edge gate.
+              const dt = 0.05;
+              const nxNext = (s.player.x + s.player.vx * dt - lantern.x) / rx;
+              const nyNext = (s.player.y + s.player.vy * dt - lantern.y) / ry;
               const nxNow = (s.player.x - lantern.x) / rx;
               const nyNow = (s.player.y - lantern.y) / ry;
-              const latency = 0.045;
-              const nxNext = (s.player.x + s.player.vx * latency - lantern.x) / rx;
-              const nyNext = (s.player.y + s.player.vy * latency - lantern.y) / ry;
-              const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.95 * 0.95;
+              const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.94 * 0.94;
               const aboutToTouch = nxNext * nxNext + nyNext * nyNext <= 1;
-              wantHold = (touchingNow || aboutToTouch)
-                && s.player.x < lantern.x + 55;
+              wantHold = (touchingNow || aboutToTouch) && distance >= -55;
             }
           }
           if (birdRoute && lantern && s.player.x >= lantern.x - 330
