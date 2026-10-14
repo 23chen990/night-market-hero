@@ -27,3 +27,22 @@ export function isConservativeKiteApexDanger(
     && player.x <= kite.x + 140 && player.vx >= 0 && player.vx < 260
     && player.y < kite.y - (kite.radiusY ?? 120) - 6;
 }
+
+/** True-input option to MISS a low pulley without trapping a rider high on
+ * an old roof rope until the natural pendulum stalls and guards catch up.
+ * Evaluated from the same visible player and hanging handle geometry as
+ * a real human sees. No hidden physics/grapple/entitlement changes.
+ */
+export function shouldReleaseConservativePulleyRope(
+  player: { x: number; y: number; vx: number; vy: number },
+  pulley: { x: number; y: number; radiusY?: number },
+  isAttached: boolean,
+): boolean {
+  const aboveVisibleHandle = player.y < pulley.y - (pulley.radiusY ?? 98) - 8;
+  const nearHandle = player.x >= pulley.x - 255 && player.x <= pulley.x + 165;
+  const stillMovingForward = player.vx >= 210 && player.vy < 185;
+  const approachingReversal = isAttached
+    && player.x >= pulley.x - 110 && player.vx < 280;
+  return aboveVisibleHandle && nearHandle
+    && (stillMovingForward || approachingReversal);
+}

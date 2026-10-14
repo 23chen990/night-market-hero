@@ -4,7 +4,8 @@ import { createGrappleGame } from '../src/game-core.ts';
 import { segmentStartPx, type VehicleId } from '../src/endless.ts';
 import { isValidRunState } from '../src/run-snapshot.ts';
 import { controlCue } from '../src/experience-director.ts';
-import { shouldHoldConservativeKiteRope, isConservativeKiteApexDanger } from './v2-casual-kite-policy.ts';
+import { shouldHoldConservativeKiteRope, isConservativeKiteApexDanger,
+  shouldReleaseConservativePulleyRope } from './v2-casual-kite-policy.ts';
 
 const config = { marketGates: false, terrainMode: 'panorama', guidedExperience: true } as const;
 const opportunities: readonly [number, VehicleId][] = [
@@ -147,4 +148,33 @@ test('full natural keyboard route may release the real kite rope before reverse 
   assert.equal(isConservativeKiteApexDanger(
     { x: 7818, y: 366.7, vx: 83.2 }, kite, false), false,
     'only a currently attached real beam can be proactively released');
+});
+
+test('a conservative REAL release can miss the low pulley while surviving its high-roof swing', () => {
+  const pulley = { x: 3774, y: 614, radiusY: 98 };
+  assert.equal(shouldReleaseConservativePulleyRope(
+    { x: 3420, y: 385, vx: 480, vy: -60 }, pulley, true), false,
+    'do not release before the pulley is close enough to make a choice');
+  assert.equal(shouldReleaseConservativePulleyRope(
+    { x: 3560, y: 390, vx: 430, vy: -40 }, pulley, true), true,
+    'release while still flying forward, far ABOVE the visible low handle');
+  assert.equal(shouldReleaseConservativePulleyRope(
+    { x: 3740, y: 400, vx: 180, vy: 10 }, pulley, true), true,
+    'late roof rope stall must not trap the rider behind pursuing officers');
+  assert.equal(shouldReleaseConservativePulleyRope(
+    { x: 3700, y: 604, vx: 480, vy: 0 }, pulley, true), false,
+    'a rider actually INSIDE the visible pulley height can still fight to earn it');
+  const { game, offer } = atOpportunity(2);
+  const state = game.getState();
+  state.vehicleOffers = [{ ...offer, status: 'available' }];
+  state.vehicleId = null;
+  state.attachedAnchorId = state.anchors[0]?.id ?? null;
+  state.player.x = offer.x - 210;
+  state.player.y = offer.y - (offer.radiusY ?? 98) - 35;
+  state.player.vx = 345;
+  state.chase.distance = 260;
+  assert.match(controlCue(state).title, /吊轮在下方.*松手/,
+    'the real player sees the same actionable safe-release cue');
+  assert.equal(controlCue(state).tone, 'danger',
+    'a nearby physical officer raises the urgency, not an invisible rescue');
 });

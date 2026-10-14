@@ -121,8 +121,17 @@ export function encounterActionEligible(
       ? state.contactCenterY + state.contactRadiusY * .9 : 520);
   if (action === 'press') return state.inputHeld && state.tick - state.lastPressTick >= 0
     && state.tick - state.lastPressTick <= 26;
-  return !state.inputHeld && releaseAge >= 0 && releaseAge < 80 && state.playerY <= 455
-    && state.stylishTicks.filter(t => state.tick - t <= 1200).length >= 2;
+  // Qingluan used to reject genuine contact in the visible lower wing-ring
+  // (e.g. center y=404, drawn ring to y=496, but a hidden hard cap y=455).
+  // The SWEPT ELLIPSE already enforces physical contact. Keep two real
+  // stylish releases and the 80-tick window, with NO invisible magnet.
+  const birdVisibleBottom = state.contactCenterY !== undefined
+    && state.contactRadiusY !== undefined
+    ? state.contactCenterY + state.contactRadiusY : 455;
+  return !state.inputHeld && releaseAge >= 0 && releaseAge < 80
+    && state.playerY <= birdVisibleBottom
+    && state.stylishTicks.filter(t => t <= state.tick
+      && state.tick - t <= 1200).length >= 2;
 }
 
 export function missedEncounterReason(
@@ -144,7 +153,10 @@ export function missedEncounterReason(
         return `还差${2 - context.stylishReleaseCount}次漂亮松手，先抓高处屋檐再松手`;
       if (context.attached || context.inputHeld)
         return '青鸾在眼前！先松开旧飞索，再飞进翼环';
-      if (playerY > 455) return '青鸾在上方，借前一根高处飞索提升高度';
+      const birdVisibleBottom = contactCenterY !== undefined && contactRadiusY !== undefined
+        ? contactCenterY + contactRadiusY : 455;
+      if (playerY > birdVisibleBottom)
+        return '青鸾在上方，借前一根高处飞索提升高度';
       if (context.releaseAge < 0 || context.releaseAge >= 80)
         return '松手太早了，靠近青鸾发光圈再离开飞索';
       return '青鸾接取时机不对，沿高线继续练习';

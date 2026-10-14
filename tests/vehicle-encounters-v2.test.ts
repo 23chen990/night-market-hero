@@ -131,8 +131,11 @@ test('qingluan failed contact explains the REAL missing action rather than alway
   assert.match(missedEncounterReason('stylish-release', 423, true, 404, 92, c), /还差1次漂亮松手/);
   assert.match(missedEncounterReason('stylish-release', 410, true, 404, 92,
     { ...c, stylishReleaseCount: 2, attached: true }), /先松开旧飞索/);
-  assert.match(missedEncounterReason('stylish-release', 470, true, 404, 92,
+  assert.match(missedEncounterReason('stylish-release', 510, true, 404, 92,
     { ...c, stylishReleaseCount: 2 }), /在上方/);
+  assert.doesNotMatch(missedEncounterReason('stylish-release', 470, true, 404, 92,
+    { ...c, stylishReleaseCount: 2 }), /在上方/,
+    'a rider inside the drawn lower wing must not be told they are too low');
   assert.match(missedEncounterReason('stylish-release', 405, true, 404, 92,
     { ...c, stylishReleaseCount: 2, releaseAge: 120 }), /松手太早/);
   assert.equal(missedEncounterReason('stylish-release', 423, true),
@@ -184,6 +187,20 @@ test('distinct qualifying actions require a real recent press/release, speed, an
   s.playerY = 420;
   s.stylishTicks = [80, 170];
   assert.equal(encounterActionEligible('stylish-release', s), true);
+  // Qingluan shares the REAL visible ellipse with the renderer. The previous
+  // invisible y<=455 cap rejected a genuine y=485 contact in the drawn
+  // center=404 radiusY=92 ring even with two real stylish releases.
+  s.playerY = 485;
+  assert.equal(encounterActionEligible('stylish-release', {
+    ...s, contactCenterY: 404, contactRadiusY: 92,
+  }), true, 'the lower visible wing is a legal skilled interception');
+  assert.equal(encounterActionEligible('stylish-release', s), false,
+    'legacy calls without an authored target retain the old conservative height cap');
+  s.playerY = 500;
+  assert.equal(encounterActionEligible('stylish-release', {
+    ...s, contactCenterY: 404, contactRadiusY: 92,
+  }), false, 'do not enlarge the physical circle or accept beyond its bottom');
+  s.playerY = 420;
   s.attached = true;
   assert.equal(encounterActionEligible('release', s), false);
   s.attached = false;

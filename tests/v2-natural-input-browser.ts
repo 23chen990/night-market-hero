@@ -9,7 +9,8 @@ import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { GrappleState } from '../src/game-core.ts';
-import { shouldHoldConservativeKiteRope } from './v2-casual-kite-policy.ts';
+import { shouldHoldConservativeKiteRope,
+  shouldReleaseConservativePulleyRope } from './v2-casual-kite-policy.ts';
 
 const target = resolve('dist/index.html');
 const targetHtml = await readFile(target, 'utf8');
@@ -191,7 +192,15 @@ try {
           if (anchor && s.player.x > anchor.x - 45
             && s.player.vx > 240 && s.player.vy < 130) wantHold = false;
           const pulley = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
-          if (pulley && s.player.x >= pulley.x - 310 && s.player.x < pulley.x + 165) wantHold = true;
+          if (pulley && s.player.x >= pulley.x - 310 && s.player.x < pulley.x + 165) {
+            // A visible low pulley can be safely declined from the HIGH roof.
+            // In the failing 9e build, unconditional holding through this
+            // region made x~3765 vx reverse and physical guards catch the
+            // casual player BEFORE the first opportunity could be resolved.
+            // This is a genuine early release, not a guard speed override.
+            wantHold = !shouldReleaseConservativePulleyRope(
+              s.player, pulley, !!anchor);
+          }
           // Keep the supported old rope through the optional kite approach,
           // then release ABOVE the visible ring before that rope swings
           // backwards. Unconditionally holding until kite.x + 140 trapped
@@ -313,7 +322,11 @@ try {
               // releasing only then sent the hero 9px OVER the visible
               // ellipse at its center. More frequent near-target real input
               // creates an actual usable, observable mid-arc release.
-              wantHold = toBird > 155;
+              // Finish rising on the REAL supported rope. An earlier 155px
+              // release left the rider ~114px below the bird at its center.
+              // A late ~40px actual release intersects its DRAWN lower wing
+              // with two stylish releases already earned. No target movement.
+              wantHold = toBird > 40;
             } else if (!anchor && toBird <= 225 && toBird >= -150) {
               wantHold = false;
             }

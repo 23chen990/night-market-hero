@@ -138,6 +138,19 @@ export function controlCue(state: GrappleState): ControlCue {
         detail: '下一个灯绳机会，提早从高处松手', tone: 'neutral',
       };
     }
+    // A conservative rider can be high ABOVE the first pulley and lose
+    // momentum on the OLD roof rope without ever reaching its low handle.
+    // Warn while forward speed remains; skipping a pickup is preferable to
+    // an unexplained backward swing and officer capture. Never auto-release.
+    if (nextOffer.id === '货运滑索' && distance > -80 && distance < 330
+      && tooHigh && !!state.attachedAnchorId
+      && state.player.vx >= 0 && state.player.vx < 450) {
+      return {
+        title: '吊轮在下方，趁还能前进赶紧松手',
+        detail: '这次接不到也别挂到倒退；松手飞出去，下次再抢',
+        tone: state.chase.distance < 340 ? 'danger' : 'ready',
+      };
+    }
     if (distance <= 320 && adjustHeight) return {
       title: `前方 ${nextOffer.id} · ${adjustHeight}`,
       detail: encounterInstructions(nextOffer.id), tone: 'ready',
