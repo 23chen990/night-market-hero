@@ -53,6 +53,11 @@ try {
     // In a bird success both the preparation and sustained player-controlled
     // ride must be attributable to THIS encounter instance, never a fixture.
     const birdClaimPreparations: Record<string, number[]> = {};
+    // Read-only per-frame evidence: diagnose whether a MISS was caused by
+    // height, a held rope, late release, or lack of TWO real stylish releases.
+    const birdApproachTrace: Array<{ tick: number; x: number; y: number; vx: number;
+      vy: number; attached: string | null; held: boolean; stylishTicks: number[];
+      lastReleaseAge: number }> = [];
     let birdRideFirstTick: number | null = null;
     let birdRideLastTick: number | null = null;
     const nearest: Record<string, { distancePx: number; heightDifferencePx: number;
@@ -236,7 +241,7 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if ((lanternRoute || birdRoute) && lantern && s.player.x >= lantern.x - 365 && s.player.x <= lantern.x + 95) {
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 365 && s.player.x <= lantern.x + 95) {
             // A low hanging REAL knot: first release the old roof rope, then
             // press at current world contact or an input-delivery prediction.
             // This affects only the test player's timing, NOT the game's
@@ -252,21 +257,52 @@ try {
             wantHold = (touchingNow || aboutToTouch)
               && s.player.x < lantern.x + 55 && !anchor;
           }
+          if (birdRoute && lantern && s.player.x >= lantern.x - 330
+            && s.player.x <= lantern.x + 100) {
+            // Choosing the rare high-bird route means IGNORING the optional
+            // lantern knot rather than losing rooftop stylish opportunities to
+            // a long lantern ride. Preserve the current real button state,
+            // creating NO new 'press' at the knot; it may honestly be missed.
+            wantHold = s.inputHeld;
+          }
           const bird = s.vehicleOffers.find(offer => offer.id === '青鸾'
             && offer.status === 'available');
-          if (birdRoute && bird && s.player.x >= bird.x - 800
+          if (birdRoute && bird && s.player.x >= bird.x - 2300
             && s.player.x <= bird.x + 150) {
             const toBird = bird.x - s.player.x;
-            // The rooftop beam BEFORE the bird, not the closer beam directly
-            // underneath it, supplies the upward arc. Hold that real support
-            // until the body is ascending alongside the drawn bird, then
-            // actually release. Retain the engine's two-stylish-release and
-            // strict swept visible-ellipse gates without any test-side award.
-            const priorSupport = anchor
-              && anchor.x >= bird.x - 400 && anchor.x <= bird.x - 220;
-            if (priorSupport) wantHold = toBird > 45;
-            else if (!anchor && toBird <= 225 && toBird >= -150)
+            const recentStyleTicks = s.stylishReleaseTicks.filter(t =>
+              t <= s.tick && s.tick - t <= 1200);
+            const physicallyStylish = !!anchor
+              && Math.hypot(s.player.vx, s.player.vy) >= 360
+              && s.player.vx > 200 && s.player.vy < 120;
+            const preparingRope = anchor && anchor.x >= bird.x - 2100
+              && anchor.x < bird.x - 400;
+            const finalHighRope = anchor && anchor.x >= bird.x - 400
+              && anchor.x <= bird.x - 220;
+            // A REAL preparatory stylish release on the previous rooftops is
+            // necessary: the old bird script earned lantern then arrived with
+            // only ONE real stylish-release record. This route actively gives
+            // up that optional lantern, builds one earned release on an earlier
+            // support, then flies off the next HIGH beam to touch the bird.
+            if (recentStyleTicks.length < 1 && preparingRope && physicallyStylish
+              && toBird > 400 && s.player.x >= anchor.x - 40) {
               wantHold = false;
+            } else if (finalHighRope) {
+              // At 70ms screen sampling, toBird>45 released too late: the
+              // player was still attached at x~14516 INSIDE the bird's drawn
+              // ellipse. Leave the previous rope BEFORE reaching the ring.
+              wantHold = toBird > 120;
+            } else if (!anchor && toBird <= 225 && toBird >= -150) {
+              wantHold = false;
+            }
+          }
+          if (birdRoute && bird && s.player.x >= bird.x - 2300
+            && s.player.x <= bird.x + 180 && step % 2 === 0) {
+            birdApproachTrace.push({ tick: s.tick, x: s.player.x, y: s.player.y,
+              vx: s.player.vx, vy: s.player.vy, attached: s.attachedAnchorId,
+              held: s.inputHeld,
+              stylishTicks: s.stylishReleaseTicks.filter(t => s.tick - t <= 1200),
+              lastReleaseAge: s.tick - s.lastGrappleReleaseTick });
           }
         }
         await edge(wantHold, s.tick);
@@ -284,7 +320,7 @@ try {
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
         encounters: [...encounters.entries()], nearest, inputEdges,
-        birdClaimPreparations,
+        birdClaimPreparations, birdApproachTrace,
         birdMount: birdRideFirstTick === null || birdRideLastTick === null ? null
           : { firstTick: birdRideFirstTick, lastTick: birdRideLastTick,
             observedTicks: birdRideLastTick - birdRideFirstTick },

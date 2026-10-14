@@ -1734,7 +1734,12 @@ export class GrappleGame {
         offer.touchedWrongAction = true;
       } else if (player.x > offer.x + radiusX + 70) {
         const reason = missedEncounterReason(
-          requiredAction, player.y, !!offer.touchedWrongAction, offer.y, radiusY);
+          requiredAction, player.y, !!offer.touchedWrongAction, offer.y, radiusY,
+          { stylishReleaseCount: this.state.stylishReleaseTicks
+              .filter(t => t <= this.state.tick && this.state.tick - t <= 1200).length,
+            attached: !!this.state.attachedAnchorId,
+            inputHeld: this.state.inputHeld,
+            releaseAge: this.state.tick - this.state.lastGrappleReleaseTick });
         this.resolveVehicleOffer(offer, 'missed', reason);
       }
     }

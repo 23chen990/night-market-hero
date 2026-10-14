@@ -126,6 +126,19 @@ test('qingluan warning begins one full street early, counts actual stylish relea
     'the HUD cannot claim qualification after only one earned stylish release');
 });
 
+test('qingluan failed contact explains the REAL missing action rather than always blaming the style streak', () => {
+  const c = { stylishReleaseCount: 1, attached: false, inputHeld: false, releaseAge: 30 };
+  assert.match(missedEncounterReason('stylish-release', 423, true, 404, 92, c), /还差1次漂亮松手/);
+  assert.match(missedEncounterReason('stylish-release', 410, true, 404, 92,
+    { ...c, stylishReleaseCount: 2, attached: true }), /先松开旧飞索/);
+  assert.match(missedEncounterReason('stylish-release', 470, true, 404, 92,
+    { ...c, stylishReleaseCount: 2 }), /在上方/);
+  assert.match(missedEncounterReason('stylish-release', 405, true, 404, 92,
+    { ...c, stylishReleaseCount: 2, releaseAge: 120 }), /松手太早/);
+  assert.equal(missedEncounterReason('stylish-release', 423, true),
+    '需要连续两次漂亮松手', 'legacy diagnostics without an actual state remain compatible');
+});
+
 test('an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling', () => {
   const ring = { x: 500, y: 410, radiusX: 80, radiusY: 75 };
   assert.equal(sweptEncounterContact({ x: 440, y: 475 }, { x: 442, y: 475 }, ring), false);

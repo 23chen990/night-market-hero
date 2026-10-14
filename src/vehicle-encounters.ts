@@ -128,13 +128,27 @@ export function encounterActionEligible(
 export function missedEncounterReason(
   action: EncounterAction, playerY: number, touchedButIneligible: boolean,
   contactCenterY?: number, contactRadiusY?: number,
+  context?: { stylishReleaseCount: number; attached: boolean; inputHeld: boolean; releaseAge: number },
 ): string {
   if (touchedButIneligible) {
     const visibleLowerBand = contactCenterY !== undefined && contactRadiusY !== undefined
       ? contactCenterY + contactRadiusY * .9 : 590;
     if (action === 'high-release' && playerY > visibleLowerBand)
       return '高度不够，借高处挂点再试';
-    if (action === 'stylish-release') return '需要连续两次漂亮松手';
+    if (action === 'stylish-release') {
+      // The old message incorrectly blamed missing stylish releases even
+      // when the player had qualified but stayed attached or dove too low.
+      // Never hide the actual reason behind an unrelated generic hint.
+      if (!context) return '需要连续两次漂亮松手';
+      if (context.stylishReleaseCount < 2)
+        return `还差${2 - context.stylishReleaseCount}次漂亮松手，先抓高处屋檐再松手`;
+      if (context.attached || context.inputHeld)
+        return '青鸾在眼前！先松开旧飞索，再飞进翼环';
+      if (playerY > 455) return '青鸾在上方，借前一根高处飞索提升高度';
+      if (context.releaseAge < 0 || context.releaseAge >= 80)
+        return '松手太早了，靠近青鸾发光圈再离开飞索';
+      return '青鸾接取时机不对，沿高线继续练习';
+    }
     return action === 'press'
       ? '碰到了灯绳！先松开旧飞索，再靠近时重新按住'
       : '松手时机不对';

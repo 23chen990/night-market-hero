@@ -24,6 +24,13 @@ assert.deepEqual(missed.errors, []);
 assert.deepEqual(earned.errors, []);
 assert.equal(earned.level, 'night-patrol');
 assert.ok(earned.worldX > 14780, 'real flight must physically pass the authored bird support');
+const earnedLantern = new Map(earned.encounters ?? []);
+const lanternInstance = [...earnedLantern.keys()].find(key => key.endsWith(':灯笼群'));
+assert.ok(lanternInstance && earnedLantern.get(lanternInstance)?.result === 'missed',
+  'the advanced bird route must deliberately forgo the optional lantern to earn rooftop rhythm');
+assert.ok((earned.birdApproachTrace ?? []).some(frame =>
+  frame.stylishTicks?.length >= 1 && frame.attached !== null),
+  'two-release Qingluan preparation must be observable on an actual prior world roof');
 const m = new Map(missed.encounters ?? []);
 const e = new Map(earned.encounters ?? []);
 const id = [...e.keys()].find(key => key.endsWith(':青鸾'));
