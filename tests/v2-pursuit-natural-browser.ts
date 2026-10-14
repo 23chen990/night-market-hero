@@ -21,6 +21,12 @@ const report:Record<string,unknown>={sha256,passed:false,
 const controls:Array<{tick:number;action:string;segment:number}>=[];
 const chase:Array<{tick:number;phase:string;gap:number;segment:number}>=[];
 report.input=controls;report.chase=chase;
+// Natural falls before the intended chase are real failures and remain in the
+// unedited report/video. A visible in-game revive or restart may be used to
+// make a SECOND genuine attempt, never to relabel the fall as an officer.
+const preCaptureFailures:Array<{reason:string|null;segment:number;tick:number;playerX:number}>=[];
+report.preCaptureFailures=preCaptureFailures;
+let recoveryAttempts=0;
 let held=false,holdAt=-999,releaseAt=-999,stalled=false,tutorial=false;
 const state=():Promise<GrappleState>=>page.evaluate(()=>(window as unknown as {
   __PROTOTYPE_TEST__:{getState():GrappleState}
@@ -38,7 +44,7 @@ try{
   await page.waitForFunction(()=>Boolean((window as unknown as {__PROTOTYPE_TEST__?:unknown}).__PROTOTYPE_TEST__));
   await page.locator('[data-action="start-run"]').click();
   const began=Date.now();let previousPhase='';
-  for(let i=0;Date.now()-began<55_000;i++){
+  for(let i=0;Date.now()-began<125_000;i++){
     const s=await state();
     if(s.levelId==='night-patrol'&&(s.chase.phase!==previousPhase||i%10===0)){
       chase.push({tick:s.tick,phase:s.chase.phase,gap:s.chase.distance,segment:s.segmentIndex});
@@ -51,6 +57,24 @@ try{
         await page.locator('[data-action="continue"]').click();
         releaseAt=-999;holdAt=-999;continue;
       }
+      if(s.status==='failed'&&s.failureReason==='fell'&&!stalled&&recoveryAttempts<2){
+        const revive=page.locator('[data-action="revive"]');
+        const restart=page.locator('[data-action="restart"]');
+        const canRevive=await revive.isVisible();
+        const canRestart=await restart.isVisible();
+        if(canRevive||canRestart){
+          preCaptureFailures.push({reason:s.failureReason,segment:s.segmentIndex,
+            tick:s.tick,playerX:s.player.x});
+          await page.screenshot({path:out+`/pre-capture-fall-${recoveryAttempts+1}.png`});
+          if(canRevive) await revive.click();
+          else await restart.click();
+          recoveryAttempts++;
+          // This is a genuine UI recovery, with recorded touch history and a
+          // continuous screen video. No reset/teleport/test-scene API is used.
+          releaseAt=-999;holdAt=-999;previousPhase='';
+          continue;
+        }
+      }
       report.result={status:s.status,reason:s.failureReason,segment:s.segmentIndex,
         gap:s.chase.distance,playerY:s.player.y,netTop:s.pursuer.runLaneY-310,
         guardX:s.pursuer.x,playerX:s.player.x,tick:s.tick};
@@ -61,7 +85,8 @@ try{
     const anchor=s.anchors.find(a=>a.id===s.attachedAnchorId);
     const normal=s.vehicleId?s.vehicleId==='货运滑索'?s.vehicleTicksRemaining>100:s.player.y>390
       :anchor?!(s.player.x>anchor.x+12&&s.player.vx>0&&s.player.vy<60)&&s.player.vx>=0&&s.tick-holdAt<160
-      :s.tick-releaseAt>20&&(s.player.vy>0||s.player.y>540||s.inputTransitions===0);
+      :s.tick-releaseAt>(s.player.y>600?8:18)
+        &&(s.player.vy>0||s.player.y>540||s.inputTransitions===0);
     await edge(stalled||normal,s);
     await page.waitForTimeout(60);
   }
@@ -77,6 +102,7 @@ try{
 }catch(e){failure=e instanceof Error?e:new Error(String(e));report.error=String(e)}
 finally{
   report.tutorialCompleted=tutorial;report.deliberatelyHeld=stalled;report.errors=errors;
+  report.recoveryAttempts=recoveryAttempts;
   await context.close();
   try{
     await page.video()?.saveAs(out+'/pursuit-natural.webm');

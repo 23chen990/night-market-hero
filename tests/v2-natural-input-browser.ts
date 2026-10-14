@@ -171,9 +171,18 @@ try {
         }
         if (skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
           const first = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
-          if (first && s.player.x >= first.x - 155 && s.player.x <= first.x + 25
-            && !!s.attachedAnchorId && s.player.y >= first.y - 120)
-            wantHold = false; // a deliberate player release at the visible ring
+          if (first && s.player.x >= first.x - 340 && s.player.x < first.x - 200) {
+            // Prepare a real support before the moving pulley enters the view.
+            // Without this, slow browser frames can put the next press INSIDE
+            // the ring and the late release loses a perfectly visible target.
+            wantHold = true;
+          }
+          if (first && s.player.x >= first.x - 185 && s.player.x <= first.x + 60
+            && s.player.y >= first.y - 150 && s.player.y <= first.y + 125) {
+            // Deliberately release even if the previous frame was airborne;
+            // never re-grapple through the target while the first ring passes.
+            wantHold = false;
+          }
           const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
           // A real one-finger skill sequence on the fixed roof supports:
           // 1. Hold the next visible high roof rope through its rising arc.
@@ -201,10 +210,13 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if (lanternRoute && lantern && s.player.x >= lantern.x - 190 && s.player.x <= lantern.x + 95) {
-            // Release the old roof rope; the NEXT real press, inside the
-            // visible physical lantern knot, is the only legal claim.
-            wantHold = s.player.x >= lantern.x - 48 && s.player.x <= lantern.x + 70;
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 365 && s.player.x <= lantern.x + 95) {
+            // Drop the real old-roof rope early enough to DESCEND to the
+            // lantern knot. Pressing at x=-48 regardless of height can hook
+            // another rooftop support while still 140 px ABOVE the lantern.
+            const visibleBand = Math.abs(s.player.y - lantern.y) <= (lantern.radiusY ?? 100) - 8;
+            wantHold = s.player.x >= lantern.x - 60
+              && s.player.x <= lantern.x + 70 && visibleBand;
           }
         }
         await edge(wantHold, s.tick);

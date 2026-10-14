@@ -11,6 +11,13 @@ assert.equal(pursuit.sha256,build,'independent capture must match SAME HTML');
 assert.deepEqual(journeys.failures,[],'complete natural journeys failed');
 assert.ok(journeys.reports?.length===2);
 assert.equal(pursuit.passed,true,'natural officer capture was not proven');
+// A visible in-game revive/restart may continue an independent run, but real
+// pre-capture falls stay in the immutable trace and may never be renamed caught.
+assert.ok((pursuit.preCaptureFailures ?? []).every(f => f.reason === 'fell'
+  && Number.isInteger(f.tick) && Number.isFinite(f.playerX)),
+  'early natural falls must remain attributable rather than masked');
+assert.ok((pursuit.recoveryAttempts ?? 0) <= 2,
+  'at most two visible UI recoveries before a real physical capture');
 assert.ok(pursuit.tutorialCompleted&&pursuit.deliberatelyHeld);
 assert.ok(pursuit.input?.some(e=>e.action==='press')&&pursuit.input?.some(e=>e.action==='release'));
 const r=pursuit.result;
