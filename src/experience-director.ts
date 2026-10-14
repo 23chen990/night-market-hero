@@ -132,8 +132,15 @@ export function controlCue(state: GrappleState): ControlCue {
   if (state.attachedAnchorId) {
     const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
     const ready = isStylishRelease(state.player) && !!anchor && state.player.x >= anchor.x;
-    return ready ? { title: '现在松手！', detail: '向前飞出，再按住接下一个', tone: 'ready' }
-      : { title: state.player.vx < 0 ? '荡回来了，松手换挂点' : '按住摆荡', detail: '身体越过挂点向前时松手', tone: 'neutral' };
+    if (ready) return { title: '现在松手！', detail: '向前飞出，再按住接下一个', tone: 'ready' };
+    // Show a warning WHILE an actual release can still keep forward motion.
+    // There is no hidden auto-release, teleport or guard mercy.
+    if (anchor && state.player.x >= anchor.x + 12
+      && state.player.vx >= 0 && state.player.vx < 260 && state.player.vy < 120)
+      return { title: '要荡回去了！赶紧松手', detail: '飞出去后再按住下一根索，避免被追兵抓住',
+        tone: state.chase.distance < 340 ? 'danger' : 'ready' };
+    return { title: state.player.vx < 0 ? '荡回来了，松手换挂点' : '按住摆荡',
+      detail: state.player.vx < 0 ? '立刻松手，向前飞时再接钩' : '身体越过挂点向前时松手', tone: 'neutral' };
   }
   return { title: '按住接飞索', detail: '金色高线多拿钱 · 青色低线缓解追兵', tone: 'neutral' };
 }

@@ -3,6 +3,8 @@ import test from 'node:test';
 import { createGrappleGame } from '../src/game-core.ts';
 import { segmentStartPx, type VehicleId } from '../src/endless.ts';
 import { isValidRunState } from '../src/run-snapshot.ts';
+import { controlCue } from '../src/experience-director.ts';
+import { shouldHoldConservativeKiteRope } from './v2-casual-kite-policy.ts';
 
 const config = { marketGates: false, terrainMode: 'panorama', guidedExperience: true } as const;
 const opportunities: readonly [number, VehicleId][] = [
@@ -103,4 +105,33 @@ test('restoring a legacy save drains deferred awards rather than awarding them a
   assert.deepEqual(restored.stylishReleaseTicks, []);
   assert.equal(restored.vehicleId, null);
   assert.ok(isValidRunState(restored));
+});
+
+test('ordinary real-input kite policy releases ABOVE the ring before rope reversal', () => {
+  const kite = { x: 8044.3, y: 554.66, radiusY: 120 };
+  assert.equal(shouldHoldConservativeKiteRope(
+    { x: 7784, y: 490, vx: 457 }, kite), true, 'can hold a real roof beam during approach');
+  assert.equal(shouldHoldConservativeKiteRope(
+    { x: 8050, y: 420, vx: 253 }, kite), false, 'must let go before backward swing');
+  assert.equal(shouldHoldConservativeKiteRope(
+    { x: 8015, y: 472, vx: 180 }, kite), false, 'a reversing rope cannot trap the player');
+  assert.equal(shouldHoldConservativeKiteRope(
+    { x: 7840, y: 600, vx: 140 }, kite), true, 'do not prematurely release far from the target');
+});
+
+test('player receives actionable warning before the real rope reverses into pursuing officers', () => {
+  const game = createGrappleGame(32, config);
+  game.restartEndless(32);
+  const state = game.getState();
+  const anchor = state.anchors[0];
+  assert.ok(anchor);
+  state.vehicleOffers = [];
+  state.attachedAnchorId = anchor.id;
+  state.player.x = anchor.x + 44;
+  state.player.vx = 205;
+  state.player.vy = -35;
+  state.chase.distance = 280;
+  const cue = controlCue(state);
+  assert.match(cue.title, /赶紧松手/);
+  assert.equal(cue.tone, 'danger');
 });

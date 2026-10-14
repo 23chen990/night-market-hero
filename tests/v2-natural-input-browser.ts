@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { GrappleState } from '../src/game-core.ts';
+import { shouldHoldConservativeKiteRope } from './v2-casual-kite-policy.ts';
 
 const target = resolve('dist/index.html');
 const targetHtml = await readFile(target, 'utf8');
@@ -169,10 +170,13 @@ try {
             && s.player.vx > 240 && s.player.vy < 130) wantHold = false;
           const pulley = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
           if (pulley && s.player.x >= pulley.x - 310 && s.player.x < pulley.x + 165) wantHold = true;
-          // Conservative input chooses to KEEP the rope near the optional kite.
-          // It must still approach the identical visible fixed world target.
+          // Keep the supported old rope through the optional kite approach,
+          // then release ABOVE the visible ring before that rope swings
+          // backwards. Unconditionally holding until kite.x + 140 trapped
+          // casual players at their natural apex near kite.x + 50.
           const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
-          if (kite && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) wantHold = true;
+          if (kite && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140)
+            wantHold = shouldHoldConservativeKiteRope(s.player, kite);
         }
         if (skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
           const first = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
