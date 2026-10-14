@@ -4,7 +4,7 @@ import { createGrappleGame } from '../src/game-core.ts';
 import { segmentStartPx, type VehicleId } from '../src/endless.ts';
 import { isValidRunState } from '../src/run-snapshot.ts';
 import { controlCue } from '../src/experience-director.ts';
-import { shouldHoldConservativeKiteRope } from './v2-casual-kite-policy.ts';
+import { shouldHoldConservativeKiteRope, isConservativeKiteApexDanger } from './v2-casual-kite-policy.ts';
 
 const config = { marketGates: false, terrainMode: 'panorama', guidedExperience: true } as const;
 const opportunities: readonly [number, VehicleId][] = [
@@ -134,4 +134,17 @@ test('player receives actionable warning before the real rope reverses into purs
   const cue = controlCue(state);
   assert.match(cue.title, /赶紧松手/);
   assert.equal(cue.tone, 'danger');
+});
+
+test('full natural keyboard route may release the real kite rope before reverse swing', () => {
+  const kite = { x: 8044.3, y: 554.66, radiusY: 120 };
+  assert.equal(isConservativeKiteApexDanger(
+    { x: 7818, y: 366.7, vx: 83.2 }, kite, true), true,
+    'a real observed browser failure: high old rope is reversing 226px before the kite');
+  assert.equal(isConservativeKiteApexDanger(
+    { x: 7750, y: 560, vx: 560 }, kite, true), false,
+    'a healthy fast approach must not be auto-released');
+  assert.equal(isConservativeKiteApexDanger(
+    { x: 7818, y: 366.7, vx: 83.2 }, kite, false), false,
+    'only a currently attached real beam can be proactively released');
 });

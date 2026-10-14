@@ -6,6 +6,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { GrappleState } from '../src/game-core.ts';
 import { everyClaimedInstanceIsPlayable } from './v2-audit-contract.ts';
+import { isConservativeKiteApexDanger } from './v2-casual-kite-policy.ts';
 
 // State-observing automated play, not blind human usability evidence.
 // No act/step/reset/teleport/scenario APIs. Time is real browser frame time.
@@ -50,6 +51,7 @@ try {
     let held = false;
     let lastRelease = -999;
     let holdAt = -999;
+    let avoidKiteReattachUntilTick = -999;
     let reviveCount = 0;
     let tutorialCompleted = false;
     const label = `${viewport.width}x${viewport.height}`;
@@ -159,6 +161,7 @@ try {
             reviveCount++;
             await page.locator('[data-action="revive"]').click();
             lastRelease = -999;
+            avoidKiteReattachUntilTick = -999;
             if (!touch) await page.locator('[data-action="grapple"]').focus();
             continue;
           }
@@ -207,8 +210,24 @@ try {
             if (firstOffer && state.player.x >= firstOffer.x - 310 && state.player.x <= firstOffer.x + 165)
               wantHold = true;
             const kite = state.vehicleOffers.find(item => item.id === '纸鸢' && item.status === 'available');
-            if (kite && state.player.x >= kite.x - 350 && state.player.x <= kite.x + 140)
-              wantHold = true;
+            if (kite && state.player.x >= kite.x - 350 && state.player.x <= kite.x + 140) {
+              // Unlike the deliberate same-build choice contrast, the full
+              // journey MUST remain survivable. Previously this same player
+              // stayed attached from tick1853 to tick2107 while swinging
+              // backwards at x~7818, ultimately dying by a genuine fall.
+              // Release the real old rope before the apex and suppress a
+              // reflex re-grapple for 65 actual physics ticks, not a hidden
+              // extra jump or an altered officer/collision.
+              if (isConservativeKiteApexDanger(state.player, kite, !!anchor)) {
+                avoidKiteReattachUntilTick = state.tick + 65;
+                wantHold = false;
+              } else if (!anchor && state.tick < avoidKiteReattachUntilTick
+                && state.player.y < kite.y + (kite.radiusY ?? 120) * .2) {
+                wantHold = false;
+              } else {
+                wantHold = true;
+              }
+            }
           }
           // A default journey may choose the safe roof rope over the
           // difficult lantern's explicit release-THEN-new-press sequence.

@@ -221,7 +221,7 @@ try {
           //    the pictured kite handle. Regrappling a later ordinary beam
           //    would pull the hero away before the handle can be touched.
           // This uses genuine input edges; never moves or enlarges the target.
-          if (kite && (lanternRoute || birdRoute) && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) {
+          if (kite && lanternRoute && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) {
             // Choose the familiar rope instead of earning the optional kite.
             // This preserves the lower route for a separate lantern attempt.
             wantHold = true;
@@ -241,28 +241,37 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if (lanternRoute && lantern && s.player.x >= lantern.x - 365 && s.player.x <= lantern.x + 95) {
-            // A low hanging REAL knot: first release the old roof rope, then
-            // press at current world contact or an input-delivery prediction.
-            // This affects only the test player's timing, NOT the game's
-            // world object, actual ellipse, 26-tick edge gate or entitlement.
-            const rx = lantern.radiusX ?? 84, ry = lantern.radiusY ?? 100;
-            const nxNow = (s.player.x - lantern.x) / rx;
-            const nyNow = (s.player.y - lantern.y) / ry;
-            const latency = 0.055;
-            const nxNext = (s.player.x + s.player.vx * latency - lantern.x) / rx;
-            const nyNext = (s.player.y + s.player.vy * latency - lantern.y) / ry;
-            const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.95 * 0.95;
-            const aboutToTouch = nxNext * nxNext + nyNext * nyNext <= 1;
-            wantHold = (touchingNow || aboutToTouch)
-              && s.player.x < lantern.x + 55 && !anchor;
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 505
+            && s.player.x <= lantern.x + 95) {
+            // On the low-knot route, a rider arriving >180px above the rope
+            // needs to release the OLD roof support before the last -365px.
+            // The previous 70ms drive arrived at x~10918,y~470 while the
+            // actual lantern knot was at y~658; waiting to release at -365
+            // offered insufficient physical gravity time to descend.
+            if (s.player.x < lantern.x - 365) {
+              if (anchor && s.player.y < lantern.y - 180
+                && s.player.vy > -350) wantHold = false;
+            } else {
+              // Then a FRESH actual press within the visible world ellipse;
+              // no invisible magnet, entitlement, teleport or auto-award.
+              const rx = lantern.radiusX ?? 84, ry = lantern.radiusY ?? 100;
+              const nxNow = (s.player.x - lantern.x) / rx;
+              const nyNow = (s.player.y - lantern.y) / ry;
+              const latency = 0.055;
+              const nxNext = (s.player.x + s.player.vx * latency - lantern.x) / rx;
+              const nyNext = (s.player.y + s.player.vy * latency - lantern.y) / ry;
+              const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.95 * 0.95;
+              const aboutToTouch = nxNext * nxNext + nyNext * nyNext <= 1;
+              wantHold = (touchingNow || aboutToTouch)
+                && s.player.x < lantern.x + 55 && !anchor;
+            }
           }
           if (birdRoute && lantern && s.player.x >= lantern.x - 330
             && s.player.x <= lantern.x + 100) {
-            // Choosing the rare high-bird route means IGNORING the optional
-            // lantern knot rather than losing rooftop stylish opportunities to
-            // a long lantern ride. Preserve the current real button state,
-            // creating NO new 'press' at the knot; it may honestly be missed.
+            // Qingluan route uses the previously earned KITE to enter the
+            // high rooftops; chooses to skip the optional low lantern knot.
+            // Keep the real current button state, adding NO new press edge
+            // at the knot. This is a meaningful route choice, not a grant.
             wantHold = s.inputHeld;
           }
           const bird = s.vehicleOffers.find(offer => offer.id === '青鸾'
