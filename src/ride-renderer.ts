@@ -22,11 +22,18 @@ export function drawRide(g: Phaser.GameObjects.Graphics, state: GrappleState): v
     g.fillStyle(0x536e75, 1); g.fillRoundedRect(x - 46, y + 15, 92, 45, 8);
     g.lineStyle(4, 0xe2b572, 1); g.strokeRect(x - 46, y + 15, 92, 45);
   } else if (state.vehicleId === '灯笼群') {
-    const pivot = state.vehicleVirtualAnchor ?? { x, y: y - 160 };
-    g.lineStyle(3, 0xffd89b, 0.9); g.lineBetween(pivot.x, pivot.y, x, y + 4);
+    // A held lantern rope is tied to a physical world pivot. Released lanterns
+    // visibly fly with the hero; no invented support follows the player.
+    const pivot = state.vehicleVirtualAnchor;
+    if (pivot) {
+      g.lineStyle(3, 0xffd89b, 0.9); g.lineBetween(pivot.x, pivot.y, x, y + 4);
+    }
     for (let index = -2; index <= 2; index++) {
-      const lx = pivot.x + index * 35, ly = pivot.y - 40 - (2 - Math.abs(index)) * 20 + wave * 4;
-      g.lineStyle(2, 0xd1a478, 1); g.lineBetween(lx, ly + 27, pivot.x, pivot.y);
+      const lx = (pivot?.x ?? x) + index * 35;
+      const ly = pivot
+        ? pivot.y + Math.min(155, Math.max(50, state.vehicleLockY * .65)) - (2 - Math.abs(index)) * 14 + wave * 4
+        : y - 68 - (2 - Math.abs(index)) * 8 + wave * 4;
+      if (pivot) g.lineStyle(2, 0xd1a478, 1).lineBetween(lx, ly - 22, pivot.x, pivot.y);
       g.fillStyle(0xe38a55, 0.97); g.fillRoundedRect(lx - 15, ly - 22, 30, 42, 10);
       g.lineStyle(3, 0xffe3a1, 1); g.lineBetween(lx - 12, ly - 22, lx + 12, ly - 22); g.lineBetween(lx - 12, ly + 19, lx + 12, ly + 19);
       g.lineStyle(2, 0xffd788, 1); g.lineBetween(lx, ly + 20, lx, ly + 32);

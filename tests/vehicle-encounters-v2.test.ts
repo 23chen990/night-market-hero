@@ -140,3 +140,19 @@ test('offer/encounter records survive save/load; invalid action, duplicate insta
   assert.equal(isValidRunState({ ...state, encounterEvents: [ev, { ...ev }] }), false);
   assert.equal(isValidRunState({ ...state, encounterEvents: [{ ...ev, quality: 'legendary' }] }), false);
 });
+
+test('default lantern holds on its authored world support and does not jump on the pickup frame', () => {
+  const g = game(32);
+  const offer = locate(g, 6);
+  assert.ok(Number.isFinite(offer.supportX) && Number.isFinite(offer.supportY));
+  g.setPlayerForTest({ x: offer.x - 12, y: offer.y, vx: 400, vy: -20 });
+  assert.equal(g.act('press'), true);
+  const mounted = g.getState();
+  assert.equal(mounted.vehicleId, '灯笼群');
+  assert.deepEqual(mounted.vehicleVirtualAnchor, { x: offer.supportX, y: offer.supportY });
+  const rope = Math.hypot(mounted.player.x - offer.supportX!, mounted.player.y - offer.supportY!);
+  assert.ok(Math.abs(mounted.vehicleLockY - rope) < 1e-5);
+  const after = g.advanceTicks(1);
+  assert.ok(Math.hypot(after.player.x - mounted.player.x, after.player.y - mounted.player.y) < 16,
+    'the first lantern grab cannot teleport the rider to a phantom rope');
+});
