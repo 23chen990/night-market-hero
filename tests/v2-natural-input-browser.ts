@@ -162,6 +162,11 @@ try {
         // while the optional pulley passes; no simulation state manipulation.
         // Not a blind-player success-rate estimate.
         if (!skilledRoute && s.levelId === 'night-patrol' && !s.vehicleId) {
+          // Still a genuine conservative one-finger swing, but release a
+          // support BEFORE reversing into an unavoidable guard capture.
+          // Keep holding near the optional pickup itself to document a miss.
+          if (anchor && s.player.x > anchor.x - 45
+            && s.player.vx > 240 && s.player.vy < 130) wantHold = false;
           const pulley = s.vehicleOffers.find(offer => offer.id === '货运滑索' && offer.status === 'available');
           if (pulley && s.player.x >= pulley.x - 310 && s.player.x < pulley.x + 165) wantHold = true;
           // Conservative input chooses to KEEP the rope near the optional kite.
@@ -211,17 +216,27 @@ try {
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
           if (lanternRoute && lantern && s.player.x >= lantern.x - 365 && s.player.x <= lantern.x + 95) {
-            // Drop the real old-roof rope early enough to DESCEND to the
-            // lantern knot. Pressing at x=-48 regardless of height can hook
-            // another rooftop support while still 140 px ABOVE the lantern.
-            const visibleBand = Math.abs(s.player.y - lantern.y) <= (lantern.radiusY ?? 100) - 8;
-            wantHold = s.player.x >= lantern.x - 60
-              && s.player.x <= lantern.x + 70 && visibleBand;
+            // A low hanging REAL knot: first release the old roof rope, then
+            // press at current world contact or an input-delivery prediction.
+            // This affects only the test player's timing, NOT the game's
+            // world object, actual ellipse, 26-tick edge gate or entitlement.
+            const rx = lantern.radiusX ?? 84, ry = lantern.radiusY ?? 100;
+            const nxNow = (s.player.x - lantern.x) / rx;
+            const nyNow = (s.player.y - lantern.y) / ry;
+            const latency = 0.055;
+            const nxNext = (s.player.x + s.player.vx * latency - lantern.x) / rx;
+            const nyNext = (s.player.y + s.player.vy * latency - lantern.y) / ry;
+            const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.95 * 0.95;
+            const aboutToTouch = nxNext * nxNext + nyNext * nyNext <= 1;
+            wantHold = (touchingNow || aboutToTouch)
+              && s.player.x < lantern.x + 55 && !anchor;
           }
         }
         await edge(wantHold, s.tick);
         if (held && !s.inputHeld && s.inputTransitions > 0 && s.tick - holdAt > 30) await edge(false, s.tick);
-        await page.waitForTimeout(70);
+        // Observe the lower-skill line frequently enough to release before
+        // its next backward pendulum, without changing world simulation time.
+        await page.waitForTimeout(skilledRoute ? 70 : 55);
       }
       await edge(false, (await getState()).tick);
       const state = await getState();

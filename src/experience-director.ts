@@ -84,6 +84,28 @@ export function controlCue(state: GrappleState): ControlCue {
     if (nextOffer.id === '纸鸢' && distance > 320 && distance <= 920 && state.attachedAnchorId)
       return { title: '纸鸢高线：过挂点后多荡半拍',
         detail: '在屋檐飞索上升时松手，再飞进鸢绳柄', tone: 'ready' };
+    // The lantern takes a RELEASE followed by a NEW PRESS. The generic
+    // high-route hint used to override this and told an already-too-high
+    // rider to swing higher, which is the opposite of reaching its low knot.
+    if (nextOffer.id === '灯笼群' && distance > -80 && distance <= 350) {
+      const inVisibleHeightBand = Math.abs(state.player.y - nextOffer.y) <= margin * 0.90;
+      if (state.inputHeld) return {
+        title: distance > 120 ? '先松开旧飞索，下降到灯绳旁' : '灯绳就在前！松开后重新按住',
+        detail: '不能一直按住穿过；需要在实体绳结附近再次接索', tone: 'ready',
+      };
+      if (distance <= 180 && inVisibleHeightBand) return {
+        title: '现在按住！接住灯绳结',
+        detail: '正在飞过发光绳圈，立刻重新按住接索', tone: 'ready',
+      };
+      if (state.player.y < nextOffer.y - margin * 0.90) return {
+        title: '灯绳在下方，保持松手下降',
+        detail: '降到发光绳圈，再按住接索', tone: 'ready',
+      };
+      if (state.player.y > nextOffer.y + margin * 0.90) return {
+        title: '灯绳在上方，这次可能赶不上',
+        detail: '下一个灯绳机会，提早从高处松手', tone: 'neutral',
+      };
+    }
     if (distance <= 320 && adjustHeight) return {
       title: `前方 ${nextOffer.id} · ${adjustHeight}`,
       detail: encounterInstructions(nextOffer.id), tone: 'ready',
@@ -91,10 +113,6 @@ export function controlCue(state: GrappleState): ControlCue {
     const imminent = distance < 170 && distance > -65;
     if (nextOffer.id === '货运滑索' && imminent && state.attachedAnchorId)
       return { title: '现在松手！飞向货运滑索', detail: '只有飞进挂环才算接住', tone: 'ready' };
-    if (nextOffer.id === '灯笼群' && distance > 90 && distance <= 290 && state.inputHeld)
-      return { title: '灯绳在前！先松开旧飞索', detail: '接近绳结后重新按住，才能主动抓到灯笼群', tone: 'ready' };
-    if (nextOffer.id === '灯笼群' && imminent && !state.inputHeld)
-      return { title: '现在按住！抓住灯绳结', detail: '必须在发光绳圈内真正重新按住', tone: 'ready' };
     if (nextOffer.id === '纸鸢' && imminent)
       return state.attachedAnchorId || state.inputHeld
         ? { title: '松手飞进鸢绳圈！', detail: '借屋檐摆荡向上，离开飞索后穿过发光圈', tone: 'ready' }

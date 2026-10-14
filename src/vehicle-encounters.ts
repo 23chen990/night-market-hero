@@ -33,8 +33,11 @@ const RECIPES: Record<VehicleId, {
     radiusX: 76, radiusY: 120, requiredAction: 'high-release', description: '借高挂点起飞，松手接住鸢绳' },
   // A low street-level knot is still hung from the SAME real source support.
   // Pressing during true physical contact remains mandatory: never auto-award.
-  '灯笼群': { supportPattern: /lantern|rope/, heightOffset: 236,
-    radiusX: 84, radiusY: 100, requiredAction: 'press', description: '飞近灯绳结，按住接索' },
+  // Real supported knot on a visibly longer hanging line: low-route
+  // releases can now physically reach it without an invisible collision
+  // extension, an auto-equipped ride, or moving the target with the rider.
+  '灯笼群': { supportPattern: /lantern|rope/, heightOffset: 270,
+    radiusX: 84, radiusY: 100, requiredAction: 'press', description: '松开旧绳，再按住接实体灯绳' },
   '青鸾': { supportPattern: /left-eave-beam|right-eave-beam/, heightOffset: 190,
     radiusX: 88, radiusY: 92, requiredAction: 'stylish-release', description: '连续两次漂亮松手，腾空接青鸾' },
 };
@@ -127,7 +130,9 @@ export function missedEncounterReason(
     if (action === 'high-release' && playerY > visibleLowerBand)
       return '高度不够，借高处挂点再试';
     if (action === 'stylish-release') return '需要连续两次漂亮松手';
-    return action === 'press' ? '飞到灯绳旁时按住才接得上' : '松手时机不对';
+    return action === 'press'
+      ? '碰到了灯绳！先松开旧飞索，再靠近时重新按住'
+      : '松手时机不对';
   }
   return playerY > 610 ? '从下方掠过，没碰到挂环' : '错过挂环，下次提早调整高度';
 }

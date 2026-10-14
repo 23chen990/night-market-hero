@@ -5,6 +5,7 @@ import { segmentLengthPx, segmentStartPx, type VehicleId } from '../src/endless.
 import { encounterActionEligible, planVehicleEncounter, sweptEncounterContact,
   encounterInstructions, missedEncounterReason } from '../src/vehicle-encounters.ts';
 import { createRunSnapshot, isValidRunState, parseRunSnapshot } from '../src/run-snapshot.ts';
+import { controlCue } from '../src/experience-director.ts';
 
 const options = { marketGates: false, terrainMode: 'panorama', guidedExperience: true } as const;
 const rides: readonly [number, VehicleId, 'release' | 'high-release' | 'press' | 'stylish-release'][] = [
@@ -58,6 +59,29 @@ test('all four initial challenges are source-anchored, deterministic, visible an
     assert.equal(offer.x, planned.x);
     assert.equal(offer.y, planned.y);
   }
+});
+
+test('lantern guidance prioritizes a real release then new press at the low visible knot', () => {
+  const g = game(32);
+  const offer = locate(g, 6);
+  const state = g.getState();
+  state.vehicleOffers = [{ ...offer, status: 'available' }];
+  state.vehicleId = null;
+  assert.equal(offer.y, Math.max(175, Math.min(675, offer.supportY! + 270)),
+    'the knot hangs under the SAME authored world support, not the player');
+  state.player.x = offer.x - 220;
+  state.player.y = offer.y - 150;
+  state.inputHeld = true;
+  assert.match(controlCue(state).title, /先松开旧飞索/);
+  state.inputHeld = false;
+  state.player.x = offer.x - 105;
+  state.player.y = offer.y - 126;
+  assert.match(controlCue(state).title, /保持松手下降/);
+  state.player.y = offer.y + 22;
+  assert.match(controlCue(state).title, /现在按住/);
+  state.player.y = offer.y + 143;
+  assert.match(controlCue(state).title, /在上方/);
+  assert.match(missedEncounterReason('press', offer.y, true), /重新按住/);
 });
 
 test('an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling', () => {
