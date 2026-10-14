@@ -92,7 +92,8 @@ export function planVehicleEncounter(seed: number, segment: number, id: VehicleI
 export function encounterActionEligible(
   action: EncounterAction,
   state: { tick: number; playerY: number; playerVx: number; inputHeld: boolean;
-    attached: boolean; lastReleaseTick: number; lastPressTick: number; stylishTicks: readonly number[] },
+    attached: boolean; lastReleaseTick: number; lastPressTick: number; stylishTicks: readonly number[];
+    contactCenterY?: number; contactRadiusY?: number },
 ): boolean {
   if (state.playerVx < 165 || state.attached) return false;
   const releaseAge = state.tick - state.lastReleaseTick;
@@ -100,7 +101,8 @@ export function encounterActionEligible(
   const recentlyReleased = releaseAge >= 0 && releaseAge <= 40;
   if (action === 'release') return !state.inputHeld && recentlyReleased;
   if (action === 'high-release') return !state.inputHeld && releaseAge >= 0
-    && releaseAge <= 65 && state.playerY <= 520;
+    && releaseAge <= 65 && state.playerY <= (state.contactCenterY !== undefined && state.contactRadiusY !== undefined
+      ? state.contactCenterY + state.contactRadiusY * .9 : 590);
   if (action === 'press') return state.inputHeld && state.tick - state.lastPressTick >= 0
     && state.tick - state.lastPressTick <= 26;
   return !state.inputHeld && releaseAge >= 0 && releaseAge < 80 && state.playerY <= 455
@@ -109,7 +111,7 @@ export function encounterActionEligible(
 
 export function missedEncounterReason(action: EncounterAction, playerY: number, touchedButIneligible: boolean): string {
   if (touchedButIneligible) {
-    if (action === 'high-release' && playerY > 540) return '高度不够，借高处挂点再试';
+    if (action === 'high-release' && playerY > 590) return '高度不够，借高处挂点再试';
     if (action === 'stylish-release') return '需要连续两次漂亮松手';
     return action === 'press' ? '飞到灯绳旁时按住才接得上' : '松手时机不对';
   }

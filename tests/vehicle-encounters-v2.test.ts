@@ -65,8 +65,12 @@ test('distinct qualifying actions require a real recent press/release, speed, an
   assert.equal(encounterActionEligible('high-release', s), false);
   s.playerY = 420;
   assert.equal(encounterActionEligible('high-release', s), true);
+  // The kite handle's illustrated collision extends to y=598 (510+88).
+  // A genuine release inside it must not fail an invisible y=520 altitude cap.
   s.playerY = 580;
-  assert.equal(encounterActionEligible('high-release', s), false);
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), true);
+  s.playerY = 610;
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), false);
   s.playerY = 420;
   s.stylishTicks = [80, 170];
   assert.equal(encounterActionEligible('stylish-release', s), true);

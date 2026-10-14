@@ -1607,7 +1607,33 @@ export class GrappleGame {
   private beginVehicleHold(): void {
     const vehicle = VEHICLES.find((item) => item.id === this.state.vehicleId);
     if (vehicle?.id === '货运滑索') this.state.vehicleLockY = this.state.player.y;
-    else if (vehicle?.id === '灯笼群') this.state.vehicleVirtualAnchor = { x: this.state.player.x, y: this.state.player.y - LANTERN_ROPE };
+    else if (vehicle?.id === '灯笼群') {
+      if (!this.options.guidedExperience) {
+        // Legacy compatibility scenario only; the default panorama uses world supports.
+        this.state.vehicleVirtualAnchor = { x: this.state.player.x, y: this.state.player.y - LANTERN_ROPE };
+        this.state.vehicleLockY = LANTERN_ROPE;
+      } else {
+        if (!this.state.vehicleVirtualAnchor) {
+          const candidates = this.state.anchors.filter(anchor => {
+            const length = Math.hypot(anchor.x - this.state.player.x, anchor.y - this.state.player.y);
+            return anchor.x >= this.state.player.x - 105
+              && anchor.x <= this.state.player.x + 325
+              && length >= 65 && length <= MAX_PLAYABLE_ROPE_LENGTH;
+          });
+          candidates.sort((a, b) =>
+            Math.hypot(a.x - this.state.player.x, a.y - this.state.player.y)
+            - Math.hypot(b.x - this.state.player.x, b.y - this.state.player.y));
+          const anchor = candidates[0];
+          this.state.vehicleVirtualAnchor = anchor ? { x: anchor.x, y: anchor.y } : null;
+        }
+        if (this.state.vehicleVirtualAnchor) {
+          this.state.vehicleLockY = Math.hypot(
+            this.state.player.x - this.state.vehicleVirtualAnchor.x,
+            this.state.player.y - this.state.vehicleVirtualAnchor.y,
+          );
+        }
+      }
+    }
     else if (this.options.guidedExperience && vehicle?.id === '青鸾') {
       // A deliberate flap brakes a dive immediately; holding then supplies
       // sustained lift. Without input the rider can still fall and fail.
@@ -1615,7 +1641,7 @@ export class GrappleGame {
     }
   }
 
-  private startVehicle(id: VehicleId): void {
+  private startVehicle(id: VehicleId, offer?: VehicleOffer): void {
     const def = VEHICLES.find(item => item.id === id)!;
     if (this.options.guidedExperience) {
       // Contact with a world ring must not teleport the player vertically.
@@ -1630,7 +1656,12 @@ export class GrappleGame {
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
     this.state.vehicleLockY = this.state.player.y;
-    this.state.vehicleVirtualAnchor = null;
+    // First lantern attachment uses the SAME authored support as its pickup.
+    // On later presses beginVehicleHold chooses a nearby physical anchor.
+    this.state.vehicleVirtualAnchor = id === '灯笼群' && this.options.guidedExperience
+      && Number.isFinite(offer?.supportX) && Number.isFinite(offer?.supportY)
+      ? { x: offer!.supportX!, y: offer!.supportY! }
+      : null;
     if (this.state.inputHeld) this.beginVehicleHold();
   }
 
@@ -1670,7 +1701,7 @@ export class GrappleGame {
     this.state.lastVehicleOffer = { id: offer.id, instanceId, kind: outcome,
       reason, quality, tick: this.state.tick };
     if (outcome === 'claimed') {
-      this.startVehicle(offer.id);
+      this.startVehicle(offer.id, offer);
       if (quality === 'stylish') this.state.coins += 8; // real run reward, settled once
     }
   }
@@ -1691,6 +1722,7 @@ export class GrappleGame {
         lastReleaseTick: this.state.lastGrappleReleaseTick,
         lastPressTick: this.state.lastGrapplePressTick,
         stylishTicks: this.state.stylishReleaseTicks,
+        contactCenterY: offer.y, contactRadiusY: radiusY,
       });
       if (touching && this.state.vehicleId) {
         this.resolveVehicleOffer(offer, 'missed', '正在使用其他载具，本次没有换乘');
@@ -1893,9 +1925,9 @@ export class GrappleGame {
     // A distant assisted capture reels to a bounded, playable length instead of
     // leaving the player hanging from a rope whose swing cannot build momentum.
     this.state.ropeLength = Math.min(captureDistance, MAX_PLAYABLE_ROPE_LENGTH);
-    if (this.state.elapsed > 0.15 && anchor.x - this.state.player.x > 100) {
-      this.applyPursuitReward('stylish-flight', 0.045);
-    }
+    // An ordinary forward grapple is not a stylish getaway. Previously every
+    // routine attachment silently slowed the officers, preventing a visible chase.
+    // Only earned stylish releases and genuine shortcuts grant pursuit relief.
     return true;
   }
 
@@ -2586,7 +2618,8 @@ export class GrappleGame {
       }
     }
 
-    // 灯笼群：凭空挂接，复用摆荡物理（固定虚拟挂点，绳长恒定）
+    // Lantern holds pivot on physical world support, never a player-relative
+    // phantom rope. The initial rope length is captured at the real press.
     if (vehicleActive && vehicle!.id === '灯笼群' && this.state.vehiclePhase === 'holding' && this.state.vehicleVirtualAnchor) {
       const pivot = this.state.vehicleVirtualAnchor;
       const dx = player.x - pivot.x;
@@ -2594,8 +2627,9 @@ export class GrappleGame {
       const distance = Math.max(0.0001, Math.hypot(dx, dy));
       const nx = dx / distance;
       const ny = dy / distance;
-      player.x = pivot.x + nx * LANTERN_ROPE;
-      player.y = pivot.y + ny * LANTERN_ROPE;
+      const rope = this.options.guidedExperience ? this.state.vehicleLockY : LANTERN_ROPE;
+      player.x = pivot.x + nx * rope;
+      player.y = pivot.y + ny * rope;
       const radialVelocity = player.vx * nx + player.vy * ny;
       player.vx -= radialVelocity * nx;
       player.vy -= radialVelocity * ny;

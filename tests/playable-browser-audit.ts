@@ -110,7 +110,8 @@ try {
         const state = await readState();
         if (sample % 5 === 0) samples.push({ ms: Date.now() - started, tick: state.tick, level: state.levelId,
           player: state.player, segment: state.segmentIndex, status: state.status, coins: state.coins,
-          pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky });
+          pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky,
+          guardX: state.pursuer.x, guardVx: state.pursuer.vx, chaseDistance: state.chase.distance });
         if (state.levelId === 'night-patrol') {
           pursuitPhases.add(state.chase.phase);
           if (state.chase.phase !== lastChasePhase) {
@@ -170,7 +171,7 @@ try {
               : state.player.y > 390
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
-        if (touch && state.levelId === 'night-patrol' && !state.vehicleId) {
+        if (state.levelId === 'night-patrol' && !state.vehicleId) {
           // A concrete, input-driven skilled choice in the first challenge.
           // The game state stays untouched; the player releases a real rope
           // near a visible fixed world target. No free or automatic ride.
@@ -256,6 +257,10 @@ try {
           `ordinary journey never resolved ${ride}; it may be earned OR missed`);
       }
       assert.equal(seams.size, 4, 'natural route must capture both roof variants and their joins');
+      const guardSamples = (samples as Array<{ level: string; tick: number; guardX: number }>).
+        filter(sample => sample.level === 'night-patrol');
+      assert.ok(guardSamples.length > 3 && guardSamples.at(-1)!.guardX > guardSamples[0]!.guardX + 2500,
+        'the physical officer must advance thousands of world units during this run');
       assert.ok(naturalClaims.size > 0 && naturalMisses.size > 0, 'a skill test must demonstrate both real earning and real missed opportunities');
       if (touch) assert.ok(naturalClaims.has('货运滑索'),
         'a timely actual rope release must make the entry ride attainable');

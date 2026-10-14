@@ -164,12 +164,14 @@ try {
             && !!s.attachedAnchorId && s.player.y >= first.y - 120)
             wantHold = false; // a deliberate player release at the visible ring
           const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
-          // Keep the next high roof beam grappled an extra 88 world units so
-          // the natural swing generates upward lift, then release at the apex.
-          // The target stays fixed at its authored world support; no magnet.
-          if (kite && s.player.x >= kite.x - 1550 && s.player.x <= kite.x + 100 && anchor)
-            wantHold = !(s.player.x > anchor.x + 100 && s.player.vx > 0 && s.player.vy < 150)
-              && s.player.vx >= 0 && s.tick - holdAt < 160;
+          // Keep the real high-roof rope until the visible kite handle is
+          // reachable, then release while rising. No fixture or invisible aid.
+          if (kite && s.player.x >= kite.x - 440 && s.player.x <= kite.x + 24 && anchor) {
+            const nearVisibleHandle = Math.abs(s.player.x - kite.x) <= (kite.radiusX ?? 76);
+            const inVisibleHighBand = s.player.y <= kite.y + (kite.radiusY ?? 88) * .9;
+            wantHold = !(nearVisibleHandle && inVisibleHighBand && s.player.vy < -15)
+              && s.tick - holdAt < 160;
+          }
         }
         await edge(wantHold, s.tick);
         if (held && !s.inputHeld && s.inputTransitions > 0 && s.tick - holdAt > 30) await edge(false, s.tick);
