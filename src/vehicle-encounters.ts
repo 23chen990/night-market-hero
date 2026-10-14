@@ -102,7 +102,7 @@ export function encounterActionEligible(
   if (action === 'release') return !state.inputHeld && recentlyReleased;
   if (action === 'high-release') return !state.inputHeld && releaseAge >= 0
     && releaseAge <= 65 && state.playerY <= (state.contactCenterY !== undefined && state.contactRadiusY !== undefined
-      ? state.contactCenterY + state.contactRadiusY * .9 : 590);
+      ? state.contactCenterY + state.contactRadiusY * .9 : 520);
   if (action === 'press') return state.inputHeld && state.tick - state.lastPressTick >= 0
     && state.tick - state.lastPressTick <= 26;
   return !state.inputHeld && releaseAge >= 0 && releaseAge < 80 && state.playerY <= 455

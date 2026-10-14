@@ -132,9 +132,12 @@ export class ExperienceHud {
     else {
       const offer = state.vehicleOffers?.find(item => item.status === 'available' && item.x >= state.player.x - 140);
       const next = OPENING_ENCOUNTERS.find(beat => beat.segment > state.segmentIndex);
-      text(this.goal, offer ? `前方 ${Math.max(0, Math.ceil((offer.x - state.player.x) / 30))}m 挑战：${offer.id}（抓准挂环）`
-        : next ? `下一处 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：${next.vehicle} 获取机会`
-          : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m · 可在暂停菜单收工`);
+      const escapedOnce = state.gatesPassed > 0;
+      text(this.goal, offer ? `前方 ${Math.max(0, Math.ceil((offer.x - state.player.x) / 30))}m：抢${offer.id}`
+        : next ? (escapedOnce ? `已突破封锁 · 前方抢${next.vehicle}` :
+          `前方 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：争夺${next.vehicle}`)
+          : escapedOnce ? `突围成功 · 暂停可收工领奖 / 继续挑战`
+            : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m`);
     }
     const cue = controlCue(state);
     this.cue.hidden = !active; this.cue.dataset.tone = cue.tone;
@@ -159,7 +162,12 @@ export class ExperienceHud {
       else if (state.lastVehicleOffer && state.lastVehicleOffer.tick > previous.offerTick && state.lastVehicleOffer.kind === 'missed') {
         this.announce(`错过${state.lastVehicleOffer.id}：${state.lastVehicleOffer.reason ?? '下一次提早调整路线'}`);
       }
-      else if (state.gatesPassed > previous.gates) { this.announce(`穿过第 ${state.gatesPassed} 个街区！`); this.audio.play('combo'); }
+      else if (state.gatesPassed > previous.gates) {
+        this.announce(state.gatesPassed === 1
+          ? '突围成功！可以收工领奖，或继续争夺载具'
+          : `突破第 ${state.gatesPassed} 处封锁！继续挑战更高收益`);
+        this.audio.play('combo');
+      }
       else if (state.combo > previous.combo) { if (state.combo >= 2) this.announce(`漂亮！${state.combo} 连飞`); this.audio.play('combo'); }
       else if (state.pickups > previous.pickups) this.audio.play('coin');
       else if (state.mutation && state.mutation !== previous.mutation) {

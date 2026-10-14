@@ -222,8 +222,11 @@ try {
         // second world encounter was earned on the final frame, it then failed
         // its own one-second duration check. Keep using actual input until
         // EVERY naturally earned vehicle is actually controllable for 120 ticks.
-        const earnedRidesObserved = naturalClaims.size > 0
-          && everyClaimedInstanceIsPlayable(resolvedEncounters.values(), observedClaims, capturedRides);
+        // Optional encounters must be skippable in a competent desktop run.
+        // Every ride actually earned still needs its own sustained real-input
+        // observation; the phone skilled route separately must earn the pulley.
+        const earnedRidesObserved = everyClaimedInstanceIsPlayable(
+          resolvedEncounters.values(), observedClaims, capturedRides);
         const allFourResolved = rides.every(name => resolvedTypes.has(name));
         const documentedMiss = [...naturalMisses].some(name => capturedMisses.has(name));
         const complete = seams.size === 4 && allFourResolved && earnedRidesObserved && documentedMiss

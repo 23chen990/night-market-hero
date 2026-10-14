@@ -164,13 +164,15 @@ try {
             && !!s.attachedAnchorId && s.player.y >= first.y - 120)
             wantHold = false; // a deliberate player release at the visible ring
           const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
-          // Keep the real high-roof rope until the visible kite handle is
-          // reachable, then release while rising. No fixture or invisible aid.
+          // Keep a real high-roof rope until the drawn handle is within reach.
+          // Release inside its VISIBLE contact ellipse; an extra unseen vy gate
+          // made a valid swing miss even when the handle crossed the player.
           if (kite && s.player.x >= kite.x - 440 && s.player.x <= kite.x + 24 && anchor) {
-            const nearVisibleHandle = Math.abs(s.player.x - kite.x) <= (kite.radiusX ?? 76);
-            const inVisibleHighBand = s.player.y <= kite.y + (kite.radiusY ?? 88) * .9;
-            wantHold = !(nearVisibleHandle && inVisibleHighBand && s.player.vy < -15)
-              && s.tick - holdAt < 160;
+            const rx = kite.radiusX ?? 76, ry = kite.radiusY ?? 88;
+            const dx = (s.player.x - kite.x) / rx;
+            const dy = (s.player.y - kite.y) / ry;
+            const visibleContact = dx * dx + dy * dy <= .83 * .83;
+            wantHold = !visibleContact && s.tick - holdAt < 160;
           }
         }
         await edge(wantHold, s.tick);

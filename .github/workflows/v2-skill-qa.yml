@@ -40,6 +40,22 @@ jobs:
           npm run build
           node --import tsx --test tests/*.test.ts
           sha256sum dist/index.html
+      - name: Preserve checked-out source and dependencies for local reproduction
+        if: success()
+        run: |
+          mkdir -p delivery/v2/portable
+          git archive --format=tar.gz --output=delivery/v2/portable/source.tgz HEAD
+          tar -czf delivery/v2/portable/node_modules.tgz node_modules
+          sha256sum delivery/v2/portable/*.tgz dist/index.html > delivery/v2/portable/build-manifest.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v2-engineering-repro-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            delivery/v2/portable/
+            dist/index.html
+          retention-days: 14
+          if-no-files-found: warn
 
   browser:
     name: Natural input and lifecycle (not a human approval)
