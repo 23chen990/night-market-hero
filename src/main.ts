@@ -1,5 +1,5 @@
 import { ExperienceHud } from './experience-hud.ts';
-import { drawRide, drawConditions } from './ride-renderer.ts';
+import { drawRide, drawVehicleOffers, drawConditions } from './ride-renderer.ts';
 import { nextCheckpointX } from './experience-director.ts';
 import { applyFlightIdentity, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
@@ -40,7 +40,7 @@ import {
 } from './runtime-session';
 import { CHARACTERS } from './progression';
 import { speedFeelProfile, settlementCoins } from './endless';
-import { createCameraLayout, projectCamera, LOGICAL_VIEWPORT } from './camera-layout';
+import { createCameraLayout, projectCamera, comfortCameraStep, LOGICAL_VIEWPORT } from './camera-layout';
 import { createNightCityRenderer, createNightCityRenderPlan, mapWorldAnchorToArchitecturalSocket, NIGHT_CITY_ASSET_PATHS } from './night-city-renderer';
 import './style.css';
 import './experience.css';
@@ -748,7 +748,7 @@ function renderProductUi(state: GrappleState): void {
   chaseDistance.textContent = `${Math.round(state.chase.distance)} 步`;
   pursuerDistance.textContent = `${Math.round(state.pursuer.distance)} 步`;
   const guardOnScreen = app.dataset.guardOnScreen === 'true';
-  const chaseVisible = state.chase.phase === 'danger' || state.chase.phase === 'climax';
+  const chaseVisible = state.levelId === 'night-patrol' || state.chase.phase !== 'safe';
   const edgeVisible = state.pursuer.visible && chaseVisible && !guardOnScreen;
   pursuerPresence.dataset.visible = String(state.pursuer.visible && chaseVisible && !guardOnScreen);
   // `hidden` is the authoritative DOM visibility switch. Keep the data
@@ -908,8 +908,10 @@ class FlightScene extends Phaser.Scene {
   private protagonistSprite!: Phaser.GameObjects.Image;
   private protagonistRim!: Phaser.GameObjects.Image;
   private pursuerSprite!: Phaser.GameObjects.Image;
+  private barricadeSprite!: Phaser.GameObjects.Image;
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
   private cameraScrollX = 0;
+  private cameraHasInitialized = false;
   private lastRenderedTick = 0;
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
@@ -944,6 +946,11 @@ class FlightScene extends Phaser.Scene {
     this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0x8dc8d8).setDepth(3.9);
     this.protagonistSprite = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setDisplaySize(150, 150).setAlpha(1).setDepth(4);
     this.pursuerSprite = this.add.image(0, 0, 'pursuer-run').setOrigin(0.5, 0.72).setDisplaySize(126, 130).setAlpha(1).setDepth(4);
+    // Reuse the repository's existing approved hanging-cloth art instead of
+    // painting an opaque magenta debug rectangle over the night-city image.
+    // Its bounds are driven only by the actual physical occupiedBounds.
+    this.barricadeSprite = this.add.image(0, 0, 'module-blank-banner')
+      .setOrigin(0.5, 0.5).setDepth(-0.25).setVisible(false);
     // The old fixed decoration pool is intentionally not mounted on the
     // default journey: it stretched a canopy over the HUD and left floating
     // fragments at the top of the playfield.  NightCityRenderer owns the
@@ -979,14 +986,18 @@ class FlightScene extends Phaser.Scene {
     const worldViewportHeight = projection.worldViewportHeight;
     this.cameras.main.setZoom(projection.zoom);
     const cameraTargetX = projection.scrollX;
-    if (state.tick < this.lastRenderedTick
-      || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 0.7
-      || Math.abs(cameraTargetX - this.cameraScrollX) > worldViewportWidth * 0.7) this.cameraScrollX = projection.scrollX;
+    const elapsedCameraSeconds = Math.max(0, (state.tick - this.lastRenderedTick) / 120);
+    const genuineRestart = state.tick < this.lastRenderedTick
+      || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 1.25;
+    if (!this.cameraHasInitialized || genuineRestart) {
+      this.cameraScrollX = cameraTargetX;
+      this.cameraHasInitialized = true;
+    } else if (elapsedCameraSeconds > 0) {
+      this.cameraScrollX = comfortCameraStep(this.cameraScrollX, cameraTargetX, elapsedCameraSeconds);
+    }
     this.lastRenderedTick = state.tick;
     this.lastRenderedPlayerX = state.player.x;
-    // A short reverse swing must not pull the market backward.  Reset only on
-    // an actual run restart/teleport; normal camera movement is forward-only.
-    this.cameraScrollX = Math.max(this.cameraScrollX, projection.scrollX);
+    // Ease backward during a real backswing; never rewind physical state.
     const maxScrollX = Math.max(0, worldRight - worldViewportWidth);
     this.cameraScrollX = Math.min(this.cameraScrollX, maxScrollX);
     this.cameras.main.scrollX = this.cameraScrollX;
@@ -1033,6 +1044,24 @@ class FlightScene extends Phaser.Scene {
     // approved image stream is the only scene owner; this pass is reserved for
     // live gameplay feedback that must remain visible while jumping.
     this.drawStrictReferencePursuer(graphics, state);
+    if (state.levelId === 'night-patrol' && state.chase.phase !== 'safe') {
+      // A visible, fixed-reach capture net. Its upper limit corresponds to
+      // the simulation's 310-world-unit vertical guard reach; it does not
+      // magically stretch to whichever altitude the player happens to fly.
+      const guardX = state.pursuer.x;
+      const guardY = state.pursuer.y - 26;
+      const upperY = state.pursuer.runLaneY - 310;
+      const warnX = guardX + Math.min(190, Math.max(60, state.chase.distance - 20));
+      graphics.lineStyle(4, 0xe89a78, 0.18 + state.chase.pressure * 0.26)
+        .lineBetween(guardX, guardY, warnX, upperY);
+      graphics.lineStyle(2, 0xffd2a3, 0.72).lineBetween(guardX, guardY, warnX, upperY);
+      graphics.lineStyle(3, 0xefaa79, 0.70).strokeEllipse(warnX, upperY + 24, 94, 64);
+      graphics.lineStyle(1, 0xffd2a3, 0.36)
+        .lineBetween(warnX - 33, upperY + 4, warnX + 35, upperY + 43);
+      graphics.lineStyle(1, 0xffd2a3, 0.36)
+        .lineBetween(warnX - 33, upperY + 43, warnX + 35, upperY + 4);
+    }
+    this.syncBarricadeSprite(state);
     this.drawChaseObstacle(graphics, state);
     this.drawActivePickups(graphics, state, this.cameras.main.scrollX, worldViewportWidth);
     this.drawTutorialAffordance(graphics, state);
@@ -1063,6 +1092,7 @@ class FlightScene extends Phaser.Scene {
         graphics.lineStyle(state.comboTier >= 3 ? 3 : 2, ropeColor, 0.94).lineBetween(anchor.x, anchor.y, state.player.x, state.player.y);
       }
     }
+    drawVehicleOffers(graphics, state);
     drawRide(graphics, state);
     this.drawStrictReferenceProtagonist(graphics, state.player.x, state.player.y, Math.atan2(state.player.vy, state.player.vx));
     graphics.lineStyle(2, 0xd76572, 0.18).lineBetween(this.cameras.main.scrollX, state.failY, this.cameras.main.scrollX + worldViewportWidth, state.failY);
@@ -1304,6 +1334,27 @@ class FlightScene extends Phaser.Scene {
     }
   }
 
+  private syncBarricadeSprite(state: GrappleState): void {
+    const obstacle = state.chaseObstacle;
+    if (!obstacle || obstacle.kind !== 'barricade'
+      || obstacle.phase === 'missed' || obstacle.phase === 'passed'
+      || obstacle.occupiedBounds.height <= 8 || obstacle.occupiedBounds.width <= 8) {
+      this.barricadeSprite.setVisible(false);
+      app.dataset.barricadeVisual = 'none';
+      return;
+    }
+    const occupied = obstacle.occupiedBounds;
+    // Source image includes transparent margins; scale the real opaque cloth
+    // to the actual blocker envelope, with no new physics or phantom area.
+    this.barricadeSprite
+      .setPosition(occupied.x + occupied.width / 2, occupied.y + occupied.height / 2)
+      .setDisplaySize(Math.max(80, occupied.width * 3.3),
+        Math.max(45, occupied.height * 1.5))
+      .setAlpha(obstacle.phase === 'aim' ? 0.48 : 0.96)
+      .setVisible(true);
+    app.dataset.barricadeVisual = 'approved-cloth-banner';
+  }
+
   private drawChaseObstacle(graphics: Phaser.GameObjects.Graphics, state: GrappleState): void {
     const obstacle = state.chaseObstacle;
     if (!obstacle) return;
@@ -1311,18 +1362,21 @@ class FlightScene extends Phaser.Scene {
     if (obstacle.kind === 'barricade') {
       const occupied = obstacle.occupiedBounds;
       const frame = obstacle.anchorBounds;
-      graphics.fillStyle(0xe55b54, 0.18 + 0.18 * Math.sin(obstacle.animationProgress * Math.PI * 6))
-        .fillRect(bounds.x - 20, bounds.y, bounds.width + 40, bounds.height);
-      graphics.fillStyle(0x33283a, 1).fillRect(frame.x, frame.y, 12, frame.height);
-      graphics.fillRect(frame.x + frame.width - 12, frame.y, 12, frame.height);
-      graphics.fillStyle(0xb0775b, 1).fillRect(frame.x, frame.y, frame.width, 18);
-      graphics.fillStyle(0x5b3140, 1).fillRect(occupied.x, occupied.y, occupied.width, occupied.height);
-      graphics.lineStyle(5, 0xe0a15b, 0.82);
-      for (let row = 0; row < 4; row += 1) {
-        const y = bounds.y + 22 + row * 44;
-        if (y <= occupied.y + occupied.height) graphics.lineBetween(occupied.x, y, occupied.x + occupied.width, y);
+      // Wood suspension poles and a subtle lit physical footprint. The cloth
+      // mass is rendered by an EXISTING approved transparent PNG above.
+      graphics.lineStyle(3, 0x80634f, 0.84)
+        .lineBetween(frame.x, frame.y, frame.x, frame.y + frame.height)
+        .lineBetween(frame.x + frame.width, frame.y, frame.x + frame.width, frame.y + frame.height);
+      graphics.lineStyle(3, 0xd2ad75, 0.85)
+        .lineBetween(frame.x, frame.y, frame.x + frame.width, frame.y);
+      if (occupied.height > 8) {
+        graphics.lineStyle(2, 0xe0ad73, 0.38)
+          .strokeRect(occupied.x, occupied.y, occupied.width, occupied.height);
       }
-      graphics.fillStyle(0xf1b958, 0.95).fillTriangle(bounds.x - 28, bounds.y + bounds.height, bounds.x - 2, bounds.y + bounds.height, bounds.x - 15, bounds.y + bounds.height - 38);
+      graphics.fillStyle(0xf1b958, 0.83)
+        .fillTriangle(bounds.x - 25, bounds.y + bounds.height,
+          bounds.x - 5, bounds.y + bounds.height,
+          bounds.x - 15, bounds.y + bounds.height - 26);
     } else {
       this.drawRoofNet(graphics, state, obstacle);
     }

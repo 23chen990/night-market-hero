@@ -46,6 +46,7 @@ export class ExperienceHud {
   private readonly launch: HTMLElement;
   private readonly metric: HTMLElement;
   private readonly goal: HTMLElement;
+  private readonly pursuit: HTMLElement;
   private readonly cue: HTMLElement;
   private readonly cueTitle: HTMLElement;
   private readonly cueDetail: HTMLElement;
@@ -56,7 +57,7 @@ export class ExperienceHud {
   private readonly claimButton: HTMLButtonElement;
   private readonly finishButton: HTMLButtonElement;
   private readonly soundButton: HTMLButtonElement;
-  private previous: { tick: number; level: string; vehicle: string | null; pickups: number; combo: number; gates: number; mutation: string | null; status: string } | null = null;
+  private previous: { offerTick: number; tick: number; level: string; vehicle: string | null; pickups: number; combo: number; gates: number; mutation: string | null; status: string } | null = null;
   private toastUntil = 0;
   private awaiting = false;
 
@@ -67,6 +68,9 @@ export class ExperienceHud {
     this.layer.innerHTML = `
       <div class="flight-metrics" data-experience="metrics"></div>
       <div class="flight-goal" data-experience="goal"></div>
+      <div class="pursuit-readout" data-experience="pursuit" role="status" aria-live="off">
+        <strong>官兵正在追</strong><span>还有 0 步</span><i aria-hidden="true"></i>
+      </div>
       <div class="ride-badge" data-experience="ride" hidden><strong></strong><span></span></div>
       <div class="flight-toast" data-experience="toast" role="status" hidden></div>
       <div class="control-coach" data-experience="cue"><strong></strong><span></span></div>
@@ -78,7 +82,7 @@ export class ExperienceHud {
       </div>`;
     root.append(this.layer);
     const get = (name: string): HTMLElement => this.layer.querySelector(`[data-experience="${name}"]`)!;
-    this.launch = get('launch'); this.metric = get('metrics'); this.goal = get('goal'); this.cue = get('cue');
+    this.launch = get('launch'); this.metric = get('metrics'); this.goal = get('goal'); this.pursuit = get('pursuit'); this.cue = get('cue');
     this.cueTitle = this.cue.querySelector('strong')!; this.cueDetail = this.cue.querySelector('span')!;
     this.ride = get('ride'); this.rideName = this.ride.querySelector('strong')!; this.rideTime = this.ride.querySelector('span')!;
     this.toast = get('toast');
@@ -118,11 +122,22 @@ export class ExperienceHud {
     this.metric.hidden = this.awaiting;
     text(this.metric, `${Math.floor(state.distanceMeters)} m  ·  拾取 ${state.coins}  ·  连飞 ${state.combo} ×${Math.min(state.characterId === '提灯童' ? 3 : 4, 1 + Math.floor(state.combo / 2))}`);
     this.goal.hidden = this.awaiting || state.status !== 'playing';
+    this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
+    this.pursuit.dataset.phase = state.chase.phase;
+    const closeness = Math.min(1, Math.max(0, state.chase.pressure));
+    text(this.pursuit.querySelector('strong')!, closeness >= 0.75 ? '危险！向高处接钩躲网' : closeness >= 0.35 ? '官兵架网！加速或升高' : '后方官兵持续追赶');
+    text(this.pursuit.querySelector('span')!, `${Math.round(state.chase.distance / 30)}m`);
+    (this.pursuit.querySelector('i')! as HTMLElement).style.setProperty('--chase-fill', `${Math.round(closeness * 100)}%`);
     if (state.levelId === 'lantern-entry') text(this.goal, `护送铜符 ${Math.round(state.progress * 100)}% · 前方是渡口`);
     else {
+      const offer = state.vehicleOffers?.find(item => item.status === 'available' && item.x >= state.player.x - 140);
       const next = OPENING_ENCOUNTERS.find(beat => beat.segment > state.segmentIndex);
-      text(this.goal, next ? `前方 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：${next.vehicle}`
-        : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m · 可在暂停菜单收工`);
+      const escapedOnce = state.gatesPassed > 0;
+      text(this.goal, offer ? `前方 ${Math.max(0, Math.ceil((offer.x - state.player.x) / 30))}m：抢${offer.id}`
+        : next ? (escapedOnce ? `已突破封锁 · 前方抢${next.vehicle}` :
+          `前方 ${Math.max(1, Math.ceil((segmentStartPx(next.segment) - state.player.x) / 30))}m：争夺${next.vehicle}`)
+          : escapedOnce ? `突围成功 · 暂停可收工领奖 / 继续挑战`
+            : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m`);
     }
     const cue = controlCue(state);
     this.cue.hidden = !active; this.cue.dataset.tone = cue.tone;
@@ -139,8 +154,20 @@ export class ExperienceHud {
     if (p && (state.tick < p.tick || state.levelId !== p.level)) this.previous = null;
     const previous = this.previous;
     if (previous && active) {
-      if (state.vehicleId && state.vehicleId !== previous.vehicle) { this.announce(`${state.vehicleId} 到了！`); this.audio.play('ride'); }
-      else if (state.gatesPassed > previous.gates) { this.announce(`穿过第 ${state.gatesPassed} 个街区！`); this.audio.play('combo'); }
+      if (state.vehicleId && state.vehicleId !== previous.vehicle) {
+        const quality = state.lastVehicleOffer?.kind === 'claimed' && state.lastVehicleOffer.quality === 'stylish';
+        this.announce(quality ? `漂亮抢到${state.vehicleId}！额外 +8 金币` : `抢到 ${state.vehicleId}！试试按住/松手`);
+        this.audio.play('ride');
+      }
+      else if (state.lastVehicleOffer && state.lastVehicleOffer.tick > previous.offerTick && state.lastVehicleOffer.kind === 'missed') {
+        this.announce(`错过${state.lastVehicleOffer.id}：${state.lastVehicleOffer.reason ?? '下一次提早调整路线'}`);
+      }
+      else if (state.gatesPassed > previous.gates) {
+        this.announce(state.gatesPassed === 1
+          ? '突围成功！可以收工领奖，或继续争夺载具'
+          : `突破第 ${state.gatesPassed} 处封锁！继续挑战更高收益`);
+        this.audio.play('combo');
+      }
       else if (state.combo > previous.combo) { if (state.combo >= 2) this.announce(`漂亮！${state.combo} 连飞`); this.audio.play('combo'); }
       else if (state.pickups > previous.pickups) this.audio.play('coin');
       else if (state.mutation && state.mutation !== previous.mutation) {
@@ -148,7 +175,7 @@ export class ExperienceHud {
       }
     }
     if (previous && state.status !== 'playing' && previous.status === 'playing') this.audio.play('finish');
-    this.previous = { tick: state.tick, level: state.levelId, vehicle: state.vehicleId, pickups: state.pickups, combo: state.combo, gates: state.gatesPassed, mutation: state.mutation, status: state.status };
+    this.previous = { offerTick: state.lastVehicleOffer?.tick ?? 0, tick: state.tick, level: state.levelId, vehicle: state.vehicleId, pickups: state.pickups, combo: state.combo, gates: state.gatesPassed, mutation: state.mutation, status: state.status };
     this.toast.hidden = !active || performance.now() > this.toastUntil;
   }
 }

@@ -3,7 +3,7 @@
 .experience-layer [hidden], .pause-actions [hidden], .mission-claim[hidden] { display: none !important; }
 .flight-metrics { position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(68px, calc(env(safe-area-inset-left) + 60px)); padding: 7px 11px; border-radius: 12px; background: #15282ddd; font-size: 14px; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .flight-goal { position: absolute; top: max(53px, calc(env(safe-area-inset-top) + 42px)); left: max(18px, env(safe-area-inset-left)); background: #11272dcc; border-left: 3px solid #e4be7b; border-radius: 4px 9px 9px 4px; padding: 6px 9px; font-size: 12px; max-width: 50vw; }
-.control-coach { position: absolute; bottom: max(14px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); padding: 9px 18px; min-width: 240px; max-width: 70vw; border: 1px solid #e5c58655; border-radius: 14px; background: #13282ceb; text-align: center; box-shadow: 0 4px 16px #0004; }
+.control-coach { position: absolute; bottom: max(12px, env(safe-area-inset-bottom)); left: max(12px, env(safe-area-inset-left)); padding: 8px 11px; min-width: 0; max-width: min(290px, 32vw); border: 1px solid #e5c58655; border-radius: 12px; background: #13282cdb; text-align: left; box-shadow: 0 4px 13px #0004; box-sizing: border-box; }
 .control-coach strong, .control-coach span { display: block; }
 .control-coach strong { font-size: 16px; line-height: 1.4; letter-spacing: .05em; }
 .control-coach span { margin-top: 3px; font-size: 11px; color: #d4dace; }
@@ -79,16 +79,33 @@ button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb
 @media (max-width: 720px) {
   .hub-money { display: none; }
   .flight-goal { font-size: 11px; max-width: 51vw; }
-  .control-coach { bottom: 8px; padding: 7px 12px; }
+  .control-coach { bottom: 6px; padding: 6px 9px; max-width: 34vw; }
   .control-coach strong { font-size: 14px; }
   .control-coach span { font-size: 10px; }
   .launch-card { padding: 16px 22px; }
   .launch-card h1 { font-size: 30px; }
 }
 @media (max-height: 430px) {
+  .control-coach { bottom: 5px; padding: 5px 8px; }
+  .control-coach strong { font-size: 12px; line-height: 1.2; letter-spacing: 0; }
+  .control-coach span { font-size: 9px; line-height: 1.15; }
   .pause-overlay { justify-content: flex-start; gap: 6px; padding: 12px; }
   .pause-actions { gap: 5px; }
   .pause-actions h2 { font-size: 18px; }
   .pause-actions small { font-size: 10px; }
   .result-card { padding: 12px 20px; }
 }
+
+/* A pursuit that exists only in sr-only text is not a game threat. */
+.pursuit-readout { position:absolute; left:max(18px,env(safe-area-inset-left)); top:max(95px,calc(env(safe-area-inset-top) + 84px));
+ width:185px; padding:7px 10px; background:#11272ddf; border-left:3px solid #edaf6a;
+ border-radius:4px 10px 10px 4px; box-sizing:border-box; display:grid; grid-template-columns:1fr auto;
+ gap:3px 8px; align-items:center; font-size:11px; }
+.pursuit-readout strong { font-weight:800; white-space:nowrap; }
+.pursuit-readout span { color:#ffe5a9; font-size:10px; font-variant-numeric:tabular-nums; }
+.pursuit-readout i { grid-column:1/-1; display:block; height:4px; border-radius:4px;
+ background:linear-gradient(90deg,#f3b477 var(--chase-fill,0%),#315159 var(--chase-fill,0%)); }
+.pursuit-readout[data-phase="danger"],.pursuit-readout[data-phase="climax"] { border-color:#f47772; background:#542831ec; animation:chase-alert 1s ease-in-out infinite alternate; }
+@keyframes chase-alert { to { box-shadow:0 0 18px #ee615066; } }
+@media (max-width:720px) { .pursuit-readout { top:max(90px,calc(env(safe-area-inset-top) + 77px)); width:166px; font-size:10px; padding:5px 8px; } }
+@media (prefers-reduced-motion:reduce) { .pursuit-readout { animation:none !important; } }

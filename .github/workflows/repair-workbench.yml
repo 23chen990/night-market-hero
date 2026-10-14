@@ -1,0 +1,47 @@
+name: Repair workbench
+on:
+  push:
+    branches: [fix/feel-pursuit-seam-20261012]
+    paths: ['.github/workflows/repair-workbench.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: game
+      - uses: actions/checkout@v4
+        with:
+          repository: 23chen990/ai-mini-game-factory
+          ref: acb3a6ca80971052f1048c7248bd68c29631d990
+          path: factory
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Game locked install
+        working-directory: game
+        run: npm ci
+      - name: Factory locked install
+        working-directory: factory
+        run: |
+          npm install -g pnpm@11.19.0
+          pnpm install --frozen-lockfile
+      - name: Portable workbench archive
+        run: |
+          mkdir delivery
+          tar -czf delivery/game-dependencies.tar.gz -C game node_modules
+          git -C game archive --format=tar.gz HEAD src tests scripts dev index.html package.json package-lock.json vite.config.ts tsconfig.json eslint.config.js .github AGENTS.md PLAYABLE_START_HERE.md docs/ART_ASSET_MANIFEST_V1.md runtime-product-gates.json validate-runtime-product-gates.mjs > delivery/game-source.tar.gz
+          git -C factory archive --format=tar.gz HEAD > delivery/factory-source.tar.gz
+          tar -czf delivery/factory-dependencies.tar.gz -C factory node_modules
+          git -C game rev-parse HEAD > delivery/game-commit.txt
+          git -C factory rev-parse HEAD > delivery/factory-commit.txt
+      # Snapshot the exact feature-branch source and QA dependencies for offline review.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repair-workbench
+          path: delivery/
+          retention-days: 7

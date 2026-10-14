@@ -44,7 +44,7 @@ test('a released short-rope anchor remains regrappleable while it stays within r
 
 test('camera keeps a forward-only deadzone and runtime exposes bounce feedback', async () => {
   const source = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
-  assert.match(source, /Math\.abs\(cameraTargetX - this\.cameraScrollX\)/);
+  assert.match(source, /comfortCameraStep\(this\.cameraScrollX, cameraTargetX, elapsedCameraSeconds\)/);
   assert.match(source, /terrain\.kind === '布棚'/);
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /data-action="clear-progress"/);
@@ -75,10 +75,14 @@ test('static terrain blockout is not painted over the approved image stream', as
   assert.match(style, /\.left-edge-alert\s*\{[\s\S]*border-radius/);
 });
 
-test('the thrown net has a distinct danger header instead of an unexplained grid', async () => {
+test('the thrown net retains an attributable telegraph and the roadblock uses approved cloth art', async () => {
   const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
   assert.match(main, /This is the官兵抛网/);
-  assert.match(main, /0xe55b54/);
+  assert.match(main, /targetRadius/);
+  assert.match(main, /0xd76572/, 'aiming reticle must still warn before the thrown net');
+  assert.match(main, /syncBarricadeSprite\(state\)/);
+  assert.match(main, /'module-blank-banner'/, 'reuse the existing approved street banner artwork');
+  assert.doesNotMatch(main, /0xe55b54/, 'the temporary full-frame magenta overlay must be retired');
 });
 
 test('the thrown net is a transient directional hazard, not a permanent debug grid', async () => {

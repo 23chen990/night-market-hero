@@ -1,0 +1,322 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { createGrappleGame } from '../src/game-core.ts';
+import { segmentLengthPx, segmentStartPx, type VehicleId } from '../src/endless.ts';
+import { encounterActionEligible, planVehicleEncounter, sweptEncounterContact,
+  encounterInstructions, missedEncounterReason,
+  preserveBirdPreparationForFinalBoarding } from '../src/vehicle-encounters.ts';
+import { createRunSnapshot, isValidRunState, parseRunSnapshot } from '../src/run-snapshot.ts';
+import { controlCue } from '../src/experience-director.ts';
+
+const options = { marketGates: false, terrainMode: 'panorama', guidedExperience: true } as const;
+const rides: readonly [number, VehicleId, 'release' | 'high-release' | 'press' | 'stylish-release'][] = [
+  [2, '货运滑索', 'release'], [4, '纸鸢', 'high-release'],
+  [6, '灯笼群', 'press'], [8, '青鸾', 'stylish-release'],
+];
+function game(seed = 32) { const result = createGrappleGame(seed, options); result.restartEndless(seed); return result; }
+function locate(g: ReturnType<typeof game>, segment: number) {
+  g.setPlayerForTest({ x: segmentStartPx(segment) + 5, y: 450, vx: 410, vy: 0 });
+  const state = g.advanceTicks(1);
+  const offer = state.vehicleOffers.find(item => item.segment === segment);
+  assert.ok(offer);
+  assert.ok(offer.instanceId && offer.chunkId && offer.supportId && offer.requiredAction);
+  return offer;
+}
+
+test('all four initial challenges are source-anchored, deterministic, visible and optional', () => {
+  for (const seed of [1, 31, 32, 99, 157]) for (const [segment, id, action] of rides) {
+    const planned = planVehicleEncounter(seed, segment, id);
+    assert.ok(planned, `seed ${seed} segment ${segment} needs a real image support`);
+    assert.deepEqual(planVehicleEncounter(seed, segment, id), planned);
+    assert.equal(planned.requiredAction, action);
+    assert.ok(planned.x > segmentStartPx(segment));
+    assert.ok(planned.x < segmentStartPx(segment) + segmentLengthPx(segment));
+    assert.ok(planned.y > 125 && planned.y < 720);
+    assert.ok(planned.radiusX <= 100 && planned.radiusY <= (id === '纸鸢' ? 120 : 100));
+    if (id === '灯笼群') {
+      assert.equal(planned.radiusY, 100, 'the visible lantern knot may not have an invisible pickup halo');
+      assert.ok(planned.y >= planned.supportY, 'lantern knot must be suspended below its real world support');
+      assert.equal(sweptEncounterContact(
+        { x: planned.x - 95, y: planned.y + 75 },
+        { x: planned.x + 95, y: planned.y + 75 }, planned,
+      ), true, 'the low route must physically cross the visible lantern knot');
+    }
+    if (id === '纸鸢') {
+      assert.equal(planned.radiusY, 120, 'the visible and physical kite radius must agree');
+      assert.equal(sweptEncounterContact(
+        { x: planned.x - 90, y: planned.y + 70 },
+        { x: planned.x + 90, y: planned.y + 70 }, planned,
+      ), true, 'crossing the visible kite tether is a genuine contact');
+      assert.equal(sweptEncounterContact(
+        { x: planned.x - 90, y: planned.y + 126 },
+        { x: planned.x + 90, y: planned.y + 126 }, planned,
+      ), false, 'no invisible pickup outside the visible kite ellipse');
+    }
+    assert.ok(planned.announceX < planned.x - 600, 'warn early enough to change swing trajectory');
+    assert.ok(encounterInstructions(id).length >= 8, 'each challenge has a usable short cue');
+    const g = game(seed);
+    const offer = locate(g, segment);
+    assert.equal(g.getState().vehicleId, null, 'segment transition is not an automatic grant');
+    assert.equal(offer.x, planned.x);
+    assert.equal(offer.y, planned.y);
+  }
+});
+
+test('lantern guidance prioritizes a real release then new press at the low visible knot', () => {
+  const g = game(32);
+  const offer = locate(g, 6);
+  const state = g.getState();
+  state.vehicleOffers = [{ ...offer, status: 'available' }];
+  state.vehicleId = null;
+  assert.equal(offer.y, Math.max(175, Math.min(675, offer.supportY! + 270)),
+    'the knot hangs under the SAME authored world support, not the player');
+  state.player.x = offer.x - 220;
+  state.player.y = offer.y - 150;
+  state.inputHeld = true;
+  assert.match(controlCue(state).title, /先沿低屋檐前进/,
+    'warn to approach the actual low knot rather than releasing 220px too early');
+  state.player.x = offer.x - 112;
+  state.player.y = offer.y - 35;
+  state.player.vx = 385;
+  state.attachedAnchorId = state.anchors[0]?.id ?? null;
+  assert.match(controlCue(state).title, /现在松开旧索/,
+    'within the drawn knot approach, request a real release THEN a new press');
+  state.inputHeld = false;
+  state.player.x = offer.x - 105;
+  state.player.y = offer.y - 126;
+  assert.match(controlCue(state).title, /保持松手下降/);
+  state.player.y = offer.y + 22;
+  assert.match(controlCue(state).title, /现在按住/);
+  state.player.y = offer.y + 143;
+  assert.match(controlCue(state).title, /在上方/);
+  assert.match(missedEncounterReason('press', offer.y, true), /重新按住/);
+});
+
+test('two earned stylish releases survive only a REAL final Qingluan boarding dismount', () => {
+  const actual = planVehicleEncounter(32, 8, '青鸾');
+  assert.ok(actual);
+  const offers = [{ id: '青鸾' as const, status: 'available',
+    x: actual.x, y: actual.y, radiusX: actual.radiusX, radiusY: actual.radiusY }];
+  const real = {
+    player: { x: actual.x - 43, y: actual.y + 65 },
+    tick: 390, releasedRealAnchor: true, stylishTicks: [265, 346],
+    offers,
+  };
+  assert.equal(preserveBirdPreparationForFinalBoarding(real), true,
+    'two consecutive stylish flights already earned before the final ordinary boarding release');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real, releasedRealAnchor: false }), false,
+    'merely entering the area with no real rope release is never a qualification');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real, stylishTicks: [346] }), false,
+    'one good release cannot be upgraded into two');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real,
+    player: { x: actual.x - 280, y: actual.y + 65 } }), false,
+    'an ordinary release in a different street still breaks preparation');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real,
+    player: { x: actual.x - 43, y: actual.y + 220 } }), false,
+    'a release far BELOW the painted ring cannot bank the boarding qualification');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real, tick: 2000 }), false,
+    'past stylish results expire and cannot grant stale qualification');
+  assert.equal(preserveBirdPreparationForFinalBoarding({ ...real,
+    offers: [{ ...offers[0]!, status: 'missed' }] }), false,
+    'a resolved instance may never be retroactively collected');
+});
+
+test('qingluan remains tied to a physical high support and earns no larger invisible catch radius', () => {
+  for (const seed of [1, 31, 32, 99, 157]) {
+    const bird = planVehicleEncounter(seed, 8, '青鸾');
+    assert.ok(bird);
+    assert.equal(bird.y, Math.max(175, Math.min(675, bird.supportY + 214)),
+      'the same authored rooftop support owns the visibly lowered bird perch');
+    assert.equal(bird.radiusX, 88);
+    assert.equal(bird.radiusY, 92);
+    assert.equal(bird.requiredAction, 'stylish-release');
+  }
+});
+
+test('qingluan warning begins one full street early, counts actual stylish releases and cues final high swing', () => {
+  const g = game(32);
+  const bird = locate(g, 8);
+  assert.equal(bird.id, '青鸾');
+  const s = g.getState();
+  s.vehicleOffers = [{ ...bird, status: 'available' }];
+  s.vehicleId = null;
+  s.inputHeld = true;
+  s.tick = 300;
+  s.stylishReleaseTicks = [];
+  s.player.x = bird.x - 1500;
+  s.player.y = bird.y + 180;
+  assert.match(controlCue(s).title, /青鸾将至.*0\/2/,
+    'the warning must precede the old 920px window so two real swings are possible');
+  s.stylishReleaseTicks = [s.tick - 85, s.tick - 15];
+  assert.match(controlCue(s).title, /2\/2/);
+  s.player.x = bird.x - 520;
+  assert.match(controlCue(s).title, /资格已备好/);
+  s.player.x = bird.x - 150;
+  assert.match(controlCue(s).title, /青鸾在上方/,
+    'a prepared but low rider must be directed to the earlier REAL beam');
+  s.player.y = bird.y + 20;
+  s.attachedAnchorId = s.anchors[0]?.id ?? null;
+  assert.match(controlCue(s).title, /现在松手/,
+    'close, visible and properly prepared rider still has to physically release');
+  s.stylishReleaseTicks = [s.tick - 85];
+  assert.match(controlCue(s).title, /1\/2/,
+    'the HUD cannot claim qualification after only one earned stylish release');
+});
+
+test('qingluan failed contact explains the REAL missing action rather than always blaming the style streak', () => {
+  const c = { stylishReleaseCount: 1, attached: false, inputHeld: false, releaseAge: 30 };
+  assert.match(missedEncounterReason('stylish-release', 423, true, 404, 92, c), /还差1次漂亮松手/);
+  assert.match(missedEncounterReason('stylish-release', 410, true, 404, 92,
+    { ...c, stylishReleaseCount: 2, attached: true }), /先松开旧飞索/);
+  assert.match(missedEncounterReason('stylish-release', 510, true, 404, 92,
+    { ...c, stylishReleaseCount: 2 }), /在上方/);
+  assert.doesNotMatch(missedEncounterReason('stylish-release', 470, true, 404, 92,
+    { ...c, stylishReleaseCount: 2 }), /在上方/,
+    'a rider inside the drawn lower wing must not be told they are too low');
+  assert.match(missedEncounterReason('stylish-release', 405, true, 404, 92,
+    { ...c, stylishReleaseCount: 2, releaseAge: 120 }), /松手太早/);
+  assert.equal(missedEncounterReason('stylish-release', 423, true),
+    '需要连续两次漂亮松手', 'legacy diagnostics without an actual state remain compatible');
+});
+
+test('an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling', () => {
+  const ring = { x: 500, y: 410, radiusX: 80, radiusY: 75 };
+  assert.equal(sweptEncounterContact({ x: 440, y: 475 }, { x: 442, y: 475 }, ring), false);
+  assert.equal(sweptEncounterContact({ x: 380, y: 410 }, { x: 620, y: 410 }, ring), true);
+  assert.equal(sweptEncounterContact({ x: 300, y: 250 }, { x: 700, y: 250 }, ring), false);
+  assert.equal(sweptEncounterContact({ x: 500, y: 410 }, { x: 500, y: 410 }, ring), true);
+});
+
+test('distinct qualifying actions require a real recent press/release, speed, and bird combo', () => {
+  const s = { tick: 200, playerY: 420, playerVx: 460, inputHeld: false,
+    attached: false, lastReleaseTick: -10000, lastPressTick: -10000, stylishTicks: [] as number[] };
+  for (const [, , action] of rides) assert.equal(encounterActionEligible(action, s), false);
+  s.lastReleaseTick = 180;
+  assert.equal(encounterActionEligible('release', s), true);
+  assert.equal(encounterActionEligible('high-release', s), true);
+  assert.equal(encounterActionEligible('stylish-release', s), false);
+  // A stale release is not a valid interaction with a later ring.
+  s.lastReleaseTick = 159;
+  assert.equal(encounterActionEligible('release', s), false);
+  s.lastReleaseTick = 180;
+  s.playerY = 535;
+  assert.equal(encounterActionEligible('high-release', s), false);
+  s.playerY = 420;
+  assert.equal(encounterActionEligible('high-release', s), true);
+  // The kite handle's illustrated collision extends to y=598 (510+88).
+  // A genuine release inside it must not fail an invisible y=520 altitude cap.
+  s.playerY = 580;
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), true);
+  s.playerY = 610;
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), false);
+  assert.equal(missedEncounterReason('high-release', 630, true, 554, 120),
+    '松手时机不对', 'the drawn lower part of the kite is not insufficient height');
+  assert.equal(missedEncounterReason('high-release', 665, true, 554, 120),
+    '高度不够，借高处挂点再试');
+  // An actual release can fly for ~1s before entering the illustrated handle:
+  // a rigid 65-tick clock must not invalidate that physically valid crossing.
+  s.playerY = 500;
+  s.lastReleaseTick = 95; // 105 ticks airborne
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), true);
+  s.lastReleaseTick = 69; // 131 ticks airborne, stale input
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), false);
+  s.lastReleaseTick = 180;
+  s.playerY = 420;
+  s.stylishTicks = [80, 170];
+  assert.equal(encounterActionEligible('stylish-release', s), true);
+  // Qingluan shares the REAL visible ellipse with the renderer. The previous
+  // invisible y<=455 cap rejected a genuine y=485 contact in the drawn
+  // center=404 radiusY=92 ring even with two real stylish releases.
+  s.playerY = 485;
+  assert.equal(encounterActionEligible('stylish-release', {
+    ...s, contactCenterY: 404, contactRadiusY: 92,
+  }), true, 'the lower visible wing is a legal skilled interception');
+  assert.equal(encounterActionEligible('stylish-release', s), false,
+    'legacy calls without an authored target retain the old conservative height cap');
+  s.playerY = 500;
+  assert.equal(encounterActionEligible('stylish-release', {
+    ...s, contactCenterY: 404, contactRadiusY: 92,
+  }), false, 'do not enlarge the physical circle or accept beyond its bottom');
+  s.playerY = 420;
+  s.attached = true;
+  assert.equal(encounterActionEligible('release', s), false);
+  s.attached = false;
+  s.inputHeld = true; s.lastPressTick = 199;
+  assert.equal(encounterActionEligible('press', s), true);
+  assert.equal(encounterActionEligible('release', s), false);
+  s.lastPressTick = 100;
+  assert.equal(encounterActionEligible('press', s), false);
+  assert.match(missedEncounterReason('stylish-release', 400, true), /连续两次/);
+});
+
+test('wrong action and bypass do not grant a ride, and the same encounter cannot resolve twice', () => {
+  const g = game(); const offer = locate(g, 2);
+  g.setPlayerForTest({ x: offer.x - 15, y: offer.y, vx: 440, vy: 0 });
+  const touched = g.advanceTicks(1);
+  assert.equal(touched.vehicleId, null);
+  assert.equal(touched.vehicleOffers.find(item => item.instanceId === offer.instanceId)?.status, 'available');
+  g.setPlayerForTest({ x: offer.x + 270, y: offer.y - 320, vx: 440, vy: 0 });
+  const missed = g.advanceTicks(1);
+  assert.equal(missed.vehicleId, null);
+  assert.equal(missed.lastVehicleOffer?.kind, 'missed');
+  assert.equal(missed.encounterEvents.filter(event => event.instanceId === offer.instanceId).length, 1);
+  g.setPlayerForTest({ x: offer.x - 15, y: offer.y });
+  g.advanceTicks(1);
+  assert.equal(g.getState().encounterEvents.filter(event => event.instanceId === offer.instanceId).length, 1);
+  assert.equal(g.getState().vehicleId, null);
+});
+
+test('a second encounter of the same vehicle can resolve differently and is identified by instance', () => {
+  const g = game(31);
+  const first = locate(g, 2);
+  g.setPlayerForTest({ x: first.x + 250, y: first.y - 310, vx: 450, vy: 0 });
+  g.advanceTicks(1);
+  const missed = g.getState().encounterEvents.at(-1);
+  assert.equal(missed?.outcome, 'missed');
+  const fixture = g.getState();
+  const id = first.id;
+  const future = { ...first, instanceId: '31:50:alternate:货运滑索', segment: 50,
+    x: fixture.player.x + 100, y: fixture.player.y, status: 'available' as const };
+  // This fixture isolates two independently saved encounters of one type.
+  fixture.vehicleOffers = [future];
+  fixture.lastGrappleReleaseTick = fixture.tick;
+  fixture.player.vx = 480;
+  assert.equal(g.restoreSnapshot(fixture), true);
+  g.setPlayerForTest({ x: future.x - 20, y: future.y, vx: 480, vy: 0 });
+  g.advanceTicks(1);
+  const after = g.getState();
+  assert.equal(after.vehicleId, id);
+  assert.equal(after.encounterEvents.filter(e => e.id === id).length, 2);
+  assert.equal(new Set(after.encounterEvents.map(e => e.instanceId)).size, 2);
+  assert.deepEqual(after.encounterEvents.map(e => e.outcome), ['missed', 'claimed']);
+});
+
+test('offer/encounter records survive save/load; invalid action, duplicate instance and forged reward are rejected', () => {
+  const g = game(); const offer = locate(g, 2);
+  g.setPlayerForTest({ x: offer.x + 250, y: offer.y - 350, vx: 400, vy: 0 }); g.advanceTicks(1);
+  const snapshot = createRunSnapshot('v2-archive', g.getState());
+  assert.ok(parseRunSnapshot(JSON.stringify(snapshot)));
+  const restored = game(); assert.equal(restored.restoreSnapshot(snapshot.state), true);
+  assert.deepEqual(restored.getState().encounterEvents, g.getState().encounterEvents);
+  const state = g.getState();
+  assert.equal(isValidRunState({ ...state, vehicleOffers: [{ ...offer, requiredAction: 'magic' }] }), false);
+  const ev = state.encounterEvents[0]!;
+  assert.equal(isValidRunState({ ...state, encounterEvents: [ev, { ...ev }] }), false);
+  assert.equal(isValidRunState({ ...state, encounterEvents: [{ ...ev, quality: 'legendary' }] }), false);
+});
+
+test('default lantern holds on its authored world support and does not jump on the pickup frame', () => {
+  const g = game(32);
+  const offer = locate(g, 6);
+  assert.ok(Number.isFinite(offer.supportX) && Number.isFinite(offer.supportY));
+  g.setPlayerForTest({ x: offer.x - 12, y: offer.y, vx: 400, vy: -20 });
+  assert.equal(g.act('press'), true);
+  const mounted = g.getState();
+  assert.equal(mounted.vehicleId, '灯笼群');
+  assert.deepEqual(mounted.vehicleVirtualAnchor, { x: offer.supportX, y: offer.supportY });
+  const rope = Math.hypot(mounted.player.x - offer.supportX!, mounted.player.y - offer.supportY!);
+  assert.ok(Math.abs(mounted.vehicleLockY - rope) < 1e-5);
+  const after = g.advanceTicks(1);
+  assert.ok(Math.hypot(after.player.x - mounted.player.x, after.player.y - mounted.player.y) < 16,
+    'the first lantern grab cannot teleport the rider to a phantom rope');
+});

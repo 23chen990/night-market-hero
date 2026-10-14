@@ -7,13 +7,25 @@ import { rollVehicleForSegment, VEHICLES, segmentStartPx } from '../src/endless.
 // map to a deterministic tick budget of 120 ticks per second (no wall clock).
 const TICKS_PER_SECOND = 120;
 
-/** Place the player inside a known segment so a deterministic vehicle is granted. */
-function grantVehicleAt(seed: number, segment: number): ReturnType<typeof createGrappleGame> {
+/** Scoped physics fixture. All default modes now require physical player
+ * interaction to earn a vehicle. Inject an already-earned active vehicle to
+ * test the physics only; this is NOT acquisition or browser-play evidence.
+ */
+function grantVehicleAt(seed: number, segment: number, forced?: '纸鸢' | '货运滑索' | '灯笼群' | '青鸾'): ReturnType<typeof createGrappleGame> {
   const game = createGrappleGame(seed);
   game.restartEndless(seed);
   const x = segmentStartPx(segment) + 120;
   game.setPlayerForTest({ x, y: 400, vx: 360, vy: 0 });
   game.advanceTicks(1);
+  const id = forced ?? rollVehicleForSegment(seed, segment, segment === 8);
+  assert.ok(id, 'test must request a known vehicle');
+  const definition = VEHICLES.find(v => v.id === id)!;
+  const mounted = game.getState();
+  mounted.vehicleId = id;
+  mounted.vehiclePhase = 'idle';
+  mounted.vehicleTicksRemaining = Math.round(definition.durationSeconds * TICKS_PER_SECOND);
+  mounted.vehicleLockY = mounted.player.y;
+  assert.equal(game.restoreSnapshot(mounted), true);
   return game;
 }
 
@@ -34,8 +46,7 @@ test('vehicle acquisition is a deterministic probability event', () => {
 
 test('vehicle duration is a deterministic tick countdown and expires', () => {
   // Seed 1 grants 纸鸢 at the wide, non-sky segment 38 so the player stays in one segment.
-  const game = createGrappleGame(1);
-  game.restartEndless(1);
+  const game = grantVehicleAt(1, 38, '纸鸢');
   const x = segmentStartPx(38) + 120;
   const kiteDurationTicks = Math.round(VEHICLES.find((v) => v.id === '纸鸢')!.durationSeconds * TICKS_PER_SECOND);
   let lastTicks = 0;

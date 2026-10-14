@@ -1,0 +1,141 @@
+name: Night Patrol Repair Gates
+on:
+  push:
+    branches: [fix/feel-pursuit-seam-20261012]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: night-patrol-repair-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install isolated dependencies
+        run: npm ci
+      - name: Static tests and build (preserve all logs)
+        shell: bash
+        run: |
+          set +e
+          mkdir -p delivery
+          git rev-parse HEAD > delivery/commit.txt
+          npm run lint > delivery/lint.log 2>&1; lint=$?
+          npm run typecheck > delivery/typecheck.log 2>&1; types=$?
+          # Several existing tests inspect the emitted HTML. Build first
+          # so a clean GitHub runner tests the same artifact the user will play.
+          npm run build > delivery/build.log 2>&1; build=$?
+          node --import tsx --test tests/*.test.ts > delivery/tests.log 2>&1; tests=$?
+          test -f dist/index.html && sha256sum dist/index.html > delivery/playable.sha256
+          printf '{"lint":%s,"typecheck":%s,"unitTests":%s,"build":%s}\n' "$lint" "$types" "$tests" "$build" > delivery/static-result.json
+          cat delivery/static-result.json
+          tail -n 35 delivery/tests.log
+          test "$lint$types$tests$build" = "0000"
+      - name: Install browser engines
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        run: npx playwright install --with-deps chromium webkit
+      - name: Natural browser journey
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        shell: bash
+        run: |
+          set +e
+          node --import tsx tests/playable-browser-audit.ts > delivery/browser.log 2>&1; code=$?
+          printf '{"naturalJourneyExit":%s}\n' "$code" > delivery/browser-result.json
+          tail -n 35 delivery/browser.log
+          exit "$code"
+      - name: Failure, revival, menu and orientation
+        if: ${{ !cancelled() && hashFiles('dist/index.html') != '' }}
+        shell: bash
+        run: |
+          set +e
+          node --import tsx tests/playable-safety-audit.ts > delivery/safety.log 2>&1; safety=$?
+          node --import tsx tests/playable-menu-audit.ts > delivery/menu.log 2>&1; menu=$?
+          printf '{"safety":%s,"mobileMenu":%s}\n' "$safety" "$menu" > delivery/safety-menu-result.json
+          cat delivery/safety-menu-result.json
+          test "$safety$menu" = "00"
+      - name: Export exact-build QA evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: night-patrol-repair-${{ github.sha }}
+          path: |
+            delivery/
+            evidence/playable-audit/
+            dist/index.html
+          retention-days: 14
+          if-no-files-found: warn
+
+  factory-review:
+    name: Factory audit (release expected BLOCKED)
+    needs: regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: 23chen990/ai-mini-game-factory
+          ref: acb3a6ca80971052f1048c7248bd68c29631d990
+          path: factory
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned factory
+        working-directory: factory
+        run: |
+          npm install -g pnpm@11.19.0
+          pnpm install --frozen-lockfile
+          pnpm exec vitest run tests/unit/existing-game-audit.test.ts
+      - name: Obtain exact successful regression build and videos
+        uses: actions/download-artifact@v4
+        with:
+          name: night-patrol-repair-${{ github.sha }}
+          path: game
+      - name: Generate hash-bound external game review
+        working-directory: game
+        run: node scripts/generate-factory-existing-manifest.mjs
+      - name: Evaluate all seven factory dimensions
+        working-directory: factory
+        shell: bash
+        run: |
+          set +e
+          pnpm exec tsx src/cli/factory.ts audit-existing ../game/delivery/factory-existing-manifest.json > ../game/delivery/factory-existing-report.json 2> ../game/delivery/factory-existing-stderr.log
+          status=$?
+          echo "$status" > ../game/delivery/factory-exit-code.txt
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            const x = JSON.parse(fs.readFileSync('../game/delivery/factory-existing-report.json','utf8'));
+            if (x.passed !== false || x.matrix.passed !== false ||
+              x.humanPassed !== false || x.buildValid !== true || x.commitValid !== true) process.exit(1);
+            console.log('Verified candidate identity. Release remains BLOCKED pending independent QA.');
+            console.log(JSON.stringify({blockingDimensions:x.matrix.blockers,problems:x.problems},null,2));
+          "
+          test "$status" -eq 2
+          {
+            echo '### Factory 7-dimension external audit'
+            echo 'Build and source SHA verified. **Release remains BLOCKED.**'
+            echo 'No automated runner can self-approve visual continuity or real human play.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: factory-audit-${{ github.sha }}
+          path: |
+            game/delivery/factory-existing-manifest.json
+            game/delivery/factory-existing-report.json
+            game/delivery/factory-existing-stderr.log
+            game/delivery/factory-evidence-state.json
+            game/delivery/factory-exit-code.txt
+          retention-days: 14
+          if-no-files-found: warn

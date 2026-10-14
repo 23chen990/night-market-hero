@@ -41,7 +41,14 @@ test('endless state exposes live pickup entities and vehicle hold/release phase'
   game.advanceTicks(1);
   game.setPlayerForTest({ x: 3300, y: 470, vx: 620, vy: 0 });
   game.advanceTicks(1);
-  assert.ok((game.getState() as any).vehicleId, 'segment 2 should grant a vehicle for seed 11');
+  assert.equal((game.getState() as any).vehicleId, null, 'entering a segment cannot automatically grant a ride');
+  const earnedFixture = game.getState();
+  // Scoped UI state test: pretend a world pickup has already been earned;
+  // actual press/release acquisition is asserted in vehicle-encounters-v2.
+  earnedFixture.vehicleId = '纸鸢';
+  earnedFixture.vehicleTicksRemaining = 6 * 120;
+  earnedFixture.vehiclePhase = 'idle';
+  assert.equal(game.restoreSnapshot(earnedFixture), true);
   game.act('press');
   assert.equal((game.getState() as any).vehiclePhase, 'holding');
   game.act('release');

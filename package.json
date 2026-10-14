@@ -11,6 +11,8 @@
     "test:file": "node --import tsx tests/file-launch-smoke.ts",
     "pretest": "node --import tsx scripts/build.ts",
     "test:play": "node --import tsx tests/playable-browser-audit.ts",
+    "test:pursuit": "node --import tsx tests/v2-pursuit-natural-browser.ts",
+    "verify:chase-matrix": "node tests/v2-chase-matrix-gate.mjs",
     "test:safety": "node --import tsx tests/playable-safety-audit.ts",
     "preverify:release": "node --import tsx scripts/build.ts",
     "verify:release": "node validate-runtime-product-gates.mjs --strict",

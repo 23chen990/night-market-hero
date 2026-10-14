@@ -108,6 +108,8 @@ export interface NightCityChunkRender {
   sourceScale: number;
   renderScale: number;
   overlap: number;
+  mirrored: boolean;
+  sourceScaleY: number;
 }
 
 export interface NightCityRenderPlan {
@@ -142,6 +144,7 @@ export interface RenderImage {
   setAlpha(alpha: number): RenderImage;
   setScrollFactor?(factorX: number, factorY?: number): RenderImage;
   setCrop?(x?: number, y?: number, width?: number, height?: number): RenderImage;
+  setFlipX?(flip: boolean): RenderImage;
   destroy(): void;
 }
 
@@ -267,7 +270,7 @@ function finite(value: number, fallback: number): number {
   return Number.isFinite(value) ? value : fallback;
 }
 
-function cropFor(
+export function cropFor(
   chunk: CityChunk,
   imageWidth: number,
   imageHeight: number,
@@ -330,14 +333,23 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
   const safeLeft = Math.min(finite(left, 0), finite(right, 0));
   const safeRight = Math.max(finite(left, 0), finite(right, safeLeft + CITY_CHUNK_WIDTH));
   const chunks = cityChunksInView(seed, safeLeft, safeRight).map((chunk) => {
-    const renderScale = 1.01 + (chunk.variant % 3) * 0.004;
     const transitionImage = transitionImageFor(chunk);
+    const ordinary = transitionImage === null;
+    // Matched source-pixel edges: A.right equals mirror(A).left. Random crop
+    // shifts, arbitrary vertical offsets and unequal scale would break joins.
+    const mirrored = ordinary && chunk.slotIndex % 2 === 1;
     const imageWidth = transitionImage?.imageWidth ?? PANORAMA_CANVAS_WIDTH;
     const imageHeight = transitionImage?.imageHeight ?? PANORAMA_CANVAS_HEIGHT;
-    const cropRect = cropFor(chunk, imageWidth, imageHeight, transitionImage === null);
-    const drawWidth = imageWidth * renderScale;
+    const cropRect = { x: 0, y: 0, width: imageWidth, height: imageHeight };
+    const drawWidth = ordinary ? CITY_CHUNK_WIDTH : imageWidth * 1.01;
     const sourceScale = drawWidth / cropRect.width;
-    const drawHeight = cropRect.height * sourceScale;
+    // The raster is rendered with uniform scale; socket projection, coverage
+    // and the plan must use the *actual* displayed height, not intrinsic PNG
+    // height. Previously ordinary panoramas claimed 941 world units but were
+    // drawn at 901, creating a 40-unit mismatch with beam/socket locations.
+    const drawHeight = imageHeight * sourceScale;
+    const sourceScaleY = drawHeight / cropRect.height;
+    const renderScale = ordinary ? 1 : 1.01;
     return {
       index: chunk.index,
       startX: chunk.startX,
@@ -353,7 +365,7 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
       name: chunk.name,
       variant: chunk.variant,
       layoutId: chunk.layoutId,
-      assetKey: transitionImage?.assetKey ?? PANORAMA_KEYS[chunk.district][chunk.index % 2],
+      assetKey: transitionImage?.assetKey ?? PANORAMA_KEYS[chunk.district][0],
       width: CITY_CHUNK_WIDTH,
       height: chunkHeight,
       imageWidth,
@@ -365,8 +377,9 @@ export function createNightCityRenderPlan(seed: number, left: number, right: num
       drawHeight,
       sourceScale,
       renderScale,
-      overlap: transitionImage?.overlap
-        ?? Math.ceil(CITY_CHUNK_WIDTH * (renderScale - 1) * 0.75) + 2,
+      mirrored,
+      sourceScaleY,
+      overlap: transitionImage?.overlap ?? 0,
     } satisfies NightCityChunkRender;
   });
   return { chunks, left: safeLeft, right: safeRight };
@@ -471,10 +484,11 @@ export function mapWorldAnchorToArchitecturalSocket(
   const authoredSupports = NIGHT_CITY_SUPPORT_CATALOG[chunk.assetKey];
   if (!authoredSupports || authoredSupports.length === 0) return null;
   const worldLeft = chunk.startX - chunk.overlap;
-  const worldTop = -chunk.variant * 2;
+  const worldTop = 0;
   const sourceTarget = {
-    x: chunk.cropRect.x + (anchor.x - worldLeft) / chunk.sourceScale,
-    y: chunk.cropRect.y + (anchor.y - worldTop) / chunk.sourceScale,
+    x: chunk.mirrored ? chunk.cropRect.x + chunk.cropRect.width - (anchor.x - worldLeft) / chunk.sourceScale
+      : chunk.cropRect.x + (anchor.x - worldLeft) / chunk.sourceScale,
+    y: chunk.cropRect.y + (anchor.y - worldTop) / chunk.sourceScaleY,
   };
   const best = authoredSupports.reduce<{ support: NightCitySupportSegment; point: SourcePoint; distance: number } | null>(
     (closest, authoredSupport) => {
@@ -494,8 +508,8 @@ export function mapWorldAnchorToArchitecturalSocket(
   if (!best || best.distance > MAX_SUPPORT_LINK_DISTANCE) return null;
   const { support, point } = best;
   return {
-    x: worldLeft + (point.x - chunk.cropRect.x) * chunk.sourceScale,
-    y: worldTop + (point.y - chunk.cropRect.y) * chunk.sourceScale,
+    x: worldLeft + (chunk.mirrored ? chunk.cropRect.width - (point.x - chunk.cropRect.x) : point.x - chunk.cropRect.x) * chunk.sourceScale,
+    y: worldTop + (point.y - chunk.cropRect.y) * chunk.sourceScaleY,
     sourceX: point.x,
     sourceY: point.y,
     supportId: support.supportId,
@@ -521,6 +535,8 @@ interface DesiredRender {
   baseX?: number;
   baseY?: number;
   cropRect?: NightCityCropRect;
+  mirrored?: boolean;
+  ordinary?: boolean;
   sourceWidth?: number;
   sourceHeight?: number;
 }
@@ -603,7 +619,7 @@ export class NightCityRenderer {
     const desired = new Map<string, DesiredRender>();
     for (const chunk of plan.chunks) {
       const baseX = chunk.startX - chunk.overlap;
-      const baseY = -chunk.variant * 2;
+      const baseY = 0;
       desired.set(`panorama:${chunk.index}`, {
         key: chunk.assetKey,
         // Phaser crops in source pixels and scales the cropped quad.  Offset
@@ -617,6 +633,8 @@ export class NightCityRenderer {
         baseX,
         baseY,
         cropRect: chunk.cropRect,
+        mirrored: chunk.mirrored,
+        ordinary: chunk.kind === 'district',
         sourceWidth: chunk.imageWidth,
         sourceHeight: chunk.imageHeight,
       });
@@ -628,6 +646,7 @@ export class NightCityRenderer {
       // plate. A second veil would double the architecture at the join.
       if (transitionImageFor(chunk)) continue;
       const districtChange = previous.district !== chunk.district;
+      if (!districtChange && previous.kind === 'district' && chunk.kind === 'district') continue;
       desired.set(`transition:${chunk.index}`, {
         // The full-height Rooftops V36 plate is a compatibility asset only.
         // It contains opaque architecture at its side edges, so placing it at
@@ -669,7 +688,8 @@ export class NightCityRenderer {
       const displayHeight = cropSupported && spec.cropRect ? spec.height : spec.cropRect
         ? spec.cropRect.height * (spec.height / (spec.sourceHeight ?? spec.cropRect.height))
         : spec.height;
-      item.image.setOrigin(0, 0).setPosition(positionX, positionY).setDisplaySize(displayWidth, displayHeight)
+      const centeredX = spec.ordinary ? positionX + displayWidth / 2 : positionX;
+      item.image.setOrigin(spec.ordinary ? 0.5 : 0, 0).setPosition(centeredX, positionY).setDisplaySize(displayWidth, displayHeight)
         .setDepth(spec.depth).setAlpha(spec.depth === -19
           || spec.depth === -20 || spec.key === 'night-city-rooftops-transition-v36' ? 1 : spec.depth === -9 || spec.depth === -8 ? 0.08 : 0.9);
       if (item.image.setCrop) {
@@ -686,6 +706,7 @@ export class NightCityRenderer {
       // Every remaining image layer is part of the baked world map.  The
       // retired compatibility parallax factor is intentionally unused here;
       // seams must stay on the same world coordinate at every camera depth.
+      item.image.setFlipX?.(spec.mirrored ?? false);
       item.image.setScrollFactor?.(NIGHT_CITY_LAYER_CONFIG.panoramaScrollFactor, 0);
       item.image.setVisible(true);
     }

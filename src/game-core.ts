@@ -1,4 +1,7 @@
 import { directedVehicle, directedMutation, guidedPickups, completedCheckpoints, isStylishRelease, pointSegmentDistance } from './experience-director.ts';
+import { planVehicleEncounter, sweptEncounterContact, encounterActionEligible,
+  missedEncounterReason, preserveBirdPreparationForFinalBoarding, type EncounterAction
+} from './vehicle-encounters.ts';
 import { UI_ANIMATION_STANDARD, type UiAnimationStandard } from './ui-animation.ts';
 import { difficultyAtSegment, gateCheckpointXForSegment, metersAtSegment, segmentForIndex, chooseMutation, rollVehicleForSegment, segmentIndexAtX, segmentProgressAtX, segmentStartPx, segmentLengthPx, retentionBoundsAtSegment, pickupPlacementForSegment, depthCoefficient, VEHICLES, type PickupPlacement, type VehicleId } from './endless.ts';
 import { cityChunksInView, type DistrictId } from './district-world.ts';
@@ -253,6 +256,38 @@ export interface FormalManifest {
   scenarios: Array<{ id: string; proves: string[] }>;
 };
 
+export interface VehicleOffer {
+  id: VehicleId;
+  segment: number;
+  x: number;
+  y: number;
+  status: 'available' | 'claimed' | 'missed';
+  /** Persistent identity: two different lantern opportunities can resolve differently. */
+  instanceId?: string;
+  chunkId?: string;
+  supportId?: string;
+  supportX?: number;
+  supportY?: number;
+  radiusX?: number;
+  radiusY?: number;
+  requiredAction?: EncounterAction;
+  announceX?: number;
+  touchedWrongAction?: boolean;
+  createdTick?: number;
+}
+
+export interface EncounterEvent {
+  instanceId: string;
+  id: VehicleId;
+  segment: number;
+  tick: number;
+  outcome: 'claimed' | 'missed';
+  reason: string;
+  quality: 'ordinary' | 'stylish' | null;
+  playerX: number;
+  playerY: number;
+}
+
 export interface GrappleState {
   levelIndex: number;
   levelCount: number;
@@ -324,7 +359,13 @@ export interface GrappleState {
   vehicleTicksRemaining: number;
   /** Locked zipline height captured when 货运滑索 hold begins. */
   vehicleLockY: number;
-  vehicleQueue: VehicleId[];
+  vehicleQueue: VehicleId[]; // compatibility only, never newly awarded or auto-dequeued
+  vehicleOffers: VehicleOffer[];
+  encounterEvents: EncounterEvent[];
+  lastGrappleReleaseTick: number;
+  lastGrapplePressTick: number;
+  stylishReleaseTicks: number[];
+  lastVehicleOffer: { id: VehicleId; instanceId?: string; reason?: string; quality?: 'ordinary' | 'stylish' | null; kind: 'claimed' | 'missed'; tick: number } | null;
   /** Fixed virtual pivot (above the player) used by 灯笼群 free-attach swing. */
   vehicleVirtualAnchor: Point | null;
   depthCoefficient: number;
@@ -374,6 +415,7 @@ const TALISMAN_END_GRACE_TICKS = 30;
 const FIRECRACKER_STUN_TICKS = 180;
 const PURSUER_RUN_LANE_Y = 647;
 const PURSUER_MAX_SPEED = 520;
+const GUIDED_PURSUER_MAX_SPEED = 850;
 const PURSUER_MAX_ACCELERATION = 1_200;
 const PURSUER_CONTACT_DISTANCE = PLAYER_COLLISION_RADIUS * 2;
 // Deferred feature: keep the authored canopy data for future art work, but do
@@ -835,6 +877,10 @@ function copyState(state: GrappleState): GrappleState {
     ...state,
     player: { ...state.player },
     vehicleQueue: [...(state.vehicleQueue ?? [])],
+    vehicleOffers: (state.vehicleOffers ?? []).map(offer => ({ ...offer })),
+    encounterEvents: (state.encounterEvents ?? []).map(event => ({ ...event })),
+    stylishReleaseTicks: [...(state.stylishReleaseTicks ?? [])],
+    lastVehicleOffer: state.lastVehicleOffer ? { ...state.lastVehicleOffer } : null,
     playerMotion: { ...state.playerMotion },
     anchors: state.anchors.map((anchor) => ({ ...anchor })),
     chase: { ...state.chase },
@@ -1029,6 +1075,12 @@ export class GrappleGame {
       vehicleTicksRemaining: 0,
       vehicleLockY: 0,
       vehicleQueue: [],
+      vehicleOffers: [],
+      encounterEvents: [],
+      lastGrappleReleaseTick: -10000,
+      lastGrapplePressTick: -10000,
+      stylishReleaseTicks: [],
+      lastVehicleOffer: null,
       vehicleVirtualAnchor: null,
       depthCoefficient: 1,
       bounceCount: 0,
@@ -1112,6 +1164,12 @@ export class GrappleGame {
     this.state.vehicleTicksRemaining = 0;
     this.state.vehicleLockY = 0;
     this.state.vehicleQueue = [];
+    this.state.vehicleOffers = [];
+    this.state.encounterEvents = [];
+    this.state.lastGrappleReleaseTick = -10000;
+    this.state.lastGrapplePressTick = -10000;
+    this.state.stylishReleaseTicks = [];
+    this.state.lastVehicleOffer = null;
     this.state.vehicleVirtualAnchor = null;
     if (this.options.guidedExperience) this.state.activePickups = guidedPickups(0);
     this.state.depthCoefficient = 1;
@@ -1191,7 +1249,15 @@ export class GrappleGame {
       vehiclePhase: snapshot.vehiclePhase ?? 'idle',
       vehicleTicksRemaining: snapshot.vehicleTicksRemaining ?? 0,
       vehicleLockY: snapshot.vehicleLockY ?? 0,
-      vehicleQueue: [...(snapshot.vehicleQueue ?? [])],
+      // Legacy queued awards were never visible to the player. Drain without
+      // secretly auto-equipping items when resuming a V2 run.
+      vehicleQueue: [],
+      vehicleOffers: (snapshot.vehicleOffers ?? []).map(offer => ({ ...offer })),
+      encounterEvents: (snapshot.encounterEvents ?? []).map(event => ({ ...event })).slice(-32),
+      lastGrappleReleaseTick: snapshot.lastGrappleReleaseTick ?? -10000,
+      lastGrapplePressTick: snapshot.lastGrapplePressTick ?? -10000,
+      stylishReleaseTicks: [...(snapshot.stylishReleaseTicks ?? [])].slice(-8),
+      lastVehicleOffer: snapshot.lastVehicleOffer ? { ...snapshot.lastVehicleOffer } : null,
       vehicleVirtualAnchor: snapshot.vehicleVirtualAnchor ?? null,
       depthCoefficient: snapshot.depthCoefficient ?? 1,
       bounceCount: snapshot.bounceCount ?? 0,
@@ -1424,6 +1490,10 @@ export class GrappleGame {
       if (this.state.inputHeld) return false;
       this.state.inputHeld = true;
       this.state.inputTransitions += 1;
+      this.state.lastGrapplePressTick = this.state.tick;
+      // A visible lantern knot can be grabbed with the SAME press used for
+      // ordinary grappling. No hidden second button or automatic pickup.
+      if (!this.state.vehicleId) this.collectVehicleOffers(this.state.player);
       if (this.state.vehicleId) {
         this.state.vehiclePhase = 'holding';
         this.beginVehicleHold();
@@ -1440,6 +1510,7 @@ export class GrappleGame {
     const releaseWasStylish = isStylishRelease(this.state.player);
     this.state.inputHeld = false;
     this.state.inputTransitions += 1;
+    if (releasedAnchor) this.state.lastGrappleReleaseTick = this.state.tick;
     if (this.state.vehicleId) {
       this.state.vehiclePhase = 'released';
       this.state.vehicleVirtualAnchor = null;
@@ -1513,6 +1584,7 @@ export class GrappleGame {
     if (releasedAnchor && releaseSpeed >= 360 && (!this.options.guidedExperience || releaseWasStylish)) {
       const previousTier = this.state.comboTier;
       this.stylishFlights += 1;
+      this.state.stylishReleaseTicks = [...this.state.stylishReleaseTicks.filter(t => this.state.tick - t <= 1200), this.state.tick].slice(-8);
       this.state.combo += 1;
       this.state.comboPeak = Math.max(this.state.comboPeak, this.state.combo);
       this.state.comboTier = Math.min(4, Math.floor(this.state.combo / 2) + 1) as 1 | 2 | 3 | 4;
@@ -1525,6 +1597,19 @@ export class GrappleGame {
     } else {
       if (this.state.combo > 0) this.recordEvent('combo-break', 'slow-release');
       this.stylishFlights = 0;
+      // Two previous stylish releases must still be CONSECUTIVE. Once earned,
+      // a FINAL ordinary boarding release near the actual visible Qingluan
+      // ring may spend that qualification, instead of erasing it at the apex.
+      // It never grants a vehicle: the same real contact + age + input gate
+      // still runs in collectVehicleOffers(). An ordinary release elsewhere
+      // (or without two qualifying releases) still breaks preparation.
+      if (!this.options.guidedExperience || !preserveBirdPreparationForFinalBoarding({
+        player: this.state.player,
+        tick: this.state.tick,
+        releasedRealAnchor: !!releasedAnchor,
+        stylishTicks: this.state.stylishReleaseTicks,
+        offers: this.state.vehicleOffers,
+      })) this.state.stylishReleaseTicks = [];
       this.state.combo = 0;
       this.state.comboTier = 1;
     }
@@ -1534,7 +1619,33 @@ export class GrappleGame {
   private beginVehicleHold(): void {
     const vehicle = VEHICLES.find((item) => item.id === this.state.vehicleId);
     if (vehicle?.id === '货运滑索') this.state.vehicleLockY = this.state.player.y;
-    else if (vehicle?.id === '灯笼群') this.state.vehicleVirtualAnchor = { x: this.state.player.x, y: this.state.player.y - LANTERN_ROPE };
+    else if (vehicle?.id === '灯笼群') {
+      if (!this.options.guidedExperience) {
+        // Legacy compatibility scenario only; the default panorama uses world supports.
+        this.state.vehicleVirtualAnchor = { x: this.state.player.x, y: this.state.player.y - LANTERN_ROPE };
+        this.state.vehicleLockY = LANTERN_ROPE;
+      } else {
+        if (!this.state.vehicleVirtualAnchor) {
+          const candidates = this.state.anchors.filter(anchor => {
+            const length = Math.hypot(anchor.x - this.state.player.x, anchor.y - this.state.player.y);
+            return anchor.x >= this.state.player.x - 105
+              && anchor.x <= this.state.player.x + 325
+              && length >= 65 && length <= MAX_PLAYABLE_ROPE_LENGTH;
+          });
+          candidates.sort((a, b) =>
+            Math.hypot(a.x - this.state.player.x, a.y - this.state.player.y)
+            - Math.hypot(b.x - this.state.player.x, b.y - this.state.player.y));
+          const anchor = candidates[0];
+          this.state.vehicleVirtualAnchor = anchor ? { x: anchor.x, y: anchor.y } : null;
+        }
+        if (this.state.vehicleVirtualAnchor) {
+          this.state.vehicleLockY = Math.hypot(
+            this.state.player.x - this.state.vehicleVirtualAnchor.x,
+            this.state.player.y - this.state.vehicleVirtualAnchor.y,
+          );
+        }
+      }
+    }
     else if (this.options.guidedExperience && vehicle?.id === '青鸾') {
       // A deliberate flap brakes a dive immediately; holding then supplies
       // sustained lift. Without input the rider can still fall and fail.
@@ -1542,11 +1653,11 @@ export class GrappleGame {
     }
   }
 
-  private startVehicle(id: VehicleId): void {
+  private startVehicle(id: VehicleId, offer?: VehicleOffer): void {
     const def = VEHICLES.find(item => item.id === id)!;
     if (this.options.guidedExperience) {
-      // A new mount catches the rider instead of inheriting a fatal dive.
-      this.state.player.y = Math.min(620, Math.max(320, this.state.player.y));
+      // Contact with a world ring must not teleport the player vertically.
+      // Preserve the collision position; just redirect a dangerous dive.
       this.state.player.vy = Math.min(-160, this.state.player.vy);
       this.state.player.vx = Math.max(280, this.state.player.vx);
     }
@@ -1557,7 +1668,12 @@ export class GrappleGame {
     this.state.attachedAnchorId = null;
     this.state.ropeLength = null;
     this.state.vehicleLockY = this.state.player.y;
-    this.state.vehicleVirtualAnchor = null;
+    // First lantern attachment uses the SAME authored support as its pickup.
+    // On later presses beginVehicleHold chooses a nearby physical anchor.
+    this.state.vehicleVirtualAnchor = id === '灯笼群' && this.options.guidedExperience
+      && Number.isFinite(offer?.supportX) && Number.isFinite(offer?.supportY)
+      ? { x: offer!.supportX!, y: offer!.supportY! }
+      : null;
     if (this.state.inputHeld) this.beginVehicleHold();
   }
 
@@ -1565,15 +1681,80 @@ export class GrappleGame {
     const id = this.options.guidedExperience
       ? directedVehicle(this.state.seed, segment)
       : rollVehicleForSegment(this.state.seed, segment, sky);
-    if (this.options.guidedExperience) {
-      if (!id) return; // Entering an empty segment never erases an active ride.
-      if (this.state.vehicleId && this.state.vehicleTicksRemaining > 0) {
-        if (this.state.vehicleQueue.length < 4) this.state.vehicleQueue.push(id);
-        return;
+    if (!id || this.state.vehicleOffers.some(offer => offer.segment === segment)) return;
+    const encounter = planVehicleEncounter(this.state.seed, segment, id);
+    // No image-backed support means no pickup. A floating unanchored reward is
+    // not a legal fallback; the ordinary grapple route remains usable.
+    if (!encounter) return;
+    this.state.vehicleOffers.push({
+      id, segment, x: encounter.x, y: encounter.y,
+      status: 'available',
+      instanceId: encounter.instanceId, chunkId: encounter.chunkId,
+      supportId: encounter.supportId, supportX: encounter.supportX,
+      supportY: encounter.supportY, radiusX: encounter.radiusX,
+      radiusY: encounter.radiusY, requiredAction: encounter.requiredAction,
+      announceX: encounter.announceX, createdTick: this.state.tick,
+    });
+    this.state.vehicleOffers = this.state.vehicleOffers.filter(offer => offer.segment >= segment - 2).slice(-4);
+  }
+
+  private resolveVehicleOffer(offer: VehicleOffer, outcome: 'claimed' | 'missed', reason: string,
+    quality: 'ordinary' | 'stylish' | null = null): void {
+    if (offer.status !== 'available') return;
+    offer.status = outcome;
+    const instanceId = offer.instanceId ?? `${this.state.seed}:${offer.segment}:${offer.id}`;
+    // A single encounter instance can only ever resolve once. A later new
+    // instance of the SAME type is allowed a different terminal outcome.
+    if (this.state.encounterEvents.some(event => event.instanceId === instanceId)) return;
+    this.state.encounterEvents.push({ instanceId, id: offer.id, segment: offer.segment,
+      tick: this.state.tick, outcome, reason, quality,
+      playerX: this.state.player.x, playerY: this.state.player.y });
+    this.state.encounterEvents = this.state.encounterEvents.slice(-32);
+    this.state.lastVehicleOffer = { id: offer.id, instanceId, kind: outcome,
+      reason, quality, tick: this.state.tick };
+    if (outcome === 'claimed') {
+      this.startVehicle(offer.id, offer);
+      if (quality === 'stylish') this.state.coins += 8; // real run reward, settled once
+    }
+  }
+
+  private collectVehicleOffers(previousPlayer: PlayerState): void {
+    const player = this.state.player;
+    for (const offer of this.state.vehicleOffers) {
+      if (offer.status !== 'available') continue;
+      const radiusX = offer.radiusX ?? 100; // older saves keep their visible halo
+      const radiusY = offer.radiusY ?? 180;
+      const touching = sweptEncounterContact(previousPlayer, player, {
+        x: offer.x, y: offer.y, radiusX, radiusY,
+      });
+      const requiredAction = offer.requiredAction ?? 'release';
+      const eligible = encounterActionEligible(requiredAction, {
+        tick: this.state.tick, playerY: player.y, playerVx: player.vx,
+        inputHeld: this.state.inputHeld, attached: !!this.state.attachedAnchorId,
+        lastReleaseTick: this.state.lastGrappleReleaseTick,
+        lastPressTick: this.state.lastGrapplePressTick,
+        stylishTicks: this.state.stylishReleaseTicks,
+        contactCenterY: offer.y, contactRadiusY: radiusY,
+      });
+      if (touching && this.state.vehicleId) {
+        this.resolveVehicleOffer(offer, 'missed', '正在使用其他载具，本次没有换乘');
+      } else if (touching && eligible) {
+        const quality = Math.abs(player.y - offer.y) < radiusY * 0.36
+          && Math.abs(player.vx) >= 360 ? 'stylish' : 'ordinary';
+        this.resolveVehicleOffer(offer, 'claimed', '准确接住实体挂环', quality);
+      } else if (touching && !eligible) {
+        offer.touchedWrongAction = true;
+      } else if (player.x > offer.x + radiusX + 70) {
+        const reason = missedEncounterReason(
+          requiredAction, player.y, !!offer.touchedWrongAction, offer.y, radiusY,
+          { stylishReleaseCount: this.state.stylishReleaseTicks
+              .filter(t => t <= this.state.tick && this.state.tick - t <= 1200).length,
+            attached: !!this.state.attachedAnchorId,
+            inputHeld: this.state.inputHeld,
+            releaseAge: this.state.tick - this.state.lastGrappleReleaseTick });
+        this.resolveVehicleOffer(offer, 'missed', reason);
       }
     }
-    if (id) this.startVehicle(id);
-    else this.expireVehicle();
   }
 
   private expireVehicle(): void {
@@ -1587,8 +1768,9 @@ export class GrappleGame {
       this.state.regrappleGraceUntilTick = this.state.tick + 90;
       this.state.player.vx = Math.max(280, this.state.player.vx);
       this.state.player.vy = Math.min(-160, this.state.player.vy);
-      const next = this.state.vehicleQueue.shift();
-      if (next) this.startVehicle(next);
+      // No deferred/hidden ride grants. Only a visible world encounter can
+      // equip another vehicle in a subsequent input-driven attempt.
+      this.state.vehicleQueue = [];
     }
   }
 
@@ -1761,9 +1943,9 @@ export class GrappleGame {
     // A distant assisted capture reels to a bounded, playable length instead of
     // leaving the player hanging from a rope whose swing cannot build momentum.
     this.state.ropeLength = Math.min(captureDistance, MAX_PLAYABLE_ROPE_LENGTH);
-    if (this.state.elapsed > 0.15 && anchor.x - this.state.player.x > 100) {
-      this.applyPursuitReward('stylish-flight', 0.045);
-    }
+    // An ordinary forward grapple is not a stylish getaway. Previously every
+    // routine attachment silently slowed the officers, preventing a visible chase.
+    // Only earned stylish releases and genuine shortcuts grant pursuit relief.
     return true;
   }
 
@@ -2209,22 +2391,35 @@ export class GrappleGame {
     const contactDistance = Math.max(0, this.levelDefinition().pursuitContactDistance);
     const currentTargetX = player.x + Math.max(-180, Math.min(220, player.vx * PURSUER_TARGET_LOOKAHEAD_SECONDS));
     const targetGap = currentTargetX - pursuer.x - contactDistance;
-    const targetSpeed = Math.max(0, Math.min(PURSUER_MAX_SPEED,
-      (targetGap / PURSUER_TARGET_RESPONSE_SECONDS
-        + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow)
-        * this.mutationModifiers().pursuitSpeedFactor)); // 宵禁加派：追兵净逼近 +25%
+    const guidedPatrol = this.options.guidedExperience && this.endlessMode;
+    const maxPursuerSpeed = guidedPatrol ? GUIDED_PURSUER_MAX_SPEED : PURSUER_MAX_SPEED;
+    // A good swing earns time; stalls allow bounded visible catch-up.
+    const targetSpeed = guidedPatrol
+      ? Math.max(240, Math.min(maxPursuerSpeed,
+          Math.max(0, player.vx) * 0.95 + 24 + (targetGap - 410) * 0.20
+          + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow))
+      : Math.max(0, Math.min(maxPursuerSpeed,
+          (targetGap / PURSUER_TARGET_RESPONSE_SECONDS
+            + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow)
+          * this.mutationModifiers().pursuitSpeedFactor));
     // Debris is a real temporary obstruction for the guard, not just a lower
     // desired speed. Prevent its inertia from masking the slowdown when the
     // player crosses into a later authored segment in the same tick.
     const debrisLimitedTarget = debrisSlow > 0 ? Math.min(targetSpeed, Math.max(0, pursuer.vx - 1)) : targetSpeed;
     pursuer.ax = Math.max(-PURSUER_MAX_ACCELERATION, Math.min(PURSUER_MAX_ACCELERATION, (debrisLimitedTarget - pursuer.vx) * 8));
-    pursuer.vx = Math.max(0, Math.min(PURSUER_MAX_SPEED, pursuer.vx + pursuer.ax * dt));
-    const maxAdvance = Math.max(0, player.x - pursuer.x - contactDistance);
-    // 青鸾 catchImmune：冻结追兵推进，距离不减即可
+    pursuer.vx = Math.max(0, Math.min(maxPursuerSpeed, pursuer.vx + pursuer.ax * dt));
+    // Catch immunity protects the rider from capture, not from the feeling of
+    // being pursued. In guided play, patrols must keep running while the bird
+    // flies; otherwise a single ride opens a multi-kilometre permanent gap.
+    // Hold a readable distance behind the rider until the vehicle expires,
+    // giving a real warning window instead of an instant post-ride catch.
+    // Preserve old compatibility-mode freeze semantics for existing saves.
     const vehicleCatchImmune = !!this.state.vehicleId
       && this.state.vehicleTicksRemaining > 0
       && VEHICLES.find((item) => item.id === this.state.vehicleId)?.catchImmune === true;
-    const advance = vehicleCatchImmune ? 0 : Math.min(pursuer.vx * dt, maxAdvance);
+    const safeMountedGap = vehicleCatchImmune && guidedPatrol ? Math.max(320, contactDistance) : contactDistance;
+    const maxAdvance = Math.max(0, player.x - pursuer.x - safeMountedGap);
+    const advance = vehicleCatchImmune && !guidedPatrol ? 0 : Math.min(pursuer.vx * dt, maxAdvance);
     if (advance < pursuer.vx * dt && dt > 0) {
       const limitedVelocity = advance / dt;
       pursuer.ax = (limitedVelocity - (pursuer.vx - pursuer.ax * dt)) / dt;
@@ -2388,7 +2583,11 @@ export class GrappleGame {
       }
     }
     const gatePacingMultiplier = this.options.marketGates !== false && this.state.segment === 'gate-climax' ? 0.84 : 1;
-    player.x += player.vx * dt * this.state.routeProfile.speedMultiplier * gatePacingMultiplier;
+    if (this.options.guidedExperience) {
+      const maxX = Math.min(700, 590 + this.state.segmentIndex * 9);
+      player.vx = Math.max(-maxX * 0.5, Math.min(maxX, player.vx));
+    }
+    player.x += player.vx * dt * (this.options.guidedExperience ? 1 : this.state.routeProfile.speedMultiplier) * gatePacingMultiplier;
     player.y += player.vy * dt;
     // Give a fresh tutorial run a short, bounded recovery lane. A first-time
     // hold/release can swing behind the camera before the player has learned
@@ -2437,7 +2636,8 @@ export class GrappleGame {
       }
     }
 
-    // 灯笼群：凭空挂接，复用摆荡物理（固定虚拟挂点，绳长恒定）
+    // Lantern holds pivot on physical world support, never a player-relative
+    // phantom rope. The initial rope length is captured at the real press.
     if (vehicleActive && vehicle!.id === '灯笼群' && this.state.vehiclePhase === 'holding' && this.state.vehicleVirtualAnchor) {
       const pivot = this.state.vehicleVirtualAnchor;
       const dx = player.x - pivot.x;
@@ -2445,8 +2645,9 @@ export class GrappleGame {
       const distance = Math.max(0.0001, Math.hypot(dx, dy));
       const nx = dx / distance;
       const ny = dy / distance;
-      player.x = pivot.x + nx * LANTERN_ROPE;
-      player.y = pivot.y + ny * LANTERN_ROPE;
+      const rope = this.options.guidedExperience ? this.state.vehicleLockY : LANTERN_ROPE;
+      player.x = pivot.x + nx * rope;
+      player.y = pivot.y + ny * rope;
       const radialVelocity = player.vx * nx + player.vy * ny;
       player.vx -= radialVelocity * nx;
       player.vy -= radialVelocity * ny;
@@ -2467,7 +2668,9 @@ export class GrappleGame {
     if (this.options.guidedExperience && !this.endlessMode) this.state.distanceMeters = Math.floor(this.state.furthestX / 30);
 
     const speed = Math.hypot(player.vx, player.vy);
-    const speedCap = (this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED) * (vehicleActive ? 1 : this.characterStats().speed);
+    const speedCap = this.options.guidedExperience
+      ? Math.min(750, 625 + Math.max(0, this.state.segmentIndex) * 9)
+      : (this.endlessMode ? MAX_SPEED + this.state.segmentIndex * 28 : MAX_SPEED) * (vehicleActive ? 1 : this.characterStats().speed);
     this.state.maxSpeed = speedCap;
     this.state.attachRadius = this.ordinaryAttachRadius();
     if (speed > speedCap) {
@@ -2480,6 +2683,7 @@ export class GrappleGame {
     this.resolveAuthoredRouteSurface();
     this.updateTerrain(dt, previousPlayer);
     this.collectPickups(previousPlayer);
+    this.collectVehicleOffers(previousPlayer);
     this.updateChase(dt);
     this.updateChaseEvents(previousPlayer);
     this.refreshDerived(false);
@@ -2512,15 +2716,22 @@ export class GrappleGame {
       && player.y >= this.state.gate.collisionAperture.y
       && player.y <= this.state.gate.collisionAperture.y + this.state.gate.collisionAperture.height;
     if (gateShelter) player.vx = Math.max(player.vx, 260);
+    // The drawn officer's net has a finite vertical reach. A high grapple
+    // genuinely avoids capture while a low stalled swing can be intercepted;
+    // raw horizontal proximity must not catch someone far above the net.
+    const withinNetHeight = !this.options.guidedExperience
+      || (player.y >= this.state.pursuer.runLaneY - 310 && player.y <= this.state.failY);
     const pursuerContact = Math.abs(player.x - this.state.pursuer.x) <= PURSUER_CONTACT_DISTANCE
-      && (!this.options.guidedExperience || Math.abs(player.y - this.state.pursuer.y) <= 72);
+      && withinNetHeight;
     // 青鸾期间追兵无法追上（catchImmune）：仅冻结追兵推进，距离自然拉大
     const vehicleCatchImmune = vehicleActive && vehicle!.catchImmune;
     // The first district cycle teaches the endless rhythm while falls still
     // fail normally. Guard contact becomes lethal from the next segment so
     // small browser-frame variations cannot end a run before every district
     // theme has appeared once.
-    const endlessOpeningGrace = this.endlessMode && this.state.segmentIndex <= 3;
+    const endlessOpeningGrace = this.endlessMode && (this.options.guidedExperience
+      ? this.state.segmentIndex <= 1 && this.state.elapsed < 22
+      : this.state.segmentIndex <= 3);
     // The tutorial's first chase is also an input lesson. A real pointer hold
     // can span a different number of fixed ticks on desktop and mobile, so a
     // player who has made several genuine hold/release transitions gets to
@@ -2642,7 +2853,10 @@ export class GrappleGame {
     if (firstEntry) {
       this.state.visitedSegments.push(segment);
       // 概率事件：首次进入新段时按设计概率抽取载具（天空段只出青鸾）
+      // Announce the next world encounter BEFORE entering its segment. The
+      // location itself comes from architecture, not current player height.
       this.grantVehicleForSegment(segment, descriptor.isSky);
+      this.grantVehicleForSegment(segment + 1, segmentForIndex(segment + 1).isSky);
       const placements = pickupPlacementForSegment(segment);
       this.state.activePickups.push(...(this.options.guidedExperience ? guidedPickups(segment) : placements.map((pickup) => ({
         ...pickup,
