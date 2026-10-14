@@ -241,29 +241,37 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if (lanternRoute && lantern && s.player.x >= lantern.x - 505
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 680
             && s.player.x <= lantern.x + 95) {
-            // On the low-knot route, a rider arriving >180px above the rope
-            // needs to release the OLD roof support before the last -365px.
-            // The previous 70ms drive arrived at x~10918,y~470 while the
-            // actual lantern knot was at y~658; waiting to release at -365
-            // offered insufficient physical gravity time to descend.
-            if (s.player.x < lantern.x - 365) {
-              if (anchor && s.player.y < lantern.y - 180
-                && s.player.vy > -350) wantHold = false;
+            // Releasing a rope at one fixed X is NOT a timing skill: the
+            // pre-lantern swing's vy changes dramatically with frame timing.
+            // While still attached to an actual rooftop support, project the
+            // body's unassisted gravity arc to the visible knot's X. Release
+            // only when that trajectory passes the DRAWN vertical grab band.
+            // This is a real input choice, not a physics override or magnet.
+            const rx = lantern.radiusX ?? 84;
+            const ry = lantern.radiusY ?? 100;
+            const towardSeconds = Math.max(0.05, Math.min(1.25,
+              (lantern.x - s.player.x) / Math.max(230, s.player.vx)));
+            const naturalLandingY = s.player.y + s.player.vy * towardSeconds
+              + 0.5 * 880 * towardSeconds * towardSeconds;
+            if (anchor) {
+              const aimedAtVisibleKnot = naturalLandingY >= lantern.y - ry * 0.45
+                && naturalLandingY <= lantern.y + ry * 0.38;
+              wantHold = !aimedAtVisibleKnot
+                && s.player.x < lantern.x - rx - 15;
             } else {
-              // Then a FRESH actual press within the visible world ellipse;
-              // no invisible magnet, entitlement, teleport or auto-award.
-              const rx = lantern.radiusX ?? 84, ry = lantern.radiusY ?? 100;
+              // A NEW real press is still required in the SAME physical
+              // ellipse, with its untouched 26-tick input edge gate.
               const nxNow = (s.player.x - lantern.x) / rx;
               const nyNow = (s.player.y - lantern.y) / ry;
-              const latency = 0.055;
+              const latency = 0.045;
               const nxNext = (s.player.x + s.player.vx * latency - lantern.x) / rx;
               const nyNext = (s.player.y + s.player.vy * latency - lantern.y) / ry;
               const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.95 * 0.95;
               const aboutToTouch = nxNext * nxNext + nyNext * nyNext <= 1;
               wantHold = (touchingNow || aboutToTouch)
-                && s.player.x < lantern.x + 55 && !anchor;
+                && s.player.x < lantern.x + 55;
             }
           }
           if (birdRoute && lantern && s.player.x >= lantern.x - 330
@@ -300,7 +308,12 @@ try {
               // At 70ms screen sampling, toBird>45 released too late: the
               // player was still attached at x~14516 INSIDE the bird's drawn
               // ellipse. Leave the previous rope BEFORE reaching the ring.
-              wantHold = toBird > 120;
+              // Release around 145-165px before the wing center while
+              // rising. Last CI sampled at x=14406,y=393 (120px away);
+              // releasing only then sent the hero 9px OVER the visible
+              // ellipse at its center. More frequent near-target real input
+              // creates an actual usable, observable mid-arc release.
+              wantHold = toBird > 155;
             } else if (!anchor && toBird <= 225 && toBird >= -150) {
               wantHold = false;
             }
@@ -316,9 +329,19 @@ try {
         }
         await edge(wantHold, s.tick);
         if (held && !s.inputHeld && s.inputTransitions > 0 && s.tick - holdAt > 30) await edge(false, s.tick);
-        // Observe the lower-skill line frequently enough to release before
-        // its next backward pendulum, without changing world simulation time.
-        await page.waitForTimeout(skilledRoute ? 70 : 55);
+        // Focused one-finger play makes shorter REAL input decisions near a
+        // rare moving target, without stepping, pausing or altering physics.
+        // Keep the proven old timing on the entry pulley and roof kite.
+        const nearLantern = lanternRoute && s.levelId === 'night-patrol'
+          && s.vehicleOffers.some(offer => offer.id === '灯笼群'
+            && offer.status === 'available'
+            && s.player.x >= offer.x - 760 && s.player.x <= offer.x + 150);
+        const nearBird = birdRoute && s.levelId === 'night-patrol'
+          && s.vehicleOffers.some(offer => offer.id === '青鸾'
+            && offer.status === 'available'
+            && s.player.x >= offer.x - 750 && s.player.x <= offer.x + 150);
+        await page.waitForTimeout(nearBird ? 30 : nearLantern ? 38
+          : skilledRoute ? 70 : 55);
       }
       await edge(false, (await getState()).tick);
       const state = await getState();
