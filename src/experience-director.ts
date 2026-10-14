@@ -67,8 +67,12 @@ export function isStylishRelease(player: Pick<GrappleState['player'], 'vx' | 'vy
 
 export interface ControlCue { title: string; detail: string; tone: 'neutral' | 'ready' | 'danger'; }
 export function controlCue(state: GrappleState): ControlCue {
+  // Qingluan needs TWO real stylish rope releases, so the warning must arrive
+  // during the preceding street rather than just 920px (around 1–2s) away.
+  // This changes only the visual cue, never the spawned encounter or reward.
   const nextOffer = state.vehicleOffers?.find(offer => offer.status === 'available'
-    && offer.x >= state.player.x - 130 && offer.x <= state.player.x + 920);
+    && offer.x >= state.player.x - 130
+    && offer.x <= state.player.x + (offer.id === '青鸾' ? 2000 : 920));
   if (!state.vehicleId && nextOffer) {
     const birdTicks = (state.stylishReleaseTicks ?? []).filter(t => state.tick - t <= 1200).length;
     const distance = nextOffer.x - state.player.x;
@@ -78,9 +82,37 @@ export function controlCue(state: GrappleState): ControlCue {
     const adjustHeight = tooLow ? '先接高处飞索，向上荡' : tooHigh ? '向下调整飞行高度' : '';
     // Physical position stays on an authored building support; this hint only
     // tells the player how to *reach* the real target, not its secret hitbox.
-    if (nextOffer.id === '青鸾' && birdTicks < 2)
-      return { title: `青鸾机会 · 漂亮松手 ${birdTicks}/2`,
-        detail: '连续两次成功接钩与松手，再飞向高空青鸾', tone: 'ready' };
+    if (nextOffer.id === '青鸾') {
+      const earned = Math.min(2, birdTicks);
+      if (distance > 950) return {
+        title: `青鸾将至 · 漂亮松手 ${earned}/2`,
+        detail: birdTicks < 2
+          ? '提前在屋檐飞索上向前松手两次，再去高空争夺'
+          : '资格已备好！继续高线，靠近青鸾后松手飞进发光圈',
+        tone: 'ready',
+      };
+      if (birdTicks < 2) return {
+        title: `青鸾考验 · 漂亮松手 ${earned}/2`,
+        detail: '向前上升时松手才计数；普通松手会中断准备',
+        tone: 'ready',
+      };
+      if (distance > 350) return {
+        title: '青鸾资格已备好 · 走高线',
+        detail: '接住前方高处屋檐，向上荡至发光翼环前再松手', tone: 'ready',
+      };
+      if (tooLow) return {
+        title: '青鸾在上方！借前一根屋檐升高',
+        detail: '不要立刻换到青鸾正下方的新索；借旧索荡高再松手', tone: 'ready',
+      };
+      if (distance > -65 && distance < 180 && state.attachedAnchorId) return {
+        title: '现在松手！飞进青鸾翼环',
+        detail: '已完成两次漂亮松手，离开旧索后接住青鸾', tone: 'ready',
+      };
+      if (distance > -65 && !state.inputHeld) return {
+        title: '保持松手，穿过青鸾发光圈',
+        detail: '要在真实高空物件旁接住，穿过才算获得', tone: 'ready',
+      };
+    }
     if (nextOffer.id === '纸鸢' && distance > 320 && distance <= 920 && state.attachedAnchorId)
       return { title: '纸鸢高线：过挂点后多荡半拍',
         detail: '在屋檐飞索上升时松手，再飞进鸢绳柄', tone: 'ready' };
@@ -117,8 +149,8 @@ export function controlCue(state: GrappleState): ControlCue {
       return state.attachedAnchorId || state.inputHeld
         ? { title: '松手飞进鸢绳圈！', detail: '借屋檐摆荡向上，离开飞索后穿过发光圈', tone: 'ready' }
         : { title: '保持松手！鸢绳就在前方', detail: '先接住纸鸢，再按住拉升；现在接钩会错过', tone: 'ready' };
-    if (nextOffer.id === '青鸾' && imminent)
-      return { title: '青鸾在前！把握松手时机', detail: '飞到高线并完成两次漂亮松手', tone: 'ready' };
+    // Bird-specific preflight, qualifying streak and release timing are handled
+    // above the generic height hint; do not overwrite them here.
     return { title: `前方 ${nextOffer.id} · ${Math.max(0, Math.round(distance / 30))}m`,
       detail: adjustHeight || encounterInstructions(nextOffer.id), tone: 'ready' };
   }

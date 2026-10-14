@@ -84,6 +84,48 @@ test('lantern guidance prioritizes a real release then new press at the low visi
   assert.match(missedEncounterReason('press', offer.y, true), /重新按住/);
 });
 
+test('qingluan remains tied to a physical high support and earns no larger invisible catch radius', () => {
+  for (const seed of [1, 31, 32, 99, 157]) {
+    const bird = planVehicleEncounter(seed, 8, '青鸾');
+    assert.ok(bird);
+    assert.equal(bird.y, Math.max(175, Math.min(675, bird.supportY + 214)),
+      'the same authored rooftop support owns the visibly lowered bird perch');
+    assert.equal(bird.radiusX, 88);
+    assert.equal(bird.radiusY, 92);
+    assert.equal(bird.requiredAction, 'stylish-release');
+  }
+});
+
+test('qingluan warning begins one full street early, counts actual stylish releases and cues final high swing', () => {
+  const g = game(32);
+  const bird = locate(g, 8);
+  assert.equal(bird.id, '青鸾');
+  const s = g.getState();
+  s.vehicleOffers = [{ ...bird, status: 'available' }];
+  s.vehicleId = null;
+  s.inputHeld = true;
+  s.tick = 300;
+  s.stylishReleaseTicks = [];
+  s.player.x = bird.x - 1500;
+  s.player.y = bird.y + 180;
+  assert.match(controlCue(s).title, /青鸾将至.*0\/2/,
+    'the warning must precede the old 920px window so two real swings are possible');
+  s.stylishReleaseTicks = [s.tick - 85, s.tick - 15];
+  assert.match(controlCue(s).title, /2\/2/);
+  s.player.x = bird.x - 520;
+  assert.match(controlCue(s).title, /资格已备好/);
+  s.player.x = bird.x - 150;
+  assert.match(controlCue(s).title, /青鸾在上方/,
+    'a prepared but low rider must be directed to the earlier REAL beam');
+  s.player.y = bird.y + 20;
+  s.attachedAnchorId = s.anchors[0]?.id ?? null;
+  assert.match(controlCue(s).title, /现在松手/,
+    'close, visible and properly prepared rider still has to physically release');
+  s.stylishReleaseTicks = [s.tick - 85];
+  assert.match(controlCue(s).title, /1\/2/,
+    'the HUD cannot claim qualification after only one earned stylish release');
+});
+
 test('an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling', () => {
   const ring = { x: 500, y: 410, radiusX: 80, radiusY: 75 };
   assert.equal(sweptEncounterContact({ x: 440, y: 475 }, { x: 442, y: 475 }, ring), false);

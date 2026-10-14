@@ -102,7 +102,7 @@ jobs:
     name: Same-build casual vs skilled natural input
     needs: engineering
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -132,6 +132,11 @@ jobs:
           V2_VIEWPORT=mobile V2_SKILLED_ROUTE=1 V2_LANTERN_ROUTE=1 V2_DURATION_SECONDS=45 \
             V2_EVIDENCE_DIR=delivery/v2/lantern node --import tsx tests/v2-natural-input-browser.ts \
             2>&1 | tee delivery/v2/lantern-console.log
+      - name: Advanced rooftop swing and real Qingluan grab (same HTML)
+        run: |
+          V2_VIEWPORT=mobile V2_SKILLED_ROUTE=1 V2_BIRD_ROUTE=1 V2_DURATION_SECONDS=58 \
+            V2_EVIDENCE_DIR=delivery/v2/bird node --import tsx tests/v2-natural-input-browser.ts \
+            2>&1 | tee delivery/v2/bird-console.log
       - name: Independent no-entitlement comparison
         run: |
           set -euo pipefail
@@ -145,6 +150,13 @@ jobs:
           set -euo pipefail
           node tests/v2-lantern-gate.mjs delivery/v2/skilled/report.json \
             delivery/v2/lantern/report.json | tee delivery/v2/lantern-result.json
+      - name: Same-build real-input Qingluan missed versus earned
+        run: |
+          set -euo pipefail
+          node tests/v2-bird-gate.mjs delivery/v2/lantern/report.json \
+            delivery/v2/bird/report.json | tee delivery/v2/bird-result.json
+          echo '### Qingluan: same visible world support, real two-release qualification, missed/earned and sustained mount' >> "$GITHUB_STEP_SUMMARY"
+          echo '**Engineering browser evidence only; human and platform gates still blocked.**' >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

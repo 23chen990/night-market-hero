@@ -21,7 +21,9 @@ const executablePath = process.env.V2_CHROMIUM_PATH || undefined;
 const maxSeconds = Number(process.env.V2_DURATION_SECONDS ?? 45);
 const skilledRoute = process.env.V2_SKILLED_ROUTE === '1';
 const lanternRoute = process.env.V2_LANTERN_ROUTE === '1';
-if (lanternRoute && !skilledRoute) throw new Error('lantern technique route requires skilled real input');
+const birdRoute = process.env.V2_BIRD_ROUTE === '1';
+if ((lanternRoute || birdRoute) && !skilledRoute)
+  throw new Error('advanced encounter routes require skilled real input');
 const viewportFilter = process.env.V2_VIEWPORT ?? 'both';
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath, args: ['--no-sandbox'] } : {}) });
 const results: unknown[] = [];
@@ -47,6 +49,12 @@ try {
     const seenOffers = new Set<string>();
     const seenRides = new Set<string>();
     const seenSegments = new Set<number>();
+    // These reflect live read-only engine state AFTER genuine browser input.
+    // In a bird success both the preparation and sustained player-controlled
+    // ride must be attributable to THIS encounter instance, never a fixture.
+    const birdClaimPreparations: Record<string, number[]> = {};
+    let birdRideFirstTick: number | null = null;
+    let birdRideLastTick: number | null = null;
     const nearest: Record<string, { distancePx: number; heightDifferencePx: number;
       inputHeld: boolean; attached: boolean; playerX: number; playerY: number;
       targetY: number; requiredAction: string; tick: number }> = {};
@@ -147,9 +155,18 @@ try {
             if (encounters.has(event.instanceId)) continue;
             encounters.set(event.instanceId, { type: event.id, result: event.outcome,
               reason: event.reason, tick: event.tick });
+            if (event.id === '青鸾' && event.outcome === 'claimed') {
+              birdClaimPreparations[event.instanceId] = s.stylishReleaseTicks
+                .filter(releaseTick => event.tick - releaseTick >= 0
+                  && event.tick - releaseTick <= 1200).slice(-8);
+            }
             shot(`encounter-${event.segment}-${event.outcome}`);
           }
           if (s.vehicleId && !seenRides.has(s.vehicleId)) { seenRides.add(s.vehicleId); shot(`ride-${s.vehicleId}`); }
+          if (s.vehicleId === '青鸾') {
+            birdRideFirstTick ??= s.tick;
+            birdRideLastTick = s.tick;
+          }
           if (!seenSegments.has(s.segmentIndex)) { seenSegments.add(s.segmentIndex); if (s.segmentIndex % 2 === 0) shot(`segment-${s.segmentIndex}`); }
         }
         const anchor = s.anchors.find(item => item.id === s.attachedAnchorId);
@@ -199,7 +216,7 @@ try {
           //    the pictured kite handle. Regrappling a later ordinary beam
           //    would pull the hero away before the handle can be touched.
           // This uses genuine input edges; never moves or enlarges the target.
-          if (kite && lanternRoute && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) {
+          if (kite && (lanternRoute || birdRoute) && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) {
             // Choose the familiar rope instead of earning the optional kite.
             // This preserves the lower route for a separate lantern attempt.
             wantHold = true;
@@ -219,7 +236,7 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if (lanternRoute && lantern && s.player.x >= lantern.x - 365 && s.player.x <= lantern.x + 95) {
+          if ((lanternRoute || birdRoute) && lantern && s.player.x >= lantern.x - 365 && s.player.x <= lantern.x + 95) {
             // A low hanging REAL knot: first release the old roof rope, then
             // press at current world contact or an input-delivery prediction.
             // This affects only the test player's timing, NOT the game's
@@ -235,6 +252,22 @@ try {
             wantHold = (touchingNow || aboutToTouch)
               && s.player.x < lantern.x + 55 && !anchor;
           }
+          const bird = s.vehicleOffers.find(offer => offer.id === '青鸾'
+            && offer.status === 'available');
+          if (birdRoute && bird && s.player.x >= bird.x - 800
+            && s.player.x <= bird.x + 150) {
+            const toBird = bird.x - s.player.x;
+            // The rooftop beam BEFORE the bird, not the closer beam directly
+            // underneath it, supplies the upward arc. Hold that real support
+            // until the body is ascending alongside the drawn bird, then
+            // actually release. Retain the engine's two-stylish-release and
+            // strict swept visible-ellipse gates without any test-side award.
+            const priorSupport = anchor
+              && anchor.x >= bird.x - 400 && anchor.x <= bird.x - 220;
+            if (priorSupport) wantHold = toBird > 45;
+            else if (!anchor && toBird <= 225 && toBird >= -150)
+              wantHold = false;
+          }
         }
         await edge(wantHold, s.tick);
         if (held && !s.inputHeld && s.inputTransitions > 0 && s.tick - holdAt > 30) await edge(false, s.tick);
@@ -246,10 +279,15 @@ try {
       const state = await getState();
       shot('end');
       await screenshotChain;
-      results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', embedded, skilledRoute, lanternRoute, duration: maxSeconds,
+      results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', embedded, skilledRoute,
+        lanternRoute, birdRoute, duration: maxSeconds,
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
         encounters: [...encounters.entries()], nearest, inputEdges,
+        birdClaimPreparations,
+        birdMount: birdRideFirstTick === null || birdRideLastTick === null ? null
+          : { firstTick: birdRideFirstTick, lastTick: birdRideLastTick,
+            observedTicks: birdRideLastTick - birdRideFirstTick },
         screenshotNames: screenshots, errors, samples: traces });
     } catch (error) {
       errors.push(`runner:${String(error)}`);

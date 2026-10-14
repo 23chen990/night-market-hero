@@ -38,8 +38,13 @@ const RECIPES: Record<VehicleId, {
   // extension, an auto-equipped ride, or moving the target with the rider.
   '灯笼群': { supportPattern: /lantern|rope/, heightOffset: 270,
     radiusX: 84, radiusY: 100, requiredAction: 'press', description: '松开旧绳，再按住接实体灯绳' },
-  '青鸾': { supportPattern: /left-eave-beam|right-eave-beam/, heightOffset: 190,
-    radiusX: 88, radiusY: 92, requiredAction: 'stylish-release', description: '连续两次漂亮松手，腾空接青鸾' },
+  // The blue-green bird remains a genuinely elevated, world-supported
+  // encounter. Moving its VISIBLE perch 24 world pixels below the same beam
+  // avoids an impossible near-miss at the crest of a real prior-roof swing.
+  // Its radii, real stylish streak requirement, release window and physics
+  // are unchanged; there is no rider-following magnet.
+  '青鸾': { supportPattern: /left-eave-beam|right-eave-beam/, heightOffset: 214,
+    radiusX: 88, radiusY: 92, requiredAction: 'stylish-release', description: '先攒两次漂亮松手，沿高线离索接青鸾' },
 };
 
 export function encounterInstructions(id: VehicleId): string { return RECIPES[id].description; }
