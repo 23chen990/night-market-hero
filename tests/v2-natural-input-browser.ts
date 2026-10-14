@@ -36,8 +36,11 @@ try {
     const errors: string[] = [];
     page.on('pageerror', e => errors.push(String(e)));
     const traces: unknown[] = [];
+    // Exact button edges are recorded before asynchronous screenshots, allowing
+    // the independent compare gate to prove skill is player input, not a grant.
+    const inputEdges: Array<{ tick: number; action: 'press' | 'release' }> = [];
     const screenshots: string[] = [];
-    const encounters = new Map<string, { type: string; result: string; reason: string }>();
+    const encounters = new Map<string, { type: string; result: string; reason: string; tick: number }>();
     const seenOffers = new Set<string>();
     const seenRides = new Set<string>();
     const seenSegments = new Set<number>();
@@ -55,6 +58,7 @@ try {
         touchPoints: down ? [touchPoint] : [] });
       else if (down) await page.keyboard.down('Space'); else await page.keyboard.up('Space');
       held = down;
+      inputEdges.push({ tick, action: down ? 'press' : 'release' });
       if (down) holdAt = tick; else releaseAt = tick;
     };
     // Capture asynchronously: blocking on a PNG encode can consume the
@@ -138,7 +142,8 @@ try {
           }
           for (const event of s.encounterEvents ?? []) {
             if (encounters.has(event.instanceId)) continue;
-            encounters.set(event.instanceId, { type: event.id, result: event.outcome, reason: event.reason });
+            encounters.set(event.instanceId, { type: event.id, result: event.outcome,
+              reason: event.reason, tick: event.tick });
             shot(`encounter-${event.segment}-${event.outcome}`);
           }
           if (s.vehicleId && !seenRides.has(s.vehicleId)) { seenRides.add(s.vehicleId); shot(`ride-${s.vehicleId}`); }
@@ -197,7 +202,8 @@ try {
       results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', embedded, skilledRoute, duration: maxSeconds,
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
-        encounters: [...encounters.entries()], nearest, screenshotNames: screenshots, errors, samples: traces });
+        encounters: [...encounters.entries()], nearest, inputEdges,
+        screenshotNames: screenshots, errors, samples: traces });
     } catch (error) {
       errors.push(`runner:${String(error)}`);
       results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', errors, screenshotNames: screenshots, samples: traces });

@@ -100,8 +100,12 @@ export function encounterActionEligible(
   // Player release must be deliberate and near the actual ring: 40 fixed steps = 1/3 s.
   const recentlyReleased = releaseAge >= 0 && releaseAge <= 40;
   if (action === 'release') return !state.inputHeld && recentlyReleased;
+  // A high-roof launch takes real airtime. The old 0.54s clock invalidated
+  // physical handle crossings after a genuine release; preserve the SAME
+  // visible ellipse and require an actual recent rope-release input edge.
+  // 130 fixed ticks = 1.08 seconds of travel, not an invisible pickup range.
   if (action === 'high-release') return !state.inputHeld && releaseAge >= 0
-    && releaseAge <= 65 && state.playerY <= (state.contactCenterY !== undefined && state.contactRadiusY !== undefined
+    && releaseAge <= 130 && state.playerY <= (state.contactCenterY !== undefined && state.contactRadiusY !== undefined
       ? state.contactCenterY + state.contactRadiusY * .9 : 520);
   if (action === 'press') return state.inputHeld && state.tick - state.lastPressTick >= 0
     && state.tick - state.lastPressTick <= 26;

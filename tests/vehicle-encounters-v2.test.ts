@@ -71,6 +71,14 @@ test('distinct qualifying actions require a real recent press/release, speed, an
   assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), true);
   s.playerY = 610;
   assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), false);
+  // An actual release can fly for ~1s before entering the illustrated handle:
+  // a rigid 65-tick clock must not invalidate that physically valid crossing.
+  s.playerY = 500;
+  s.lastReleaseTick = 95; // 105 ticks airborne
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), true);
+  s.lastReleaseTick = 69; // 131 ticks airborne, stale input
+  assert.equal(encounterActionEligible('high-release', { ...s, contactCenterY: 510, contactRadiusY: 88 }), false);
+  s.lastReleaseTick = 180;
   s.playerY = 420;
   s.stylishTicks = [80, 170];
   assert.equal(encounterActionEligible('stylish-release', s), true);

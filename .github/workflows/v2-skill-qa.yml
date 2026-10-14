@@ -40,12 +40,15 @@ jobs:
           npm run build
           node --import tsx --test tests/*.test.ts
           sha256sum dist/index.html
-      - name: Preserve checked-out source and dependencies for local reproduction
+      - name: Preserve exact source identity and playable HTML SHA
         if: success()
         run: |
           mkdir -p delivery/v2/portable
-          git archive --format=tar.gz --output=delivery/v2/portable/source.tgz HEAD
-          sha256sum delivery/v2/portable/source.tgz dist/index.html > delivery/v2/portable/build-manifest.sha256
+          git rev-parse HEAD > delivery/v2/portable/commit.txt
+          sha256sum dist/index.html > delivery/v2/portable/build-manifest.sha256
+      # The repository itself is already archived by its immutable Git SHA;
+      # packaging the full asset history or node_modules produced 818+ MB
+      # artifacts without improving audit validity.
       - uses: actions/upload-artifact@v4
         if: always()
         with:
