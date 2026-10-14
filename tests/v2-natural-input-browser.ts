@@ -164,15 +164,26 @@ try {
             && !!s.attachedAnchorId && s.player.y >= first.y - 120)
             wantHold = false; // a deliberate player release at the visible ring
           const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
-          // Keep a real high-roof rope until the drawn handle is within reach.
-          // Release inside its VISIBLE contact ellipse; an extra unseen vy gate
-          // made a valid swing miss even when the handle crossed the player.
-          if (kite && s.player.x >= kite.x - 440 && s.player.x <= kite.x + 24 && anchor) {
-            const rx = kite.radiusX ?? 76, ry = kite.radiusY ?? 88;
-            const dx = (s.player.x - kite.x) / rx;
-            const dy = (s.player.y - kite.y) / ry;
-            const visibleContact = dx * dx + dy * dy <= .83 * .83;
-            wantHold = !visibleContact && s.tick - holdAt < 160;
+          // A real one-finger skill sequence on the fixed roof supports:
+          // 1. Hold the next visible high roof rope through its rising arc.
+          // 2. Release BEFORE the apex, then remain airborne until crossing
+          //    the pictured kite handle. Regrappling a later ordinary beam
+          //    would pull the hero away before the handle can be touched.
+          // This uses genuine input edges; never moves or enlarges the target.
+          if (kite && s.player.x >= kite.x - 530 && s.player.x <= kite.x + 140) {
+            const ahead = kite.x - s.player.x;
+            if (anchor) {
+              if (ahead >= 148 && ahead <= 245 &&
+                  s.player.y >= 500 && s.player.y <= 635 && s.player.vy < -110) {
+                wantHold = false;
+              } else if (ahead > 145) {
+                wantHold = true;
+              }
+            } else if (ahead <= 250 &&
+                       s.tick - s.lastGrappleReleaseTick >= 0 &&
+                       s.tick - s.lastGrappleReleaseTick < 100) {
+              wantHold = false;
+            }
           }
         }
         await edge(wantHold, s.tick);
