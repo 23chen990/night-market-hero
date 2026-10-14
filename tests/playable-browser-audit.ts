@@ -172,6 +172,11 @@ try {
           : anchor ? !(state.player.x > anchor.x + 12 && state.player.vx > 0 && state.player.vy < 60) && state.player.vx >= 0 && state.tick - holdAt < 160
             : state.tick - lastRelease > 20 && (state.player.vy > 0 || state.player.y > 540 || state.inputTransitions === 0);
         if (state.levelId === 'night-patrol' && !state.vehicleId) {
+          // An ordinary keyboard rider still needs to release a live rope
+          // BEFORE swinging backwards. The older driver hung onto it until
+          // vx reversed, feeding the physical officer an early guaranteed catch.
+          if (!touch && anchor && state.player.x > anchor.x - 45
+            && state.player.vx > 240 && state.player.vy < 130) wantHold = false;
           const firstOffer = state.vehicleOffers.find(item => item.id === '货运滑索' && item.status === 'available');
           if (touch) {
             // Same real forward-support preparation and airborne pulley
@@ -180,9 +185,20 @@ try {
             // ring on slow frames, leaving a valid player skill unproven.
             if (firstOffer && state.player.x >= firstOffer.x - 340 && state.player.x < firstOffer.x - 200)
               wantHold = true;
-            if (firstOffer && state.player.x >= firstOffer.x - 185 && state.player.x <= firstOffer.x + 60
-              && state.player.y >= firstOffer.y - 150 && state.player.y <= firstOffer.y + 125)
-              wantHold = false;
+            if (firstOffer && state.player.x >= firstOffer.x - 220 && state.player.x <= firstOffer.x + 65) {
+              const radiusX = firstOffer.radiusX ?? 90, radiusY = firstOffer.radiusY ?? 98;
+              const nxNow = (state.player.x - firstOffer.x) / radiusX;
+              const nyNow = (state.player.y - firstOffer.y) / radiusY;
+              const dt = 0.060;
+              const nxNext = (state.player.x + state.player.vx * dt - firstOffer.x) / radiusX;
+              const nyNext = (state.player.y + state.player.vy * dt - firstOffer.y) / radiusY;
+              const visibleNow = nxNow * nxNow + nyNow * nyNow <= 1;
+              const enteringVisibleRing = nxNext * nxNext + nyNext * nyNext <= 1.25;
+              const highEnough = state.player.y >= firstOffer.y - 150
+                && state.player.y <= firstOffer.y + 125;
+              if (highEnough && (visibleNow || enteringVisibleRing)
+                && state.player.vx > 165) wantHold = false;
+            }
           } else {
             // An ordinary keyboard player is NOT required to earn a ride:
             // maintaining a real grapple through optional world encounters
@@ -221,7 +237,10 @@ try {
         // screenshot slot for approaching joins rather than losing one while
         // a lower-priority ride screenshot is encoding. Input never stops.
         let reserveForSeam = false;
-        if (state.levelId === 'night-patrol') {
+        if (state.levelId === 'night-patrol' && [8000, 9600, 11200, 12800].some(
+          seam => !seams.has(seam) && Math.abs(seam - state.player.x) < 1750)) {
+          // Avoid an extra browser/DOM round-trip every frame when no real
+          // rooftop join is nearby. Keep all four real frame screenshots.
           const view = await page.locator('#app').evaluate(element => ({ left: Number((element as HTMLElement).dataset.cameraX), width: Number((element as HTMLElement).dataset.worldViewportWidth) }));
           for (const seam of [8000, 9600, 11200, 12800]) {
             if (seams.has(seam)) continue;
@@ -259,7 +278,9 @@ try {
           await page.locator('.hub-settings').click();
           break;
         }
-        await page.waitForTimeout(65);
+        // More frequent real input decisions, no simulation fast-forward,
+        // fixture mutation, automatic pickup or looser acceptance checks.
+        await page.waitForTimeout(45);
       }
       lifecycle.journey = await readState();
       await edge(false, (await readState()).tick);
