@@ -44,8 +44,19 @@ assert.ok(c.screenshotNames.some(n => n === 'encounter-2-missed'), 'need a scree
 const a=c.nearest?.[identity], b=s.nearest?.[identity];
 assert.ok(a && b && a.distancePx < 120 && b.distancePx < 120,
   'both paths must physically approach the same authored pickup');
-assert.equal(a.inputHeld, true, 'conservative touch path must keep the rope held at the pickup');
-assert.equal(a.attached, true, 'conservative path must pass with an actual grapple, not a skip or teleport');
+// Do not infer the entire conservative approach from the single nearest-X
+// frame: a legitimate last-second release may be closer than the earlier
+// held rope. Require BOTH a near actual body passage AND a separate, earlier,
+// genuinely held world-rope observation near this same fixed instance.
+const heldAtPulley = c.heldNearby?.[identity];
+assert.ok(heldAtPulley && heldAtPulley.distancePx < 120
+  && Math.abs(heldAtPulley.heightDifferencePx) < 145,
+'conservative path must pass near the physical pulley with its real roof rope still held');
+assert.equal(heldAtPulley.inputHeld, true, 'real browser input must still be held at the near-pulley sample');
+assert.equal(heldAtPulley.attached, true, 'real world support, not a hidden grant or teleport');
+assert.equal(heldAtPulley.samplePhase, 'available', 'held evidence must PRECEDE encounter resolution');
+assert.ok(heldAtPulley.tick <= cm.get(identity)?.tick,
+  'near-pulley held evidence cannot be sampled after the encounter resolves');
 // The second route is not a larger hidden magnet: holding the actual
 // high-roof swing longer generates a physical upward launch into the kite.
 const kiteIdentity = [...sm.keys()].find(k => k.endsWith(':纸鸢'));
@@ -54,8 +65,11 @@ assert.equal(cm.get(kiteIdentity)?.result, 'missed', 'ordinary low flight may mi
 assert.equal(sm.get(kiteIdentity)?.result, 'claimed', 'deliberate high swing and release must earn the kite');
 const kiteResolvedAt = sm.get(kiteIdentity)?.tick;
 assert.ok(Number.isInteger(kiteResolvedAt) && s.inputEdges?.some(edge =>
-  edge.action === 'release' && edge.tick <= kiteResolvedAt && kiteResolvedAt - edge.tick <= 130),
-  'a real recent release input edge must precede the earned kite at the SAME build tick');
+  edge.action === 'release' && Number.isInteger(edge.engineReleaseTick)
+  && edge.requestedTick <= edge.engineReleaseTick
+  && edge.engineReleaseTick <= kiteResolvedAt
+  && kiteResolvedAt - edge.engineReleaseTick <= 130),
+  'a browser release of a REAL roof rope (engine-confirmed tick) must precede the earned kite');
 assert.ok(s.seenRides.includes('纸鸢'), 'the actual kite ride must become controllable');
 assert.ok(s.screenshotNames.includes('encounter-4-claimed'), 'earned kite requires a visual encounter frame');
 const kiteA=c.nearest?.[kiteIdentity], kiteB=s.nearest?.[kiteIdentity];

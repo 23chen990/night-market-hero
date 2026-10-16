@@ -1,7 +1,7 @@
 import { ExperienceHud } from './experience-hud.ts';
-import { drawRide, drawVehicleOffers, drawConditions } from './ride-renderer.ts';
+import { drawRide, drawVehicleOffers, drawConditions, drawSwingTimingSignal } from './ride-renderer.ts';
 import { nextCheckpointX } from './experience-director.ts';
-import { applyFlightIdentity, flightPresentation } from './flight-presentation';
+import { applyFlightIdentity, applyFlightSilhouetteOutlines, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
 import {
   MockAdProvider,
@@ -907,11 +907,14 @@ class FlightScene extends Phaser.Scene {
   private moduleLayer!: Phaser.GameObjects.Container;
   private protagonistSprite!: Phaser.GameObjects.Image;
   private protagonistRim!: Phaser.GameObjects.Image;
+  private protagonistOutlineSprites: Phaser.GameObjects.Image[] = [];
   private pursuerSprite!: Phaser.GameObjects.Image;
   private barricadeSprite!: Phaser.GameObjects.Image;
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
   private cameraScrollX = 0;
   private cameraHasInitialized = false;
+  private lastCameraViewportWidth = 0;
+  private lastCameraViewportHeight = 0;
   private lastRenderedTick = 0;
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
@@ -939,11 +942,45 @@ class FlightScene extends Phaser.Scene {
     this.nightCityRenderer.preload(this);
   }
 
+  private createHeroContrastMask(): void {
+    const key = 'protagonist-contrast-mask';
+    if (this.textures.exists(key)) return;
+    // Phaser's tintFill is WebGL-only. A CPU-generated alpha-coloured texture
+    // means the SAME approved silhouette edge works on Canvas fallback too.
+    // Done once at scene creation: no per-frame readback or alpha processing.
+    const source = this.textures.get('protagonist-swing').getSourceImage() as HTMLImageElement;
+    const width = source.naturalWidth || source.width;
+    const height = source.naturalHeight || source.height;
+    const texture = this.textures.createCanvas(key, width, height);
+    if (!texture) throw new Error('Failed to initialize the hero contrast texture');
+    const ctx = texture.context;
+    // The approved 566x562 actor art ALSO contains a long black rope reaching
+    // into the upper-right scenery. Tint only the BODY region of the existing
+    // alpha silhouette; outlining the rope made an intrusive neon diagonal.
+    // Source-relative crop (roughly x=90..365, y=250..535), never a collider.
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(width * 0.16, height * 0.445, width * 0.486, height * 0.507);
+    ctx.clip();
+    ctx.drawImage(source, 0, 0);
+    ctx.restore();
+    ctx.globalCompositeOperation = 'source-in';
+    ctx.fillStyle = '#a8f5e9';
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'source-over';
+    texture.refresh();
+  }
+
   create(): void {
     this.cameras.main.setBackgroundColor('rgba(0,0,0,0)');
     this.cameras.main.setOrigin(0, 0);
     this.moduleLayer = this.add.container(0, 0).setDepth(-5);
-    this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0x8dc8d8).setDepth(3.9);
+    this.createHeroContrastMask();
+    this.protagonistRim = this.add.image(0, 0, 'protagonist-contrast-mask')
+      .setOrigin(0.5, 0.72).setDepth(3.9);
+    this.protagonistOutlineSprites = Array.from({ length: 4 }, () =>
+      this.add.image(0, 0, 'protagonist-contrast-mask')
+        .setOrigin(0.5, 0.72).setDepth(3.85));
     this.protagonistSprite = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setDisplaySize(150, 150).setAlpha(1).setDepth(4);
     this.pursuerSprite = this.add.image(0, 0, 'pursuer-run').setOrigin(0.5, 0.72).setDisplaySize(126, 130).setAlpha(1).setDepth(4);
     // Reuse the repository's existing approved hanging-cloth art instead of
@@ -971,6 +1008,13 @@ class FlightScene extends Phaser.Scene {
   private renderState(state: GrappleState): void {
     const viewportWidth = Math.max(1, this.scale.width || app.clientWidth || REFERENCE_STAGE_WIDTH);
     const viewportHeight = Math.max(1, this.scale.height || app.clientHeight || REFERENCE_STAGE_HEIGHT);
+    // Pausing freezes simulation ticks, including the smoothing clock. When
+    // orientation or window size changes during pause, rebase immediately to
+    // the new viewport rather than keeping the old look-ahead crop.
+    const viewportChanged = viewportWidth !== this.lastCameraViewportWidth
+      || viewportHeight !== this.lastCameraViewportHeight;
+    this.lastCameraViewportWidth = viewportWidth;
+    this.lastCameraViewportHeight = viewportHeight;
     this.cameraLayout = createCameraLayout({ width: viewportWidth, height: viewportHeight, lookAhead: 0.32 });
     const geometryRight = state.environmentGeometry.worldBounds.x + state.environmentGeometry.worldBounds.width;
     // Endless mode intentionally has no finite finishX; keep the presentation
@@ -989,7 +1033,7 @@ class FlightScene extends Phaser.Scene {
     const elapsedCameraSeconds = Math.max(0, (state.tick - this.lastRenderedTick) / 120);
     const genuineRestart = state.tick < this.lastRenderedTick
       || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 1.25;
-    if (!this.cameraHasInitialized || genuineRestart) {
+    if (!this.cameraHasInitialized || genuineRestart || viewportChanged) {
       this.cameraScrollX = cameraTargetX;
       this.cameraHasInitialized = true;
     } else if (elapsedCameraSeconds > 0) {
@@ -1022,6 +1066,7 @@ class FlightScene extends Phaser.Scene {
     app.dataset.longmapChunkKind = 'none';
     app.dataset.longmapSceneFamily = 'none';
     applyFlightIdentity(this.protagonistSprite, this.protagonistRim, state.player, projection.zoom);
+    applyFlightSilhouetteOutlines(this.protagonistOutlineSprites, state.player, projection.zoom);
     this.pursuerSprite.setPosition(state.pursuer.x, state.pursuer.y).setRotation(0).setVisible(state.pursuer.visible);
     app.dataset.guardOnScreen = String(state.pursuer.x >= this.cameras.main.scrollX
       && state.pursuer.x <= this.cameras.main.scrollX + worldViewportWidth);
@@ -1094,6 +1139,10 @@ class FlightScene extends Phaser.Scene {
     }
     drawVehicleOffers(graphics, state);
     drawRide(graphics, state);
+    // A small world-anchored "release now" tell appears only while this
+    // actual roof swing can earn the existing stylish-release reward.
+    // Draw BEHIND the same authored character; never attach a fake grapple.
+    drawSwingTimingSignal(graphics, state, this.reducedMotion);
     this.drawStrictReferenceProtagonist(graphics, state.player.x, state.player.y, Math.atan2(state.player.vy, state.player.vx));
     graphics.lineStyle(2, 0xd76572, 0.18).lineBetween(this.cameras.main.scrollX, state.failY, this.cameras.main.scrollX + worldViewportWidth, state.failY);
   }

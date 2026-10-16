@@ -123,3 +123,40 @@ export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: Grapple
     }
   }
 }
+
+
+/**
+ * A visual timing tell, not aim assist: the EXACT same real world-rope,
+ * forward velocity, speed and positive swing geometry used to score a
+ * stylish release. This must not appear for an idle/free-flying rider,
+ * for a vehicle ride, or while paused. No new collision or input path.
+ */
+export function shouldShowSwingTimingSignal(state: Pick<GrappleState,
+  'status' | 'paused' | 'levelId' | 'vehicleId' | 'attachedAnchorId'
+  | 'anchors' | 'player'>): boolean {
+  if (state.status !== 'playing' || state.paused || state.levelId !== 'night-patrol'
+    || state.vehicleId !== null || !state.attachedAnchorId) return false;
+  const anchor = state.anchors.find(a => a.id === state.attachedAnchorId);
+  if (!anchor || state.player.x < anchor.x) return false;
+  const { vx, vy } = state.player;
+  return vx > 200 && vy < 120 && Math.hypot(vx, vy) >= 360;
+}
+
+/** Gold corner sparks: not a big halo to be confused with pickup hitboxes. */
+export function drawSwingTimingSignal(
+  g: Phaser.GameObjects.Graphics,
+  state: GrappleState,
+  reducedMotion: boolean,
+): void {
+  if (!shouldShowSwingTimingSignal(state)) return;
+  const { x, y } = state.player;
+  const beat = reducedMotion ? 1 : 0.84 + 0.16 * Math.sin(state.tick * 0.18);
+  const alpha = 0.58 + beat * 0.24;
+  // Two open arcs, not an enclosed catch ring: the real actor is still the
+  // only target, and the next real hand release is the only input action.
+  g.lineStyle(4, 0xffdda0, alpha)
+    .lineBetween(x - 37, y - 24, x - 45, y - 13)
+    .lineBetween(x - 45, y + 13, x - 37, y + 24);
+  g.fillStyle(0xffe9a8, alpha)
+    .fillTriangle(x + 39, y - 15, x + 54 + 3 * beat, y, x + 39, y + 15);
+}

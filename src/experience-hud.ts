@@ -121,16 +121,34 @@ export class ExperienceHud {
     this.layer.dataset.active = String(active);
     this.metric.hidden = this.awaiting;
     text(this.metric, `${Math.floor(state.distanceMeters)} m  ·  拾取 ${state.coins}  ·  连飞 ${state.combo} ×${Math.min(state.characterId === '提灯童' ? 3 : 4, 1 + Math.floor(state.combo / 2))}`);
-    this.goal.hidden = this.awaiting || state.status !== 'playing';
     this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
     this.pursuit.dataset.phase = state.chase.phase;
     const closeness = Math.min(1, Math.max(0, state.chase.pressure));
-    text(this.pursuit.querySelector('strong')!, closeness >= 0.75 ? '危险！向高处接钩躲网' : closeness >= 0.35 ? '官兵架网！加速或升高' : '后方官兵持续追赶');
+    // Calm pursuit should remain visible without occupying the same visual
+    // weight as a real near-capture warning. Escalation is state-driven:
+    // pressure, not arbitrary wall-clock flashing or a hidden difficulty buff.
+    const urgency = state.chase.phase === 'danger' || state.chase.phase === 'climax'
+      ? 'danger' : closeness >= 0.75 ? 'danger'
+        : state.chase.phase === 'alert' || closeness >= 0.35 ? 'alert' : 'calm';
+    this.pursuit.dataset.urgency = urgency;
+    text(this.pursuit.querySelector('strong')!, urgency === 'danger'
+      ? '危险！向高处接钩躲网' : urgency === 'alert'
+        ? '官兵架网！加速或升高' : '官兵在后');
     text(this.pursuit.querySelector('span')!, `${Math.round(state.chase.distance / 30)}m`);
     (this.pursuit.querySelector('i')! as HTMLElement).style.setProperty('--chase-fill', `${Math.round(closeness * 100)}%`);
+    // Keep a strategic goal only until the actual encounter is near enough
+    // to be coached. Showing "抢滑索" in the left corner AND a longer
+    // "抢滑索" instruction at lower right made the first 90s text-heavy,
+    // and obscured the patrol. No world encounter or gameplay gate changes.
+    const offer = state.vehicleOffers?.find(item => item.status === 'available'
+      && item.x >= state.player.x - 140);
+    const offerInCoachingRange = !state.vehicleId && !!offer
+      && offer.x - state.player.x <= (offer.id === '青鸾' ? 2000 : 920);
+    this.goal.hidden = this.awaiting || state.status !== 'playing'
+      || (state.levelId === 'night-patrol' && offerInCoachingRange);
+    this.layer.dataset.goalVisible = String(!this.goal.hidden);
     if (state.levelId === 'lantern-entry') text(this.goal, `护送铜符 ${Math.round(state.progress * 100)}% · 前方是渡口`);
     else {
-      const offer = state.vehicleOffers?.find(item => item.status === 'available' && item.x >= state.player.x - 140);
       const next = OPENING_ENCOUNTERS.find(beat => beat.segment > state.segmentIndex);
       const escapedOnce = state.gatesPassed > 0;
       text(this.goal, offer ? `前方 ${Math.max(0, Math.ceil((offer.x - state.player.x) / 30))}m：抢${offer.id}`
@@ -140,7 +158,18 @@ export class ExperienceHud {
             : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m`);
     }
     const cue = controlCue(state);
-    this.cue.hidden = !active; this.cue.dataset.tone = cue.tone;
+    this.cue.hidden = !active;
+    this.cue.dataset.tone = cue.tone;
+    // After the opening lesson, quiet contextual reminders become a small
+    // one-line pill. Full coaching returns the instant there is an actual
+    // ride, skill opportunity, hazard, or beginner lesson to read.
+    const lowPriority = state.levelId === 'night-patrol' && state.elapsed > 16
+      && !state.vehicleId && !offerInCoachingRange && cue.tone === 'neutral';
+    this.cue.dataset.density = lowPriority ? 'compact' : 'full';
+    const urgentRelease = /现在松手|现在松开|赶紧松手|松手飞进/.test(cue.title);
+    const urgentPress = /现在按住|快按住/.test(cue.title);
+    this.cue.dataset.quickAction = urgentRelease ? 'release'
+      : urgentPress ? 'press' : 'none';
     text(this.cueTitle, cue.title); text(this.cueDetail, cue.detail);
     this.ride.hidden = !active || !state.vehicleId;
     text(this.rideName, state.vehicleId ?? '');
@@ -168,7 +197,15 @@ export class ExperienceHud {
           : `突破第 ${state.gatesPassed} 处封锁！继续挑战更高收益`);
         this.audio.play('combo');
       }
-      else if (state.combo > previous.combo) { if (state.combo >= 2) this.announce(`漂亮！${state.combo} 连飞`); this.audio.play('combo'); }
+      else if (state.combo > previous.combo) {
+        // Celebrate the very first EARNED well-timed release, not every
+        // animation frame or every subsequent combo: preserve the fun,
+        // avoid hiding imminent pickups behind a permanent toast.
+        if (state.combo === 1) this.announce('漂亮松手！再接下一根飞索');
+        else if (state.combo === 2 || state.combo % 3 === 0)
+          this.announce(`漂亮！${state.combo} 连飞`);
+        this.audio.play('combo');
+      }
       else if (state.pickups > previous.pickups) this.audio.play('coin');
       else if (state.mutation && state.mutation !== previous.mutation) {
         this.announce(state.mutation === '起雾' ? '起雾了：靠近一点再挂接' : state.mutation === '下雨' ? '雨天下坠略快，提前接索' : '官兵增援！保持向前的节奏');

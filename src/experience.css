@@ -3,7 +3,8 @@
 .experience-layer [hidden], .pause-actions [hidden], .mission-claim[hidden] { display: none !important; }
 .flight-metrics { position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(68px, calc(env(safe-area-inset-left) + 60px)); padding: 7px 11px; border-radius: 12px; background: #15282ddd; font-size: 14px; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .flight-goal { position: absolute; top: max(53px, calc(env(safe-area-inset-top) + 42px)); left: max(18px, env(safe-area-inset-left)); background: #11272dcc; border-left: 3px solid #e4be7b; border-radius: 4px 9px 9px 4px; padding: 6px 9px; font-size: 12px; max-width: 50vw; }
-.control-coach { position: absolute; bottom: max(12px, env(safe-area-inset-bottom)); left: max(12px, env(safe-area-inset-left)); padding: 8px 11px; min-width: 0; max-width: min(290px, 32vw); border: 1px solid #e5c58655; border-radius: 12px; background: #13282cdb; text-align: left; box-shadow: 0 4px 13px #0004; box-sizing: border-box; }
+/* Keep action coaching out of the hero's ~32%-width flight lane and clear of the right-side item rail. */
+.control-coach { position: absolute; bottom: max(12px, env(safe-area-inset-bottom)); left: auto; right: max(68px, calc(env(safe-area-inset-right) + 60px)); padding: 8px 11px; min-width: 0; max-width: min(290px, 32vw); border: 1px solid #e5c58655; border-radius: 12px; background: #13282cdb; text-align: left; box-shadow: 0 4px 13px #0004; box-sizing: border-box; }
 .control-coach strong, .control-coach span { display: block; }
 .control-coach strong { font-size: 16px; line-height: 1.4; letter-spacing: .05em; }
 .control-coach span { margin-top: 3px; font-size: 11px; color: #d4dace; }
@@ -109,3 +110,47 @@ button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb
 @keyframes chase-alert { to { box-shadow:0 0 18px #ee615066; } }
 @media (max-width:720px) { .pursuit-readout { top:max(90px,calc(env(safe-area-inset-top) + 77px)); width:166px; font-size:10px; padding:5px 8px; } }
 @media (prefers-reduced-motion:reduce) { .pursuit-readout { animation:none !important; } }
+
+/* V2 flight clarity: the same world information at the right visual priority.
+ * Calm guards stay legible; only REAL escalating pressure expands the warning.
+ * Actual chase distance, encounter positions and hitboxes never change. */
+.pursuit-readout[data-urgency="calm"] {
+  width: 126px;
+  padding: 5px 8px;
+  gap: 2px 5px;
+  background: #11272dbb;
+  border-color: #91bda0;
+  font-size: 11px;
+}
+.pursuit-readout[data-urgency="calm"] strong { font-weight: 650; }
+.pursuit-readout[data-urgency="calm"] i { display: none; }
+.experience-layer[data-goal-visible="false"] .pursuit-readout {
+  top: max(53px, calc(env(safe-area-inset-top) + 43px));
+}
+/* Preserve an always-visible one-finger reminder but de-emphasize narration
+ * when it has nothing urgent to teach. Restore the full panel for encounters. */
+.control-coach[data-density="compact"] {
+  padding: 6px 10px;
+  background: #13282cbf;
+  border-color: #abbbad66;
+  max-width: 31vw;
+}
+.control-coach[data-density="compact"] span { display: none; }
+.control-coach[data-quick-action="release"] {
+  border-color: #ffdf9b;
+  box-shadow: 0 0 0 2px #ffe6a423, 0 4px 13px #0004;
+}
+.control-coach[data-quick-action="press"] {
+  border-color: #8ff2d3;
+  box-shadow: 0 0 0 2px #a3ead533, 0 4px 13px #0004;
+}
+.flight-toast {
+  max-width: min(72vw, 550px);
+  white-space: normal;
+  text-align: center;
+  box-sizing: border-box;
+}
+@media (max-width: 720px) {
+  .pursuit-readout[data-urgency="calm"] { width: 114px; padding: 4px 7px; font-size: 10px; }
+  .control-coach[data-density="compact"] { max-width: 30vw; }
+}
