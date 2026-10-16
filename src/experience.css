@@ -3,7 +3,8 @@
 .experience-layer [hidden], .pause-actions [hidden], .mission-claim[hidden] { display: none !important; }
 .flight-metrics { position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(68px, calc(env(safe-area-inset-left) + 60px)); padding: 7px 11px; border-radius: 12px; background: #15282ddd; font-size: 14px; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .flight-goal { position: absolute; top: max(53px, calc(env(safe-area-inset-top) + 42px)); left: max(18px, env(safe-area-inset-left)); background: #11272dcc; border-left: 3px solid #e4be7b; border-radius: 4px 9px 9px 4px; padding: 6px 9px; font-size: 12px; max-width: 50vw; }
-.control-coach { position: absolute; bottom: max(12px, env(safe-area-inset-bottom)); left: max(12px, env(safe-area-inset-left)); padding: 8px 11px; min-width: 0; max-width: min(290px, 32vw); border: 1px solid #e5c58655; border-radius: 12px; background: #13282cdb; text-align: left; box-shadow: 0 4px 13px #0004; box-sizing: border-box; }
+/* Keep action coaching out of the hero's ~32%-width flight lane and clear of the right-side item rail. */
+.control-coach { position: absolute; bottom: max(12px, env(safe-area-inset-bottom)); left: auto; right: max(68px, calc(env(safe-area-inset-right) + 60px)); padding: 8px 11px; min-width: 0; max-width: min(290px, 32vw); border: 1px solid #e5c58655; border-radius: 12px; background: #13282cdb; text-align: left; box-shadow: 0 4px 13px #0004; box-sizing: border-box; }
 .control-coach strong, .control-coach span { display: block; }
 .control-coach strong { font-size: 16px; line-height: 1.4; letter-spacing: .05em; }
 .control-coach span { margin-top: 3px; font-size: 11px; color: #d4dace; }
