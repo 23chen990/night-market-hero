@@ -307,9 +307,19 @@ try {
             // only ONE real stylish-release record. This route actively gives
             // up that optional lantern, builds one earned release on an earlier
             // support, then flies off the next HIGH beam to touch the bird.
+            // Keep the FINAL authored high-roof support. On the natural
+            // miss trace the controller stayed airborne at x~14185, y~400,
+            // then waited to press until it could grab only the NEXT low
+            // support (x~14532), pulling the rider below the visible wing.
+            // A genuine fresh press by the high beam is the intended skill.
+            const catchFinalRoof = !anchor && toBird >= 280 && toBird <= 430
+              && s.player.y >= 320 && s.player.y <= 475
+              && s.player.vx >= 210 && s.player.vy < 180;
             if (recentStyleTicks.length < 1 && preparingRope && physicallyStylish
               && toBird > 400 && s.player.x >= anchor.x - 40) {
               wantHold = false;
+            } else if (catchFinalRoof) {
+              wantHold = true;
             } else if (finalHighRope) {
               // At 70ms screen sampling, toBird>45 released too late: the
               // player was still attached at x~14516 INSIDE the bird's drawn
@@ -358,8 +368,19 @@ try {
           && s.vehicleOffers.some(offer => offer.id === '青鸾'
             && offer.status === 'available'
             && s.player.x >= offer.x - 750 && s.player.x <= offer.x + 150);
-        await page.waitForTimeout(nearBird ? 30 : nearLantern ? 38
-          : skilledRoute ? 70 : 55);
+        // At 55-70ms per input decision, a legitimately earned moving
+        // pulley/kite could resolve between samples. The nearest pre-claim
+        // point then stayed >120px away even though a real release earned
+        // the fixed ring. Sample actual visible input more often NEAR the
+        // authored targets; never edit world state, enlarge a pickup or
+        // relax the independent comparison gate.
+        const nearEarlyRing = s.levelId === 'night-patrol'
+          && s.vehicleOffers.some(offer =>
+            (offer.id === '货运滑索' || offer.id === '纸鸢')
+            && offer.status === 'available'
+            && s.player.x >= offer.x - 450 && s.player.x <= offer.x + 160);
+        await page.waitForTimeout(nearBird ? 28 : nearEarlyRing ? 24
+          : nearLantern ? 38 : skilledRoute ? 70 : 55);
       }
       await edge(false, (await getState()).tick);
       const state = await getState();
