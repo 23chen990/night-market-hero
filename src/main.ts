@@ -1,7 +1,7 @@
 import { ExperienceHud } from './experience-hud.ts';
 import { drawRide, drawVehicleOffers, drawConditions } from './ride-renderer.ts';
 import { nextCheckpointX } from './experience-director.ts';
-import { applyFlightIdentity, flightPresentation } from './flight-presentation';
+import { applyFlightIdentity, applyFlightSilhouetteOutlines, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
 import {
   MockAdProvider,
@@ -907,6 +907,7 @@ class FlightScene extends Phaser.Scene {
   private moduleLayer!: Phaser.GameObjects.Container;
   private protagonistSprite!: Phaser.GameObjects.Image;
   private protagonistRim!: Phaser.GameObjects.Image;
+  private protagonistOutlineSprites: Phaser.GameObjects.Image[] = [];
   private pursuerSprite!: Phaser.GameObjects.Image;
   private barricadeSprite!: Phaser.GameObjects.Image;
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
@@ -941,11 +942,35 @@ class FlightScene extends Phaser.Scene {
     this.nightCityRenderer.preload(this);
   }
 
+  private createHeroContrastMask(): void {
+    const key = 'protagonist-contrast-mask';
+    if (this.textures.exists(key)) return;
+    // Phaser's tintFill is WebGL-only. A CPU-generated alpha-coloured texture
+    // means the SAME approved silhouette edge works on Canvas fallback too.
+    // Done once at scene creation: no per-frame readback or alpha processing.
+    const source = this.textures.get('protagonist-swing').getSourceImage() as HTMLImageElement;
+    const width = source.naturalWidth || source.width;
+    const height = source.naturalHeight || source.height;
+    const texture = this.textures.createCanvas(key, width, height);
+    const ctx = texture.context;
+    ctx.drawImage(source, 0, 0);
+    ctx.globalCompositeOperation = 'source-in';
+    ctx.fillStyle = '#a8f5e9';
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'source-over';
+    texture.refresh();
+  }
+
   create(): void {
     this.cameras.main.setBackgroundColor('rgba(0,0,0,0)');
     this.cameras.main.setOrigin(0, 0);
     this.moduleLayer = this.add.container(0, 0).setDepth(-5);
-    this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0xa8f5e9).setDepth(3.9);
+    this.createHeroContrastMask();
+    this.protagonistRim = this.add.image(0, 0, 'protagonist-contrast-mask')
+      .setOrigin(0.5, 0.72).setDepth(3.9);
+    this.protagonistOutlineSprites = Array.from({ length: 4 }, () =>
+      this.add.image(0, 0, 'protagonist-contrast-mask')
+        .setOrigin(0.5, 0.72).setDepth(3.85));
     this.protagonistSprite = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setDisplaySize(150, 150).setAlpha(1).setDepth(4);
     this.pursuerSprite = this.add.image(0, 0, 'pursuer-run').setOrigin(0.5, 0.72).setDisplaySize(126, 130).setAlpha(1).setDepth(4);
     // Reuse the repository's existing approved hanging-cloth art instead of
@@ -1031,6 +1056,7 @@ class FlightScene extends Phaser.Scene {
     app.dataset.longmapChunkKind = 'none';
     app.dataset.longmapSceneFamily = 'none';
     applyFlightIdentity(this.protagonistSprite, this.protagonistRim, state.player, projection.zoom);
+    applyFlightSilhouetteOutlines(this.protagonistOutlineSprites, state.player, projection.zoom);
     this.pursuerSprite.setPosition(state.pursuer.x, state.pursuer.y).setRotation(0).setVisible(state.pursuer.visible);
     app.dataset.guardOnScreen = String(state.pursuer.x >= this.cameras.main.scrollX
       && state.pursuer.x <= this.cameras.main.scrollX + worldViewportWidth);
