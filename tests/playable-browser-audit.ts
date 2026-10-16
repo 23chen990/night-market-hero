@@ -258,9 +258,25 @@ try {
           const lantern = state.vehicleOffers.find(item => item.id === '灯笼群' && item.status === 'available');
           if (lantern && state.player.x >= lantern.x - 200 && state.player.x <= lantern.x + 105)
             wantHold = true;
+          // The actual desktop failure video at x~12010 showed a low,
+          // downward 670px/s swing with nearly no forward speed. A late
+          // panic release was followed by a real fall before the next input
+          // poll. Recover while still holding the REAL roof rope, not by
+          // injecting height, slowing gravity or disabling a fall test.
+          if (!touch && anchor && state.player.y > 560 && state.player.vy > 215
+            && state.player.vx < 250) wantHold = false;
+          if (!touch && !anchor && state.player.y > 595 && state.player.vy > 220
+            && state.tick - lastRelease > 6) wantHold = true;
         }
         await edge(wantHold, state.tick);
-        if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) await edge(false, state.tick);
+        if (held && !state.inputHeld && state.inputTransitions > 0 && state.tick - holdAt > 30) {
+          // An engine-side cancellation means the hardware key is still held
+          // but the next grapple requires a fresh down edge. Actually send
+          // key-up then key-down, like a player re-tapping to recover.
+          await edge(false, state.tick);
+          if (wantHold && state.player.y < state.failY - 25)
+            await edge(true, state.tick);
+        }
         if (state.vehicleId) {
           const visit = seen.get(state.vehicleId);
           if (visit) visit.lastTick = state.tick;
