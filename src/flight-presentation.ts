@@ -5,13 +5,13 @@ export function flightPresentation(zoom: number) {
     heroSize: 150,
     // A tiny scale-only rim looked unchanged on Canvas: the texture contains
     // large transparent areas and Phaser tintFill is WebGL-only. Retain the
-    // subtle two-pixel center rim, plus FOUR truly offset tinted-silhouette
-    // images built from the existing art. Offset is physical screen pixels,
-    // never game/world collision or a reward magnet.
+    // restrained center rim plus four small body-only edge copies. The long
+    // rope is intentionally excluded from the cyan mask. Offsets are physical
+    // screen pixels, never additional hitboxes or a vehicle reward magnet.
     heroRimSize: 150 + 4 / safeZoom,
-    heroRimAlpha: 0.56,
-    heroOutlineOffsetPixels: 2.8,
-    heroOutlineAlpha: 0.58,
+    heroRimAlpha: 0.36,
+    heroOutlineOffsetPixels: 1.6,
+    heroOutlineAlpha: 0.13,
     idleAnchorSize: 30,
     eligibleAnchorSize: 54,
     attachedAnchorSize: 56,
