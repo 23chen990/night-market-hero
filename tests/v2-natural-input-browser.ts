@@ -140,9 +140,12 @@ try {
         if (s.levelId === 'night-patrol') {
           for (const offer of s.vehicleOffers) {
             const key = offer.instanceId ?? `${offer.segment}-${offer.id}`;
-            // The next observation may already say claimed, so record the
-            // nearest ACTUAL approached point across the resolution frame.
-            if (Math.abs(s.player.x - offer.x) < 1300) {
+            // Keep nearest-approach evidence BEFORE the collision resolves.
+            // Sampling a successfully MOUNTED kite as if it were still a free
+            // approach can misleadingly report held=true after a real release.
+            // The independent gate must still require an airborne approach
+            // near the fixed object, never a post-grant sample.
+            if (offer.status === 'available' && Math.abs(s.player.x - offer.x) < 1300) {
               const distancePx = Math.abs(s.player.x - offer.x);
               if (!nearest[key] || distancePx < nearest[key]!.distancePx) {
                 nearest[key] = { distancePx, heightDifferencePx: s.player.y - offer.y,
@@ -318,9 +321,16 @@ try {
               // creates an actual usable, observable mid-arc release.
               // Finish rising on the REAL supported rope. An earlier 155px
               // release left the rider ~114px below the bird at its center.
-              // A late ~40px actual release intersects its DRAWN lower wing
-              // with two stylish releases already earned. No target movement.
-              wantHold = toBird > 40;
+              // A late ~40px actual release intersects the wing when the
+              // roof swing has enough forward amplitude. On other real frame
+              // cadences the same roof reaches only ~130px before swinging
+              // backwards; waiting for an unreachable 40px would make the
+              // player hang until the officer catches them. A high, UPWARD,
+              // fast enough swing can release earlier into the real ellipse.
+              const highForwardExit = toBird <= 180 && toBird > 40
+                && s.player.y <= bird.y + 26 && s.player.y >= bird.y - 70
+                && s.player.vx >= 220 && s.player.vy <= -230;
+              wantHold = toBird > 40 && !highForwardExit;
             } else if (!anchor && toBird <= 225 && toBird >= -150) {
               wantHold = false;
             }
