@@ -321,15 +321,16 @@ try {
               // creates an actual usable, observable mid-arc release.
               // Finish rising on the REAL supported rope. An earlier 155px
               // release left the rider ~114px below the bird at its center.
-              // A late ~40px actual release intersects the wing when the
-              // roof swing has enough forward amplitude. On other real frame
-              // cadences the same roof reaches only ~130px before swinging
-              // backwards; waiting for an unreachable 40px would make the
-              // player hang until the officer catches them. A high, UPWARD,
-              // fast enough swing can release earlier into the real ellipse.
-              const highForwardExit = toBird <= 180 && toBird > 40
-                && s.player.y <= bird.y + 26 && s.player.y >= bird.y - 70
-                && s.player.vx >= 220 && s.player.vy <= -230;
+              // The last current-build touch trace shows the actual high
+              // roof arc at x=14379, y=464, vx=233, vy=-271, 144px before
+              // the bird. Waiting for the old x<40 gate stalls the rope at
+              // x~14427, vx~10; this safely aims for the DRAWN fixed ellipse
+              // using a forward/upward real release instead. Do not extend
+              // collision radius, attach through another rope or grant a ride.
+              const highForwardExit = toBird <= 190 && toBird > 40
+                && s.player.y <= bird.y + 72 && s.player.y >= bird.y - 70
+                && s.player.vx >= 180 && s.player.vy <= -190
+                && Math.hypot(s.player.vx, s.player.vy) >= 310;
               wantHold = toBird > 40 && !highForwardExit;
             } else if (!anchor && toBird <= 225 && toBird >= -150) {
               wantHold = false;
