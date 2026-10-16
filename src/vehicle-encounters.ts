@@ -196,5 +196,19 @@ export function missedEncounterReason(
       ? '碰到了灯绳！先松开旧飞索，再靠近时重新按住'
       : '松手时机不对';
   }
+  // When the body never entered the real world-space ring, "missed" must
+  // describe WHICH side of this particular target was actually missed.
+  // A hard-coded y=610 gave the same vague, sometimes reversed explanation
+  // to a high pulley, low lantern and Qingluan. Only the player's actual
+  // height relative to the AUTHORED ellipse matters; no pickup thresholds
+  // or physics are changed here.
+  if (Number.isFinite(contactCenterY) && Number.isFinite(contactRadiusY)
+    && contactRadiusY! > 0) {
+    if (playerY < contactCenterY! - contactRadiusY!)
+      return '从挂环上方飞过：下次提前走低屋檐';
+    if (playerY > contactCenterY! + contactRadiusY!)
+      return '从挂环下方飞过：下次先接高处屋檐升高';
+    return '擦过挂环边缘：下次对准发光圈中心';
+  }
   return playerY > 610 ? '从下方掠过，没碰到挂环' : '错过挂环，下次提早调整高度';
 }

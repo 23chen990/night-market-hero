@@ -28,7 +28,26 @@ const pulley = named('货运滑索');
 const kite = named('纸鸢');
 const lanternId = named('灯笼群');
 assert.ok(pulley && kite && lanternId, 'real world encounters must all be reached');
-assert.equal(events.get(pulley)?.result, 'claimed', 'the opening physical pulley should still be earned');
+// Each world ride is OPTIONAL: requiring a pulley mount in a later lantern
+// route wrongly invalidates a valid skilled choice to skip the pulley.
+ // The independent SAME-HTML casual/skilled contrast still STRICTLY requires
+// the exact pulley to be earned on the baseline skilled route. Here a
+// different real route must be able to miss it without a hidden reward queue.
+const baselinePulley = new Map(a.encounters ?? []).get(pulley);
+assert.equal(baselinePulley?.result, 'claimed',
+  'the independent skilled baseline must still physically earn the same pulley');
+const entryOutcome = events.get(pulley)?.result;
+assert.ok(entryOutcome === 'missed' || entryOutcome === 'claimed',
+  'lantern route must resolve the real pulley encounter, not skip the world segment');
+if (entryOutcome === 'missed') {
+  assert.ok(!b.seenRides.includes('货运滑索'),
+    'a missed optional pulley must never be silently granted later');
+  assert.ok(b.screenshotNames?.includes('encounter-2-missed'),
+    'declining the entry pulley requires visible failure evidence');
+} else {
+  assert.ok(b.seenRides.includes('货运滑索'),
+    'a claimed entry pulley must actually be observed as a mounted ride');
+}
 assert.equal(events.get(kite)?.result, 'missed', 'choosing the low lantern route must forgo the kite');
 assert.equal(events.get(lanternId)?.result, 'claimed', 'a fresh actual press must earn the anchored lantern');
 assert.ok(b.seenRides.includes('灯笼群'), 'lantern must become an equipped vehicle');
@@ -47,6 +66,18 @@ assert.ok(b.inputEdges?.some(edge => edge.action === 'release'
 const nearest = b.nearest?.[lanternId];
 assert.ok(nearest && nearest.distancePx < 110,
   'actual player trajectory must pass close to the fixed authored lantern');
+if (nearest.samplePhase === 'claimed-after-real-press') {
+  // No relaxation of the 110px observation bound: a fast browser may capture
+  // x=-117px before the physical claim and x=+36px just after. The post-claim
+  // frame is valid ONLY if the runtime says a real press itself claimed the
+  // exact world instance at the exact same physics tick.
+  assert.equal(nearest.enginePressTick, claimedAt,
+    'post-claim near-lantern sample must match the exact real input/claim tick');
+  assert.ok(b.inputEdges?.some(edge => edge.action === 'press'
+    && edge.tick <= nearest.enginePressTick
+    && nearest.enginePressTick - edge.tick <= 26),
+    'post-claim lantern evidence still requires a recent genuine browser press');
+}
 console.log(JSON.stringify({
   status: 'LANTERN_REAL_TOUCH_PASS', sha256: lantern.buildSha256,
   worldInstance: lanternId, claimedAtTick: claimedAt,

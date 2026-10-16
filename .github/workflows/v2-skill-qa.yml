@@ -1,7 +1,7 @@
 name: V2 Skill Encounters — Draft QA
 on:
   pull_request:
-    branches: [feat/playable-experience-20261012]
+    branches: [feat/playable-experience-20261012, feat/v2-skill-encounters-20261013]
     paths:
       - 'src/**'
       - 'tests/**'
@@ -79,6 +79,8 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Offline single-file launch
         run: npm run test:file
+      - name: Four real Chromium landscape coach safe-area checks
+        run: npm run test:coach
       - name: Real phone and desktop journey with per-encounter evidence
         run: npm run test:play
       - name: Deliberate error in actual touch flight must result in guard contact

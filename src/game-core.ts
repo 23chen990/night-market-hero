@@ -1411,6 +1411,17 @@ export class GrappleGame {
   setPaused(paused: boolean): void {
     this.state.paused = paused;
     if (paused) {
+      // A user pausing mid-swing must release the held input, but this must
+      // not also count as a missed skill action. Give their NEXT real press
+      // a short reattachment window, without changing velocity, awarding a
+      // combo, cancelling the patrol or advancing a single physics tick.
+      const hadRealRope = this.state.status === 'playing'
+        && this.state.attachedAnchorId !== null && this.state.ropeLength !== null;
+      if (this.options.guidedExperience && hadRealRope) {
+        this.state.regrappleGraceUntilTick = Math.max(
+          this.state.regrappleGraceUntilTick, this.state.tick + 72,
+        );
+      }
       this.accumulator = 0;
       this.state.inputHeld = false;
       this.state.attachedAnchorId = null;
