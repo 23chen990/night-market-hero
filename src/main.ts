@@ -945,7 +945,7 @@ class FlightScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('rgba(0,0,0,0)');
     this.cameras.main.setOrigin(0, 0);
     this.moduleLayer = this.add.container(0, 0).setDepth(-5);
-    this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0x8dc8d8).setDepth(3.9);
+    this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0xa8f5e9).setDepth(3.9);
     this.protagonistSprite = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setDisplaySize(150, 150).setAlpha(1).setDepth(4);
     this.pursuerSprite = this.add.image(0, 0, 'pursuer-run').setOrigin(0.5, 0.72).setDisplaySize(126, 130).setAlpha(1).setDepth(4);
     // Reuse the repository's existing approved hanging-cloth art instead of
