@@ -140,8 +140,13 @@ export function encounterActionEligible(
 ): boolean {
   if (state.playerVx < 165 || state.attached) return false;
   const releaseAge = state.tick - state.lastReleaseTick;
-  // Player release must be deliberate and near the actual ring: 40 fixed steps = 1/3 s.
-  const recentlyReleased = releaseAge >= 0 && releaseAge <= 40;
+  // The first pulley is a one-finger precision grab. A 40-tick / 0.33s
+  // release window was shorter than the REAL swing travel time from the
+  // visible yellow ring's approach (~230 world units at 500+ units/sec).
+  // Allow up to 64 fixed steps (~0.53s), but still require a genuine
+  // released physical rope, no held input, forward velocity, and ACTUAL
+  // intersection with the unchanged visible world-space ellipse.
+  const recentlyReleased = releaseAge >= 0 && releaseAge <= 64;
   if (action === 'release') return !state.inputHeld && recentlyReleased;
   // A high-roof launch takes real airtime. The old 0.54s clock invalidated
   // physical handle crossings after a genuine release; preserve the SAME
