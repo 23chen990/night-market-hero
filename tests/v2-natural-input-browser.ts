@@ -44,7 +44,7 @@ try {
     const traces: unknown[] = [];
     // Exact button edges are recorded before asynchronous screenshots, allowing
     // the independent compare gate to prove skill is player input, not a grant.
-    const inputEdges: Array<{ tick: number; action: 'press' | 'release' }> = [];
+    const inputEdges: Array<{ tick: number; requestedTick: number; action: 'press' | 'release' }> = [];
     const screenshots: string[] = [];
     const encounters = new Map<string, { type: string; result: string; reason: string; tick: number }>();
     const seenOffers = new Set<string>();
@@ -80,7 +80,17 @@ try {
         touchPoints: down ? [touchPoint] : [] });
       else if (down) await page.keyboard.down('Space'); else await page.keyboard.up('Space');
       held = down;
-      inputEdges.push({ tick, action: down ? 'press' : 'release' });
+      // The tick supplied by the controller was sampled BEFORE the awaited
+      // browser/CDP dispatch. On a busy video capture this was 13-14 fixed
+      // ticks stale when the actual Phaser release ran. The evidence tick
+      // must come from a new read AFTER the real hardware event, otherwise
+      // a correctly earned stylish release falsely fails the strict ±10-tick
+      // causality gate. Retain the original observation for audit.
+      const dispatchedTick = (await getState()).tick;
+      inputEdges.push({ tick: dispatchedTick, requestedTick: tick,
+        action: down ? 'press' : 'release' });
+      // Keep the established gameplay driver cadence untouched: these
+      // timings describe the controller's decision, not the evidence timestamp.
       if (down) holdAt = tick; else releaseAt = tick;
     };
     // Capture asynchronously: blocking on a PNG encode can consume the
