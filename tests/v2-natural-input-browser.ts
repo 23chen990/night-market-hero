@@ -64,7 +64,8 @@ try {
     const nearest: Record<string, { distancePx: number; heightDifferencePx: number;
       inputHeld: boolean; attached: boolean; playerX: number; playerY: number;
       targetY: number; requiredAction: string; tick: number;
-      samplePhase: 'available' | 'claimed-after-real-release' }> = {};
+      samplePhase: 'available' | 'claimed-after-real-release' | 'claimed-after-real-press';
+      enginePressTick?: number }> = {};
     // Separate closest BODY position from closest observed, actively HELD rope.
     // A conservative rider can genuinely hold within 25px of the ring and
     // then release 15px later; overwriting its only witness mislabels choice.
@@ -176,7 +177,21 @@ try {
               && s.vehicleId === offer.id && !s.inputHeld && !s.attachedAnchorId
               && s.lastGrappleReleaseTick >= 0
               && s.tick - s.lastGrappleReleaseTick <= 80;
-            if ((offer.status === 'available' || realReleasedMount)
+            // Lanterns resolve synchronously on a NEW real browser press.
+            // The engine stores the exact press tick; match it to the claimed
+            // world instance. Fast browsers can jump from 117px BEFORE contact
+            // straight to a 36px mounted frame, without a sampled available
+            // frame inside 110px. This is an observed body position, not an
+            // invented pre-claim sample or a wider pickup ellipse.
+            const claimedPressEvent = s.encounterEvents?.find(event =>
+              event.instanceId === key && event.outcome === 'claimed'
+              && event.tick === s.lastGrapplePressTick);
+            const realPressedMount = offer.status === 'claimed'
+              && offer.requiredAction === 'press'
+              && s.vehicleId === offer.id && !!claimedPressEvent
+              && s.lastGrapplePressTick >= 0
+              && s.tick - s.lastGrapplePressTick <= 80;
+            if ((offer.status === 'available' || realReleasedMount || realPressedMount)
               && Math.abs(s.player.x - offer.x) < 1300) {
               const distancePx = Math.abs(s.player.x - offer.x);
               if (!nearest[key] || distancePx < nearest[key]!.distancePx) {
@@ -184,7 +199,9 @@ try {
                   inputHeld: s.inputHeld, attached: !!s.attachedAnchorId,
                   playerX: s.player.x, playerY: s.player.y, targetY: offer.y,
                   requiredAction: offer.requiredAction ?? 'release', tick: s.tick,
-                  samplePhase: realReleasedMount ? 'claimed-after-real-release' : 'available' };
+                  samplePhase: realPressedMount ? 'claimed-after-real-press'
+                    : realReleasedMount ? 'claimed-after-real-release' : 'available',
+                  enginePressTick: realPressedMount ? s.lastGrapplePressTick : undefined };
               }
             }
             if (offer.status === 'available' && s.inputHeld && !!s.attachedAnchorId
