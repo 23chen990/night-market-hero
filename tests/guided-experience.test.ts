@@ -268,6 +268,43 @@ test('late backward release remains recoverable without awarding a fake combo', 
   const state = game.getState(); assert.ok(state.player.vx >= 300); assert.ok(state.player.vy <= -180);
   assert.equal(state.combo, 0); assert.ok(state.regrappleGraceUntilTick > state.tick);
 });
+test('pausing an actual swing freezes physics and gives the next real press a finite regrapple chance', () => {
+  const game = patrol(32);
+  game.act('press');
+  const swinging = game.getState();
+  assert.ok(swinging.attachedAnchorId, 'this case must start on a physical rope');
+  assert.ok(swinging.ropeLength !== null);
+  assert.equal(swinging.regrappleGraceUntilTick, 0);
+  game.setPaused(true);
+  const paused = game.getState();
+  assert.equal(paused.inputHeld, false);
+  assert.equal(paused.attachedAnchorId, null, 'pausing still cancels held physical input');
+  assert.equal(paused.ropeLength, null);
+  assert.equal(paused.regrappleGraceUntilTick, paused.tick + 72);
+  game.advanceTicks(400);
+  assert.equal(game.getState().tick, paused.tick, 'paused wall time cannot consume grace');
+  assert.deepEqual(game.getState().player, paused.player, 'pause alone cannot move the rider');
+  assert.equal(game.getState().combo, swinging.combo, 'pause cannot invent a stylish release');
+  game.setPaused(false);
+  assert.equal(game.act('press'), true, 'recovery requires a new real press');
+  const reattached = game.getState();
+  assert.ok(reattached.attachedAnchorId, 'the real nearby roof anchor is recoverable');
+  assert.equal(reattached.regrappleGraceUntilTick, 0, 'successful attach consumes grace');
+  assert.deepEqual(reattached.player, paused.player, 'reattaching must not teleport the rider');
+  assert.equal(reattached.combo, swinging.combo, 'recovering input grants no combo or bonus');
+  assert.equal(reattached.inputTransitions, swinging.inputTransitions + 1);
+});
+
+test('pausing without a rope does not manufacture a regrapple entitlement', () => {
+  const game = patrol(32);
+  const before = game.getState();
+  assert.equal(before.attachedAnchorId, null);
+  game.setPaused(true);
+  assert.equal(game.getState().regrappleGraceUntilTick, before.regrappleGraceUntilTick);
+  game.setPaused(true);
+  assert.equal(game.getState().regrappleGraceUntilTick, before.regrappleGraceUntilTick);
+});
+
 test('pausing a held lantern cancels the virtual rope without losing the mount', () => {
   const game = patrol(); collectOffer(game, 6); game.act('press'); assert.ok(game.getState().vehicleVirtualAnchor);
   game.setPaused(true); const state = game.getState();
