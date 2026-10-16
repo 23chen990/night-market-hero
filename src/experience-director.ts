@@ -153,6 +153,29 @@ export function controlCue(state: GrappleState): ControlCue {
         detail: '下一个灯绳机会，提早从低屋檐飞近', tone: 'neutral',
       };
     }
+    // The first ride opportunity is the player's introduction to optional
+    // world objects. Show the ACTION while there is still enough distance
+    // to choose a roof line, not only once a difficult 170px window is gone.
+    if (nextOffer.id === '货运滑索' && distance > 330 && distance < 850) {
+      if (tooHigh && state.attachedAnchorId) return {
+        title: '第一辆滑索在下方！先换低线',
+        detail: '从旧索松手，换低屋檐靠近黄色挂环；再松手飞进去才能抢到',
+        tone: 'ready',
+      };
+      if (!tooHigh && !tooLow) return {
+        title: '第一辆滑索要来了！准备抢',
+        detail: '看准黄色吊轮：先按住摆荡，靠近挂环时松手飞进去',
+        tone: 'ready',
+      };
+    }
+    if (nextOffer.id === '货运滑索' && distance > -75 && distance < 200
+      && !state.inputHeld && state.tick - state.lastGrappleReleaseTick >= 0
+      && state.tick - state.lastGrappleReleaseTick <= 40
+      && Math.abs(state.player.y - nextOffer.y) < margin + 60) return {
+        title: '保持松手！滑过黄色挂环',
+        detail: '现在重新接普通飞索，反而可能错过吊轮',
+        tone: 'ready',
+      };
     // A conservative rider can be high ABOVE the first pulley and lose
     // momentum on the OLD roof rope without ever reaching its low handle.
     // Warn while forward speed remains; skipping a pickup is preferable to

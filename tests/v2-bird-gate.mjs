@@ -47,11 +47,14 @@ const qualifying = stylish.filter(t => t <= tick && tick - t <= 1200);
 assert.ok(qualifying.length >= 2, 'both stylish releases must precede the same instance claim');
 const releases = (earned.inputEdges ?? []).filter(edge => edge.action === 'release');
 for (const stylishTick of qualifying.slice(-2)) {
-  assert.ok(releases.some(edge => Math.abs(edge.tick - stylishTick) <= 10),
-    `engine stylish tick ${stylishTick} must correspond to a genuine browser release edge`);
+  assert.ok(releases.some(edge => edge.engineReleaseTick === stylishTick
+    && edge.requestedTick <= edge.engineReleaseTick),
+    `engine stylish tick ${stylishTick} must match the real rope-release tick caused by browser input`);
 }
-assert.ok(releases.some(edge => edge.tick <= tick && tick - edge.tick <= 80),
-  'the final bird contact must follow a recent actual release, not a hidden grant');
+assert.ok(releases.some(edge => Number.isInteger(edge.engineReleaseTick)
+  && edge.engineReleaseTick <= tick && tick - edge.engineReleaseTick <= 80
+  && edge.requestedTick <= edge.engineReleaseTick),
+  'the final bird contact must follow a recent engine-confirmed actual rope release, never a hidden grant');
 assert.ok(earned.seenRides?.includes('青鸾'), 'riding Qingluan must be visible to the browser');
 assert.ok(earned.screenshotNames?.some(name => name === 'encounter-8-claimed'),
   'a successful Qingluan encounter must have a genuine captured frame');
