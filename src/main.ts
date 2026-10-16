@@ -952,8 +952,18 @@ class FlightScene extends Phaser.Scene {
     const width = source.naturalWidth || source.width;
     const height = source.naturalHeight || source.height;
     const texture = this.textures.createCanvas(key, width, height);
+    if (!texture) throw new Error('Failed to initialize the hero contrast texture');
     const ctx = texture.context;
+    // The approved 566x562 actor art ALSO contains a long black rope reaching
+    // into the upper-right scenery. Tint only the BODY region of the existing
+    // alpha silhouette; outlining the rope made an intrusive neon diagonal.
+    // Source-relative crop (roughly x=90..365, y=250..535), never a collider.
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(width * 0.16, height * 0.445, width * 0.486, height * 0.507);
+    ctx.clip();
     ctx.drawImage(source, 0, 0);
+    ctx.restore();
     ctx.globalCompositeOperation = 'source-in';
     ctx.fillStyle = '#a8f5e9';
     ctx.fillRect(0, 0, width, height);
