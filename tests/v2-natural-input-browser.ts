@@ -301,24 +301,30 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if (lanternRoute && lantern && s.player.x >= lantern.x - 180
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 300
             && s.player.x <= lantern.x + 95) {
-            // Repeated real Chromium input experiments (55ms and 75ms)
-            // demonstrate that the old "gravity forecast" at -680px let
-            // a HIGH roof rope reverse around -350px, losing the real lantern.
-            // Preserve ordinary LOW roof swings until the drawn knot is
-            // immediately ahead. Release the actual rope only while flying
-            // toward the knot, then make a FRESH browser press in its SAME
-            // visible ellipse. No fixture movement or altered pickup gate.
+            // Exact-build 38851840048: the rider was still hanging 5px from
+            // the real lantern at tick 2872, then the actual CDP release landed
+            // at tick 2886 and fresh press came only after the object resolved
+            // at tick 2905. On a ~600px/s approach, a 145px warning is too
+            // late given the next genuine on-screen touch decision.
+            // Release from the visible LOW roof somewhat earlier and make a
+            // fresh browser press when the actual body is about to intersect
+            // the original, unchanged lantern ellipse. No fixture edits,
+            // auto-claims, collision expansion or time stepping.
             const rx = lantern.radiusX ?? 84;
             const ry = lantern.radiusY ?? 100;
             const distance = lantern.x - s.player.x;
             if (anchor) {
-              const atReachableLowKnot = distance <= 145
-                && s.player.y >= lantern.y - 130 && s.player.vx > 165;
+              const atReachableLowKnot = distance <= 255
+                && s.player.y >= lantern.y - 145
+                && s.player.y <= lantern.y + 105
+                && s.player.vx > 165 && s.player.vy < 250;
               wantHold = !atReachableLowKnot;
             } else {
-              const dt = 0.05;
+              // Predict only the real in-flight touch latency. The engine
+              // still requires a NEW press inside the SAME visible ellipse.
+              const dt = 0.085;
               const nxNext = (s.player.x + s.player.vx * dt - lantern.x) / rx;
               const nyNext = (s.player.y + s.player.vy * dt - lantern.y) / ry;
               const nxNow = (s.player.x - lantern.x) / rx;
