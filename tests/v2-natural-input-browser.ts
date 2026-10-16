@@ -63,7 +63,8 @@ try {
     let birdRideLastTick: number | null = null;
     const nearest: Record<string, { distancePx: number; heightDifferencePx: number;
       inputHeld: boolean; attached: boolean; playerX: number; playerY: number;
-      targetY: number; requiredAction: string; tick: number }> = {};
+      targetY: number; requiredAction: string; tick: number;
+      samplePhase: 'available' | 'claimed-after-real-release' }> = {};
     let held = false, holdAt = -10000, releaseAt = -10000, revives = 0;
     const touchPoint = { x: Math.round(viewport.width * .13), y: Math.round(viewport.height * .72), id: 1 };
     const getState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as {
@@ -140,18 +141,25 @@ try {
         if (s.levelId === 'night-patrol') {
           for (const offer of s.vehicleOffers) {
             const key = offer.instanceId ?? `${offer.segment}-${offer.id}`;
-            // Keep nearest-approach evidence BEFORE the collision resolves.
-            // Sampling a successfully MOUNTED kite as if it were still a free
-            // approach can misleadingly report held=true after a real release.
-            // The independent gate must still require an airborne approach
-            // near the fixed object, never a post-grant sample.
-            if (offer.status === 'available' && Math.abs(s.player.x - offer.x) < 1300) {
+            // Observe an AVAILABLE approach or a just-earned mount with a
+            // RECENT genuine rope release and NO held rope/input. Fast real
+            // browser frames can resolve the fixed ellipse between samples,
+            // leaving the closest pre-claim observation 176px from its center.
+            // Record that actual post-release player body truth, including
+            // its explicit phase; never forge an available pre-claim sample.
+            const realReleasedMount = offer.status === 'claimed'
+              && s.vehicleId === offer.id && !s.inputHeld && !s.attachedAnchorId
+              && s.lastGrappleReleaseTick >= 0
+              && s.tick - s.lastGrappleReleaseTick <= 80;
+            if ((offer.status === 'available' || realReleasedMount)
+              && Math.abs(s.player.x - offer.x) < 1300) {
               const distancePx = Math.abs(s.player.x - offer.x);
               if (!nearest[key] || distancePx < nearest[key]!.distancePx) {
                 nearest[key] = { distancePx, heightDifferencePx: s.player.y - offer.y,
                   inputHeld: s.inputHeld, attached: !!s.attachedAnchorId,
                   playerX: s.player.x, playerY: s.player.y, targetY: offer.y,
-                  requiredAction: offer.requiredAction ?? 'release', tick: s.tick };
+                  requiredAction: offer.requiredAction ?? 'release', tick: s.tick,
+                  samplePhase: realReleasedMount ? 'claimed-after-real-release' : 'available' };
               }
             }
             if (offer.status === 'available' && s.player.x >= offer.x - 850
@@ -234,9 +242,11 @@ try {
           //    would pull the hero away before the handle can be touched.
           // This uses genuine input edges; never moves or enlarges the target.
           if (kite && lanternRoute && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) {
-            // Choose the familiar rope instead of earning the optional kite.
-            // This preserves the lower route for a separate lantern attempt.
-            wantHold = true;
+            // Forgo the difficult kite without staying on an old roof rope
+            // until it stalls or reverses. Previous natural touch at x~7970
+            // actually fell BEFORE reaching the optional lantern; this uses
+            // a genuine release, not a skip, fixture or physics intervention.
+            wantHold = shouldHoldConservativeKiteRope(s.player, kite);
           } else if (kite && s.player.x >= kite.x - 530 && s.player.x <= kite.x + 140) {
             const ahead = kite.x - s.player.x;
             if (anchor) {
