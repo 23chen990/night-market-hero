@@ -127,7 +127,9 @@ export class ExperienceHud {
     // Calm pursuit should remain visible without occupying the same visual
     // weight as a real near-capture warning. Escalation is state-driven:
     // pressure, not arbitrary wall-clock flashing or a hidden difficulty buff.
-    const urgency = closeness >= 0.75 ? 'danger' : closeness >= 0.35 ? 'alert' : 'calm';
+    const urgency = state.chase.phase === 'danger' || state.chase.phase === 'climax'
+      ? 'danger' : closeness >= 0.75 ? 'danger'
+        : state.chase.phase === 'alert' || closeness >= 0.35 ? 'alert' : 'calm';
     this.pursuit.dataset.urgency = urgency;
     text(this.pursuit.querySelector('strong')!, urgency === 'danger'
       ? '危险！向高处接钩躲网' : urgency === 'alert'

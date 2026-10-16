@@ -127,6 +127,58 @@ try {
       await screenshotChain; // launch card is paused: exact startup frame is safe to await
       await page.locator('[data-action="start-run"]').click();
       if (!touch) await page.locator('[data-action="grapple"]').focus();
+      // IN-BROWSER read-only observation: the old CDP round-trip could jump
+      // from x=-146 to x=+147 across a fixed pulley while the world actually
+      // ran every frame. Do NOT weaken <120px evidence. Observe available
+      // REAL world instances at rAF cadence to avoid erasing a legitimate
+      // passing frame when the outer video/pointer driver temporarily stalls.
+      // This has no state setter, no event injection, no physics stepping,
+      // and stops once the first two encounters have passed.
+      await page.evaluate(() => {
+        const tracker: {
+          frames: number;
+          nearest: Record<string, { distancePx: number; heightDifferencePx: number;
+            inputHeld: boolean; attached: boolean; playerX: number; playerY: number;
+            targetY: number; requiredAction: string; tick: number; samplePhase: 'available' }>;
+          heldNearby: typeof tracker.nearest;
+        } = { frames: 0, nearest: {}, heldNearby: {} };
+        (window as unknown as { __V2_APPROACH_WITNESS__?: typeof tracker })
+          .__V2_APPROACH_WITNESS__ = tracker;
+        const observe = () => {
+          tracker.frames += 1;
+          // The instrument only reads every second real browser paint.
+          // Rendering and touch input continue on their native clocks.
+          if (tracker.frames % 2 === 0) {
+            const probe = (window as unknown as { __PROTOTYPE_TEST__?: {
+              getState(): GrappleState } }).__PROTOTYPE_TEST__;
+            const s = probe?.getState();
+            if (s?.levelId === 'night-patrol' && s.segmentIndex >= 6) return;
+            if (s?.levelId === 'night-patrol' && s.status === 'playing') {
+              for (const offer of s.vehicleOffers) {
+                if (offer.status !== 'available'
+                  || (offer.id !== '货运滑索' && offer.id !== '纸鸢')
+                  || Math.abs(s.player.x - offer.x) >= 1300) continue;
+                const key = offer.instanceId ?? `${offer.segment}-${offer.id}`;
+                const distancePx = Math.abs(s.player.x - offer.x);
+                const sample = {
+                  distancePx, heightDifferencePx: s.player.y - offer.y,
+                  inputHeld: s.inputHeld, attached: !!s.attachedAnchorId,
+                  playerX: s.player.x, playerY: s.player.y, targetY: offer.y,
+                  requiredAction: offer.requiredAction ?? 'release',
+                  tick: s.tick, samplePhase: 'available' as const,
+                };
+                if (!tracker.nearest[key] || tracker.nearest[key]!.distancePx > distancePx)
+                  tracker.nearest[key] = sample;
+                if (sample.inputHeld && sample.attached
+                  && (!tracker.heldNearby[key] || tracker.heldNearby[key]!.distancePx > distancePx))
+                  tracker.heldNearby[key] = sample;
+              }
+            }
+          }
+          requestAnimationFrame(observe);
+        };
+        requestAnimationFrame(observe);
+      });
       const began = Date.now();
       for (let step = 0; Date.now() - began < maxSeconds * 1000; step++) {
         const s = await getState();
@@ -457,11 +509,28 @@ try {
       const state = await getState();
       shot('end');
       await screenshotChain;
+      const witness = await page.evaluate(() => (
+        window as unknown as { __V2_APPROACH_WITNESS__?: {
+          frames: number; nearest: typeof nearest; heldNearby: typeof heldNearby
+        } }).__V2_APPROACH_WITNESS__);
+      if (witness) {
+        // Preserve closest observed real body position, even if the edge of
+        // contact was missed by the slower CDP/JSON outer observation.
+        // Independent 120px test gates, event outcomes, ticks and real
+        // input requirements stay EXACTLY the same.
+        for (const [key, sample] of Object.entries(witness.nearest))
+          if (!nearest[key] || sample.distancePx < nearest[key]!.distancePx)
+            nearest[key] = sample;
+        for (const [key, sample] of Object.entries(witness.heldNearby))
+          if (!heldNearby[key] || sample.distancePx < heldNearby[key]!.distancePx)
+            heldNearby[key] = sample;
+      }
       results.push({ viewport, inputMode: touch ? 'touch' : 'keyboard', embedded, skilledRoute,
         lanternRoute, birdRoute, duration: maxSeconds,
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
-        encounters: [...encounters.entries()], nearest, heldNearby, inputEdges,
+        encounters: [...encounters.entries()], nearest, heldNearby,
+        approachWitnessFrames: witness?.frames ?? 0, inputEdges,
         birdClaimPreparations, birdApproachTrace,
         birdMount: birdRideFirstTick === null || birdRideLastTick === null ? null
           : { firstTick: birdRideFirstTick, lastTick: birdRideLastTick,

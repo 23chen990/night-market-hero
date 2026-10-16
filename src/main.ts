@@ -1,5 +1,5 @@
 import { ExperienceHud } from './experience-hud.ts';
-import { drawRide, drawVehicleOffers, drawConditions } from './ride-renderer.ts';
+import { drawRide, drawVehicleOffers, drawConditions, drawSwingTimingSignal } from './ride-renderer.ts';
 import { nextCheckpointX } from './experience-director.ts';
 import { applyFlightIdentity, applyFlightSilhouetteOutlines, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
@@ -1139,6 +1139,10 @@ class FlightScene extends Phaser.Scene {
     }
     drawVehicleOffers(graphics, state);
     drawRide(graphics, state);
+    // A small world-anchored "release now" tell appears only while this
+    // actual roof swing can earn the existing stylish-release reward.
+    // Draw BEHIND the same authored character; never attach a fake grapple.
+    drawSwingTimingSignal(graphics, state, this.reducedMotion);
     this.drawStrictReferenceProtagonist(graphics, state.player.x, state.player.y, Math.atan2(state.player.vy, state.player.vx));
     graphics.lineStyle(2, 0xd76572, 0.18).lineBetween(this.cameras.main.scrollX, state.failY, this.cameras.main.scrollX + worldViewportWidth, state.failY);
   }
