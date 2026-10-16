@@ -471,6 +471,18 @@ try {
               stylishTicks: s.stylishReleaseTicks.filter(t => s.tick - t <= 1200),
               lastReleaseAge: s.tick - s.lastGrappleReleaseTick });
           }
+          // "Lantern then skip Qingluan" is a deliberate PLAYER choice:
+          // a physically skilled low-route rider can unexpectedly earn two
+          // stylish releases and the bird on an ordinary rhythm. To test
+          // missability independently, KEEP THE REAL TOUCH PRESSED as the
+          // visible bird ring approaches instead of performing a last release.
+          // No physics edits, encounter teleport, collider changes or fake
+          // outcomes. The dedicated birdRoute still releases for a true catch.
+          if (lanternRoute && !birdRoute && bird
+            && s.player.x >= bird.x - 260
+            && s.player.x <= bird.x + (bird.radiusX ?? 88) + 120) {
+            wantHold = true;
+          }
         }
         await edge(wantHold, s.tick);
         if (held && !s.inputHeld && s.inputTransitions > 0 && s.tick - holdAt > 30) await edge(false, s.tick);
