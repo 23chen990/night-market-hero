@@ -3,9 +3,12 @@ export function flightPresentation(zoom: number) {
   const safeZoom = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
   return {
     heroSize: 150,
-    // Two screen pixels around the existing alpha silhouette at phone sizes.
-    heroRimSize: 150 + 4 / safeZoom,
-    heroRimAlpha: 0.72,
+    // Preserve the exact body/rope pose and collision truth, but make the
+    // approved cyan silhouette visible over near-black roof silhouettes:
+    // 3.6 physical screen pixels per side at EVERY actual viewport zoom.
+    // This is a bounded alpha rim, not a new HUD marker or extra hitbox.
+    heroRimSize: 150 + 7.2 / safeZoom,
+    heroRimAlpha: 0.86,
     idleAnchorSize: 30,
     eligibleAnchorSize: 54,
     attachedAnchorSize: 56,
