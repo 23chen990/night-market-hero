@@ -39,6 +39,15 @@ interface HudActions { start(): void; resume(): void; finish(): void; claimMissi
 export interface ExperienceMeta { claimableReward: number; bestDistance: number; }
 function text(node: HTMLElement, value: string): void { if (node.textContent !== value) node.textContent = value; }
 
+/** HUD-only priority from the visible guard phase and pressure.
+ * Does not change chase physics, kill radius, or score calculation.
+ */
+export function chaseReadoutUrgency(phase: string, pressure: number): 'calm' | 'alert' | 'danger' {
+  if (phase === 'danger' || phase === 'climax' || pressure >= 0.75) return 'danger';
+  if (phase === 'alert' || pressure >= 0.35) return 'alert';
+  return 'calm';
+}
+
 /** A small, legible play layer. It never advances or changes physics itself. */
 export class ExperienceHud {
   readonly audio = new FlightAudio();
@@ -125,7 +134,11 @@ export class ExperienceHud {
     this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
     this.pursuit.dataset.phase = state.chase.phase;
     const closeness = Math.min(1, Math.max(0, state.chase.pressure));
-    text(this.pursuit.querySelector('strong')!, closeness >= 0.75 ? '危险！向高处接钩躲网' : closeness >= 0.35 ? '官兵架网！加速或升高' : '后方官兵持续追赶');
+    const urgency = chaseReadoutUrgency(state.chase.phase, closeness);
+    this.pursuit.dataset.urgency = urgency;
+    text(this.pursuit.querySelector('strong')!, urgency === 'danger'
+      ? '危险！向高处接钩躲网' : urgency === 'alert'
+        ? '官兵架网！加速或升高' : '官兵在后');
     text(this.pursuit.querySelector('span')!, `${Math.round(state.chase.distance / 30)}m`);
     (this.pursuit.querySelector('i')! as HTMLElement).style.setProperty('--chase-fill', `${Math.round(closeness * 100)}%`);
     if (state.levelId === 'lantern-entry') text(this.goal, `护送铜符 ${Math.round(state.progress * 100)}% · 前方是渡口`);

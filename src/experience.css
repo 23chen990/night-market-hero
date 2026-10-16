@@ -110,3 +110,21 @@ button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb
 @keyframes chase-alert { to { box-shadow:0 0 18px #ee615066; } }
 @media (max-width:720px) { .pursuit-readout { top:max(90px,calc(env(safe-area-inset-top) + 77px)); width:166px; font-size:10px; padding:5px 8px; } }
 @media (prefers-reduced-motion:reduce) { .pursuit-readout { animation:none !important; } }
+
+/* Visual urgency follows REAL chase state instead of an unrelated animation.
+   Calm patrol HUD occupies less of a narrow phone; danger is readable. */
+.pursuit-readout[data-urgency="calm"] {
+  width: 124px; padding: 5px 8px; background: #11272dbb;
+  border-color: #91bda0; font-size: 10px; gap: 2px 6px;
+}
+.pursuit-readout[data-urgency="calm"] i { display: none; }
+.pursuit-readout[data-urgency="alert"] {
+  border-color: #f3bb75; background: #483626ec;
+}
+.pursuit-readout[data-urgency="danger"] {
+  border-color: #ff8c76; background: #592d36f5;
+  animation: chase-alert 0.8s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pursuit-readout[data-urgency="danger"] { animation: none; }
+}
