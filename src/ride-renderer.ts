@@ -123,3 +123,64 @@ export function drawVehicleOffers(g: Phaser.GameObjects.Graphics, state: Grapple
     }
   }
 }
+
+// A successful stylish release is already defined by the physics director.
+// Rendering reads that SAME predicate. It cannot loosen a pickup, create a
+// combo, or invent an invisible "almost good" scoring window.
+import { isStylishRelease } from './experience-director.ts';
+
+export type FlightActionFeedback = 'none' | 'ready' | 'earned';
+
+/** A tiny world-space, no-HUD signal around the existing actor.
+ * 'ready' is deliberately a subset of an actual scoreable release:
+ * there is a REAL held world rope and the player is past its pivot.
+ * 'earned' comes only from the engine's recorded stylish-release tick.
+ */
+export function flightActionFeedbackMode(state: Pick<GrappleState,
+  'status' | 'paused' | 'vehicleId' | 'inputHeld' | 'attachedAnchorId'
+  | 'anchors' | 'player' | 'tick' | 'combo' | 'stylishReleaseTicks'>,
+): FlightActionFeedback {
+  if (state.status !== 'playing' || state.paused || state.vehicleId !== null) return 'none';
+  const lastEarnedTick = state.stylishReleaseTicks.at(-1);
+  if (state.combo > 0 && lastEarnedTick !== undefined
+    && state.tick >= lastEarnedTick && state.tick - lastEarnedTick <= 36) return 'earned';
+  if (!state.inputHeld || !state.attachedAnchorId) return 'none';
+  const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
+  return anchor && state.player.x >= anchor.x && isStylishRelease(state.player)
+    ? 'ready' : 'none';
+}
+
+/** Real action window = open golden chevron; earned action = tiny trailing
+ * sparks for just 0.3s. Never draw a big circle that looks like a catch ring.
+ * Graphics depth is below the original authored character image.
+ */
+export function drawFlightActionFeedback(
+  g: Phaser.GameObjects.Graphics, state: GrappleState, reducedMotion: boolean,
+): void {
+  const mode = flightActionFeedbackMode(state);
+  if (mode === 'none') return;
+  const { x, y } = state.player;
+  if (mode === 'ready') {
+    const brightness = reducedMotion ? 0.88 : 0.78 + 0.12 * Math.sin(state.tick * 0.16);
+    // The action is at the ACTOR (not at a pickup). Open chevrons distinguish
+    // "release this roof rope" from the closed collision ellipses ahead.
+    g.lineStyle(4, 0xffdc95, brightness)
+      .lineBetween(x + 32, y - 23, x + 50, y)
+      .lineBetween(x + 50, y, x + 32, y + 23);
+    g.lineStyle(3, 0x9cf5d6, brightness * 0.72)
+      .lineBetween(x - 30, y - 18, x - 42, y - 8)
+      .lineBetween(x - 42, y + 8, x - 30, y + 18);
+    return;
+  }
+
+  const elapsed = state.tick - state.stylishReleaseTicks.at(-1)!;
+  const alpha = 0.85 * (1 - elapsed / 37);
+  if (alpha <= 0) return;
+  // This cannot be confused with an unearned ride: two small open dashes
+  // and an arrowhead, not a new target or a second character silhouette.
+  g.lineStyle(3, 0xffe0a0, alpha)
+    .lineBetween(x - 20, y - 31, x - 34, y - 47)
+    .lineBetween(x - 31, y + 6, x - 47, y + 20);
+  g.fillStyle(0xa8f6d8, alpha * 0.72)
+    .fillTriangle(x + 30, y - 14, x + 42, y, x + 30, y + 14);
+}

@@ -1,7 +1,8 @@
 import { ExperienceHud } from './experience-hud.ts';
-import { drawRide, drawVehicleOffers, drawConditions } from './ride-renderer.ts';
+import { buildRetryPlan } from './retry-debrief.ts';
+import { drawRide, drawVehicleOffers, drawConditions, drawFlightActionFeedback } from './ride-renderer.ts';
 import { nextCheckpointX } from './experience-director.ts';
-import { applyFlightIdentity, flightPresentation } from './flight-presentation';
+import { applyFlightIdentity, applyFlightSilhouetteOutlines, flightPresentation } from './flight-presentation';
 import Phaser from 'phaser';
 import {
   MockAdProvider,
@@ -179,6 +180,10 @@ const adFlow = new NightMarketAdFlow(ads, interstitialPolicy);
 const economy = new NightMarketMonetization(ads, new LocalProgressStorage());
 if (!restoredRun) core.setCharacter(economy.getProgressV2().selectedCharacter ?? CHARACTERS[0]!.id);
 let currentRunId = runtimeSession.runId;
+// Capture the record before settling THIS run. The ledger is updated by
+// completeRun(), so reading it after settlement would hide true new records.
+// A rewarded revive continues the same run and must preserve this baseline.
+let bestBeforeThisRun = economy.getRecordLedger().bestDistanceMeters;
 let observedStatus: GrappleState['status'] = 'playing';
 let lastRenderedDistance = core.getState().chase.distance;
 let lastReliefFeedbackAt = Number.NEGATIVE_INFINITY;
@@ -270,6 +275,9 @@ const depthReadout = requiredElement<HTMLElement>('[data-ui="depth"]');
 const recordReadout = requiredElement<HTMLElement>('[data-ui="record"]');
 const runStateReadout = requiredElement<HTMLElement>('[data-ui="run-state"]');
 const settlementDetails = requiredElement<HTMLElement>('[data-ui="settlement-details"]');
+const retryPlan = requiredElement<HTMLElement>('[data-ui="retry-plan"]');
+const retryRecord = requiredElement<HTMLElement>('[data-ui="retry-record"]');
+const retryNext = requiredElement<HTMLElement>('[data-ui="retry-next"]');
 const app = requiredElement<HTMLElement>('#app');
 const reviveButton = requiredElement<HTMLButtonElement>('[data-action="revive"]');
 const doubleButton = requiredElement<HTMLButtonElement>('[data-action="double"]');
@@ -476,6 +484,10 @@ function beginNextRun(state: GrappleState): void {
   backgroundPolicy.explicitResume();
   requiredElement<HTMLElement>('[data-ui="progression-menu"]').hidden = true;
   currentRunId = runtimeSession.beginNewRun(state.seed);
+  // A new run uses the durable ledger as its baseline; reviving a failed
+  // run does NOT call beginNextRun and cannot inflate this comparison.
+  bestBeforeThisRun = economy.getRecordLedger().bestDistanceMeters;
+  retryPlan.hidden = true;
   failedSettlementCommitted = false;
   failedSettlementBaseReward = 0;
   failedSettlementResult = null;
@@ -593,6 +605,16 @@ function openResultCard(): void {
   playUiElement(resultCard, 'menu-enter');
 }
 
+function updateRetryPlan(state: GrappleState): void {
+  const plan = buildRetryPlan(state, bestBeforeThisRun);
+  retryPlan.hidden = !plan;
+  if (!plan) return;
+  retryRecord.textContent = plan.record;
+  retryNext.textContent = plan.next;
+  retryPlan.dataset.tone = plan.tone;
+  retryPlan.dataset.targetMeters = String(plan.targetMeters);
+}
+
 function isSettlementFailure(result: CompleteRunResult): result is Extract<CompleteRunResult, { status: 'not-committed' | 'rejected' }> {
   return result.status === 'not-committed' || result.status === 'rejected';
 }
@@ -620,6 +642,9 @@ function settlementFor(state: GrappleState): CompleteRunResult {
 function showSettlementPending(state: GrappleState, result: CompleteRunResult): void {
   terminalSettlementPending = true;
   terminalSettlementRunId = currentRunId;
+  // Never celebrate a record or advertise next-run progress while the actual
+  // wallet transaction is still unsaved. Retry-save owns this terminal UI.
+  retryPlan.hidden = true;
   settlementDetails.textContent = `已穿过 ${state.gatesPassed} 个街区 · 结算暂未保存`;
   resultKicker.textContent = '结算待保存';
   resultTitle.textContent = '奖励尚未入账';
@@ -796,6 +821,7 @@ function renderProductUi(state: GrappleState): void {
   persistRun(state, false);
 
   if (state.status === 'playing') {
+    retryPlan.hidden = true;
     // Endless gate beats are in-run checkpoints, never terminal settlements.
     // Hide any stale card immediately when gameplay resumes (including rapid
     // restart taps before the menu exit animation completes).
@@ -852,6 +878,7 @@ function renderProductUi(state: GrappleState): void {
     const failedSettlement = failedSettlementResult;
     if (!failedSettlement || isSettlementFailure(failedSettlement)) return;
     settlementDetails.textContent = `里程 ${Math.floor(state.distanceMeters)}m · 拾取 ${state.pickups} 枚 · 最高 ${state.comboPeak} 连飞 · 入账 +${failedSettlementBaseReward}`;
+    updateRetryPlan(state);
     const canRevive = core.canRewardedRevive();
     const freeRevive = economy.canDailyFreeRevive(Date.now());
     const wasCaught = state.failureReason === 'caught';
@@ -864,7 +891,8 @@ function renderProductUi(state: GrappleState): void {
       : wasCaught
         ? '碰撞、错过挂点和滞空会让官兵追近；连续漂亮飞越和捷径能拉开距离。'
         : '盟契铜符还在怀里，换一条夜市内线重新突围。';
-    resultCopy.textContent += wasCaught ? ' 下次试试青色金币线，可拉开追兵。' : ' 身体向前时松手，下落时及时按住。';
+    // A focused, physically actionable next-attempt cue now lives in the
+    // debrief panel; do not repeat three different instructions in prose.
     reviveButton.hidden = !canRevive || (!freeRevive && !window.__NIGHT_MARKET_HERO_TAPTAP_AD_CONFIG__);
     reviveButton.textContent = freeRevive ? '今日免费 · 安全复起' : '看完广告 · 安全复起';
     doubleButton.hidden = true;
@@ -885,6 +913,7 @@ function renderProductUi(state: GrappleState): void {
   terminalSettlementRunId = null;
   app.dataset.settlementStatus = 'committed';
   settlementDetails.textContent = `里程 ${Math.floor(state.distanceMeters)}m · ${state.gatesPassed} 个街区 · 最高 ${state.comboPeak} 连飞 · 入账 +${settlement.baseReward}`;
+  updateRetryPlan(state);
   const campaignComplete = state.levelId === 'night-patrol' || state.levelIndex === state.levelCount - 1;
   resultKicker.textContent = state.levelId === 'night-patrol' ? '夜巡结束' : campaignComplete ? '渡口已达' : `第${state.levelIndex + 1}关通过`;
   resultTitle.textContent = state.levelId === 'night-patrol' ? '本次夜巡记录' : campaignComplete ? '盟契铜符已送达' : `${state.levelTitle} · 突围成功`;
@@ -907,11 +936,14 @@ class FlightScene extends Phaser.Scene {
   private moduleLayer!: Phaser.GameObjects.Container;
   private protagonistSprite!: Phaser.GameObjects.Image;
   private protagonistRim!: Phaser.GameObjects.Image;
+  private protagonistOutlineSprites: Phaser.GameObjects.Image[] = [];
   private pursuerSprite!: Phaser.GameObjects.Image;
   private barricadeSprite!: Phaser.GameObjects.Image;
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
   private cameraScrollX = 0;
   private cameraHasInitialized = false;
+  private lastCameraViewportWidth = 0;
+  private lastCameraViewportHeight = 0;
   private lastRenderedTick = 0;
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
@@ -939,11 +971,45 @@ class FlightScene extends Phaser.Scene {
     this.nightCityRenderer.preload(this);
   }
 
+  private createHeroContrastMask(): void {
+    const key = 'protagonist-contrast-mask';
+    if (this.textures.exists(key)) return;
+    // Phaser's tintFill is WebGL-only. A CPU-generated alpha-coloured texture
+    // means the SAME approved silhouette edge works on Canvas fallback too.
+    // Done once at scene creation: no per-frame readback or alpha processing.
+    const source = this.textures.get('protagonist-swing').getSourceImage() as HTMLImageElement;
+    const width = source.naturalWidth || source.width;
+    const height = source.naturalHeight || source.height;
+    const texture = this.textures.createCanvas(key, width, height);
+    if (!texture) throw new Error('Failed to initialize the hero contrast texture');
+    const ctx = texture.context;
+    // The approved 566x562 actor art ALSO contains a long black rope reaching
+    // into the upper-right scenery. Tint only the BODY region of the existing
+    // alpha silhouette; outlining the rope made an intrusive neon diagonal.
+    // Source-relative crop (roughly x=90..365, y=250..535), never a collider.
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(width * 0.16, height * 0.445, width * 0.486, height * 0.507);
+    ctx.clip();
+    ctx.drawImage(source, 0, 0);
+    ctx.restore();
+    ctx.globalCompositeOperation = 'source-in';
+    ctx.fillStyle = '#a8f5e9';
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'source-over';
+    texture.refresh();
+  }
+
   create(): void {
     this.cameras.main.setBackgroundColor('rgba(0,0,0,0)');
     this.cameras.main.setOrigin(0, 0);
     this.moduleLayer = this.add.container(0, 0).setDepth(-5);
-    this.protagonistRim = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setTintFill(0x8dc8d8).setDepth(3.9);
+    this.createHeroContrastMask();
+    this.protagonistRim = this.add.image(0, 0, 'protagonist-contrast-mask')
+      .setOrigin(0.5, 0.72).setDepth(3.9);
+    this.protagonistOutlineSprites = Array.from({ length: 4 }, () =>
+      this.add.image(0, 0, 'protagonist-contrast-mask')
+        .setOrigin(0.5, 0.72).setDepth(3.85));
     this.protagonistSprite = this.add.image(0, 0, 'protagonist-swing').setOrigin(0.5, 0.72).setDisplaySize(150, 150).setAlpha(1).setDepth(4);
     this.pursuerSprite = this.add.image(0, 0, 'pursuer-run').setOrigin(0.5, 0.72).setDisplaySize(126, 130).setAlpha(1).setDepth(4);
     // Reuse the repository's existing approved hanging-cloth art instead of
@@ -971,6 +1037,13 @@ class FlightScene extends Phaser.Scene {
   private renderState(state: GrappleState): void {
     const viewportWidth = Math.max(1, this.scale.width || app.clientWidth || REFERENCE_STAGE_WIDTH);
     const viewportHeight = Math.max(1, this.scale.height || app.clientHeight || REFERENCE_STAGE_HEIGHT);
+    // Pausing freezes simulation ticks, including the smoothing clock. When
+    // orientation or window size changes during pause, rebase immediately to
+    // the new viewport rather than keeping the old look-ahead crop.
+    const viewportChanged = viewportWidth !== this.lastCameraViewportWidth
+      || viewportHeight !== this.lastCameraViewportHeight;
+    this.lastCameraViewportWidth = viewportWidth;
+    this.lastCameraViewportHeight = viewportHeight;
     this.cameraLayout = createCameraLayout({ width: viewportWidth, height: viewportHeight, lookAhead: 0.32 });
     const geometryRight = state.environmentGeometry.worldBounds.x + state.environmentGeometry.worldBounds.width;
     // Endless mode intentionally has no finite finishX; keep the presentation
@@ -989,7 +1062,7 @@ class FlightScene extends Phaser.Scene {
     const elapsedCameraSeconds = Math.max(0, (state.tick - this.lastRenderedTick) / 120);
     const genuineRestart = state.tick < this.lastRenderedTick
       || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 1.25;
-    if (!this.cameraHasInitialized || genuineRestart) {
+    if (!this.cameraHasInitialized || genuineRestart || viewportChanged) {
       this.cameraScrollX = cameraTargetX;
       this.cameraHasInitialized = true;
     } else if (elapsedCameraSeconds > 0) {
@@ -1022,6 +1095,7 @@ class FlightScene extends Phaser.Scene {
     app.dataset.longmapChunkKind = 'none';
     app.dataset.longmapSceneFamily = 'none';
     applyFlightIdentity(this.protagonistSprite, this.protagonistRim, state.player, projection.zoom);
+    applyFlightSilhouetteOutlines(this.protagonistOutlineSprites, state.player, projection.zoom);
     this.pursuerSprite.setPosition(state.pursuer.x, state.pursuer.y).setRotation(0).setVisible(state.pursuer.visible);
     app.dataset.guardOnScreen = String(state.pursuer.x >= this.cameras.main.scrollX
       && state.pursuer.x <= this.cameras.main.scrollX + worldViewportWidth);
@@ -1094,6 +1168,9 @@ class FlightScene extends Phaser.Scene {
     }
     drawVehicleOffers(graphics, state);
     drawRide(graphics, state);
+    // Match the EXACT existing stylish-release physics; no additional input,
+    // reward, collision geometry or tutorial panel is introduced here.
+    drawFlightActionFeedback(graphics, state, this.reducedMotion);
     this.drawStrictReferenceProtagonist(graphics, state.player.x, state.player.y, Math.atan2(state.player.vy, state.player.vx));
     graphics.lineStyle(2, 0xd76572, 0.18).lineBetween(this.cameras.main.scrollX, state.failY, this.cameras.main.scrollX + worldViewportWidth, state.failY);
   }

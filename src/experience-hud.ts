@@ -38,6 +38,47 @@ export class FlightAudio {
 interface HudActions { start(): void; resume(): void; finish(): void; claimMissions(): void; }
 export interface ExperienceMeta { claimableReward: number; bestDistance: number; }
 function text(node: HTMLElement, value: string): void { if (node.textContent !== value) node.textContent = value; }
+// Keep the high-frequency 120Hz HUD read-only when a presentation state has
+// not actually changed. Repeated writes to data-* / hidden previously forced
+// needless CSS recomputation during an input-sensitive mobile swing.
+function data(node: HTMLElement, key: string, value: string): void {
+  if (node.dataset[key] !== value) node.dataset[key] = value;
+}
+function show(node: HTMLElement, visible: boolean): void {
+  if (node.hidden === visible) node.hidden = !visible;
+}
+
+/** HUD-only priority from the visible guard phase and pressure.
+ * Does not change chase physics, kill radius, or score calculation.
+ */
+export function chaseReadoutUrgency(phase: string, pressure: number): 'calm' | 'alert' | 'danger' {
+  if (phase === 'danger' || phase === 'climax' || pressure >= 0.75) return 'danger';
+  if (phase === 'alert' || pressure >= 0.35) return 'alert';
+  return 'calm';
+}
+
+/** Resolve competing UI copy before painting it on a small landscape phone.
+ * A visible ride object needs ONE actionable cue, not duplicate goal text.
+ * Outside a choice/hazard, compact coaching still remains accessible.
+ * These decisions do not touch simulation, rewards, ads or controls.
+ */
+export function hudCopyPriority(
+  state: Pick<GrappleState, 'levelId' | 'elapsed' | 'vehicleId' | 'vehicleOffers' | 'player'>,
+  cue: ReturnType<typeof controlCue>,
+  chaseUrgency: ReturnType<typeof chaseReadoutUrgency>,
+): { hideDuplicateGoal: boolean; compactCoaching: boolean; quickAction: 'press' | 'release' | 'none' } {
+  const offer = state.vehicleOffers?.find(item => item.status === 'available'
+    && item.x >= state.player.x - 140);
+  const coachingOffer = state.levelId === 'night-patrol' && !state.vehicleId && !!offer
+    && offer.x - state.player.x <= (offer.id === '青鸾' ? 2000 : 920);
+  const compactCoaching = state.levelId === 'night-patrol' && state.elapsed > 16
+    && !state.vehicleId && !coachingOffer && cue.tone === 'neutral'
+    && chaseUrgency === 'calm';
+  const release = /现在松手|现在松开|赶紧松手|松手飞进/.test(cue.title);
+  const press = /现在按住|快按住/.test(cue.title);
+  return { hideDuplicateGoal: coachingOffer, compactCoaching,
+    quickAction: release ? 'release' : press ? 'press' : 'none' };
+}
 
 /** A small, legible play layer. It never advances or changes physics itself. */
 export class ExperienceHud {
@@ -47,6 +88,9 @@ export class ExperienceHud {
   private readonly metric: HTMLElement;
   private readonly goal: HTMLElement;
   private readonly pursuit: HTMLElement;
+  private readonly pursuitTitle: HTMLElement;
+  private readonly pursuitDistance: HTMLElement;
+  private readonly pursuitMeter: HTMLElement;
   private readonly cue: HTMLElement;
   private readonly cueTitle: HTMLElement;
   private readonly cueDetail: HTMLElement;
@@ -83,6 +127,9 @@ export class ExperienceHud {
     root.append(this.layer);
     const get = (name: string): HTMLElement => this.layer.querySelector(`[data-experience="${name}"]`)!;
     this.launch = get('launch'); this.metric = get('metrics'); this.goal = get('goal'); this.pursuit = get('pursuit'); this.cue = get('cue');
+    this.pursuitTitle = this.pursuit.querySelector('strong')!;
+    this.pursuitDistance = this.pursuit.querySelector('span')!;
+    this.pursuitMeter = this.pursuit.querySelector('i')!;
     this.cueTitle = this.cue.querySelector('strong')!; this.cueDetail = this.cue.querySelector('span')!;
     this.ride = get('ride'); this.rideName = this.ride.querySelector('strong')!; this.rideTime = this.ride.querySelector('span')!;
     this.toast = get('toast');
@@ -118,16 +165,28 @@ export class ExperienceHud {
   announce(message: string): void { text(this.toast, message); this.toastUntil = performance.now() + 1600; this.toast.hidden = false; }
   update(state: GrappleState, meta: ExperienceMeta): void {
     const active = state.status === 'playing' && !state.paused && !this.awaiting;
-    this.layer.dataset.active = String(active);
-    this.metric.hidden = this.awaiting;
+    data(this.layer, 'active', String(active));
+    show(this.metric, !this.awaiting);
     text(this.metric, `${Math.floor(state.distanceMeters)} m  ·  拾取 ${state.coins}  ·  连飞 ${state.combo} ×${Math.min(state.characterId === '提灯童' ? 3 : 4, 1 + Math.floor(state.combo / 2))}`);
-    this.goal.hidden = this.awaiting || state.status !== 'playing';
-    this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
-    this.pursuit.dataset.phase = state.chase.phase;
+    // Once the real pickup enters actionable range, its lower-right cue
+    // replaces the redundant "抢同一辆车" goal. The goal returns after
+    // the object resolves, whether claimed or deliberately missed.
+    const cue = controlCue(state);
+    const urgency = chaseReadoutUrgency(state.chase.phase, state.chase.pressure);
+    const priority = hudCopyPriority(state, cue, urgency);
+    show(this.goal, active && !priority.hideDuplicateGoal);
+    data(this.layer, 'goalVisible', String(!this.goal.hidden));
+    show(this.pursuit, active && state.levelId === 'night-patrol');
+    data(this.pursuit, 'phase', state.chase.phase);
     const closeness = Math.min(1, Math.max(0, state.chase.pressure));
-    text(this.pursuit.querySelector('strong')!, closeness >= 0.75 ? '危险！向高处接钩躲网' : closeness >= 0.35 ? '官兵架网！加速或升高' : '后方官兵持续追赶');
-    text(this.pursuit.querySelector('span')!, `${Math.round(state.chase.distance / 30)}m`);
-    (this.pursuit.querySelector('i')! as HTMLElement).style.setProperty('--chase-fill', `${Math.round(closeness * 100)}%`);
+    data(this.pursuit, 'urgency', urgency);
+    text(this.pursuitTitle, urgency === 'danger'
+      ? '危险！向高处接钩躲网' : urgency === 'alert'
+        ? '官兵架网！加速或升高' : '官兵在后');
+    text(this.pursuitDistance, `${Math.round(state.chase.distance / 30)}m`);
+    const chaseFill = `${Math.round(closeness * 100)}%`;
+    if (this.pursuitMeter.style.getPropertyValue('--chase-fill') !== chaseFill)
+      this.pursuitMeter.style.setProperty('--chase-fill', chaseFill);
     if (state.levelId === 'lantern-entry') text(this.goal, `护送铜符 ${Math.round(state.progress * 100)}% · 前方是渡口`);
     else {
       const offer = state.vehicleOffers?.find(item => item.status === 'available' && item.x >= state.player.x - 140);
@@ -139,10 +198,12 @@ export class ExperienceHud {
           : escapedOnce ? `突围成功 · 暂停可收工领奖 / 继续挑战`
             : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m`);
     }
-    const cue = controlCue(state);
-    this.cue.hidden = !active; this.cue.dataset.tone = cue.tone;
+    show(this.cue, active);
+    data(this.cue, 'tone', cue.tone);
+    data(this.cue, 'density', priority.compactCoaching ? 'compact' : 'full');
+    data(this.cue, 'quickAction', priority.quickAction);
     text(this.cueTitle, cue.title); text(this.cueDetail, cue.detail);
-    this.ride.hidden = !active || !state.vehicleId;
+    show(this.ride, active && !!state.vehicleId);
     text(this.rideName, state.vehicleId ?? '');
     text(this.rideTime, `${Math.max(0, state.vehicleTicksRemaining / 120).toFixed(1)}s`);
     this.ride.dataset.vehicle = state.vehicleId ?? '';
@@ -168,7 +229,15 @@ export class ExperienceHud {
           : `突破第 ${state.gatesPassed} 处封锁！继续挑战更高收益`);
         this.audio.play('combo');
       }
-      else if (state.combo > previous.combo) { if (state.combo >= 2) this.announce(`漂亮！${state.combo} 连飞`); this.audio.play('combo'); }
+      else if (state.combo > previous.combo) {
+        // Give the first EARNED well-timed release a clear response. Later
+        // chained releases celebrate milestones rather than throwing a
+        // blocking toast across every new roof and visible ring.
+        if (state.combo === 1) this.announce('漂亮松手！再接下一根飞索');
+        else if (state.combo === 2 || state.combo % 3 === 0)
+          this.announce(`漂亮！${state.combo} 连飞`);
+        this.audio.play('combo');
+      }
       else if (state.pickups > previous.pickups) this.audio.play('coin');
       else if (state.mutation && state.mutation !== previous.mutation) {
         this.announce(state.mutation === '起雾' ? '起雾了：靠近一点再挂接' : state.mutation === '下雨' ? '雨天下坠略快，提前接索' : '官兵增援！保持向前的节奏');

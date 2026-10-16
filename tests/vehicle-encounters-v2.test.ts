@@ -320,3 +320,37 @@ test('default lantern holds on its authored world support and does not jump on t
   assert.ok(Math.hypot(after.player.x - mounted.player.x, after.player.y - mounted.player.y) < 16,
     'the first lantern grab cannot teleport the rider to a phantom rope');
 });
+
+// Product contract: encounters are optional independently; a missed entry
+// pulley does NOT prohibit a later successful lantern touch. This validates
+// honest explanatory feedback and first-opportunity onboarding; it never
+// creates an award or weakens any contact/action gate.
+test('missed optional encounters explain their actual world height and first pulley teaches the release', () => {
+  const p = planVehicleEncounter(32, 2, '货运滑索');
+  assert.ok(p);
+  assert.match(missedEncounterReason('release', p.y - p.radiusY - 60, false, p.y, p.radiusY),
+    /上方.*低屋檐/);
+  assert.match(missedEncounterReason('release', p.y + p.radiusY + 60, false, p.y, p.radiusY),
+    /下方.*高处屋檐/);
+  assert.match(missedEncounterReason('release', p.y, false, p.y, p.radiusY),
+    /挂环边缘/);
+  assert.match(missedEncounterReason('press', p.y, true, p.y, p.radiusY),
+    /重新按住/, 'a wrong real action takes priority over height');
+  const g = game(32);
+  const offer = locate(g, 2);
+  const state = g.getState();
+  state.vehicleId = null;
+  state.player.x = offer.x - 600;
+  state.player.y = offer.y - (offer.radiusY ?? 90) - 70;
+  state.player.vy = -180;
+  state.inputHeld = true;
+  state.attachedAnchorId = 'physical-roof-grapple';
+  assert.match(controlCue(state).title, /低线/);
+  state.player.y = offer.y + 12;
+  assert.match(controlCue(state).title, /第一辆滑索/);
+  state.player.x = offer.x - 110;
+  state.inputHeld = false;
+  state.attachedAnchorId = null;
+  state.lastGrappleReleaseTick = state.tick - 14;
+  assert.match(controlCue(state).title, /保持松手/);
+});
