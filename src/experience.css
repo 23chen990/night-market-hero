@@ -128,3 +128,31 @@ button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb
 @media (prefers-reduced-motion: reduce) {
   .pursuit-readout[data-urgency="danger"] { animation: none; }
 }
+
+/* One actionable instruction at a time. A nearby pickup cue replaces the
+   left-hand goal; chasing remains legible in the space it vacates. */
+.experience-layer[data-goal-visible="false"] .pursuit-readout {
+  top: max(53px, calc(env(safe-area-inset-top) + 43px));
+}
+/* Keep the one-finger explanation, but stop repeating the same neutral
+   sentence after a player has entered patrol. Urgent and choice cues expand. */
+.control-coach[data-density="compact"] {
+  padding: 6px 10px; background: #13282cbf;
+  border-color: #abbbad66; max-width: 31vw;
+}
+.control-coach[data-density="compact"] span { display: none; }
+.control-coach[data-quick-action="release"] {
+  border-color: #ffdf9b;
+  box-shadow: 0 0 0 2px #ffe6a423, 0 4px 13px #0004;
+}
+.control-coach[data-quick-action="press"] {
+  border-color: #8ff2d3;
+  box-shadow: 0 0 0 2px #a3ead533, 0 4px 13px #0004;
+}
+.flight-toast {
+  max-width: min(72vw, 550px);
+  white-space: normal; text-align: center; box-sizing: border-box;
+}
+@media (max-width: 720px) {
+  .control-coach[data-density="compact"] { max-width: 30vw; }
+}

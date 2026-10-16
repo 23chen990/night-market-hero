@@ -48,6 +48,29 @@ export function chaseReadoutUrgency(phase: string, pressure: number): 'calm' | '
   return 'calm';
 }
 
+/** Resolve competing UI copy before painting it on a small landscape phone.
+ * A visible ride object needs ONE actionable cue, not duplicate goal text.
+ * Outside a choice/hazard, compact coaching still remains accessible.
+ * These decisions do not touch simulation, rewards, ads or controls.
+ */
+export function hudCopyPriority(
+  state: Pick<GrappleState, 'levelId' | 'elapsed' | 'vehicleId' | 'vehicleOffers' | 'player'>,
+  cue: ReturnType<typeof controlCue>,
+  chaseUrgency: ReturnType<typeof chaseReadoutUrgency>,
+): { hideDuplicateGoal: boolean; compactCoaching: boolean; quickAction: 'press' | 'release' | 'none' } {
+  const offer = state.vehicleOffers?.find(item => item.status === 'available'
+    && item.x >= state.player.x - 140);
+  const coachingOffer = state.levelId === 'night-patrol' && !state.vehicleId && !!offer
+    && offer.x - state.player.x <= (offer.id === '青鸾' ? 2000 : 920);
+  const compactCoaching = state.levelId === 'night-patrol' && state.elapsed > 16
+    && !state.vehicleId && !coachingOffer && cue.tone === 'neutral'
+    && chaseUrgency === 'calm';
+  const release = /现在松手|现在松开|赶紧松手|松手飞进/.test(cue.title);
+  const press = /现在按住|快按住/.test(cue.title);
+  return { hideDuplicateGoal: coachingOffer, compactCoaching,
+    quickAction: release ? 'release' : press ? 'press' : 'none' };
+}
+
 /** A small, legible play layer. It never advances or changes physics itself. */
 export class ExperienceHud {
   readonly audio = new FlightAudio();
@@ -130,11 +153,17 @@ export class ExperienceHud {
     this.layer.dataset.active = String(active);
     this.metric.hidden = this.awaiting;
     text(this.metric, `${Math.floor(state.distanceMeters)} m  ·  拾取 ${state.coins}  ·  连飞 ${state.combo} ×${Math.min(state.characterId === '提灯童' ? 3 : 4, 1 + Math.floor(state.combo / 2))}`);
-    this.goal.hidden = this.awaiting || state.status !== 'playing';
+    // Once the real pickup enters actionable range, its lower-right cue
+    // replaces the redundant "抢同一辆车" goal. The goal returns after
+    // the object resolves, whether claimed or deliberately missed.
+    const cue = controlCue(state);
+    const urgency = chaseReadoutUrgency(state.chase.phase, state.chase.pressure);
+    const priority = hudCopyPriority(state, cue, urgency);
+    this.goal.hidden = !active || priority.hideDuplicateGoal;
+    this.layer.dataset.goalVisible = String(!this.goal.hidden);
     this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
     this.pursuit.dataset.phase = state.chase.phase;
     const closeness = Math.min(1, Math.max(0, state.chase.pressure));
-    const urgency = chaseReadoutUrgency(state.chase.phase, closeness);
     this.pursuit.dataset.urgency = urgency;
     text(this.pursuit.querySelector('strong')!, urgency === 'danger'
       ? '危险！向高处接钩躲网' : urgency === 'alert'
@@ -152,8 +181,10 @@ export class ExperienceHud {
           : escapedOnce ? `突围成功 · 暂停可收工领奖 / 继续挑战`
             : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m`);
     }
-    const cue = controlCue(state);
-    this.cue.hidden = !active; this.cue.dataset.tone = cue.tone;
+    this.cue.hidden = !active;
+    this.cue.dataset.tone = cue.tone;
+    this.cue.dataset.density = priority.compactCoaching ? 'compact' : 'full';
+    this.cue.dataset.quickAction = priority.quickAction;
     text(this.cueTitle, cue.title); text(this.cueDetail, cue.detail);
     this.ride.hidden = !active || !state.vehicleId;
     text(this.rideName, state.vehicleId ?? '');
@@ -181,7 +212,15 @@ export class ExperienceHud {
           : `突破第 ${state.gatesPassed} 处封锁！继续挑战更高收益`);
         this.audio.play('combo');
       }
-      else if (state.combo > previous.combo) { if (state.combo >= 2) this.announce(`漂亮！${state.combo} 连飞`); this.audio.play('combo'); }
+      else if (state.combo > previous.combo) {
+        // Give the first EARNED well-timed release a clear response. Later
+        // chained releases celebrate milestones rather than throwing a
+        // blocking toast across every new roof and visible ring.
+        if (state.combo === 1) this.announce('漂亮松手！再接下一根飞索');
+        else if (state.combo === 2 || state.combo % 3 === 0)
+          this.announce(`漂亮！${state.combo} 连飞`);
+        this.audio.play('combo');
+      }
       else if (state.pickups > previous.pickups) this.audio.play('coin');
       else if (state.mutation && state.mutation !== previous.mutation) {
         this.announce(state.mutation === '起雾' ? '起雾了：靠近一点再挂接' : state.mutation === '下雨' ? '雨天下坠略快，提前接索' : '官兵增援！保持向前的节奏');
