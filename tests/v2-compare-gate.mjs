@@ -44,8 +44,19 @@ assert.ok(c.screenshotNames.some(n => n === 'encounter-2-missed'), 'need a scree
 const a=c.nearest?.[identity], b=s.nearest?.[identity];
 assert.ok(a && b && a.distancePx < 120 && b.distancePx < 120,
   'both paths must physically approach the same authored pickup');
-assert.equal(a.inputHeld, true, 'conservative touch path must keep the rope held at the pickup');
-assert.equal(a.attached, true, 'conservative path must pass with an actual grapple, not a skip or teleport');
+// Do not infer the entire conservative approach from the single nearest-X
+// frame: a legitimate last-second release may be closer than the earlier
+// held rope. Require BOTH a near actual body passage AND a separate, earlier,
+// genuinely held world-rope observation near this same fixed instance.
+const heldAtPulley = c.heldNearby?.[identity];
+assert.ok(heldAtPulley && heldAtPulley.distancePx < 120
+  && Math.abs(heldAtPulley.heightDifferencePx) < 145,
+'conservative path must pass near the physical pulley with its real roof rope still held');
+assert.equal(heldAtPulley.inputHeld, true, 'real browser input must still be held at the near-pulley sample');
+assert.equal(heldAtPulley.attached, true, 'real world support, not a hidden grant or teleport');
+assert.equal(heldAtPulley.samplePhase, 'available', 'held evidence must PRECEDE encounter resolution');
+assert.ok(heldAtPulley.tick <= cm.get(identity)?.tick,
+  'near-pulley held evidence cannot be sampled after the encounter resolves');
 // The second route is not a larger hidden magnet: holding the actual
 // high-roof swing longer generates a physical upward launch into the kite.
 const kiteIdentity = [...sm.keys()].find(k => k.endsWith(':纸鸢'));

@@ -912,6 +912,8 @@ class FlightScene extends Phaser.Scene {
   private anchorSprites = new Map<string, Phaser.GameObjects.Image>();
   private cameraScrollX = 0;
   private cameraHasInitialized = false;
+  private lastCameraViewportWidth = 0;
+  private lastCameraViewportHeight = 0;
   private lastRenderedTick = 0;
   private lastRenderedPlayerX = 0;
   private reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
@@ -971,6 +973,13 @@ class FlightScene extends Phaser.Scene {
   private renderState(state: GrappleState): void {
     const viewportWidth = Math.max(1, this.scale.width || app.clientWidth || REFERENCE_STAGE_WIDTH);
     const viewportHeight = Math.max(1, this.scale.height || app.clientHeight || REFERENCE_STAGE_HEIGHT);
+    // Pausing freezes simulation ticks, including the smoothing clock. When
+    // orientation or window size changes during pause, rebase immediately to
+    // the new viewport rather than keeping the old look-ahead crop.
+    const viewportChanged = viewportWidth !== this.lastCameraViewportWidth
+      || viewportHeight !== this.lastCameraViewportHeight;
+    this.lastCameraViewportWidth = viewportWidth;
+    this.lastCameraViewportHeight = viewportHeight;
     this.cameraLayout = createCameraLayout({ width: viewportWidth, height: viewportHeight, lookAhead: 0.32 });
     const geometryRight = state.environmentGeometry.worldBounds.x + state.environmentGeometry.worldBounds.width;
     // Endless mode intentionally has no finite finishX; keep the presentation
@@ -989,7 +998,7 @@ class FlightScene extends Phaser.Scene {
     const elapsedCameraSeconds = Math.max(0, (state.tick - this.lastRenderedTick) / 120);
     const genuineRestart = state.tick < this.lastRenderedTick
       || Math.abs(state.player.x - this.lastRenderedPlayerX) > worldViewportWidth * 1.25;
-    if (!this.cameraHasInitialized || genuineRestart) {
+    if (!this.cameraHasInitialized || genuineRestart || viewportChanged) {
       this.cameraScrollX = cameraTargetX;
       this.cameraHasInitialized = true;
     } else if (elapsedCameraSeconds > 0) {

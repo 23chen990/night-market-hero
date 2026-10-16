@@ -63,7 +63,12 @@ try {
     let birdRideLastTick: number | null = null;
     const nearest: Record<string, { distancePx: number; heightDifferencePx: number;
       inputHeld: boolean; attached: boolean; playerX: number; playerY: number;
-      targetY: number; requiredAction: string; tick: number }> = {};
+      targetY: number; requiredAction: string; tick: number;
+      samplePhase: 'available' | 'claimed-after-real-release' }> = {};
+    // Separate closest BODY position from closest observed, actively HELD rope.
+    // A conservative rider can genuinely hold within 25px of the ring and
+    // then release 15px later; overwriting its only witness mislabels choice.
+    const heldNearby: typeof nearest = {};
     let held = false, holdAt = -10000, releaseAt = -10000, revives = 0;
     const touchPoint = { x: Math.round(viewport.width * .13), y: Math.round(viewport.height * .72), id: 1 };
     const getState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as {
@@ -140,15 +145,38 @@ try {
         if (s.levelId === 'night-patrol') {
           for (const offer of s.vehicleOffers) {
             const key = offer.instanceId ?? `${offer.segment}-${offer.id}`;
-            // The next observation may already say claimed, so record the
-            // nearest ACTUAL approached point across the resolution frame.
-            if (Math.abs(s.player.x - offer.x) < 1300) {
+            // Observe an AVAILABLE approach or a just-earned mount with a
+            // RECENT genuine rope release and NO held rope/input. Fast real
+            // browser frames can resolve the fixed ellipse between samples,
+            // leaving the closest pre-claim observation 176px from its center.
+            // Record that actual post-release player body truth, including
+            // its explicit phase; never forge an available pre-claim sample.
+            const realReleasedMount = offer.status === 'claimed'
+              && s.vehicleId === offer.id && !s.inputHeld && !s.attachedAnchorId
+              && s.lastGrappleReleaseTick >= 0
+              && s.tick - s.lastGrappleReleaseTick <= 80;
+            if ((offer.status === 'available' || realReleasedMount)
+              && Math.abs(s.player.x - offer.x) < 1300) {
               const distancePx = Math.abs(s.player.x - offer.x);
               if (!nearest[key] || distancePx < nearest[key]!.distancePx) {
                 nearest[key] = { distancePx, heightDifferencePx: s.player.y - offer.y,
                   inputHeld: s.inputHeld, attached: !!s.attachedAnchorId,
                   playerX: s.player.x, playerY: s.player.y, targetY: offer.y,
-                  requiredAction: offer.requiredAction ?? 'release', tick: s.tick };
+                  requiredAction: offer.requiredAction ?? 'release', tick: s.tick,
+                  samplePhase: realReleasedMount ? 'claimed-after-real-release' : 'available' };
+              }
+            }
+            if (offer.status === 'available' && s.inputHeld && !!s.attachedAnchorId
+              && Math.abs(s.player.x - offer.x) < 1300) {
+              const distancePx = Math.abs(s.player.x - offer.x);
+              if (!heldNearby[key] || distancePx < heldNearby[key]!.distancePx) {
+                heldNearby[key] = {
+                  distancePx, heightDifferencePx: s.player.y - offer.y,
+                  inputHeld: true, attached: true, playerX: s.player.x,
+                  playerY: s.player.y, targetY: offer.y,
+                  requiredAction: offer.requiredAction ?? 'release', tick: s.tick,
+                  samplePhase: 'available',
+                };
               }
             }
             if (offer.status === 'available' && s.player.x >= offer.x - 850
@@ -231,9 +259,11 @@ try {
           //    would pull the hero away before the handle can be touched.
           // This uses genuine input edges; never moves or enlarges the target.
           if (kite && lanternRoute && s.player.x >= kite.x - 350 && s.player.x <= kite.x + 140) {
-            // Choose the familiar rope instead of earning the optional kite.
-            // This preserves the lower route for a separate lantern attempt.
-            wantHold = true;
+            // Forgo the difficult kite without staying on an old roof rope
+            // until it stalls or reverses. Previous natural touch at x~7970
+            // actually fell BEFORE reaching the optional lantern; this uses
+            // a genuine release, not a skip, fixture or physics intervention.
+            wantHold = shouldHoldConservativeKiteRope(s.player, kite);
           } else if (kite && s.player.x >= kite.x - 530 && s.player.x <= kite.x + 140) {
             const ahead = kite.x - s.player.x;
             if (anchor) {
@@ -304,9 +334,19 @@ try {
             // only ONE real stylish-release record. This route actively gives
             // up that optional lantern, builds one earned release on an earlier
             // support, then flies off the next HIGH beam to touch the bird.
+            // Keep the FINAL authored high-roof support. On the natural
+            // miss trace the controller stayed airborne at x~14185, y~400,
+            // then waited to press until it could grab only the NEXT low
+            // support (x~14532), pulling the rider below the visible wing.
+            // A genuine fresh press by the high beam is the intended skill.
+            const catchFinalRoof = !anchor && toBird >= 280 && toBird <= 430
+              && s.player.y >= 320 && s.player.y <= 475
+              && s.player.vx >= 210 && s.player.vy < 180;
             if (recentStyleTicks.length < 1 && preparingRope && physicallyStylish
               && toBird > 400 && s.player.x >= anchor.x - 40) {
               wantHold = false;
+            } else if (catchFinalRoof) {
+              wantHold = true;
             } else if (finalHighRope) {
               // At 70ms screen sampling, toBird>45 released too late: the
               // player was still attached at x~14516 INSIDE the bird's drawn
@@ -318,9 +358,17 @@ try {
               // creates an actual usable, observable mid-arc release.
               // Finish rising on the REAL supported rope. An earlier 155px
               // release left the rider ~114px below the bird at its center.
-              // A late ~40px actual release intersects its DRAWN lower wing
-              // with two stylish releases already earned. No target movement.
-              wantHold = toBird > 40;
+              // The last current-build touch trace shows the actual high
+              // roof arc at x=14379, y=464, vx=233, vy=-271, 144px before
+              // the bird. Waiting for the old x<40 gate stalls the rope at
+              // x~14427, vx~10; this safely aims for the DRAWN fixed ellipse
+              // using a forward/upward real release instead. Do not extend
+              // collision radius, attach through another rope or grant a ride.
+              const highForwardExit = toBird <= 190 && toBird > 40
+                && s.player.y <= bird.y + 72 && s.player.y >= bird.y - 70
+                && s.player.vx >= 180 && s.player.vy <= -190
+                && Math.hypot(s.player.vx, s.player.vy) >= 310;
+              wantHold = toBird > 40 && !highForwardExit;
             } else if (!anchor && toBird <= 225 && toBird >= -150) {
               wantHold = false;
             }
@@ -347,8 +395,19 @@ try {
           && s.vehicleOffers.some(offer => offer.id === '青鸾'
             && offer.status === 'available'
             && s.player.x >= offer.x - 750 && s.player.x <= offer.x + 150);
-        await page.waitForTimeout(nearBird ? 30 : nearLantern ? 38
-          : skilledRoute ? 70 : 55);
+        // At 55-70ms per input decision, a legitimately earned moving
+        // pulley/kite could resolve between samples. The nearest pre-claim
+        // point then stayed >120px away even though a real release earned
+        // the fixed ring. Sample actual visible input more often NEAR the
+        // authored targets; never edit world state, enlarge a pickup or
+        // relax the independent comparison gate.
+        const nearEarlyRing = s.levelId === 'night-patrol'
+          && s.vehicleOffers.some(offer =>
+            (offer.id === '货运滑索' || offer.id === '纸鸢')
+            && offer.status === 'available'
+            && s.player.x >= offer.x - 450 && s.player.x <= offer.x + 160);
+        await page.waitForTimeout(nearBird ? 28 : nearEarlyRing ? 24
+          : nearLantern ? 38 : skilledRoute ? 70 : 55);
       }
       await edge(false, (await getState()).tick);
       const state = await getState();
@@ -358,7 +417,7 @@ try {
         lanternRoute, birdRoute, duration: maxSeconds,
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
-        encounters: [...encounters.entries()], nearest, inputEdges,
+        encounters: [...encounters.entries()], nearest, heldNearby, inputEdges,
         birdClaimPreparations, birdApproachTrace,
         birdMount: birdRideFirstTick === null || birdRideLastTick === null ? null
           : { firstTick: birdRideFirstTick, lastTick: birdRideLastTick,
