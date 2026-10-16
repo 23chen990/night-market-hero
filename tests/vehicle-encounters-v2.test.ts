@@ -195,11 +195,8 @@ test('distinct qualifying actions require a real recent press/release, speed, an
   assert.equal(encounterActionEligible('release', s), true);
   assert.equal(encounterActionEligible('high-release', s), true);
   assert.equal(encounterActionEligible('stylish-release', s), false);
-  // A real forward launch slightly before the pulley is still eligible,
-  // but a stale release from another street cannot pick up a later ride.
-  s.lastReleaseTick = 137; // age 63 / 120 = 0.525s
-  assert.equal(encounterActionEligible('release', s), true);
-  s.lastReleaseTick = 135; // age 65 / 120 = 0.542s
+  // A stale release is not a valid interaction with a later ring.
+  s.lastReleaseTick = 159;
   assert.equal(encounterActionEligible('release', s), false);
   s.lastReleaseTick = 180;
   s.playerY = 535;

@@ -283,32 +283,10 @@ try {
             // the ring and the late release loses a perfectly visible target.
             wantHold = true;
           }
-          if (first && anchor && s.player.x >= first.x - 300
-            && s.player.x <= first.x - 190
-            && s.player.y >= first.y - 65 && s.player.y <= first.y + 85
-            && s.player.vx >= 350 && s.player.vy <= 85) {
-            // Real failed screenshot: x=3526,y=615,vx=553,vy=-63
-            // while still attached, then the old x-185 release flew ABOVE
-            // the visible x=3774,y=614 pulley ring. Release near its
-            // vertical centre BEFORE the steep rising part of this rope
-            // arc. Never alter body height/velocity or fixture geometry.
-            wantHold = false;
-          }
           if (first && s.player.x >= first.x - 185 && s.player.x <= first.x + 60
             && s.player.y >= first.y - 150 && s.player.y <= first.y + 125) {
             // Deliberately release even if the previous frame was airborne;
             // never re-grapple through the target while the first ring passes.
-            wantHold = false;
-          }
-          if (first && !anchor
-            && s.player.x >= first.x - 330 && s.player.x <= first.x + 70
-            && s.tick - s.lastGrappleReleaseTick >= 0
-            && s.tick - s.lastGrappleReleaseTick <= 64
-            && s.player.y < s.failY - 110) {
-            // This launch was a REAL release from an anchored roof.
-            // The 20-tick generic regrab cadence must not attach another
-            // rope a split-second before crossing the pulley itself.
-            // If a fall is imminent, permit normal recovery instead.
             wantHold = false;
           }
           const kite = s.vehicleOffers.find(offer => offer.id === '纸鸢' && offer.status === 'available');
