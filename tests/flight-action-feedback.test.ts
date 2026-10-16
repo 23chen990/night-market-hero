@@ -11,7 +11,7 @@ function scene(): GrappleState {
     anchors: [{ id: 'real-roof', x: 400, y: 200 }],
     player: { x: 430, y: 480, vx: 390, vy: -140 },
     stylishReleaseTicks: [], tick: 120, combo: 0,
-  } as GrappleState;
+  } as unknown as GrappleState;
 }
 
 test('only the existing scoreable, attached real world-rope window displays release-now', () => {
