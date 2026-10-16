@@ -47,6 +47,18 @@ assert.ok(b.inputEdges?.some(edge => edge.action === 'release'
 const nearest = b.nearest?.[lanternId];
 assert.ok(nearest && nearest.distancePx < 110,
   'actual player trajectory must pass close to the fixed authored lantern');
+if (nearest.samplePhase === 'claimed-after-real-press') {
+  // No relaxation of the 110px observation bound: a fast browser may capture
+  // x=-117px before the physical claim and x=+36px just after. The post-claim
+  // frame is valid ONLY if the runtime says a real press itself claimed the
+  // exact world instance at the exact same physics tick.
+  assert.equal(nearest.enginePressTick, claimedAt,
+    'post-claim near-lantern sample must match the exact real input/claim tick');
+  assert.ok(b.inputEdges?.some(edge => edge.action === 'press'
+    && edge.tick <= nearest.enginePressTick
+    && nearest.enginePressTick - edge.tick <= 26),
+    'post-claim lantern evidence still requires a recent genuine browser press');
+}
 console.log(JSON.stringify({
   status: 'LANTERN_REAL_TOUCH_PASS', sha256: lantern.buildSha256,
   worldInstance: lanternId, claimedAtTick: claimedAt,
