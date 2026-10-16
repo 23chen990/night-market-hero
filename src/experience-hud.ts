@@ -38,6 +38,15 @@ export class FlightAudio {
 interface HudActions { start(): void; resume(): void; finish(): void; claimMissions(): void; }
 export interface ExperienceMeta { claimableReward: number; bestDistance: number; }
 function text(node: HTMLElement, value: string): void { if (node.textContent !== value) node.textContent = value; }
+// Keep the high-frequency 120Hz HUD read-only when a presentation state has
+// not actually changed. Repeated writes to data-* / hidden previously forced
+// needless CSS recomputation during an input-sensitive mobile swing.
+function data(node: HTMLElement, key: string, value: string): void {
+  if (node.dataset[key] !== value) node.dataset[key] = value;
+}
+function show(node: HTMLElement, visible: boolean): void {
+  if (node.hidden === visible) node.hidden = !visible;
+}
 
 /** HUD-only priority from the visible guard phase and pressure.
  * Does not change chase physics, kill radius, or score calculation.
@@ -79,6 +88,9 @@ export class ExperienceHud {
   private readonly metric: HTMLElement;
   private readonly goal: HTMLElement;
   private readonly pursuit: HTMLElement;
+  private readonly pursuitTitle: HTMLElement;
+  private readonly pursuitDistance: HTMLElement;
+  private readonly pursuitMeter: HTMLElement;
   private readonly cue: HTMLElement;
   private readonly cueTitle: HTMLElement;
   private readonly cueDetail: HTMLElement;
@@ -115,6 +127,9 @@ export class ExperienceHud {
     root.append(this.layer);
     const get = (name: string): HTMLElement => this.layer.querySelector(`[data-experience="${name}"]`)!;
     this.launch = get('launch'); this.metric = get('metrics'); this.goal = get('goal'); this.pursuit = get('pursuit'); this.cue = get('cue');
+    this.pursuitTitle = this.pursuit.querySelector('strong')!;
+    this.pursuitDistance = this.pursuit.querySelector('span')!;
+    this.pursuitMeter = this.pursuit.querySelector('i')!;
     this.cueTitle = this.cue.querySelector('strong')!; this.cueDetail = this.cue.querySelector('span')!;
     this.ride = get('ride'); this.rideName = this.ride.querySelector('strong')!; this.rideTime = this.ride.querySelector('span')!;
     this.toast = get('toast');
@@ -150,8 +165,8 @@ export class ExperienceHud {
   announce(message: string): void { text(this.toast, message); this.toastUntil = performance.now() + 1600; this.toast.hidden = false; }
   update(state: GrappleState, meta: ExperienceMeta): void {
     const active = state.status === 'playing' && !state.paused && !this.awaiting;
-    this.layer.dataset.active = String(active);
-    this.metric.hidden = this.awaiting;
+    data(this.layer, 'active', String(active));
+    show(this.metric, !this.awaiting);
     text(this.metric, `${Math.floor(state.distanceMeters)} m  ·  拾取 ${state.coins}  ·  连飞 ${state.combo} ×${Math.min(state.characterId === '提灯童' ? 3 : 4, 1 + Math.floor(state.combo / 2))}`);
     // Once the real pickup enters actionable range, its lower-right cue
     // replaces the redundant "抢同一辆车" goal. The goal returns after
@@ -159,17 +174,19 @@ export class ExperienceHud {
     const cue = controlCue(state);
     const urgency = chaseReadoutUrgency(state.chase.phase, state.chase.pressure);
     const priority = hudCopyPriority(state, cue, urgency);
-    this.goal.hidden = !active || priority.hideDuplicateGoal;
-    this.layer.dataset.goalVisible = String(!this.goal.hidden);
-    this.pursuit.hidden = !active || state.levelId !== 'night-patrol';
-    this.pursuit.dataset.phase = state.chase.phase;
+    show(this.goal, active && !priority.hideDuplicateGoal);
+    data(this.layer, 'goalVisible', String(!this.goal.hidden));
+    show(this.pursuit, active && state.levelId === 'night-patrol');
+    data(this.pursuit, 'phase', state.chase.phase);
     const closeness = Math.min(1, Math.max(0, state.chase.pressure));
-    this.pursuit.dataset.urgency = urgency;
-    text(this.pursuit.querySelector('strong')!, urgency === 'danger'
+    data(this.pursuit, 'urgency', urgency);
+    text(this.pursuitTitle, urgency === 'danger'
       ? '危险！向高处接钩躲网' : urgency === 'alert'
         ? '官兵架网！加速或升高' : '官兵在后');
-    text(this.pursuit.querySelector('span')!, `${Math.round(state.chase.distance / 30)}m`);
-    (this.pursuit.querySelector('i')! as HTMLElement).style.setProperty('--chase-fill', `${Math.round(closeness * 100)}%`);
+    text(this.pursuitDistance, `${Math.round(state.chase.distance / 30)}m`);
+    const chaseFill = `${Math.round(closeness * 100)}%`;
+    if (this.pursuitMeter.style.getPropertyValue('--chase-fill') !== chaseFill)
+      this.pursuitMeter.style.setProperty('--chase-fill', chaseFill);
     if (state.levelId === 'lantern-entry') text(this.goal, `护送铜符 ${Math.round(state.progress * 100)}% · 前方是渡口`);
     else {
       const offer = state.vehicleOffers?.find(item => item.status === 'available' && item.x >= state.player.x - 140);
@@ -181,12 +198,12 @@ export class ExperienceHud {
           : escapedOnce ? `突围成功 · 暂停可收工领奖 / 继续挑战`
             : `挑战 ${Math.ceil((Math.max(meta.bestDistance, state.distanceMeters) + 1) / 100) * 100}m`);
     }
-    this.cue.hidden = !active;
-    this.cue.dataset.tone = cue.tone;
-    this.cue.dataset.density = priority.compactCoaching ? 'compact' : 'full';
-    this.cue.dataset.quickAction = priority.quickAction;
+    show(this.cue, active);
+    data(this.cue, 'tone', cue.tone);
+    data(this.cue, 'density', priority.compactCoaching ? 'compact' : 'full');
+    data(this.cue, 'quickAction', priority.quickAction);
     text(this.cueTitle, cue.title); text(this.cueDetail, cue.detail);
-    this.ride.hidden = !active || !state.vehicleId;
+    show(this.ride, active && !!state.vehicleId);
     text(this.rideName, state.vehicleId ?? '');
     text(this.rideTime, `${Math.max(0, state.vehicleTicksRemaining / 120).toFixed(1)}s`);
     this.ride.dataset.vehicle = state.vehicleId ?? '';
