@@ -54,6 +54,7 @@ try {
     let avoidKiteReattachUntilTick = -999;
     let reviveCount = 0;
     let tutorialCompleted = false;
+    let coachingLayoutVerified = false;
     const label = `${viewport.width}x${viewport.height}`;
     const started = Date.now();
     const readState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState());
@@ -110,6 +111,28 @@ try {
       if (!touch) await page.locator('[data-action="grapple"]').focus();
       for (let sample = 0; Date.now() - started < 140_000; sample++) {
         const state = await readState();
+        if (!coachingLayoutVerified && state.levelId === 'night-patrol' && state.player.x > 3_700) {
+          // Observe the actual browser bounding box and real camera projection.
+          // In the old mobile layout the bottom-left coach covered the hero
+          // exactly when the player needed to read "release now".
+          const layout = await page.evaluate(() => {
+            const cue = document.querySelector<HTMLElement>('[data-experience="cue"]');
+            const root = document.querySelector<HTMLElement>('#app');
+            const observed = (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } })
+              .__PROTOTYPE_TEST__.getState();
+            if (!cue || !root) return null;
+            const rect = cue.getBoundingClientRect();
+            return { visible: !cue.hidden, left: rect.left, right: rect.right,
+              heroX: (observed.player.x - Number(root.dataset.cameraX)) * (innerHeight / 941) };
+          });
+          assert.ok(layout?.visible, 'action coaching must remain visible during flight');
+          assert.ok(layout.left >= layout.heroX + 28,
+            `live coach covers the projected hero at ${label}: ${JSON.stringify(layout)}`);
+          assert.ok(layout.right <= viewport.width - 50,
+            `live coach must clear the right-side usable item rail at ${label}`);
+          lifecycle.coachingLayout = layout;
+          coachingLayoutVerified = true;
+        }
         if (sample % 5 === 0) samples.push({ ms: Date.now() - started, tick: state.tick, level: state.levelId,
           player: state.player, segment: state.segmentIndex, status: state.status, coins: state.coins,
           pickups: state.pickups, combo: state.combo, vehicle: state.vehicleId, sky: state.isSky,
@@ -316,6 +339,7 @@ try {
       }
       await screenshotJob;
       assert.equal(tutorialCompleted, true, 'normal input must complete the tutorial');
+      assert.ok(coachingLayoutVerified, 'normal route never validated the visible action coaching layout');
       for (const ride of rides) {
         assert.ok(encounteredTypes.has(ride), `ordinary journey never saw the optional ${ride} world encounter`);
         assert.ok([...resolvedEncounters.values()].some(event => event.id === ride),
@@ -359,6 +383,30 @@ try {
       assert.equal(paused.inputHeld, false, 'pause cancels held input');
       lifecycle.pausedTick = paused.tick;
       await page.screenshot({ path: `${out}/${label}-pause.png` });
+      if (touch) {
+        // Frozen game ticks must not prevent the camera from adopting a new
+        // viewport. At this point the player is deep into the patrol rather
+        // than at world x=0, so a stale camera is measurable.
+        await page.setViewportSize({ width: 568, height: 320 });
+        await page.waitForTimeout(200);
+        const resized = await page.evaluate(() => {
+          const root = document.querySelector<HTMLElement>('#app')!;
+          const observed = (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } })
+            .__PROTOTYPE_TEST__.getState();
+          const worldWidth = Number(root.dataset.worldViewportWidth);
+          const cameraX = Number(root.dataset.cameraX);
+          const target = Math.max(0, observed.player.x - worldWidth * 0.32);
+          return { tick: observed.tick, worldWidth, cameraX, target };
+        });
+        assert.ok(resized.worldWidth > 1_000 && Number.isFinite(resized.cameraX));
+        assert.ok(Math.abs(resized.cameraX - resized.target) < 3,
+          `frozen resized camera must snap to the actual new target: ${JSON.stringify(resized)}`);
+        assert.equal(resized.tick, paused.tick, 'resizing must never advance a paused patrol');
+        lifecycle.pausedResize = resized;
+        await page.setViewportSize(viewport);
+        await page.waitForTimeout(200);
+        assert.equal((await readState()).tick, paused.tick);
+      }
       await page.reload();
       await page.waitForFunction(() => Boolean((window as unknown as { __PROTOTYPE_TEST__?: unknown }).__PROTOTYPE_TEST__));
       const restored = await readState();
