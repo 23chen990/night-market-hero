@@ -134,51 +134,45 @@ try {
       // passing frame when the outer video/pointer driver temporarily stalls.
       // This has no state setter, no event injection, no physics stepping,
       // and stops once the first two encounters have passed.
-      await page.evaluate(() => {
-        const tracker: {
-          frames: number;
-          nearest: Record<string, { distancePx: number; heightDifferencePx: number;
-            inputHeld: boolean; attached: boolean; playerX: number; playerY: number;
-            targetY: number; requiredAction: string; tick: number; samplePhase: 'available' }>;
-          heldNearby: typeof tracker.nearest;
-        } = { frames: 0, nearest: {}, heldNearby: {} };
-        (window as unknown as { __V2_APPROACH_WITNESS__?: typeof tracker })
-          .__V2_APPROACH_WITNESS__ = tracker;
-        const observe = () => {
-          tracker.frames += 1;
-          // The instrument only reads every second real browser paint.
-          // Rendering and touch input continue on their native clocks.
-          if (tracker.frames % 2 === 0) {
-            const probe = (window as unknown as { __PROTOTYPE_TEST__?: {
-              getState(): GrappleState } }).__PROTOTYPE_TEST__;
-            const s = probe?.getState();
-            if (s?.levelId === 'night-patrol' && s.segmentIndex >= 6) return;
-            if (s?.levelId === 'night-patrol' && s.status === 'playing') {
-              for (const offer of s.vehicleOffers) {
-                if (offer.status !== 'available'
-                  || (offer.id !== '货运滑索' && offer.id !== '纸鸢')
-                  || Math.abs(s.player.x - offer.x) >= 1300) continue;
-                const key = offer.instanceId ?? `${offer.segment}-${offer.id}`;
-                const distancePx = Math.abs(s.player.x - offer.x);
-                const sample = {
-                  distancePx, heightDifferencePx: s.player.y - offer.y,
-                  inputHeld: s.inputHeld, attached: !!s.attachedAnchorId,
-                  playerX: s.player.x, playerY: s.player.y, targetY: offer.y,
-                  requiredAction: offer.requiredAction ?? 'release',
-                  tick: s.tick, samplePhase: 'available' as const,
-                };
-                if (!tracker.nearest[key] || tracker.nearest[key]!.distancePx > distancePx)
-                  tracker.nearest[key] = sample;
-                if (sample.inputHeld && sample.attached
-                  && (!tracker.heldNearby[key] || tracker.heldNearby[key]!.distancePx > distancePx))
-                  tracker.heldNearby[key] = sample;
-              }
-            }
-          }
-          requestAnimationFrame(observe);
-        };
-        requestAnimationFrame(observe);
-      });
+      // Use an untransformed browser script: tsx/esbuild can inject a
+      // Node-only __name helper into nested page.evaluate callbacks, where
+      // Chromium does not define it. Inline script has NO state mutations.
+      await page.addScriptTag({ content: String.raw`(() => {
+  const tracker = { frames: 0, nearest: Object.create(null), heldNearby: Object.create(null) };
+  window.__V2_APPROACH_WITNESS__ = tracker;
+  function observe() {
+    tracker.frames += 1;
+    // Observe only every other real browser animation frame; do not affect inputs.
+    if (tracker.frames % 2 === 0) {
+      const probe = window.__PROTOTYPE_TEST__;
+      const s = probe && probe.getState();
+      if (s && s.levelId === 'night-patrol' && s.segmentIndex >= 6) return;
+      if (s && s.levelId === 'night-patrol' && s.status === 'playing') {
+        for (const offer of s.vehicleOffers) {
+          if (offer.status !== 'available'
+            || (offer.id !== '货运滑索' && offer.id !== '纸鸢')
+            || Math.abs(s.player.x - offer.x) >= 1300) continue;
+          const key = offer.instanceId || String(offer.segment) + '-' + offer.id;
+          const distancePx = Math.abs(s.player.x - offer.x);
+          const sample = {
+            distancePx, heightDifferencePx: s.player.y - offer.y,
+            inputHeld: s.inputHeld, attached: !!s.attachedAnchorId,
+            playerX: s.player.x, playerY: s.player.y, targetY: offer.y,
+            requiredAction: offer.requiredAction || 'release',
+            tick: s.tick, samplePhase: 'available'
+          };
+          if (!tracker.nearest[key] || tracker.nearest[key].distancePx > distancePx)
+            tracker.nearest[key] = sample;
+          if (sample.inputHeld && sample.attached
+            && (!tracker.heldNearby[key] || tracker.heldNearby[key].distancePx > distancePx))
+            tracker.heldNearby[key] = sample;
+        }
+      }
+    }
+    requestAnimationFrame(observe);
+  }
+  requestAnimationFrame(observe);
+})();` });
       const began = Date.now();
       for (let step = 0; Date.now() - began < maxSeconds * 1000; step++) {
         const s = await getState();
