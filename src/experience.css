@@ -156,3 +156,20 @@ button:focus-visible, [role="button"]:focus-visible { outline: 3px solid #b6eddb
 @media (max-width: 720px) {
   .control-coach[data-density="compact"] { max-width: 30vw; }
 }
+
+/* Two honest, compact post-run lines: real record comparison + one achievable
+   next action. Does not sit over gameplay and cannot mask save failures. */
+.retry-plan[hidden] { display: none !important; }
+.result-card .retry-plan {
+  display: grid; gap: 3px; margin: 3px 0 10px; padding: 8px 11px;
+  border-left: 3px solid #74cdbb; border-radius: 7px;
+  background: #163337d9; text-align: left; color: #e6eee5;
+  font-size: 11px; line-height: 1.35; overflow-wrap: anywhere;
+}
+.result-card .retry-plan strong { color: #f2d49b; font-size: 12px; }
+.result-card .retry-plan[data-tone="new-best"] { border-left-color: #efc778; }
+.result-card .retry-plan[data-tone="catch-up"] { border-left-color: #8fd7cf; }
+@media (max-height: 430px) {
+  .result-card .retry-plan { margin-bottom: 6px; padding: 6px 9px; gap: 2px; font-size: 10px; }
+  .result-card .retry-plan strong { font-size: 11px; }
+}

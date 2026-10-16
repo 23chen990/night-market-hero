@@ -25,11 +25,19 @@ try {
   // A player who stops interacting must genuinely fail, not run forever.
   await waitStatus('failed');
   report.failed = await state();
+  const nextAttempt = page.locator('[data-ui="retry-plan"]');
+  await nextAttempt.waitFor({ state: 'visible' });
+  const firstDebrief = await nextAttempt.innerText();
+  assert.match(firstDebrief, /纪录|最好成绩|里程/);
+  assert.match(firstDebrief, /下局挑战 \d+m/);
+  assert.match(firstDebrief, /下落前|连做|连续完成|接飞索|挂点/);
+  report.firstDebrief = firstDebrief;
   await page.screenshot({ path: `${out}/safety-natural-failure.png` });
   await page.locator('[data-action="revive"]').tap();
   await waitStatus('playing');
   const revived = await state();
   assert.equal(revived.reviveUsed, true);
+  await nextAttempt.waitFor({ state: 'hidden' });
   report.revived = revived;
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(150);
@@ -44,10 +52,13 @@ try {
   await waitStatus('failed');
   await page.waitForTimeout(150);
   assert.equal(await page.locator('[data-action="revive"]').isVisible(), false, 'no second free or fake-ad revival');
+  await nextAttempt.waitFor({ state: 'visible' });
+  assert.match(await nextAttempt.innerText(), /下局挑战 \d+m/);
   await page.locator('[data-action="restart"]').tap();
   await waitStatus('playing');
   const restarted = await state();
   assert.equal(restarted.reviveUsed, false);
+  await nextAttempt.waitFor({ state: 'hidden' });
   report.restarted = restarted;
   assert.deepEqual(errors, []);
   report.passed = true;
