@@ -65,6 +65,10 @@ try {
       inputHeld: boolean; attached: boolean; playerX: number; playerY: number;
       targetY: number; requiredAction: string; tick: number;
       samplePhase: 'available' | 'claimed-after-real-release' }> = {};
+    // Separate closest BODY position from closest observed, actively HELD rope.
+    // A conservative rider can genuinely hold within 25px of the ring and
+    // then release 15px later; overwriting its only witness mislabels choice.
+    const heldNearby: typeof nearest = {};
     let held = false, holdAt = -10000, releaseAt = -10000, revives = 0;
     const touchPoint = { x: Math.round(viewport.width * .13), y: Math.round(viewport.height * .72), id: 1 };
     const getState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as {
@@ -160,6 +164,19 @@ try {
                   playerX: s.player.x, playerY: s.player.y, targetY: offer.y,
                   requiredAction: offer.requiredAction ?? 'release', tick: s.tick,
                   samplePhase: realReleasedMount ? 'claimed-after-real-release' : 'available' };
+              }
+            }
+            if (offer.status === 'available' && s.inputHeld && !!s.attachedAnchorId
+              && Math.abs(s.player.x - offer.x) < 1300) {
+              const distancePx = Math.abs(s.player.x - offer.x);
+              if (!heldNearby[key] || distancePx < heldNearby[key]!.distancePx) {
+                heldNearby[key] = {
+                  distancePx, heightDifferencePx: s.player.y - offer.y,
+                  inputHeld: true, attached: true, playerX: s.player.x,
+                  playerY: s.player.y, targetY: offer.y,
+                  requiredAction: offer.requiredAction ?? 'release', tick: s.tick,
+                  samplePhase: 'available',
+                };
               }
             }
             if (offer.status === 'available' && s.player.x >= offer.x - 850
@@ -400,7 +417,7 @@ try {
         lanternRoute, birdRoute, duration: maxSeconds,
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
-        encounters: [...encounters.entries()], nearest, inputEdges,
+        encounters: [...encounters.entries()], nearest, heldNearby, inputEdges,
         birdClaimPreparations, birdApproachTrace,
         birdMount: birdRideFirstTick === null || birdRideLastTick === null ? null
           : { firstTick: birdRideFirstTick, lastTick: birdRideLastTick,
