@@ -55,6 +55,7 @@ try {
     let reviveCount = 0;
     let tutorialCompleted = false;
     let coachingLayoutVerified = false;
+    let unclutteredEncounterVerified = false;
     const label = `${viewport.width}x${viewport.height}`;
     const started = Date.now();
     const readState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as { __PROTOTYPE_TEST__: { getState(): GrappleState } }).__PROTOTYPE_TEST__.getState());
@@ -111,6 +112,31 @@ try {
       if (!touch) await page.locator('[data-action="grapple"]').focus();
       for (let sample = 0; Date.now() - started < 140_000; sample++) {
         const state = await readState();
+        if (!unclutteredEncounterVerified && state.levelId === 'night-patrol'
+          && !state.vehicleId && state.vehicleOffers.some(offer =>
+            offer.status === 'available' && offer.x >= state.player.x
+            && offer.x - state.player.x <= (offer.id === '青鸾' ? 2000 : 920))) {
+          // Assert against real browser visibility, not only source strings.
+          // A target being actively coached must not also cover the left
+          // gameplay view with an identical "go grab target" readout.
+          const hud = await page.evaluate(() => {
+            const goal = document.querySelector<HTMLElement>('[data-experience="goal"]')!;
+            const pursuit = document.querySelector<HTMLElement>('[data-experience="pursuit"]')!;
+            const cue = document.querySelector<HTMLElement>('[data-experience="cue"]')!;
+            return {
+              goalHidden: goal.hidden,
+              pursuitUrgency: pursuit.dataset.urgency,
+              cueVisible: !cue.hidden,
+              cueTitle: cue.querySelector('strong')?.textContent,
+            };
+          });
+          assert.equal(hud.goalHidden, true, 'close active encounter must not duplicate the flight cue');
+          assert.equal(hud.cueVisible, true, 'world pickup still needs a visible contextual one-finger instruction');
+          assert.ok(['calm','alert','danger'].includes(hud.pursuitUrgency ?? ''),
+            'pursuit urgency must remain derived from real engine pressure');
+          lifecycle.unclutteredEncounter = hud;
+          unclutteredEncounterVerified = true;
+        }
         if (!coachingLayoutVerified && state.levelId === 'night-patrol' && state.player.x > 3_700) {
           // Observe the actual browser bounding box and real camera projection.
           // In the old mobile layout the bottom-left coach covered the hero

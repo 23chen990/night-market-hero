@@ -57,3 +57,22 @@ test('chase HUD exposes the persistent patrol and escalates to danger', () => {
   assert.match(main, /chaseVisible = state\.levelId === 'night-patrol'/);
   assert.match(experienceCss, /\.pursuit-readout/);
 });
+
+test('first minute reduces duplicated objective copy without hiding officer danger or touch instructions', async () => {
+  const hudSource = await readFile(new URL('../src/experience-hud.ts', import.meta.url), 'utf8');
+  assert.match(hudSource, /const offerInCoachingRange =/);
+  assert.match(hudSource, /offer\.id === '青鸾' \? 2000 : 920/);
+  assert.match(hudSource, /this\.goal\.hidden = .*this\.awaiting[\s\S]*?offerInCoachingRange/);
+  assert.match(hudSource, /this\.layer\.dataset\.goalVisible/);
+  assert.match(hudSource, /this\.pursuit\.dataset\.urgency = urgency/);
+  assert.match(hudSource, /closeness >= 0\.75 \? 'danger'/);
+  assert.match(hudSource, /closeness >= 0\.35 \? 'alert'/);
+  assert.match(hudSource, /this\.cue\.dataset\.density = lowPriority \? 'compact' : 'full'/);
+  assert.match(hudSource, /this\.cue\.dataset\.quickAction/);
+  assert.match(hudSource, /state\.combo === 1\) this\.announce\('漂亮松手/);
+  assert.match(experienceCss, /\.pursuit-readout\[data-urgency="calm"\] i \{ display: none; \}/);
+  assert.match(experienceCss, /\.experience-layer\[data-goal-visible="false"\] \.pursuit-readout/);
+  assert.match(experienceCss, /\.control-coach\[data-density="compact"\] span \{ display: none; \}/);
+  assert.match(experienceCss, /\.control-coach\[data-quick-action="release"\]/);
+  assert.match(experienceCss, /\.control-coach\[data-quick-action="press"\]/);
+});
