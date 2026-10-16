@@ -65,8 +65,11 @@ assert.equal(cm.get(kiteIdentity)?.result, 'missed', 'ordinary low flight may mi
 assert.equal(sm.get(kiteIdentity)?.result, 'claimed', 'deliberate high swing and release must earn the kite');
 const kiteResolvedAt = sm.get(kiteIdentity)?.tick;
 assert.ok(Number.isInteger(kiteResolvedAt) && s.inputEdges?.some(edge =>
-  edge.action === 'release' && edge.tick <= kiteResolvedAt && kiteResolvedAt - edge.tick <= 130),
-  'a real recent release input edge must precede the earned kite at the SAME build tick');
+  edge.action === 'release' && Number.isInteger(edge.engineReleaseTick)
+  && edge.requestedTick <= edge.engineReleaseTick
+  && edge.engineReleaseTick <= kiteResolvedAt
+  && kiteResolvedAt - edge.engineReleaseTick <= 130),
+  'a browser release of a REAL roof rope (engine-confirmed tick) must precede the earned kite');
 assert.ok(s.seenRides.includes('纸鸢'), 'the actual kite ride must become controllable');
 assert.ok(s.screenshotNames.includes('encounter-4-claimed'), 'earned kite requires a visual encounter frame');
 const kiteA=c.nearest?.[kiteIdentity], kiteB=s.nearest?.[kiteIdentity];
