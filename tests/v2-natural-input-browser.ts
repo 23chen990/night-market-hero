@@ -44,7 +44,7 @@ try {
     const traces: unknown[] = [];
     // Exact button edges are recorded before asynchronous screenshots, allowing
     // the independent compare gate to prove skill is player input, not a grant.
-    const inputEdges: Array<{ tick: number; requestedTick: number; action: 'press' | 'release' }> = [];
+    const inputEdges: Array<{ tick: number; requestedTick: number; engineReleaseTick?: number; action: 'press' | 'release' }> = [];
     const screenshots: string[] = [];
     const encounters = new Map<string, { type: string; result: string; reason: string; tick: number }>();
     const seenOffers = new Set<string>();
@@ -70,6 +70,7 @@ try {
     // then release 15px later; overwriting its only witness mislabels choice.
     const heldNearby: typeof nearest = {};
     let held = false, holdAt = -10000, releaseAt = -10000, revives = 0;
+    let lastObservedEngineReleaseTick = -10000;
     const touchPoint = { x: Math.round(viewport.width * .13), y: Math.round(viewport.height * .72), id: 1 };
     const getState = (): Promise<GrappleState> => page.evaluate(() => (window as unknown as {
       __PROTOTYPE_TEST__: { getState(): GrappleState }
@@ -80,17 +81,15 @@ try {
         touchPoints: down ? [touchPoint] : [] });
       else if (down) await page.keyboard.down('Space'); else await page.keyboard.up('Space');
       held = down;
-      // The tick supplied by the controller was sampled BEFORE the awaited
-      // browser/CDP dispatch. On a busy video capture this was 13-14 fixed
-      // ticks stale when the actual Phaser release ran. The evidence tick
-      // must come from a new read AFTER the real hardware event, otherwise
-      // a correctly earned stylish release falsely fails the strict ±10-tick
-      // causality gate. Retain the original observation for audit.
-      const dispatchedTick = (await getState()).tick;
-      inputEdges.push({ tick: dispatchedTick, requestedTick: tick,
+      // Record real browser dispatch, but DO NOT read a second full game state
+      // here: the extra 20-30 physics ticks between dispatch and next decision
+      // destabilized genuine pulley/kite/lantern/bird routes (see 913d772 CI).
+      // At the NEXT existing render-state observation, correlate this edge
+      // with the game's authoritative lastGrappleReleaseTick. This is stronger
+      // evidence than either the stale before-dispatch tick or a late after-
+      // dispatch wall-clock sample, and keeps input cadence unchanged.
+      inputEdges.push({ tick, requestedTick: tick,
         action: down ? 'press' : 'release' });
-      // Keep the established gameplay driver cadence untouched: these
-      // timings describe the controller's decision, not the evidence timestamp.
       if (down) holdAt = tick; else releaseAt = tick;
     };
     // Capture asynchronously: blocking on a PNG encode can consume the
@@ -130,6 +129,18 @@ try {
       const began = Date.now();
       for (let step = 0; Date.now() - began < maxSeconds * 1000; step++) {
         const s = await getState();
+        // The runtime writes lastGrappleReleaseTick only when a REAL held
+        // world-rope is released. Do not synthesize a successful release tick,
+        // or add extra CDP reads that change the natural flight trajectory.
+        if (s.lastGrappleReleaseTick < lastObservedEngineReleaseTick)
+          lastObservedEngineReleaseTick = s.lastGrappleReleaseTick;
+        if (s.lastGrappleReleaseTick > lastObservedEngineReleaseTick) {
+          const edge = [...inputEdges].reverse().find(event =>
+            event.action === 'release' && event.engineReleaseTick === undefined
+            && event.tick <= s.lastGrappleReleaseTick);
+          if (edge) edge.engineReleaseTick = s.lastGrappleReleaseTick;
+          lastObservedEngineReleaseTick = s.lastGrappleReleaseTick;
+        }
         if (step % 5 === 0) traces.push({ ms: Date.now() - began, tick: s.tick, status: s.status,
           level: s.levelId, segment: s.segmentIndex, x: s.player.x, y: s.player.y,
           vx: s.player.vx, vy: s.player.vy, vehicle: s.vehicleId,
