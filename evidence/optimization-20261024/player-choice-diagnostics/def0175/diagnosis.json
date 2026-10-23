@@ -1,0 +1,60 @@
+{
+  "status": "HONEST_FOCUSED_LANTERN_MISS_RETAINED",
+  "buildSha256": "def0175ab5d70d5018b4e5bc5c5b1217663f31d6e9b1b2b442d17f9235a34a8e",
+  "gates": {
+    "playerChoice": "ENGINEERING_CONTRAST_PASS",
+    "lantern": "FAIL: actual physical miss",
+    "bird": "BIRD_NATURAL_INPUT_PASS"
+  },
+  "issue": "The input driver treated a strongly rising body near the low lantern as a reachable low-route release.",
+  "releaseDecision": {
+    "ms": 32599,
+    "tick": 2813,
+    "status": "playing",
+    "level": "night-patrol",
+    "segment": 6,
+    "x": 10696.485293296919,
+    "y": 554.7519229933442,
+    "vx": 414.37914507758444,
+    "vy": -253.23614055009992,
+    "vehicle": null,
+    "attachedAnchorId": "endless-node-10557",
+    "distance": 496.74712393407935,
+    "inputTransitions": 45
+  },
+  "actualReleaseTick": 2822,
+  "inputDelayTicks": 9,
+  "nearestObservedBody": {
+    "distancePx": 13.550673226824074,
+    "heightDifferencePx": -151.9553928831977,
+    "inputHeld": false,
+    "attached": false,
+    "playerX": 10911.808178447816,
+    "playerY": 505.6044157292425,
+    "targetY": 657.5598086124402,
+    "requiredAction": "press",
+    "tick": 2885,
+    "samplePhase": "available"
+  },
+  "originalRadius": {
+    "x": 84,
+    "y": 100
+  },
+  "estimatedCenterYAtDecision": 549.1118474259371,
+  "actualOutcome": {
+    "type": "灯笼群",
+    "result": "missed",
+    "reason": "擦过挂环边缘：下次对准发光圈中心",
+    "tick": 2943
+  },
+  "evidenceReview": [
+    "lantern/844x390-approach-6-灯笼群.png",
+    "lantern/844x390-encounter-6-missed.png",
+    "lantern/lantern-contact-sheet.png",
+    "lantern/844x390-journey.webm",
+    "bird/844x390-ride-青鸾.png",
+    "bird/844x390-end.png"
+  ],
+  "decision": "Correct only the observational touch policy to judge the real visible flight arc earlier. No product, gate, pickup geometry, eligibility window or state mutation changes.",
+  "caveat": "These are state-observing real browser inputs, not a blind-human or native-platform test."
+}

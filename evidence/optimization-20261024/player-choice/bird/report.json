@@ -1,0 +1,2899 @@
+{
+  "source": "/workspace/scratch/dc818e809d62/night-market-hero/dist/index.html",
+  "buildSha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+  "observation": "file URL browser touch/key input; state-observing driver (NOT blind human QA)",
+  "results": [
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "inputMode": "touch",
+      "embedded": false,
+      "skilledRoute": true,
+      "lanternRoute": false,
+      "birdRoute": true,
+      "duration": 58,
+      "finalStatus": "failed",
+      "level": "night-patrol",
+      "worldX": 21899.845776608614,
+      "segment": 11,
+      "revives": 1,
+      "seenRides": [
+        "货运滑索",
+        "纸鸢",
+        "青鸾"
+      ],
+      "encounters": [
+        [
+          "32:2:2:货运滑索",
+          {
+            "type": "货运滑索",
+            "result": "claimed",
+            "reason": "准确接住实体挂环",
+            "tick": 791
+          }
+        ],
+        [
+          "32:4:4:纸鸢",
+          {
+            "type": "纸鸢",
+            "result": "claimed",
+            "reason": "准确接住实体挂环",
+            "tick": 1673
+          }
+        ],
+        [
+          "32:6:6:灯笼群",
+          {
+            "type": "灯笼群",
+            "result": "missed",
+            "reason": "擦过挂环边缘：下次对准发光圈中心",
+            "tick": 2925
+          }
+        ],
+        [
+          "32:8:9:青鸾",
+          {
+            "type": "青鸾",
+            "result": "claimed",
+            "reason": "准确接住实体挂环",
+            "tick": 3676
+          }
+        ]
+      ],
+      "nearest": {
+        "32:2:2:货运滑索": {
+          "distancePx": 23.526861596007166,
+          "heightDifferencePx": 94.27464256219139,
+          "inputHeld": false,
+          "attached": false,
+          "playerX": 3750.63581782983,
+          "playerY": 708.3894750980766,
+          "targetY": 614.1148325358852,
+          "requiredAction": "release",
+          "tick": 791,
+          "samplePhase": "claimed-after-real-release"
+        },
+        "32:4:4:纸鸢": {
+          "distancePx": 51.535001637114874,
+          "heightDifferencePx": -88.07616694497312,
+          "inputHeld": false,
+          "attached": false,
+          "playerX": 7992.764998362885,
+          "playerY": 466.58383305502696,
+          "targetY": 554.6600000000001,
+          "requiredAction": "high-release",
+          "tick": 1673,
+          "samplePhase": "claimed-after-real-release"
+        },
+        "32:6:6:灯笼群": {
+          "distancePx": 5.309685007974622,
+          "heightDifferencePx": -182.15147527910682,
+          "inputHeld": false,
+          "attached": false,
+          "playerX": 10920.049166666666,
+          "playerY": 475.40833333333336,
+          "targetY": 657.5598086124402,
+          "requiredAction": "press",
+          "tick": 2854,
+          "samplePhase": "available"
+        },
+        "32:8:9:青鸾": {
+          "distancePx": 7.788081627862994,
+          "heightDifferencePx": 62.48968105846433,
+          "inputHeld": false,
+          "attached": false,
+          "playerX": 14515.141918372137,
+          "playerY": 466.3696810584643,
+          "targetY": 403.88,
+          "requiredAction": "stylish-release",
+          "tick": 3681,
+          "samplePhase": "claimed-after-real-release"
+        }
+      },
+      "heldNearby": {
+        "32:2:2:货运滑索": {
+          "distancePx": 198.44412222246865,
+          "heightDifferencePx": 118.6155513956619,
+          "inputHeld": true,
+          "attached": true,
+          "playerX": 3575.7185572033686,
+          "playerY": 732.7303839315471,
+          "targetY": 614.1148325358852,
+          "requiredAction": "release",
+          "tick": 755,
+          "samplePhase": "available"
+        },
+        "32:4:4:纸鸢": {
+          "distancePx": 242.54408916589546,
+          "heightDifferencePx": -14.508010476424147,
+          "inputHeld": true,
+          "attached": true,
+          "playerX": 7801.755910834105,
+          "playerY": 540.1519895235759,
+          "targetY": 554.6600000000001,
+          "requiredAction": "high-release",
+          "tick": 1594,
+          "samplePhase": "available"
+        },
+        "32:6:6:灯笼群": {
+          "distancePx": 18.356881734671333,
+          "heightDifferencePx": -248.60485868913986,
+          "inputHeld": true,
+          "attached": true,
+          "playerX": 10907.001969939969,
+          "playerY": 408.9549499233003,
+          "targetY": 657.5598086124402,
+          "requiredAction": "press",
+          "tick": 2725,
+          "samplePhase": "available"
+        },
+        "32:8:9:青鸾": {
+          "distancePx": 34.95190782053032,
+          "heightDifferencePx": 104.41522409020399,
+          "inputHeld": true,
+          "attached": true,
+          "playerX": 14487.97809217947,
+          "playerY": 508.295224090204,
+          "targetY": 403.88,
+          "requiredAction": "stylish-release",
+          "tick": 3669,
+          "samplePhase": "available"
+        }
+      },
+      "inputEdges": [
+        {
+          "tick": 5,
+          "requestedTick": 5,
+          "action": "press"
+        },
+        {
+          "tick": 97,
+          "requestedTick": 97,
+          "action": "release",
+          "engineReleaseTick": 103
+        },
+        {
+          "tick": 123,
+          "requestedTick": 123,
+          "action": "press"
+        },
+        {
+          "tick": 179,
+          "requestedTick": 179,
+          "action": "release",
+          "engineReleaseTick": 185
+        },
+        {
+          "tick": 207,
+          "requestedTick": 207,
+          "action": "press"
+        },
+        {
+          "tick": 243,
+          "requestedTick": 243,
+          "action": "release",
+          "engineReleaseTick": 249
+        },
+        {
+          "tick": 271,
+          "requestedTick": 271,
+          "action": "press"
+        },
+        {
+          "tick": 337,
+          "requestedTick": 337,
+          "action": "release",
+          "engineReleaseTick": 343
+        },
+        {
+          "tick": 365,
+          "requestedTick": 365,
+          "action": "press"
+        },
+        {
+          "tick": 415,
+          "requestedTick": 415,
+          "action": "release",
+          "engineReleaseTick": 421
+        },
+        {
+          "tick": 441,
+          "requestedTick": 441,
+          "action": "press"
+        },
+        {
+          "tick": 457,
+          "requestedTick": 457,
+          "action": "release",
+          "engineReleaseTick": 463
+        },
+        {
+          "tick": 485,
+          "requestedTick": 485,
+          "action": "press"
+        },
+        {
+          "tick": 583,
+          "requestedTick": 583,
+          "action": "release",
+          "engineReleaseTick": 589
+        },
+        {
+          "tick": 609,
+          "requestedTick": 609,
+          "action": "press"
+        },
+        {
+          "tick": 645,
+          "requestedTick": 645,
+          "action": "release",
+          "engineReleaseTick": 651
+        },
+        {
+          "tick": 671,
+          "requestedTick": 671,
+          "action": "press"
+        },
+        {
+          "tick": 685,
+          "requestedTick": 685,
+          "action": "release",
+          "engineReleaseTick": 691
+        },
+        {
+          "tick": 5,
+          "requestedTick": 5,
+          "action": "press"
+        },
+        {
+          "tick": 94,
+          "requestedTick": 94,
+          "action": "release",
+          "engineReleaseTick": 101
+        },
+        {
+          "tick": 115,
+          "requestedTick": 115,
+          "action": "press"
+        },
+        {
+          "tick": 183,
+          "requestedTick": 183,
+          "action": "release",
+          "engineReleaseTick": 190
+        },
+        {
+          "tick": 215,
+          "requestedTick": 215,
+          "action": "press"
+        },
+        {
+          "tick": 244,
+          "requestedTick": 244,
+          "action": "release",
+          "engineReleaseTick": 252
+        },
+        {
+          "tick": 268,
+          "requestedTick": 268,
+          "action": "press"
+        },
+        {
+          "tick": 319,
+          "requestedTick": 319,
+          "action": "release",
+          "engineReleaseTick": 326
+        },
+        {
+          "tick": 353,
+          "requestedTick": 353,
+          "action": "press"
+        },
+        {
+          "tick": 377,
+          "requestedTick": 377,
+          "action": "release",
+          "engineReleaseTick": 383
+        },
+        {
+          "tick": 404,
+          "requestedTick": 404,
+          "action": "press"
+        },
+        {
+          "tick": 447,
+          "requestedTick": 447,
+          "action": "release",
+          "engineReleaseTick": 453
+        },
+        {
+          "tick": 472,
+          "requestedTick": 472,
+          "action": "press"
+        },
+        {
+          "tick": 519,
+          "requestedTick": 519,
+          "action": "release",
+          "engineReleaseTick": 525
+        },
+        {
+          "tick": 548,
+          "requestedTick": 548,
+          "action": "press"
+        },
+        {
+          "tick": 635,
+          "requestedTick": 635,
+          "action": "release",
+          "engineReleaseTick": 641
+        },
+        {
+          "tick": 662,
+          "requestedTick": 662,
+          "action": "press"
+        },
+        {
+          "tick": 755,
+          "requestedTick": 755,
+          "action": "release",
+          "engineReleaseTick": 761
+        },
+        {
+          "tick": 791,
+          "requestedTick": 791,
+          "action": "press"
+        },
+        {
+          "tick": 1057,
+          "requestedTick": 1057,
+          "action": "release"
+        },
+        {
+          "tick": 1087,
+          "requestedTick": 1087,
+          "action": "press"
+        },
+        {
+          "tick": 1119,
+          "requestedTick": 1119,
+          "action": "release",
+          "engineReleaseTick": 1125
+        },
+        {
+          "tick": 1147,
+          "requestedTick": 1147,
+          "action": "press"
+        },
+        {
+          "tick": 1180,
+          "requestedTick": 1180,
+          "action": "release",
+          "engineReleaseTick": 1187
+        },
+        {
+          "tick": 1201,
+          "requestedTick": 1201,
+          "action": "press"
+        },
+        {
+          "tick": 1243,
+          "requestedTick": 1243,
+          "action": "release",
+          "engineReleaseTick": 1249
+        },
+        {
+          "tick": 1272,
+          "requestedTick": 1272,
+          "action": "press"
+        },
+        {
+          "tick": 1309,
+          "requestedTick": 1309,
+          "action": "release",
+          "engineReleaseTick": 1315
+        },
+        {
+          "tick": 1338,
+          "requestedTick": 1338,
+          "action": "press"
+        },
+        {
+          "tick": 1371,
+          "requestedTick": 1371,
+          "action": "release",
+          "engineReleaseTick": 1378
+        },
+        {
+          "tick": 1402,
+          "requestedTick": 1402,
+          "action": "press"
+        },
+        {
+          "tick": 1474,
+          "requestedTick": 1474,
+          "action": "release",
+          "engineReleaseTick": 1498
+        },
+        {
+          "tick": 1511,
+          "requestedTick": 1511,
+          "action": "press"
+        },
+        {
+          "tick": 1594,
+          "requestedTick": 1594,
+          "action": "release",
+          "engineReleaseTick": 1601
+        },
+        {
+          "tick": 1673,
+          "requestedTick": 1673,
+          "action": "press"
+        },
+        {
+          "tick": 1717,
+          "requestedTick": 1717,
+          "action": "release"
+        },
+        {
+          "tick": 1871,
+          "requestedTick": 1871,
+          "action": "press"
+        },
+        {
+          "tick": 1972,
+          "requestedTick": 1972,
+          "action": "release"
+        },
+        {
+          "tick": 2139,
+          "requestedTick": 2139,
+          "action": "press"
+        },
+        {
+          "tick": 2247,
+          "requestedTick": 2247,
+          "action": "release"
+        },
+        {
+          "tick": 2415,
+          "requestedTick": 2415,
+          "action": "press"
+        },
+        {
+          "tick": 2450,
+          "requestedTick": 2450,
+          "action": "release"
+        },
+        {
+          "tick": 2481,
+          "requestedTick": 2481,
+          "action": "press"
+        },
+        {
+          "tick": 2803,
+          "requestedTick": 2803,
+          "action": "release"
+        },
+        {
+          "tick": 2909,
+          "requestedTick": 2909,
+          "action": "press"
+        },
+        {
+          "tick": 2969,
+          "requestedTick": 2969,
+          "action": "release",
+          "engineReleaseTick": 2975
+        },
+        {
+          "tick": 2999,
+          "requestedTick": 2999,
+          "action": "press"
+        },
+        {
+          "tick": 3085,
+          "requestedTick": 3085,
+          "action": "release",
+          "engineReleaseTick": 3091
+        },
+        {
+          "tick": 3115,
+          "requestedTick": 3115,
+          "action": "press"
+        },
+        {
+          "tick": 3169,
+          "requestedTick": 3169,
+          "action": "release",
+          "engineReleaseTick": 3175
+        },
+        {
+          "tick": 3199,
+          "requestedTick": 3199,
+          "action": "press"
+        },
+        {
+          "tick": 3231,
+          "requestedTick": 3231,
+          "action": "release",
+          "engineReleaseTick": 3238
+        },
+        {
+          "tick": 3259,
+          "requestedTick": 3259,
+          "action": "press"
+        },
+        {
+          "tick": 3299,
+          "requestedTick": 3299,
+          "action": "release",
+          "engineReleaseTick": 3306
+        },
+        {
+          "tick": 3330,
+          "requestedTick": 3330,
+          "action": "press"
+        },
+        {
+          "tick": 3360,
+          "requestedTick": 3360,
+          "action": "release",
+          "engineReleaseTick": 3367
+        },
+        {
+          "tick": 3381,
+          "requestedTick": 3381,
+          "action": "press"
+        },
+        {
+          "tick": 3424,
+          "requestedTick": 3424,
+          "action": "release",
+          "engineReleaseTick": 3431
+        },
+        {
+          "tick": 3454,
+          "requestedTick": 3454,
+          "action": "press"
+        },
+        {
+          "tick": 3489,
+          "requestedTick": 3489,
+          "action": "release",
+          "engineReleaseTick": 3495
+        },
+        {
+          "tick": 3531,
+          "requestedTick": 3531,
+          "action": "press"
+        },
+        {
+          "tick": 3547,
+          "requestedTick": 3547,
+          "action": "release",
+          "engineReleaseTick": 3553
+        },
+        {
+          "tick": 3569,
+          "requestedTick": 3569,
+          "action": "press"
+        },
+        {
+          "tick": 3669,
+          "requestedTick": 3669,
+          "action": "release",
+          "engineReleaseTick": 3675
+        },
+        {
+          "tick": 3681,
+          "requestedTick": 3681,
+          "action": "press"
+        },
+        {
+          "tick": 3705,
+          "requestedTick": 3705,
+          "action": "release"
+        },
+        {
+          "tick": 3821,
+          "requestedTick": 3821,
+          "action": "press"
+        },
+        {
+          "tick": 3867,
+          "requestedTick": 3867,
+          "action": "release"
+        },
+        {
+          "tick": 3960,
+          "requestedTick": 3960,
+          "action": "press"
+        },
+        {
+          "tick": 4007,
+          "requestedTick": 4007,
+          "action": "release"
+        },
+        {
+          "tick": 4103,
+          "requestedTick": 4103,
+          "action": "press"
+        },
+        {
+          "tick": 4141,
+          "requestedTick": 4141,
+          "action": "release"
+        },
+        {
+          "tick": 4228,
+          "requestedTick": 4228,
+          "action": "press"
+        },
+        {
+          "tick": 4262,
+          "requestedTick": 4262,
+          "action": "release"
+        },
+        {
+          "tick": 4345,
+          "requestedTick": 4345,
+          "action": "press"
+        },
+        {
+          "tick": 4373,
+          "requestedTick": 4373,
+          "action": "release"
+        },
+        {
+          "tick": 4444,
+          "requestedTick": 4444,
+          "action": "press"
+        },
+        {
+          "tick": 4481,
+          "requestedTick": 4481,
+          "action": "release"
+        },
+        {
+          "tick": 4565,
+          "requestedTick": 4565,
+          "action": "press"
+        },
+        {
+          "tick": 4601,
+          "requestedTick": 4601,
+          "action": "release"
+        },
+        {
+          "tick": 4689,
+          "requestedTick": 4689,
+          "action": "press"
+        },
+        {
+          "tick": 4723,
+          "requestedTick": 4723,
+          "action": "release"
+        },
+        {
+          "tick": 4839,
+          "requestedTick": 4839,
+          "action": "press"
+        },
+        {
+          "tick": 4875,
+          "requestedTick": 4875,
+          "action": "release"
+        },
+        {
+          "tick": 4957,
+          "requestedTick": 4957,
+          "action": "press"
+        },
+        {
+          "tick": 4985,
+          "requestedTick": 4985,
+          "action": "release"
+        },
+        {
+          "tick": 5057,
+          "requestedTick": 5057,
+          "action": "press"
+        },
+        {
+          "tick": 5079,
+          "requestedTick": 5079,
+          "action": "release"
+        },
+        {
+          "tick": 5147,
+          "requestedTick": 5147,
+          "action": "press"
+        },
+        {
+          "tick": 5173,
+          "requestedTick": 5173,
+          "action": "release",
+          "engineReleaseTick": 5179
+        },
+        {
+          "tick": 5211,
+          "requestedTick": 5211,
+          "action": "press"
+        },
+        {
+          "tick": 5237,
+          "requestedTick": 5237,
+          "action": "release",
+          "engineReleaseTick": 5243
+        },
+        {
+          "tick": 5275,
+          "requestedTick": 5275,
+          "action": "press"
+        },
+        {
+          "tick": 5294,
+          "requestedTick": 5294,
+          "action": "release",
+          "engineReleaseTick": 5300
+        },
+        {
+          "tick": 5327,
+          "requestedTick": 5327,
+          "action": "press"
+        },
+        {
+          "tick": 5347,
+          "requestedTick": 5347,
+          "action": "release",
+          "engineReleaseTick": 5354
+        },
+        {
+          "tick": 5387,
+          "requestedTick": 5387,
+          "action": "press"
+        },
+        {
+          "tick": 5413,
+          "requestedTick": 5413,
+          "action": "release",
+          "engineReleaseTick": 5419
+        },
+        {
+          "tick": 5451,
+          "requestedTick": 5451,
+          "action": "press"
+        },
+        {
+          "tick": 5471,
+          "requestedTick": 5471,
+          "action": "release",
+          "engineReleaseTick": 5477
+        },
+        {
+          "tick": 5511,
+          "requestedTick": 5511,
+          "action": "press"
+        },
+        {
+          "tick": 5533,
+          "requestedTick": 5533,
+          "action": "release",
+          "engineReleaseTick": 5539
+        },
+        {
+          "tick": 5571,
+          "requestedTick": 5571,
+          "action": "press"
+        },
+        {
+          "tick": 5592,
+          "requestedTick": 5592,
+          "action": "release",
+          "engineReleaseTick": 5599
+        },
+        {
+          "tick": 5633,
+          "requestedTick": 5633,
+          "action": "press"
+        },
+        {
+          "tick": 5695,
+          "requestedTick": 5695,
+          "action": "release",
+          "engineReleaseTick": 5702
+        },
+        {
+          "tick": 5736,
+          "requestedTick": 5736,
+          "action": "press"
+        },
+        {
+          "tick": 5757,
+          "requestedTick": 5757,
+          "action": "release",
+          "engineReleaseTick": 5764
+        },
+        {
+          "tick": 5799,
+          "requestedTick": 5799,
+          "action": "press"
+        },
+        {
+          "tick": 5817,
+          "requestedTick": 5817,
+          "action": "release",
+          "engineReleaseTick": 5823
+        },
+        {
+          "tick": 5857,
+          "requestedTick": 5857,
+          "action": "press"
+        },
+        {
+          "tick": 5878,
+          "requestedTick": 5878,
+          "action": "release",
+          "engineReleaseTick": 5885
+        },
+        {
+          "tick": 5919,
+          "requestedTick": 5919,
+          "action": "press"
+        },
+        {
+          "tick": 5939,
+          "requestedTick": 5939,
+          "action": "release",
+          "engineReleaseTick": 5946
+        },
+        {
+          "tick": 5979,
+          "requestedTick": 5979,
+          "action": "press"
+        },
+        {
+          "tick": 6000,
+          "requestedTick": 6000,
+          "action": "release"
+        }
+      ],
+      "birdClaimPreparations": {
+        "32:8:9:青鸾": [
+          3175,
+          3238,
+          3306,
+          3367,
+          3431,
+          3495,
+          3553,
+          3675
+        ]
+      },
+      "birdApproachTrace": [
+        {
+          "tick": 3278,
+          "x": 12484.703114309514,
+          "y": 651.1168893591305,
+          "vx": 645.1941915728406,
+          "vy": 118.09512457602655,
+          "attached": "endless-node-12550",
+          "held": true,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238
+          ],
+          "lastReleaseAge": 40
+        },
+        {
+          "tick": 3299,
+          "x": 12598.90101412218,
+          "y": 653.5971332530099,
+          "vx": 651.1489273276923,
+          "vy": -90.17008656992769,
+          "attached": "endless-node-12550",
+          "held": true,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238
+          ],
+          "lastReleaseAge": 61
+        },
+        {
+          "tick": 3330,
+          "x": 12763.812101666643,
+          "y": 632.9300970204737,
+          "vx": 635.7757943234652,
+          "vy": 17.268909257908867,
+          "attached": null,
+          "held": false,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238,
+            3306
+          ],
+          "lastReleaseAge": 24
+        },
+        {
+          "tick": 3360,
+          "x": 12924.653899919633,
+          "y": 642.5227393980097,
+          "vx": 650.7853052671975,
+          "vy": -91.11136622677836,
+          "attached": "endless-node-12879",
+          "held": true,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238,
+            3306
+          ],
+          "lastReleaseAge": 54
+        },
+        {
+          "tick": 3403,
+          "x": 13141.185233234262,
+          "y": 648.5311542626565,
+          "vx": 601.0959202987866,
+          "vy": 152.1270581236938,
+          "attached": "endless-node-13222",
+          "held": true,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238,
+            3306,
+            3367
+          ],
+          "lastReleaseAge": 36
+        },
+        {
+          "tick": 3424,
+          "x": 13252.84696804959,
+          "y": 657.1038407471274,
+          "vx": 652.8607417993007,
+          "vy": -61.9660917009656,
+          "attached": "endless-node-13222",
+          "held": true,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238,
+            3306,
+            3367
+          ],
+          "lastReleaseAge": 57
+        },
+        {
+          "tick": 3454,
+          "x": 13413.648049947455,
+          "y": 641.7560356694039,
+          "vx": 640.9339779158706,
+          "vy": 30.952976004875474,
+          "attached": null,
+          "held": false,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431
+          ],
+          "lastReleaseAge": 23
+        },
+        {
+          "tick": 3489,
+          "x": 13602.411004140942,
+          "y": 651.4256993360354,
+          "vx": 647.8708049822324,
+          "vy": -114.2516123813039,
+          "attached": "endless-node-13541",
+          "held": true,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431
+          ],
+          "lastReleaseAge": 58
+        },
+        {
+          "tick": 3531,
+          "x": 13823.890178998976,
+          "y": 632.9948738223684,
+          "vx": 630.1956149378078,
+          "vy": 90.82259029401008,
+          "attached": null,
+          "held": false,
+          "stylishTicks": [
+            2975,
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495
+          ],
+          "lastReleaseAge": 36
+        },
+        {
+          "tick": 3557,
+          "x": 13961.885755523776,
+          "y": 628.5305806546573,
+          "vx": 633.3215246106305,
+          "vy": -111.32022745262368,
+          "attached": null,
+          "held": false,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 4
+        },
+        {
+          "tick": 3569,
+          "x": 14025.16374131817,
+          "y": 622.1652245760616,
+          "vx": 632.32152461063,
+          "vy": -23.320227452623705,
+          "attached": null,
+          "held": false,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 16
+        },
+        {
+          "tick": 3585,
+          "x": 14103.387451080778,
+          "y": 640.8585964192073,
+          "vx": 593.156600070132,
+          "vy": 187.16668578848368,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 32
+        },
+        {
+          "tick": 3597,
+          "x": 14165.934964876036,
+          "y": 654.3143424205717,
+          "vx": 652.3717915044521,
+          "vy": 77.43349906547157,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 44
+        },
+        {
+          "tick": 3607,
+          "x": 14220.377835997946,
+          "y": 656.4023635677949,
+          "vx": 653.8481495272582,
+          "vy": -27.134004736389194,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 54
+        },
+        {
+          "tick": 3617,
+          "x": 14274.507023837268,
+          "y": 649.8011618282007,
+          "vx": 644.4243645625186,
+          "vy": -131.4579254967674,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 64
+        },
+        {
+          "tick": 3627,
+          "x": 14326.766416561466,
+          "y": 634.7224606629937,
+          "vx": 609.1542283038634,
+          "vy": -229.69124766929244,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 74
+        },
+        {
+          "tick": 3637,
+          "x": 14375.056693792932,
+          "y": 612.0641267836578,
+          "vx": 550.8883846347746,
+          "vy": -313.11650922513223,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 84
+        },
+        {
+          "tick": 3647,
+          "x": 14417.747145809832,
+          "y": 583.3436926204356,
+          "vx": 476.46555780500717,
+          "vy": -375.6010181961907,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 94
+        },
+        {
+          "tick": 3669,
+          "x": 14487.97809217947,
+          "y": 508.295224090204,
+          "vx": 294.49743976922696,
+          "vy": -429.29142272439265,
+          "attached": "endless-node-14206",
+          "held": true,
+          "stylishTicks": [
+            3091,
+            3175,
+            3238,
+            3306,
+            3367,
+            3431,
+            3495,
+            3553
+          ],
+          "lastReleaseAge": 116
+        }
+      ],
+      "lanternApproachTrace": [],
+      "birdMount": {
+        "firstTick": 3681,
+        "lastTick": 5107,
+        "observedTicks": 1426
+      },
+      "screenshotNames": [
+        "start-card",
+        "terminal-0",
+        "segment-0",
+        "approach-2-货运滑索",
+        "segment-2",
+        "encounter-2-claimed",
+        "ride-货运滑索",
+        "segment-4",
+        "approach-4-纸鸢",
+        "encounter-4-claimed",
+        "ride-纸鸢",
+        "approach-6-灯笼群",
+        "segment-6",
+        "terminal-0",
+        "encounter-6-missed",
+        "approach-8-青鸾",
+        "segment-8",
+        "encounter-8-claimed",
+        "ride-青鸾",
+        "segment-10",
+        "terminal-1",
+        "end"
+      ],
+      "errors": [],
+      "samples": [
+        {
+          "ms": 28,
+          "tick": 5,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 82.19791666666667,
+          "y": 568.2083333333333,
+          "vx": 244.5833333333333,
+          "vy": -148.3333333333333,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 444.8739981518736,
+          "inputTransitions": 0
+        },
+        {
+          "ms": 576,
+          "tick": 65,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 200.62031575077805,
+          "y": 617.6961920881495,
+          "vx": 379.3762665446702,
+          "vy": 111.6672423278853,
+          "vehicle": null,
+          "attachedAnchorId": "node-1",
+          "distance": 468.75469537148814,
+          "inputTransitions": 1
+        },
+        {
+          "ms": 1048,
+          "tick": 123,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 411.455924676923,
+          "y": 615.5930823979861,
+          "vx": 442.2608972337453,
+          "vy": 38.031492260014716,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 572.6567244501248,
+          "inputTransitions": 2
+        },
+        {
+          "ms": 1512,
+          "tick": 179,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 641.2780423887808,
+          "y": 661.3896649281548,
+          "vx": 568.131176760907,
+          "vy": -71.85075177514206,
+          "vehicle": null,
+          "attachedAnchorId": "node-2",
+          "distance": 721.4931632994293,
+          "inputTransitions": 3
+        },
+        {
+          "ms": 2043,
+          "tick": 243,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 942.2686890222496,
+          "y": 679.4407317122925,
+          "vx": 590.6290444060475,
+          "vy": -33.50205223194418,
+          "vehicle": null,
+          "attachedAnchorId": "node-3",
+          "distance": 918.6514138991248,
+          "inputTransitions": 5
+        },
+        {
+          "ms": 2578,
+          "tick": 307,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 1145.5925840884952,
+          "y": 674.527345072466,
+          "vx": 423.5715498815151,
+          "vy": 128.36139600895316,
+          "vehicle": null,
+          "attachedAnchorId": "node-4",
+          "distance": 930.3844766589837,
+          "inputTransitions": 7
+        },
+        {
+          "ms": 3062,
+          "tick": 365,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 1385.142623808462,
+          "y": 692.3672282348099,
+          "vx": 513.8664055102004,
+          "vy": 102.54725444122049,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 1035.818840661451,
+          "inputTransitions": 8
+        },
+        {
+          "ms": 3609,
+          "tick": 431,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 1698.9985197800363,
+          "y": 714.9371732411383,
+          "vx": 581.0122056209674,
+          "vy": -51.553803726880474,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 1128.542100488698,
+          "inputTransitions": 10
+        },
+        {
+          "ms": 4191,
+          "tick": 501,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 1962.1673116411914,
+          "y": 611.0060526289575,
+          "vx": 184.56752618677078,
+          "vy": 197.19181122982488,
+          "vehicle": null,
+          "attachedAnchorId": "node-7",
+          "distance": 1220.5974516983097,
+          "inputTransitions": 13
+        },
+        {
+          "ms": 4609,
+          "tick": 551,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 2108.8215053266385,
+          "y": 705.7382534665453,
+          "vx": 518.9925995953754,
+          "vy": 176.9562952036596,
+          "vehicle": null,
+          "attachedAnchorId": "node-7",
+          "distance": 1196.4922892345817,
+          "inputTransitions": 13
+        },
+        {
+          "ms": 5092,
+          "tick": 609,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 2388.7566890584176,
+          "y": 713.3571261160712,
+          "vx": 583.3078286184192,
+          "vy": 36.87629744011137,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 1243.7884553156387,
+          "inputTransitions": 14
+        },
+        {
+          "ms": 5608,
+          "tick": 671,
+          "status": "playing",
+          "level": "lantern-entry",
+          "segment": 0,
+          "x": 2705.140474003343,
+          "y": 687.4186731263806,
+          "vx": 585.6625874132753,
+          "vy": 51.809952343284635,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 1305.2587190379836,
+          "inputTransitions": 16
+        },
+        {
+          "ms": 6493,
+          "tick": 41,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 0,
+          "x": 136.34617264499738,
+          "y": 591.2240284281963,
+          "vx": 246.5071217123578,
+          "vy": 151.08543567701676,
+          "vehicle": null,
+          "attachedAnchorId": "node-1",
+          "distance": 422.2965210224819,
+          "inputTransitions": 1
+        },
+        {
+          "ms": 6942,
+          "tick": 94,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 0,
+          "x": 303.20155718756064,
+          "y": 628.8311335886441,
+          "vx": 454.87891464869887,
+          "vy": -48.623123247016764,
+          "vehicle": null,
+          "attachedAnchorId": "node-1",
+          "distance": 430.14944712816464,
+          "inputTransitions": 1
+        },
+        {
+          "ms": 7586,
+          "tick": 172,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 0,
+          "x": 610.734360006585,
+          "y": 680.3320256258708,
+          "vx": 583.6190954746869,
+          "vy": -18.14131621933599,
+          "vehicle": null,
+          "attachedAnchorId": "node-2",
+          "distance": 455.97980409711704,
+          "inputTransitions": 3
+        },
+        {
+          "ms": 8207,
+          "tick": 244,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 0,
+          "x": 953.414804768117,
+          "y": 664.3280446168944,
+          "vx": 589.8835060761611,
+          "vy": -57.932250167040216,
+          "vehicle": null,
+          "attachedAnchorId": "node-3",
+          "distance": 516.6713085444676,
+          "inputTransitions": 5
+        },
+        {
+          "ms": 8802,
+          "tick": 319,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 0,
+          "x": 1312.4659884228588,
+          "y": 675.0593498410508,
+          "vx": 585.5600607318786,
+          "vy": -106.00375845898758,
+          "vehicle": null,
+          "attachedAnchorId": "node-4",
+          "distance": 571.6596481592452,
+          "inputTransitions": 7
+        },
+        {
+          "ms": 9526,
+          "tick": 404,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 1,
+          "x": 1725.6335011293131,
+          "y": 636.8965419656188,
+          "vx": 583.136907278568,
+          "vy": 49.48401288692398,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 627.8629010136053,
+          "inputTransitions": 10
+        },
+        {
+          "ms": 10102,
+          "tick": 472,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 1,
+          "x": 2058.542180782096,
+          "y": 660.5570414401154,
+          "vx": 590.7857782623629,
+          "vy": 21.985983535969854,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 606.0371043059665,
+          "inputTransitions": 12
+        },
+        {
+          "ms": 10741,
+          "tick": 548,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 1,
+          "x": 2428.5091285863114,
+          "y": 661.7862525328295,
+          "vx": 574.4759383441057,
+          "vy": -3.096438114864532,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 643.9615097119338,
+          "inputTransitions": 14
+        },
+        {
+          "ms": 11264,
+          "tick": 612,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 1,
+          "x": 2784.738437993502,
+          "y": 719.977054980066,
+          "vx": 603.8925786004162,
+          "vy": 121.06277601616542,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-2856",
+          "distance": 767.3533606302001,
+          "inputTransitions": 15
+        },
+        {
+          "ms": 12014,
+          "tick": 702,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 2,
+          "x": 3310.2647747206506,
+          "y": 687.5599692372657,
+          "vx": 547.5501672765606,
+          "vy": 337.1020829295044,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-3499",
+          "distance": 850.4826475285208,
+          "inputTransitions": 17
+        },
+        {
+          "ms": 12405,
+          "tick": 751,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 2,
+          "x": 3555.6908688457643,
+          "y": 736.5082915903824,
+          "vx": 605.2226294575098,
+          "vy": -96.51138249286443,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-3499",
+          "distance": 839.4844484923692,
+          "inputTransitions": 17
+        },
+        {
+          "ms": 12653,
+          "tick": 780,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 2,
+          "x": 3697.3856217360853,
+          "y": 708.0850511079425,
+          "vx": 581.4112301135608,
+          "vy": -40.679011016718476,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 808.953986667434,
+          "inputTransitions": 18
+        },
+        {
+          "ms": 13156,
+          "tick": 841,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 2,
+          "x": 4003.0604553929534,
+          "y": 708.3894750980766,
+          "vx": 608,
+          "vy": 0,
+          "vehicle": "货运滑索",
+          "attachedAnchorId": null,
+          "distance": 798.5376047102291,
+          "inputTransitions": 19
+        },
+        {
+          "ms": 13647,
+          "tick": 899,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 2,
+          "x": 4296.9271220596165,
+          "y": 708.3894750980766,
+          "vx": 608,
+          "vy": 0,
+          "vehicle": "货运滑索",
+          "attachedAnchorId": null,
+          "distance": 780.0630946946517,
+          "inputTransitions": 19
+        },
+        {
+          "ms": 14083,
+          "tick": 950,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 2,
+          "x": 4555.327122059613,
+          "y": 708.3894750980766,
+          "vx": 608,
+          "vy": 0,
+          "vehicle": "货运滑索",
+          "attachedAnchorId": null,
+          "distance": 734.7811953926666,
+          "inputTransitions": 19
+        },
+        {
+          "ms": 14518,
+          "tick": 1005,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 2,
+          "x": 4833.993788726277,
+          "y": 708.3894750980766,
+          "vx": 608,
+          "vy": 0,
+          "vehicle": "货运滑索",
+          "attachedAnchorId": null,
+          "distance": 689.0054977003429,
+          "inputTransitions": 19
+        },
+        {
+          "ms": 14974,
+          "tick": 1057,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 3,
+          "x": 5099.26253872627,
+          "y": 708.3894750980766,
+          "vx": 617,
+          "vy": 0,
+          "vehicle": "货运滑索",
+          "attachedAnchorId": null,
+          "distance": 650.2963380718402,
+          "inputTransitions": 19
+        },
+        {
+          "ms": 15621,
+          "tick": 1137,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 3,
+          "x": 5488.347755194253,
+          "y": 670.3278018202335,
+          "vx": 587.7789973144847,
+          "vy": -17.229562488558532,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 597.8761968867439,
+          "inputTransitions": 22
+        },
+        {
+          "ms": 16332,
+          "tick": 1221,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 3,
+          "x": 5905.291946182679,
+          "y": 706.28075987593,
+          "vx": 598.7867116271989,
+          "vy": 159.73554529723398,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-5995",
+          "distance": 636.5083516889872,
+          "inputTransitions": 25
+        },
+        {
+          "ms": 16882,
+          "tick": 1287,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 3,
+          "x": 6249.53850844156,
+          "y": 701.3746994079954,
+          "vx": 620.9692977247399,
+          "vy": 88.79845195693918,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-6301",
+          "distance": 677.879675583451,
+          "inputTransitions": 27
+        },
+        {
+          "ms": 17489,
+          "tick": 1361,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 3,
+          "x": 6623.489445369951,
+          "y": 691.5194718192445,
+          "vx": 618.6775254721009,
+          "vy": 3.548690053905524,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-6626",
+          "distance": 678.2919414415855,
+          "inputTransitions": 29
+        },
+        {
+          "ms": 18255,
+          "tick": 1452,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 7153.243471982105,
+          "y": 658.6469462667535,
+          "vx": 632.4056956394498,
+          "vy": 170.07983954980855,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-7247",
+          "distance": 773.806098522763,
+          "inputTransitions": 31
+        },
+        {
+          "ms": 19015,
+          "tick": 1543,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 7594.4397270783975,
+          "y": 631.996914478296,
+          "vx": 567.263416675934,
+          "vy": -21.42966143796876,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-7583",
+          "distance": 791.9625495061937,
+          "inputTransitions": 33
+        },
+        {
+          "ms": 19198,
+          "tick": 1565,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 7696.021638836321,
+          "y": 610.5464962388329,
+          "vx": 524.8275435524836,
+          "vy": -208.68240926828443,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-7583",
+          "distance": 798.4506225775813,
+          "inputTransitions": 33
+        },
+        {
+          "ms": 19403,
+          "tick": 1590,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 7789.97943204303,
+          "y": 551.5605555229441,
+          "vx": 370.2040611074947,
+          "vy": -339.9045130813504,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-7583",
+          "distance": 797.1480667706,
+          "inputTransitions": 33
+        },
+        {
+          "ms": 19691,
+          "tick": 1623,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 7873.205222839837,
+          "y": 469.8570696071427,
+          "vx": 289.0684612553132,
+          "vy": -194.85576772507792,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 795.2410045664701,
+          "inputTransitions": 34
+        },
+        {
+          "ms": 19909,
+          "tick": 1650,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 7937.983126622282,
+          "y": 449.1145218690002,
+          "vx": 286.8184612553137,
+          "vy": 3.14423227492213,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 804.1079081491025,
+          "inputTransitions": 34
+        },
+        {
+          "ms": 20351,
+          "tick": 1705,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 8068.674365808746,
+          "y": 412.65333305502736,
+          "vx": 286.50179458864784,
+          "vy": -277.873333333333,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 801.7155458769912,
+          "inputTransitions": 35
+        },
+        {
+          "ms": 20987,
+          "tick": 1781,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 8254.595780159334,
+          "y": 298.9539999999999,
+          "vx": 300.43512792198146,
+          "vy": 58.07999999999994,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 739.4848011484173,
+          "inputTransitions": 36
+        },
+        {
+          "ms": 21401,
+          "tick": 1831,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 8381.725000126826,
+          "y": 340.29566666666653,
+          "vx": 309.6017945886483,
+          "vy": 138.74666666666653,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 701.0524204841386,
+          "inputTransitions": 36
+        },
+        {
+          "ms": 21862,
+          "tick": 1887,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 4,
+          "x": 8528.64417093486,
+          "y": 423.3939444444444,
+          "vx": 319.8684612553152,
+          "vy": 161.29333333333378,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 661.6207419062757,
+          "inputTransitions": 37
+        },
+        {
+          "ms": 22307,
+          "tick": 1938,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 8666.614100301704,
+          "y": 437.2352777777778,
+          "vx": 329.2184612553154,
+          "vy": -87.9066666666661,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 628.7606632005973,
+          "inputTransitions": 37
+        },
+        {
+          "ms": 22841,
+          "tick": 2003,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 8848.217850148336,
+          "y": 320.0541666666669,
+          "vx": 341.1351279219823,
+          "vy": -244.05066666666625,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 590.7032704800549,
+          "inputTransitions": 38
+        },
+        {
+          "ms": 23287,
+          "tick": 2057,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 9003.997407713226,
+          "y": 300.46044999999975,
+          "vx": 351.0351279219825,
+          "vy": 64.37200000000003,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 562.0440098119088,
+          "inputTransitions": 38
+        },
+        {
+          "ms": 23710,
+          "tick": 2107,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 9152.20996101405,
+          "y": 345.2808666666656,
+          "vx": 360.20179458864936,
+          "vy": 149.07199999999997,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 537.6809004419501,
+          "inputTransitions": 38
+        },
+        {
+          "ms": 24258,
+          "tick": 2172,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 9350.596349749569,
+          "y": 437.3134999999996,
+          "vx": 372.1184612553163,
+          "vy": 90.33799999999931,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 508.8465773594926,
+          "inputTransitions": 39
+        },
+        {
+          "ms": 24708,
+          "tick": 2227,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 9523.50342226937,
+          "y": 417.1184166666659,
+          "vx": 382.2017945886498,
+          "vy": -173.66200000000072,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 486.72274240302795,
+          "inputTransitions": 39
+        },
+        {
+          "ms": 25202,
+          "tick": 2287,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 9717.400152897028,
+          "y": 290,
+          "vx": 393.20179458865005,
+          "vy": 0,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 464.73357212212795,
+          "inputTransitions": 40
+        },
+        {
+          "ms": 25651,
+          "tick": 2340,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 9893.250528840344,
+          "y": 310.2009499999995,
+          "vx": 402.9184612553169,
+          "vy": 89.78200000000007,
+          "vehicle": "纸鸢",
+          "attachedAnchorId": null,
+          "distance": 447.0023637610866,
+          "inputTransitions": 40
+        },
+        {
+          "ms": 26096,
+          "tick": 2393,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 10073.392432561444,
+          "y": 370.055616666666,
+          "vx": 412.6351279219838,
+          "vy": -160,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 430.7154661713721,
+          "inputTransitions": 40
+        },
+        {
+          "ms": 26829,
+          "tick": 2481,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 10249.563025948864,
+          "y": 567.1590083209744,
+          "vx": 43.920590352766865,
+          "vy": 668.5588842750236,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 324.5570425140395,
+          "inputTransitions": 41
+        },
+        {
+          "ms": 27376,
+          "tick": 2543,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 5,
+          "x": 10439.168198155869,
+          "y": 666.2772782471802,
+          "vx": 470.05048170466694,
+          "vy": 162.34166398705668,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-10557",
+          "distance": 371.1676773262243,
+          "inputTransitions": 42
+        },
+        {
+          "ms": 27926,
+          "tick": 2613,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 10750.305189429513,
+          "y": 629.5014965732016,
+          "vx": 455.7549658159879,
+          "vy": -290.74348903126935,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-10557",
+          "distance": 368.83508232337044,
+          "inputTransitions": 42
+        },
+        {
+          "ms": 28419,
+          "tick": 2670,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 10883.628108885936,
+          "y": 476.70326127223404,
+          "vx": 128.7427024757521,
+          "vy": -279.29651505187536,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-10557",
+          "distance": 319.7410442587661,
+          "inputTransitions": 42
+        },
+        {
+          "ms": 28856,
+          "tick": 2725,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 10907.001969939969,
+          "y": 408.9549499233003,
+          "vx": 2.559538354585145,
+          "vy": -10.808721166858131,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-10557",
+          "distance": 230.5606664868501,
+          "inputTransitions": 42
+        },
+        {
+          "ms": 29336,
+          "tick": 2779,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 10887.137181494916,
+          "y": 468.8448817496269,
+          "vx": -111.2576920730491,
+          "vy": 257.37562532767856,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-10557",
+          "distance": 102.63852323003266,
+          "inputTransitions": 42
+        },
+        {
+          "ms": 30148,
+          "tick": 2833,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 10871.647083333335,
+          "y": 455.1666666666667,
+          "vx": 277.50000000000057,
+          "vy": 35.00000000000003,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 344.97711872869513,
+          "inputTransitions": 43
+        },
+        {
+          "ms": 30605,
+          "tick": 2889,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 11000.03875,
+          "y": 569.0333333333334,
+          "vx": 272.83333333333496,
+          "vy": 445.66666666666634,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 337.53951177729687,
+          "inputTransitions": 43
+        },
+        {
+          "ms": 31278,
+          "tick": 2969,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 11254.453523371376,
+          "y": 655.544134655589,
+          "vx": 445.4686256892574,
+          "vy": -40.184801572715706,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-11222",
+          "distance": 340.5857790508089,
+          "inputTransitions": 44
+        },
+        {
+          "ms": 31870,
+          "tick": 3040,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 11434.555303978026,
+          "y": 652.5138085385862,
+          "vx": 275.7277254825464,
+          "vy": 94.60575220089245,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-11551",
+          "distance": 265.17651571411625,
+          "inputTransitions": 46
+        },
+        {
+          "ms": 32401,
+          "tick": 3104,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 11631.99279978917,
+          "y": 671.2453907304331,
+          "vx": 409.59574001545224,
+          "vy": 53.854968666718605,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 242.65600445044583,
+          "inputTransitions": 47
+        },
+        {
+          "ms": 32933,
+          "tick": 3169,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 11936.376454103238,
+          "y": 641.5431969312752,
+          "vx": 574.3921730535765,
+          "vy": -67.45112427858238,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-11894",
+          "distance": 367.71974026069256,
+          "inputTransitions": 48
+        },
+        {
+          "ms": 33601,
+          "tick": 3249,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 6,
+          "x": 12330.21292637282,
+          "y": 642.8473063641857,
+          "vx": 623.6706344770774,
+          "vy": -34.844144716457876,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 405.599420705581,
+          "inputTransitions": 51
+        },
+        {
+          "ms": 34196,
+          "tick": 3319,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 7,
+          "x": 12705.494459409214,
+          "y": 634.7082247829431,
+          "vx": 636.6924609901323,
+          "vy": -63.397757408757805,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 465.25019181130665,
+          "inputTransitions": 53
+        },
+        {
+          "ms": 34886,
+          "tick": 3403,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 7,
+          "x": 13141.185233234262,
+          "y": 648.5311542626565,
+          "vx": 601.0959202987866,
+          "vy": 152.1270581236938,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-13222",
+          "distance": 470.10092524150605,
+          "inputTransitions": 56
+        },
+        {
+          "ms": 35517,
+          "tick": 3478,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 7,
+          "x": 13542.732060525472,
+          "y": 656.8121980833396,
+          "vx": 654.4882668750186,
+          "vy": -3.5823340751799417,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-13541",
+          "distance": 535.5651458432676,
+          "inputTransitions": 58
+        },
+        {
+          "ms": 36163,
+          "tick": 3557,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 7,
+          "x": 13961.885755523776,
+          "y": 628.5305806546573,
+          "vx": 633.3215246106305,
+          "vy": -111.32022745262368,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 588.9968691588765,
+          "inputTransitions": 61
+        },
+        {
+          "ms": 36446,
+          "tick": 3591,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 7,
+          "x": 14133.926294242048,
+          "y": 648.963122677399,
+          "vx": 626.9974555665895,
+          "vy": 135.70869509726865,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-14206",
+          "distance": 602.2412911870924,
+          "inputTransitions": 62
+        },
+        {
+          "ms": 36660,
+          "tick": 3617,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 7,
+          "x": 14274.507023837268,
+          "y": 649.8011618282007,
+          "vx": 644.4243645625186,
+          "vy": -131.4579254967674,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-14206",
+          "distance": 594.2959779984394,
+          "inputTransitions": 62
+        },
+        {
+          "ms": 36867,
+          "tick": 3641,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 14392.87596557829,
+          "y": 601.2029327614689,
+          "vx": 522.6213598861475,
+          "vy": -340.86170897589363,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-14206",
+          "distance": 571.0699127841071,
+          "inputTransitions": 62
+        },
+        {
+          "ms": 37414,
+          "tick": 3705,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 14571.190251705473,
+          "y": 379.24485100360727,
+          "vx": 282.11666666666696,
+          "vy": -493.53540027428556,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 516.5843237683785,
+          "inputTransitions": 64
+        },
+        {
+          "ms": 38106,
+          "tick": 3787,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 14796.877335038807,
+          "y": 286.2241330384013,
+          "vx": 384.650000000002,
+          "vy": 319.8812663923815,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 537.4338070178273,
+          "inputTransitions": 65
+        },
+        {
+          "ms": 38674,
+          "tick": 3855,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 15003.86038934374,
+          "y": 410.30964896325685,
+          "vx": 333.12939293012715,
+          "vy": -310.74999999999994,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 504.36817787194013,
+          "inputTransitions": 66
+        },
+        {
+          "ms": 39194,
+          "tick": 3919,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 15195.216898906476,
+          "y": 300.4897878521454,
+          "vx": 398.52939293012827,
+          "vy": 111.61666666666615,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 483.14041918385374,
+          "inputTransitions": 67
+        },
+        {
+          "ms": 39739,
+          "tick": 3982,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 15414.973954155772,
+          "y": 427.5004424390351,
+          "vx": 399.5707172258771,
+          "vy": -243.74999999999972,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 462.3360714398241,
+          "inputTransitions": 68
+        },
+        {
+          "ms": 40274,
+          "tick": 4048,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 15643.900487518897,
+          "y": 274.6087757723682,
+          "vx": 451.33738389254466,
+          "vy": -35.950000000000536,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 442.2917492023553,
+          "inputTransitions": 69
+        },
+        {
+          "ms": 40726,
+          "tick": 4103,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 15865.603457280256,
+          "y": 401.52242304953745,
+          "vx": 461.2735056790085,
+          "vy": 522.5282317335568,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 430.5736214381377,
+          "inputTransitions": 69
+        },
+        {
+          "ms": 41309,
+          "tick": 4173,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 16125.243872105406,
+          "y": 292.5243483001453,
+          "vx": 473.5964433935452,
+          "vy": -93.58333333333361,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 406.5411955501877,
+          "inputTransitions": 71
+        },
+        {
+          "ms": 41767,
+          "tick": 4228,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 8,
+          "x": 16358.252689027764,
+          "y": 394.28730396821754,
+          "vx": 498.73594660244555,
+          "vy": 486.8998414115193,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 398.3411962460523,
+          "inputTransitions": 71
+        },
+        {
+          "ms": 42380,
+          "tick": 4301,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 9,
+          "x": 16653.466303739533,
+          "y": 303.73121114089844,
+          "vx": 519.8499449849759,
+          "vy": 25.26666666666656,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 375.81083851626136,
+          "inputTransitions": 73
+        },
+        {
+          "ms": 42880,
+          "tick": 4362,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 9,
+          "x": 16923.816021966395,
+          "y": 412.48358342954685,
+          "vx": 492.9779606940822,
+          "vy": -221.41666666666646,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 359.5723754813771,
+          "inputTransitions": 74
+        },
+        {
+          "ms": 43393,
+          "tick": 4423,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 9,
+          "x": 17186.92717976366,
+          "y": 351.783583429547,
+          "vx": 555.4946273607462,
+          "vy": 183.8000000000001,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 347.4333292805459,
+          "inputTransitions": 75
+        },
+        {
+          "ms": 43880,
+          "tick": 4481,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 9,
+          "x": 17454.245405859314,
+          "y": 370.1080094460453,
+          "vx": 542.5881989677781,
+          "vy": -327.50000000000006,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 334.68888791221616,
+          "inputTransitions": 76
+        },
+        {
+          "ms": 44378,
+          "tick": 4543,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 9,
+          "x": 17753.083058659333,
+          "y": 335.4659261127119,
+          "vx": 619.2881989677727,
+          "vy": 275.53333333333325,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 327.99361825836604,
+          "inputTransitions": 77
+        },
+        {
+          "ms": 44862,
+          "tick": 4601,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 9,
+          "x": 18017.572648023488,
+          "y": 367.66975076446784,
+          "vx": 517.6143505205575,
+          "vy": -327.50000000000006,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320,
+          "inputTransitions": 78
+        },
+        {
+          "ms": 45343,
+          "tick": 4659,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 9,
+          "x": 18283.764167441754,
+          "y": 324.4115563200233,
+          "vx": 588.9143505205525,
+          "vy": 230.06666666666652,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320,
+          "inputTransitions": 79
+        },
+        {
+          "ms": 45812,
+          "tick": 4715,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 18534.538010965116,
+          "y": 409.0653147152239,
+          "vx": 488.92387515940766,
+          "vy": -271.66666666666634,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320,
+          "inputTransitions": 80
+        },
+        {
+          "ms": 46416,
+          "tick": 4787,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 18841.10455828299,
+          "y": 257.41281471522365,
+          "vx": 552.2905418260721,
+          "vy": 55.183333333332726,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320.40706105523714,
+          "inputTransitions": 81
+        },
+        {
+          "ms": 46848,
+          "tick": 4839,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 19084.094832624447,
+          "y": 402.25121011522555,
+          "vx": 485.23683494718904,
+          "vy": 525.1382808465162,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320,
+          "inputTransitions": 81
+        },
+        {
+          "ms": 47380,
+          "tick": 4901,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 19325.206786144558,
+          "y": 310.35720750335497,
+          "vx": 489.83681562258005,
+          "vy": -133.6666666666668,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320.20842839944817,
+          "inputTransitions": 83
+        },
+        {
+          "ms": 47842,
+          "tick": 4957,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 19571.225551627886,
+          "y": 398.7160502853116,
+          "vx": 533.7218856401503,
+          "vy": 475.7793068101241,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320.53350335581854,
+          "inputTransitions": 83
+        },
+        {
+          "ms": 48412,
+          "tick": 5025,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 19866.041263761308,
+          "y": 329.45575755081893,
+          "vx": 553.5774408793147,
+          "vy": 53.18333333333337,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320.2491787757717,
+          "inputTransitions": 85
+        },
+        {
+          "ms": 48995,
+          "tick": 5097,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 20207.651076213853,
+          "y": 353.51177270678926,
+          "vx": 576.6851907901694,
+          "vy": -146.433333333333,
+          "vehicle": "青鸾",
+          "attachedAnchorId": null,
+          "distance": 320.02095179898606,
+          "inputTransitions": 87
+        },
+        {
+          "ms": 49414,
+          "tick": 5147,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 20457.4581001542,
+          "y": 337.3014949290115,
+          "vx": 608.0185241234993,
+          "vy": 67.33333333333334,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 317.5202215317622,
+          "inputTransitions": 87
+        },
+        {
+          "ms": 49950,
+          "tick": 5211,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 20567.568836195547,
+          "y": 329.601178203411,
+          "vx": 305.8666666666668,
+          "vy": 54.66666666666671,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 204.9496461421768,
+          "inputTransitions": 89
+        },
+        {
+          "ms": 50478,
+          "tick": 5275,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 10,
+          "x": 20669.567080680234,
+          "y": 311.6197671211448,
+          "vx": 305.8666666666668,
+          "vy": 54.66666666666671,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 162.18366806832637,
+          "inputTransitions": 91
+        },
+        {
+          "ms": 51245,
+          "tick": 5367,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 20796.118601635335,
+          "y": 300.2012068016611,
+          "vx": 302.3833333333334,
+          "vy": -84.66666666666663,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 86.97063179728138,
+          "inputTransitions": 95
+        },
+        {
+          "ms": 51782,
+          "tick": 5431,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 20894.91164878527,
+          "y": 286.90810762358416,
+          "vx": 302.20000000000005,
+          "vy": -91.99999999999996,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 48.27066193000428,
+          "inputTransitions": 97
+        },
+        {
+          "ms": 52377,
+          "tick": 5501,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 21071.55652121821,
+          "y": 302.3080181297749,
+          "vx": 304.4000000000001,
+          "vy": -3.9999999999999636,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 75.78692820029028,
+          "inputTransitions": 99
+        },
+        {
+          "ms": 52976,
+          "tick": 5571,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 21187.630985265703,
+          "y": 312.03177920885645,
+          "vx": 305.8666666666668,
+          "vy": 54.66666666666671,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 42.43391932113809,
+          "inputTransitions": 101
+        },
+        {
+          "ms": 53638,
+          "tick": 5653,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 21319.414461843626,
+          "y": 304.25395621046687,
+          "vx": 111.05019530432972,
+          "vy": -51.08706769340636,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-21363",
+          "distance": 28.70359661677867,
+          "inputTransitions": 104
+        },
+        {
+          "ms": 54151,
+          "tick": 5715,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 21363.003888209787,
+          "y": 286.0156366513302,
+          "vx": 302.3833333333334,
+          "vy": -84.66666666666663,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 22.360487388759793,
+          "inputTransitions": 105
+        },
+        {
+          "ms": 54771,
+          "tick": 5788,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 21489.355480577775,
+          "y": 287.0434141028631,
+          "vx": 304.4000000000001,
+          "vy": -3.9999999999999636,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 17.279576967757748,
+          "inputTransitions": 107
+        },
+        {
+          "ms": 55334,
+          "tick": 5857,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 21617.40460504881,
+          "y": 283.22877384579806,
+          "vx": 306.23333333333346,
+          "vy": 69.33333333333337,
+          "vehicle": null,
+          "attachedAnchorId": null,
+          "distance": 43.23663711897461,
+          "inputTransitions": 109
+        },
+        {
+          "ms": 56032,
+          "tick": 5939,
+          "status": "playing",
+          "level": "night-patrol",
+          "segment": 11,
+          "x": 21805.731277826424,
+          "y": 332.6444304977445,
+          "vx": -31.76064343712254,
+          "vy": 153.07194191910614,
+          "vehicle": null,
+          "attachedAnchorId": "endless-node-22063",
+          "distance": 59.08393755841098,
+          "inputTransitions": 112
+        }
+      ]
+    }
+  ]
+}

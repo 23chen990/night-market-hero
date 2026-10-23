@@ -67,6 +67,22 @@ export function isStylishRelease(player: Pick<GrappleState['player'], 'vx' | 'vy
 
 export interface ControlCue { title: string; detail: string; tone: 'neutral' | 'ready' | 'danger'; }
 export function controlCue(state: GrappleState): ControlCue {
+  // Recovery outranks an optional pickup. A distant bird or low lantern
+  // previously kept advertising its approach while the unroped hero fell.
+  // Do not override a mounted vehicle, an upward low pass, or a live rope.
+  if (!state.vehicleId && !state.attachedAnchorId
+    && state.player.y > 730 && state.player.vy > 80) return {
+      title: state.inputHeld ? '保持按住 · 接前方飞索' : '快按住！接住前方挂点',
+      detail: '先接住飞索，载具可以下次再抢', tone: 'danger',
+    };
+  const attachedAnchor = state.anchors.find(item => item.id === state.attachedAnchorId);
+  if (!state.vehicleId && state.inputHeld && attachedAnchor
+    && state.player.x >= attachedAnchor.x + 12
+    && state.player.vx < 260 && state.player.vy < 120) return {
+      title: state.player.vx < 0 ? '荡回来了！赶紧松手' : '要荡回去了！赶紧松手',
+      detail: '飞出去再接下一根，别停在旧索上',
+      tone: state.chase.distance < 340 ? 'danger' : 'ready',
+    };
   // Qingluan needs TWO real stylish rope releases, so the warning must arrive
   // during the preceding street rather than just 920px (around 1–2s) away.
   // This changes only the visual cue, never the spawned encounter or reward.
@@ -84,33 +100,39 @@ export function controlCue(state: GrappleState): ControlCue {
     // tells the player how to *reach* the real target, not its secret hitbox.
     if (nextOffer.id === '青鸾') {
       const earned = Math.min(2, birdTicks);
+      const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
+      if (birdTicks < 2 && state.inputHeld && anchor
+        && state.player.x >= anchor.x && isStylishRelease(state.player)) return {
+          title: `现在松手 · 青鸾准备 ${earned}/2`,
+          detail: '这次向前上升的松手，可以积累资格', tone: 'ready',
+        };
       if (distance > 950) return {
         title: `青鸾将至 · 漂亮松手 ${earned}/2`,
         detail: birdTicks < 2
-          ? '提前在屋檐飞索上向前松手两次，再去高空争夺'
-          : '资格已备好！继续高线，靠近青鸾后松手飞进发光圈',
+          ? '先在高屋檐完成两次漂亮松手'
+          : '保持高线，靠近翼环后松手',
         tone: 'ready',
       };
       if (birdTicks < 2) return {
         title: `青鸾考验 · 漂亮松手 ${earned}/2`,
-        detail: '向前上升时松手才计数；普通松手会中断准备',
+        detail: '向前上升时松手；普通松手会断连',
         tone: 'ready',
       };
       if (distance > 350) return {
         title: '青鸾资格已备好 · 走高线',
-        detail: '接住前方高处屋檐，向上荡至发光翼环前再松手', tone: 'ready',
+        detail: '接高屋檐，荡到翼环前再松手', tone: 'ready',
       };
       if (tooLow) return {
-        title: '青鸾在上方！借前一根屋檐升高',
-        detail: '不要立刻换到青鸾正下方的新索；借旧索荡高再松手', tone: 'ready',
+        title: '青鸾在上方 · 先荡高',
+        detail: '借当前屋檐荡高，再松手入圈', tone: 'ready',
       };
       if (distance > -65 && distance < 180 && state.attachedAnchorId) return {
-        title: '现在松手！飞进青鸾翼环',
-        detail: '已完成两次漂亮松手，离开旧索后接住青鸾', tone: 'ready',
+        title: '现在松手 · 飞进青鸾翼环',
+        detail: '两次准备已完成，离索后接青鸾', tone: 'ready',
       };
       if (distance > -65 && !state.inputHeld) return {
         title: '保持松手，穿过青鸾发光圈',
-        detail: '要在真实高空物件旁接住，穿过才算获得', tone: 'ready',
+        detail: '先穿过翼环，接住后再按住振翅', tone: 'ready',
       };
     }
     if (nextOffer.id === '纸鸢' && distance > 320 && distance <= 920 && state.attachedAnchorId)
@@ -128,21 +150,21 @@ export function controlCue(state: GrappleState): ControlCue {
         // near-knot release-then-FRESH-press rather than a magic catch.
         if (distance > 150 && state.player.y < nextOffer.y - margin - 30
           && !!state.attachedAnchorId && state.player.vx < 260)
-          return { title: '挂得太高，要倒摆了！先松手',
-            detail: '离开旧索，下一根选择低屋檐靠近灯绳', tone: 'danger' };
+          return { title: '要倒摆了！赶紧松手',
+            detail: '下一根接低屋檐，靠近灯绳', tone: 'danger' };
         if (distance > 150) return {
           title: '灯绳在前 · 先沿低屋檐前进',
-          detail: '靠近发光灯绳再松旧索，接着重新按住', tone: 'ready',
+          detail: '靠近灯绳再松手，入圈时重新按住', tone: 'ready',
         };
         if (state.player.y >= nextOffer.y - margin - 30 && state.player.vx > 165)
-          return { title: '现在松开旧索！马上重新按住',
-            detail: '身体飞进发光灯绳圈时，再按一次才接住', tone: 'ready' };
+          return { title: '现在松开旧索',
+            detail: '飞进灯绳圈，再按住接绳', tone: 'ready' };
         return { title: '灯绳在下方，先调整到低路线',
-          detail: '不要挂旧索倒摆；错过也能继续逃跑', tone: 'ready' };
+          detail: '别挂到倒摆，错过也能继续', tone: 'ready' };
       }
       if (distance <= 180 && inVisibleHeightBand) return {
         title: '现在按住！接住灯绳结',
-        detail: '正在飞过发光绳圈，必须新按下才能接住', tone: 'ready',
+        detail: '入圈后新按一次，才能接住', tone: 'ready',
       };
       if (state.player.y < nextOffer.y - margin * 0.90) return {
         title: '灯绳在下方，保持松手下降',
@@ -150,7 +172,7 @@ export function controlCue(state: GrappleState): ControlCue {
       };
       if (state.player.y > nextOffer.y + margin * 0.90) return {
         title: '灯绳在上方，这次可能赶不上',
-        detail: '下一个灯绳机会，提早从低屋檐飞近', tone: 'neutral',
+        detail: '这次略过，下次提早调整高度', tone: 'neutral',
       };
     }
     // The first ride opportunity is the player's introduction to optional
@@ -159,12 +181,12 @@ export function controlCue(state: GrappleState): ControlCue {
     if (nextOffer.id === '货运滑索' && distance > 330 && distance < 850) {
       if (tooHigh && state.attachedAnchorId) return {
         title: '第一辆滑索在下方！先换低线',
-        detail: '从旧索松手，换低屋檐靠近黄色挂环；再松手飞进去才能抢到',
+        detail: '换低屋檐，靠近黄色挂环再松手',
         tone: 'ready',
       };
       if (!tooHigh && !tooLow) return {
         title: '第一辆滑索要来了！准备抢',
-        detail: '看准黄色吊轮：先按住摆荡，靠近挂环时松手飞进去',
+        detail: '先摆荡，靠近黄色挂环再松手',
         tone: 'ready',
       };
     }
@@ -173,7 +195,7 @@ export function controlCue(state: GrappleState): ControlCue {
       && state.tick - state.lastGrappleReleaseTick <= 40
       && Math.abs(state.player.y - nextOffer.y) < margin + 60) return {
         title: '保持松手！滑过黄色挂环',
-        detail: '现在重新接普通飞索，反而可能错过吊轮',
+        detail: '先穿过挂环，别急着接普通飞索',
         tone: 'ready',
       };
     // A conservative rider can be high ABOVE the first pulley and lose
@@ -184,8 +206,8 @@ export function controlCue(state: GrappleState): ControlCue {
       && tooHigh && !!state.attachedAnchorId
       && state.player.vx >= 0 && state.player.vx < 450) {
       return {
-        title: '吊轮在下方，趁还能前进赶紧松手',
-        detail: '这次接不到也别挂到倒退；松手飞出去，下次再抢',
+        title: '吊轮在下方 · 赶紧松手',
+        detail: '别挂到倒退，错过也能继续',
         tone: state.chase.distance < 340 ? 'danger' : 'ready',
       };
     }
@@ -211,7 +233,6 @@ export function controlCue(state: GrappleState): ControlCue {
   if (state.vehicleId === '灯笼群') return state.vehiclePhase === 'holding' && state.player.vx < 240
     ? { title: '马上松手！官兵要追上了', detail: '吊灯连接太久会减速；松手可向前冲', tone: 'danger' }
     : { title: '按住连接 · 松手前飞', detail: '慢下来了就松手，再按住可重新挂接', tone: 'ready' };
-  if (state.player.y > 730 && !state.attachedAnchorId) return { title: '快按住！接住前方挂点', detail: '松手太久会坠落', tone: 'danger' };
   if (state.attachedAnchorId) {
     const anchor = state.anchors.find(item => item.id === state.attachedAnchorId);
     const ready = isStylishRelease(state.player) && !!anchor && state.player.x >= anchor.x;

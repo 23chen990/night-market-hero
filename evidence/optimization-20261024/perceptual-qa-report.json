@@ -1,0 +1,46 @@
+{
+  "buildHash": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+  "passed": true,
+  "scope": "Scoped agent screenshot and DOM-layout review only",
+  "reviewedViewports": [
+    "568x320",
+    "667x375",
+    "844x390",
+    "1280x720"
+  ],
+  "reviewedSeamPositions": [
+    8000,
+    9600,
+    11200,
+    12800
+  ],
+  "findings": [
+    "Chinese text rendered; short-landscape cue title 14px/detail 11px",
+    "Coach safe area passed four viewports; 44px menu targets and three tabs verified",
+    "Sampled seam screenshots show no opaque transition overlay; full subjective motion continuity remains pending",
+    "Failure, cashout and resumed-run screens inspected; primary actions remain visible"
+  ],
+  "committedRepresentativeScreenshots": [
+    {
+      "path": "evidence/optimization-20261024/ui/current/568x320-flight.png",
+      "sha256": "c6048b7e8407b5a922403c00b777e3b3f82002e11a562e825973b336c2d0a4a4"
+    },
+    {
+      "path": "evidence/optimization-20261024/ui/current/844x390-flight.png",
+      "sha256": "d76a37c3837e5c27fc1db319211e428da504b37c48ad5943a23a5b67479c9f73"
+    },
+    {
+      "path": "evidence/playable-audit/safety-natural-failure.png",
+      "sha256": "296c97321c29dde48a5b88542c50616cec62d3108e56faa9afd3d3711ff67bb9"
+    },
+    {
+      "path": "evidence/playable-audit/844x390-seam-12800.png",
+      "sha256": "d18b7042fe7427154a46b2e280c7752ca23176b1f49fbdd69bc4b1b542b267ef"
+    }
+  ],
+  "humanPerceptualSignoff": false,
+  "blindFirstRunPlaytest": false,
+  "realDevicePerformanceVerified": false,
+  "fullContinuousMapApproval": false,
+  "commercialReleasePassed": false
+}

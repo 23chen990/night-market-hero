@@ -876,6 +876,8 @@ function copyState(state: GrappleState): GrappleState {
   return {
     ...state,
     player: { ...state.player },
+    itemUsage: { ...state.itemUsage },
+    vehicleVirtualAnchor: state.vehicleVirtualAnchor ? { ...state.vehicleVirtualAnchor } : null,
     vehicleQueue: [...(state.vehicleQueue ?? [])],
     vehicleOffers: (state.vehicleOffers ?? []).map(offer => ({ ...offer })),
     encounterEvents: (state.encounterEvents ?? []).map(event => ({ ...event })),
@@ -1452,8 +1454,13 @@ export class GrappleGame {
     if (this.state.status !== 'playing' || this.state.paused || this.state.firecrackerStunUntilTick > this.state.tick) return false;
     this.state.firecrackerStunUntilTick = this.state.tick + FIRECRACKER_STUN_TICKS;
     this.state.itemUsage.firecracker += 1;
-    this.state.chase.pressure = Math.max(0, this.state.chase.pressure - 0.12);
-    this.rebasePursuerToCurrentPressure();
+    // The stun affects the actual officer, not a position reconstructed from
+    // a clamped HUD pressure value. Rebasing pressure=0 used to TELEPORT a
+    // distant officer closer (e.g. a 900px lead became 520px after using it).
+    // Stop immediately and let continued player movement earn the real gap.
+    this.state.pursuer.vx = 0;
+    this.state.pursuer.ax = 0;
+    this.refreshChaseDerived();
     return true;
   }
 
@@ -1518,7 +1525,14 @@ export class GrappleGame {
     const releasedAnchor = this.state.attachedAnchorId;
     const releasedRopeLength = this.state.ropeLength;
     const releaseSpeed = Math.hypot(this.state.player.vx, this.state.player.vy);
-    const releaseWasStylish = isStylishRelease(this.state.player);
+    const releasedSupport = this.state.anchors.find(anchor => anchor.id === releasedAnchor);
+    // Match the visible release cue: a new swing must actually advance and
+    // carry the body past its support. Reusing inherited speed across rapid
+    // press/release edges is not a flight and cannot buy a combo or bird.
+    const releaseWasStylish = isStylishRelease(this.state.player)
+      && (!this.options.guidedExperience || (!!releasedSupport
+        && this.state.player.x >= releasedSupport.x
+        && this.state.tick > this.state.lastGrapplePressTick));
     this.state.inputHeld = false;
     this.state.inputTransitions += 1;
     if (releasedAnchor) this.state.lastGrappleReleaseTick = this.state.tick;
@@ -2405,10 +2419,16 @@ export class GrappleGame {
     const guidedPatrol = this.options.guidedExperience && this.endlessMode;
     const maxPursuerSpeed = guidedPatrol ? GUIDED_PURSUER_MAX_SPEED : PURSUER_MAX_SPEED;
     // A good swing earns time; stalls allow bounded visible catch-up.
+    const guidedTargetSpeed = Math.max(0, player.vx) * 0.95 + 24 + (targetGap - 410) * 0.20
+      + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow;
+    // The advertised curfew event must act on the shipped guided route too.
+    // Add 25% to NET closing speed only: do not multiply the entire running
+    // speed, negate a stylish escape, or jump the guard to another position.
+    const reinforcedGuidedTarget = guidedTargetSpeed
+      + Math.max(0, guidedTargetSpeed - Math.max(0, player.vx))
+        * (this.mutationModifiers().pursuitSpeedFactor - 1);
     const targetSpeed = guidedPatrol
-      ? Math.max(240, Math.min(maxPursuerSpeed,
-          Math.max(0, player.vx) * 0.95 + 24 + (targetGap - 410) * 0.20
-          + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow))
+      ? Math.max(240, Math.min(maxPursuerSpeed, reinforcedGuidedTarget))
       : Math.max(0, Math.min(maxPursuerSpeed,
           (targetGap / PURSUER_TARGET_RESPONSE_SECONDS
             + this.pursuitIntentOffset - routeDistanceIntent - debrisSlow)

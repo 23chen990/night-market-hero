@@ -1,0 +1,460 @@
+TAP version 13
+# Subtest: guided high-speed player must not create unlimited uncatchable guard distance
+ok 1 - guided high-speed player must not create unlimited uncatchable guard distance
+  ---
+  duration_ms: 53.677888
+  type: 'test'
+  ...
+# Subtest: guided run must limit travel speed in later endless segments
+ok 2 - guided run must limit travel speed in later endless segments
+  ---
+  duration_ms: 1.446409
+  type: 'test'
+  ...
+# Subtest: guided catch-immune bird cannot permanently freeze officers
+ok 3 - guided catch-immune bird cannot permanently freeze officers
+  ---
+  duration_ms: 4.44216
+  type: 'test'
+  ...
+# Subtest: all opening rides are authored for every seed; later rolls stay deterministic
+ok 4 - all opening rides are authored for every seed; later rolls stay deterministic
+  ---
+  duration_ms: 3.110616
+  type: 'test'
+  ...
+# Subtest: guided weather never advertises removed closing-gate mechanics
+ok 5 - guided weather never advertises removed closing-gate mechanics
+  ---
+  duration_ms: 0.346375
+  type: 'test'
+  ...
+# Subtest: coin routes are separated spatially and retained inside their segment
+ok 6 - coin routes are separated spatially and retained inside their segment
+  ---
+  duration_ms: 0.652788
+  type: 'test'
+  ...
+# Subtest: a checkpoint is earned at its visible midpoint, never just at segment entry
+ok 7 - a checkpoint is earned at its visible midpoint, never just at segment entry
+  ---
+  duration_ms: 2.286899
+  type: 'test'
+  ...
+# Subtest: kite pre-approach teaches an upward rope swing before the actual release window
+ok 8 - kite pre-approach teaches an upward rope swing before the actual release window
+  ---
+  duration_ms: 6.822182
+  type: 'test'
+  ...
+# Subtest: visible ride halo does not collect from the rectangular corner or outside its vertical reach
+ok 9 - visible ride halo does not collect from the rectangular corner or outside its vertical reach
+  ---
+  duration_ms: 14.598636
+  type: 'test'
+  ...
+# Subtest: ride offer is fixed in world space after segment entry and cannot follow the rider
+ok 10 - ride offer is fixed in world space after segment entry and cannot follow the rider
+  ---
+  duration_ms: 1.56038
+  type: 'test'
+  ...
+# Subtest: mounted vehicles release the old physical grapple immediately
+ok 11 - mounted vehicles release the old physical grapple immediately
+  ---
+  duration_ms: 2.246929
+  type: 'test'
+  ...
+# Subtest: an empty segment preserves the remaining ride duration
+ok 12 - an empty segment preserves the remaining ride duration
+  ---
+  duration_ms: 6.667853
+  type: 'test'
+  ...
+# Subtest: a second world pickup cannot become a hidden queued award
+ok 13 - a second world pickup cannot become a hidden queued award
+  ---
+  duration_ms: 8.58631
+  type: 'test'
+  ...
+# Subtest: legacy queued awards are safely drained without losing currently active ride
+ok 14 - legacy queued awards are safely drained without losing currently active ride
+  ---
+  duration_ms: 5.287289
+  type: 'test'
+  ...
+# Subtest: corrupt ride queues are rejected without rejecting old saves
+ok 15 - corrupt ride queues are rejected without rejecting old saves
+  ---
+  duration_ms: 1.140145
+  type: 'test'
+  ...
+# Subtest: a missed pickup is not granted automatically and cannot be collected from far above its lane
+ok 16 - a missed pickup is not granted automatically and cannot be collected from far above its lane
+  ---
+  duration_ms: 1.039212
+  type: 'test'
+  ...
+# Subtest: visible pickup offers persist through snapshots and reject malformed records
+ok 17 - visible pickup offers persist through snapshots and reject malformed records
+  ---
+  duration_ms: 1.509213
+  type: 'test'
+  ...
+# Subtest: zipline release really ejects upward and returns to ordinary grapple control
+ok 18 - zipline release really ejects upward and returns to ordinary grapple control
+  ---
+  duration_ms: 6.350477
+  type: 'test'
+  ...
+# Subtest: bird lift remains visible and its countdown is frozen while paused
+ok 19 - bird lift remains visible and its countdown is frozen while paused
+  ---
+  duration_ms: 20.634979
+  type: 'test'
+  ...
+# Subtest: ride expiry supplies a finite, forward recovery window
+ok 20 - ride expiry supplies a finite, forward recovery window
+  ---
+  duration_ms: 1.378977
+  type: 'test'
+  ...
+# Subtest: actual guided checkpoint award agrees with the next-checkpoint display
+ok 21 - actual guided checkpoint award agrees with the next-checkpoint display
+  ---
+  duration_ms: 0.706108
+  type: 'test'
+  ...
+# Subtest: swept coin contact catches a fast pass and handles a stationary frame
+ok 22 - swept coin contact catches a fast pass and handles a stationary frame
+  ---
+  duration_ms: 0.124388
+  type: 'test'
+  ...
+# Subtest: cash out is a real terminal transition and cannot settle twice
+ok 23 - cash out is a real terminal transition and cannot settle twice
+  ---
+  duration_ms: 2.874889
+  type: 'test'
+  ...
+# Subtest: tutorial distance is real, rather than a permanent zero in settlement
+ok 24 - tutorial distance is real, rather than a permanent zero in settlement
+  ---
+  duration_ms: 2.151225
+  type: 'test'
+  ...
+# Subtest: each vehicle presents its own hold/release meaning
+ok 25 - each vehicle presents its own hold/release meaning
+  ---
+  duration_ms: 0.317901
+  type: 'test'
+  ...
+# Subtest: shipping bootstrap opts in and connects the visible ride, input and lifecycle layers
+ok 26 - shipping bootstrap opts in and connects the visible ride, input and lifecycle layers
+  ---
+  duration_ms: 0.914564
+  type: 'test'
+  ...
+# Subtest: standalone build is independent of its download filename
+ok 27 - standalone build is independent of its download filename
+  ---
+  duration_ms: 113.883041
+  type: 'test'
+  ...
+# Subtest: authored patrol exposes four optional anchored encounters (seed 1)
+ok 28 - authored patrol exposes four optional anchored encounters (seed 1)
+  ---
+  duration_ms: 1.091061
+  type: 'test'
+  ...
+# Subtest: authored patrol exposes four optional anchored encounters (seed 31)
+ok 29 - authored patrol exposes four optional anchored encounters (seed 31)
+  ---
+  duration_ms: 0.588981
+  type: 'test'
+  ...
+# Subtest: authored patrol exposes four optional anchored encounters (seed 99)
+ok 30 - authored patrol exposes four optional anchored encounters (seed 99)
+  ---
+  duration_ms: 0.81316
+  type: 'test'
+  ...
+# Subtest: a release already in flight at ride entry cannot immediately erase the zipline
+ok 31 - a release already in flight at ride entry cannot immediately erase the zipline
+  ---
+  duration_ms: 3.246442
+  type: 'test'
+  ...
+# Subtest: late backward release remains recoverable without awarding a fake combo
+ok 32 - late backward release remains recoverable without awarding a fake combo
+  ---
+  duration_ms: 0.238741
+  type: 'test'
+  ...
+# Subtest: pausing an actual swing freezes physics and gives the next real press a finite regrapple chance
+ok 33 - pausing an actual swing freezes physics and gives the next real press a finite regrapple chance
+  ---
+  duration_ms: 0.219382
+  type: 'test'
+  ...
+# Subtest: pausing without a rope does not manufacture a regrapple entitlement
+ok 34 - pausing without a rope does not manufacture a regrapple entitlement
+  ---
+  duration_ms: 0.236308
+  type: 'test'
+  ...
+# Subtest: pausing a held lantern cancels the virtual rope without losing the mount
+ok 35 - pausing a held lantern cancels the virtual rope without losing the mount
+  ---
+  duration_ms: 0.354837
+  type: 'test'
+  ...
+# Subtest: a claimed pickup stabilizes the first frame instead of teleporting an already falling stranger
+ok 36 - a claimed pickup stabilizes the first frame instead of teleporting an already falling stranger
+  ---
+  duration_ms: 1.269271
+  type: 'test'
+  ...
+# Subtest: guided revival eligibility does not depend on repeating segment progress
+ok 37 - guided revival eligibility does not depend on repeating segment progress
+  ---
+  duration_ms: 0.498865
+  type: 'test'
+  ...
+# Subtest: lantern release really launches forward and does not erase an earned grapple combo
+ok 38 - lantern release really launches forward and does not erase an earned grapple combo
+  ---
+  duration_ms: 0.485505
+  type: 'test'
+  ...
+# Subtest: a deliberate bird flap immediately brakes a late dive without fake rewards
+ok 39 - a deliberate bird flap immediately brakes a late dive without fake rewards
+  ---
+  duration_ms: 0.887773
+  type: 'test'
+  ...
+# Subtest: a stable gameplay input route can intentionally bypass a visible lantern halo
+ok 40 - a stable gameplay input route can intentionally bypass a visible lantern halo
+  ---
+  duration_ms: 107.487856
+  type: 'test'
+  ...
+# Subtest: a firecracker never teleports a distant guard closer to the player
+ok 41 - a firecracker never teleports a distant guard closer to the player
+  ---
+  duration_ms: 16.777632
+  type: 'test'
+  ...
+# Subtest: visible curfew reinforcement increases bounded closing pressure in the default patrol
+ok 42 - visible curfew reinforcement increases bounded closing pressure in the default patrol
+  ---
+  duration_ms: 5.841838
+  type: 'test'
+  ...
+# Subtest: read-only state snapshots cannot mutate live item use or the lantern pivot
+ok 43 - read-only state snapshots cannot mutate live item use or the lantern pivot
+  ---
+  duration_ms: 2.287551
+  type: 'test'
+  ...
+# Subtest: a low safety pickup still slows real reinforced officers
+ok 44 - a low safety pickup still slows real reinforced officers
+  ---
+  duration_ms: 3.713818
+  type: 'test'
+  ...
+# Subtest: two actual stylish rope releases still counter curfew pursuit
+ok 45 - two actual stylish rope releases still counter curfew pursuit
+  ---
+  duration_ms: 14.446746
+  type: 'test'
+  ...
+# Subtest: instant re-press and release cannot manufacture consecutive flight rewards
+ok 46 - instant re-press and release cannot manufacture consecutive flight rewards
+  ---
+  duration_ms: 18.763988
+  type: 'test'
+  ...
+# Subtest: guided release rewards require the body to actually pass its attached support
+ok 47 - guided release rewards require the body to actually pass its attached support
+  ---
+  duration_ms: 1.474341
+  type: 'test'
+  ...
+# Subtest: each of the four rides requires a distinct real press/release action at a visible anchored encounter
+ok 48 - each of the four rides requires a distinct real press/release action at a visible anchored encounter
+  ---
+  duration_ms: 18.845711
+  type: 'test'
+  ...
+# Subtest: the bird cannot be claimed without two real stylish-release records
+ok 49 - the bird cannot be claimed without two real stylish-release records
+  ---
+  duration_ms: 1.774244
+  type: 'test'
+  ...
+# Subtest: visible opportunity may be deliberately ignored; later segment never gives an unseen deferred ride
+ok 50 - visible opportunity may be deliberately ignored; later segment never gives an unseen deferred ride
+  ---
+  duration_ms: 1.792672
+  type: 'test'
+  ...
+# Subtest: restoring a legacy save drains deferred awards rather than awarding them after dismount
+ok 51 - restoring a legacy save drains deferred awards rather than awarding them after dismount
+  ---
+  duration_ms: 2.07605
+  type: 'test'
+  ...
+# Subtest: ordinary real-input kite policy releases ABOVE the ring before rope reversal
+ok 52 - ordinary real-input kite policy releases ABOVE the ring before rope reversal
+  ---
+  duration_ms: 0.348598
+  type: 'test'
+  ...
+# Subtest: player receives actionable warning before the real rope reverses into pursuing officers
+ok 53 - player receives actionable warning before the real rope reverses into pursuing officers
+  ---
+  duration_ms: 0.830086
+  type: 'test'
+  ...
+# Subtest: full natural keyboard route may release the real kite rope before reverse swing
+ok 54 - full natural keyboard route may release the real kite rope before reverse swing
+  ---
+  duration_ms: 0.237099
+  type: 'test'
+  ...
+# Subtest: a conservative REAL release can miss the low pulley while surviving its high-roof swing
+ok 55 - a conservative REAL release can miss the low pulley while surviving its high-roof swing
+  ---
+  duration_ms: 1.083459
+  type: 'test'
+  ...
+# Subtest: all four initial challenges are source-anchored, deterministic, visible and optional
+ok 56 - all four initial challenges are source-anchored, deterministic, visible and optional
+  ---
+  duration_ms: 43.729788
+  type: 'test'
+  ...
+# Subtest: lantern guidance prioritizes a real release then new press at the low visible knot
+ok 57 - lantern guidance prioritizes a real release then new press at the low visible knot
+  ---
+  duration_ms: 3.013329
+  type: 'test'
+  ...
+# Subtest: two earned stylish releases survive only a REAL final Qingluan boarding dismount
+ok 58 - two earned stylish releases survive only a REAL final Qingluan boarding dismount
+  ---
+  duration_ms: 0.370771
+  type: 'test'
+  ...
+# Subtest: qingluan remains tied to a physical high support and earns no larger invisible catch radius
+ok 59 - qingluan remains tied to a physical high support and earns no larger invisible catch radius
+  ---
+  duration_ms: 0.245251
+  type: 'test'
+  ...
+# Subtest: qingluan warning begins one full street early, counts actual stylish releases and cues final high swing
+ok 60 - qingluan warning begins one full street early, counts actual stylish releases and cues final high swing
+  ---
+  duration_ms: 0.65424
+  type: 'test'
+  ...
+# Subtest: qingluan failed contact explains the REAL missing action rather than always blaming the style streak
+ok 61 - qingluan failed contact explains the REAL missing action rather than always blaming the style streak
+  ---
+  duration_ms: 0.154183
+  type: 'test'
+  ...
+# Subtest: an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling
+ok 62 - an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling
+  ---
+  duration_ms: 0.231851
+  type: 'test'
+  ...
+# Subtest: distinct qualifying actions require a real recent press/release, speed, and bird combo
+ok 63 - distinct qualifying actions require a real recent press/release, speed, and bird combo
+  ---
+  duration_ms: 0.334927
+  type: 'test'
+  ...
+# Subtest: wrong action and bypass do not grant a ride, and the same encounter cannot resolve twice
+ok 64 - wrong action and bypass do not grant a ride, and the same encounter cannot resolve twice
+  ---
+  duration_ms: 2.669879
+  type: 'test'
+  ...
+# Subtest: a second encounter of the same vehicle can resolve differently and is identified by instance
+ok 65 - a second encounter of the same vehicle can resolve differently and is identified by instance
+  ---
+  duration_ms: 2.052966
+  type: 'test'
+  ...
+# Subtest: offer/encounter records survive save/load; invalid action, duplicate instance and forged reward are rejected
+ok 66 - offer/encounter records survive save/load; invalid action, duplicate instance and forged reward are rejected
+  ---
+  duration_ms: 4.386176
+  type: 'test'
+  ...
+# Subtest: default lantern holds on its authored world support and does not jump on the pickup frame
+ok 67 - default lantern holds on its authored world support and does not jump on the pickup frame
+  ---
+  duration_ms: 1.240396
+  type: 'test'
+  ...
+# Subtest: missed optional encounters explain their actual world height and first pulley teaches the release
+ok 68 - missed optional encounters explain their actual world height and first pulley teaches the release
+  ---
+  duration_ms: 0.783996
+  type: 'test'
+  ...
+# Subtest: vehicle acquisition is a deterministic probability event
+ok 69 - vehicle acquisition is a deterministic probability event
+  ---
+  duration_ms: 0.787531
+  type: 'test'
+  ...
+# Subtest: vehicle duration is a deterministic tick countdown and expires
+ok 70 - vehicle duration is a deterministic tick countdown and expires
+  ---
+  duration_ms: 32.345916
+  type: 'test'
+  ...
+# Subtest: 纸鸢 lifts on hold, glides low-gravity on release, immune to falling
+ok 71 - 纸鸢 lifts on hold, glides low-gravity on release, immune to falling
+  ---
+  duration_ms: 3.150387
+  type: 'test'
+  ...
+# Subtest: 货运滑索 locks height and accelerates on hold, ejects on release
+ok 72 - 货运滑索 locks height and accelerates on hold, ejects on release
+  ---
+  duration_ms: 2.564079
+  type: 'test'
+  ...
+# Subtest: 灯笼群 free-attach swings around a virtual pivot
+ok 73 - 灯笼群 free-attach swings around a virtual pivot
+  ---
+  duration_ms: 1.357113
+  type: 'test'
+  ...
+# Subtest: 青鸾 climbs on hold, dives on release, and is catch-immune
+ok 74 - 青鸾 climbs on hold, dives on release, and is catch-immune
+  ---
+  duration_ms: 3.045006
+  type: 'test'
+  ...
+# Subtest: vehicle state survives snapshot save/restore and defaults when absent
+ok 75 - vehicle state survives snapshot save/restore and defaults when absent
+  ---
+  duration_ms: 1.673022
+  type: 'test'
+  ...
+1..75
+# tests 75
+# suites 0
+# pass 75
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 407.960147

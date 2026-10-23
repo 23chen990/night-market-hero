@@ -42,10 +42,12 @@
     "evidence": "Default main.ts uses marketGates:false, terrainMode:panorama, guidedExperience:true. Fixed levels, hidden terrain and closing gates remain compatibility fixtures, not the default player journey. Historical reports are not current-build acceptance."
   },
   "browserEvidence": [
-    "evidence/playable-upgrade-20261012/journeys.json",
-    "evidence/playable-upgrade-20261012/safety.json",
-    "evidence/playable-upgrade-20261012/menus.json",
-    "evidence/playable-upgrade-20261012/perceptual-qa-report.json"
+    "evidence/playable-audit/journeys.json",
+    "evidence/playable-audit/safety.json",
+    "evidence/playable-audit/menus.json",
+    "evidence/optimization-20261024/input-lifecycle/report.json",
+    "evidence/optimization-20261024/ad-lifecycle/report.json",
+    "evidence/optimization-20261024/perceptual-qa-report.json"
   ],
   "productSystems": {
     "characters": true,
@@ -54,7 +56,7 @@
     "records": true,
     "economy": true
   },
-  "evidenceStatus": "V2_ENGINEERING_CONTRAST_ONLY",
+  "evidenceStatus": "OPTIMIZATION_CURRENT_BUILD_BROWSER_ENGINEERING",
   "checkpointRules": {
     "collisionEnabled": false,
     "beats": 0,
@@ -63,14 +65,14 @@
     "rewardsPerSegmentPerRun": 1,
     "terminal": false
   },
-  "activePlan": "docs/V2_IMPLEMENTATION_HANDOFF_ZH.md",
-  "qaEvidenceDirectory": "evidence/v2-player-choice",
-  "mapQaStatus": "V2_DYNAMIC_VISUAL_REVIEW_PENDING",
-  "mapQaScope": "Earlier scoped browser screenshot acceptance belongs to 9608d55, not the V2 candidate; continuous seams + independent visual sign-off are required again.",
+  "activePlan": "docs/OPTIMIZATION_20261024_ZH.md",
+  "qaEvidenceDirectory": "evidence/optimization-20261024",
+  "mapQaStatus": "SAMPLED_SCREENSHOTS_REVIEWED_HUMAN_DYNAMIC_REVIEW_PENDING",
+  "mapQaScope": "Current-build four viewport screenshots and four seam positions reviewed by agents; full subjective continuous-map coherence and independent human playtest remain unverified.",
   "commercialReleasePassed": false,
   "v2PlayerChoiceGate": {
-    "codeBaseline": "9608d55dd5e246641b86352f534e3329427b5b3a",
-    "latestQA": "V2 local Chromium matched SHA input contrasts first pulley AND fixed roof kite (not original file:// or blind human QA)",
+    "codeBaseline": "30eede33a00a399e7b868742556f0e300fd89022",
+    "latestQA": "See same-build player-choice reports and independent comparison gates in evidence/optimization-20261024; no automatic entitlement.",
     "fourOptionalEncounterTarget": true,
     "automaticVehicleGrantAllowed": false,
     "deferredRideQueueAllowed": false,
