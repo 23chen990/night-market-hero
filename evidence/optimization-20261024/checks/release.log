@@ -1,0 +1,11 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> night-market-hero-prototype@0.1.0 preverify:release
+> node --import tsx scripts/build.ts
+
+built self-contained dist/index.html and /workspace/scratch/dc818e809d62/night-market-hero/夜市飞侠-护印突围-试玩版.html (35002096 bytes)
+
+> night-market-hero-prototype@0.1.0 verify:release
+> node validate-runtime-product-gates.mjs --strict
+
+{"structurePassed":true,"passed":true,"productGatePassed":true,"evidenceStatus":"OPTIMIZATION_CURRENT_BUILD_BROWSER_ENGINEERING","blockers":[],"scope":"web-lite-playable","commercialReleasePassed":false,"buildHash":"f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75","journey":8,"wired":14}

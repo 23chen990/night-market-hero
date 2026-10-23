@@ -59,6 +59,9 @@ try {
     const birdApproachTrace: Array<{ tick: number; x: number; y: number; vx: number;
       vy: number; attached: string | null; held: boolean; stylishTicks: number[];
       lastReleaseAge: number }> = [];
+    const lanternApproachTrace: Array<{ tick: number; x: number; y: number;
+      vx: number; vy: number; anchorX: number | null; held: boolean;
+      wantHold: boolean; pressTick: number; releaseTick: number }> = [];
     let birdRideFirstTick: number | null = null;
     let birdRideLastTick: number | null = null;
     const nearest: Record<string, { distancePx: number; heightDifferencePx: number;
@@ -318,38 +321,37 @@ try {
             }
           }
           const lantern = s.vehicleOffers.find(offer => offer.id === '灯笼群' && offer.status === 'available');
-          if (lanternRoute && lantern && s.player.x >= lantern.x - 300
+          if (lanternRoute && lantern && !anchor && s.player.x >= lantern.x - 360
             && s.player.x <= lantern.x + 95) {
-            // Exact-build 38851840048: the rider was still hanging 5px from
-            // the real lantern at tick 2872, then the actual CDP release landed
-            // at tick 2886 and fresh press came only after the object resolved
-            // at tick 2905. On a ~600px/s approach, a 145px warning is too
-            // late given the next genuine on-screen touch decision.
-            // Release from the visible LOW roof somewhat earlier and make a
-            // fresh browser press when the actual body is about to intersect
-            // the original, unchanged lantern ellipse. No fixture edits,
-            // auto-claims, collision expansion or time stepping.
+            // Keep the ordinary real-swing release above, including its
+            // passed-support, reversal and maximum-hold exits. A specialized
+            // hold-until-height rule pulled the hero above the knot; a narrow
+            // projected release band was skipped between real browser frames
+            // and then held the old rope backwards. Neither is a valid route.
+            // Once airborne, wait for actual contact geometry instead of
+            // reflexively grabbing another roof rope through the lantern.
             const rx = lantern.radiusX ?? 84;
             const ry = lantern.radiusY ?? 100;
             const distance = lantern.x - s.player.x;
-            if (anchor) {
-              const atReachableLowKnot = distance <= 255
-                && s.player.y >= lantern.y - 145
-                && s.player.y <= lantern.y + 105
-                && s.player.vx > 165 && s.player.vy < 250;
-              wantHold = !atReachableLowKnot;
-            } else {
-              // Predict only the real in-flight touch latency. The engine
-              // still requires a NEW press inside the SAME visible ellipse.
-              const dt = 0.085;
-              const nxNext = (s.player.x + s.player.vx * dt - lantern.x) / rx;
-              const nyNext = (s.player.y + s.player.vy * dt - lantern.y) / ry;
-              const nxNow = (s.player.x - lantern.x) / rx;
-              const nyNow = (s.player.y - lantern.y) / ry;
-              const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.94 * 0.94;
-              const aboutToTouch = nxNext * nxNext + nyNext * nyNext <= 1;
-              wantHold = (touchingNow || aboutToTouch) && distance >= -55;
-            }
+            // Predict only the real in-flight touch latency. The engine
+            // still requires a NEW press inside the SAME visible ellipse.
+            const dt = 0.085;
+            const nxNext = (s.player.x + s.player.vx * dt - lantern.x) / rx;
+            const nyNext = (s.player.y + s.player.vy * dt - lantern.y) / ry;
+            const nxNow = (s.player.x - lantern.x) / rx;
+            const nyNow = (s.player.y - lantern.y) / ry;
+            const touchingNow = nxNow * nxNow + nyNow * nyNow <= 0.94 * 0.94;
+            const aboutToTouch = nxNext * nxNext + nyNext * nyNext <= 1;
+            wantHold = (touchingNow || aboutToTouch) && distance >= -55;
+          }
+          if (lanternRoute && lantern && s.player.x >= lantern.x - 760
+            && s.player.x <= lantern.x + 180) {
+            // Reuse the existing observed frame: no extra state reads or
+            // pauses that could alter the physical input cadence.
+            lanternApproachTrace.push({ tick: s.tick, x: s.player.x, y: s.player.y,
+              vx: s.player.vx, vy: s.player.vy, anchorX: anchor?.x ?? null,
+              held: s.inputHeld, wantHold,
+              pressTick: s.lastGrapplePressTick, releaseTick: s.lastGrappleReleaseTick });
           }
           if (birdRoute && lantern && s.player.x >= lantern.x - 330
             && s.player.x <= lantern.x + 100) {
@@ -462,7 +464,7 @@ try {
         finalStatus: state.status, level: state.levelId, worldX: state.player.x,
         segment: state.segmentIndex, revives, seenRides: [...seenRides],
         encounters: [...encounters.entries()], nearest, heldNearby, inputEdges,
-        birdClaimPreparations, birdApproachTrace,
+        birdClaimPreparations, birdApproachTrace, lanternApproachTrace,
         birdMount: birdRideFirstTick === null || birdRideLastTick === null ? null
           : { firstTick: birdRideFirstTick, lastTick: birdRideLastTick,
             observedTicks: birdRideLastTick - birdRideFirstTick },

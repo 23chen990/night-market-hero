@@ -1,0 +1,170 @@
+{
+  "sha256": "def0175ab5d70d5018b4e5bc5c5b1217663f31d6e9b1b2b442d17f9235a34a8e",
+  "browserVersion": "153.0.8010.12",
+  "method": "Real buttons, viewport rotation and natural losses; delayed ad SDK plus synthetic blur/focus explicitly injected. No game state writes or real ads.",
+  "passed": false,
+  "cases": [
+    {
+      "scenario": "revive-rotate-return",
+      "errors": [],
+      "stage": "complete-after-rotation",
+      "portraitPending": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "completed": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "failure": "AssertionError [ERR_ASSERTION]: completed revive entitlement survives viewport changes during the ad\n+ actual - expected\n\n+ 'failed'\n- 'playing'\n",
+      "failureState": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      }
+    },
+    {
+      "scenario": "revive-rotate-pending",
+      "errors": [],
+      "stage": "complete-after-rotation",
+      "portraitPending": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "completed": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "failure": "AssertionError [ERR_ASSERTION]: completed revive entitlement survives viewport changes during the ad\n+ actual - expected\n\n+ 'failed'\n- 'playing'\n",
+      "failureState": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      }
+    },
+    {
+      "scenario": "revive-rotate-dismissed-retry",
+      "errors": [],
+      "stage": "dismiss-after-rotation",
+      "portraitPending": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "dismissed": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "failure": "AssertionError [ERR_ASSERTION]: returning from portrait cannot lock the failed run behind paused=true\n\ntrue !== false\n",
+      "failureState": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      }
+    }
+  ]
+}

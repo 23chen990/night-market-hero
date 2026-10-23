@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "夜市飞侠",
+  "repository": "23chen990/night-market-hero",
+  "baseCommit": "30eede33a00a399e7b868742556f0e300fd89022",
+  "workspace": "/workspace/scratch/dc818e809d62/night-market-hero",
+  "route": "formal-fixer",
+  "routeReason": "The player's actionable coaching is part of the default journey; preserve independent browser retest rather than treating unit success as experience approval.",
+  "intentionallyOmitted": [
+    "Other factory games",
+    "historic green QA used as current-build proof",
+    "economy/ads changes",
+    "new physics or reward system"
+  ],
+  "issues": [
+    {
+      "id": "UI-RECOVERY-PRIORITY",
+      "classification": "player-guidance bug",
+      "reproduction": "Patrol, no ride, no attached rope, player y=770 and vy=320, optional encounter 100 world units ahead. Original controlCue returned a ready pickup cue rather than danger recovery. Repeat for all four vehicle ids.",
+      "expected": "The dangerous descending free flight requests a rope catch before advertising optional rewards. If input is already held, say keep holding rather than ask for another press.",
+      "scope": [
+        "src/experience-director.ts"
+      ],
+      "acceptance": [
+        "Four vehicle approach states return danger recovery",
+        "Upward low pass remains eligible for its own cue",
+        "Active ride retains ride-specific controls",
+        "State is never mutated"
+      ]
+    },
+    {
+      "id": "UI-REVERSE-PRIORITY",
+      "classification": "player-guidance bug",
+      "reproduction": "Attached to a real roof, player 44 units ahead of its anchor, vx=205, vy=-35 and pursuing guard 280 units behind. An optional vehicle 500 units ahead hid the existing release-before-reversal warning.",
+      "expected": "The real impending reversal has priority over pickup preparation; show release now with actual urgency.",
+      "scope": [
+        "src/experience-director.ts"
+      ],
+      "acceptance": [
+        "Warning visible for all four optional encounters",
+        "No automatic release, speed or collision changes"
+      ]
+    },
+    {
+      "id": "UI-BIRD-PREPARATION-TIMING",
+      "classification": "player-guidance bug",
+      "reproduction": "Bird 1500 world units ahead, one earned stylish release, real held roof rope, player past anchor with vx=400 and vy=-190. Original cue only showed the preparation count and hid the immediate scoreable release timing.",
+      "expected": "The earned preparation count and the genuine release-now window share one short cue; slow unqualified motion never says release now.",
+      "scope": [
+        "src/experience-director.ts"
+      ],
+      "acceptance": [
+        "Real qualifying rope state shows release now and 1/2",
+        "Unqualified speed does not show a scoring cue",
+        "No added or retained qualification"
+      ]
+    },
+    {
+      "id": "UI-MOUNTED-GOAL-CONFLICT",
+      "classification": "conflicting guidance",
+      "reproduction": "Mounted on a kite, a lantern offer is 800 world units ahead. V2 cannot claim another ride while mounted, yet the goal advertised grabbing it.",
+      "expected": "Hide the redundant future pickup goal while mounted; keep ride badge, remaining time and actual controls.",
+      "scope": [
+        "src/experience-hud.ts"
+      ],
+      "acceptance": [
+        "Mounted ride has no conflicting future-pickup goal",
+        "Goal returns after dismount"
+      ]
+    }
+  ],
+  "reproductionMatrix": {
+    "objects": [
+      "货运滑索",
+      "纸鸢",
+      "灯笼群",
+      "青鸾"
+    ],
+    "states": [
+      "unroped descending",
+      "already-held rescue",
+      "low upward pass",
+      "real roof reversal",
+      "mounted ride",
+      "bird preparation score window"
+    ],
+    "presentation": "Default experience control coach",
+    "browserViewportsVerified": [
+      "568x320",
+      "667x375",
+      "844x390",
+      "1280x720"
+    ]
+  },
+  "engineeringEvidence": {
+    "testFirst": "Original safety/preparation tests: 3 failed, 1 passed. Additional reversal test: failed before the priority change. Final focused suite: 70 passed, 0 failed, 0 skipped. Mounted-goal regression also failed before the fix and passed after it.",
+    "testCommand": "node --import tsx --test --experimental-test-isolation=none --test-reporter=tap tests/control-cue-safety.test.ts tests/vehicle-encounters-v2.test.ts tests/chase-readout-priority.test.ts tests/retry-debrief.test.ts tests/guided-experience.test.ts tests/v2-player-choice-contract.test.ts",
+    "runtime": "Node 22.23.4, isolation=none used for local subprocess diagnostics",
+    "lint": "passed for src/experience-director.ts, src/experience-hud.ts, tests/control-cue-safety.test.ts and tests/chase-readout-priority.test.ts",
+    "runtimeProductGate": "PENDING_PARENT_CURRENT_BUILD_BROWSER_RETEST",
+    "humanPlaytest": false,
+    "commercialReleasePassed": false,
+    "uiLayoutGate": "PASS_FINAL_BUILD_FOUR_VIEWPORTS",
+    "coachViewportAudit": {
+      "command": "npm run test:coach",
+      "passed": true,
+      "viewports": 4,
+      "browserErrors": [],
+      "sha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+      "report": "evidence/playable-audit/coach-viewport-layout.json"
+    },
+    "menuAudit": {
+      "command": "node --import tsx tests/playable-menu-audit.ts",
+      "passed": true,
+      "viewports": 4,
+      "tabsPerViewport": 3,
+      "touchTargetsAtLeast44px": true,
+      "portraitGuard": true,
+      "closeReturnsToPause": true,
+      "browserErrors": [],
+      "sha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+      "report": "evidence/playable-audit/menus.json"
+    }
+  },
+  "readability": {
+    "change": "Landscape <=430px height control title 12→14px and detail 9→11px; shortened vehicle instructions without adding more overlays.",
+    "baselineBrowser": "/tmp/night-market-ui/baseline/layout.json",
+    "caveat": "Earlier screenshots without CJK fonts are excluded. Corrected the separate layout-probe driver to hide its source coach while displaying a clone, avoiding probe-only duplicate text. Game code was unchanged during browser checks.",
+    "currentBuildSha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+    "currentVisualReview": "All four final-build natural-entry screenshots reviewed at 568x320, 667x375, 844x390, 1280x720. Chinese fonts render correctly; compact coach text legible, no overflow or overlap with the hero flight lane or right item rail. Natural-entry geometry, coach viewport audit and menu audit all pass on final build f6a76194 after the ad-completion rotation fix.",
+    "previousBuildLayoutProbe": {
+      "sha256": "63c34dfc23d5240264fef2562686a519ec1d7d0c7de3710d21934b7090482fbe",
+      "directory": "evidence/optimization-20261024/ui/layout-probe-63c34dfc",
+      "scope": "Long-cue and danger-pursuit presentation-only DOM clones, all four sizes fit and were viewed. This is supporting style evidence from the preceding build, not final-build natural-hazard or ride-acquisition proof."
+    },
+    "previousNaturalEntryArchive": {
+      "sha256": "def0175ab5d70d5018b4e5bc5c5b1217663f31d6e9b1b2b442d17f9235a34a8e",
+      "directory": "/tmp/night-market-ui-def0175ab-pipwaks_/current",
+      "scope": "Previous build screenshots archived before the final rerun; not current-build evidence."
+    }
+  }
+}

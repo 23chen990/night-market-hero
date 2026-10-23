@@ -1,0 +1,286 @@
+{
+  "sha256": "05b9831f44e5c496748f388690b93b932093b7766ab80c2b2d100e77b52d202b",
+  "method": "Real browser touch/keyboard/buttons and viewport resize. State reads only. Synthetic blur case explicitly labelled.",
+  "cases": [
+    {
+      "scenario": "launch-pause-button",
+      "before": {
+        "tick": 0,
+        "paused": true,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 72,
+          "y": 575,
+          "vx": 245,
+          "vy": -185
+        },
+        "lastGrappleReleaseTick": -10000,
+        "inputTransitions": 0,
+        "combo": 0,
+        "regrappleGraceUntilTick": 0,
+        "vehicleId": null
+      },
+      "after": {
+        "tick": 75,
+        "paused": false,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 223.14583333333312,
+          "y": 633.5416666666666,
+          "vx": 238.7499999999993,
+          "vy": 364.9999999999999
+        },
+        "lastGrappleReleaseTick": -10000,
+        "inputTransitions": 0,
+        "combo": 0,
+        "regrappleGraceUntilTick": 0,
+        "vehicleId": null
+      },
+      "launchVisible": true,
+      "advancedBehindLaunch": true
+    },
+    {
+      "scenario": "pause-touch",
+      "errors": [],
+      "before": {
+        "tick": 19,
+        "paused": false,
+        "inputHeld": true,
+        "status": "playing",
+        "attachedAnchorId": "node-1",
+        "ropeLength": 275.65702831744096,
+        "player": {
+          "x": 95.78412582251798,
+          "y": 574.4480071607352,
+          "vx": 124.90045635664278,
+          "vy": 106.87208140368733
+        },
+        "lastGrappleReleaseTick": -10000,
+        "inputTransitions": 1,
+        "combo": 0,
+        "regrappleGraceUntilTick": 0,
+        "vehicleId": null
+      },
+      "error": "TimeoutError: page.waitForFunction: Timeout 4000ms exceeded."
+    },
+    {
+      "scenario": "growth-touch",
+      "errors": [],
+      "before": {
+        "tick": 23,
+        "paused": false,
+        "inputHeld": true,
+        "status": "playing",
+        "attachedAnchorId": "node-1",
+        "ropeLength": 275.65702831744096,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 146.3944526252496,
+          "vy": 119.8926019430107
+        },
+        "lastGrappleReleaseTick": -10000,
+        "inputTransitions": 1,
+        "combo": 0,
+        "regrappleGraceUntilTick": 0,
+        "vehicleId": null
+      },
+      "error": "TimeoutError: page.waitForFunction: Timeout 4000ms exceeded."
+    },
+    {
+      "scenario": "rotate-touch",
+      "errors": [],
+      "before": {
+        "tick": 21,
+        "paused": false,
+        "inputHeld": true,
+        "status": "playing",
+        "attachedAnchorId": "node-1",
+        "ropeLength": 275.65702831744096,
+        "player": {
+          "x": 97.974087536394,
+          "y": 576.3022091158305,
+          "vx": 135.57509007778967,
+          "vy": 113.58283535597084
+        },
+        "lastGrappleReleaseTick": -10000,
+        "inputTransitions": 1,
+        "combo": 0,
+        "regrappleGraceUntilTick": 0,
+        "vehicleId": null
+      },
+      "after": {
+        "tick": 23,
+        "paused": true,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 300,
+          "vy": -180
+        },
+        "lastGrappleReleaseTick": 23,
+        "inputTransitions": 2,
+        "combo": 0,
+        "regrappleGraceUntilTick": 89,
+        "vehicleId": null
+      },
+      "frozen": {
+        "tick": 23,
+        "paused": true,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 300,
+          "vy": -180
+        },
+        "lastGrappleReleaseTick": 23,
+        "inputTransitions": 2,
+        "combo": 0,
+        "regrappleGraceUntilTick": 89,
+        "vehicleId": null
+      },
+      "cancelWasRealRelease": true,
+      "expectedNoRelease": false
+    },
+    {
+      "scenario": "blur-event",
+      "errors": [],
+      "before": {
+        "tick": 21,
+        "paused": false,
+        "inputHeld": true,
+        "status": "playing",
+        "attachedAnchorId": "node-1",
+        "ropeLength": 275.65702831744096,
+        "player": {
+          "x": 97.974087536394,
+          "y": 576.3022091158305,
+          "vx": 135.57509007778967,
+          "vy": 113.58283535597084
+        },
+        "lastGrappleReleaseTick": -10000,
+        "inputTransitions": 1,
+        "combo": 0,
+        "regrappleGraceUntilTick": 0,
+        "vehicleId": null
+      },
+      "after": {
+        "tick": 23,
+        "paused": true,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 300,
+          "vy": -180
+        },
+        "lastGrappleReleaseTick": 23,
+        "inputTransitions": 2,
+        "combo": 0,
+        "regrappleGraceUntilTick": 89,
+        "vehicleId": null
+      },
+      "frozen": {
+        "tick": 23,
+        "paused": true,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 300,
+          "vy": -180
+        },
+        "lastGrappleReleaseTick": 23,
+        "inputTransitions": 2,
+        "combo": 0,
+        "regrappleGraceUntilTick": 89,
+        "vehicleId": null
+      },
+      "cancelWasRealRelease": true,
+      "expectedNoRelease": false
+    },
+    {
+      "scenario": "pause-keyboard",
+      "errors": [],
+      "before": {
+        "tick": 17,
+        "paused": false,
+        "inputHeld": true,
+        "status": "playing",
+        "attachedAnchorId": "node-1",
+        "ropeLength": 267.30207777204043,
+        "player": {
+          "x": 99.30372761608226,
+          "y": 566.44781123568,
+          "vx": 112.0919099176162,
+          "vy": 97.76294225345691
+        },
+        "lastGrappleReleaseTick": -10000,
+        "inputTransitions": 1,
+        "combo": 0,
+        "regrappleGraceUntilTick": 0,
+        "vehicleId": null
+      },
+      "after": {
+        "tick": 35,
+        "paused": true,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 123.62905212196796,
+          "y": 585.3116813057267,
+          "vx": 300,
+          "vy": -180
+        },
+        "lastGrappleReleaseTick": 35,
+        "inputTransitions": 2,
+        "combo": 0,
+        "regrappleGraceUntilTick": 101,
+        "vehicleId": null
+      },
+      "frozen": {
+        "tick": 35,
+        "paused": true,
+        "inputHeld": false,
+        "status": "playing",
+        "attachedAnchorId": null,
+        "ropeLength": null,
+        "player": {
+          "x": 123.62905212196796,
+          "y": 585.3116813057267,
+          "vx": 300,
+          "vy": -180
+        },
+        "lastGrappleReleaseTick": 35,
+        "inputTransitions": 2,
+        "combo": 0,
+        "regrappleGraceUntilTick": 101,
+        "vehicleId": null
+      },
+      "cancelWasRealRelease": true,
+      "expectedNoRelease": false
+    }
+  ]
+}

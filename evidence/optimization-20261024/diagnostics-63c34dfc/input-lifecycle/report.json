@@ -1,0 +1,433 @@
+{
+  "sha256": "63c34dfc23d5240264fef2562686a519ec1d7d0c7de3710d21934b7090482fbe",
+  "method": "Visible buttons, real keyboard/touch, CDP native touchCancel and viewport rotation; synthetic blur is labelled. Game state is read-only.",
+  "passed": false,
+  "cases": [
+    {
+      "scenario": "launch-settings",
+      "errors": [],
+      "before": {
+        "tick": 0,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 0,
+        "combo": 0,
+        "player": {
+          "x": 72,
+          "y": 575,
+          "vx": 245,
+          "vy": -185
+        },
+        "graceUntil": 0
+      },
+      "after": {
+        "tick": 0,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 0,
+        "combo": 0,
+        "player": {
+          "x": 72,
+          "y": 575,
+          "vx": 245,
+          "vy": -185
+        },
+        "graceUntil": 0
+      },
+      "passed": true
+    },
+    {
+      "scenario": "pause-keyboard",
+      "errors": [],
+      "before": {
+        "tick": 13,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 90.26401528065716,
+          "y": 569.5957311641109,
+          "vx": 93.72209793139821,
+          "vy": 84.62465933578886
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 25,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 102.89305714739723,
+          "y": 580.3276514587325,
+          "vx": 157.35762916767925,
+          "vy": 125.77270177385073
+        },
+        "graceUntil": 97
+      },
+      "frozen": {
+        "tick": 25,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 102.89305714739723,
+          "y": 580.3276514587325,
+          "vx": 157.35762916767925,
+          "vy": 125.77270177385073
+        },
+        "graceUntil": 97
+      },
+      "resumed": {
+        "tick": 40,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 123.4846058243964,
+          "y": 601.8609940916667,
+          "vx": 221.16362957592816,
+          "vy": 141.47409387100467
+        },
+        "graceUntil": 0
+      },
+      "passed": true
+    },
+    {
+      "scenario": "growth-keyboard",
+      "errors": [],
+      "before": {
+        "tick": 17,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 99.30372761608226,
+          "y": 566.44781123568,
+          "vx": 112.0919099176162,
+          "vy": 97.76294225345691
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 35,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 123.62905212196796,
+          "y": 585.3116813057267,
+          "vx": 211.82824575481823,
+          "vy": 145.54217986631141
+        },
+        "graceUntil": 107
+      },
+      "frozen": {
+        "tick": 35,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 123.62905212196796,
+          "y": 585.3116813057267,
+          "vx": 211.82824575481823,
+          "vy": 145.54217986631141
+        },
+        "graceUntil": 107
+      },
+      "resumed": {
+        "tick": 50,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 151.00670714156652,
+          "y": 608.9757355722049,
+          "vx": 274.4116634711124,
+          "vy": 139.4614332148359
+        },
+        "graceUntil": 0
+      },
+      "passed": true
+    },
+    {
+      "scenario": "rotate-touch",
+      "errors": [],
+      "before": {
+        "tick": 21,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 97.974087536394,
+          "y": 576.3022091158305,
+          "vx": 135.57509007778967,
+          "vy": 113.58283535597084
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 23,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 146.3944526252496,
+          "vy": 119.8926019430107
+        },
+        "graceUntil": 95
+      },
+      "frozen": {
+        "tick": 23,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 146.3944526252496,
+          "vy": 119.8926019430107
+        },
+        "graceUntil": 95
+      },
+      "failure": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-action=\"resume-run\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"reward-button\" data-action=\"resume-run\">继续飞行</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    13 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "scenario": "cancel-touch",
+      "errors": [],
+      "before": {
+        "tick": 21,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 97.974087536394,
+          "y": 576.3022091158305,
+          "vx": 135.57509007778967,
+          "vy": 113.58283535597084
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 27,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 105.62678459855852,
+          "y": 582.4845078744215,
+          "vx": 168.46141504628693,
+          "vy": 131.19486907978583
+        },
+        "graceUntil": 99
+      },
+      "frozen": {
+        "tick": 27,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 105.62678459855852,
+          "y": 582.4845078744215,
+          "vx": 168.46141504628693,
+          "vy": 131.19486907978583
+        },
+        "graceUntil": 99
+      },
+      "resumed": {
+        "tick": 42,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 127.60762929161757,
+          "y": 604.6338254856691,
+          "vx": 232.39512682336942,
+          "vy": 142.94004034760135
+        },
+        "graceUntil": 0
+      },
+      "passed": true
+    },
+    {
+      "scenario": "blur-event",
+      "errors": [],
+      "before": {
+        "tick": 18,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 96.1801396113504,
+          "y": 571.9394123356062,
+          "vx": 119.00985811485543,
+          "vy": 102.8384393904542
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 20,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 98.27140748430267,
+          "y": 573.7282142755089,
+          "vx": 129.61016425848388,
+          "vy": 109.739940930534
+        },
+        "graceUntil": 92
+      },
+      "frozen": {
+        "tick": 20,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 98.27140748430267,
+          "y": 573.7282142755089,
+          "vx": 129.61016425848388,
+          "vy": 109.739940930534
+        },
+        "graceUntil": 92
+      },
+      "failure": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-action=\"resume-run\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"reward-button\" data-action=\"resume-run\">继续飞行</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    12 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "scenario": "multi-touch-release",
+      "errors": [],
+      "before": {
+        "tick": 20,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 98.27140748430267,
+          "y": 573.7282142755089,
+          "vx": 129.61016425848388,
+          "vy": 109.739940930534
+        },
+        "graceUntil": 0
+      },
+      "remaining": {
+        "tick": 33,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 116.29963686420461,
+          "y": 587.7434793384283,
+          "vx": 201.93236979329146,
+          "vy": 143.87285549390396
+        },
+        "graceUntil": 0
+      },
+      "released": {
+        "tick": 41,
+        "paused": false,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": 39,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 132.31634028812257,
+          "y": 592.3802378424306,
+          "vx": 299.83333333333337,
+          "vy": -165.33333333333331
+        },
+        "graceUntil": 105
+      },
+      "passed": true
+    }
+  ]
+}

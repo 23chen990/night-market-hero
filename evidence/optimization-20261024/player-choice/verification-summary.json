@@ -1,0 +1,237 @@
+{
+  "status": "SAME_BUILD_PLAYER_CHOICES_PASS",
+  "buildSha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+  "runtime": "Node 22.23.4",
+  "browser": "Playwright default Chromium headless 153.0.8010.12 (revision 1243), no executable override",
+  "launch": "Local offline file URL, real Chromium touch input, existing state observer only",
+  "runOrder": [
+    "casual 31s",
+    "skilled 31s",
+    "lantern 45s (failed driver version retained)",
+    "bird 58s",
+    "one evidence-based corrected lantern 45s"
+  ],
+  "runs": {
+    "casual": {
+      "durationSeconds": 31,
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "inputMode": "touch",
+      "finalStatus": "playing",
+      "worldX": 12962.597774706794,
+      "segment": 7,
+      "uiRevives": 0,
+      "encounters": {
+        "32:2:2:货运滑索": {
+          "type": "货运滑索",
+          "result": "missed",
+          "reason": "松手时机不对",
+          "tick": 877
+        },
+        "32:4:4:纸鸢": {
+          "type": "纸鸢",
+          "result": "missed",
+          "reason": "松手时机不对",
+          "tick": 1740
+        },
+        "32:6:6:灯笼群": {
+          "type": "灯笼群",
+          "result": "missed",
+          "reason": "碰到了灯绳！先松开旧飞索，再靠近时重新按住",
+          "tick": 2403
+        }
+      },
+      "ridesObservedInPeriodicSamples": {},
+      "runtimeErrors": [],
+      "report": "casual/report.json",
+      "continuousVideo": "casual/844x390-journey.webm"
+    },
+    "skilled": {
+      "durationSeconds": 31,
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "inputMode": "touch",
+      "finalStatus": "playing",
+      "worldX": 10599.243077288354,
+      "segment": 6,
+      "uiRevives": 1,
+      "encounters": {
+        "32:2:2:货运滑索": {
+          "type": "货运滑索",
+          "result": "claimed",
+          "reason": "准确接住实体挂环",
+          "tick": 899
+        },
+        "32:4:4:纸鸢": {
+          "type": "纸鸢",
+          "result": "claimed",
+          "reason": "准确接住实体挂环",
+          "tick": 2135
+        }
+      },
+      "ridesObservedInPeriodicSamples": {
+        "货运滑索": {
+          "firstSampleTick": 958,
+          "lastSampleTick": 1150,
+          "observedTicks": 192
+        },
+        "纸鸢": {
+          "firstSampleTick": 2180,
+          "lastSampleTick": 2780,
+          "observedTicks": 600
+        }
+      },
+      "runtimeErrors": [],
+      "report": "skilled/report.json",
+      "continuousVideo": "skilled/844x390-journey.webm"
+    },
+    "lantern": {
+      "durationSeconds": 45,
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "inputMode": "touch",
+      "finalStatus": "playing",
+      "worldX": 20499.380050518597,
+      "segment": 10,
+      "uiRevives": 1,
+      "encounters": {
+        "32:2:2:货运滑索": {
+          "type": "货运滑索",
+          "result": "claimed",
+          "reason": "准确接住实体挂环",
+          "tick": 781
+        },
+        "32:4:4:纸鸢": {
+          "type": "纸鸢",
+          "result": "missed",
+          "reason": "松手时机不对",
+          "tick": 2053
+        },
+        "32:6:6:灯笼群": {
+          "type": "灯笼群",
+          "result": "claimed",
+          "reason": "准确接住实体挂环",
+          "tick": 2719
+        },
+        "32:8:9:青鸾": {
+          "type": "青鸾",
+          "result": "missed",
+          "reason": "从挂环下方飞过：下次先接高处屋檐升高",
+          "tick": 3518
+        }
+      },
+      "ridesObservedInPeriodicSamples": {
+        "货运滑索": {
+          "firstSampleTick": 825,
+          "lastSampleTick": 1046,
+          "observedTicks": 221
+        },
+        "灯笼群": {
+          "firstSampleTick": 2811,
+          "lastSampleTick": 3302,
+          "observedTicks": 491
+        }
+      },
+      "runtimeErrors": [],
+      "report": "lantern/report.json",
+      "continuousVideo": "lantern/844x390-journey.webm"
+    },
+    "bird": {
+      "durationSeconds": 58,
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "inputMode": "touch",
+      "finalStatus": "failed",
+      "worldX": 21899.845776608614,
+      "segment": 11,
+      "uiRevives": 1,
+      "encounters": {
+        "32:2:2:货运滑索": {
+          "type": "货运滑索",
+          "result": "claimed",
+          "reason": "准确接住实体挂环",
+          "tick": 791
+        },
+        "32:4:4:纸鸢": {
+          "type": "纸鸢",
+          "result": "claimed",
+          "reason": "准确接住实体挂环",
+          "tick": 1673
+        },
+        "32:6:6:灯笼群": {
+          "type": "灯笼群",
+          "result": "missed",
+          "reason": "擦过挂环边缘：下次对准发光圈中心",
+          "tick": 2925
+        },
+        "32:8:9:青鸾": {
+          "type": "青鸾",
+          "result": "claimed",
+          "reason": "准确接住实体挂环",
+          "tick": 3676
+        }
+      },
+      "ridesObservedInPeriodicSamples": {
+        "货运滑索": {
+          "firstSampleTick": 841,
+          "lastSampleTick": 1057,
+          "observedTicks": 216
+        },
+        "纸鸢": {
+          "firstSampleTick": 1705,
+          "lastSampleTick": 2340,
+          "observedTicks": 635
+        },
+        "青鸾": {
+          "firstSampleTick": 3705,
+          "lastSampleTick": 5097,
+          "observedTicks": 1392
+        }
+      },
+      "runtimeErrors": [],
+      "report": "bird/report.json",
+      "continuousVideo": "bird/844x390-journey.webm"
+    }
+  },
+  "gates": [
+    {
+      "path": "player-choice-result.json",
+      "status": "ENGINEERING_CONTRAST_PASS",
+      "gateScript": "tests/v2-compare-gate.mjs",
+      "gateUnchangedFromBaseline": true
+    },
+    {
+      "path": "lantern-result.json",
+      "status": "LANTERN_REAL_TOUCH_PASS",
+      "gateScript": "tests/v2-lantern-gate.mjs",
+      "gateUnchangedFromBaseline": true
+    },
+    {
+      "path": "bird-result.json",
+      "status": "BIRD_NATURAL_INPUT_PASS",
+      "gateScript": "tests/v2-bird-gate.mjs",
+      "gateUnchangedFromBaseline": true
+    }
+  ],
+  "driverSha256": "51335e05dc6eefa8889c68abac15c69cd3086fca18ab62bacd5a029968b2a69e",
+  "driverCorrection": "The lantern-specific attached-rope override was removed. The existing real swing/passed-support/reversal/max-hold release policy remains active; only the airborne fresh press is guided by the original visible collision ellipse. Read-only approach traces reuse existing frames. No product, collision, qualification, gate or injected-state change.",
+  "retainedFailures": [
+    "../player-choice-diagnostics/def0175/diagnosis.json",
+    "../player-choice-diagnostics/f6a76194-predicted-band/diagnosis.json"
+  ],
+  "finalVisualReview": [
+    "lantern/844x390-encounter-6-claimed.png",
+    "lantern/844x390-ride-灯笼群.png",
+    "bird/844x390-ride-青鸾.png"
+  ],
+  "commercialReleasePassed": false,
+  "limits": "Engineering automated browser evidence. Drivers observe state and use real touch input, with an allowed UI revive. This is not blind human play, a physical mobile device test, native-platform certification, performance certification or real-ad-platform signoff."
+}

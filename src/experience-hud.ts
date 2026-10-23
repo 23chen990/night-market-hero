@@ -76,7 +76,10 @@ export function hudCopyPriority(
     && chaseUrgency === 'calm';
   const release = /现在松手|现在松开|赶紧松手|松手飞进/.test(cue.title);
   const press = /现在按住|快按住/.test(cue.title);
-  return { hideDuplicateGoal: coachingOffer, compactCoaching,
+  // V2 cannot board a second ride while mounted and never queues it for later.
+  // Keep the active ride's badge/control visible instead of urging an
+  // impossible pickup in the simultaneous future-goal strip.
+  return { hideDuplicateGoal: coachingOffer || !!state.vehicleId, compactCoaching,
     quickAction: release ? 'release' : press ? 'press' : 'none' };
 }
 

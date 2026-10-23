@@ -1,0 +1,210 @@
+{
+  "passed": true,
+  "naturalFlow": {
+    "buildHash": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+    "method": "state-observing driver; trusted touch/keyboard/buttons; real browser time; continuous video; no state mutation APIs",
+    "sourceReport": "evidence/playable-audit/journeys.json",
+    "journeys": [
+      {
+        "viewport": {
+          "width": 844,
+          "height": 390
+        },
+        "inputDevice": "touch",
+        "tutorialCompleted": true,
+        "claimed": [
+          "货运滑索",
+          "灯笼群"
+        ],
+        "missed": [
+          "纸鸢",
+          "青鸾"
+        ],
+        "seams": [
+          8000,
+          9600,
+          11200,
+          12800
+        ],
+        "rideObservationTicks": {
+          "货运滑索": 258,
+          "灯笼群": 527
+        },
+        "errors": []
+      },
+      {
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "inputDevice": "keyboard",
+        "tutorialCompleted": true,
+        "claimed": [
+          "货运滑索",
+          "灯笼群"
+        ],
+        "missed": [
+          "纸鸢",
+          "青鸾"
+        ],
+        "seams": [
+          8000,
+          9600,
+          11200,
+          12800
+        ],
+        "rideObservationTicks": {
+          "货运滑索": 262,
+          "灯笼群": 581
+        },
+        "errors": []
+      }
+    ],
+    "optionalRoutes": [
+      {
+        "route": "casual",
+        "report": "evidence/optimization-20261024/player-choice/casual/report.json",
+        "results": [
+          {
+            "viewport": {
+              "width": 844,
+              "height": 390
+            },
+            "seenRides": [],
+            "finalStatus": "playing",
+            "segment": 7
+          }
+        ]
+      },
+      {
+        "route": "skilled",
+        "report": "evidence/optimization-20261024/player-choice/skilled/report.json",
+        "results": [
+          {
+            "viewport": {
+              "width": 844,
+              "height": 390
+            },
+            "seenRides": [
+              "货运滑索",
+              "纸鸢"
+            ],
+            "finalStatus": "playing",
+            "segment": 6
+          }
+        ]
+      },
+      {
+        "route": "lantern",
+        "report": "evidence/optimization-20261024/player-choice/lantern/report.json",
+        "results": [
+          {
+            "viewport": {
+              "width": 844,
+              "height": 390
+            },
+            "seenRides": [
+              "货运滑索",
+              "灯笼群"
+            ],
+            "finalStatus": "playing",
+            "segment": 10
+          }
+        ]
+      },
+      {
+        "route": "bird",
+        "report": "evidence/optimization-20261024/player-choice/bird/report.json",
+        "results": [
+          {
+            "viewport": {
+              "width": 844,
+              "height": 390
+            },
+            "seenRides": [
+              "货运滑索",
+              "纸鸢",
+              "青鸾"
+            ],
+            "finalStatus": "failed",
+            "segment": 11
+          }
+        ]
+      }
+    ],
+    "comparisonGates": [
+      {
+        "status": "ENGINEERING_CONTRAST_PASS",
+        "sha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+        "viewport": {
+          "width": 844,
+          "height": 390
+        },
+        "casual": {
+          "32:2:2:货运滑索": {
+            "type": "货运滑索",
+            "result": "missed",
+            "reason": "松手时机不对",
+            "tick": 877
+          },
+          "32:4:4:纸鸢": {
+            "type": "纸鸢",
+            "result": "missed",
+            "reason": "松手时机不对",
+            "tick": 1740
+          },
+          "32:6:6:灯笼群": {
+            "type": "灯笼群",
+            "result": "missed",
+            "reason": "碰到了灯绳！先松开旧飞索，再靠近时重新按住",
+            "tick": 2403
+          }
+        },
+        "skilled": {
+          "32:2:2:货运滑索": {
+            "type": "货运滑索",
+            "result": "claimed",
+            "reason": "准确接住实体挂环",
+            "tick": 899
+          },
+          "32:4:4:纸鸢": {
+            "type": "纸鸢",
+            "result": "claimed",
+            "reason": "准确接住实体挂环",
+            "tick": 2135
+          }
+        },
+        "limits": "Not a blind human study, full game experience review, performance certification or platform release."
+      },
+      {
+        "status": "LANTERN_REAL_TOUCH_PASS",
+        "sha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+        "worldInstance": "32:6:6:灯笼群",
+        "claimedAtTick": 2719,
+        "inputTransitions": 122,
+        "limits": "Same-build Chromium simulated touch only; not human or real phone approval."
+      },
+      {
+        "status": "BIRD_NATURAL_INPUT_PASS",
+        "sha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+        "viewport": {
+          "width": 844,
+          "height": 390
+        },
+        "birdInstance": "32:8:9:青鸾",
+        "missedAt": 3518,
+        "claimedAt": 3676,
+        "stylishReleaseTicks": [
+          3553,
+          3675
+        ],
+        "sustainedMountTicks": 1426,
+        "caveat": "Real browser input and trace: not a blind-human, real-device, IAA or native-platform signoff."
+      }
+    ]
+  },
+  "inputStateMutationUsed": false,
+  "stateObservingDriver": true,
+  "humanApproval": false,
+  "commercialReleasePassed": false
+}

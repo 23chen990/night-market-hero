@@ -49,3 +49,16 @@ test('quiet coaching compacts only after the intro and never hides near-capture 
   assert.equal(hudCopyPriority(state, { ...quiet, tone: 'danger' }, 'calm').compactCoaching, false);
   assert.equal(hudCopyPriority(state, { ...quiet, title: '快按住！接住前方挂点' }, 'calm').quickAction, 'press');
 });
+
+test('an active ride does not advertise a second pickup that cannot be claimed while mounted', () => {
+  const riding = {
+    levelId: 'night-patrol', elapsed: 25, vehicleId: '纸鸢',
+    player: { x: 10000 },
+    vehicleOffers: [{ id: '灯笼群', status: 'available', x: 10800 }],
+  } as unknown as GrappleState;
+  const cue = { title: '按住拉升 · 松手滑翔', detail: '顺着金币调整高度', tone: 'neutral' } as const;
+  assert.equal(hudCopyPriority(riding, cue, 'calm').hideDuplicateGoal, true,
+    'the ride badge and valid ride control cue already supply the current goal');
+  assert.equal(hudCopyPriority({ ...riding, vehicleId: null, vehicleOffers: [] }, cue, 'calm').hideDuplicateGoal, false,
+    'ordinary traversal restores its next objective after the ride ends');
+});

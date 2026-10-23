@@ -4,6 +4,8 @@ export type RewardedAdResult = { status: 'completed' | 'dismissed' | 'unavailabl
 export type InterstitialAdResult = { status: 'shown' | 'unavailable' | 'failed' };
 
 export interface AdProvider {
+  /** A configured bridge must actually exist before the UI offers an ad. */
+  readonly available?: boolean;
   showRewarded(placement: RewardedPlacement): Promise<RewardedAdResult>;
   showInterstitial(placement: InterstitialPlacement): Promise<InterstitialAdResult>;
 }
@@ -14,6 +16,7 @@ export interface InjectedAdBridge {
 }
 
 export class NoopAdProvider implements AdProvider {
+  readonly available = false;
   async showRewarded(placement: RewardedPlacement): Promise<RewardedAdResult> {
     void placement;
     return { status: 'unavailable' };
@@ -26,11 +29,29 @@ export class NoopAdProvider implements AdProvider {
 }
 
 export class InjectedAdProvider implements AdProvider {
-  constructor(private readonly bridge: InjectedAdBridge) {}
+  readonly available = true;
+  constructor(private readonly bridge: InjectedAdBridge, private readonly timeoutMs = 120_000) {}
+
+  private settle<T extends RewardedAdResult | InterstitialAdResult>(request: () => Promise<T>): Promise<T | { status: 'failed' }> {
+    // A missing SDK callback must not permanently lock the settlement screen.
+    // Once timed out, a late completion is ignored and grants no reward.
+    return new Promise(resolve => {
+      let finished = false;
+      const finish = (result: T | { status: 'failed' }): void => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        resolve(result);
+      };
+      const timeout = Number.isFinite(this.timeoutMs) ? Math.max(1, this.timeoutMs) : 120_000;
+      const timer = setTimeout(() => finish({ status: 'failed' }), timeout);
+      Promise.resolve().then(request).then(finish, () => finish({ status: 'failed' }));
+    });
+  }
 
   async showRewarded(placement: RewardedPlacement): Promise<RewardedAdResult> {
     try {
-      return await this.bridge.showRewarded(placement);
+      return await this.settle(() => this.bridge.showRewarded(placement));
     } catch {
       return { status: 'failed' };
     }
@@ -38,7 +59,7 @@ export class InjectedAdProvider implements AdProvider {
 
   async showInterstitial(placement: InterstitialPlacement): Promise<InterstitialAdResult> {
     try {
-      return await this.bridge.showInterstitial(placement);
+      return await this.settle(() => this.bridge.showInterstitial(placement));
     } catch {
       return { status: 'failed' };
     }
@@ -62,6 +83,7 @@ export function createTapTapAdProvider(config: TapTapProviderConfig): AdProvider
 }
 
 export class MockAdProvider implements AdProvider {
+  readonly available = false;
   readonly rewardedPlacements: RewardedPlacement[] = [];
   readonly interstitialPlacements: InterstitialPlacement[] = [];
   private readonly rewardedQueue: RewardedAdResult[] = [];

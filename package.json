@@ -15,6 +15,8 @@
     "test:pursuit": "node --import tsx tests/v2-pursuit-natural-browser.ts",
     "verify:chase-matrix": "node tests/v2-chase-matrix-gate.mjs",
     "test:safety": "node --import tsx tests/playable-safety-audit.ts",
+    "test:input": "node --import tsx tests/input-lifecycle-browser.ts",
+    "test:ads": "node --import tsx tests/ad-lifecycle-browser.ts",
     "preverify:release": "node --import tsx scripts/build.ts",
     "verify:release": "node validate-runtime-product-gates.mjs --strict",
     "check": "npm run lint && npm run typecheck && npm test"

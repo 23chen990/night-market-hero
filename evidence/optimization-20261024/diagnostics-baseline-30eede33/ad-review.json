@@ -1,0 +1,69 @@
+{
+  "sha256": "05b9831f44e5c496748f388690b93b932093b7766ab80c2b2d100e77b52d202b",
+  "method": "Real button input and natural inactivity failures; injected delayed ad bridge and explicit blur/focus events are fault-injection only, no game-state writes.",
+  "cases": [
+    {
+      "scenario": "pending-item-ad",
+      "during": {
+        "tick": 431,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": false,
+        "inputHeld": true,
+        "background": "visible",
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "later": {
+        "tick": 552,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": false,
+        "inputHeld": true,
+        "background": "visible",
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "advancedDuringAd": true
+    },
+    {
+      "scenario": "revive-lifecycle",
+      "after": {
+        "tick": 135,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "inputHeld": false,
+        "background": "resume-required",
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "later": {
+        "tick": 135,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "inputHeld": false,
+        "background": "resume-required",
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "invisiblePause": true
+    },
+    {
+      "scenario": "unavailable-copy",
+      "failure": {
+        "tick": 135,
+        "status": "failed",
+        "paused": false,
+        "reviveUsed": false,
+        "inputHeld": false,
+        "background": "visible",
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "reviveVisible": false,
+      "adPromisedWithoutAction": true
+    }
+  ]
+}

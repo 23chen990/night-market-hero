@@ -1,0 +1,487 @@
+{
+  "sha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+  "browserVersion": "153.0.8010.12",
+  "method": "Real buttons, viewport rotation and natural losses; delayed ad SDK plus synthetic blur/focus explicitly injected. No game state writes or real ads.",
+  "passed": true,
+  "cases": [
+    {
+      "scenario": "item-completed",
+      "errors": [],
+      "stage": "complete",
+      "firstUse": {
+        "tick": 27,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": false,
+        "held": true,
+        "itemUsage": {
+          "talisman": 1,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "during": {
+        "tick": 414,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 1,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "waiting": {
+        "tick": 414,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 1,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "after": {
+        "tick": 424,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 2,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "unlocked": true,
+      "passed": true
+    },
+    {
+      "scenario": "item-dismissed",
+      "errors": [],
+      "stage": "complete",
+      "firstUse": {
+        "tick": 35,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": false,
+        "held": true,
+        "itemUsage": {
+          "talisman": 1,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "during": {
+        "tick": 418,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 1,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "waiting": {
+        "tick": 418,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 1,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "after": {
+        "tick": 430,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 1,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": ""
+      },
+      "unlocked": false,
+      "passed": true
+    },
+    {
+      "scenario": "revive-lifecycle",
+      "errors": [],
+      "after": {
+        "tick": 135,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "resume-required",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": true,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "frozen": {
+        "tick": 135,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "resume-required",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": true,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "resumed": {
+        "tick": 140,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "resume-required",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "unavailable-copy",
+      "errors": [],
+      "failureScreen": {
+        "tick": 135,
+        "status": "failed",
+        "paused": false,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "盟契铜符还在怀里，换一条夜市内线重新突围。"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "missing-bridge-copy",
+      "errors": [],
+      "failureScreen": {
+        "tick": 135,
+        "status": "failed",
+        "paused": false,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "盟契铜符还在怀里，换一条夜市内线重新突围。"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "revive-rotate-return",
+      "errors": [],
+      "stage": "complete",
+      "portraitPending": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "completed": {
+        "tick": 171,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "returned": {
+        "tick": 175,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "resumed": {
+        "tick": 178,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "revive-rotate-pending",
+      "errors": [],
+      "stage": "complete",
+      "portraitPending": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "completed": {
+        "tick": 135,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "frozen": {
+        "tick": 135,
+        "status": "playing",
+        "paused": true,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "returned": {
+        "tick": 137,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "resumed": {
+        "tick": 139,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "passed": true
+    },
+    {
+      "scenario": "revive-rotate-dismissed-retry",
+      "errors": [],
+      "stage": "complete",
+      "portraitPending": {
+        "tick": 135,
+        "status": "failed",
+        "paused": true,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "true",
+        "adWaiting": true,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "dismissed": {
+        "tick": 135,
+        "status": "failed",
+        "paused": false,
+        "reviveUsed": false,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "completed": {
+        "tick": 168,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "returned": {
+        "tick": 172,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "resumed": {
+        "tick": 176,
+        "status": "playing",
+        "paused": false,
+        "reviveUsed": true,
+        "held": false,
+        "itemUsage": {
+          "talisman": 0,
+          "firecracker": 0
+        },
+        "background": "visible",
+        "orientationBlocked": "false",
+        "adWaiting": false,
+        "pauseVisible": false,
+        "copy": "已突围 12%。主动看完一次广告可从最近的安全内檐复起。"
+      },
+      "passed": true
+    }
+  ]
+}

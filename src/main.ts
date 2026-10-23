@@ -292,6 +292,8 @@ const firecrackerAvailability = document.querySelector<HTMLElement>('[data-slot=
 const cornerHud = requiredElement<HTMLElement>('.corner-hud');
 const resultButtons = [reviveButton, doubleButton, restartButton, continueButton];
 const activePointerIds = new Set<number>();
+const interruptedPointerIds = new Set<number>();
+let suppressLegacyInterruptedClick = false;
 let keyboardGrappleHeld = false;
 let orientationBlocked = window.matchMedia('(orientation: portrait)').matches;
 let pausedBeforeOrientation = core.getState().paused;
@@ -300,12 +302,13 @@ let lastPersistedStatus: GrappleState['status'] | null = null;
 let lastPersistedPaused: boolean | null = null;
 let tutorialStepIndex = 0;
 let waitingForFirstInput = core.getState().status === 'playing';
+let adInFlight = false;
 if (waitingForFirstInput) core.setPaused(true);
 app.dataset.awaitingStart = String(waitingForFirstInput);
 const experience = new ExperienceHud(app, {
   start: () => startFirstInput(),
   resume: () => {
-    if (orientationBlocked || core.getState().status !== 'playing') return;
+    if (adInFlight || orientationBlocked || core.getState().status !== 'playing') return;
     waitingForFirstInput = false;
     app.dataset.awaitingStart = 'false';
     experience.setAwaiting(false);
@@ -315,8 +318,8 @@ const experience = new ExperienceHud(app, {
     refreshScene();
   },
   finish: () => {
-    if (orientationBlocked) return;
-    cancelOwnedGrapple();
+    if (adInFlight || orientationBlocked) return;
+    clearGrappleOwnership();
     if (core.finishPatrol()) refreshScene();
   },
   claimMissions: () => {
@@ -332,7 +335,7 @@ const experience = new ExperienceHud(app, {
 experience.setAwaiting(waitingForFirstInput, Boolean(restoredRun));
 
 function startFirstInput(): void {
-  if (!waitingForFirstInput || orientationBlocked || core.getState().status !== 'playing') return;
+  if (adInFlight || !waitingForFirstInput || orientationBlocked || core.getState().status !== 'playing') return;
   waitingForFirstInput = false;
   app.dataset.awaitingStart = 'false';
   experience.setAwaiting(false);
@@ -475,6 +478,7 @@ function itemReady(item: 'talisman' | 'firecracker', state: GrappleState): boole
 }
 
 function beginNextRun(state: GrappleState): void {
+  clearGrappleOwnership();
   waitingForFirstInput = false;
   app.dataset.awaitingStart = 'false';
   experience.setAwaiting(false);
@@ -509,7 +513,7 @@ function beginNextRun(state: GrappleState): void {
 
 async function useItem(item: 'talisman' | 'firecracker', button: HTMLButtonElement): Promise<void> {
   const initialState = core.getState();
-  if (initialState.status !== 'playing' || initialState.paused || button.disabled || !itemReady(item, initialState)) return;
+  if (adInFlight || initialState.status !== 'playing' || initialState.paused || button.disabled || !itemReady(item, initialState)) return;
   const operation = runtimeSession.beginOperation(`item:${item}`);
   if (!operation) return;
   button.disabled = true;
@@ -517,7 +521,7 @@ async function useItem(item: 'talisman' | 'firecracker', button: HTMLButtonEleme
     const consumed = economy.consumeItem(item);
     if (consumed.status === 'locked') {
       adNote.textContent = '正在请求道具解锁广告…';
-      const unlocked = await economy.unlockItemWithAd(item);
+      const unlocked = await withAdPause(() => economy.unlockItemWithAd(item));
       if (!runtimeSession.isCurrent(operation)) return;
       const afterUnlock = core.getState();
       if (unlocked.status !== 'granted' && unlocked.status !== 'already-unlocked') {
@@ -817,7 +821,7 @@ function renderProductUi(state: GrappleState): void {
     pulseUiElement(escapeFeedback);
   }
   lastRenderedDistance = state.chase.distance;
-  pauseOverlay.hidden = !state.paused || state.status !== 'playing' || orientationBlocked || waitingForFirstInput || !progressionMenu.hidden;
+  pauseOverlay.hidden = adInFlight || !state.paused || state.status !== 'playing' || orientationBlocked || waitingForFirstInput || !progressionMenu.hidden;
   persistRun(state, false);
 
   if (state.status === 'playing') {
@@ -881,10 +885,11 @@ function renderProductUi(state: GrappleState): void {
     updateRetryPlan(state);
     const canRevive = core.canRewardedRevive();
     const freeRevive = economy.canDailyFreeRevive(Date.now());
+    const reviveAvailable = canRevive && (freeRevive || ads.available === true);
     const wasCaught = state.failureReason === 'caught';
     resultKicker.textContent = canRevive ? '惜败 · 铜符尚在' : '护印突围中断';
     resultTitle.textContent = wasCaught ? '官兵追上了' : '松手太久，坠落了';
-    resultCopy.textContent = canRevive
+    resultCopy.textContent = reviveAvailable
       ? state.levelId === 'night-patrol'
         ? `本次夜巡已行进 ${Math.round(state.distanceMeters)}m。${freeRevive ? '今日首次可免费' : '主动看完一次广告可'}从最近的安全内檐复起。`
         : `已突围 ${Math.round(state.progress * 100)}%。${freeRevive ? '今日首次可免费' : '主动看完一次广告可'}从最近的安全内檐复起。`
@@ -893,7 +898,7 @@ function renderProductUi(state: GrappleState): void {
         : '盟契铜符还在怀里，换一条夜市内线重新突围。';
     // A focused, physically actionable next-attempt cue now lives in the
     // debrief panel; do not repeat three different instructions in prose.
-    reviveButton.hidden = !canRevive || (!freeRevive && !window.__NIGHT_MARKET_HERO_TAPTAP_AD_CONFIG__);
+    reviveButton.hidden = !reviveAvailable;
     reviveButton.textContent = freeRevive ? '今日免费 · 安全复起' : '看完广告 · 安全复起';
     doubleButton.hidden = true;
     restartButton.hidden = false;
@@ -923,7 +928,7 @@ function renderProductUi(state: GrappleState): void {
     ? `顺利抵达渡口。本次夜巡已记录，获得金币：+${settlement.baseReward}。`
     : `铜符仍在手中，准备开始夜巡。结算金币：+${settlement.baseReward}。`;
   reviveButton.hidden = true;
-  doubleButton.hidden = !settlement.canDouble || !window.__NIGHT_MARKET_HERO_TAPTAP_AD_CONFIG__;
+  doubleButton.hidden = !settlement.canDouble || ads.available !== true;
   doubleButton.textContent = `看完广告 · 再得 ${settlement.baseReward} 金币`;
   restartButton.hidden = true;
   continueButton.hidden = false;
@@ -1690,7 +1695,7 @@ function dispatchGrapple(edge: GrappleEdge): boolean {
 
 async function claimRevive(): Promise<'granted' | 'not-granted' | 'not-eligible'> {
   const state = core.getState();
-  if (state.status !== 'failed' || state.paused || !core.canRewardedRevive() || !failedSettlementCommitted) return 'not-eligible';
+  if (adInFlight || state.status !== 'failed' || state.paused || !core.canRewardedRevive() || !failedSettlementCommitted) return 'not-eligible';
   const operation = runtimeSession.beginOperation('revive');
   if (!operation) return 'not-granted';
   setResultCardInteractionLocked(true);
@@ -1700,7 +1705,7 @@ async function claimRevive(): Promise<'granted' | 'not-granted' | 'not-eligible'
   try {
     if (!free) {
       let result: RewardedAdResult;
-      try { result = await ads.showRewarded('revive'); }
+      try { result = await withAdPause(() => ads.showRewarded('revive')); }
       catch { result = { status: 'failed' }; }
       if (!runtimeSession.isCurrent(operation)) return 'not-granted';
       if (result.status === 'completed' || result.status === 'dismissed') interstitialPolicy.recordRewarded(performance.now());
@@ -1710,13 +1715,19 @@ async function claimRevive(): Promise<'granted' | 'not-granted' | 'not-eligible'
       }
     }
     const latest = core.getState();
-    if (!runtimeSession.isCurrent(operation) || latest.status !== 'failed' || latest.paused || !core.canRewardedRevive()) return 'not-eligible';
+    // Rotation can pause a terminal screen while the SDK is open. That must
+    // not revoke an already completed rescue; apply pause to the revived run.
+    if (!runtimeSession.isCurrent(operation) || latest.status !== 'failed' || !core.canRewardedRevive()) return 'not-eligible';
     const continuation = free ? economy.claimDailyFreeRevive(operation.runId, Date.now()) : economy.resumeRun(operation.runId);
     if (continuation.status !== 'granted' && continuation.status !== 'resumed') {
       adNote.textContent = '复起尚未保存，本次奖励与免费资格均保留；请重试。';
       return 'not-granted';
     }
     if (!core.reviveFromSafeState()) return 'not-eligible';
+    // A host ad may have hidden/unfocused the page while it was failed.
+    // Keep the resumed run visibly paused until an explicit, safe return.
+    core.setPaused(orientationBlocked || !backgroundPolicy.shouldAdvance || !progressionMenu.hidden);
+    clearGrappleOwnership();
     failedSettlementCommitted = false;
     failedSettlementResult = null;
     terminalSettlementPending = false;
@@ -1738,14 +1749,14 @@ async function claimRevive(): Promise<'granted' | 'not-granted' | 'not-eligible'
 
 async function claimDoubleWishfire(): Promise<'granted' | 'not-granted' | 'already-claimed'> {
   const state = core.getState();
-  if (state.status !== 'won' || state.paused) return 'already-claimed';
+  if (adInFlight || state.status !== 'won' || state.paused) return 'already-claimed';
   const operation = runtimeSession.beginOperation('double-wishfire');
   if (!operation) return 'already-claimed';
   setResultCardInteractionLocked(true);
   doubleButton.disabled = true;
   adNote.textContent = '正在请求金币奖励广告…';
   try {
-    const result = await economy.doubleWishfire(operation.runId);
+    const result = await withAdPause(() => economy.doubleWishfire(operation.runId));
     if (!runtimeSession.isCurrent(operation)) return 'not-granted';
     if (result.adStatus === 'completed' || result.adStatus === 'dismissed') interstitialPolicy.recordRewarded(performance.now());
     adNote.textContent = result.status === 'granted'
@@ -1769,7 +1780,7 @@ async function claimDoubleWishfire(): Promise<'granted' | 'not-granted' | 'alrea
 
 async function navigateFromTerminal(showInterstitial: boolean): Promise<void> {
   const terminalState = core.getState();
-  if (terminalState.status === 'playing' || terminalNavigationRunId === currentRunId
+  if (adInFlight || terminalState.status === 'playing' || terminalNavigationRunId === currentRunId
     || runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire')) return;
   if (terminalSettlementPending && terminalSettlementRunId === currentRunId) {
     renderProductUi(terminalState);
@@ -1791,10 +1802,10 @@ async function navigateFromTerminal(showInterstitial: boolean): Promise<void> {
       beginNextRun(next);
       refreshScene();
     }
-    if (showInterstitial) {
+    if (showInterstitial && ads.available === true && interstitialPolicy.canShowAtNaturalTransition(performance.now())) {
       adNote.textContent = '正在前往下一段夜市路线…';
       const enteringRunId = currentRunId;
-      await adFlow.showNaturalTransitionInterstitial(performance.now());
+      await withAdPause(() => adFlow.showNaturalTransitionInterstitial(performance.now()));
       if (currentRunId === enteringRunId) adNote.textContent = '';
     }
   } finally {
@@ -1809,8 +1820,8 @@ async function continueJourney(): Promise<void> {
 
 function suspendForBackground(): void {
   backgroundPolicy.hidden();
-  cancelOwnedGrapple();
   if (core.getState().status === 'playing' && !core.getState().paused) core.setPaused(true);
+  clearGrappleOwnership();
   app.dataset.backgroundState = 'suspended';
   adNote.textContent = '页面已暂停，返回后点击暂停键继续；不会补算离线时间。';
   persistRun(core.getState());
@@ -1894,9 +1905,8 @@ function renderProgressionMenu(): void {
   }
 }
 for (const button of document.querySelectorAll<HTMLButtonElement>('[data-action="progression"]')) button.addEventListener('click', () => {
-  if (orientationBlocked || runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire')) return;
-  cancelOwnedGrapple();
-  core.setPaused(true);
+  if (adInFlight || orientationBlocked || runtimeSession.isOperationActive('revive') || runtimeSession.isOperationActive('double-wishfire')) return;
+  pauseOwnedGrapple();
   progressionTab = 'characters';
   progressionNote.textContent = '角色选择在下一程生效；任务由已保存记录结算。';
   renderProgressionMenu();
@@ -1929,7 +1939,7 @@ function isInteractiveTarget(target: EventTarget | null): boolean {
 
 function gameplayInputBlocked(): boolean {
   const state = core.getState();
-  return orientationBlocked || state.paused || state.status !== 'playing';
+  return adInFlight || orientationBlocked || state.paused || state.status !== 'playing';
 }
 
 function releaseOwnedGrapple(): void {
@@ -1937,10 +1947,67 @@ function releaseOwnedGrapple(): void {
   if (core.getState().inputHeld) dispatchGrapple('release');
 }
 
-function cancelOwnedGrapple(): void {
+function rememberInterruptedPointer(pointerId: number): void {
+  interruptedPointerIds.add(pointerId);
+  // Some engines cancel a pointer without ever emitting its compatibility
+  // click. Retain only recent gestures, so repeated app switches stay bounded.
+  if (interruptedPointerIds.size > 32) interruptedPointerIds.delete(interruptedPointerIds.values().next().value!);
+  suppressLegacyInterruptedClick = true;
+}
+
+function clearGrappleOwnership(): void {
+  for (const pointerId of activePointerIds) rememberInterruptedPointer(pointerId);
   activePointerIds.clear();
   keyboardGrappleHeld = false;
-  if (core.getState().status === 'playing' && !core.getState().paused && core.getState().inputHeld) dispatchGrapple('release');
+}
+
+function pauseOwnedGrapple(): void {
+  // Cancel an interrupted gesture through the core's pause contract. It must
+  // never masquerade as a scored release, a launch impulse or a ride eject.
+  core.setPaused(true);
+  clearGrappleOwnership();
+}
+
+async function withAdPause<T>(request: () => Promise<T>): Promise<T> {
+  const runId = currentRunId;
+  const before = core.getState();
+  const wasRunning = before.status === 'playing' && !before.paused && !waitingForFirstInput;
+  adInFlight = true;
+  requiredElement<HTMLElement>('[data-ui="ad-wait"]').hidden = false;
+  if (before.status === 'playing') pauseOwnedGrapple();
+  else clearGrappleOwnership();
+  refreshScene();
+  try {
+    return await request();
+  } finally {
+    adInFlight = false;
+    requiredElement<HTMLElement>('[data-ui="ad-wait"]').hidden = true;
+    if (runtimeSession.isCurrentRun(runId)) {
+      const after = core.getState();
+      if (before.status !== 'playing' && after.status === before.status) {
+        // A rotate-return during the ad must not leave failed/won screens
+        // paused forever, including a dismissed ad that the player retries.
+        core.setPaused(orientationBlocked || !progressionMenu.hidden || before.paused);
+      } else if (wasRunning && after.status === 'playing'
+        && !orientationBlocked && backgroundPolicy.shouldAdvance && progressionMenu.hidden) {
+        core.setPaused(false);
+      }
+    }
+    refreshScene();
+  }
+}
+
+function cancelPointer(pointerId: number): void {
+  const owned = activePointerIds.delete(pointerId);
+  // Normal pointerup also emits lostpointercapture: it already released and
+  // removed ownership. Only an unexpectedly cancelled gesture pauses play.
+  if (!owned) return;
+  rememberInterruptedPointer(pointerId);
+  if (activePointerIds.size > 0 || keyboardGrappleHeld) return;
+  if (core.getState().status === 'playing') {
+    pauseOwnedGrapple();
+    refreshScene();
+  }
 }
 
 function syncOrientationBlock(): void {
@@ -1954,15 +2021,32 @@ function syncOrientationBlock(): void {
   orientationBlock.hidden = !orientationBlocked;
   if (orientationBlocked) {
     pausedBeforeOrientation = core.getState().paused;
-    cancelOwnedGrapple();
-    core.setPaused(true);
+    pauseOwnedGrapple();
   } else {
-    core.setPaused(backgroundPolicy.resumeRequired ? true : pausedBeforeOrientation);
+    core.setPaused(adInFlight || backgroundPolicy.resumeRequired ? true : pausedBeforeOrientation);
   }
   refreshScene();
 }
 
+document.addEventListener('pointerdown', (event) => {
+  interruptedPointerIds.delete(event.pointerId);
+  suppressLegacyInterruptedClick = false;
+}, true);
+document.addEventListener('click', (event) => {
+  const pointerId = event instanceof PointerEvent ? event.pointerId : -1;
+  const interrupted = pointerId >= 0
+    ? interruptedPointerIds.has(pointerId)
+    : suppressLegacyInterruptedClick;
+  // Releasing a gesture interrupted by blur/rotation can click the menu that
+  // just appeared beneath it. A fresh press or keyboard activation is valid.
+  if (!interrupted || event.detail === 0) return;
+  interruptedPointerIds.delete(pointerId);
+  event.preventDefault();
+  event.stopImmediatePropagation();
+}, true);
+
 inputSurface.addEventListener('pointerdown', (event) => {
+  if (event.pointerType === 'mouse' && event.button !== 0) return;
   event.preventDefault();
   startFirstInput();
   if (gameplayInputBlocked()) return;
@@ -1973,24 +2057,22 @@ inputSurface.addEventListener('pointerdown', (event) => {
 });
 inputSurface.addEventListener('pointerup', (event) => {
   event.preventDefault();
-  activePointerIds.delete(event.pointerId);
+  if (!activePointerIds.delete(event.pointerId)) return;
   releaseOwnedGrapple();
 });
 inputSurface.addEventListener('lostpointercapture', (event) => {
-  activePointerIds.delete(event.pointerId);
-  releaseOwnedGrapple();
+  cancelPointer(event.pointerId);
 });
 inputSurface.addEventListener('pointercancel', (event) => {
-  activePointerIds.delete(event.pointerId);
-  releaseOwnedGrapple();
+  cancelPointer(event.pointerId);
 });
 pauseButton.addEventListener('click', () => {
-  if (orientationBlocked || core.getState().status !== 'playing') return;
+  if (adInFlight || waitingForFirstInput || orientationBlocked || core.getState().status !== 'playing') return;
   const paused = !core.getState().paused;
   if (!paused) progressionMenu.hidden = true;
-  cancelOwnedGrapple();
   if (!paused) backgroundPolicy.explicitResume();
   core.setPaused(paused);
+  clearGrappleOwnership();
   // Keep the generated pause icon node intact; state is conveyed by icon + aria-label.
   pauseButton.setAttribute('aria-label', paused ? '继续' : '暂停');
   playUiElement(pauseButton, 'icon-press');

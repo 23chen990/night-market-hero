@@ -1,10 +1,13 @@
 name: V2 Skill Encounters — Draft QA
 on:
   pull_request:
-    branches: [feat/playable-experience-20261012, feat/v2-skill-encounters-20261013]
+    branches: [feat/playable-experience-20261012, feat/v2-skill-encounters-20261013, feat/v2-retry-goals-20261016]
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'index.html'
+      - 'package.json'
+      - 'package-lock.json'
       - 'AGENTS.md'
       - 'PLAYABLE_START_HERE.md'
       - 'runtime-product-gates.json'
@@ -79,9 +82,13 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Offline single-file launch
         run: npm run test:file
+      - name: Held-input interruption and stale-touch click regression
+        run: npm run test:input
+      - name: Ad lifecycle with explicitly simulated SDK callbacks
+        run: npm run test:ads
       - name: Four real Chromium landscape coach safe-area checks
         run: npm run test:coach
-      - name: Real phone and desktop journey with per-encounter evidence
+      - name: Touch viewport and desktop journey with per-encounter evidence
         run: npm run test:play
       - name: Deliberate error in actual touch flight must result in guard contact
         run: npm run test:pursuit
@@ -96,6 +103,8 @@ jobs:
           path: |
             evidence/playable-audit/
             evidence/v2-pursuit/
+            evidence/optimization-20261024/input-lifecycle/
+            evidence/optimization-20261024/ad-lifecycle/
             dist/index.html
           retention-days: 14
           if-no-files-found: warn

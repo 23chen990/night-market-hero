@@ -1,0 +1,916 @@
+{
+  "sha256": "f6a76194bf6c25486554fb89227a130faddcf283f79466fef889930da1364e75",
+  "browserVersion": "153.0.8010.12",
+  "method": "Visible buttons, real keyboard/touch, CDP native touchCancel and viewport rotation; synthetic blur is labelled. Game state is read-only.",
+  "passed": true,
+  "cases": [
+    {
+      "scenario": "launch-settings",
+      "errors": [],
+      "before": {
+        "tick": 0,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 0,
+        "combo": 0,
+        "player": {
+          "x": 72,
+          "y": 575,
+          "vx": 245,
+          "vy": -185
+        },
+        "graceUntil": 0
+      },
+      "after": {
+        "tick": 0,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 0,
+        "combo": 0,
+        "player": {
+          "x": 72,
+          "y": 575,
+          "vx": 245,
+          "vy": -185
+        },
+        "graceUntil": 0
+      },
+      "passed": true,
+      "inputEvents": [
+        {
+          "type": "pointerdown",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "pause"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "pause"
+        },
+        {
+          "type": "click",
+          "pointerId": 2,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "pause"
+        }
+      ]
+    },
+    {
+      "scenario": "pause-keyboard",
+      "errors": [],
+      "before": {
+        "tick": 11,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 85.75521065407193,
+          "y": 571.5252521586647,
+          "vx": 84.86654390809419,
+          "vy": 77.76555678559632
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 29,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 105.7302008616712,
+          "y": 588.1905131797822,
+          "vx": 181.0168872340629,
+          "vy": 137.28492177476176
+        },
+        "graceUntil": 101
+      },
+      "frozen": {
+        "tick": 29,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 105.7302008616712,
+          "y": 588.1905131797822,
+          "vx": 181.0168872340629,
+          "vy": 137.28492177476176
+        },
+        "graceUntil": 101
+      },
+      "resumed": {
+        "tick": 44,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 129.28116090076696,
+          "y": 611.03998882995,
+          "vx": 245.0329227344218,
+          "vy": 145.12239742715187
+        },
+        "graceUntil": 0
+      },
+      "passed": true,
+      "inputEvents": [
+        {
+          "type": "pointerdown",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 2,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "pause"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "pause"
+        },
+        {
+          "type": "click",
+          "pointerId": 1,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "pause"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 1,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "resume-run"
+        }
+      ]
+    },
+    {
+      "scenario": "growth-keyboard",
+      "errors": [],
+      "before": {
+        "tick": 17,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 99.30372761608226,
+          "y": 566.44781123568,
+          "vx": 112.0919099176162,
+          "vy": 97.76294225345691
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 33,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 120.17808433963748,
+          "y": 582.900379101335,
+          "vx": 200.2428876884136,
+          "vy": 142.27596848220935
+        },
+        "graceUntil": 105
+      },
+      "frozen": {
+        "tick": 33,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 120.17808433963748,
+          "y": 582.900379101335,
+          "vx": 200.2428876884136,
+          "vy": 142.27596848220935
+        },
+        "graceUntil": 105
+      },
+      "resumed": {
+        "tick": 48,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 146.1173414570342,
+          "y": 606.2271458602647,
+          "vx": 263.4058400524893,
+          "vy": 140.7322746394939
+        },
+        "graceUntil": 0
+      },
+      "passed": true,
+      "inputEvents": [
+        {
+          "type": "pointerdown",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 2,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": null
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": null
+        },
+        {
+          "type": "click",
+          "pointerId": 1,
+          "detail": 1,
+          "isTrusted": true,
+          "action": null
+        },
+        {
+          "type": "click",
+          "pointerId": -1,
+          "detail": 0,
+          "isTrusted": false,
+          "action": "progression"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "close-progression"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "close-progression"
+        },
+        {
+          "type": "click",
+          "pointerId": 1,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "close-progression"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 1,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 1,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "resume-run"
+        }
+      ]
+    },
+    {
+      "scenario": "rotate-touch",
+      "errors": [],
+      "before": {
+        "tick": 21,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 97.974087536394,
+          "y": 576.3022091158305,
+          "vx": 135.57509007778967,
+          "vy": 113.58283535597084
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 23,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 146.3944526252496,
+          "vy": 119.8926019430107
+        },
+        "graceUntil": 95
+      },
+      "frozen": {
+        "tick": 23,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 100.34293859564912,
+          "y": 578.2644090381685,
+          "vx": 146.3944526252496,
+          "vy": 119.8926019430107
+        },
+        "graceUntil": 95
+      },
+      "resumed": {
+        "tick": 36,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 118.52798530193792,
+          "y": 593.884916489548,
+          "vx": 209.31457317668983,
+          "vy": 143.09319055595006
+        },
+        "graceUntil": 0
+      },
+      "passed": true,
+      "inputEvents": [
+        {
+          "type": "pointerdown",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 2,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "click",
+          "pointerId": 4,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "grapple"
+        }
+      ]
+    },
+    {
+      "scenario": "cancel-touch",
+      "errors": [],
+      "before": {
+        "tick": 19,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 97.20371475156074,
+          "y": 572.8194981205512,
+          "vx": 124.29201390739556,
+          "vy": 106.33582776705279
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 25,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 104.28207149552168,
+          "y": 578.6722998761468,
+          "vx": 156.74407097510817,
+          "vy": 125.23393588097296
+        },
+        "graceUntil": 97
+      },
+      "frozen": {
+        "tick": 25,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 104.28207149552168,
+          "y": 578.6722998761468,
+          "vx": 156.74407097510817,
+          "vy": 125.23393588097296
+        },
+        "graceUntil": 97
+      },
+      "resumed": {
+        "tick": 38,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 123.60664232155989,
+          "y": 594.7453585265359,
+          "vx": 220.18024017952217,
+          "vy": 145.0903124616254
+        },
+        "graceUntil": 0
+      },
+      "passed": true,
+      "inputEvents": [
+        {
+          "type": "pointerdown",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 2,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointercancel",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 4,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 5,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 5,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "click",
+          "pointerId": 5,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "grapple"
+        }
+      ]
+    },
+    {
+      "scenario": "blur-event",
+      "errors": [],
+      "before": {
+        "tick": 18,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 96.1801396113504,
+          "y": 571.9394123356062,
+          "vx": 119.00985811485543,
+          "vy": 102.8384393904542
+        },
+        "graceUntil": 0
+      },
+      "paused": {
+        "tick": 20,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 98.27140748430267,
+          "y": 573.7282142755089,
+          "vx": 129.61016425848388,
+          "vy": 109.739940930534
+        },
+        "graceUntil": 92
+      },
+      "frozen": {
+        "tick": 20,
+        "paused": true,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 98.27140748430267,
+          "y": 573.7282142755089,
+          "vx": 129.61016425848388,
+          "vy": 109.739940930534
+        },
+        "graceUntil": 92
+      },
+      "resumed": {
+        "tick": 36,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 119.252505015601,
+          "y": 592.2338119814071,
+          "vx": 207.06013781395615,
+          "vy": 141.92033084533566
+        },
+        "graceUntil": 0
+      },
+      "passed": true,
+      "inputEvents": [
+        {
+          "type": "pointerdown",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 2,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 4,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "resume-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 5,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 5,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "click",
+          "pointerId": 5,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "grapple"
+        }
+      ]
+    },
+    {
+      "scenario": "multi-touch-release",
+      "errors": [],
+      "before": {
+        "tick": 19,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 95.78412582251798,
+          "y": 574.4480071607352,
+          "vx": 124.90045635664278,
+          "vy": 106.87208140368733
+        },
+        "graceUntil": 0
+      },
+      "remaining": {
+        "tick": 33,
+        "paused": false,
+        "status": "playing",
+        "held": true,
+        "anchor": "node-1",
+        "releaseTick": -10000,
+        "transitions": 1,
+        "combo": 0,
+        "player": {
+          "x": 114.95165334617329,
+          "y": 589.4355675782672,
+          "vx": 202.54812312717686,
+          "vy": 144.44008395877563
+        },
+        "graceUntil": 0
+      },
+      "released": {
+        "tick": 41,
+        "paused": false,
+        "status": "playing",
+        "held": false,
+        "anchor": null,
+        "releaseTick": 39,
+        "transitions": 2,
+        "combo": 0,
+        "player": {
+          "x": 130.99922877396776,
+          "y": 594.1018282125831,
+          "vx": 299.83333333333337,
+          "vy": -165.33333333333331
+        },
+        "graceUntil": 105
+      },
+      "passed": true,
+      "inputEvents": [
+        {
+          "type": "pointerdown",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 2,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "click",
+          "pointerId": 2,
+          "detail": 1,
+          "isTrusted": true,
+          "action": "start-run"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerdown",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 4,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        },
+        {
+          "type": "pointerup",
+          "pointerId": 3,
+          "detail": 0,
+          "isTrusted": true,
+          "action": "grapple"
+        }
+      ]
+    }
+  ]
+}

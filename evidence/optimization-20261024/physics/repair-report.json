@@ -1,0 +1,64 @@
+{
+  "targetGame": "夜市飞侠",
+  "repository": "23chen990/night-market-hero",
+  "workspace": "/workspace/scratch/dc818e809d62/night-market-hero",
+  "sourceBaseline": "30eede33a00a399e7b868742556f0e300fd89022",
+  "route": "formal-fixer",
+  "reason": "Changes affect actual pursuit, skill rewards, and mutable physics snapshots; current-build browser QA remains a separate root-owned obligation.",
+  "scope": ["src/game-core.ts", "tests/pressure-causality.test.ts", "tests/stylish-release-integrity.test.ts"],
+  "contextOmitted": ["Other games", "Factory implementation", "Archived artwork and platform-release claims"],
+  "issues": [
+    {
+      "id": "NM-PRESSURE-01",
+      "severity": "P1",
+      "finding": "A firecracker rebuilt officer position from clamped HUD pressure, moving an officer 380 world pixels closer when the player had a 900-pixel lead.",
+      "reproduction": "Default guided-patrol fixture with gaps 220, 520, 900 and 1400; call the existing useFirecracker action.",
+      "change": "Stop the officer at its actual position immediately, retain the 180-tick stun and existing item transaction, derive HUD pressure from the true gap.",
+      "acceptance": "Position unchanged on use and during stun; no repeated active use; player motion earns actual extra distance.",
+      "engineeringStatus": "PASS"
+    },
+    {
+      "id": "NM-PRESSURE-02",
+      "severity": "P1",
+      "finding": "The guided patrol displayed curfew reinforcement but never consumed its pursuit-speed factor.",
+      "reproduction": "Identical player and officer positions in segment 9 with seeds 32 (curfew) and 33 (fog), no grapple or pickups; compare real officer motion.",
+      "change": "Apply the existing 25-percent reinforcement to positive net closing speed, respecting the existing 850 speed and 1200 acceleration limits.",
+      "acceptance": "The real gap closes more under curfew; low-route pickups and two qualifying releases still produce measurable relief; no teleport.",
+      "engineeringStatus": "PASS"
+    },
+    {
+      "id": "NM-SNAPSHOT-01",
+      "severity": "P2",
+      "finding": "getState and restoreSnapshot shared mutable itemUsage and vehicleVirtualAnchor references with callers.",
+      "reproduction": "Read a snapshot then use a firecracker, or mutate the returned lantern pivot; the earlier snapshot or live world changed.",
+      "change": "Clone these two nested objects at the existing copyState boundary; no new persistence fields.",
+      "acceptance": "Prior counters remain historical, and external snapshot mutations cannot change current item counters or physical lantern support.",
+      "engineeringStatus": "PASS"
+    },
+    {
+      "id": "NM-SKILL-01",
+      "severity": "P1",
+      "finding": "Inherited speed let same-frame press/release spam earn combos and Qingluan preparation without performing another swing.",
+      "reproduction": "Simulate a genuine first swing to tick 90, release once, then press/release four times without a physics step; baseline raised combo from 1 to 5 with repeated stylish tick 90.",
+      "change": "In guided mode, stylish release requires the body at or beyond its actual attached support and at least one physics step since its most recent press, in addition to existing velocity requirements.",
+      "acceptance": "Real forward swings still earn rewards; same-tick presses and premature releases earn no combo or rare-bird preparation.",
+      "engineeringStatus": "PASS"
+    }
+  ],
+  "regression": {
+    "node": "22",
+    "files": ["pressure-causality.test.ts", "stylish-release-integrity.test.ts", "comfort-pursuit.test.ts", "guided-experience.test.ts", "optional-pickup-branch.test.ts", "vehicle-physics.test.ts", "v2-player-choice-contract.test.ts", "vehicle-encounters-v2.test.ts"],
+    "passed": 75,
+    "failed": 0,
+    "skipped": 0,
+    "log": "regression-after.log",
+    "baselineFailures": ["regression-before.log", "stylish-before.log"]
+  },
+  "evidenceLimits": [
+    "Tests include isolated physical-state fixtures and deterministic normal-input simulation, not human or natural-browser playtest evidence.",
+    "Browser gameplay, visual evidence, complete build, lint/typecheck and full suite are consolidated by the parent agent after all edits.",
+    "No change to vehicle world supports, visible contact ellipses, reward wallets, advertisements, main.ts or setPaused."
+  ],
+  "naturalBrowserStatus": "PENDING_PARENT_RETEST",
+  "commercialReleasePassed": false
+}

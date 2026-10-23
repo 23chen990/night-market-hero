@@ -1,0 +1,2985 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> night-market-hero-prototype@0.1.0 check
+> npm run lint && npm run typecheck && npm test
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> night-market-hero-prototype@0.1.0 lint
+> eslint src tests scripts vite.config.ts --config eslint.config.js
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> night-market-hero-prototype@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> night-market-hero-prototype@0.1.0 pretest
+> node --import tsx scripts/build.ts
+
+built self-contained dist/index.html and /workspace/scratch/dc818e809d62/night-market-hero/夜市飞侠-护印突围-试玩版.html (35002096 bytes)
+
+> night-market-hero-prototype@0.1.0 test
+> node --import tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: an unresolved rewarded bridge releases the caller and rejects late completion
+ok 1 - an unresolved rewarded bridge releases the caller and rejects late completion
+  ---
+  duration_ms: 23.520038
+  type: 'test'
+  ...
+# Subtest: an unresolved interstitial bridge also has a bounded wait
+ok 2 - an unresolved interstitial bridge also has a bounded wait
+  ---
+  duration_ms: 21.077355
+  type: 'test'
+  ...
+# Subtest: configured but unavailable bridges do not advertise live ads
+ok 3 - configured but unavailable bridges do not advertise live ads
+  ---
+  duration_ms: 0.342548
+  type: 'test'
+  ...
+# Subtest: a healthy bridge settles immediately without waiting for the timeout
+ok 4 - a healthy bridge settles immediately without waiting for the timeout
+  ---
+  duration_ms: 0.241996
+  type: 'test'
+  ...
+# Subtest: TapTap-ready ad abstraction
+    # Subtest: Noop provider never blocks gameplay and never grants a reward
+    ok 1 - Noop provider never blocks gameplay and never grants a reward
+      ---
+      duration_ms: 2.152854
+      type: 'test'
+      ...
+    # Subtest: injected bridge converts rejection into a non-blocking failed result
+    ok 2 - injected bridge converts rejection into a non-blocking failed result
+      ---
+      duration_ms: 0.682522
+      type: 'test'
+      ...
+    # Subtest: mock provider only completes rewards explicitly queued as completed
+    ok 3 - mock provider only completes rewards explicitly queued as completed
+      ---
+      duration_ms: 0.322398
+      type: 'test'
+      ...
+    1..3
+ok 5 - TapTap-ready ad abstraction
+  ---
+  duration_ms: 4.221592
+  type: 'suite'
+  ...
+# Subtest: long-map art manifest covers all fifteen authored scene families
+ok 6 - long-map art manifest covers all fifteen authored scene families
+  ---
+  duration_ms: 1.009196
+  type: 'test'
+  ...
+# Subtest: manifest distinguishes approved reuse from missing and reference-only art
+ok 7 - manifest distinguishes approved reuse from missing and reference-only art
+  ---
+  duration_ms: 0.275086
+  type: 'test'
+  ...
+# Subtest: manifest records transparency, canvas, transform, support, and occlusion fields
+ok 8 - manifest records transparency, canvas, transform, support, and occlusion fields
+  ---
+  duration_ms: 0.247875
+  type: 'test'
+  ...
+# Subtest: ambient and elastic-anchor requirements are listed without runtime implementation
+ok 9 - ambient and elastic-anchor requirements are listed without runtime implementation
+  ---
+  duration_ms: 0.411011
+  type: 'test'
+  ...
+# Subtest: TASK-00 baseline: mutation modifier source
+    # Subtest: A1 mutationModifiers is the single authoritative mutation source
+    ok 1 - A1 mutationModifiers is the single authoritative mutation source
+      ---
+      duration_ms: 1.810147
+      type: 'test'
+      ...
+    # Subtest: A2 a normal run advances a fixed tick against the documented modifiers
+    ok 2 - A2 a normal run advances a fixed tick against the documented modifiers
+      ---
+      duration_ms: 3.38705
+      type: 'test'
+      ...
+    # Subtest: A3 mutation tuning parameters stay untouched by this stabilization
+    ok 3 - A3 mutation tuning parameters stay untouched by this stabilization
+      ---
+      duration_ms: 0.833991
+      type: 'test'
+      ...
+    1..3
+ok 10 - TASK-00 baseline: mutation modifier source
+  ---
+  duration_ms: 7.03767
+  type: 'suite'
+  ...
+# Subtest: TASK-00 baseline: night-patrol snapshot keeps the endless runtime
+    # Subtest: B1 restored night-patrol keeps its course and still runs as endless after a real tick
+    ok 1 - B1 restored night-patrol keeps its course and still runs as endless after a real tick
+      ---
+      duration_ms: 10.251008
+      type: 'test'
+      ...
+    # Subtest: B2 a campaign snapshot restore stays a campaign run
+    ok 2 - B2 a campaign snapshot restore stays a campaign run
+      ---
+      duration_ms: 0.58879
+      type: 'test'
+      ...
+    1..2
+ok 11 - TASK-00 baseline: night-patrol snapshot keeps the endless runtime
+  ---
+  duration_ms: 10.971647
+  type: 'suite'
+  ...
+# Subtest: build is a self-contained immediately playable 夜市飞侠 formal QA page
+ok 12 - build is a self-contained immediately playable 夜市飞侠 formal QA page
+  ---
+  duration_ms: 191.423419
+  type: 'test'
+  ...
+# Subtest: build exposes an unambiguous double-click playable alias
+ok 13 - build exposes an unambiguous double-click playable alias
+  ---
+  duration_ms: 202.044081
+  type: 'test'
+  ...
+# Subtest: source bootstraps asynchronously without top-level await and publishes APIs only after preload
+ok 14 - source bootstraps asynchronously without top-level await and publishes APIs only after preload
+  ---
+  duration_ms: 139.840466
+  type: 'test'
+  ...
+# Subtest: browser smoke records all three vertical closing-gate beat screenshots
+ok 15 - browser smoke records all three vertical closing-gate beat screenshots
+  ---
+  duration_ms: 3.884824
+  type: 'test'
+  ...
+# Subtest: night-city camera layout
+    # Subtest: uses one logical 16:9 viewport and keeps the hero in the mobile landscape frame
+    ok 1 - uses one logical 16:9 viewport and keeps the hero in the mobile landscape frame
+      ---
+      duration_ms: 0.769693
+      type: 'test'
+      ...
+    # Subtest: look-ahead is stable while camera scroll is clamped to world bounds
+    ok 2 - look-ahead is stable while camera scroll is clamped to world bounds
+      ---
+      duration_ms: 0.156496
+      type: 'test'
+      ...
+    # Subtest: keeps the side-view vertical origin fixed during a jump so raster scenery cannot uncover the shell
+    ok 3 - keeps the side-view vertical origin fixed during a jump so raster scenery cannot uncover the shell
+      ---
+      duration_ms: 0.116306
+      type: 'test'
+      ...
+    # Subtest: camera follows with a capped frame-time step instead of teleporting on every swing
+    ok 4 - camera follows with a capped frame-time step instead of teleporting on every swing
+      ---
+      duration_ms: 0.37741
+      type: 'test'
+      ...
+    # Subtest: FlightScene pins the Phaser camera origin to the same logical projection
+    ok 5 - FlightScene pins the Phaser camera origin to the same logical projection
+      ---
+      duration_ms: 8.361341
+      type: 'test'
+      ...
+    1..5
+ok 16 - night-city camera layout
+  ---
+  duration_ms: 11.89913
+  type: 'suite'
+  ...
+# Subtest: 布篷弹跳在当前版本被隐藏且不参与核心循环
+ok 17 - 布篷弹跳在当前版本被隐藏且不参与核心循环
+  ---
+  duration_ms: 3.732973
+  type: 'test'
+  ...
+# Subtest: 玩家二维碰撞体落到官兵身上时立即被抓捕
+ok 18 - 玩家二维碰撞体落到官兵身上时立即被抓捕
+  ---
+  duration_ms: 3.216021
+  type: 'test'
+  ...
+# Subtest: 追捕接网有高度边界：高空躲网成功，低空同水平距离被抓
+ok 19 - 追捕接网有高度边界：高空躲网成功，低空同水平距离被抓
+  ---
+  duration_ms: 4.823131
+  type: 'test'
+  ...
+# Subtest: pursuit warnings reflect actual danger phase and normalized pressure without changing game physics
+ok 20 - pursuit warnings reflect actual danger phase and normalized pressure without changing game physics
+  ---
+  duration_ms: 0.951678
+  type: 'test'
+  ...
+# Subtest: pickup action replaces duplicate objective while patrol warning stays independent
+ok 21 - pickup action replaces duplicate objective while patrol warning stays independent
+  ---
+  duration_ms: 0.270979
+  type: 'test'
+  ...
+# Subtest: quiet coaching compacts only after the intro and never hides near-capture warning
+ok 22 - quiet coaching compacts only after the intro and never hides near-capture warning
+  ---
+  duration_ms: 0.141063
+  type: 'test'
+  ...
+# Subtest: an active ride does not advertise a second pickup that cannot be claimed while mounted
+ok 23 - an active ride does not advertise a second pickup that cannot be claimed while mounted
+  ---
+  duration_ms: 0.343549
+  type: 'test'
+  ...
+# Subtest: guided high-speed player must not create unlimited uncatchable guard distance
+ok 24 - guided high-speed player must not create unlimited uncatchable guard distance
+  ---
+  duration_ms: 42.362524
+  type: 'test'
+  ...
+# Subtest: guided run must limit travel speed in later endless segments
+ok 25 - guided run must limit travel speed in later endless segments
+  ---
+  duration_ms: 0.963947
+  type: 'test'
+  ...
+# Subtest: guided catch-immune bird cannot permanently freeze officers
+ok 26 - guided catch-immune bird cannot permanently freeze officers
+  ---
+  duration_ms: 6.196579
+  type: 'test'
+  ...
+# Subtest: component scenery foundation
+    # Subtest: approved lantern cable uses the single sprite contract
+    ok 1 - approved lantern cable uses the single sprite contract
+      ---
+      duration_ms: 0.861653
+      type: 'test'
+      ...
+    # Subtest: authored recipes are deterministic and differ by scene family
+    ok 2 - authored recipes are deterministic and differ by scene family
+      ---
+      duration_ms: 0.801763
+      type: 'test'
+      ...
+    # Subtest: all fifteen authored slots have recipes and catalog entries
+    ok 3 - all fifteen authored slots have recipes and catalog entries
+      ---
+      duration_ms: 0.369919
+      type: 'test'
+      ...
+    # Subtest: rooftops recipes use atomic horizontal components instead of full-building art
+    ok 4 - rooftops recipes use atomic horizontal components instead of full-building art
+      ---
+      duration_ms: 0.154333
+      type: 'test'
+      ...
+    # Subtest: v55 source-derived rooftop components are available and used by rooftop recipes
+    ok 5 - v55 source-derived rooftop components are available and used by rooftop recipes
+      ---
+      duration_ms: 9.766335
+      type: 'test'
+      ...
+    # Subtest: missing assets are counted and skipped without procedural scenery fallback
+    ok 6 - missing assets are counted and skipped without procedural scenery fallback
+      ---
+      duration_ms: 1.062756
+      type: 'test'
+      ...
+    # Subtest: lantern cable expands to pooled sprites with scale-derived connector span
+    ok 7 - lantern cable expands to pooled sprites with scale-derived connector span
+      ---
+      duration_ms: 0.514317
+      type: 'test'
+      ...
+    # Subtest: rooftop components use a code-drawn structural span between asset anchors
+    ok 8 - rooftop components use a code-drawn structural span between asset anchors
+      ---
+      duration_ms: 0.715192
+      type: 'test'
+      ...
+    # Subtest: pool remains bounded while scrolling away and reuses released components
+    ok 9 - pool remains bounded while scrolling away and reuses released components
+      ---
+      duration_ms: 0.349939
+      type: 'test'
+      ...
+    # Subtest: depth bands stay between panorama and player layers
+    ok 10 - depth bands stay between panorama and player layers
+      ---
+      duration_ms: 0.478222
+      type: 'test'
+      ...
+    # Subtest: preview switch is opt-in and disabled mode does not touch the Phaser scene
+    ok 11 - preview switch is opt-in and disabled mode does not touch the Phaser scene
+      ---
+      duration_ms: 0.212661
+      type: 'test'
+      ...
+    # Subtest: component renderer has no collision or building-graphics side effect
+    ok 12 - component renderer has no collision or building-graphics side effect
+      ---
+      duration_ms: 12.834663
+      type: 'test'
+      ...
+    1..12
+ok 27 - component scenery foundation
+  ---
+  duration_ms: 29.239655
+  type: 'suite'
+  ...
+# Subtest: an imminent unroped fall takes priority over every optional vehicle approach
+ok 28 - an imminent unroped fall takes priority over every optional vehicle approach
+  ---
+  duration_ms: 4.047339
+  type: 'test'
+  ...
+# Subtest: low rescue coaching respects a held input and never asks for a second press
+ok 29 - low rescue coaching respects a held input and never asks for a second press
+  ---
+  duration_ms: 0.757576
+  type: 'test'
+  ...
+# Subtest: a low upward flight and an active ride keep their own actionable controls
+ok 30 - a low upward flight and an active ride keep their own actionable controls
+  ---
+  duration_ms: 0.596281
+  type: 'test'
+  ...
+# Subtest: preparing for Qingluan retains the actual scoreable release timing
+ok 31 - preparing for Qingluan retains the actual scoreable release timing
+  ---
+  duration_ms: 0.543421
+  type: 'test'
+  ...
+# Subtest: a real rope about to reverse cannot be masked by optional vehicle preparation
+ok 32 - a real rope about to reverse cannot be masked by optional vehicle preparation
+  ---
+  duration_ms: 0.826129
+  type: 'test'
+  ...
+# Subtest: workspace manifest declares configuration imports directly
+ok 33 - workspace manifest declares configuration imports directly
+  ---
+  duration_ms: 0.56857
+  type: 'test'
+  ...
+# Subtest: workspace lockfile records the manifest root and direct configuration dependencies
+ok 34 - workspace lockfile records the manifest root and direct configuration dependencies
+  ---
+  duration_ms: 3.489075
+  type: 'test'
+  ...
+# Subtest: recognizes the real v36 key and fullheight URL marker
+ok 35 - recognizes the real v36 key and fullheight URL marker
+  ---
+  duration_ms: 0.642261
+  type: 'test'
+  ...
+# Subtest: does not turn an unstarted request observation into a false result
+ok 36 - does not turn an unstarted request observation into a false result
+  ---
+  duration_ms: 0.951809
+  type: 'test'
+  ...
+# Subtest: reports a measured negative only after the adapter collection window closes
+ok 37 - reports a measured negative only after the adapter collection window closes
+  ---
+  duration_ms: 0.561159
+  type: 'test'
+  ...
+# Subtest: reports collection failure without a boolean fallback
+ok 38 - reports collection failure without a boolean fallback
+  ---
+  duration_ms: 0.104909
+  type: 'test'
+  ...
+# Subtest: turns load, console, and page errors into explicit collection failures
+ok 39 - turns load, console, and page errors into explicit collection failures
+  ---
+  duration_ms: 0.220103
+  type: 'test'
+  ...
+# Subtest: endless district gameplay integration
+    # Subtest: district layouts influence generated anchor trajectories
+    ok 1 - district layouts influence generated anchor trajectories
+      ---
+      duration_ms: 7.6538
+      type: 'test'
+      ...
+    # Subtest: pruning retains the currently attached anchor
+    ok 2 - pruning retains the currently attached anchor
+      ---
+      duration_ms: 1.509402
+      type: 'test'
+      ...
+    # Subtest: tutorial course and transition into endless remain available
+    ok 3 - tutorial course and transition into endless remain available
+      ---
+      duration_ms: 0.296118
+      type: 'test'
+      ...
+    1..3
+ok 40 - endless district gameplay integration
+  ---
+  duration_ms: 10.334994
+  type: 'suite'
+  ...
+# Subtest: district-world compatibility facade
+    # Subtest: exposes the authoritative first chain with four districts and three transitions
+    ok 1 - exposes the authoritative first chain with four districts and three transitions
+      ---
+      duration_ms: 2.964422
+      type: 'test'
+      ...
+    # Subtest: keeps the legacy API shape and chunk width while exposing new metadata
+    ok 2 - keeps the legacy API shape and chunk width while exposing new metadata
+      ---
+      duration_ms: 0.812638
+      type: 'test'
+      ...
+    # Subtest: preserves the validated endless opening profile without changing authored topology
+    ok 3 - preserves the validated endless opening profile without changing authored topology
+      ---
+      duration_ms: 0.792158
+      type: 'test'
+      ...
+    # Subtest: keeps deterministic lookup and bounded viewport behavior
+    ok 4 - keeps deterministic lookup and bounded viewport behavior
+      ---
+      duration_ms: 1.047093
+      type: 'test'
+      ...
+    # Subtest: does not create a modulo-15 closed loop of chunk identities
+    ok 5 - does not create a modulo-15 closed loop of chunk identities
+      ---
+      duration_ms: 1.911279
+      type: 'test'
+      ...
+    # Subtest: keeps long-chain scene families varied without changing the three-district vocabulary
+    ok 6 - keeps long-chain scene families varied without changing the three-district vocabulary
+      ---
+      duration_ms: 1.101656
+      type: 'test'
+      ...
+    1..6
+ok 41 - district-world compatibility facade
+  ---
+  duration_ms: 9.96171
+  type: 'suite'
+  ...
+# Subtest: endless opening tolerates browser frame variance around the taught rhythm
+ok 42 - endless opening tolerates browser frame variance around the taught rhythm
+  ---
+  duration_ms: 232.320165
+  type: 'test'
+  ...
+# Subtest: opening chase grace ends after the first endless district cycle
+ok 43 - opening chase grace ends after the first endless district cycle
+  ---
+  duration_ms: 16.764967
+  type: 'test'
+  ...
+# Subtest: endless fall rescue prefers reachable forward anchors before a passed ring
+ok 44 - endless fall rescue prefers reachable forward anchors before a passed ring
+  ---
+  duration_ms: 1.212112
+  type: 'test'
+  ...
+# Subtest: tutorial completion enters the real endless patrol runtime
+ok 45 - tutorial completion enters the real endless patrol runtime
+  ---
+  duration_ms: 8.724711
+  type: 'test'
+  ...
+# Subtest: endless mapping is deterministic and keeps constant segment budget
+ok 46 - endless mapping is deterministic and keeps constant segment budget
+  ---
+  duration_ms: 0.393925
+  type: 'test'
+  ...
+# Subtest: difficulty rises by segment while spacing is bounded and sky is wider
+ok 47 - difficulty rises by segment while spacing is bounded and sky is wider
+  ---
+  duration_ms: 0.23772
+  type: 'test'
+  ...
+# Subtest: mutations start at segment 3, are deterministic, and do not repeat within last 2
+ok 48 - mutations start at segment 3, are deterministic, and do not repeat within last 2
+  ---
+  duration_ms: 0.76755
+  type: 'test'
+  ...
+# Subtest: vehicles preserve hold/release semantics and are reachable
+ok 49 - vehicles preserve hold/release semantics and are reachable
+  ---
+  duration_ms: 0.24427
+  type: 'test'
+  ...
+# Subtest: settlement is fixed pickup value plus gates and ignores legacy multipliers
+ok 50 - settlement is fixed pickup value plus gates and ignores legacy multipliers
+  ---
+  duration_ms: 0.255907
+  type: 'test'
+  ...
+# Subtest: roster tradeoffs and mission gating are explicit
+ok 51 - roster tradeoffs and mission gating are explicit
+  ---
+  duration_ms: 0.326664
+  type: 'test'
+  ...
+# Subtest: endless runtime exposes segment, economy and pickup progression
+ok 52 - endless runtime exposes segment, economy and pickup progression
+  ---
+  duration_ms: 1.390933
+  type: 'test'
+  ...
+# Subtest: night patrol replay remains endless after a terminal failure
+ok 53 - night patrol replay remains endless after a terminal failure
+  ---
+  duration_ms: 3.720474
+  type: 'test'
+  ...
+# Subtest: snapshot storage defaults to v2 and does not expose legacy fixed-level key
+ok 54 - snapshot storage defaults to v2 and does not expose legacy fixed-level key
+  ---
+  duration_ms: 0.50273
+  type: 'test'
+  ...
+# Subtest: speed feel profile interpolates continuously from player velocity
+ok 55 - speed feel profile interpolates continuously from player velocity
+  ---
+  duration_ms: 0.256928
+  type: 'test'
+  ...
+# Subtest: endless anchor spacing widens by street block without exceeding cap
+ok 56 - endless anchor spacing widens by street block without exceeding cap
+  ---
+  duration_ms: 0.130878
+  type: 'test'
+  ...
+# Subtest: segment-relative progress uses scaled segment boundaries
+ok 57 - segment-relative progress uses scaled segment boundaries
+  ---
+  duration_ms: 0.125219
+  type: 'test'
+  ...
+# Subtest: endless retention window spans exactly two segments behind and ahead
+ok 58 - endless retention window spans exactly two segments behind and ahead
+  ---
+  duration_ms: 0.113923
+  type: 'test'
+  ...
+# Subtest: sky segments are sparse, gated by high route speed, and wider than ground anchors
+ok 59 - sky segments are sparse, gated by high route speed, and wider than ground anchors
+  ---
+  duration_ms: 0.175535
+  type: 'test'
+  ...
+# Subtest: fast release emits combo gain feedback events
+ok 60 - fast release emits combo gain feedback events
+  ---
+  duration_ms: 4.703942
+  type: 'test'
+  ...
+# Subtest: pickup placements use risk positions and a three-segment collision window
+ok 61 - pickup placements use risk positions and a three-segment collision window
+  ---
+  duration_ms: 0.626116
+  type: 'test'
+  ...
+# Subtest: vehicles expose per-segment probabilities and hold/release tradeoffs
+ok 62 - vehicles expose per-segment probabilities and hold/release tradeoffs
+  ---
+  duration_ms: 0.118119
+  type: 'test'
+  ...
+# Subtest: legacy wishfire migrates to coins while future progress fails closed
+ok 63 - legacy wishfire migrates to coins while future progress fails closed
+  ---
+  duration_ms: 0.604354
+  type: 'test'
+  ...
+# Subtest: settlement persists roster, records and identity progression in v2
+ok 64 - settlement persists roster, records and identity progression in v2
+  ---
+  duration_ms: 0.439695
+  type: 'test'
+  ...
+# Subtest: escape distance feedback keeps its icon bounded to a compact overlay size
+ok 65 - escape distance feedback keeps its icon bounded to a compact overlay size
+  ---
+  duration_ms: 6.563843
+  type: 'test'
+  ...
+# Subtest: only the existing scoreable, attached real world-rope window displays release-now
+ok 66 - only the existing scoreable, attached real world-rope window displays release-now
+  ---
+  duration_ms: 1.111711
+  type: 'test'
+  ...
+# Subtest: earned feedback can only follow a real engine-recorded stylish tick and expires promptly
+ok 67 - earned feedback can only follow a real engine-recorded stylish tick and expires promptly
+  ---
+  duration_ms: 0.174483
+  type: 'test'
+  ...
+# Subtest: graphics are only small actor-adjacent open strokes, never a fake pickup ring
+ok 68 - graphics are only small actor-adjacent open strokes, never a fake pickup ring
+  ---
+  duration_ms: 0.710985
+  type: 'test'
+  ...
+# Subtest: 夜市飞侠 formal deterministic contract
+    # Subtest: manifest locks the exact approved ui-f night-market reference and strict silhouette identities
+    ok 1 - manifest locks the exact approved ui-f night-market reference and strict silhouette identities
+      ---
+      duration_ms: 2.600732
+      type: 'test'
+      ...
+    # Subtest: manifest locks title, ordered path, nodes, routes, SAFE_THEN_CHASE evidence, events, and hold/release-only input
+    ok 2 - manifest locks title, ordered path, nodes, routes, SAFE_THEN_CHASE evidence, events, and hold/release-only input
+      ---
+      duration_ms: 0.685196
+      type: 'test'
+      ...
+    # Subtest: manifest locks the covered night-market interior, exact internal routes, and anchored architecture
+    ok 3 - manifest locks the covered night-market interior, exact internal routes, and anchored architecture
+      ---
+      duration_ms: 0.527778
+      type: 'test'
+      ...
+    # Subtest: selected treatment uses the exact fixed fixture and scores forward anchors instead of randomizing courses
+    ok 4 - selected treatment uses the exact fixed fixture and scores forward anchors instead of randomizing courses
+      ---
+      duration_ms: 0.421688
+      type: 'test'
+      ...
+    # Subtest: fixtures expose every ordered segment and materially different high/low tradeoffs
+    ok 5 - fixtures expose every ordered segment and materially different high/low tradeoffs
+      ---
+      duration_ms: 2.704879
+      type: 'test'
+      ...
+    # Subtest: each terrain fixture teaches safely first and tests the same behavior later under guard pursuit
+    ok 6 - each terrain fixture teaches safely first and tests the same behavior later under guard pursuit
+      ---
+      duration_ms: 2.002388
+      type: 'test'
+      ...
+    # Subtest: penalty and reward fixtures move a visible guard and append monotonic causal events
+    ok 7 - penalty and reward fixtures move a visible guard and append monotonic causal events
+      ---
+      duration_ms: 6.171791
+      type: 'test'
+      ...
+    # Subtest: hold/release-only fixtures cover barricade, roof-net, and all fixed closing-gate beats
+    ok 8 - hold/release-only fixtures cover barricade, roof-net, and all fixed closing-gate beats
+      ---
+      duration_ms: 0.748782
+      type: 'test'
+      ...
+    # Subtest: advanceTicks is deterministic and reset keeps event sequence monotonic
+    ok 9 - advanceTicks is deterministic and reset keeps event sequence monotonic
+      ---
+      duration_ms: 9.905444
+      type: 'test'
+      ...
+    1..9
+ok 69 - 夜市飞侠 formal deterministic contract
+  ---
+  duration_ms: 27.099449
+  type: 'suite'
+  ...
+# Subtest: high route exposes an early reachable upper anchor and distinct corridor
+ok 70 - high route exposes an early reachable upper anchor and distinct corridor
+  ---
+  duration_ms: 6.668831
+  type: 'test'
+  ...
+# Subtest: edge pursuer is explicitly hidden when the world pursuer is on screen
+ok 71 - edge pursuer is explicitly hidden when the world pursuer is on screen
+  ---
+  duration_ms: 1.286465
+  type: 'test'
+  ...
+# Subtest: natural high commitment never persists after leaving the physical upper corridor
+ok 72 - natural high commitment never persists after leaving the physical upper corridor
+  ---
+  duration_ms: 44.820119
+  type: 'test'
+  ...
+# Subtest: normal hold/release can collide with an independently closing gate and recover
+ok 73 - normal hold/release can collide with an independently closing gate and recover
+  ---
+  duration_ms: 45.863549
+  type: 'test'
+  ...
+# Subtest: mobile pursuit copy remains readable
+ok 74 - mobile pursuit copy remains readable
+  ---
+  duration_ms: 14.103773
+  type: 'test'
+  ...
+# Subtest: formal world-space QA contract
+    # Subtest: pursuer keeps independent forward lane motion through 1000 backward-swing ticks
+    ok 1 - pursuer keeps independent forward lane motion through 1000 backward-swing ticks
+      ---
+      duration_ms: 36.754623
+      type: 'test'
+      ...
+    # Subtest: the full course is enclosed by continuous canopy, crossbeam, stall-wall, and column geometry
+    ok 2 - the full course is enclosed by continuous canopy, crossbeam, stall-wall, and column geometry
+      ---
+      duration_ms: 0.368437
+      type: 'test'
+      ...
+    # Subtest: barricade and roof-net expose distinct deterministic bounds, animated phases, and collision-linked resolution
+    ok 3 - barricade and roof-net expose distinct deterministic bounds, animated phases, and collision-linked resolution
+      ---
+      duration_ms: 7.44777
+      type: 'test'
+      ...
+    # Subtest: obstacle lifecycle telegraphs before activation instead of popping in fully formed
+    ok 4 - obstacle lifecycle telegraphs before activation instead of popping in fully formed
+      ---
+      duration_ms: 0.526567
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal gate geometry (replaced by vertical gate contract)
+    ok 5 - legacy horizontal gate geometry (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.153312
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal gate interpolation (replaced by vertical gate contract)
+    ok 6 - legacy horizontal gate interpolation (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.112991
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal gate traversal (replaced by vertical gate contract)
+    ok 7 - legacy horizontal gate traversal (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.061072
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal gate collision (replaced by vertical gate contract)
+    ok 8 - legacy horizontal gate collision (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.280454
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal leaf overlap (replaced by vertical gate contract)
+    ok 9 - legacy horizontal leaf overlap (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.209036
+      type: 'test'
+      ...
+    # Subtest: crossing the live beat-3 aperture is the only gate passage that can resolve victory
+    ok 10 - crossing the live beat-3 aperture is the only gate passage that can resolve victory
+      ---
+      duration_ms: 0.869455
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal exit aperture (replaced by vertical gate contract)
+    ok 11 - legacy horizontal exit aperture (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.076195
+      type: 'test'
+      ...
+    # Subtest: closing-gate beat 3 remains actionable for 24 fixed ticks even after crossing the exit
+    ok 12 - closing-gate beat 3 remains actionable for 24 fixed ticks even after crossing the exit
+      ---
+      duration_ms: 2.382913
+      type: 'test'
+      ...
+    # Subtest: terrain manifest and fixtures expose distinct silhouettes, safe/chase placements, and persistent reactions
+    ok 13 - terrain manifest and fixtures expose distinct silhouettes, safe/chase placements, and persistent reactions
+      ---
+      duration_ms: 1.030838
+      type: 'test'
+      ...
+    # Subtest: authored route graph locks a branch through separated corridors and clears commitment at rejoin
+    ok 14 - authored route graph locks a branch through separated corridors and clears commitment at rejoin
+      ---
+      duration_ms: 1.020603
+      type: 'test'
+      ...
+    # Subtest: exact-fixture branch anchors stay in their corridors and commitment selects only its reachable forward anchor
+    ok 15 - exact-fixture branch anchors stay in their corridors and commitment selects only its reachable forward anchor
+      ---
+      duration_ms: 0.372804
+      type: 'test'
+      ...
+    # Subtest: the low counter-passage surface carries a released flight to the shared rejoin anchor
+    ok 16 - the low counter-passage surface carries a released flight to the shared rejoin anchor
+      ---
+      duration_ms: 3.145556
+      type: 'test'
+      ...
+    1..16
+ok 75 - formal world-space QA contract
+  ---
+  duration_ms: 56.526415
+  type: 'suite'
+  ...
+# Subtest: fresh launch query clears the persisted run before bootstrap can restore it
+ok 76 - fresh launch query clears the persisted run before bootstrap can restore it
+  ---
+  duration_ms: 5.319402
+  type: 'test'
+  ...
+# Subtest: 夜市飞侠 deterministic grapple core
+    # Subtest: every seed resets to the selected fixed action-treatment course
+    ok 1 - every seed resets to the selected fixed action-treatment course
+      ---
+      duration_ms: 3.570844
+      type: 'test'
+      ...
+    # Subtest: press attaches only to a nearby eligible forward anchor
+    ok 2 - press attaches only to a nearby eligible forward anchor
+      ---
+      duration_ms: 1.588571
+      type: 'test'
+      ...
+    # Subtest: falling through a lower anchor can rescue-grapple despite sideways momentum
+    ok 3 - falling through a lower anchor can rescue-grapple despite sideways momentum
+      ---
+      duration_ms: 0.602751
+      type: 'test'
+      ...
+    # Subtest: highlighted anchor id is the same candidate used by press
+    ok 4 - highlighted anchor id is the same candidate used by press
+      ---
+      duration_ms: 0.406986
+      type: 'test'
+      ...
+    # Subtest: falling rescue can switch to a visible lower branch anchor
+    ok 5 - falling rescue can switch to a visible lower branch anchor
+      ---
+      duration_ms: 1.348149
+      type: 'test'
+      ...
+    # Subtest: rightward transfer prefers the nearest aligned playable anchor
+    ok 6 - rightward transfer prefers the nearest aligned playable anchor
+      ---
+      duration_ms: 0.427516
+      type: 'test'
+      ...
+    # Subtest: long-distance captures are reeled to a playable rope length
+    ok 7 - long-distance captures are reeled to a playable rope length
+      ---
+      duration_ms: 0.31082
+      type: 'test'
+      ...
+    # Subtest: authored anchor layouts keep adjacent transfers within a playable envelope
+    ok 8 - authored anchor layouts keep adjacent transfers within a playable envelope
+      ---
+      duration_ms: 0.406394
+      type: 'test'
+      ...
+    # Subtest: held swing constrains the body to its captured rope length without jitter
+    ok 9 - held swing constrains the body to its captured rope length without jitter
+      ---
+      duration_ms: 21.207559
+      type: 'test'
+      ...
+    # Subtest: release preserves the tangential launch velocity
+    ok 10 - release preserves the tangential launch velocity
+      ---
+      duration_ms: 2.415822
+      type: 'test'
+      ...
+    # Subtest: a release at the first launch window can immediately grapple a new ring
+    ok 11 - a release at the first launch window can immediately grapple a new ring
+      ---
+      duration_ms: 4.231599
+      type: 'test'
+      ...
+    # Subtest: repeating the visible right-side release rhythm can complete the course
+    ok 12 - repeating the visible right-side release rhythm can complete the course
+      ---
+      duration_ms: 56.739354
+      type: 'test'
+      ...
+    # Subtest: normal seed-31 hold/release rhythm visibly breaks bamboo during ordinary traversal
+    ok 13 - normal seed-31 hold/release rhythm visibly breaks bamboo during ordinary traversal
+      ---
+      duration_ms: 42.850485
+      type: 'test'
+      ...
+    # Subtest: velocity is capped
+    ok 14 - velocity is capped
+      ---
+      duration_ms: 0.633909
+      type: 'test'
+      ...
+    # Subtest: fixed-step result is materially stable at low and high render cadence
+    ok 15 - fixed-step result is materially stable at low and high render cadence
+      ---
+      duration_ms: 7.793453
+      type: 'test'
+      ...
+    # Subtest: falling below the course produces a visible failure state
+    ok 16 - falling below the course produces a visible failure state
+      ---
+      duration_ms: 0.389259
+      type: 'test'
+      ...
+    # Subtest: crossing the beacon resolves only after gate beat 3 has remained actionable for 24 ticks
+    ok 17 - crossing the beacon resolves only after gate beat 3 has remained actionable for 24 ticks
+      ---
+      duration_ms: 0.748221
+      type: 'test'
+      ...
+    # Subtest: one press after a terminal state restarts with a deterministic variation
+    ok 18 - one press after a terminal state restarts with a deterministic variation
+      ---
+      duration_ms: 0.256137
+      type: 'test'
+      ...
+    # Subtest: duplicate pointer edges are ignored and numeric zero toggles grapple
+    ok 19 - duplicate pointer edges are ignored and numeric zero toggles grapple
+      ---
+      duration_ms: 0.230949
+      type: 'test'
+      ...
+    # Subtest: rewarded revive unlocks at sixty percent and restores one safe flight per run
+    ok 20 - rewarded revive unlocks at sixty percent and restores one safe flight per run
+      ---
+      duration_ms: 0.448328
+      type: 'test'
+      ...
+    # Subtest: chase begins safe, stalled flight draws patrol closer, and pressure is clamped
+    ok 21 - chase begins safe, stalled flight draws patrol closer, and pressure is clamped
+      ---
+      duration_ms: 26.564853
+      type: 'test'
+      ...
+    # Subtest: a backward swing cannot drag guards backward and instead closes actual separation
+    ok 22 - a backward swing cannot drag guards backward and instead closes actual separation
+      ---
+      duration_ms: 0.370179
+      type: 'test'
+      ...
+    # Subtest: fast forward flight creates deterministic physical separation
+    ok 23 - fast forward flight creates deterministic physical separation
+      ---
+      duration_ms: 19.648967
+      type: 'test'
+      ...
+    # Subtest: catching a meaningfully forward interior-market anchor creates causal breathing room
+    ok 24 - catching a meaningfully forward interior-market anchor creates causal breathing room
+      ---
+      duration_ms: 1.184962
+      type: 'test'
+      ...
+    # Subtest: the final twenty percent enters climax only when guards are physically threatening
+    ok 25 - the final twenty percent enters climax only when guards are physically threatening
+      ---
+      duration_ms: 0.239983
+      type: 'test'
+      ...
+    # Subtest: caught terminal state freezes chase and restart restores initial patrol distance
+    ok 26 - caught terminal state freezes chase and restart restores initial patrol distance
+      ---
+      duration_ms: 5.141934
+      type: 'test'
+      ...
+    # Subtest: explicit pause freezes physics, elapsed time, and patrol pressure until resumed
+    ok 27 - explicit pause freezes physics, elapsed time, and patrol pressure until resumed
+      ---
+      duration_ms: 0.777365
+      type: 'test'
+      ...
+    # Subtest: rewarded revive after a chase catch restores safe but non-zero pressure
+    ok 28 - rewarded revive after a chase catch restores safe but non-zero pressure
+      ---
+      duration_ms: 7.365838
+      type: 'test'
+      ...
+    # Subtest: current-target pursuit trace proves lead, back-swing pressure, recovery, and contact catch
+    ok 29 - current-target pursuit trace proves lead, back-swing pressure, recovery, and contact catch
+      ---
+      duration_ms: 14.600244
+      type: 'test'
+      ...
+    1..29
+ok 77 - 夜市飞侠 deterministic grapple core
+  ---
+  duration_ms: 224.560103
+  type: 'suite'
+  ...
+# Subtest: approved characters affect ordinary velocity, gravity, speed cap and actual grapple eligibility
+ok 78 - approved characters affect ordinary velocity, gravity, speed cap and actual grapple eligibility
+  ---
+  duration_ms: 6.053933
+  type: 'test'
+  ...
+# Subtest: selection validates ids, affects new runs, survives restore and never compounds
+ok 79 - selection validates ids, affects new runs, survives restore and never compounds
+  ---
+  duration_ms: 2.290874
+  type: 'test'
+  ...
+# Subtest: sky record counts qualified distinct segments once across frames, reentry and reload
+ok 80 - sky record counts qualified distinct segments once across frames, reentry and reload
+  ---
+  duration_ms: 7.078642
+  type: 'test'
+  ...
+# Subtest: paused item use is a full no-op
+ok 81 - paused item use is a full no-op
+  ---
+  duration_ms: 0.478083
+  type: 'test'
+  ...
+# Subtest: 追捕阶段在最终 gate-climax 外按现有距离阈值依次预警
+ok 82 - 追捕阶段在最终 gate-climax 外按现有距离阈值依次预警
+  ---
+  duration_ms: 7.922398
+  type: 'test'
+  ...
+# Subtest: 路线 commitment 对 high/low 实际走廊对称更新并驱动下游路线
+ok 83 - 路线 commitment 对 high/low 实际走廊对称更新并驱动下游路线
+  ---
+  duration_ms: 2.081777
+  type: 'test'
+  ...
+# Subtest: 结算拒绝非有限、负数与不安全输入且不产生 NaN 或溢出
+ok 84 - 结算拒绝非有限、负数与不安全输入且不产生 NaN 或溢出
+  ---
+  duration_ms: 0.425043
+  type: 'test'
+  ...
+# Subtest: 无尽夜巡复活不越过死亡前已到达的前沿
+ok 85 - 无尽夜巡复活不越过死亡前已到达的前沿
+  ---
+  duration_ms: 4.577942
+  type: 'test'
+  ...
+# Subtest: 无尽夜巡分段奖励按首次进入记录，回退和存档恢复不重复发放
+ok 86 - 无尽夜巡分段奖励按首次进入记录，回退和存档恢复不重复发放
+  ---
+  duration_ms: 13.99619
+  type: 'test'
+  ...
+# Subtest: 分段里程边界与分段起点一致
+ok 87 - 分段里程边界与分段起点一致
+  ---
+  duration_ms: 0.174274
+  type: 'test'
+  ...
+# Subtest: preserves malformed and future progress bytes and reports a recoverable issue
+ok 88 - preserves malformed and future progress bytes and reports a recoverable issue
+  ---
+  duration_ms: 1.939773
+  type: 'test'
+  ...
+# Subtest: does not mutate wallet or settlement ledger when a write is rejected, then retries atomically
+ok 89 - does not mutate wallet or settlement ledger when a write is rejected, then retries atomically
+  ---
+  duration_ms: 1.047434
+  type: 'test'
+  ...
+# Subtest: rejects invalid economy numbers without mutation and floors valid fractional values
+ok 90 - rejects invalid economy numbers without mutation and floors valid fractional values
+  ---
+  duration_ms: 0.530602
+  type: 'test'
+  ...
+# Subtest: deduplicates concurrent item unlocks and releases the reservation after provider failure
+ok 91 - deduplicates concurrent item unlocks and releases the reservation after provider failure
+  ---
+  duration_ms: 0.598806
+  type: 'test'
+  ...
+# Subtest: new runs receive unique persistent ids while restore keeps its id
+ok 92 - new runs receive unique persistent ids while restore keeps its id
+  ---
+  duration_ms: 1.410713
+  type: 'test'
+  ...
+# Subtest: runtime session invalidates stale async operations after a new run
+ok 93 - runtime session invalidates stale async operations after a new run
+  ---
+  duration_ms: 0.261525
+  type: 'test'
+  ...
+# Subtest: a completed async operation cannot impersonate its successor in the same run
+ok 94 - a completed async operation cannot impersonate its successor in the same run
+  ---
+  duration_ms: 0.364912
+  type: 'test'
+  ...
+# Subtest: background policy suspends hidden time and never auto-resumes on visibility or focus
+ok 95 - background policy suspends hidden time and never auto-resumes on visibility or focus
+  ---
+  duration_ms: 0.234475
+  type: 'test'
+  ...
+# Subtest: entry wiring uses the lifecycle/session contracts and does not advertise fixed rewards
+ok 96 - entry wiring uses the lifecycle/session contracts and does not advertise fixed rewards
+  ---
+  duration_ms: 0.560337
+  type: 'test'
+  ...
+# Subtest: run save failures have an actionable alert outside terminal-only UI
+ok 97 - run save failures have an actionable alert outside terminal-only UI
+  ---
+  duration_ms: 0.545675
+  type: 'test'
+  ...
+# Subtest: saved reward frontiers reject malformed values before core restoration
+ok 98 - saved reward frontiers reject malformed values before core restoration
+  ---
+  duration_ms: 5.374967
+  type: 'test'
+  ...
+# Subtest: legacy omissions remain readable and known progression fields roundtrip
+ok 99 - legacy omissions remain readable and known progression fields roundtrip
+  ---
+  duration_ms: 2.150231
+  type: 'test'
+  ...
+# Subtest: runtime contract binds the actual workspace and open checkpoint journey
+ok 100 - runtime contract binds the actual workspace and open checkpoint journey
+  ---
+  duration_ms: 0.321366
+  type: 'test'
+  ...
+# Subtest: character unlock and selection validate roster ids, affordability, ownership, and persistence
+ok 101 - character unlock and selection validate roster ids, affordability, ownership, and persistence
+  ---
+  duration_ms: 3.191605
+  type: 'test'
+  ...
+# Subtest: missions expose exactly three active slots and atomically claim historical record eligibility once
+ok 102 - missions expose exactly three active slots and atomically claim historical record eligibility once
+  ---
+  duration_ms: 0.996156
+  type: 'test'
+  ...
+# Subtest: record ledger maps persisted deltas and resumed terminal rewards without replaying a run
+ok 103 - record ledger maps persisted deltas and resumed terminal rewards without replaying a run
+  ---
+  duration_ms: 0.5693
+  type: 'test'
+  ...
+# Subtest: daily free revive is an atomic UTC-day claim that survives reload and rejects invalid input
+ok 104 - daily free revive is an atomic UTC-day claim that survives reload and rejects invalid input
+  ---
+  duration_ms: 0.768201
+  type: 'test'
+  ...
+# Subtest: failed tutorial completion does not unlock endless mode while legacy calls retain completion behavior
+ok 105 - failed tutorial completion does not unlock endless mode while legacy calls retain completion behavior
+  ---
+  duration_ms: 0.327365
+  type: 'test'
+  ...
+# Subtest: item and spending transactions preserve the cross-session settlement ledger
+ok 106 - item and spending transactions preserve the cross-session settlement ledger
+  ---
+  duration_ms: 0.360936
+  type: 'test'
+  ...
+# Subtest: failed progression writes are atomic and a doubled settlement cannot be resumed
+ok 107 - failed progression writes are atomic and a doubled settlement cannot be resumed
+  ---
+  duration_ms: 0.886861
+  type: 'test'
+  ...
+# Subtest: free revive claim atomically reopens the existing ledger and pays only new earnings
+ok 108 - free revive claim atomically reopens the existing ledger and pays only new earnings
+  ---
+  duration_ms: 0.43046
+  type: 'test'
+  ...
+# Subtest: run snapshot shape audit
+    # Subtest: accepts valid playing, paused, failed, won, tutorial, patrol, and legacy states
+    ok 1 - accepts valid playing, paused, failed, won, tutorial, patrol, and legacy states
+      ---
+      duration_ms: 9.469818
+      type: 'test'
+      ...
+    # Subtest: rejects malformed nested anchors, routes, bounds, resources, enums, and references
+    ok 2 - rejects malformed nested anchors, routes, bounds, resources, enums, and references
+      ---
+      duration_ms: 10.706868
+      type: 'test'
+      ...
+    # Subtest: accepts active-terrain legacy omissions but rejects supplied wrong types
+    ok 3 - accepts active-terrain legacy omissions but rejects supplied wrong types
+      ---
+      duration_ms: 5.2776
+      type: 'test'
+      ...
+    # Subtest: preserves unknown top-level fields while validating saved furthest segment indices
+    ok 4 - preserves unknown top-level fields while validating saved furthest segment indices
+      ---
+      duration_ms: 4.260542
+      type: 'test'
+      ...
+    1..4
+ok 109 - run snapshot shape audit
+  ---
+  duration_ms: 31.763615
+  type: 'suite'
+  ...
+# Subtest: local run snapshot storage audit
+    # Subtest: preserves malformed and future raw bytes and reports an issue until explicit clear
+    ok 1 - preserves malformed and future raw bytes and reports an issue until explicit clear
+      ---
+      duration_ms: 3.864903
+      type: 'test'
+      ...
+    # Subtest: rejects invalid snapshots before writing and makes write failures retryable
+    ok 2 - rejects invalid snapshots before writing and makes write failures retryable
+      ---
+      duration_ms: 2.441842
+      type: 'test'
+      ...
+    # Subtest: reports storage read failures without overwriting or claiming a save
+    ok 3 - reports storage read failures without overwriting or claiming a save
+      ---
+      duration_ms: 1.006001
+      type: 'test'
+      ...
+    1..3
+ok 110 - local run snapshot storage audit
+  ---
+  duration_ms: 8.194208
+  type: 'suite'
+  ...
+# Subtest: all opening rides are authored for every seed; later rolls stay deterministic
+ok 111 - all opening rides are authored for every seed; later rolls stay deterministic
+  ---
+  duration_ms: 6.603003
+  type: 'test'
+  ...
+# Subtest: guided weather never advertises removed closing-gate mechanics
+ok 112 - guided weather never advertises removed closing-gate mechanics
+  ---
+  duration_ms: 0.420536
+  type: 'test'
+  ...
+# Subtest: coin routes are separated spatially and retained inside their segment
+ok 113 - coin routes are separated spatially and retained inside their segment
+  ---
+  duration_ms: 4.549198
+  type: 'test'
+  ...
+# Subtest: a checkpoint is earned at its visible midpoint, never just at segment entry
+ok 114 - a checkpoint is earned at its visible midpoint, never just at segment entry
+  ---
+  duration_ms: 1.819251
+  type: 'test'
+  ...
+# Subtest: kite pre-approach teaches an upward rope swing before the actual release window
+ok 115 - kite pre-approach teaches an upward rope swing before the actual release window
+  ---
+  duration_ms: 6.297771
+  type: 'test'
+  ...
+# Subtest: visible ride halo does not collect from the rectangular corner or outside its vertical reach
+ok 116 - visible ride halo does not collect from the rectangular corner or outside its vertical reach
+  ---
+  duration_ms: 12.078911
+  type: 'test'
+  ...
+# Subtest: ride offer is fixed in world space after segment entry and cannot follow the rider
+ok 117 - ride offer is fixed in world space after segment entry and cannot follow the rider
+  ---
+  duration_ms: 1.308218
+  type: 'test'
+  ...
+# Subtest: mounted vehicles release the old physical grapple immediately
+ok 118 - mounted vehicles release the old physical grapple immediately
+  ---
+  duration_ms: 1.757618
+  type: 'test'
+  ...
+# Subtest: an empty segment preserves the remaining ride duration
+ok 119 - an empty segment preserves the remaining ride duration
+  ---
+  duration_ms: 2.918061
+  type: 'test'
+  ...
+# Subtest: a second world pickup cannot become a hidden queued award
+ok 120 - a second world pickup cannot become a hidden queued award
+  ---
+  duration_ms: 4.057154
+  type: 'test'
+  ...
+# Subtest: legacy queued awards are safely drained without losing currently active ride
+ok 121 - legacy queued awards are safely drained without losing currently active ride
+  ---
+  duration_ms: 3.489667
+  type: 'test'
+  ...
+# Subtest: corrupt ride queues are rejected without rejecting old saves
+ok 122 - corrupt ride queues are rejected without rejecting old saves
+  ---
+  duration_ms: 0.665747
+  type: 'test'
+  ...
+# Subtest: a missed pickup is not granted automatically and cannot be collected from far above its lane
+ok 123 - a missed pickup is not granted automatically and cannot be collected from far above its lane
+  ---
+  duration_ms: 1.232774
+  type: 'test'
+  ...
+# Subtest: visible pickup offers persist through snapshots and reject malformed records
+ok 124 - visible pickup offers persist through snapshots and reject malformed records
+  ---
+  duration_ms: 1.56072
+  type: 'test'
+  ...
+# Subtest: zipline release really ejects upward and returns to ordinary grapple control
+ok 125 - zipline release really ejects upward and returns to ordinary grapple control
+  ---
+  duration_ms: 4.857794
+  type: 'test'
+  ...
+# Subtest: bird lift remains visible and its countdown is frozen while paused
+ok 126 - bird lift remains visible and its countdown is frozen while paused
+  ---
+  duration_ms: 19.935791
+  type: 'test'
+  ...
+# Subtest: ride expiry supplies a finite, forward recovery window
+ok 127 - ride expiry supplies a finite, forward recovery window
+  ---
+  duration_ms: 1.01145
+  type: 'test'
+  ...
+# Subtest: actual guided checkpoint award agrees with the next-checkpoint display
+ok 128 - actual guided checkpoint award agrees with the next-checkpoint display
+  ---
+  duration_ms: 0.742953
+  type: 'test'
+  ...
+# Subtest: swept coin contact catches a fast pass and handles a stationary frame
+ok 129 - swept coin contact catches a fast pass and handles a stationary frame
+  ---
+  duration_ms: 0.146801
+  type: 'test'
+  ...
+# Subtest: cash out is a real terminal transition and cannot settle twice
+ok 130 - cash out is a real terminal transition and cannot settle twice
+  ---
+  duration_ms: 3.725272
+  type: 'test'
+  ...
+# Subtest: tutorial distance is real, rather than a permanent zero in settlement
+ok 131 - tutorial distance is real, rather than a permanent zero in settlement
+  ---
+  duration_ms: 7.056288
+  type: 'test'
+  ...
+# Subtest: each vehicle presents its own hold/release meaning
+ok 132 - each vehicle presents its own hold/release meaning
+  ---
+  duration_ms: 0.321036
+  type: 'test'
+  ...
+# Subtest: shipping bootstrap opts in and connects the visible ride, input and lifecycle layers
+ok 133 - shipping bootstrap opts in and connects the visible ride, input and lifecycle layers
+  ---
+  duration_ms: 0.775463
+  type: 'test'
+  ...
+# Subtest: standalone build is independent of its download filename
+ok 134 - standalone build is independent of its download filename
+  ---
+  duration_ms: 128.794616
+  type: 'test'
+  ...
+# Subtest: authored patrol exposes four optional anchored encounters (seed 1)
+ok 135 - authored patrol exposes four optional anchored encounters (seed 1)
+  ---
+  duration_ms: 1.113153
+  type: 'test'
+  ...
+# Subtest: authored patrol exposes four optional anchored encounters (seed 31)
+ok 136 - authored patrol exposes four optional anchored encounters (seed 31)
+  ---
+  duration_ms: 0.741471
+  type: 'test'
+  ...
+# Subtest: authored patrol exposes four optional anchored encounters (seed 99)
+ok 137 - authored patrol exposes four optional anchored encounters (seed 99)
+  ---
+  duration_ms: 0.789915
+  type: 'test'
+  ...
+# Subtest: a release already in flight at ride entry cannot immediately erase the zipline
+ok 138 - a release already in flight at ride entry cannot immediately erase the zipline
+  ---
+  duration_ms: 4.69595
+  type: 'test'
+  ...
+# Subtest: late backward release remains recoverable without awarding a fake combo
+ok 139 - late backward release remains recoverable without awarding a fake combo
+  ---
+  duration_ms: 0.209787
+  type: 'test'
+  ...
+# Subtest: pausing an actual swing freezes physics and gives the next real press a finite regrapple chance
+ok 140 - pausing an actual swing freezes physics and gives the next real press a finite regrapple chance
+  ---
+  duration_ms: 0.251681
+  type: 'test'
+  ...
+# Subtest: pausing without a rope does not manufacture a regrapple entitlement
+ok 141 - pausing without a rope does not manufacture a regrapple entitlement
+  ---
+  duration_ms: 0.152591
+  type: 'test'
+  ...
+# Subtest: pausing a held lantern cancels the virtual rope without losing the mount
+ok 142 - pausing a held lantern cancels the virtual rope without losing the mount
+  ---
+  duration_ms: 0.351942
+  type: 'test'
+  ...
+# Subtest: a claimed pickup stabilizes the first frame instead of teleporting an already falling stranger
+ok 143 - a claimed pickup stabilizes the first frame instead of teleporting an already falling stranger
+  ---
+  duration_ms: 1.13734
+  type: 'test'
+  ...
+# Subtest: guided revival eligibility does not depend on repeating segment progress
+ok 144 - guided revival eligibility does not depend on repeating segment progress
+  ---
+  duration_ms: 0.532665
+  type: 'test'
+  ...
+# Subtest: lantern release really launches forward and does not erase an earned grapple combo
+ok 145 - lantern release really launches forward and does not erase an earned grapple combo
+  ---
+  duration_ms: 0.806549
+  type: 'test'
+  ...
+# Subtest: a deliberate bird flap immediately brakes a late dive without fake rewards
+ok 146 - a deliberate bird flap immediately brakes a late dive without fake rewards
+  ---
+  duration_ms: 1.042406
+  type: 'test'
+  ...
+# Subtest: standalone playable alias contains the current Hub shell contract
+ok 147 - standalone playable alias contains the current Hub shell contract
+  ---
+  duration_ms: 98.854014
+  type: 'test'
+  ...
+# Subtest: inventory slot presentation declares a shared tone contract
+ok 148 - inventory slot presentation declares a shared tone contract
+  ---
+  duration_ms: 1.822335
+  type: 'test'
+  ...
+# Subtest: Hub top image layers use the approved aligned assets
+ok 149 - Hub top image layers use the approved aligned assets
+  ---
+  duration_ms: 0.987933
+  type: 'test'
+  ...
+# Subtest: Hub inventory renders ring, talisman, scroll and play as independent persistent layers
+ok 150 - Hub inventory renders ring, talisman, scroll and play as independent persistent layers
+  ---
+  duration_ms: 0.236057
+  type: 'test'
+  ...
+# Subtest: Hub integration never loads screenshot-derived backgrounds
+ok 151 - Hub integration never loads screenshot-derived backgrounds
+  ---
+  duration_ms: 0.228405
+  type: 'test'
+  ...
+# Subtest: reference-stage maps Hub UI assets to manifest pixel rectangles
+ok 152 - reference-stage maps Hub UI assets to manifest pixel rectangles
+  ---
+  duration_ms: 8.656353
+  type: 'test'
+  ...
+# Subtest: approved transparent Hub sources retain alpha and native money-value dimensions
+ok 153 - approved transparent Hub sources retain alpha and native money-value dimensions
+  ---
+  duration_ms: 9.036432
+  type: 'test'
+  ...
+# Subtest: Hub top uses transparent shell sources and preserves money glyph aspect ratio
+ok 154 - Hub top uses transparent shell sources and preserves money glyph aspect ratio
+  ---
+  duration_ms: 1.048776
+  type: 'test'
+  ...
+# Subtest: visible grapple anchors are backed by the approved anchor-button asset
+ok 155 - visible grapple anchors are backed by the approved anchor-button asset
+  ---
+  duration_ms: 0.512585
+  type: 'test'
+  ...
+# Subtest: confirmed return-button source is copied byte-for-byte and wired as an independent asset
+ok 156 - confirmed return-button source is copied byte-for-byte and wired as an independent asset
+  ---
+  duration_ms: 5.349277
+  type: 'test'
+  ...
+# Subtest: HUD slice exposes fixed top navigation and a right-side item rail
+ok 157 - HUD slice exposes fixed top navigation and a right-side item rail
+  ---
+  duration_ms: 0.321956
+  type: 'test'
+  ...
+# Subtest: static reference baseline removes legacy rails and text placeholder items
+ok 158 - static reference baseline removes legacy rails and text placeholder items
+  ---
+  duration_ms: 1.109147
+  type: 'test'
+  ...
+# Subtest: chase HUD exposes the persistent patrol and escalates to danger
+ok 159 - chase HUD exposes the persistent patrol and escalates to danger
+  ---
+  duration_ms: 0.231149
+  type: 'test'
+  ...
+# Subtest: IAA道具与城门结算契约
+    # Subtest: 每个道具账号首次免费，之后看一次广告永久解锁
+    ok 1 - 每个道具账号首次免费，之后看一次广告永久解锁
+      ---
+      duration_ms: 8.522766
+      type: 'test'
+      ...
+    # Subtest: 收益只由固定拾取金币和已闯城门奖励构成
+    ok 2 - 收益只由固定拾取金币和已闯城门奖励构成
+      ---
+      duration_ms: 1.205933
+      type: 'test'
+      ...
+    1..2
+ok 160 - IAA道具与城门结算契约
+  ---
+  duration_ms: 10.664534
+  type: 'suite'
+  ...
+# Subtest: legacy three-level night-market campaign (superseded)
+ok 161 - legacy three-level night-market campaign (superseded) # SKIP
+  ---
+  duration_ms: 0.441427
+  type: 'suite'
+  ...
+# Subtest: level one UI exposes wordless state icons and all four segment states
+ok 162 - level one UI exposes wordless state icons and all four segment states
+  ---
+  duration_ms: 8.436195
+  type: 'test'
+  ...
+# Subtest: missing art remains explicit TODO and never falls back to legacy character sheet
+ok 163 - missing art remains explicit TODO and never falls back to legacy character sheet
+  ---
+  duration_ms: 1.161777
+  type: 'test'
+  ...
+# Subtest: source entry redirects file protocol users to the self-contained playable alias
+ok 164 - source entry redirects file protocol users to the self-contained playable alias
+  ---
+  duration_ms: 0.797946
+  type: 'test'
+  ...
+# Subtest: panorama core journey reaches tutorial settlement, patrol failure, and replay on normal input
+ok 165 - panorama core journey reaches tutorial settlement, patrol failure, and replay on normal input
+  ---
+  duration_ms: 153.929897
+  type: 'test'
+  ...
+# Subtest: default browser opts into the panorama terrain contract before restoring saves
+ok 166 - default browser opts into the panorama terrain contract before restoring saves
+  ---
+  duration_ms: 2.381576
+  type: 'test'
+  ...
+# Subtest: mobile identity has a bounded, screen-pixel cyan rim without hiding the physical hero
+ok 167 - mobile identity has a bounded, screen-pixel cyan rim without hiding the physical hero
+  ---
+  duration_ms: 4.377699
+  type: 'test'
+  ...
+# Subtest: rim and hero follow exactly the same pose through flying, back-swing and replay
+ok 168 - rim and hero follow exactly the same pose through flying, back-swing and replay
+  ---
+  duration_ms: 0.639878
+  type: 'test'
+  ...
+# Subtest: actual cyan silhouette edges are made from a Canvas-safe texture and respect every screen zoom
+ok 169 - actual cyan silhouette edges are made from a Canvas-safe texture and respect every screen zoom
+  ---
+  duration_ms: 1.609724
+  type: 'test'
+  ...
+# Subtest: normal scene draws anchor mounts from the selected panorama transform
+ok 170 - normal scene draws anchor mounts from the selected panorama transform
+  ---
+  duration_ms: 0.864807
+  type: 'test'
+  ...
+# Subtest: default image stream retires repeated foreground eaves and keeps compatibility asset unloaded
+ok 171 - default image stream retires repeated foreground eaves and keeps compatibility asset unloaded
+  ---
+  duration_ms: 3.291606
+  type: 'test'
+  ...
+# Subtest: every seam veil remains world-aligned at near and far camera positions
+ok 172 - every seam veil remains world-aligned at near and far camera positions
+  ---
+  duration_ms: 1.539868
+  type: 'test'
+  ...
+# Subtest: seam-matched mirrored panels replace the old random crop variation and keep full coverage
+ok 173 - seam-matched mirrored panels replace the old random crop variation and keep full coverage
+  ---
+  duration_ms: 2.227948
+  type: 'test'
+  ...
+# Subtest: renderer world height and anchor socket Y match the actual plate display transform
+ok 174 - renderer world height and anchor socket Y match the actual plate display transform
+  ---
+  duration_ms: 0.704415
+  type: 'test'
+  ...
+# Subtest: adjacent ordinary districts have exactly matching edge pixels by construction
+ok 175 - adjacent ordinary districts have exactly matching edge pixels by construction
+  ---
+  duration_ms: 2.357014
+  type: 'test'
+  ...
+# Subtest: maps a world anchor to a support socket on the same transformed panorama image
+ok 176 - maps a world anchor to a support socket on the same transformed panorama image
+  ---
+  duration_ms: 0.682361
+  type: 'test'
+  ...
+# Subtest: catalogs explicit visible source-pixel supports for all six panoramas and three bridge plates
+ok 177 - catalogs explicit visible source-pixel supports for all six panoramas and three bridge plates
+  ---
+  duration_ms: 0.379124
+  type: 'test'
+  ...
+# Subtest: returns an authored support point inside the selected crop and preserves its transformed world position
+ok 178 - returns an authored support point inside the selected crop and preserves its transformed world position
+  ---
+  duration_ms: 0.76744
+  type: 'test'
+  ...
+# Subtest: uses the two supplied opaque bridge plates for every authored district transition
+ok 179 - uses the two supplied opaque bridge plates for every authored district transition
+  ---
+  duration_ms: 2.082649
+  type: 'test'
+  ...
+# Subtest: preloads and renders each supplied bridge plate on the default image stream
+ok 180 - preloads and renders each supplied bridge plate on the default image stream
+  ---
+  duration_ms: 0.444963
+  type: 'test'
+  ...
+# Subtest: socket lookup never clamps an off-map anchor into a distant visible support
+ok 181 - socket lookup never clamps an off-map anchor into a distant visible support
+  ---
+  duration_ms: 0.234164
+  type: 'test'
+  ...
+# Subtest: default map journey contract belongs to the current game and runtime
+ok 182 - default map journey contract belongs to the current game and runtime
+  ---
+  duration_ms: 3.157384
+  type: 'test'
+  ...
+# Subtest: open-streets journey declares settlement and replay without a removed gate checkpoint
+ok 183 - open-streets journey declares settlement and replay without a removed gate checkpoint
+  ---
+  duration_ms: 0.753609
+  type: 'test'
+  ...
+# Subtest: runtime contract validator keeps missing current-build browser evidence blocked
+ok 184 - runtime contract validator keeps missing current-build browser evidence blocked
+  ---
+  duration_ms: 96.984876
+  type: 'test'
+  ...
+# Subtest: release gate rejects stale, failed and malformed evidence and fails strict mode
+ok 185 - release gate rejects stale, failed and malformed evidence and fails strict mode
+  ---
+  duration_ms: 479.331885
+  type: 'test'
+  ...
+# Subtest: panorama terrain mode leaves the exact bamboo fixture physically untouched
+ok 186 - panorama terrain mode leaves the exact bamboo fixture physically untouched
+  ---
+  duration_ms: 5.321946
+  type: 'test'
+  ...
+# Subtest: default and explicit legacy-authored terrain modes keep the bamboo fixture kickable
+ok 187 - default and explicit legacy-authored terrain modes keep the bamboo fixture kickable
+  ---
+  duration_ms: 1.419976
+  type: 'test'
+  ...
+# Subtest: panorama snapshot restore sanitizes legacy terrain and route surfaces
+ok 188 - panorama snapshot restore sanitizes legacy terrain and route surfaces
+  ---
+  duration_ms: 1.997399
+  type: 'test'
+  ...
+# Subtest: panorama endless anchors follow the authored district when compatibility districts disagree
+ok 189 - panorama endless anchors follow the authored district when compatibility districts disagree
+  ---
+  duration_ms: 3.376405
+  type: 'test'
+  ...
+# Subtest: 夜市飞侠 IAA rules
+    # Subtest: base wishfire is granted once and a completed reward doubles it once
+    ok 1 - base wishfire is granted once and a completed reward doubles it once
+      ---
+      duration_ms: 7.191773
+      type: 'test'
+      ...
+    # Subtest: simultaneous double-wishfire requests reserve one run before opening an ad
+    ok 2 - simultaneous double-wishfire requests reserve one run before opening an ad
+      ---
+      duration_ms: 0.778056
+      type: 'test'
+      ...
+    # Subtest: settlement and completed double remain idempotent after monetization re-instantiation
+    ok 3 - settlement and completed double remain idempotent after monetization re-instantiation
+      ---
+      duration_ms: 1.125572
+      type: 'test'
+      ...
+    # Subtest: dismissed or unavailable rewarded ads do not grant wishfire
+    ok 4 - dismissed or unavailable rewarded ads do not grant wishfire
+      ---
+      duration_ms: 0.527197
+      type: 'test'
+      ...
+    # Subtest: legacy and malformed saves migrate defensively to version one
+    ok 5 - legacy and malformed saves migrate defensively to version one
+      ---
+      duration_ms: 0.703534
+      type: 'test'
+      ...
+    # Subtest: interstitial eligibility respects every timing and session cap gate
+    ok 6 - interstitial eligibility respects every timing and session cap gate
+      ---
+      duration_ms: 0.242466
+      type: 'test'
+      ...
+    # Subtest: rewarded revive flow grants only after a completed ad and records cooldown
+    ok 7 - rewarded revive flow grants only after a completed ad and records cooldown
+      ---
+      duration_ms: 0.646798
+      type: 'test'
+      ...
+    # Subtest: natural-transition hook shows an interstitial only when policy is eligible
+    ok 8 - natural-transition hook shows an interstitial only when policy is eligible
+      ---
+      duration_ms: 0.665376
+      type: 'test'
+      ...
+    1..8
+ok 190 - 夜市飞侠 IAA rules
+  ---
+  duration_ms: 13.273237
+  type: 'suite'
+  ...
+# Subtest: default journey exposes only tutorial plus endless patrol
+ok 191 - default journey exposes only tutorial plus endless patrol
+  ---
+  duration_ms: 2.342351
+  type: 'test'
+  ...
+# Subtest: open-street patrol checkpoints never become terminal wins
+ok 192 - open-street patrol checkpoints never become terminal wins
+  ---
+  duration_ms: 6.941184
+  type: 'test'
+  ...
+# Subtest: terminal UI hides result immediately on restart and suppresses endless checkpoints
+ok 193 - terminal UI hides result immediately on restart and suppresses endless checkpoints
+  ---
+  duration_ms: 7.629545
+  type: 'test'
+  ...
+# Subtest: completed test journey uses the gate-and-pickup settlement formula
+ok 194 - completed test journey uses the gate-and-pickup settlement formula
+  ---
+  duration_ms: 14.382144
+  type: 'test'
+  ...
+# Subtest: endless state exposes live pickup entities and vehicle hold/release phase
+ok 195 - endless state exposes live pickup entities and vehicle hold/release phase
+  ---
+  duration_ms: 3.855219
+  type: 'test'
+  ...
+# Subtest: ordinary tutorial rhythm can recover from the low route and reach the rejoin
+ok 196 - ordinary tutorial rhythm can recover from the low route and reach the rejoin
+  ---
+  duration_ms: 41.547716
+  type: 'test'
+  ...
+# Subtest: browser-scale tutorial cadence cannot be caught before the authored rejoin
+ok 197 - browser-scale tutorial cadence cannot be caught before the authored rejoin
+  ---
+  duration_ms: 37.15197
+  type: 'test'
+  ...
+# Subtest: browser-scale tutorial cadence remains recoverable through the closing gate
+ok 198 - browser-scale tutorial cadence remains recoverable through the closing gate
+  ---
+  duration_ms: 19.723034
+  type: 'test'
+  ...
+# Subtest: live currency is the first visible coins selector and hides screenshot numerals
+ok 199 - live currency is the first visible coins selector and hides screenshot numerals
+  ---
+  duration_ms: 1.207405
+  type: 'test'
+  ...
+# Subtest: one image pause control owns the pause action while compatibility markup stays hidden
+ok 200 - one image pause control owns the pause action while compatibility markup stays hidden
+  ---
+  duration_ms: 0.325912
+  type: 'test'
+  ...
+# Subtest: gate frame and live values are separate from the legacy baked-number image
+ok 201 - gate frame and live values are separate from the legacy baked-number image
+  ---
+  duration_ms: 0.337931
+  type: 'test'
+  ...
+# Subtest: reference HUD exports measured geometry and mobile touch target policy
+ok 202 - reference HUD exports measured geometry and mobile touch target policy
+  ---
+  duration_ms: 0.980412
+  type: 'test'
+  ...
+# Subtest: night-city image renderer
+    # Subtest: plans distinct image-backed market, rooftop, and waterfront chunks
+    ok 1 - plans distinct image-backed market, rooftop, and waterfront chunks
+      ---
+      duration_ms: 2.766202
+      type: 'test'
+      ...
+    # Subtest: preloads before first visibility and releases pooled images outside the bounded view
+    ok 2 - preloads before first visibility and releases pooled images outside the bounded view
+      ---
+      duration_ms: 1.015014
+      type: 'test'
+      ...
+    # Subtest: uses baked panorama architecture without a repeated foreground eaves stream
+    ok 3 - uses baked panorama architecture without a repeated foreground eaves stream
+      ---
+      duration_ms: 0.697305
+      type: 'test'
+      ...
+    # Subtest: keeps neighboring panorama coverage overlapped and the long-run pool bounded
+    ok 4 - keeps neighboring panorama coverage overlapped and the long-run pool bounded
+      ---
+      duration_ms: 5.271451
+      type: 'test'
+      ...
+    # Subtest: leaves no artificial veil on pixel-matched same-district joins
+    ok 5 - leaves no artificial veil on pixel-matched same-district joins
+      ---
+      duration_ms: 4.117365
+      type: 'test'
+      ...
+    # Subtest: keeps ordinary Rooftops variant seams from installing an opaque full-height carrier
+    ok 6 - keeps ordinary Rooftops variant seams from installing an opaque full-height carrier
+      ---
+      duration_ms: 0.474908
+      type: 'test'
+      ...
+    # Subtest: keeps both screen-space streams covered at far camera positions
+    ok 7 - keeps both screen-space streams covered at far camera positions
+      ---
+      duration_ms: 0.570973
+      type: 'test'
+      ...
+    # Subtest: uses a real alpha-feathered market-to-rooftops transition plate
+    ok 8 - uses a real alpha-feathered market-to-rooftops transition plate
+      ---
+      duration_ms: 113.673063
+      type: 'test'
+      ...
+    # Subtest: preserves transition metadata while using the alpha-feathered market-to-rooftops bridge
+    ok 9 - preserves transition metadata while using the alpha-feathered market-to-rooftops bridge
+      ---
+      duration_ms: 0.3638
+      type: 'test'
+      ...
+    # Subtest: uses the alpha-feathered bridge as the deterministic sole transition panorama owner
+    ok 10 - uses the alpha-feathered bridge as the deterministic sole transition panorama owner
+      ---
+      duration_ms: 0.734841
+      type: 'test'
+      ...
+    # Subtest: renders the alpha-feathered bridge above neighboring opaque panoramas
+    ok 11 - renders the alpha-feathered bridge above neighboring opaque panoramas
+      ---
+      duration_ms: 0.313534
+      type: 'test'
+      ...
+    1..11
+ok 203 - night-city image renderer
+  ---
+  duration_ms: 131.118099
+  type: 'suite'
+  ...
+# Subtest: night patrol uses one compact, traversable gate landmark per block
+ok 204 - night patrol uses one compact, traversable gate landmark per block
+  ---
+  duration_ms: 8.8699
+  type: 'test'
+  ...
+# Subtest: non-gate market supports do not span both routes or hide the transfer gap
+ok 205 - non-gate market supports do not span both routes or hide the transfer gap
+  ---
+  duration_ms: 0.459444
+  type: 'test'
+  ...
+# Subtest: opening market fixtures stay separated and the alley reads as a passage, not a gate
+ok 206 - opening market fixtures stay separated and the alley reads as a passage, not a gate
+  ---
+  duration_ms: 0.318181
+  type: 'test'
+  ...
+# Subtest: release preserves a readable glide gap before the next grapple capture
+ok 207 - release preserves a readable glide gap before the next grapple capture
+  ---
+  duration_ms: 3.964033
+  type: 'test'
+  ...
+# Subtest: gate checkpoint helper is stable at the center of its gate segment
+ok 208 - gate checkpoint helper is stable at the center of its gate segment
+  ---
+  duration_ms: 0.21144
+  type: 'test'
+  ...
+# Subtest: 竹架 is a reusable obstacle type with impact slowdown and persistent debris
+ok 209 - 竹架 is a reusable obstacle type with impact slowdown and persistent debris
+  ---
+  duration_ms: 5.11304
+  type: 'test'
+  ...
+# Subtest: collapsed obstacle debris slows the pursuer and survives leaving the original bounds
+ok 210 - collapsed obstacle debris slows the pursuer and survives leaving the original bounds
+  ---
+  duration_ms: 1.066222
+  type: 'test'
+  ...
+# Subtest: 布棚在当前版本保留数据但不触发弹跳
+ok 211 - 布棚在当前版本保留数据但不触发弹跳
+  ---
+  duration_ms: 0.369298
+  type: 'test'
+  ...
+# Subtest: default browser entrypoint explicitly selects the open-streets journey
+ok 212 - default browser entrypoint explicitly selects the open-streets journey
+  ---
+  duration_ms: 1.18438
+  type: 'test'
+  ...
+# Subtest: open streets cross the old gate leaves without collision and settle at the destination
+ok 213 - open streets cross the old gate leaves without collision and settle at the destination
+  ---
+  duration_ms: 6.388799
+  type: 'test'
+  ...
+# Subtest: restored patrol at a former gate checkpoint stays open and keeps progress
+ok 214 - restored patrol at a former gate checkpoint stays open and keeps progress
+  ---
+  duration_ms: 4.22652
+  type: 'test'
+  ...
+# Subtest: legacy gate fixtures remain explicitly available for compatibility checks
+ok 215 - legacy gate fixtures remain explicitly available for compatibility checks
+  ---
+  duration_ms: 0.403079
+  type: 'test'
+  ...
+# Subtest: open-street tutorial keeps the final held-input rescue after a long release rhythm
+ok 216 - open-street tutorial keeps the final held-input rescue after a long release rhythm
+  ---
+  duration_ms: 17.719541
+  type: 'test'
+  ...
+# Subtest: a paused legacy snapshot restores with no active gate before any physics tick
+ok 217 - a paused legacy snapshot restores with no active gate before any physics tick
+  ---
+  duration_ms: 0.418843
+  type: 'test'
+  ...
+# Subtest: a stable gameplay input route can intentionally bypass a visible lantern halo
+ok 218 - a stable gameplay input route can intentionally bypass a visible lantern halo
+  ---
+  duration_ms: 97.632612
+  type: 'test'
+  ...
+# Subtest: generated parallax environment art is not part of the playable scene
+ok 219 - generated parallax environment art is not part of the playable scene
+  ---
+  duration_ms: 2.115478
+  type: 'test'
+  ...
+# Subtest: playable scene stays transparent over the neutral scene layer
+ok 220 - playable scene stays transparent over the neutral scene layer
+  ---
+  duration_ms: 0.199161
+  type: 'test'
+  ...
+# Subtest: scene geometry is not substituted with the removed generated reference backdrop
+ok 221 - scene geometry is not substituted with the removed generated reference backdrop
+  ---
+  duration_ms: 0.374246
+  type: 'test'
+  ...
+# Subtest: night-city scenery uses bounded image depth layers with seamless chunk coverage
+ok 222 - night-city scenery uses bounded image depth layers with seamless chunk coverage
+  ---
+  duration_ms: 0.37686
+  type: 'test'
+  ...
+# Subtest: a firecracker never teleports a distant guard closer to the player
+ok 223 - a firecracker never teleports a distant guard closer to the player
+  ---
+  duration_ms: 17.1969
+  type: 'test'
+  ...
+# Subtest: visible curfew reinforcement increases bounded closing pressure in the default patrol
+ok 224 - visible curfew reinforcement increases bounded closing pressure in the default patrol
+  ---
+  duration_ms: 5.38344
+  type: 'test'
+  ...
+# Subtest: read-only state snapshots cannot mutate live item use or the lantern pivot
+ok 225 - read-only state snapshots cannot mutate live item use or the lantern pivot
+  ---
+  duration_ms: 1.614401
+  type: 'test'
+  ...
+# Subtest: a low safety pickup still slows real reinforced officers
+ok 226 - a low safety pickup still slows real reinforced officers
+  ---
+  duration_ms: 3.553763
+  type: 'test'
+  ...
+# Subtest: two actual stylish rope releases still counter curfew pursuit
+ok 227 - two actual stylish rope releases still counter curfew pursuit
+  ---
+  duration_ms: 6.858079
+  type: 'test'
+  ...
+# Subtest: default page exposes a visible run HUD and detailed terminal settlement
+ok 228 - default page exposes a visible run HUD and detailed terminal settlement
+  ---
+  duration_ms: 10.982454
+  type: 'test'
+  ...
+# Subtest: 闸门是紧凑地标且闸门后有收钱接应人
+ok 229 - 闸门是紧凑地标且闸门后有收钱接应人
+  ---
+  duration_ms: 2.755887
+  type: 'test'
+  ...
+# Subtest: 完成穿门后记录一次城门奖励并标记接应人已收钱
+ok 230 - 完成穿门后记录一次城门奖励并标记接应人已收钱
+  ---
+  duration_ms: 5.847311
+  type: 'test'
+  ...
+# Subtest: 人在闸门开口外侧时不能被判定为通关
+ok 231 - 人在闸门开口外侧时不能被判定为通关
+  ---
+  duration_ms: 1.299485
+  type: 'test'
+  ...
+# Subtest: QA round 2 independent pursuit and physical world truth
+    # Subtest: guard stays on its running lane while the player swings through more than 100px vertically
+    ok 1 - guard stays on its running lane while the player swings through more than 100px vertically
+      ---
+      duration_ms: 12.380018
+      type: 'test'
+      ...
+    # Subtest: guard velocity and acceleration stay capped and do not copy player displacement
+    ok 2 - guard velocity and acceleration stay capped and do not copy player displacement
+      ---
+      duration_ms: 16.537493
+      type: 'test'
+      ...
+    # Subtest: world separation is the single HUD/chase truth and contact catches on the next fixed tick
+    ok 3 - world separation is the single HUD/chase truth and contact catches on the next fixed tick
+      ---
+      duration_ms: 1.292744
+      type: 'test'
+      ...
+    # Subtest: fast flight opens separation and stalling closes it continuously without teleport penalties
+    ok 4 - fast flight opens separation and stalling closes it continuously without teleport penalties
+      ---
+      duration_ms: 10.43055
+      type: 'test'
+      ...
+    1..4
+ok 232 - QA round 2 independent pursuit and physical world truth
+  ---
+  duration_ms: 41.661098
+  type: 'suite'
+  ...
+# Subtest: QA round 2 authored route, terrain, gate, and pause behavior
+    # Subtest: natural high commitment occurs only inside the declared upper corridor
+    ok 1 - natural high commitment occurs only inside the declared upper corridor
+      ---
+      duration_ms: 63.282568
+      type: 'test'
+      ...
+    # Subtest: roof net cannot resolve missed before the player reaches its world bounds
+    ok 2 - roof net cannot resolve missed before the player reaches its world bounds
+      ---
+      duration_ms: 55.907206
+      type: 'test'
+      ...
+    # Subtest: gate aperture advances while player progress is temporarily flat
+    ok 3 - gate aperture advances while player progress is temporarily flat
+      ---
+      duration_ms: 24.675147
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal gate collision recovery (replaced by vertical gate contract)
+    ok 4 - legacy horizontal gate collision recovery (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.292312
+      type: 'test'
+      ...
+    # Subtest: legacy gate route completion fixture (replaced by vertical gate contract)
+    ok 5 - legacy gate route completion fixture (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.166251
+      type: 'test'
+      ...
+    # Subtest: legacy gate golden path fixture (replaced by vertical gate contract)
+    ok 6 - legacy gate golden path fixture (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.278871
+      type: 'test'
+      ...
+    # Subtest: route profile changes actual speed and grapple-window expiry
+    ok 7 - route profile changes actual speed and grapple-window expiry
+      ---
+      duration_ms: 1.017418
+      type: 'test'
+      ...
+    # Subtest: terrain reactions begin only on bounds contact and stop when contact ends
+    ok 8 - terrain reactions begin only on bounds contact and stop when contact ends
+      ---
+      duration_ms: 3.667284
+      type: 'test'
+      ...
+    # Subtest: legacy horizontal gate bounds (replaced by vertical gate contract)
+    ok 9 - legacy horizontal gate bounds (replaced by vertical gate contract) # SKIP
+      ---
+      duration_ms: 0.078819
+      type: 'test'
+      ...
+    # Subtest: paused gameplay rejects grapple edges without changing held state
+    ok 10 - paused gameplay rejects grapple edges without changing held state
+      ---
+      duration_ms: 0.181515
+      type: 'test'
+      ...
+    1..10
+ok 233 - QA round 2 authored route, terrain, gate, and pause behavior
+  ---
+  duration_ms: 150.487093
+  type: 'suite'
+  ...
+# Subtest: QA round 2 bounded modal shell and input ownership
+    # Subtest: edge pursuer is non-rendered when the world pursuer is visible and both expressions are mutually exclusive
+    ok 1 - edge pursuer is non-rendered when the world pursuer is visible and both expressions are mutually exclusive
+      ---
+      duration_ms: 6.312494
+      type: 'test'
+      ...
+    # Subtest: markup supplies in-app result scrim, pause modal, and accessible rotate prompt
+    ok 2 - markup supplies in-app result scrim, pause modal, and accessible rotate prompt
+      ---
+      duration_ms: 2.65218
+      type: 'test'
+      ...
+    # Subtest: runtime tracks pointer and keyboard grapple ownership separately and ignores interactive key targets
+    ok 3 - runtime tracks pointer and keyboard grapple ownership separately and ignores interactive key targets
+      ---
+      duration_ms: 1.175928
+      type: 'test'
+      ...
+    1..3
+ok 234 - QA round 2 bounded modal shell and input ownership
+  ---
+  duration_ms: 10.924356
+  type: 'suite'
+  ...
+# Subtest: QA round 2 versioned run refresh recovery
+    # Subtest: snapshot parser round-trips a valid run and rejects corrupt or future versions
+    ok 1 - snapshot parser round-trips a valid run and rejects corrupt or future versions
+      ---
+      duration_ms: 12.290532
+      type: 'test'
+      ...
+    # Subtest: core restore preserves seed, run state, pause, terminal eligibility, and physical pursuer truth
+    ok 2 - core restore preserves seed, run state, pause, terminal eligibility, and physical pursuer truth
+      ---
+      duration_ms: 4.846127
+      type: 'test'
+      ...
+    1..2
+ok 235 - QA round 2 versioned run refresh recovery
+  ---
+  duration_ms: 17.283321
+  type: 'suite'
+  ...
+# Subtest: derives the three R1 checkpoints from the authoritative RunPlan
+ok 236 - derives the three R1 checkpoints from the authoritative RunPlan
+  ---
+  duration_ms: 1.896197
+  type: 'test'
+  ...
+# Subtest: centers the actual logical camera on a checkpoint and bounds preview panning
+ok 237 - centers the actual logical camera on a checkpoint and bounds preview panning
+  ---
+  duration_ms: 0.263469
+  type: 'test'
+  ...
+# Subtest: only the explicit longmap mode enables component comparison
+ok 238 - only the explicit longmap mode enables component comparison
+  ---
+  duration_ms: 0.104107
+  type: 'test'
+  ...
+# Subtest: the R1 entry is isolated from formal bootstrap, state APIs, and player persistence
+ok 239 - the R1 entry is isolated from formal bootstrap, state APIs, and player persistence
+  ---
+  duration_ms: 9.164615
+  type: 'test'
+  ...
+# Subtest: the dev-only HTML is not the formal self-contained build entry
+ok 240 - the dev-only HTML is not the formal self-contained build entry
+  ---
+  duration_ms: 1.082167
+  type: 'test'
+  ...
+# Subtest: R1 telemetry exposes measured request state and explicit unmeasured visibility state
+ok 241 - R1 telemetry exposes measured request state and explicit unmeasured visibility state
+  ---
+  duration_ms: 1.578186
+  type: 'test'
+  ...
+# Subtest: late console errors after telemetry fail the case and collection outcome
+ok 242 - late console errors after telemetry fail the case and collection outcome
+  ---
+  duration_ms: 1.390282
+  type: 'test'
+  ...
+# Subtest: late page errors after telemetry fail the case and collection outcome
+ok 243 - late page errors after telemetry fail the case and collection outcome
+  ---
+  duration_ms: 1.667141
+  type: 'test'
+  ...
+# Subtest: a case without late errors remains a passing collection outcome
+ok 244 - a case without late errors remains a passing collection outcome
+  ---
+  duration_ms: 1.789275
+  type: 'test'
+  ...
+# Subtest: retry goal uses the pre-settlement record rather than falsely treating every completed run as a tie
+ok 245 - retry goal uses the pre-settlement record rather than falsely treating every completed run as a tie
+  ---
+  duration_ms: 2.558208
+  type: 'test'
+  ...
+# Subtest: failure-specific next action is true to the existing skill and chase rules
+ok 246 - failure-specific next action is true to the existing skill and chase rules
+  ---
+  duration_ms: 0.280043
+  type: 'test'
+  ...
+# Subtest: missed vehicle goals use the actual last resolved instance without granting or blaming it for a death
+ok 247 - missed vehicle goals use the actual last resolved instance without granting or blaming it for a death
+  ---
+  duration_ms: 0.334686
+  type: 'test'
+  ...
+# Subtest: debrief has no live overlay, no mutation and no impossible negative targets
+ok 248 - debrief has no live overlay, no mutation and no impossible negative targets
+  ---
+  duration_ms: 0.178851
+  type: 'test'
+  ...
+# Subtest: authoritative long-map run plan
+    # Subtest: defines the first chain as four districts, three transitions, and four districts
+    ok 1 - defines the first chain as four districts, three transitions, and four districts
+      ---
+      duration_ms: 2.210232
+      type: 'test'
+      ...
+    # Subtest: is deterministic for repeated and out-of-order queries
+    ok 2 - is deterministic for repeated and out-of-order queries
+      ---
+      duration_ms: 0.545575
+      type: 'test'
+      ...
+    # Subtest: is directly addressable from world X without walking from the origin
+    ok 3 - is directly addressable from world X without walking from the origin
+      ---
+      duration_ms: 0.163076
+      type: 'test'
+      ...
+    # Subtest: caps viewport queries and clamps negative coordinates to the world origin
+    ok 4 - caps viewport queries and clamps negative coordinates to the world origin
+      ---
+      duration_ms: 0.245351
+      type: 'test'
+      ...
+    # Subtest: keeps extreme finite coordinates addressable without non-finite positions
+    ok 5 - keeps extreme finite coordinates addressable without non-finite positions
+      ---
+      duration_ms: 0.236377
+      type: 'test'
+      ...
+    # Subtest: keeps the maximum chunk width exact at the finite address limit
+    ok 6 - keeps the maximum chunk width exact at the finite address limit
+      ---
+      duration_ms: 0.166132
+      type: 'test'
+      ...
+    # Subtest: keeps gameplay compatibility projection out of the topology descriptor
+    ok 7 - keeps gameplay compatibility projection out of the topology descriptor
+      ---
+      duration_ms: 0.135465
+      type: 'test'
+      ...
+    # Subtest: does not turn the next chain into the same chunk instance
+    ok 8 - does not turn the next chain into the same chunk instance
+      ---
+      duration_ms: 0.315397
+      type: 'test'
+      ...
+    # Subtest: exposes traversal rhythm and landmark metadata without changing gameplay state
+    ok 9 - exposes traversal rhythm and landmark metadata without changing gameplay state
+      ---
+      duration_ms: 0.321576
+      type: 'test'
+      ...
+    1..9
+ok 249 - authoritative long-map run plan
+  ---
+  duration_ms: 5.996617
+  type: 'suite'
+  ...
+# Subtest: district textures are queued in preload and are not visible until texture readiness
+ok 250 - district textures are queued in preload and are not visible until texture readiness
+  ---
+  duration_ms: 0.662522
+  type: 'test'
+  ...
+# Subtest: renderer uses image display objects with world depth and bounded streaming, never a scenery Graphics fallback
+ok 251 - renderer uses image display objects with world depth and bounded streaming, never a scenery Graphics fallback
+  ---
+  duration_ms: 0.27159
+  type: 'test'
+  ...
+# Subtest: approved identity assets are wired into the Phaser world renderer
+ok 252 - approved identity assets are wired into the Phaser world renderer
+  ---
+  duration_ms: 0.899981
+  type: 'test'
+  ...
+# Subtest: approved environment support assets remain preloadable but do not mount stale floating decoration
+ok 253 - approved environment support assets remain preloadable but do not mount stale floating decoration
+  ---
+  duration_ms: 0.644033
+  type: 'test'
+  ...
+# Subtest: approved v55 rooftop components are present in the runtime source tree
+ok 254 - approved v55 rooftop components are present in the runtime source tree
+  ---
+  duration_ms: 0.407816
+  type: 'test'
+  ...
+# Subtest: withdrawn full-cable asset is unavailable on every main runtime presentation path
+ok 255 - withdrawn full-cable asset is unavailable on every main runtime presentation path
+  ---
+  duration_ms: 0.228966
+  type: 'test'
+  ...
+# Subtest: night-city renderer streams approved district panoramas before visibility
+ok 256 - night-city renderer streams approved district panoramas before visibility
+  ---
+  duration_ms: 0.232782
+  type: 'test'
+  ...
+# Subtest: the default and longmap query use one approved static scene owner
+ok 257 - the default and longmap query use one approved static scene owner
+  ---
+  duration_ms: 0.343169
+  type: 'test'
+  ...
+# Subtest: the FlightScene never paints legacy sceneObjects terrain over the image stream
+ok 258 - the FlightScene never paints legacy sceneObjects terrain over the image stream
+  ---
+  duration_ms: 0.154744
+  type: 'test'
+  ...
+# Subtest: live gate HUD values stay wired to current core state
+ok 259 - live gate HUD values stay wired to current core state
+  ---
+  duration_ms: 0.177649
+  type: 'test'
+  ...
+# Subtest: self-contained playable bundle contains no module-only import.meta expression
+ok 260 - self-contained playable bundle contains no module-only import.meta expression
+  ---
+  duration_ms: 183.750483
+  type: 'test'
+  ...
+# Subtest: 结算公式：里程计费 floor(米数*0.12)
+ok 261 - 结算公式：里程计费 floor(米数*0.12)
+  ---
+  duration_ms: 1.03844
+  type: 'test'
+  ...
+# Subtest: 结算公式：连击倍率作用拾取金币
+ok 262 - 结算公式：连击倍率作用拾取金币
+  ---
+  duration_ms: 0.154273
+  type: 'test'
+  ...
+# Subtest: 结算公式：深度系数作用拾取金币
+ok 263 - 结算公式：深度系数作用拾取金币
+  ---
+  duration_ms: 0.159651
+  type: 'test'
+  ...
+# Subtest: 结算公式：提灯童连击倍率上限为3
+ok 264 - 结算公式：提灯童连击倍率上限为3
+  ---
+  duration_ms: 0.240604
+  type: 'test'
+  ...
+# Subtest: 结算公式：0值边界与负值钳制
+ok 265 - 结算公式：0值边界与负值钳制
+  ---
+  duration_ms: 0.23854
+  type: 'test'
+  ...
+# Subtest: 结算公式：三项合并
+ok 266 - 结算公式：三项合并
+  ---
+  duration_ms: 0.114674
+  type: 'test'
+  ...
+# Subtest: instant re-press and release cannot manufacture consecutive flight rewards
+ok 267 - instant re-press and release cannot manufacture consecutive flight rewards
+  ---
+  duration_ms: 11.275598
+  type: 'test'
+  ...
+# Subtest: guided release rewards require the body to actually pass its attached support
+ok 268 - guided release rewards require the body to actually pass its attached support
+  ---
+  duration_ms: 1.142787
+  type: 'test'
+  ...
+# Subtest: first-level canopy and bamboo lessons are delayed and separated by a playable gap
+ok 269 - first-level canopy and bamboo lessons are delayed and separated by a playable gap
+  ---
+  duration_ms: 5.287123
+  type: 'test'
+  ...
+# Subtest: first-level teaching is visual and mechanical, without instructional copy or blocking cards
+ok 270 - first-level teaching is visual and mechanical, without instructional copy or blocking cards
+  ---
+  duration_ms: 11.575821
+  type: 'test'
+  ...
+# Subtest: uiAnimationStandard runtime contract
+    # Subtest: locks key-pose runtime motion policy and covers HUD, menu, overlay, icon, and state transitions
+    ok 1 - locks key-pose runtime motion policy and covers HUD, menu, overlay, icon, and state transitions
+      ---
+      duration_ms: 0.943757
+      type: 'test'
+      ...
+    # Subtest: reaches the exact same semantic final state at 30, 60, and 120 Hz
+    ok 2 - reaches the exact same semantic final state at 30, 60, and 120 Hz
+      ---
+      duration_ms: 0.538925
+      type: 'test'
+      ...
+    # Subtest: refuses playback until every declared UI asset has preloaded
+    ok 3 - refuses playback until every declared UI asset has preloaded
+      ---
+      duration_ms: 0.43634
+      type: 'test'
+      ...
+    # Subtest: reduced motion uses a short crossfade with no transform and keeps interaction available
+    ok 4 - reduced motion uses a short crossfade with no transform and keeps interaction available
+      ---
+      duration_ms: 0.148906
+      type: 'test'
+      ...
+    1..4
+ok 271 - uiAnimationStandard runtime contract
+  ---
+  duration_ms: 2.858192
+  type: 'suite'
+  ...
+# Subtest: default playable scene does not load fabricated backdrop or parallax art
+ok 272 - default playable scene does not load fabricated backdrop or parallax art
+  ---
+  duration_ms: 1.185051
+  type: 'test'
+  ...
+# Subtest: default playable shell does not expose a legacy solid background
+ok 273 - default playable shell does not expose a legacy solid background
+  ---
+  duration_ms: 0.23161
+  type: 'test'
+  ...
+# Subtest: HUD and persistent inventory share the 1672x941 reference-stage transform
+ok 274 - HUD and persistent inventory share the 1672x941 reference-stage transform
+  ---
+  duration_ms: 0.42385
+  type: 'test'
+  ...
+# Subtest: inventory keeps independent supplied asset layers and remains persistent
+ok 275 - inventory keeps independent supplied asset layers and remains persistent
+  ---
+  duration_ms: 0.320875
+  type: 'test'
+  ...
+# Subtest: world camera, streamed scenery, and HUD share the same logical 16:9 origin
+ok 276 - world camera, streamed scenery, and HUD share the same logical 16:9 origin
+  ---
+  duration_ms: 0.348978
+  type: 'test'
+  ...
+# Subtest: default composition keeps only sparse status and one pursuit signal
+ok 277 - default composition keeps only sparse status and one pursuit signal
+  ---
+  duration_ms: 1.087904
+  type: 'test'
+  ...
+# Subtest: tutorial stages are world-affordance driven rather than a tutorial card
+ok 278 - tutorial stages are world-affordance driven rather than a tutorial card
+  ---
+  duration_ms: 0.177818
+  type: 'test'
+  ...
+# Subtest: ring, talisman, and ad-play item layers are independent visible slots
+ok 279 - ring, talisman, and ad-play item layers are independent visible slots
+  ---
+  duration_ms: 0.287445
+  type: 'test'
+  ...
+# Subtest: all player-facing economy strings use 金币
+ok 280 - all player-facing economy strings use 金币
+  ---
+  duration_ms: 0.212481
+  type: 'test'
+  ...
+# Subtest: fresh tutorial hold/release has a bounded safety window before the first pursuit
+ok 281 - fresh tutorial hold/release has a bounded safety window before the first pursuit
+  ---
+  duration_ms: 10.958679
+  type: 'test'
+  ...
+# Subtest: player-facing settlement copy uses coins, never the legacy currency name
+ok 282 - player-facing settlement copy uses coins, never the legacy currency name
+  ---
+  duration_ms: 0.959501
+  type: 'test'
+  ...
+# Subtest: first-run tutorial exposes readable staged affordances including coin pickup and canopy rescue
+ok 283 - first-run tutorial exposes readable staged affordances including coin pickup and canopy rescue
+  ---
+  duration_ms: 0.180142
+  type: 'test'
+  ...
+# Subtest: beam-hung net has an explicit telegraph/aim/travel sequence and predicted target
+ok 284 - beam-hung net has an explicit telegraph/aim/travel sequence and predicted target
+  ---
+  duration_ms: 0.208195
+  type: 'test'
+  ...
+# Subtest: canopy bounce is retired without affecting the fixed economy
+ok 285 - canopy bounce is retired without affecting the fixed economy
+  ---
+  duration_ms: 5.224419
+  type: 'test'
+  ...
+# Subtest: a released short-rope anchor remains regrappleable while it stays within range
+ok 286 - a released short-rope anchor remains regrappleable while it stays within range
+  ---
+  duration_ms: 1.583604
+  type: 'test'
+  ...
+# Subtest: camera keeps a forward-only deadzone and runtime exposes bounce feedback
+ok 287 - camera keeps a forward-only deadzone and runtime exposes bounce feedback
+  ---
+  duration_ms: 6.450372
+  type: 'test'
+  ...
+# Subtest: closing gate continues narrowing below the old visible plateau
+ok 288 - closing gate continues narrowing below the old visible plateau
+  ---
+  duration_ms: 0.503802
+  type: 'test'
+  ...
+# Subtest: endless mode has no completion percentage UI or terminal copy
+ok 289 - endless mode has no completion percentage UI or terminal copy
+  ---
+  duration_ms: 3.116191
+  type: 'test'
+  ...
+# Subtest: static terrain blockout is not painted over the approved image stream
+ok 290 - static terrain blockout is not painted over the approved image stream
+  ---
+  duration_ms: 1.520439
+  type: 'test'
+  ...
+# Subtest: the thrown net retains an attributable telegraph and the roadblock uses approved cloth art
+ok 291 - the thrown net retains an attributable telegraph and the roadblock uses approved cloth art
+  ---
+  duration_ms: 1.466587
+  type: 'test'
+  ...
+# Subtest: the thrown net is a transient directional hazard, not a permanent debug grid
+ok 292 - the thrown net is a transient directional hazard, not a permanent debug grid
+  ---
+  duration_ms: 2.609761
+  type: 'test'
+  ...
+# Subtest: an unfolded net stays inside the visible danger bounds and leaves no solid panel
+ok 293 - an unfolded net stays inside the visible danger bounds and leaves no solid panel
+  ---
+  duration_ms: 625.736679
+  type: 'test'
+  ...
+# Subtest: flying net strands move with the bundle, and resolved nets draw nothing
+ok 294 - flying net strands move with the bundle, and resolved nets draw nothing
+  ---
+  duration_ms: 40.56454
+  type: 'test'
+  ...
+# Subtest: newly earned last ride must be observed for a real second before automated pause
+ok 295 - newly earned last ride must be observed for a real second before automated pause
+  ---
+  duration_ms: 1.75258
+  type: 'test'
+  ...
+# Subtest: safe skilled route is valid when a separate real-input route shows escalating officer contact
+ok 296 - safe skilled route is valid when a separate real-input route shows escalating officer contact
+  ---
+  duration_ms: 0.162816
+  type: 'test'
+  ...
+# Subtest: multiple instances of the same ride cannot mask a zero-duration late reward
+ok 297 - multiple instances of the same ride cannot mask a zero-duration late reward
+  ---
+  duration_ms: 0.168575
+  type: 'test'
+  ...
+# Subtest: each of the four rides requires a distinct real press/release action at a visible anchored encounter
+ok 298 - each of the four rides requires a distinct real press/release action at a visible anchored encounter
+  ---
+  duration_ms: 15.629019
+  type: 'test'
+  ...
+# Subtest: the bird cannot be claimed without two real stylish-release records
+ok 299 - the bird cannot be claimed without two real stylish-release records
+  ---
+  duration_ms: 4.850574
+  type: 'test'
+  ...
+# Subtest: visible opportunity may be deliberately ignored; later segment never gives an unseen deferred ride
+ok 300 - visible opportunity may be deliberately ignored; later segment never gives an unseen deferred ride
+  ---
+  duration_ms: 1.019962
+  type: 'test'
+  ...
+# Subtest: restoring a legacy save drains deferred awards rather than awarding them after dismount
+ok 301 - restoring a legacy save drains deferred awards rather than awarding them after dismount
+  ---
+  duration_ms: 1.246114
+  type: 'test'
+  ...
+# Subtest: ordinary real-input kite policy releases ABOVE the ring before rope reversal
+ok 302 - ordinary real-input kite policy releases ABOVE the ring before rope reversal
+  ---
+  duration_ms: 0.234926
+  type: 'test'
+  ...
+# Subtest: player receives actionable warning before the real rope reverses into pursuing officers
+ok 303 - player receives actionable warning before the real rope reverses into pursuing officers
+  ---
+  duration_ms: 0.558344
+  type: 'test'
+  ...
+# Subtest: full natural keyboard route may release the real kite rope before reverse swing
+ok 304 - full natural keyboard route may release the real kite rope before reverse swing
+  ---
+  duration_ms: 0.176166
+  type: 'test'
+  ...
+# Subtest: a conservative REAL release can miss the low pulley while surviving its high-roof swing
+ok 305 - a conservative REAL release can miss the low pulley while surviving its high-roof swing
+  ---
+  duration_ms: 0.702252
+  type: 'test'
+  ...
+# Subtest: all four initial challenges are source-anchored, deterministic, visible and optional
+ok 306 - all four initial challenges are source-anchored, deterministic, visible and optional
+  ---
+  duration_ms: 28.463014
+  type: 'test'
+  ...
+# Subtest: lantern guidance prioritizes a real release then new press at the low visible knot
+ok 307 - lantern guidance prioritizes a real release then new press at the low visible knot
+  ---
+  duration_ms: 0.950427
+  type: 'test'
+  ...
+# Subtest: two earned stylish releases survive only a REAL final Qingluan boarding dismount
+ok 308 - two earned stylish releases survive only a REAL final Qingluan boarding dismount
+  ---
+  duration_ms: 0.359865
+  type: 'test'
+  ...
+# Subtest: qingluan remains tied to a physical high support and earns no larger invisible catch radius
+ok 309 - qingluan remains tied to a physical high support and earns no larger invisible catch radius
+  ---
+  duration_ms: 0.247324
+  type: 'test'
+  ...
+# Subtest: qingluan warning begins one full street early, counts actual stylish releases and cues final high swing
+ok 310 - qingluan warning begins one full street early, counts actual stylish releases and cues final high swing
+  ---
+  duration_ms: 0.631435
+  type: 'test'
+  ...
+# Subtest: qingluan failed contact explains the REAL missing action rather than always blaming the style streak
+ok 311 - qingluan failed contact explains the REAL missing action rather than always blaming the style streak
+  ---
+  duration_ms: 0.150508
+  type: 'test'
+  ...
+# Subtest: an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling
+ok 312 - an ellipse is a real world collision: no magnet rectangle and no high-speed tunneling
+  ---
+  duration_ms: 0.183277
+  type: 'test'
+  ...
+# Subtest: distinct qualifying actions require a real recent press/release, speed, and bird combo
+ok 313 - distinct qualifying actions require a real recent press/release, speed, and bird combo
+  ---
+  duration_ms: 0.212652
+  type: 'test'
+  ...
+# Subtest: wrong action and bypass do not grant a ride, and the same encounter cannot resolve twice
+ok 314 - wrong action and bypass do not grant a ride, and the same encounter cannot resolve twice
+  ---
+  duration_ms: 1.419126
+  type: 'test'
+  ...
+# Subtest: a second encounter of the same vehicle can resolve differently and is identified by instance
+ok 315 - a second encounter of the same vehicle can resolve differently and is identified by instance
+  ---
+  duration_ms: 1.366115
+  type: 'test'
+  ...
+# Subtest: offer/encounter records survive save/load; invalid action, duplicate instance and forged reward are rejected
+ok 316 - offer/encounter records survive save/load; invalid action, duplicate instance and forged reward are rejected
+  ---
+  duration_ms: 2.619841
+  type: 'test'
+  ...
+# Subtest: default lantern holds on its authored world support and does not jump on the pickup frame
+ok 317 - default lantern holds on its authored world support and does not jump on the pickup frame
+  ---
+  duration_ms: 0.862934
+  type: 'test'
+  ...
+# Subtest: missed optional encounters explain their actual world height and first pulley teaches the release
+ok 318 - missed optional encounters explain their actual world height and first pulley teaches the release
+  ---
+  duration_ms: 0.492715
+  type: 'test'
+  ...
+# Subtest: vehicle acquisition is a deterministic probability event
+ok 319 - vehicle acquisition is a deterministic probability event
+  ---
+  duration_ms: 0.814231
+  type: 'test'
+  ...
+# Subtest: vehicle duration is a deterministic tick countdown and expires
+ok 320 - vehicle duration is a deterministic tick countdown and expires
+  ---
+  duration_ms: 41.505402
+  type: 'test'
+  ...
+# Subtest: 纸鸢 lifts on hold, glides low-gravity on release, immune to falling
+ok 321 - 纸鸢 lifts on hold, glides low-gravity on release, immune to falling
+  ---
+  duration_ms: 3.807211
+  type: 'test'
+  ...
+# Subtest: 货运滑索 locks height and accelerates on hold, ejects on release
+ok 322 - 货运滑索 locks height and accelerates on hold, ejects on release
+  ---
+  duration_ms: 2.908697
+  type: 'test'
+  ...
+# Subtest: 灯笼群 free-attach swings around a virtual pivot
+ok 323 - 灯笼群 free-attach swings around a virtual pivot
+  ---
+  duration_ms: 0.966211
+  type: 'test'
+  ...
+# Subtest: 青鸾 climbs on hold, dives on release, and is catch-immune
+ok 324 - 青鸾 climbs on hold, dives on release, and is catch-immune
+  ---
+  duration_ms: 2.06372
+  type: 'test'
+  ...
+# Subtest: vehicle state survives snapshot save/restore and defaults when absent
+ok 325 - vehicle state survives snapshot save/restore and defaults when absent
+  ---
+  duration_ms: 1.63339
+  type: 'test'
+  ...
+# Subtest: closing gate uses vertically closing leaves with stable horizontal aperture
+ok 326 - closing gate uses vertically closing leaves with stable horizontal aperture
+  ---
+  duration_ms: 4.90124
+  type: 'test'
+  ...
+# Subtest: fixed scenery remains present and preserves collapsed debris through reset and snapshot
+ok 327 - fixed scenery remains present and preserves collapsed debris through reset and snapshot
+  ---
+  duration_ms: 4.531771
+  type: 'test'
+  ...
+# Subtest: every level has adjacent playable transfers and distant assist captures reel the rope
+ok 328 - every level has adjacent playable transfers and distant assist captures reel the rope
+  ---
+  duration_ms: 1.424414
+  type: 'test'
+  ...
+# Subtest: ui-f-night-market-interior visual standard
+    # Subtest: locks a landscape minimal-flat shell with token-only left and destination-plus-pause right corners
+    ok 1 - locks a landscape minimal-flat shell with token-only left and destination-plus-pause right corners
+      ---
+      duration_ms: 0.960872
+      type: 'test'
+      ...
+    # Subtest: uses a readable guard at the phone-left edge as the primary pursuit expression
+    ok 2 - uses a readable guard at the phone-left edge as the primary pursuit expression
+      ---
+      duration_ms: 0.167092
+      type: 'test'
+      ...
+    # Subtest: draws strict-reference silhouettes without readable skin or facial features
+    ok 3 - draws strict-reference silhouettes without readable skin or facial features
+      ---
+      duration_ms: 0.368617
+      type: 'test'
+      ...
+    # Subtest: renders the patrol from formal pursuer world coordinates
+    ok 4 - renders the patrol from formal pursuer world coordinates
+      ---
+      duration_ms: 0.203087
+      type: 'test'
+      ...
+    # Subtest: does not reintroduce the retired neutral or floating decoration path
+    ok 5 - does not reintroduce the retired neutral or floating decoration path
+      ---
+      duration_ms: 0.65464
+      type: 'test'
+      ...
+    # Subtest: keeps approved minimal-flat character identity over image-backed city plates
+    ok 6 - keeps approved minimal-flat character identity over image-backed city plates
+      ---
+      duration_ms: 0.176237
+      type: 'test'
+      ...
+    # Subtest: restored bamboo and approved cloth shutter remain tied to physical occupied bounds
+    ok 7 - restored bamboo and approved cloth shutter remain tied to physical occupied bounds
+      ---
+      duration_ms: 0.391672
+      type: 'test'
+      ...
+    # Subtest: open streets remove the code-drawn market gate and gate prompts
+    ok 8 - open streets remove the code-drawn market gate and gate prompts
+      ---
+      duration_ms: 3.36037
+      type: 'test'
+      ...
+    # Subtest: keeps the center clear and makes grapple guidance contextual instead of persistent
+    ok 9 - keeps the center clear and makes grapple guidance contextual instead of persistent
+      ---
+      duration_ms: 0.272772
+      type: 'test'
+      ...
+    # Subtest: does not add gameplay actions beyond the existing grapple hold surface
+    ok 10 - does not add gameplay actions beyond the existing grapple hold surface
+      ---
+      duration_ms: 0.818137
+      type: 'test'
+      ...
+    # Subtest: routes every HUD, menu, overlay, icon, and state transition through the UI motion contract
+    ok 11 - routes every HUD, menu, overlay, icon, and state transition through the UI motion contract
+      ---
+      duration_ms: 0.380956
+      type: 'test'
+      ...
+    1..11
+ok 329 - ui-f-night-market-interior visual standard
+  ---
+  duration_ms: 8.961699
+  type: 'suite'
+  ...
+1..329
+# tests 465
+# suites 23
+# pass 455
+# fail 0
+# cancelled 0
+# skipped 10
+# todo 0
+# duration_ms 2962.388469
